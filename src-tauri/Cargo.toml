@@ -1,0 +1,23 @@
+[package]
+authors = ["you"]
+default-run = "app"
+description = "A Tauri App"
+edition = "2018"
+license = "GPL-3.0 License"
+name = "app"
+repository = "https://github.com/jbarszczewski/tauri-svelte-template"
+version = "0.1.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+tauri-build = {version = "1.0.0-beta-rc.1"}
+
+[dependencies]
+serde = {version = "1.0", features = ["derive"]}
+serde_json = "1.0"
+tauri = {version = "1.0.0-beta-rc.4", features =["api-all"]}
+
+[features]
+custom-protocol = ["tauri/custom-protocol"]
+default = ["custom-protocol"]
