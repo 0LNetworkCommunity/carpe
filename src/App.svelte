@@ -17,10 +17,26 @@
 	let input: string = '';
 	let result: string = '';
 	const handleClick = async () => {
-		result = await invoke('my_custom_command', {
-			invokeMessage: input,
-		});
+        invoke('keygen',{})
+          .then((res) => result = res)
+          .catch((e) => console.error(e))
 	};
+
+    const wizard_user = async () => {
+        invoke('wizard_user',{
+           home: '/Users/ping/.0L',
+           blockZero: ''
+        })
+          .then((res) => result = res)
+          .catch((e) => console.error(e))
+        };
+    const wizard_user_check = async () => {
+        invoke('wizard_user_check',{
+           home: '/Users/ping/.0L/account.json',
+        })
+          .then((res) => result = res)
+          .catch((e) => console.error(e))
+        };
 </script>
 
 <main>
@@ -34,6 +50,9 @@
 				<CardText>Write something below and press the button.</CardText>
 				<Input type="text" bind:value={input} />
 				<Button color="primary" on:click={handleClick}>Call Rust</Button>
+				<Button color="danger" on:click={handleClick}>Keygen</Button>
+				<Button color="danger" on:click={wizard_user}>wizard-user</Button>
+				<Button color="danger" on:click={wizard_user_check}>wizard-user-check</Button>
 			</CardBody>
 			<CardFooter>
 				{#if result.length !== 0}
