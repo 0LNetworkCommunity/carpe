@@ -2,6 +2,8 @@
 
 - [x] create new keys & mnemonic
 - [x] initialize local files user-wizard, val-wizard
+- [ ] dev mode, to connect to a swarm (bonus: app can start-up a swarm, and shut down).
+- [ ] ability to start 'miner' and send proofs (send to swarm in dev mode)
 - [ ] ability to send common txs: create account, upgrade, rotate keys (multiple accounts?)
 - [ ] include all web-monitor views
 - [ ] ability to upgrade (tauri self updater)
