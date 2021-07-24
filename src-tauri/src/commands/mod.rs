@@ -1,8 +1,12 @@
 use libra_types::transaction::authenticator::AuthenticationKey;
 use libra_types::waypoint::Waypoint;
+use miner::block::mine_once;
+use miner::commit_proof::commit_proof_tx;
 use ol::commands::init_cmd::InitCmd;
 use ol::prelude::{app_config, Runnable};
+use ol_types::config::{self, TxType};
 use serde::{Deserialize, Serialize};
+use txs::submit_tx::{TxParams, get_tx_params_from_swarm, tx_params};
 use std::net::Ipv4Addr;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
@@ -101,6 +105,48 @@ pub fn wizard_user_check(home: String) -> bool {
   };
   check(home_path)
 }
+
+// Get configs from swarm
+pub fn swarm_params(swarm_path: String) -> Result<TxParams, Error> {
+  let txp = get_tx_params_from_swarm(
+    PathBuf::from(swarm_path),
+    "alice".to_string(),
+    false, 
+  ).unwrap();
+  Ok(txp)
+}
+
+#[tauri::command]
+/// mine for swarm
+pub fn mine(config_dir: String, is_swarm: bool) -> String {
+  let appcfg = config::parse_toml(config_dir).unwrap();
+  let swarm_path = None;
+  let swarm_persona = None;
+  if is_swarm {
+   swarm_path = Some(PathBuf::from(config_dir));
+   swarm_persona = Some("alice".to_string());
+  }
+  match mine_once(&appcfg) {
+    Ok(b) => {
+      let tx_params = tx_params(
+        appcfg,
+        None,
+        None,
+        swarm_path,
+        swarm_persona,
+        TxType::Miner,
+        false, //  TODO: should be true in production
+        true,
+      ).unwrap();
+      commit_proof_tx(tx_params, b.preimage, b.proof, false);
+    },
+    Err(_) => todo!(),
+  };
+
+  "Result".to_string()
+}
+
+
 
 #[tauri::command]
 pub async fn start_swarm(swarm_path: Option<PathBuf>) -> bool {
