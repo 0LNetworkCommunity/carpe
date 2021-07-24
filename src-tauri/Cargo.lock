@@ -11,7 +11,7 @@ checksum = "d9fe5e32de01730eb1f6b7f5b51c17e03e2325bf40a74f754f04f130043affff"
 [[package]]
 name = "abigen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "heck",
@@ -79,7 +79,7 @@ dependencies = [
 [[package]]
 name = "accumulator"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "libra-crypto",
@@ -213,6 +213,9 @@ checksum = "28b2cd92db5cbd74e8e5028f7e27dd7aa3090e89e4f2a197cc7c8dfb69c7063b"
 name = "app"
 version = "0.1.0"
 dependencies = [
+ "libra-config",
+ "libra-node",
+ "libra-swarm",
  "libra-types",
  "libra-wallet",
  "miner",
@@ -222,6 +225,7 @@ dependencies = [
  "serde_json",
  "tauri",
  "tauri-build",
+ "txs",
  "url",
 ]
 
@@ -355,7 +359,7 @@ dependencies = [
 [[package]]
 name = "backup-cli"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -364,7 +368,7 @@ dependencies = [
  "dirs 3.0.2",
  "executor",
  "executor-types",
- "futures",
+ "futures 0.3.14",
  "hex",
  "itertools",
  "libra-canonical-serialization",
@@ -388,6 +392,29 @@ dependencies = [
  "tokio 0.2.25",
  "tokio-util 0.3.1",
  "toml",
+]
+
+[[package]]
+name = "backup-service"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "bytes 0.5.6",
+ "futures 0.3.14",
+ "hyper 0.13.10",
+ "libra-canonical-serialization",
+ "libra-crypto",
+ "libra-logger",
+ "libra-metrics",
+ "libra-types",
+ "libra-workspace-hack",
+ "libradb",
+ "once_cell",
+ "serde",
+ "storage-interface",
+ "tokio 0.2.25",
+ "warp",
 ]
 
 [[package]]
@@ -529,10 +556,21 @@ dependencies = [
 [[package]]
 name = "borrow-graph"
 version = "0.0.1"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
  "mirai-annotations",
+]
+
+[[package]]
+name = "bounded-executor"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "futures 0.3.14",
+ "futures-semaphore",
+ "libra-workspace-hack",
+ "tokio 0.2.25",
 ]
 
 [[package]]
@@ -569,7 +607,7 @@ checksum = "e3b5ca7a04898ad4bcd41c90c5285445ff5b791899bb1b0abdd2a2aa791211d7"
 [[package]]
 name = "bytecode"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "borrow-graph",
  "bytecode-verifier",
@@ -587,7 +625,7 @@ dependencies = [
 [[package]]
 name = "bytecode-source-map"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "codespan",
@@ -604,7 +642,7 @@ dependencies = [
 [[package]]
 name = "bytecode-verifier"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "borrow-graph",
@@ -774,6 +812,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fd16c4719339c4530435d38e511904438d07cce7950afa3718a84ac36c10e89e"
 
 [[package]]
+name = "channel"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "futures 0.3.14",
+ "libra-infallible",
+ "libra-metrics",
+ "libra-workspace-hack",
+]
+
+[[package]]
 name = "chrono"
 version = "0.4.19"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -822,7 +872,7 @@ dependencies = [
 [[package]]
 name = "classgroup"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libc",
  "num-traits",
@@ -831,7 +881,7 @@ dependencies = [
 [[package]]
 name = "cli"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "chrono",
@@ -978,7 +1028,7 @@ dependencies = [
 [[package]]
 name = "compiled-stdlib"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "bytecode-verifier",
@@ -996,7 +1046,7 @@ dependencies = [
 [[package]]
 name = "compiler"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -1022,9 +1072,58 @@ dependencies = [
 ]
 
 [[package]]
+name = "consensus"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "byteorder",
+ "bytes 0.5.6",
+ "channel",
+ "consensus-types",
+ "crash-handler",
+ "execution-correctness",
+ "executor",
+ "executor-types",
+ "fail",
+ "futures 0.3.14",
+ "itertools",
+ "libra-canonical-serialization",
+ "libra-config",
+ "libra-crypto",
+ "libra-infallible",
+ "libra-logger",
+ "libra-mempool",
+ "libra-metrics",
+ "libra-secure-storage",
+ "libra-temppath",
+ "libra-trace",
+ "libra-types",
+ "libra-vm",
+ "libra-workspace-hack",
+ "mirai-annotations",
+ "network",
+ "num-derive",
+ "num-traits",
+ "once_cell",
+ "rand 0.7.3",
+ "safety-rules",
+ "schemadb",
+ "serde",
+ "serde_json",
+ "state-synchronizer",
+ "storage-interface",
+ "subscription-service",
+ "termion",
+ "thiserror",
+ "tokio 0.2.25",
+]
+
+[[package]]
 name = "consensus-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "executor-types",
@@ -1159,7 +1258,7 @@ checksum = "dcb25d077389e53838a8158c8e99174c5a9d902dee4904320db714f3c653ffba"
 [[package]]
 name = "crash-handler"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "backtrace",
  "libra-logger",
@@ -1346,6 +1445,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "ctrlc"
+version = "3.1.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "232295399409a8b7ae41276757b5a1cc21032848d42bff2352261f958b3ca29a"
+dependencies = [
+ "nix 0.20.0",
+ "winapi 0.3.9",
+]
+
+[[package]]
 name = "curve25519-dalek"
 version = "3.0.0"
 source = "git+https://github.com/novifinancial/curve25519-dalek.git?branch=fiat3#2940429efd0e6482af1531cff079e6605cbc9cf2"
@@ -1396,13 +1505,28 @@ dependencies = [
 [[package]]
 name = "datatest-stable"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
  "regex",
  "structopt",
  "termcolor",
  "walkdir",
+]
+
+[[package]]
+name = "debug-interface"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "bytes 0.5.6",
+ "libra-logger",
+ "libra-metrics",
+ "libra-workspace-hack",
+ "reqwest 0.10.10",
+ "tokio 0.2.25",
+ "warp",
 ]
 
 [[package]]
@@ -1567,7 +1691,7 @@ checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 [[package]]
 name = "docgen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "bytecode",
@@ -1690,7 +1814,7 @@ dependencies = [
 [[package]]
 name = "errmapgen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "libra-canonical-serialization",
@@ -1709,9 +1833,36 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f7531096570974c3a9dcf9e4b8e1cede1ec26cf5046219fb3b9d897503b9be59"
 
 [[package]]
+name = "execution-correctness"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "consensus-types",
+ "executor",
+ "executor-types",
+ "libra-canonical-serialization",
+ "libra-config",
+ "libra-crypto",
+ "libra-global-constants",
+ "libra-infallible",
+ "libra-logger",
+ "libra-secure-net",
+ "libra-secure-storage",
+ "libra-temppath",
+ "libra-types",
+ "libra-vm",
+ "libra-workspace-hack",
+ "rand 0.7.3",
+ "serde",
+ "storage-client",
+ "thiserror",
+]
+
+[[package]]
 name = "executor"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "consensus-types",
@@ -1740,7 +1891,7 @@ dependencies = [
 [[package]]
 name = "executor-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "libra-canonical-serialization",
@@ -1854,6 +2005,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2022715d62ab30faffd124d40b76f4134a550a87792276512b18d63272333394"
 
 [[package]]
+name = "fuchsia-cprng"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a06f77d526c1a601b7c4cdd98f54b5eaabffc14d5f2f0296febdc7f357c6d3ba"
+
+[[package]]
 name = "fuchsia-zircon"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1868,6 +2025,12 @@ name = "fuchsia-zircon-sys"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3dcaa9ae7725d12cdb85b3ad99a434db70b468c09ded17e012d86b5c1010f7a7"
+
+[[package]]
+name = "futures"
+version = "0.1.31"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3a471a38ef8ed83cd6e40aa59c1ffe17db6855c18e3604d9c4ed8c08ebc28678"
 
 [[package]]
 name = "futures"
@@ -1942,6 +2105,15 @@ dependencies = [
  "proc-macro2 1.0.26",
  "quote 1.0.9",
  "syn 1.0.71",
+]
+
+[[package]]
+name = "futures-semaphore"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "libra-workspace-hack",
+ "tokio 0.2.25",
 ]
 
 [[package]]
@@ -2060,7 +2232,7 @@ dependencies = [
 [[package]]
 name = "generate-key"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-canonical-serialization",
  "libra-crypto",
@@ -2174,7 +2346,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1fb60242bfff700772dae5d9e3a1f7aa2e4ebccf18b89662a16acb2822568561"
 dependencies = [
  "bitflags 1.2.1",
- "futures",
+ "futures 0.3.14",
  "futures-channel",
  "futures-core",
  "futures-io",
@@ -2751,7 +2923,7 @@ checksum = "47be2f14c678be2fdcab04ab1171db51b2762ce6f0a8ee87c8dd4a04ed216135"
 [[package]]
 name = "ir-to-bytecode"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -2770,7 +2942,7 @@ dependencies = [
 [[package]]
 name = "ir-to-bytecode-syntax"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "codespan",
@@ -2812,6 +2984,27 @@ version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3f46ada8a08dcd75a10afae872fbfb51275df4a8ae0d46b8cc7c708f08dd2998"
 dependencies = [
+ "libc",
+]
+
+[[package]]
+name = "jemalloc-sys"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0d3b9f3f5c9b31aa0f5ed3260385ac205db665baa41d49bb8338008ae94ede45"
+dependencies = [
+ "cc",
+ "fs_extra",
+ "libc",
+]
+
+[[package]]
+name = "jemallocator"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "43ae63fcfc45e99ab3d1b29a46782ad679e98436c3169d15a167a1108a724b69"
+dependencies = [
+ "jemalloc-sys",
  "libc",
 ]
 
@@ -2903,9 +3096,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "libra-bitvec"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "libra-workspace-hack",
+ "serde",
+ "serde_bytes",
+]
+
+[[package]]
 name = "libra-canonical-serialization"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
  "serde",
@@ -2915,7 +3118,7 @@ dependencies = [
 [[package]]
 name = "libra-config"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "get_if_addrs",
  "libra-canonical-serialization",
@@ -2940,7 +3143,7 @@ dependencies = [
 [[package]]
 name = "libra-crypto"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -2974,7 +3177,7 @@ dependencies = [
 [[package]]
 name = "libra-crypto-derive"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
  "proc-macro2 1.0.26",
@@ -2985,7 +3188,7 @@ dependencies = [
 [[package]]
 name = "libra-genesis-tool"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "consensus-types",
@@ -3026,7 +3229,7 @@ dependencies = [
 [[package]]
 name = "libra-github-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-crypto",
  "libra-workspace-hack",
@@ -3039,12 +3242,12 @@ dependencies = [
 [[package]]
 name = "libra-global-constants"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 
 [[package]]
 name = "libra-infallible"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
 ]
@@ -3052,7 +3255,7 @@ dependencies = [
 [[package]]
 name = "libra-jellyfish-merkle"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -3071,9 +3274,41 @@ dependencies = [
 ]
 
 [[package]]
+name = "libra-json-rpc"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "fail",
+ "futures 0.3.14",
+ "hex",
+ "hyper 0.13.10",
+ "libra-canonical-serialization",
+ "libra-config",
+ "libra-crypto",
+ "libra-json-rpc-types",
+ "libra-logger",
+ "libra-mempool",
+ "libra-metrics",
+ "libra-trace",
+ "libra-types",
+ "libra-workspace-hack",
+ "move-core-types",
+ "network",
+ "ol-types",
+ "once_cell",
+ "rand 0.7.3",
+ "serde",
+ "serde_json",
+ "storage-interface",
+ "tokio 0.2.25",
+ "warp",
+]
+
+[[package]]
 name = "libra-json-rpc-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "hex",
@@ -3089,7 +3324,7 @@ dependencies = [
 [[package]]
 name = "libra-json-rpc-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "compiled-stdlib",
@@ -3109,7 +3344,7 @@ dependencies = [
 [[package]]
 name = "libra-log-derive"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
  "proc-macro2 1.0.26",
@@ -3120,7 +3355,7 @@ dependencies = [
 [[package]]
 name = "libra-logger"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "chrono",
  "erased-serde",
@@ -3138,7 +3373,7 @@ dependencies = [
 [[package]]
 name = "libra-management"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "executor",
@@ -3169,12 +3404,45 @@ dependencies = [
 ]
 
 [[package]]
-name = "libra-metrics"
+name = "libra-mempool"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
- "futures",
+ "bounded-executor",
+ "channel",
+ "fail",
+ "futures 0.3.14",
+ "itertools",
+ "libra-canonical-serialization",
+ "libra-config",
+ "libra-crypto",
+ "libra-infallible",
+ "libra-logger",
+ "libra-metrics",
+ "libra-trace",
+ "libra-types",
+ "libra-workspace-hack",
+ "mirai-annotations",
+ "netcore",
+ "network",
+ "once_cell",
+ "rand 0.7.3",
+ "serde",
+ "serde_json",
+ "storage-interface",
+ "subscription-service",
+ "tokio 0.2.25",
+ "vm-validator",
+]
+
+[[package]]
+name = "libra-metrics"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "futures 0.3.14",
  "hyper 0.13.10",
  "libra-logger",
  "libra-metrics-core",
@@ -3188,7 +3456,7 @@ dependencies = [
 [[package]]
 name = "libra-metrics-core"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
  "prometheus",
@@ -3197,13 +3465,15 @@ dependencies = [
 [[package]]
 name = "libra-network-address"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "aes-gcm",
  "libra-canonical-serialization",
  "libra-crypto",
  "libra-workspace-hack",
  "move-core-types",
+ "proptest",
+ "proptest-derive",
  "serde",
  "serde_bytes",
  "static_assertions",
@@ -3213,7 +3483,7 @@ dependencies = [
 [[package]]
 name = "libra-network-address-encryption"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "base64 0.13.0",
  "libra-canonical-serialization",
@@ -3231,16 +3501,65 @@ dependencies = [
 [[package]]
 name = "libra-nibble"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
  "serde",
 ]
 
 [[package]]
+name = "libra-node"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "backup-service",
+ "consensus",
+ "crash-handler",
+ "debug-interface",
+ "executor",
+ "executor-types",
+ "fail",
+ "futures 0.3.14",
+ "jemallocator",
+ "libra-config",
+ "libra-crypto",
+ "libra-genesis-tool",
+ "libra-json-rpc",
+ "libra-logger",
+ "libra-mempool",
+ "libra-metrics",
+ "libra-secure-storage",
+ "libra-temppath",
+ "libra-trace",
+ "libra-types",
+ "libra-vm",
+ "libra-workspace-hack",
+ "libradb",
+ "network-builder",
+ "state-synchronizer",
+ "storage-client",
+ "storage-interface",
+ "storage-service",
+ "structopt",
+ "subscription-service",
+ "tokio 0.2.25",
+]
+
+[[package]]
+name = "libra-proptest-helpers"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "crossbeam",
+ "libra-workspace-hack",
+ "proptest",
+ "proptest-derive",
+]
+
+[[package]]
 name = "libra-secure-json-rpc"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "hex",
  "libra-canonical-serialization",
@@ -3256,7 +3575,7 @@ dependencies = [
 [[package]]
 name = "libra-secure-net"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-logger",
  "libra-secure-push-metrics",
@@ -3269,7 +3588,7 @@ dependencies = [
 [[package]]
 name = "libra-secure-push-metrics"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-logger",
  "libra-metrics-core",
@@ -3280,7 +3599,7 @@ dependencies = [
 [[package]]
 name = "libra-secure-storage"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "base64 0.13.0",
  "chrono",
@@ -3306,7 +3625,7 @@ dependencies = [
 [[package]]
 name = "libra-secure-time"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-infallible",
  "libra-workspace-hack",
@@ -3315,7 +3634,7 @@ dependencies = [
 [[package]]
 name = "libra-state-view"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "libra-crypto",
@@ -3324,9 +3643,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "libra-swarm"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "ctrlc",
+ "debug-interface",
+ "libra-config",
+ "libra-genesis-tool",
+ "libra-logger",
+ "libra-temppath",
+ "libra-types",
+ "libra-workspace-hack",
+ "reqwest 0.10.10",
+ "structopt",
+ "thiserror",
+]
+
+[[package]]
 name = "libra-temppath"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "hex",
  "libra-workspace-hack",
@@ -3336,7 +3674,7 @@ dependencies = [
 [[package]]
 name = "libra-trace"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "chrono",
@@ -3354,7 +3692,7 @@ dependencies = [
 [[package]]
 name = "libra-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "bytes 0.5.6",
@@ -3366,10 +3704,13 @@ dependencies = [
  "libra-crypto-derive",
  "libra-infallible",
  "libra-network-address",
+ "libra-proptest-helpers",
  "libra-workspace-hack",
  "mirai-annotations",
  "move-core-types",
  "once_cell",
+ "proptest",
+ "proptest-derive",
  "radix_trie",
  "rand 0.7.3",
  "serde",
@@ -3382,7 +3723,7 @@ dependencies = [
 [[package]]
 name = "libra-vault-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "base64 0.13.0",
  "chrono",
@@ -3399,7 +3740,7 @@ dependencies = [
 [[package]]
 name = "libra-vm"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "fail",
@@ -3427,7 +3768,7 @@ dependencies = [
 [[package]]
 name = "libra-wallet"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -3450,7 +3791,7 @@ dependencies = [
 [[package]]
 name = "libra-workspace-hack"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "bytes 0.5.6",
  "cc",
@@ -3467,7 +3808,7 @@ dependencies = [
 [[package]]
 name = "libradb"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "accumulator",
  "anyhow",
@@ -3641,7 +3982,7 @@ dependencies = [
 [[package]]
 name = "miner"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -3814,7 +4155,7 @@ checksum = "c9be0862c1b3f26a88803c4a49de6889c10e608b3ee9344e6ef5b45fb37ad3d1"
 [[package]]
 name = "move-core-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "hex",
@@ -3824,6 +4165,8 @@ dependencies = [
  "libra-workspace-hack",
  "mirai-annotations",
  "once_cell",
+ "proptest",
+ "proptest-derive",
  "rand 0.7.3",
  "ref-cast",
  "serde",
@@ -3836,7 +4179,7 @@ dependencies = [
 [[package]]
 name = "move-explain"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "compiled-stdlib",
  "errmapgen",
@@ -3849,7 +4192,7 @@ dependencies = [
 [[package]]
 name = "move-ir-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "codespan",
@@ -3864,7 +4207,7 @@ dependencies = [
 [[package]]
 name = "move-lang"
 version = "0.0.1"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "borrow-graph",
@@ -3892,7 +4235,7 @@ dependencies = [
 [[package]]
 name = "move-prover"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "abigen",
  "anyhow",
@@ -3904,7 +4247,7 @@ dependencies = [
  "codespan-reporting",
  "docgen",
  "errmapgen",
- "futures",
+ "futures 0.3.14",
  "handlebars",
  "hex",
  "itertools",
@@ -3931,7 +4274,7 @@ dependencies = [
 [[package]]
 name = "move-vm-natives"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "hex",
  "libra-crypto",
@@ -3950,7 +4293,7 @@ dependencies = [
 [[package]]
 name = "move-vm-runtime"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "bytecode-verifier",
  "fail",
@@ -3970,7 +4313,7 @@ dependencies = [
 [[package]]
 name = "move-vm-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-canonical-serialization",
  "libra-crypto",
@@ -4083,6 +4426,112 @@ dependencies = [
  "cfg-if 0.1.10",
  "libc",
  "winapi 0.3.9",
+]
+
+[[package]]
+name = "netcore"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "async-trait",
+ "bytes 0.5.6",
+ "futures 0.3.14",
+ "libra-network-address",
+ "libra-types",
+ "libra-workspace-hack",
+ "pin-project 0.4.28",
+ "serde",
+ "tokio 0.2.25",
+]
+
+[[package]]
+name = "network"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "bytes 0.5.6",
+ "channel",
+ "futures 0.3.14",
+ "futures-util",
+ "hex",
+ "libra-bitvec",
+ "libra-canonical-serialization",
+ "libra-config",
+ "libra-crypto",
+ "libra-crypto-derive",
+ "libra-infallible",
+ "libra-logger",
+ "libra-metrics",
+ "libra-network-address",
+ "libra-types",
+ "libra-workspace-hack",
+ "netcore",
+ "num-variants",
+ "once_cell",
+ "pin-project 0.4.28",
+ "rand 0.7.3",
+ "serde",
+ "serde_bytes",
+ "short-hex-str",
+ "stream-ratelimiter",
+ "thiserror",
+ "tokio 0.2.25",
+ "tokio-retry",
+ "tokio-util 0.3.1",
+]
+
+[[package]]
+name = "network-builder"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "channel",
+ "futures 0.3.14",
+ "libra-canonical-serialization",
+ "libra-config",
+ "libra-crypto",
+ "libra-infallible",
+ "libra-logger",
+ "libra-metrics",
+ "libra-network-address",
+ "libra-network-address-encryption",
+ "libra-secure-storage",
+ "libra-types",
+ "libra-workspace-hack",
+ "netcore",
+ "network",
+ "network-simple-onchain-discovery",
+ "rand 0.7.3",
+ "serde",
+ "storage-interface",
+ "subscription-service",
+ "tokio 0.2.25",
+ "tokio-retry",
+]
+
+[[package]]
+name = "network-simple-onchain-discovery"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "channel",
+ "futures 0.3.14",
+ "libra-canonical-serialization",
+ "libra-config",
+ "libra-crypto",
+ "libra-logger",
+ "libra-metrics",
+ "libra-network-address",
+ "libra-network-address-encryption",
+ "libra-types",
+ "libra-workspace-hack",
+ "move-core-types",
+ "network",
+ "once_cell",
+ "subscription-service",
+ "tokio 0.2.25",
 ]
 
 [[package]]
@@ -4280,7 +4729,7 @@ dependencies = [
 [[package]]
 name = "num-variants"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
  "proc-macro2 1.0.26",
@@ -4367,7 +4816,7 @@ dependencies = [
 [[package]]
 name = "ol"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "abscissa_core",
  "abscissa_tokio",
@@ -4383,7 +4832,7 @@ dependencies = [
  "crossterm",
  "dirs 2.0.2",
  "fs_extra",
- "futures",
+ "futures 0.3.14",
  "gag",
  "glob",
  "gumdrop",
@@ -4430,12 +4879,12 @@ dependencies = [
 [[package]]
 name = "ol-fixtures"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 
 [[package]]
 name = "ol-keys"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-types",
  "libra-wallet",
@@ -4445,7 +4894,7 @@ dependencies = [
 [[package]]
 name = "ol-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "ajson",
  "anyhow",
@@ -4476,7 +4925,7 @@ dependencies = [
 [[package]]
 name = "onboard"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "abscissa_core",
  "anyhow",
@@ -5062,6 +5511,19 @@ dependencies = [
 
 [[package]]
 name = "rand"
+version = "0.4.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "552840b97013b1a26992c11eac34bdd778e464601a4c2054b5f0bff7c6761293"
+dependencies = [
+ "fuchsia-cprng",
+ "libc",
+ "rand_core 0.3.1",
+ "rdrand",
+ "winapi 0.3.9",
+]
+
+[[package]]
+name = "rand"
 version = "0.7.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6a6b1679d49b24bbfe0c803429aa1874472f50d9b363131f0e89fc356b544d03"
@@ -5105,6 +5567,21 @@ dependencies = [
  "ppv-lite86",
  "rand_core 0.6.2",
 ]
+
+[[package]]
+name = "rand_core"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7a6fdeb83b075e8266dcc8762c22776f6877a63111121f5f8c7411e5be7eed4b"
+dependencies = [
+ "rand_core 0.4.2",
+]
+
+[[package]]
+name = "rand_core"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9c33a3c44ca05fa6f1807d8e6743f3824e8509beca625669633be0acbdf509dc"
 
 [[package]]
 name = "rand_core"
@@ -5192,6 +5669,15 @@ dependencies = [
  "crossbeam-utils 0.8.4",
  "lazy_static",
  "num_cpus",
+]
+
+[[package]]
+name = "rdrand"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "678054eb77286b51581ba43620cc911abf02758c91f93f479767aed0f90458b2"
+dependencies = [
+ "rand_core 0.3.1",
 ]
 
 [[package]]
@@ -5369,7 +5855,7 @@ dependencies = [
 [[package]]
 name = "resource-viewer"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "compiled-stdlib",
@@ -5520,6 +6006,33 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ef703b7cb59335eae2eb93ceb664c0eb7ea6bf567079d843e09420219668e072"
 
 [[package]]
+name = "safety-rules"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "consensus-types",
+ "crash-handler",
+ "libra-canonical-serialization",
+ "libra-config",
+ "libra-crypto",
+ "libra-global-constants",
+ "libra-infallible",
+ "libra-logger",
+ "libra-secure-net",
+ "libra-secure-push-metrics",
+ "libra-secure-storage",
+ "libra-temppath",
+ "libra-types",
+ "libra-vault-client",
+ "libra-workspace-hack",
+ "once_cell",
+ "rand 0.7.3",
+ "rand_core 0.5.1",
+ "serde",
+ "thiserror",
+]
+
+[[package]]
 name = "same-file"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5541,7 +6054,7 @@ dependencies = [
 [[package]]
 name = "schemadb"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "libra-metrics",
@@ -5571,7 +6084,7 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 [[package]]
 name = "scratchpad"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "itertools",
  "libra-crypto",
@@ -5853,7 +6366,7 @@ checksum = "7fdf1b9db47230893d76faad238fd6097fd6d6a9245cd7a4d90dbd639536bbd2"
 [[package]]
 name = "short-hex-str"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
  "mirai-annotations",
@@ -6003,7 +6516,7 @@ dependencies = [
 [[package]]
 name = "spec-lang"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -6031,6 +6544,40 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
 
 [[package]]
+name = "state-synchronizer"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "channel",
+ "executor",
+ "executor-types",
+ "fail",
+ "futures 0.3.14",
+ "itertools",
+ "libra-canonical-serialization",
+ "libra-config",
+ "libra-crypto",
+ "libra-infallible",
+ "libra-logger",
+ "libra-mempool",
+ "libra-metrics",
+ "libra-types",
+ "libra-vm",
+ "libra-workspace-hack",
+ "netcore",
+ "network",
+ "network-builder",
+ "once_cell",
+ "rand 0.7.3",
+ "serde",
+ "storage-interface",
+ "subscription-service",
+ "tokio 0.2.25",
+ "transaction-builder",
+]
+
+[[package]]
 name = "static_assertions"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6039,7 +6586,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "stdlib"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "bytecode-verifier",
@@ -6059,9 +6606,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "storage-client"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "libra-canonical-serialization",
+ "libra-crypto",
+ "libra-infallible",
+ "libra-logger",
+ "libra-secure-net",
+ "libra-types",
+ "libra-workspace-hack",
+ "serde",
+ "storage-interface",
+]
+
+[[package]]
 name = "storage-interface"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "itertools",
@@ -6075,6 +6639,39 @@ dependencies = [
  "scratchpad",
  "serde",
  "thiserror",
+]
+
+[[package]]
+name = "storage-service"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "futures 0.3.14",
+ "libra-canonical-serialization",
+ "libra-config",
+ "libra-crypto",
+ "libra-logger",
+ "libra-metrics",
+ "libra-secure-net",
+ "libra-types",
+ "libra-workspace-hack",
+ "libradb",
+ "storage-interface",
+ "tokio 0.2.25",
+]
+
+[[package]]
+name = "stream-ratelimiter"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "futures 0.3.14",
+ "futures-semaphore",
+ "libra-workspace-hack",
+ "pin-project 0.4.28",
+ "tokio 0.2.25",
 ]
 
 [[package]]
@@ -6163,6 +6760,17 @@ dependencies = [
  "proc-macro2 1.0.26",
  "quote 1.0.9",
  "syn 1.0.71",
+]
+
+[[package]]
+name = "subscription-service"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "channel",
+ "libra-types",
+ "libra-workspace-hack",
 ]
 
 [[package]]
@@ -6295,7 +6903,7 @@ dependencies = [
  "dirs-next 2.0.0",
  "either",
  "flate2",
- "futures",
+ "futures 0.3.14",
  "http",
  "ignore",
  "minisign-verify",
@@ -6628,6 +7236,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "tokio-executor"
+version = "0.1.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fb2d1b8f4548dbf5e1f7818512e9c406860678f29c300cdf0ebac72d1a3a1671"
+dependencies = [
+ "crossbeam-utils 0.7.2",
+ "futures 0.1.31",
+]
+
+[[package]]
 name = "tokio-macros"
 version = "0.2.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6646,6 +7264,29 @@ checksum = "f7d995660bd2b7f8c1568414c1126076c13fbb725c40112dc0120b78eb9b717b"
 dependencies = [
  "native-tls",
  "tokio 1.5.0",
+]
+
+[[package]]
+name = "tokio-retry"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9c03755b956458582182941061def32b8123a26c98b08fc6ddcf49ae89d18f33"
+dependencies = [
+ "futures 0.1.31",
+ "rand 0.4.6",
+ "tokio-timer",
+]
+
+[[package]]
+name = "tokio-timer"
+version = "0.2.13"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "93044f2d313c95ff1cb7809ce9a7a05735b012288a888b62d4434fd58c94f296"
+dependencies = [
+ "crossbeam-utils 0.7.2",
+ "futures 0.1.31",
+ "slab",
+ "tokio-executor",
 ]
 
 [[package]]
@@ -6789,7 +7430,7 @@ dependencies = [
 [[package]]
 name = "transaction-builder"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "libra-workspace-hack",
  "mirai-annotations",
@@ -6799,7 +7440,7 @@ dependencies = [
 [[package]]
 name = "transaction-builder-generated"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "compiled-stdlib",
  "libra-canonical-serialization",
@@ -6813,7 +7454,7 @@ dependencies = [
 [[package]]
 name = "transaction-builder-generator"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "heck",
@@ -6885,7 +7526,7 @@ dependencies = [
 [[package]]
 name = "txs"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -7084,7 +7725,7 @@ checksum = "cbdbff6266a24120518560b5dc983096efb98462e51d0d68169895b237be3e5d"
 [[package]]
 name = "vdf"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "bit-vec 0.5.1",
  "classgroup",
@@ -7114,7 +7755,7 @@ checksum = "5fecdca9a5291cc2b8dcf7dc02453fee791a280f3743cb0905f8822ae463b3fe"
 [[package]]
 name = "vm"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "libra-crypto",
@@ -7129,7 +7770,7 @@ dependencies = [
 [[package]]
 name = "vm-genesis"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#fb1d25f989f1dfc8466a165528ebea107f91dff7"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
 dependencies = [
  "anyhow",
  "bytecode-verifier",
@@ -7151,6 +7792,22 @@ dependencies = [
  "serde",
  "transaction-builder",
  "vm",
+]
+
+[[package]]
+name = "vm-validator"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri-demo#e10c79461ec47f176272f181223f41865bb32d85"
+dependencies = [
+ "anyhow",
+ "fail",
+ "libra-config",
+ "libra-state-view",
+ "libra-types",
+ "libra-vm",
+ "libra-workspace-hack",
+ "scratchpad",
+ "storage-interface",
 ]
 
 [[package]]
@@ -7202,7 +7859,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f41be6df54c97904af01aa23e613d4521eed7ab23537cede692d4058f6449407"
 dependencies = [
  "bytes 0.5.6",
- "futures",
+ "futures 0.3.14",
  "headers",
  "http",
  "hyper 0.13.10",
@@ -7690,7 +8347,7 @@ dependencies = [
  "derivative",
  "enumflags2",
  "fastrand",
- "futures",
+ "futures 0.3.14",
  "nb-connect",
  "nix 0.17.0",
  "once_cell",

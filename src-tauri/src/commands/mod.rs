@@ -16,6 +16,10 @@ use ol::node::client;
 use ol::mgmt::management::NodeMode;
 use ol::config::AppCfg;
 use tauri::Error;
+use miner::commands::MinerCmd;
+use ol::entrypoint::EntryPoint;
+use libra_config::config::NodeConfig;
+use miner::commands::start_cmd::StartCmd;
 
 #[tauri::command]
 pub fn hello(hello: String) ->String {
@@ -52,19 +56,15 @@ pub fn keygen() ->Result<String, String> {
 
 /// Wizard User handler
 #[tauri::command]
-pub async fn wizard_user(home: String, block_zero: String) -> (AccountAddress, String) {
-    let home_path = if home.is_empty(){
-        PathBuf::from(".")
-    }else{
-        PathBuf::from(home )
-    };
-
-    let zero_path = if block_zero.is_empty(){
-        None
-    }else {
-        Some(PathBuf::from(block_zero))
-    };
-    wizard(home_path, false, &zero_path )
+pub async fn wizard_user(home_path:Option<PathBuf>, check: bool, fix:bool, validator:bool, block_zero: Option<PathBuf>) -> bool {
+    // let x = onboard::commands::wizard_user_cmd::UserWizardCmd{
+    //     home_path,
+    //     check,
+    //     fix,
+    //     validator,
+    //     block_zero
+    // }.run();
+    true
 }
 
 /// Wizard User Check Handler
@@ -78,49 +78,68 @@ pub fn wizard_user_check(home: String) -> bool {
     check(home_path)
 }
 
+#[tauri::command]
+pub async fn start_swarm(swarm_path: Option<PathBuf>) -> bool {
+    true
+}
+
 /// Start Mining handler
 #[tauri::command]
-pub async fn start_mining(swarm_path: Option<PathBuf>) -> bool {
-    let is_swarm = swarm_path.is_some();
-    let mut cfg = AppCfg::default();
-    let client = client::pick_client(swarm_path, &mut cfg).unwrap();
-    let mut node = Node::new(client, cfg, is_swarm);
-    node.start_miner(false);
+pub async fn start_mining(
+    home:Option<PathBuf>,
+    swarm_path: Option<PathBuf>,
+    swarm_persona: Option<String>,
+    is_operator: bool
+) -> bool {
+    let s = StartCmd{
+        backlog_only: false,
+        skip_backlog: false,
+        upstream_url: false,
+        url: None
+    };
+    miner::entrypoint::EntryPoint{
+        config: home,
+        help: false,
+        verbose: false,
+        command: Some(miner::commands::MinerCmd::Start(s)),
+        account: None,
+        url: None,
+        use_upstream_url: false,
+        waypoint: None,
+        save_path: None,
+        no_send: false,
+        swarm_path,
+        swarm_persona,
+        is_operator
+    };
+
     true
 }
 
 /// Start Node handler
 #[tauri::command]
-pub async fn start_node(swarm_path: Option<PathBuf>) -> bool {
-    let is_swarm = swarm_path.is_some();
-    let mut cfg = AppCfg::default();
-    let client = client::pick_client(swarm_path, &mut cfg).unwrap();
-    let mut node = Node::new(client, cfg, is_swarm);
-    let node_type = if node.vitals.items.validator_set {
-        NodeMode::Validator
-    } else {
-        NodeMode::Fullnode
-    };
-    node.start_node( node_type ,false);
-    true
+pub async fn start_node(home: PathBuf) -> Result<bool, String> {
+    match NodeConfig::load( home ) {
+        Ok(config) => {
+            libra_node::start(&config, None);
+            Ok(true)
+        },
+        Err(e) => {
+            Err(format!("Config was not loaded from: {:?}", e))
+        }
+    }
 }
 
 /// Stop Mining handler
 #[tauri::command]
 pub async fn stop_mining() -> bool {
-    let mut cfg = AppCfg::default();
-    let client = client::pick_client(None, &mut cfg).unwrap();
-    let node = Node::new(client, cfg, false);
-    node.stop_miner();
+
     true
 }
 
 /// Stop Mining handler
 #[tauri::command]
 pub async fn stop_node() -> bool {
-    let mut cfg = AppCfg::default();
-    let client = client::pick_client(None, &mut cfg).unwrap();
-    let node = Node::new(client, cfg, false);
-    node.stop_node();
+
     true
 }

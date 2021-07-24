@@ -39,7 +39,10 @@
         };
     const mining = async () => {
         invoke('start_mining',{
-           swarmPath: '/Users/ping/.0L',
+           home: '/Users/ping/.0L',
+           swarmPath: '/Users/ping/swarm',
+           swarmPersona: 'alice',
+           isOperator: false,
         })
           .then((res) => result = res)
           .catch((e) => console.error(e))
