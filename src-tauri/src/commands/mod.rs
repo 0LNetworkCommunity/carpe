@@ -39,15 +39,10 @@ struct Output {
 /// Keygen handler
 #[tauri::command]
 pub fn keygen() ->Result<String, String> {
-    let mut wallet = WalletLibrary::new();
+    let wallet = WalletLibrary::new();
     let mnemonic_string = wallet.mnemonic();
-    // NOTE: Authkey uses the child number 0 by default
-    // let auth_key = match wallet.new_address() {
-    //     Ok( (k, _)) => k,
-    //     Err(e) => return Err(e.to_string())
-    // };
-    // let account = auth_key.derived_address();
-    let (authkey, account, wall) = wallet::get_account_from_mnem(mnemonic_string.clone());
+
+    let (authkey, account, _) = wallet::get_account_from_mnem(mnemonic_string.clone());
 
     let output = Output {
         mnemonic: mnemonic_string,

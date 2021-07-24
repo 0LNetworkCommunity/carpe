@@ -16,10 +16,21 @@
 
   let input: string = "";
   let result: string = "";
+  
+  let authkey: string = "";
+  let account: string = "";
+
 
   const handleClick = async () => {
     invoke("keygen", {})
-      .then((res) => (result = res))
+      .then((res) => {
+        let o = JSON.parse(res);
+        if ('account' in o) {
+          console.log(o);
+          account = o.account;
+        }
+        result = res;
+      })
       .catch((e) => console.error(e));
   };
 
@@ -71,9 +82,11 @@
   <Container>
     <Card class="mb-3">
       <CardHeader>
-        <CardTitle>Tauri + Svelte</CardTitle>
+        <CardTitle>0L Light Node</CardTitle>
       </CardHeader>
       <CardBody>
+         <h1> account: {account}</h1>
+
         <CardSubtitle>Example of async call to Tauri</CardSubtitle>
         <CardText>Write something below and press the button.</CardText>
         <Input type="text" bind:value={input} />
