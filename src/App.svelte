@@ -39,14 +39,14 @@
         };
     const mining = async () => {
         invoke('start_mining',{
-           home: '/Users/ping/.0L',
+           swarmPath: '/Users/ping/.0L',
         })
           .then((res) => result = res)
           .catch((e) => console.error(e))
         };
     const start_node = async () => {
         invoke('start_node',{
-           home: '/Users/ping/.0L',
+           swarmPath: '/Users/ping/.0L',
         })
           .then((res) => result = res)
           .catch((e) => console.error(e))
@@ -77,6 +77,7 @@
 				<Button color="danger" on:click={handleClick}>Keygen</Button>
 				<Button color="danger" on:click={wizard_user}>wizard-user</Button>
 				<Button color="danger" on:click={wizard_user_check}>wizard-user-check</Button>
+				<br>
 				<Button color="danger" on:click={mining}>Start mining</Button>
 				<Button color="danger" on:click={stop_mining}>Stop mining</Button>
 				<Button color="danger" on:click={start_node}>Start node</Button>
