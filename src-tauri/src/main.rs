@@ -14,16 +14,17 @@ fn my_custom_command(invoke_message: String) -> String{
 fn main() {
 	tauri::Builder::default()
 	.invoke_handler(tauri::generate_handler![
-			my_custom_command,
 			hello,
 			keygen,
       init_user,
-			wizard_user,
-			wizard_user_check,
-			start_mining,
-			start_node,
-			stop_mining,
-			stop_node,
+      miner,
+      demo,
+			// wizard_user,
+			// wizard_user_check,
+			// start_mining,
+			// start_node,
+			// stop_mining,
+			// stop_node,
 		])
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");

@@ -118,14 +118,37 @@ pub fn swarm_params(swarm_path: String) -> Result<TxParams, Error> {
 
 #[tauri::command]
 /// mine for swarm
-pub fn mine(config_dir: String, is_swarm: bool) -> String {
-  let appcfg = config::parse_toml(config_dir).unwrap();
-  let swarm_path = None;
-  let swarm_persona = None;
+pub fn demo(config_dir: String) -> String {
+    let appcfg = config::parse_toml(config_dir.clone()).unwrap();
+    let tx_params = tx_params(
+        appcfg,
+        None,
+        None,
+        Some(PathBuf::from(&config_dir)),
+        Some("alice".to_string()),
+        TxType::Miner,
+        false, //  TODO: should be true in production
+        false,
+      ).unwrap();
+
+  // 
+  txs::commands::demo_cmd::demo_tx(&tx_params, false, None);
+
+  "Demo tx submitted".to_string()
+}
+
+#[tauri::command]
+/// mine for swarm
+pub fn miner(config_dir: String, is_swarm: bool) -> String {
+  let mut swarm_path = None;
+  let mut swarm_persona = None;
   if is_swarm {
-   swarm_path = Some(PathBuf::from(config_dir));
+   swarm_path = Some(PathBuf::from(&config_dir));
    swarm_persona = Some("alice".to_string());
   }
+
+  let appcfg = config::parse_toml(config_dir).unwrap();
+
   match mine_once(&appcfg) {
     Ok(b) => {
       let tx_params = tx_params(
@@ -138,9 +161,12 @@ pub fn mine(config_dir: String, is_swarm: bool) -> String {
         false, //  TODO: should be true in production
         true,
       ).unwrap();
-      commit_proof_tx(tx_params, b.preimage, b.proof, false);
+      match commit_proof_tx(&tx_params, b.preimage, b.proof, false) {
+          Ok(r) => format!("{:?}", r),
+          Err(e) => format!("Error submitting tx, message: {:?}", e),
+      }
     },
-    Err(_) => todo!(),
+    Err(e) => format!("Error mining proof, message: {:?}", e),
   };
 
   "Result".to_string()

@@ -19,7 +19,17 @@
   
   let authkey: string = "";
   let account: string = "";
+
   let temp_path: string = "/Users/lucas/code/rust/tauri-demo";
+  let swarm_path: string = "/Users/lucas/.0L/swarm_temp/";
+
+  const hello = async () => {
+    invoke("hello", {
+      hello: account,
+    })
+      .then((res) => (result = res))
+      .catch((e) => console.error(e));
+  };
 
   const keygen = async () => {
     invoke("keygen", {})
@@ -45,48 +55,50 @@
         .catch((e) => console.error(e));
     };
 
-  const wizard_user = async () => {
-    invoke("wizard_user", {
-      home: input,
-      blockZero: "",
+    const demo = async () => {
+    invoke("demo", {
+      configDir: swarm_path,
     })
-      .then((res) => (result = res))
-      .catch((e) => console.error(e));
-  };
-  const wizard_user_check = async () => {
-    invoke("wizard_user_check", {
-      home: "/Users/ping/.0L/account.json",
+        .then((res) => (result = res))
+        .catch((e) => console.error(e));
+    };
+
+    const miner = async () => {
+    invoke("miner", {
+      configDir: demo_path,
+      isSwarm: false,
     })
-      .then((res) => (result = res))
-      .catch((e) => console.error(e));
-  };
-  const mining = async () => {
-    invoke("start_mining", {
-      home: "/Users/ping/.0L",
-      swarmPath: "/Users/ping/swarm",
-      swarmPersona: "alice",
-      isOperator: false,
-    })
-      .then((res) => (result = res))
-      .catch((e) => console.error(e));
-  };
-  const hello = async () => {
-    invoke("hello", {
-      hello: "/Users/ping/.0L",
-    })
-      .then((res) => (result = res))
-      .catch((e) => console.error(e));
-  };
-  const stop_node = async () => {
-    invoke("stop_node", {})
-      .then((res) => (result = res))
-      .catch((e) => console.error(e));
-  };
-  const stop_mining = async () => {
-    invoke("stop_mining", {})
-      .then((res) => (result = res))
-      .catch((e) => console.error(e));
-  };
+        .then((res) => (result = res))
+        .catch((e) => console.error(e));
+    };
+
+  // const wizard_user = async () => {
+  //   invoke("wizard_user", {
+  //     home: input,
+  //     blockZero: "",
+  //   })
+  //     .then((res) => (result = res))
+  //     .catch((e) => console.error(e));
+  // };
+  // const wizard_user_check = async () => {
+  //   invoke("wizard_user_check", {
+  //     home: "/Users/ping/.0L/account.json",
+  //   })
+  //     .then((res) => (result = res))
+  //     .catch((e) => console.error(e));
+  // };
+
+
+  // const stop_node = async () => {
+  //   invoke("stop_node", {})
+  //     .then((res) => (result = res))
+  //     .catch((e) => console.error(e));
+  // };
+  // const stop_mining = async () => {
+  //   invoke("stop_mining", {})
+  //     .then((res) => (result = res))
+  //     .catch((e) => console.error(e));
+  // };
 </script>
 
 <main>
@@ -102,11 +114,14 @@
         <!-- <CardText>Write something below and press the button.</CardText> -->
         <!-- <Input type="text" bind:value={input} /> -->
         <!-- <Button color="primary" on:click={handleClick}>Call Rust</Button> -->
+        <Button on:click={hello}>Hello</Button>
+
         <Button on:click={keygen}>Keygen</Button>
         
         <Button on:click={init}>Init</Button>
 
-        <Button on:click={hello}>hello</Button>
+        <Button on:click={miner}>Mine Once</Button>
+        
 
         <!-- <Button color="danger" on:click={wizard_user}>wizard-user</Button>
         <Button color="danger" on:click={wizard_user_check}

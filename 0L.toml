@@ -4,8 +4,8 @@ block_dir = "blocks"
 db_path = "/Users/lucas/.0L/db"
 
 [profile]
-account = "9241971CDBE0286286489ADBF4E9D106"
-auth_key = "1e10366a480b350ce051becbec29ab529241971cdbe0286286489adbf4e9d106"
+account = "1EF4B9ACB5440F7237B9C43DBF60DCE2"
+auth_key = "25430afd1e500b3ab7cdc0067ef8d3b01ef4b9acb5440f7237b9c43dbf60dce2"
 statement = "Test"
 ip = "1.1.1.1"
 default_node = "http://localhost:8080/"
