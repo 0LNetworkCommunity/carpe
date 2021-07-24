@@ -72,6 +72,7 @@
         .catch((e) => console.error(e));
     };
 
+
   // const wizard_user = async () => {
   //   invoke("wizard_user", {
   //     home: input,
@@ -119,6 +120,8 @@
         <Button on:click={keygen}>Keygen</Button>
         
         <Button on:click={init}>Init</Button>
+
+        <Button on:click={demo}>Swarm Demo Tx</Button>
 
         <Button on:click={miner}>Mine Once</Button>
         
