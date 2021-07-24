@@ -1,3 +1,17 @@
+# 0L Light Node
+
+- [x] create new keys & mnemonic
+- [x] initialize local files user-wizard, val-wizard
+- [ ] dev mode, to connect to a swarm (bonus: app can start-up a swarm, and shut down).
+- [ ] ability to start 'miner' and send proofs (send to swarm in dev mode)
+- [ ] ability to send common txs: create account, upgrade, rotate keys (multiple accounts?)
+- [ ] include all web-monitor views
+- [ ] ability to upgrade (tauri self updater)
+- [ ] display help content from a github-hosted markdown file.
+- [ ] TBD: user account can upgrade to validator account.
+- [ ] TBD: validator account can choose operator (delegation).
+
+
 # Tauri Svelte App Template
 
 This is a project template for [Tauri](https://tauri.studio) and [Svelte](https://svelte.dev) apps. It lives at https://github.com/jbarszczewski/tauri-svelte-template.
@@ -37,3 +51,4 @@ This will create standalone app and installer in `src-tauri/target/release` dire
 -   [Tauri](https://tauri.studio)
 -   [Svelte](https://svelte.dev)
 -   [Sveltestrap](https://sveltestrap.js.org)
+
