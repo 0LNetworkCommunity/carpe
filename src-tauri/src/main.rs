@@ -19,6 +19,10 @@ fn main() {
 			keygen,
 			wizard_user,
 			wizard_user_check,
+			start_mining,
+			start_node,
+			stop_mining,
+			stop_node,
 		])
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");
