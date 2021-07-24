@@ -21,8 +21,9 @@
   let account: string = "";
 
   let temp_path: string = "/Users/lucas/code/rust/tauri-demo";
-  let swarm_path: string = "/Users/lucas/.0L/swarm_temp/";
-
+  let swarm_path: string = "/Users/lucas/.0L/swarm_temp/";  
+  // https://github.com/OLSF/libra/blob/main/ol/documentation/devs/swarm_qa_tools.md
+  
   const hello = async () => {
     invoke("hello", {
       hello: account,

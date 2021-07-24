@@ -118,6 +118,7 @@ pub fn swarm_params(swarm_path: String) -> Result<TxParams, Error> {
 
 #[tauri::command]
 /// mine for swarm
+// https://github.com/OLSF/libra/blob/main/ol/documentation/devs/swarm_qa_tools.md
 pub fn demo(config_dir: String) -> String {
     let appcfg = config::parse_toml(config_dir.clone()).unwrap();
     let tx_params = tx_params(
