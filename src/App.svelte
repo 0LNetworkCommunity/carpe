@@ -19,7 +19,7 @@
   
   let authkey: string = "";
   let account: string = "";
-
+  let temp_path: string = "/Users/lucas/code/rust/tauri-demo";
 
   const keygen = async () => {
     invoke("keygen", {})
@@ -39,6 +39,7 @@
       invoke("init_user", {
         authkey: authkey,
         account: account,
+        pathStr: temp_path,
       })
         .then((res) => (result = res))
         .catch((e) => console.error(e));

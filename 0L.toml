@@ -4,9 +4,9 @@ block_dir = "blocks"
 db_path = "/Users/lucas/.0L/db"
 
 [profile]
-account = "C88751931204C04F364966EAC694B550"
-auth_key = "b0e9b0647f903c70268416c7f74f23cfc88751931204c04f364966eac694b550"
-statement = "asdf"
+account = "9241971CDBE0286286489ADBF4E9D106"
+auth_key = "1e10366a480b350ce051becbec29ab529241971cdbe0286286489adbf4e9d106"
+statement = "Test"
 ip = "1.1.1.1"
 default_node = "http://localhost:8080/"
 upstream_nodes = ["http://localhost:8080/"]

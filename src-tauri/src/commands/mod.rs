@@ -3,6 +3,7 @@ use libra_types::waypoint::Waypoint;
 use ol::commands::init_cmd::InitCmd;
 use ol::prelude::{app_config, Runnable};
 use serde::{Deserialize, Serialize};
+use std::net::Ipv4Addr;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
 use url::Url;
@@ -74,9 +75,8 @@ pub async fn wizard_user(
 
 /// Wizard init handler
 #[tauri::command]
-pub fn init_user(authkey: String, account: String) -> String {
-  dbg!(&authkey);
-  let path = PathBuf::from("/Users/lucas/code/rust/tauri-demo");
+pub fn init_user(authkey: String, account: String, path_str: String) -> String {
+  let path = PathBuf::from(&path_str);
   ol_types::config::AppCfg::init_app_configs(
     authkey.parse::<AuthenticationKey>().expect("could not parse Authentication Key from string."), 
     account.parse::<AccountAddress>().expect("could not parse Account from string."),
@@ -84,7 +84,9 @@ pub fn init_user(authkey: String, account: String) -> String {
      &Some(path), 
      None, 
      None, 
-     &None
+     &None,
+     Some("Test".to_string()), // TODO
+     Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
     );
   account
 }
