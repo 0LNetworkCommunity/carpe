@@ -1,4 +1,5 @@
 use std::path::PathBuf;
+use libra_types::transaction::authenticator::AuthenticationKey;
 use ol::commands::init_cmd::InitCmd;
 use ol::prelude::{Runnable, app_config};
 use libra_types::waypoint::Waypoint;
@@ -20,6 +21,7 @@ use miner::commands::MinerCmd;
 use ol::entrypoint::EntryPoint;
 use libra_config::config::NodeConfig;
 use miner::commands::start_cmd::StartCmd;
+use ol_keys::wallet;
 
 #[tauri::command]
 pub fn hello(hello: String) ->String {
@@ -31,6 +33,7 @@ pub fn hello(hello: String) ->String {
 struct Output {
     mnemonic: String,
     account: AccountAddress,
+    authkey: AuthenticationKey,
 }
 
 /// Keygen handler
@@ -39,14 +42,17 @@ pub fn keygen() ->Result<String, String> {
     let mut wallet = WalletLibrary::new();
     let mnemonic_string = wallet.mnemonic();
     // NOTE: Authkey uses the child number 0 by default
-    let auth_key = match wallet.new_address() {
-        Ok( (k, _)) => k,
-        Err(e) => return Err(e.to_string())
-    };
-    let account = auth_key.derived_address();
+    // let auth_key = match wallet.new_address() {
+    //     Ok( (k, _)) => k,
+    //     Err(e) => return Err(e.to_string())
+    // };
+    // let account = auth_key.derived_address();
+    let (authkey, account, wall) = wallet::get_account_from_mnem(mnemonic_string.clone());
+
     let output = Output {
         mnemonic: mnemonic_string,
         account,
+        authkey,
     };
     return match serde_json::to_string(&output) {
         Ok(t) => Ok(t),
@@ -56,16 +62,35 @@ pub fn keygen() ->Result<String, String> {
 
 /// Wizard User handler
 #[tauri::command]
-pub async fn wizard_user(home_path:Option<PathBuf>, check: bool, fix:bool, validator:bool, block_zero: Option<PathBuf>) -> bool {
-    // let x = onboard::commands::wizard_user_cmd::UserWizardCmd{
-    //     home_path,
-    //     check,
-    //     fix,
-    //     validator,
-    //     block_zero
-    // }.run();
+pub async fn wizard_user(home_path: Option<PathBuf>, check: bool, fix:bool, validator:bool, block_zero: Option<PathBuf>) -> bool {
+  if let Some(path) = home_path {
+    
+    let (acc, add) = onboard::commands::wizard_user_cmd::wizard(path, false, &None);
     true
+  } else {
+    false
+  }
 }
+
+// /// Wizard User handler
+// #[tauri::command]
+// pub async fn init(home_path: Option<PathBuf>, check: bool, fix:bool, validator:bool, block_zero: Option<PathBuf>) -> bool {
+//   if let Some(path) = home_path {
+    
+//     ol::types::config::init_app_configs(
+//         authkey: AuthenticationKey,
+//         account: AccountAddress,
+//         upstream_peer: &Option<Url>,
+//         config_path: &Option<PathBuf>,
+//         base_epoch: &Option<u64>,
+//         base_waypoint: &Option<Waypoint>,
+//         source_path: &Option<PathBuf>,
+//     );
+//     true
+//   } else {
+//     false
+//   }
+// }
 
 /// Wizard User Check Handler
 #[tauri::command]

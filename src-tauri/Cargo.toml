@@ -15,9 +15,9 @@ tauri-build = {version = "1.0.0-beta-rc.1"}
 
 [dependencies]
 tauri = {version = "1.0.0-beta.4", features =["api-all"]}
-serde = { version = "1.0", features = ["serde_derive"] }
+serde = {version = "1.0", features = ["serde_derive"]}
 serde_json = "1.0"
-url = { version = "^2.1", features = ["serde"]}
+url = {version = "^2.1", features = ["serde"]}
 ol = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 libra-wallet = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 libra-types = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
@@ -27,6 +27,8 @@ libra-swarm = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 libra-node = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 libra-config = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 txs = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
+ol-types = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
+ol-keys = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]
