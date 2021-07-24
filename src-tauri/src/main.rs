@@ -17,6 +17,7 @@ fn main() {
 			my_custom_command,
 			hello,
 			keygen,
+      init_user,
 			wizard_user,
 			wizard_user_check,
 			start_mining,

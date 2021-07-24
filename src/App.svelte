@@ -21,18 +21,28 @@
   let account: string = "";
 
 
-  const handleClick = async () => {
+  const keygen = async () => {
     invoke("keygen", {})
       .then((res) => {
         let o = JSON.parse(res);
         if ('account' in o) {
           console.log(o);
           account = o.account;
+          authkey = o.authkey;
         }
         result = res;
       })
       .catch((e) => console.error(e));
   };
+
+    const init = async () => {
+      invoke("init_user", {
+        authkey: authkey,
+        account: account,
+      })
+        .then((res) => (result = res))
+        .catch((e) => console.error(e));
+    };
 
   const wizard_user = async () => {
     invoke("wizard_user", {
@@ -59,9 +69,9 @@
       .then((res) => (result = res))
       .catch((e) => console.error(e));
   };
-  const start_node = async () => {
-    invoke("start_node", {
-      swarmPath: "/Users/ping/.0L",
+  const hello = async () => {
+    invoke("hello", {
+      hello: "/Users/ping/.0L",
     })
       .then((res) => (result = res))
       .catch((e) => console.error(e));
@@ -87,20 +97,25 @@
       <CardBody>
          <h1> account: {account}</h1>
 
-        <CardSubtitle>Example of async call to Tauri</CardSubtitle>
-        <CardText>Write something below and press the button.</CardText>
-        <Input type="text" bind:value={input} />
-        <Button color="primary" on:click={handleClick}>Call Rust</Button>
-        <Button color="danger" on:click={handleClick}>Keygen</Button>
-        <Button color="danger" on:click={wizard_user}>wizard-user</Button>
+        <!-- <CardSubtitle>Example of async call to Tauri</CardSubtitle> -->
+        <!-- <CardText>Write something below and press the button.</CardText> -->
+        <!-- <Input type="text" bind:value={input} /> -->
+        <!-- <Button color="primary" on:click={handleClick}>Call Rust</Button> -->
+        <Button on:click={keygen}>Keygen</Button>
+        
+        <Button on:click={init}>Init</Button>
+
+        <Button on:click={hello}>hello</Button>
+
+        <!-- <Button color="danger" on:click={wizard_user}>wizard-user</Button>
         <Button color="danger" on:click={wizard_user_check}
           >wizard-user-check</Button
-        >
-        <br />
-        <Button color="danger" on:click={mining}>Start mining</Button>
+        > -->
+        <!-- <br /> -->
+        <!-- <Button color="danger" on:click={mining}>Start mining</Button>
         <Button color="danger" on:click={stop_mining}>Stop mining</Button>
         <Button color="danger" on:click={start_node}>Start node</Button>
-        <Button color="danger" on:click={stop_node}>Stop node</Button>
+        <Button color="danger" on:click={stop_node}>Stop node</Button> -->
       </CardBody>
       <CardFooter>
         {#if result.length !== 0}

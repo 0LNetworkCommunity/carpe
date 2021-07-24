@@ -3,7 +3,7 @@ use libra_types::waypoint::Waypoint;
 use ol::commands::init_cmd::InitCmd;
 use ol::prelude::{app_config, Runnable};
 use serde::{Deserialize, Serialize};
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::str::FromStr;
 use url::Url;
 
@@ -74,10 +74,19 @@ pub async fn wizard_user(
 
 /// Wizard init handler
 #[tauri::command]
-pub async fn init(authkey: AuthenticationKey, account: AccountAddress) -> bool {
-  ol_types::config::AppCfg::init_app_configs(authkey, account, &None, &None, None, None, &None);
-
-  true
+pub fn init_user(authkey: String, account: String) -> String {
+  dbg!(&authkey);
+  let path = PathBuf::from("/Users/lucas/code/rust/tauri-demo");
+  ol_types::config::AppCfg::init_app_configs(
+    authkey.parse::<AuthenticationKey>().expect("could not parse Authentication Key from string."), 
+    account.parse::<AccountAddress>().expect("could not parse Account from string."),
+    &None, 
+     &Some(path), 
+     None, 
+     None, 
+     &None
+    );
+  account
 }
 
 /// Wizard User Check Handler
