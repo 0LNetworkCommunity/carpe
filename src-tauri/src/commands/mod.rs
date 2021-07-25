@@ -95,6 +95,25 @@ pub fn init_user(authkey: String, account: String, path_str: String) -> String {
   account
 }
 
+
+// /// Swarm init handler
+// #[tauri::command]
+// pub fn init_swarm(swarm_path: String, swarm_persona: String, source_path: String) -> String {
+//   let path = PathBuf::from(&source_path);
+//   ol_types::config::AppCfg::init_app_configs(
+//     authkey.parse::<AuthenticationKey>().expect("could not parse Authentication Key from string."), 
+//     account.parse::<AccountAddress>().expect("could not parse Account from string."),
+//     &None, 
+//      &Some(path), 
+//      None, 
+//      None, 
+//      &None,
+//      Some("Test".to_string()), // TODO
+//      Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
+//     );
+//   account
+// }
+
 /// Wizard User Check Handler
 #[tauri::command]
 pub fn wizard_user_check(home: String) -> bool {
@@ -120,7 +139,9 @@ pub fn swarm_params(swarm_path: String) -> Result<TxParams, Error> {
 /// mine for swarm
 // https://github.com/OLSF/libra/blob/main/ol/documentation/devs/swarm_qa_tools.md
 pub fn demo(config_dir: String) -> String {
-    let appcfg = config::parse_toml(config_dir.clone()).unwrap();
+    let toml = Path::new(&config_dir).join("0/0L.toml");
+    dbg!(&toml);
+    let appcfg = config::parse_toml(toml.to_str().unwrap().to_string()).unwrap();
     let tx_params = tx_params(
         appcfg,
         None,
