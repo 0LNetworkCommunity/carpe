@@ -2,7 +2,7 @@ use libra_types::transaction::authenticator::AuthenticationKey;
 use libra_types::waypoint::Waypoint;
 use miner::block::mine_once;
 use miner::commit_proof::commit_proof_tx;
-use ol::commands::init_cmd::InitCmd;
+use ol::commands::init_cmd::{InitCmd, initialize_host_swarm};
 use ol::prelude::{app_config, Runnable};
 use ol_types::config::{self, TxType};
 use serde::{Deserialize, Serialize};
@@ -77,6 +77,17 @@ pub async fn wizard_user(
   }
 }
 
+
+/// Wizard init handler
+#[tauri::command]
+pub fn init_swarm(swarm_path: String, swarm_persona: String, source_path: String) -> String {
+  let swarm_path = PathBuf::from(&swarm_path);
+  let persona_dir = swarm_path.join("0"); // TODO: alice has directory swarm_path/0, bob 1, carol 2... hard-coding this for demo.
+  let source_path = PathBuf::from(&source_path); // TODO: this is not necessary for swarm, but lib requires it.
+  initialize_host_swarm(swarm_path, persona_dir, Some(swarm_persona), &source_path);
+
+  "ok".to_string()
+}
 /// Wizard init handler
 #[tauri::command]
 pub fn init_user(authkey: String, account: String, path_str: String) -> String {

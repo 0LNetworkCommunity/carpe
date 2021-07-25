@@ -17,6 +17,7 @@ fn main() {
 			hello,
 			keygen,
       init_user,
+      init_swarm,
       swarm_miner,
       demo,
 			// wizard_user,

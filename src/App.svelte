@@ -16,14 +16,15 @@
 
   let input: string = "";
   let result: string = "";
-  
+
   let authkey: string = "";
   let account: string = "";
 
   let temp_path: string = "/Users/lucas/code/rust/tauri-demo";
-  let swarm_path: string = "/Users/lucas/code/rust/ol/swarm_temp";  
+  let swarm_path: string = "/Users/lucas/code/rust/ol/swarm_temp";
+  let source_path: string = "/Users/lucas/code/rust/ol/";
   // https://github.com/OLSF/libra/blob/main/ol/documentation/devs/swarm_qa_tools.md
-  
+
   const hello = async () => {
     invoke("hello", {
       hello: account,
@@ -36,7 +37,7 @@
     invoke("keygen", {})
       .then((res) => {
         let o = JSON.parse(res);
-        if ('account' in o) {
+        if ("account" in o) {
           console.log(o);
           account = o.account;
           authkey = o.authkey;
@@ -46,33 +47,42 @@
       .catch((e) => console.error(e));
   };
 
-    const init = async () => {
-      invoke("init_user", {
-        authkey: authkey,
-        account: account,
-        pathStr: temp_path,
-      })
-        .then((res) => (result = res))
-        .catch((e) => console.error(e));
-    };
+  const initSwarm = async () => {
+    invoke("init_swarm", {
+      swarmPath: swarm_path,
+      swarmPersona: "alice",
+      sourcePath: source_path,
+    })
+      .then((res) => (result = res))
+      .catch((e) => console.error(e));
+  };
 
-    const demo = async () => {
+  const init = async () => {
+    invoke("init_user", {
+      authkey: authkey,
+      account: account,
+      pathStr: temp_path,
+    })
+      .then((res) => (result = res))
+      .catch((e) => console.error(e));
+  };
+
+  const demo = async () => {
     invoke("demo", {
       configDir: swarm_path,
     })
-        .then((res) => (result = res))
-        .catch((e) => console.error(e));
-    };
+      .then((res) => (result = res))
+      .catch((e) => console.error(e));
+  };
 
-    const miner = async () => {
+  const miner = async () => {
     invoke("swarm_miner", {
       swarmDir: swarm_path,
       swarmPersona: "alice",
     })
-        .then((res) => (result = res))
-        .catch((e) => console.error(e));
-    };
-
+      .then((res) => (result = res))
+      .catch((e) => console.error(e));
+  };
 
   // const wizard_user = async () => {
   //   invoke("wizard_user", {
@@ -89,7 +99,6 @@
   //     .then((res) => (result = res))
   //     .catch((e) => console.error(e));
   // };
-
 
   // const stop_node = async () => {
   //   invoke("stop_node", {})
@@ -110,22 +119,25 @@
         <CardTitle>0L Light Node</CardTitle>
       </CardHeader>
       <CardBody>
-         <h3> account: {account}</h3>
+        <h3>account: {account}</h3>
 
         <!-- <CardSubtitle>Example of async call to Tauri</CardSubtitle> -->
         <!-- <CardText>Write something below and press the button.</CardText> -->
         <!-- <Input type="text" bind:value={input} /> -->
         <!-- <Button color="primary" on:click={handleClick}>Call Rust</Button> -->
-        <Button on:click={hello}>Hello</Button>
+        <!-- <Button on:click={hello}>Hello</Button> -->
 
         <Button on:click={keygen}>Keygen</Button>
-        
+
         <Button on:click={init}>Init</Button>
 
-        <Button on:click={demo}>Swarm Demo Tx</Button>
+        <div>
+          <Button on:click={initSwarm}>Init Swarm</Button>
 
-        <Button on:click={miner}>Mine Once</Button>
-        
+          <Button on:click={demo}>Swarm Demo Tx</Button>
+
+          <Button on:click={miner}>Mine Once</Button>
+        </div>
 
         <!-- <Button color="danger" on:click={wizard_user}>wizard-user</Button>
         <Button color="danger" on:click={wizard_user_check}
