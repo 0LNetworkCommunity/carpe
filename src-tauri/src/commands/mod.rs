@@ -6,7 +6,7 @@ use ol::commands::init_cmd::InitCmd;
 use ol::prelude::{app_config, Runnable};
 use ol_types::config::{self, TxType};
 use serde::{Deserialize, Serialize};
-use txs::submit_tx::{TxParams, get_tx_params_from_swarm, tx_params};
+use txs::submit_tx::{TxParams, get_tx_params_from_swarm, get_tx_params_from_toml, tx_params};
 use std::net::Ipv4Addr;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
@@ -159,39 +159,39 @@ pub fn demo(config_dir: String) -> String {
   "Demo tx submitted".to_string()
 }
 
+// fn get_swarm_cfg(config_dir: String) -> AppCfg {
+//   let toml = Path::new(&config_dir).join("0/0L.toml");
+//   config::parse_toml(toml.to_str().unwrap().to_string()).unwrap()
+// }
+
+fn get_cfg(config_dir: &str, is_swarm: bool) -> AppCfg {
+  let mut toml = PathBuf::from(config_dir);
+  if is_swarm { toml.push("0/") };
+  toml.push("0L.toml");
+  config::parse_toml(toml.to_str().unwrap().to_string()).unwrap()
+}
+
 #[tauri::command]
 /// mine for swarm
-pub fn miner(config_dir: String, is_swarm: bool) -> String {
-  let mut swarm_path = None;
-  let mut swarm_persona = None;
-  if is_swarm {
-   swarm_path = Some(PathBuf::from(&config_dir));
-   swarm_persona = Some("alice".to_string());
-  }
+pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
 
-  let appcfg = config::parse_toml(config_dir).unwrap();
+  let tx_params = get_tx_params_from_swarm(
+    PathBuf::from(&swarm_dir),
+    swarm_persona, 
+    false
+  );
 
+  let appcfg = get_cfg(&swarm_dir, true);
+  
   match mine_once(&appcfg) {
     Ok(b) => {
-      let tx_params = tx_params(
-        appcfg,
-        None,
-        None,
-        swarm_path,
-        swarm_persona,
-        TxType::Miner,
-        false, //  TODO: should be true in production
-        true,
-      ).unwrap();
-      match commit_proof_tx(&tx_params, b.preimage, b.proof, false) {
+      match commit_proof_tx(&tx_params.unwrap(), b.preimage, b.proof, false) {
           Ok(r) => format!("{:?}", r),
           Err(e) => format!("Error submitting tx, message: {:?}", e),
       }
     },
     Err(e) => format!("Error mining proof, message: {:?}", e),
-  };
-
-  "Result".to_string()
+  }
 }
 
 

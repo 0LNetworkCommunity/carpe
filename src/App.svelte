@@ -65,9 +65,9 @@
     };
 
     const miner = async () => {
-    invoke("miner", {
-      configDir: demo_path,
-      isSwarm: false,
+    invoke("swarm_miner", {
+      swarmDir: swarm_path,
+      swarmPersona: "alice",
     })
         .then((res) => (result = res))
         .catch((e) => console.error(e));
