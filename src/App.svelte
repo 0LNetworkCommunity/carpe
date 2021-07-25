@@ -110,7 +110,7 @@
         <CardTitle>0L Light Node</CardTitle>
       </CardHeader>
       <CardBody>
-         <h1> account: {account}</h1>
+         <h3> account: {account}</h3>
 
         <!-- <CardSubtitle>Example of async call to Tauri</CardSubtitle> -->
         <!-- <CardText>Write something below and press the button.</CardText> -->

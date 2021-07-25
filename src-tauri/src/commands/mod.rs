@@ -6,7 +6,7 @@ use ol::commands::init_cmd::InitCmd;
 use ol::prelude::{app_config, Runnable};
 use ol_types::config::{self, TxType};
 use serde::{Deserialize, Serialize};
-use txs::submit_tx::{TxParams, get_tx_params_from_swarm, get_tx_params_from_toml, tx_params};
+use txs::submit_tx::{TxParams, eval_tx_status, get_tx_params_from_swarm, get_tx_params_from_toml, tx_params};
 use std::net::Ipv4Addr;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
@@ -186,8 +186,11 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
   match mine_once(&appcfg) {
     Ok(b) => {
       match commit_proof_tx(&tx_params.unwrap(), b.preimage, b.proof, false) {
-          Ok(r) => format!("{:?}", r),
-          Err(e) => format!("Error submitting tx, message: {:?}", e),
+          Ok(tx_view) => match eval_tx_status(tx_view) {
+              Ok(r) => format!("Success: Proof committed to chain \n {:?}", r),
+              Err(e) => format!("ERROR: Proof NOT committed to chain, message: \n{:?}", e),
+          },
+          Err(e) => format!("Miner transaction rejected, message: \n{:?}", e),
       }
     },
     Err(e) => format!("Error mining proof, message: {:?}", e),
