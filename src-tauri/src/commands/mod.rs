@@ -113,14 +113,14 @@ fn check_process(process_str: &str) -> bool {
 
 /// Wizard init handler
 #[tauri::command]
-pub fn swarm_files(swarm_str: String, swarm_persona: String, source_path: String) -> String {
-  let swarm_path = Path::new(&swarm_str);
+pub fn swarm_files(swarm_dir: String) -> String {
+  let swarm_path = Path::new(&swarm_dir);
 
   format!(
     "{path}: {path_exists}\n
     /0/0L.toml: {toml_exists},\n
     /0/blocks/block_0.json: {block_exists}", 
-    path = swarm_str,
+    path = swarm_dir,
     path_exists = swarm_path.exists().to_string(),
     toml_exists = swarm_path.join("0/0L.toml").exists().to_string(),
     block_exists = swarm_path.join("blocks/block_0.json").exists().to_string()

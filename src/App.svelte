@@ -17,6 +17,9 @@
   let input: string = "";
   let result: string = "";
 
+  let swarm_running: string = "";
+  let swarm_files: string = "";
+
   let authkey: string = "";
   let account: string = "";
 
@@ -84,6 +87,17 @@
       .catch((e) => console.error(e));
   };
 
+  const swarmProcess = async () => {
+    invoke("swarm_process", {})
+      .then((res) => (swarm_running = res))
+      .catch((e) => console.error(e));
+    invoke("swarm_process", {
+      swarmDir: swarm_path
+    })
+      .then((res) => (swarm_running = res))
+      .catch((e) => console.error(e));
+  };
+
   // const wizard_user = async () => {
   //   invoke("wizard_user", {
   //     home: input,
@@ -92,13 +106,7 @@
   //     .then((res) => (result = res))
   //     .catch((e) => console.error(e));
   // };
-  // const wizard_user_check = async () => {
-  //   invoke("wizard_user_check", {
-  //     home: "/Users/ping/.0L/account.json",
-  //   })
-  //     .then((res) => (result = res))
-  //     .catch((e) => console.error(e));
-  // };
+
 
   // const stop_node = async () => {
   //   invoke("stop_node", {})
@@ -132,6 +140,12 @@
         <Button on:click={init}>Init</Button>
 
         <div>
+          <h3> swarm </h3>
+          <p> swarm running: {swarm_running} </p>
+          <p> swarm files: {swarm_files} </p>
+
+          <Button on:click={swarmProcess}>Check Swarm</Button>
+          
           <Button on:click={initSwarm}>Init Swarm</Button>
 
           <Button on:click={demo}>Swarm Demo Tx</Button>
