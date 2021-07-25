@@ -29,6 +29,7 @@ libra-config = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 txs = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 ol-types = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 ol-keys = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
+sysinfo = "0.16.4"
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]

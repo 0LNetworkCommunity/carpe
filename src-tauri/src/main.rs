@@ -19,6 +19,8 @@ fn main() {
       init_user,
       init_swarm,
       swarm_miner,
+      swarm_files,
+      swarm_process,
       demo,
 			// wizard_user,
 			// wizard_user_check,

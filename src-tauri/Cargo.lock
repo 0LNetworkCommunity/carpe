@@ -225,6 +225,7 @@ dependencies = [
  "onboard",
  "serde",
  "serde_json",
+ "sysinfo 0.16.5",
  "tauri",
  "tauri-build",
  "txs",

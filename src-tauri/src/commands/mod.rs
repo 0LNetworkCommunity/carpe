@@ -6,6 +6,7 @@ use ol::commands::init_cmd::{InitCmd, initialize_host_swarm};
 use ol::prelude::{app_config, Runnable};
 use ol_types::config::{self, TxType};
 use serde::{Deserialize, Serialize};
+use sysinfo::{ProcessExt, SystemExt};
 use txs::submit_tx::{TxParams, eval_tx_status, get_tx_params_from_swarm, get_tx_params_from_toml, tx_params};
 use std::net::Ipv4Addr;
 use std::path::{Path, PathBuf};
@@ -88,6 +89,44 @@ pub fn init_swarm(swarm_path: String, swarm_persona: String, source_path: String
 
   "ok".to_string()
 }
+
+/// Wizard init handler
+#[tauri::command]
+pub fn swarm_process() -> bool {
+  check_process("libra-swarm")
+}
+
+fn check_process(process_str: &str) -> bool {
+    // get processes from sysinfo
+    let mut system = sysinfo::System::new_all();
+    system.refresh_all();
+    for (_, process) in system.get_processes() {
+        if process.name() == process_str {
+            // TODO: doesn't always catch `miner` running, see get by name below.
+            return true;
+        }
+    }
+    // also try by name (yield different results), most reliable.
+    let p = system.get_process_by_name(process_str);
+    !p.is_empty()
+}
+
+/// Wizard init handler
+#[tauri::command]
+pub fn swarm_files(swarm_str: String, swarm_persona: String, source_path: String) -> String {
+  let swarm_path = Path::new(&swarm_str);
+
+  format!(
+    "{path}: {path_exists}\n
+    /0/0L.toml: {toml_exists},\n
+    /0/blocks/block_0.json: {block_exists}", 
+    path = swarm_str,
+    path_exists = swarm_path.exists().to_string(),
+    toml_exists = swarm_path.join("0/0L.toml").exists().to_string(),
+    block_exists = swarm_path.join("blocks/block_0.json").exists().to_string()
+  )
+}
+
 /// Wizard init handler
 #[tauri::command]
 pub fn init_user(authkey: String, account: String, path_str: String) -> String {
