@@ -24,10 +24,7 @@
 
     const wizard_user = async () => {
         invoke('wizard_user',{
-           homePath: '/Users/ping/.0L',
-           check: false,
-           fix: false,
-           validator: false,
+           home: '/Users/ping/.0L',
            //blockZero: ''
         })
           .then((res) => result = res)

@@ -63,27 +63,14 @@ pub fn keygen() ->Result<String, String> {
 
 /// Wizard User handler
 #[tauri::command]
-pub async fn wizard_user(home_path:String, check: bool, fix: bool, validator: bool, block_zero: Option<String>) -> bool {
-    let mut args = vec![
-        "user".to_string(),
-        "--home-path".to_string(), home_path.to_string(),
-    ];
-    if check {
-        args.push("--check".to_string());
-    }
-    if fix {
-        args.push("--fix".to_string());
-    }
-    if validator {
-        args.push("--validator".to_string());
-    }
-    if let Some( p ) = block_zero {
-        args.push("--block-zero".to_string());
-        args.push(p);
-    }
+pub async fn wizard_user(home: String, block_zero: Option<PathBuf>) -> (AccountAddress, String) {
+    let home_path = if home.is_empty(){
+        PathBuf::from(".")
+    }else{
+        PathBuf::from(home )
+    };
 
-    Application::run(&onboard::application::APPLICATION, args);
-    true
+    wizard(home_path, false, &block_zero )
 }
 
 /// Wizard User Check Handler
