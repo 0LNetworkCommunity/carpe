@@ -1,3 +1,6 @@
+mod swarm;
+pub use swarm::*;
+
 use std::path::PathBuf;
 use ol::commands::init_cmd::InitCmd;
 use ol::prelude::{Runnable, app_config};
@@ -20,6 +23,10 @@ use miner::commands::MinerCmd;
 use ol::entrypoint::EntryPoint;
 use libra_config::config::NodeConfig;
 use miner::commands::start_cmd::StartCmd;
+use std::env::Args;
+use std::process::Command;
+use miner::prelude::Application;
+use onboard::application::OnboardApp;
 
 #[tauri::command]
 pub fn hello(hello: String) ->String {
@@ -56,14 +63,26 @@ pub fn keygen() ->Result<String, String> {
 
 /// Wizard User handler
 #[tauri::command]
-pub async fn wizard_user(home_path:Option<PathBuf>, check: bool, fix:bool, validator:bool, block_zero: Option<PathBuf>) -> bool {
-    // let x = onboard::commands::wizard_user_cmd::UserWizardCmd{
-    //     home_path,
-    //     check,
-    //     fix,
-    //     validator,
-    //     block_zero
-    // }.run();
+pub async fn wizard_user(home_path:String, check: bool, fix: bool, validator: bool, block_zero: Option<String>) -> bool {
+    let mut args = vec![
+        "user".to_string(),
+        "--home-path".to_string(), home_path.to_string(),
+    ];
+    if check {
+        args.push("--check".to_string());
+    }
+    if fix {
+        args.push("--fix".to_string());
+    }
+    if validator {
+        args.push("--validator".to_string());
+    }
+    if let Some( p ) = block_zero {
+        args.push("--block-zero".to_string());
+        args.push(p);
+    }
+
+    Application::run(&onboard::application::APPLICATION, args);
     true
 }
 
@@ -78,10 +97,6 @@ pub fn wizard_user_check(home: String) -> bool {
     check(home_path)
 }
 
-#[tauri::command]
-pub async fn start_swarm(swarm_path: Option<PathBuf>) -> bool {
-    true
-}
 
 /// Start Mining handler
 #[tauri::command]
@@ -91,27 +106,8 @@ pub async fn start_mining(
     swarm_persona: Option<String>,
     is_operator: bool
 ) -> bool {
-    let s = StartCmd{
-        backlog_only: false,
-        skip_backlog: false,
-        upstream_url: false,
-        url: None
-    };
-    miner::entrypoint::EntryPoint{
-        config: home,
-        help: false,
-        verbose: false,
-        command: Some(miner::commands::MinerCmd::Start(s)),
-        account: None,
-        url: None,
-        use_upstream_url: false,
-        waypoint: None,
-        save_path: None,
-        no_send: false,
-        swarm_path,
-        swarm_persona,
-        is_operator
-    };
+    let args = ["start".to_string()];
+    miner::application::MinerApp::run(&miner::application::APPLICATION, args);
 
     true
 }

@@ -26,7 +26,10 @@ onboard = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 libra-swarm = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 libra-node = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 libra-config = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
+libra-logger = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
+libra-genesis-tool = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
 txs = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
+ctrlc = { version = "3.1.6", default-features = false }
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]

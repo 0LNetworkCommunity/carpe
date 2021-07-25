@@ -23,6 +23,8 @@ fn main() {
 			start_node,
 			stop_mining,
 			stop_node,
+			start_swarm,
+			init_swarm_miner,
 		])
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");

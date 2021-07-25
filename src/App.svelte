@@ -24,8 +24,11 @@
 
     const wizard_user = async () => {
         invoke('wizard_user',{
-           home: '/Users/ping/.0L',
-           blockZero: ''
+           homePath: '/Users/ping/.0L',
+           check: false,
+           fix: false,
+           validator: false,
+           //blockZero: ''
         })
           .then((res) => result = res)
           .catch((e) => console.error(e))
@@ -64,6 +67,25 @@
           .then((res) => result = res)
           .catch((e) => console.error(e))
         };
+    const start_swarm = async () => {
+        invoke('start_swarm',{
+           libraNode: '/Users/ping/workspace/libra/target/release/libra-node',
+           c: '/Users/ping/swarm',
+           n: 0,
+           f: 0,
+        })
+          .then((res) => result = res)
+          .catch((e) => console.error(e))
+        };
+    const init_swarm_miner = async () => {
+        invoke('init_swarm_miner',{
+           swarmPath: '/Users/ping/swarm',
+           swarmPersona: 'alice',
+           sourcePath: '/Users/ping/workspace/libra',
+        })
+          .then((res) => result = res)
+          .catch((e) => console.error(e))
+        };
 </script>
 
 <main>
@@ -76,15 +98,23 @@
 				<CardSubtitle>Example of async call to Tauri</CardSubtitle>
 				<CardText>Write something below and press the button.</CardText>
 				<Input type="text" bind:value={input} />
+				<CardText>
 				<Button color="primary" on:click={handleClick}>Call Rust</Button>
 				<Button color="danger" on:click={handleClick}>Keygen</Button>
 				<Button color="danger" on:click={wizard_user}>wizard-user</Button>
 				<Button color="danger" on:click={wizard_user_check}>wizard-user-check</Button>
-				<br>
-				<Button color="danger" on:click={mining}>Start mining</Button>
-				<Button color="danger" on:click={stop_mining}>Stop mining</Button>
-				<Button color="danger" on:click={start_node}>Start node</Button>
-				<Button color="danger" on:click={stop_node}>Stop node</Button>
+				</CardText>
+                <CardText>
+                    <Button color="warning" on:click={start_swarm}>Start Swarm</Button>
+                    <Button color="warning" on:click={init_swarm_miner}>Init Swarm Miner</Button>
+
+                </CardText>
+				<CardText>
+                    <Button color="info" on:click={mining}>Start mining</Button>
+                    <Button color="info" on:click={stop_mining}>Stop mining</Button>
+                    <Button color="info" on:click={start_node}>Start node</Button>
+                    <Button color="info" on:click={stop_node}>Stop node</Button>
+				</CardText>
 			</CardBody>
 			<CardFooter>
 				{#if result.length !== 0}
