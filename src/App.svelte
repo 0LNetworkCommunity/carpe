@@ -91,10 +91,11 @@
     invoke("swarm_process", {})
       .then((res) => (swarm_running = res))
       .catch((e) => console.error(e));
-    invoke("swarm_process", {
+    
+      invoke("swarm_files", {
       swarmDir: swarm_path
     })
-      .then((res) => (swarm_running = res))
+      .then((res) => (swarm_files = res))
       .catch((e) => console.error(e));
   };
 
@@ -146,7 +147,7 @@
 
           <Button on:click={swarmProcess}>Check Swarm</Button>
           
-          <Button on:click={initSwarm}>Init Swarm</Button>
+          <Button on:click={initSwarm}>Init Alice</Button>
 
           <Button on:click={demo}>Swarm Demo Tx</Button>
 

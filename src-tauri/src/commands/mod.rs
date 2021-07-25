@@ -116,6 +116,7 @@ fn check_process(process_str: &str) -> bool {
 pub fn swarm_files(swarm_dir: String) -> String {
   let swarm_path = Path::new(&swarm_dir);
 
+
   format!(
     "{path}: {path_exists}\n
     /0/0L.toml: {toml_exists},\n
@@ -123,8 +124,25 @@ pub fn swarm_files(swarm_dir: String) -> String {
     path = swarm_dir,
     path_exists = swarm_path.exists().to_string(),
     toml_exists = swarm_path.join("0/0L.toml").exists().to_string(),
-    block_exists = swarm_path.join("blocks/block_0.json").exists().to_string()
+    block_exists = swarm_path.join("0/blocks/block_0.json").exists().to_string()
   )
+
+  // TODO: make this JSON not string
+  // struct Output {
+  //   path_exists: String,
+  //   toml_exists: String
+  //   block_exists: String,
+  // }
+  // let output = Output {
+  //   path_exists: mnemonic_string,
+  //   toml_exists,
+  //   block_exists,
+  // };
+  // return match serde_json::to_string(&output) {
+  //   Ok(t) => Ok(t),
+  //   Err(e) => Err(e.to_string()),
+  // };
+
 }
 
 /// Wizard init handler
