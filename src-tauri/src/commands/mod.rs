@@ -1,5 +1,5 @@
 use libra_types::transaction::authenticator::AuthenticationKey;
-use miner::block::mine_once;
+use miner::block::{mine_and_submit, mine_once};
 use miner::commit_proof::commit_proof_tx;
 use ol::commands::init_cmd::initialize_host_swarm;
 use ol_types::config::{self, TxType};
@@ -202,6 +202,8 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
   );
 
   let appcfg = get_cfg(&swarm_dir, true);
+  
+  // TODO:(Ping) mine_and_submit(config, tx_params, is_operator)
   
   match mine_once(&appcfg) {
     Ok(b) => {
