@@ -142,6 +142,10 @@
 
         <div>
           <h3> swarm </h3>
+          <div>
+            <p> start swarm with: needs swarm_temp absolute path </p>
+            <p>NODE_ENV="test" cargo run -p libra-swarm -- --libra-node target/debug/libra-node -c /Users/lucas/code/rust/ol/swarm_temp</p>
+          </div>
           <p> swarm running: {swarm_running} </p>
           <p> swarm files: {swarm_files} </p>
 

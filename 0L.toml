@@ -4,17 +4,17 @@ block_dir = "blocks"
 db_path = "/Users/lucas/.0L/db"
 
 [profile]
-account = "1EF4B9ACB5440F7237B9C43DBF60DCE2"
-auth_key = "25430afd1e500b3ab7cdc0067ef8d3b01ef4b9acb5440f7237b9c43dbf60dce2"
+account = "01CAC9E962960658EC1E1F4616401188"
+auth_key = "bd747fed786b7b8e68be54bef5ab44d801cac9e962960658ec1e1f4616401188"
 statement = "Test"
 ip = "1.1.1.1"
 default_node = "http://localhost:8080/"
-upstream_nodes = ["http://localhost:8080/"]
+upstream_nodes = ["http://167.172.248.37:3030/"]
 
 [chain_info]
 chain_id = "experimental"
-base_epoch = 0
-base_waypoint = "0:683185844ef67e5c8eeaa158e635de2a4c574ce7bbb7f41f787d38db2d623ae2"
+base_epoch = 241
+base_waypoint = "81474141:fb7e5ff659a79667b6675f10954f46c4979a328685db8157cdc9c7a380e11ad1"
 [tx_configs.baseline_cost]
 max_gas_unit_for_tx = 10000
 coin_price_per_unit = 1

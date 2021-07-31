@@ -50,24 +50,6 @@ pub fn keygen() -> Result<String, String> {
   };
 }
 
-// /// Wizard User handler
-// #[tauri::command]
-// pub async fn wizard_user(
-//   home_path: Option<PathBuf>,
-//   check: bool,
-//   fix: bool,
-//   validator: bool,
-//   block_zero: Option<PathBuf>,
-// ) -> bool {
-//   if let Some(path) = home_path {
-//     let (acc, add) = onboard::commands::wizard_user_cmd::wizard(path,  &None);
-//     true
-//   } else {
-//     false
-//   }
-// }
-
-
 /// Wizard init handler
 #[tauri::command]
 pub fn init_swarm(swarm_path: String, swarm_persona: String, source_path: String) -> String {
@@ -152,25 +134,6 @@ pub fn init_user(authkey: String, account: String, path_str: String) -> String {
     );
   account
 }
-
-
-// /// Swarm init handler
-// #[tauri::command]
-// pub fn init_swarm(swarm_path: String, swarm_persona: String, source_path: String) -> String {
-//   let path = PathBuf::from(&source_path);
-//   ol_types::config::AppCfg::init_app_configs(
-//     authkey.parse::<AuthenticationKey>().expect("could not parse Authentication Key from string."), 
-//     account.parse::<AccountAddress>().expect("could not parse Account from string."),
-//     &None, 
-//      &Some(path), 
-//      None, 
-//      None, 
-//      &None,
-//      Some("Test".to_string()), // TODO
-//      Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
-//     );
-//   account
-// }
 
 /// Wizard User Check Handler
 #[tauri::command]
