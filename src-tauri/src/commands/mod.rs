@@ -1,32 +1,21 @@
 use libra_types::transaction::authenticator::AuthenticationKey;
-use libra_types::waypoint::Waypoint;
 use miner::block::mine_once;
 use miner::commit_proof::commit_proof_tx;
-use ol::commands::init_cmd::{InitCmd, initialize_host_swarm};
-use ol::prelude::{app_config, Runnable};
+use ol::commands::init_cmd::initialize_host_swarm;
 use ol_types::config::{self, TxType};
 use serde::{Deserialize, Serialize};
 use sysinfo::{ProcessExt, SystemExt};
-use txs::submit_tx::{TxParams, eval_tx_status, get_tx_params_from_swarm, get_tx_params_from_toml, tx_params};
+use txs::submit_tx::{TxParams, eval_tx_status, get_tx_params_from_swarm, tx_params};
+use url::Url;
+use std::convert::TryFrom;
 use std::net::Ipv4Addr;
 use std::path::{Path, PathBuf};
-use std::str::FromStr;
-use url::Url;
-
 use libra_config::config::NodeConfig;
 use libra_types::account_address::AccountAddress;
-use libra_wallet::{Mnemonic, WalletLibrary};
-use miner::commands::start_cmd::StartCmd;
-use miner::commands::MinerCmd;
+use libra_wallet::WalletLibrary;
 use ol::config::AppCfg;
-use ol::entrypoint::EntryPoint;
-use ol::mgmt::management::NodeMode;
-use ol::node::client;
-use ol::node::node::Node;
 use ol_keys::wallet;
-use onboard::commands::wizard_user_cmd::{check, wizard};
-use std::thread;
-use std::time::Duration;
+use onboard::commands::wizard_user_cmd::check;
 use tauri::Error;
 
 #[tauri::command]
@@ -61,22 +50,22 @@ pub fn keygen() -> Result<String, String> {
   };
 }
 
-/// Wizard User handler
-#[tauri::command]
-pub async fn wizard_user(
-  home_path: Option<PathBuf>,
-  check: bool,
-  fix: bool,
-  validator: bool,
-  block_zero: Option<PathBuf>,
-) -> bool {
-  if let Some(path) = home_path {
-    let (acc, add) = onboard::commands::wizard_user_cmd::wizard(path, false, &None);
-    true
-  } else {
-    false
-  }
-}
+// /// Wizard User handler
+// #[tauri::command]
+// pub async fn wizard_user(
+//   home_path: Option<PathBuf>,
+//   check: bool,
+//   fix: bool,
+//   validator: bool,
+//   block_zero: Option<PathBuf>,
+// ) -> bool {
+//   if let Some(path) = home_path {
+//     let (acc, add) = onboard::commands::wizard_user_cmd::wizard(path,  &None);
+//     true
+//   } else {
+//     false
+//   }
+// }
 
 
 /// Wizard init handler
@@ -85,7 +74,7 @@ pub fn init_swarm(swarm_path: String, swarm_persona: String, source_path: String
   let swarm_path = PathBuf::from(&swarm_path);
   let persona_dir = swarm_path.join("0"); // TODO: alice has directory swarm_path/0, bob 1, carol 2... hard-coding this for demo.
   let source_path = PathBuf::from(&source_path); // TODO: this is not necessary for swarm, but lib requires it.
-  initialize_host_swarm(swarm_path, persona_dir, Some(swarm_persona), &source_path);
+  initialize_host_swarm(swarm_path, persona_dir, Some(swarm_persona), &Some(source_path));
 
   "ok".to_string()
 }
@@ -152,10 +141,11 @@ pub fn init_user(authkey: String, account: String, path_str: String) -> String {
   ol_types::config::AppCfg::init_app_configs(
     authkey.parse::<AuthenticationKey>().expect("could not parse Authentication Key from string."), 
     account.parse::<AccountAddress>().expect("could not parse Account from string."),
-    &None, 
+    // TODO: how to pick a URL to fetch upstream data from
+    &Some(Url::try_from("http://167.172.248.37:3030/").unwrap()), 
      &Some(path), 
-     None, 
-     None, 
+     &None, 
+     &None, 
      &None,
      Some("Test".to_string()), // TODO
      Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
@@ -221,8 +211,7 @@ pub fn demo(config_dir: String) -> String {
         false,
       ).unwrap();
 
-  // 
-  txs::commands::demo_cmd::demo_tx(&tx_params, false, None);
+  txs::commands::demo_cmd::demo_tx(&tx_params, false, None).unwrap();
 
   "Demo tx submitted".to_string()
 }
@@ -263,46 +252,6 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
     },
     Err(e) => format!("Error mining proof, message: {:?}", e),
   }
-}
-
-
-
-#[tauri::command]
-pub async fn start_swarm(swarm_path: Option<PathBuf>) -> bool {
-  true
-}
-
-/// Start Mining handler
-#[tauri::command]
-pub async fn start_mining(
-  home: Option<PathBuf>,
-  swarm_path: Option<PathBuf>,
-  swarm_persona: Option<String>,
-  is_operator: bool,
-) -> bool {
-  let s = StartCmd {
-    backlog_only: false,
-    skip_backlog: false,
-    upstream_url: false,
-    url: None,
-  };
-  miner::entrypoint::EntryPoint {
-    config: home,
-    help: false,
-    verbose: false,
-    command: Some(miner::commands::MinerCmd::Start(s)),
-    account: None,
-    url: None,
-    use_upstream_url: false,
-    waypoint: None,
-    save_path: None,
-    no_send: false,
-    swarm_path,
-    swarm_persona,
-    is_operator,
-  };
-
-  true
 }
 
 /// Start Node handler
