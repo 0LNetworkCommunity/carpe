@@ -22,13 +22,13 @@ fn main() {
       swarm_files,
       swarm_process,
       demo,
+      start_swarm,
 			// wizard_user,
 			// wizard_user_check,
 			// start_mining,
 			// start_node,
 			// stop_mining,
 			// stop_node,
-      // start_swarm,
 			// init_swarm_miner,
 		])
 		.run(tauri::generate_context!())

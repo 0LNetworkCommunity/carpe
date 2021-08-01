@@ -20,8 +20,8 @@
   let account: string = "";
 
   let temp_path: string = "/Users/lucas/code/rust/tauri-demo";
-  let swarm_path: string = "/Users/lucas/code/rust/ol/swarm_temp";
-  let source_path: string = "/Users/lucas/code/rust/ol/";
+  let swarmPath: string = "/Users/lucas/code/rust/ol/swarm_temp";
+  let sourcePath: string = "/Users/lucas/code/rust/ol/";
   // https://github.com/OLSF/libra/blob/main/ol/documentation/devs/swarm_qa_tools.md
 
   const hello = async () => {
@@ -48,9 +48,9 @@
 
   const initSwarm = async () => {
     invoke("init_swarm", {
-      swarmPath: swarm_path,
+      swarmPath: swarmPath,
       swarmPersona: "alice",
-      sourcePath: source_path,
+      sourcePath: sourcePath,
     })
       .then((res) => (result = res))
       .catch((e) => console.error(e));
@@ -68,7 +68,7 @@
 
   const demo = async () => {
     invoke("demo", {
-      configDir: swarm_path,
+      configDir: swarmPath,
     })
       .then((res) => (result = res))
       .catch((e) => console.error(e));
@@ -76,7 +76,7 @@
 
   const miner = async () => {
     invoke("swarm_miner", {
-      swarmDir: swarm_path,
+      swarmDir: swarmPath,
       swarmPersona: "alice",
     })
       .then((res) => (result = res))
@@ -87,77 +87,77 @@
     invoke("swarm_process", {})
       .then((res) => (swarm_running = res))
       .catch((e) => console.error(e));
-    
-      invoke("swarm_files", {
-      swarmDir: swarm_path
+
+    invoke("swarm_files", {
+      swarmDir: swarmPath,
     })
       .then((res) => (swarm_files = res))
       .catch((e) => console.error(e));
   };
 
-    // TODO(ping): check if these functions can be reused, with new api.
+  // TODO(ping): check if these functions can be reused, with new api.
 
-    // const wizard_user = async () => {
-    //     invoke('wizard_user',{
-    //        home: '/Users/ping/.0L',
-    //        //blockZero: ''
-    //     })
-    //       .then((res) => result = res)
-    //       .catch((e) => console.error(e))
-    //     };
-    // const wizard_user_check = async () => {
-    //     invoke('wizard_user_check',{
-    //        home: '/Users/ping/.0L/account.json',
-    //     })
-    //       .then((res) => result = res)
-    //       .catch((e) => console.error(e))
-    //     };
-    // const mining = async () => {
-    //     invoke('start_mining',{
-    //        home: '/Users/ping/.0L',
-    //        swarmPath: '/Users/ping/swarm',
-    //        swarmPersona: 'alice',
-    //        isOperator: false,
-    //     })
-    //       .then((res) => result = res)
-    //       .catch((e) => console.error(e))
-    //     };
-    // const start_node = async () => {
-    //     invoke('start_node',{
-    //        swarmPath: '/Users/ping/.0L',
-    //     })
-    //       .then((res) => result = res)
-    //       .catch((e) => console.error(e))
-    //     };
-    // const stop_node = async () => {
-    //     invoke('stop_node',{})
-    //       .then((res) => result = res)
-    //       .catch((e) => console.error(e))
-    //     };
-    // const stop_mining = async () => {
-    //     invoke('stop_mining',{})
-    //       .then((res) => result = res)
-    //       .catch((e) => console.error(e))
-    //     };
-    // const start_swarm = async () => {
-    //     invoke('start_swarm',{
-    //        libraNode: '/Users/ping/workspace/libra/target/release/libra-node',
-    //        c: '/Users/ping/swarm',
-    //        n: 0,
-    //        f: 0,
-    //     })
-    //       .then((res) => result = res)
-    //       .catch((e) => console.error(e))
-    //     };
-    // const init_swarm_miner = async () => {
-    //     invoke('init_swarm_miner',{
-    //        swarmPath: '/Users/ping/swarm',
-    //        swarmPersona: 'alice',
-    //        sourcePath: '/Users/ping/workspace/libra',
-    //     })
-    //       .then((res) => result = res)
-    //       .catch((e) => console.error(e))
-    //     };
+  // const wizard_user = async () => {
+  //     invoke('wizard_user',{
+  //        home: '/Users/ping/.0L',
+  //        //blockZero: ''
+  //     })
+  //       .then((res) => result = res)
+  //       .catch((e) => console.error(e))
+  //     };
+  // const wizard_user_check = async () => {
+  //     invoke('wizard_user_check',{
+  //        home: '/Users/ping/.0L/account.json',
+  //     })
+  //       .then((res) => result = res)
+  //       .catch((e) => console.error(e))
+  //     };
+  // const mining = async () => {
+  //     invoke('start_mining',{
+  //        home: '/Users/ping/.0L',
+  //        swarmPath: '/Users/ping/swarm',
+  //        swarmPersona: 'alice',
+  //        isOperator: false,
+  //     })
+  //       .then((res) => result = res)
+  //       .catch((e) => console.error(e))
+  //     };
+  // const start_node = async () => {
+  //     invoke('start_node',{
+  //        swarmPath: '/Users/ping/.0L',
+  //     })
+  //       .then((res) => result = res)
+  //       .catch((e) => console.error(e))
+  //     };
+  // const stop_node = async () => {
+  //     invoke('stop_node',{})
+  //       .then((res) => result = res)
+  //       .catch((e) => console.error(e))
+  //     };
+  // const stop_mining = async () => {
+  //     invoke('stop_mining',{})
+  //       .then((res) => result = res)
+  //       .catch((e) => console.error(e))
+  //     };
+  const start_swarm = async () => {
+    invoke("start_swarm", {
+      libra_node: sourcePath.concat("target/release/libra-node"),
+      config_path: swarmPath,
+      num_nodes: 0,
+      num_full_nodes: 0,
+    })
+      .then((res) => (result = res))
+      .catch((e) => console.error(e));
+  };
+  // const init_swarm_miner = async () => {
+  //     invoke('init_swarm_miner',{
+  //        swarmPath: '/Users/ping/swarm',
+  //        swarmPersona: 'alice',
+  //        sourcePath: '/Users/ping/workspace/libra',
+  //     })
+  //       .then((res) => result = res)
+  //       .catch((e) => console.error(e))
+  //     };
 </script>
 
 <main>
@@ -180,21 +180,28 @@
         <Button on:click={init}>Init</Button>
 
         <div>
-          <h3> swarm </h3>
+          <h3>swarm</h3>
           <div>
-            <p> start swarm with: needs swarm_temp absolute path </p>
-            <p>NODE_ENV="test" cargo run -p libra-swarm -- --libra-node target/debug/libra-node -c /Users/lucas/code/rust/ol/swarm_temp</p>
+            <p>start swarm with: needs swarm_temp absolute path</p>
+            <p>
+              NODE_ENV="test" cargo run -p libra-swarm -- --libra-node
+              target/debug/libra-node -c /Users/lucas/code/rust/ol/swarm_temp
+            </p>
           </div>
-          <p> swarm running: {swarm_running} </p>
-          <p> swarm files: {swarm_files} </p>
+          <p>swarm running: {swarm_running}</p>
+          <p>swarm files: {swarm_files}</p>
+
+          <Button on:click={start_swarm}>Start Swarm</Button>
 
           <Button on:click={swarmCheck}>Check Swarm</Button>
-          
+
           <Button on:click={initSwarm}>Init Alice</Button>
 
           <Button on:click={demo}>Swarm Demo Tx</Button>
 
           <Button on:click={miner}>Mine Once</Button>
+
+          
         </div>
 
         <!-- <Button color="danger" on:click={wizard_user}>wizard-user</Button>
