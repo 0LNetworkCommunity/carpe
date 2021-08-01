@@ -5,16 +5,12 @@
     CardBody,
     CardFooter,
     CardHeader,
-    CardSubtitle,
-    CardText,
     CardTitle,
     Container,
-    Input,
   } from "sveltestrap";
 
   import { invoke } from "@tauri-apps/api/tauri";
 
-  let input: string = "";
   let result: string = "";
 
   let swarm_running: string = "";
@@ -87,7 +83,7 @@
       .catch((e) => console.error(e));
   };
 
-  const swarmProcess = async () => {
+  const swarmCheck = async () => {
     invoke("swarm_process", {})
       .then((res) => (swarm_running = res))
       .catch((e) => console.error(e));
@@ -99,26 +95,69 @@
       .catch((e) => console.error(e));
   };
 
-  // const wizard_user = async () => {
-  //   invoke("wizard_user", {
-  //     home: input,
-  //     blockZero: "",
-  //   })
-  //     .then((res) => (result = res))
-  //     .catch((e) => console.error(e));
-  // };
+    // TODO(ping): check if these functions can be reused, with new api.
 
-
-  // const stop_node = async () => {
-  //   invoke("stop_node", {})
-  //     .then((res) => (result = res))
-  //     .catch((e) => console.error(e));
-  // };
-  // const stop_mining = async () => {
-  //   invoke("stop_mining", {})
-  //     .then((res) => (result = res))
-  //     .catch((e) => console.error(e));
-  // };
+    // const wizard_user = async () => {
+    //     invoke('wizard_user',{
+    //        home: '/Users/ping/.0L',
+    //        //blockZero: ''
+    //     })
+    //       .then((res) => result = res)
+    //       .catch((e) => console.error(e))
+    //     };
+    // const wizard_user_check = async () => {
+    //     invoke('wizard_user_check',{
+    //        home: '/Users/ping/.0L/account.json',
+    //     })
+    //       .then((res) => result = res)
+    //       .catch((e) => console.error(e))
+    //     };
+    // const mining = async () => {
+    //     invoke('start_mining',{
+    //        home: '/Users/ping/.0L',
+    //        swarmPath: '/Users/ping/swarm',
+    //        swarmPersona: 'alice',
+    //        isOperator: false,
+    //     })
+    //       .then((res) => result = res)
+    //       .catch((e) => console.error(e))
+    //     };
+    // const start_node = async () => {
+    //     invoke('start_node',{
+    //        swarmPath: '/Users/ping/.0L',
+    //     })
+    //       .then((res) => result = res)
+    //       .catch((e) => console.error(e))
+    //     };
+    // const stop_node = async () => {
+    //     invoke('stop_node',{})
+    //       .then((res) => result = res)
+    //       .catch((e) => console.error(e))
+    //     };
+    // const stop_mining = async () => {
+    //     invoke('stop_mining',{})
+    //       .then((res) => result = res)
+    //       .catch((e) => console.error(e))
+    //     };
+    // const start_swarm = async () => {
+    //     invoke('start_swarm',{
+    //        libraNode: '/Users/ping/workspace/libra/target/release/libra-node',
+    //        c: '/Users/ping/swarm',
+    //        n: 0,
+    //        f: 0,
+    //     })
+    //       .then((res) => result = res)
+    //       .catch((e) => console.error(e))
+    //     };
+    // const init_swarm_miner = async () => {
+    //     invoke('init_swarm_miner',{
+    //        swarmPath: '/Users/ping/swarm',
+    //        swarmPersona: 'alice',
+    //        sourcePath: '/Users/ping/workspace/libra',
+    //     })
+    //       .then((res) => result = res)
+    //       .catch((e) => console.error(e))
+    //     };
 </script>
 
 <main>
@@ -149,7 +188,7 @@
           <p> swarm running: {swarm_running} </p>
           <p> swarm files: {swarm_files} </p>
 
-          <Button on:click={swarmProcess}>Check Swarm</Button>
+          <Button on:click={swarmCheck}>Check Swarm</Button>
           
           <Button on:click={initSwarm}>Init Alice</Button>
 
