@@ -3,21 +3,19 @@ use libra_swarm::swarm::LibraSwarm;
 use libra_config::config::NodeConfig;
 use libra_types::chain_id::ChainId;
 use libra_genesis_tool::config_builder::FullnodeType;
-use ol::application::{OlCliApp, APPLICATION};
-use ol::prelude::Application;
-use std::process;
+// use ol::application::{OlCliApp, APPLICATION};
+// use ol::prelude::Application;
+// use std::process;
 
 #[tauri::command]
-pub async fn start_swarm(libra_node: PathBuf, c: Option<String>, n: usize, f: usize) -> Result<bool,String> {
-    let num_nodes = n;
-    let num_full_nodes = f;
-
+pub async fn start_swarm(libra_node: PathBuf, config_path: Option<String>, num_nodes: usize, num_full_nodes: usize) -> Result<bool,String> {
     libra_logger::Logger::new().init();
+    dbg!("hello");
 
     let mut validator_swarm = LibraSwarm::configure_validator_swarm(
         libra_node.as_ref(),
         num_nodes,
-        c.clone(),
+        config_path.clone(),
         None,
     )
         .expect("Failed to configure validator swarm");
@@ -174,18 +172,18 @@ pub async fn start_swarm(libra_node: PathBuf, c: Option<String>, n: usize, f: us
     Ok(true)
 }
 
-#[tauri::command]
-pub async fn init_swarm_miner(swarm_path: String, swarm_persona: String, source_path: String) -> Result<bool, String> {
-    let args = vec![
-        //"-c".to_string(), "/Users/ping/.0L".to_string(),
-        "-s".to_string(), swarm_path,
-        "-S".to_string(), swarm_persona,
-        "init".to_string(),
-        //*"--source-path".to_string(), source_path
-    ];
+// #[tauri::command]
+// pub async fn init_swarm_miner(swarm_path: String, swarm_persona: String, source_path: String) -> Result<bool, String> {
+//     let args = vec![
+//         //"-c".to_string(), "/Users/ping/.0L".to_string(),
+//         "-s".to_string(), swarm_path,
+//         "-S".to_string(), swarm_persona,
+//         "init".to_string(),
+//         //*"--source-path".to_string(), source_path
+//     ];
 
-    println!("args of init miner: {:?}", args);
-    Application::run(&APPLICATION, args);
-    //process::exit(0);
-    Ok(true)
-}
+//     println!("args of init miner: {:?}", args);
+//     Application::run(&APPLICATION, args);
+//     //process::exit(0);
+//     Ok(true)
+// }
