@@ -9,6 +9,7 @@ use libra_genesis_tool::config_builder::FullnodeType;
 
 #[tauri::command]
 pub async fn start_swarm(libra_node: PathBuf, config_path: Option<String>, num_nodes: usize, num_full_nodes: usize) -> Result<bool,String> {
+    println!("libra-node: {:?}", libra_node);
     libra_logger::Logger::new().init();
     dbg!("hello");
 

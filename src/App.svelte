@@ -19,9 +19,10 @@
   let authkey: string = "";
   let account: string = "";
 
+  let home: string = "";
   let temp_path: string = "/Users/lucas/code/rust/tauri-demo";
-  let swarmPath: string = "/Users/lucas/code/rust/ol/swarm_temp";
-  let sourcePath: string = "/Users/lucas/code/rust/ol/";
+  let swarmPath: string = "/Users/ping/swarm";
+  let sourcePath: string = "/Users/ping/workspace/libra/";
   // https://github.com/OLSF/libra/blob/main/ol/documentation/devs/swarm_qa_tools.md
 
   const hello = async () => {
@@ -48,7 +49,7 @@
 
   const initSwarm = async () => {
     invoke("init_swarm", {
-      swarmPath: swarmPath,
+      swarmPath: home.concat('swarm_temp'),
       swarmPersona: "alice",
       sourcePath: sourcePath,
     })
@@ -68,7 +69,7 @@
 
   const demo = async () => {
     invoke("demo", {
-      configDir: swarmPath,
+      configDir: home.concat('/swarm_temp'),
     })
       .then((res) => (result = res))
       .catch((e) => console.error(e));
@@ -76,7 +77,7 @@
 
   const miner = async () => {
     invoke("swarm_miner", {
-      swarmDir: swarmPath,
+      swarmDir: home.concat('swarm_temp'),
       swarmPersona: "alice",
     })
       .then((res) => (result = res))
@@ -89,62 +90,18 @@
       .catch((e) => console.error(e));
 
     invoke("swarm_files", {
-      swarmDir: swarmPath,
+      swarmDir: home.concat('swarm_temp'),
     })
       .then((res) => (swarm_files = res))
       .catch((e) => console.error(e));
   };
 
-  // TODO(ping): check if these functions can be reused, with new api.
-
-  // const wizard_user = async () => {
-  //     invoke('wizard_user',{
-  //        home: '/Users/ping/.0L',
-  //        //blockZero: ''
-  //     })
-  //       .then((res) => result = res)
-  //       .catch((e) => console.error(e))
-  //     };
-  // const wizard_user_check = async () => {
-  //     invoke('wizard_user_check',{
-  //        home: '/Users/ping/.0L/account.json',
-  //     })
-  //       .then((res) => result = res)
-  //       .catch((e) => console.error(e))
-  //     };
-  // const mining = async () => {
-  //     invoke('start_mining',{
-  //        home: '/Users/ping/.0L',
-  //        swarmPath: '/Users/ping/swarm',
-  //        swarmPersona: 'alice',
-  //        isOperator: false,
-  //     })
-  //       .then((res) => result = res)
-  //       .catch((e) => console.error(e))
-  //     };
-  // const start_node = async () => {
-  //     invoke('start_node',{
-  //        swarmPath: '/Users/ping/.0L',
-  //     })
-  //       .then((res) => result = res)
-  //       .catch((e) => console.error(e))
-  //     };
-  // const stop_node = async () => {
-  //     invoke('stop_node',{})
-  //       .then((res) => result = res)
-  //       .catch((e) => console.error(e))
-  //     };
-  // const stop_mining = async () => {
-  //     invoke('stop_mining',{})
-  //       .then((res) => result = res)
-  //       .catch((e) => console.error(e))
-  //     };
   const start_swarm = async () => {
     invoke("start_swarm", {
-      libra_node: sourcePath.concat("target/release/libra-node"),
-      config_path: swarmPath,
-      num_nodes: 0,
-      num_full_nodes: 0,
+      libraNode: sourcePath.concat("target/release/libra-node"),
+      configPath: home.concat('swarm_temp'),
+      numNodes: 0,
+      numFullNodes: 0,
     })
       .then((res) => (result = res))
       .catch((e) => console.error(e));
@@ -158,6 +115,10 @@
   //       .then((res) => result = res)
   //       .catch((e) => console.error(e))
   //     };
+
+  window.__TAURI__.path.homeDir().then(dir =>{
+    home = dir
+   });
 </script>
 
 <main>
@@ -167,7 +128,7 @@
         <CardTitle>0L Light Node</CardTitle>
       </CardHeader>
       <CardBody>
-        <h3>account: {account}</h3>
+        <h3>Home {home} account: {account}</h3>
 
         <!-- <CardSubtitle>Example of async call to Tauri</CardSubtitle> -->
         <!-- <CardText>Write something below and press the button.</CardText> -->
@@ -185,7 +146,7 @@
             <p>start swarm with: needs swarm_temp absolute path</p>
             <p>
               NODE_ENV="test" cargo run -p libra-swarm -- --libra-node
-              target/debug/libra-node -c /Users/lucas/code/rust/ol/swarm_temp
+              target/debug/libra-node -c {home}swarm_temp
             </p>
           </div>
           <p>swarm running: {swarm_running}</p>
@@ -203,16 +164,6 @@
 
           
         </div>
-
-        <!-- <Button color="danger" on:click={wizard_user}>wizard-user</Button>
-        <Button color="danger" on:click={wizard_user_check}
-          >wizard-user-check</Button
-        > -->
-        <!-- <br /> -->
-        <!-- <Button color="danger" on:click={mining}>Start mining</Button>
-        <Button color="danger" on:click={stop_mining}>Stop mining</Button>
-        <Button color="danger" on:click={start_node}>Start node</Button>
-        <Button color="danger" on:click={stop_node}>Stop node</Button> -->
       </CardBody>
       <CardFooter>
         {#if result.length !== 0}
