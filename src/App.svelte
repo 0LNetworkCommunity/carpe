@@ -20,18 +20,8 @@
   let account: string = "";
 
   let home: string = "";
-  let temp_path: string = "/Users/lucas/code/rust/tauri-demo";
-  let swarmPath: string = "/Users/ping/swarm";
-  let sourcePath: string = "/Users/ping/workspace/libra/";
-  // https://github.com/OLSF/libra/blob/main/ol/documentation/devs/swarm_qa_tools.md
-
-  const hello = async () => {
-    invoke("hello", {
-      hello: account,
-    })
-      .then((res) => (result = res))
-      .catch((e) => console.error(e));
-  };
+  // let sourcePath: string = "/Users/ping/workspace/libra/";
+  let sourcePath: string = "/Users/lucas/code/rust/ol/";
 
   const keygen = async () => {
     invoke("keygen", {})
@@ -44,6 +34,14 @@
         }
         result = res;
       })
+      .catch((e) => console.error(e));
+  };
+
+  const easySwarm = async () => {
+    invoke("easy_swarm", {
+      sourcePath: sourcePath,
+    })
+      .then((res) => (result = res))
       .catch((e) => console.error(e));
   };
 
@@ -61,7 +59,7 @@
     invoke("init_user", {
       authkey: authkey,
       account: account,
-      pathStr: temp_path,
+      pathStr: home,
     })
       .then((res) => (result = res))
       .catch((e) => console.error(e));
@@ -152,7 +150,7 @@
           <p>swarm running: {swarm_running}</p>
           <p>swarm files: {swarm_files}</p>
 
-          <Button on:click={start_swarm}>Start Swarm</Button>
+          <Button on:click={easySwarm}>Start Swarm</Button>
 
           <Button on:click={swarmCheck}>Check Swarm</Button>
 

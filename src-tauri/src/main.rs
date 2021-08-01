@@ -23,6 +23,7 @@ fn main() {
       swarm_process,
       demo,
       start_swarm,
+      easy_swarm,
 			// wizard_user,
 			// wizard_user_check,
 			// start_mining,
