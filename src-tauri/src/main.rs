@@ -6,10 +6,6 @@
 pub mod commands;
 use crate::commands::*;
 
-#[tauri::command]
-fn my_custom_command(invoke_message: String) -> String{
-	format!("Yo! I was invoked from JS, with this message: {}", invoke_message)
-}
 
 fn main() {
 	tauri::Builder::default()
@@ -22,7 +18,7 @@ fn main() {
       swarm_files,
       swarm_process,
       demo,
-      start_swarm,
+      // start_swarm,
       easy_swarm,
 			// wizard_user,
 			// wizard_user_check,

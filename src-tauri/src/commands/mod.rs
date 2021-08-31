@@ -1,8 +1,11 @@
 mod swarm;
 pub use swarm::*;
 
-use libra_types::transaction::authenticator::AuthenticationKey;
-use miner::block::{mine_and_submit, mine_once};
+use diem_types::transaction::authenticator::AuthenticationKey;
+use miner::block::{
+  // mine_and_submit,
+  mine_once
+};
 use miner::commit_proof::commit_proof_tx;
 use ol::commands::init_cmd::initialize_host_swarm;
 use ol_types::config::{self, TxType};
@@ -13,9 +16,9 @@ use url::Url;
 use std::convert::TryFrom;
 use std::net::Ipv4Addr;
 use std::path::{Path, PathBuf};
-use libra_config::config::NodeConfig;
-use libra_types::account_address::AccountAddress;
-use libra_wallet::WalletLibrary;
+// use diem_config::config::NodeConfig;
+use diem_types::account_address::AccountAddress;
+use diem_wallet::WalletLibrary;
 use ol::config::AppCfg;
 use ol_keys::wallet;
 use onboard::commands::wizard_user_cmd::check;
@@ -222,17 +225,17 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
   }
 }
 
-/// Start Node handler
-#[tauri::command]
-pub async fn start_node(home: PathBuf) -> Result<bool, String> {
-  match NodeConfig::load(home) {
-    Ok(config) => {
-      libra_node::start(&config, None);
-      Ok(true)
-    }
-    Err(e) => Err(format!("Config was not loaded from: {:?}", e)),
-  }
-}
+// /// Start Node handler
+// #[tauri::command]
+// pub async fn start_node(home: PathBuf) -> Result<bool, String> {
+//   match NodeConfig::load(home) {
+//     Ok(config) => {
+//       libra_node::start(&config, None);
+//       Ok(true)
+//     }
+//     Err(e) => Err(format!("Config was not loaded from: {:?}", e)),
+//   }
+// }
 
 /// Stop Mining handler
 #[tauri::command]
