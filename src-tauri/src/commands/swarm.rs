@@ -7,11 +7,24 @@ use libra_genesis_tool::config_builder::FullnodeType;
 // use ol::prelude::Application;
 // use std::process;
 
+use std::process::Command;
+
+#[tauri::command]
+pub async fn easy_swarm(source_path: PathBuf) -> Result<String,String>  {
+  let output = Command::new("cargo")
+    .current_dir(source_path.to_str().unwrap())
+    .args(&["run", "-p", "libra-swarm", "--", "--libra-node", "/Users/lucas/code/rust/ol/target/debug/libra-node", "-c", "/Users/lucas/swarm_temp"])
+    .output()
+    .expect("failed to execute process");
+
+    Ok(output.status.success().to_string())
+}
+
+
 #[tauri::command]
 pub async fn start_swarm(libra_node: PathBuf, config_path: Option<String>, num_nodes: usize, num_full_nodes: usize) -> Result<bool,String> {
     println!("libra-node: {:?}", libra_node);
     libra_logger::Logger::new().init();
-    dbg!("hello");
 
     let mut validator_swarm = LibraSwarm::configure_validator_swarm(
         libra_node.as_ref(),
