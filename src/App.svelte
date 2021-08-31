@@ -94,16 +94,16 @@
       .catch((e) => console.error(e));
   };
 
-  const start_swarm = async () => {
-    invoke("start_swarm", {
-      libraNode: sourcePath.concat("target/release/libra-node"),
-      configPath: home.concat('swarm_temp'),
-      numNodes: 0,
-      numFullNodes: 0,
-    })
-      .then((res) => (result = res))
-      .catch((e) => console.error(e));
-  };
+  // const start_swarm = async () => {
+  //   invoke("start_swarm", {
+  //     libraNode: sourcePath.concat("target/release/libra-node"),
+  //     configPath: home.concat('swarm_temp'),
+  //     numNodes: 0,
+  //     numFullNodes: 0,
+  //   })
+  //     .then((res) => (result = res))
+  //     .catch((e) => console.error(e));
+  // };
   // const init_swarm_miner = async () => {
   //     invoke('init_swarm_miner',{
   //        swarmPath: '/Users/ping/swarm',
