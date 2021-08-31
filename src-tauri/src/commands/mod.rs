@@ -40,6 +40,7 @@ struct Output {
 /// Keygen handler
 #[tauri::command]
 pub fn keygen() -> Result<String, String> {
+  dbg!("keygen");
   let wallet = WalletLibrary::new();
   let mnemonic_string = wallet.mnemonic();
 
