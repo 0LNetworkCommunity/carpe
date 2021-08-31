@@ -1,13 +1,14 @@
 <script lang="ts">
-  import {
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-    Container,
-  } from "sveltestrap";
+
+  import UIkit from 'uikit';
+  import Icons from 'uikit/dist/js/uikit-icons';
+
+  // loads the Icon plugin
+  UIkit.use(Icons);
+
+
+// // components can be called from the imported UIkit reference
+// UIkit.notification('Hello world.');
 
   import { invoke } from "@tauri-apps/api/tauri";
 
@@ -94,25 +95,6 @@
       .catch((e) => console.error(e));
   };
 
-  // const start_swarm = async () => {
-  //   invoke("start_swarm", {
-  //     libraNode: sourcePath.concat("target/release/libra-node"),
-  //     configPath: home.concat('swarm_temp'),
-  //     numNodes: 0,
-  //     numFullNodes: 0,
-  //   })
-  //     .then((res) => (result = res))
-  //     .catch((e) => console.error(e));
-  // };
-  // const init_swarm_miner = async () => {
-  //     invoke('init_swarm_miner',{
-  //        swarmPath: '/Users/ping/swarm',
-  //        swarmPersona: 'alice',
-  //        sourcePath: '/Users/ping/workspace/libra',
-  //     })
-  //       .then((res) => result = res)
-  //       .catch((e) => console.error(e))
-  //     };
 
   window.__TAURI__.path.homeDir().then(dir =>{
     home = dir
@@ -120,23 +102,23 @@
 </script>
 
 <main>
-  <Container>
-    <Card class="mb-3">
-      <CardHeader>
-        <CardTitle>0L Light Node</CardTitle>
-      </CardHeader>
-      <CardBody>
+  <div>
+    <div class="uk-background-primary">
+      <div>
+        <p>0L Light Node</p>
+      </div>
+      <div>
         <h3>Home {home} account: {account}</h3>
-
+        <span uk-icon="icon: home"></span>
         <!-- <CardSubtitle>Example of async call to Tauri</CardSubtitle> -->
-        <!-- <CardText>Write something below and press the button.</CardText> -->
+        <!-- <CardText>Write something below and press the a.</CardText> -->
         <!-- <Input type="text" bind:value={input} /> -->
-        <!-- <Button color="primary" on:click={handleClick}>Call Rust</Button> -->
-        <!-- <Button on:click={hello}>Hello</Button> -->
+        <!-- <a color="primary" on:click={handleClick}>Call Rust</a> -->
+        <!-- <a on:click={hello}>Hello</a> -->
 
-        <Button on:click={keygen}>Keygen</Button>
+        <a on:click={keygen}>Keygen</a>
 
-        <Button on:click={init}>Init</Button>
+        <a on:click={init}>Init</a>
 
         <div>
           <h3>swarm</h3>
@@ -150,28 +132,29 @@
           <p>swarm running: {swarm_running}</p>
           <p>swarm files: {swarm_files}</p>
 
-          <Button on:click={easySwarm}>Start Swarm</Button>
+          <button class="uk-button uk-button-default">Start Swarm</button>
+          <!-- <button class="uk-button uk-button-default" on:click={easySwarm}>Start Swarm</button> -->
 
-          <Button on:click={swarmCheck}>Check Swarm</Button>
+          <a on:click={swarmCheck}>Check Swarm</a>
 
-          <Button on:click={initSwarm}>Init Alice</Button>
+          <a on:click={initSwarm}>Init Alice</a>
 
-          <Button on:click={demo}>Swarm Demo Tx</Button>
+          <a on:click={demo}>Swarm Demo Tx</a>
 
-          <Button on:click={miner}>Mine Once</Button>
+          <a on:click={miner}>Mine Once</a>
 
           
         </div>
-      </CardBody>
-      <CardFooter>
+      </div>
+      <div>
         {#if result.length !== 0}
           {result}
         {:else}
           No result yet.
         {/if}
-      </CardFooter>
-    </Card>
-  </Container>
+      </div>
+    </div>
+  </div>
 </main>
 
 <style>

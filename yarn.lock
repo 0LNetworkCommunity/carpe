@@ -49,11 +49,6 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.12.tgz#431ec342a7195622f86688bbda82e3166ce8cb28"
   integrity sha512-6RglhutqrGFMO1MNUXp95RBuYIuc8wTnMAV5MUhLmjTOy78ncwOw7RgeQ/HeymkKXRhZd0s2DNrM1rL7unk3MQ==
 
-"@popperjs/core@^2.6.0":
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.9.2.tgz#adea7b6953cbb34651766b0548468e743c6a2353"
-  integrity sha512-VZMYa7+fXHdwIq1TDhSXoVmSPEGM/aa+6Aiq3nVVJ9bXr24zScr+NlKFKC3iPljA7ho/GAZr+d2jOf5GIRC30Q==
-
 "@rollup/plugin-commonjs@^17.0.0":
   version "17.1.0"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-17.1.0.tgz#757ec88737dffa8aa913eb392fade2e45aef2a2d"
@@ -421,11 +416,6 @@ boolean@^3.0.1:
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/boolean/-/boolean-3.1.4.tgz#f51a2fb5838a99e06f9b6ec1edb674de67026435"
   integrity sha512-3hx0kwU3uzG6ReQ3pnaFQPSktpBw6RHN3/ivDKEuU8g1XSfafowyvDnadjv1xp8IZqhtSukxlwv9bF6FhX8m0w==
-
-bootstrap@^4.6.0:
-  version "4.6.0"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.6.0.tgz#97b9f29ac98f98dfa43bf7468262d84392552fd7"
-  integrity sha512-Io55IuQY3kydzHtbGvQya3H+KorS/M9rSNyfCGCg9WZ4pyT/lCxIlpJgG1GXW/PswzC84Tr2fBYi+7+jFVQQBw==
 
 boxen@^5.0.0:
   version "5.0.1"
@@ -3323,13 +3313,6 @@ svelte@^3.0.0:
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.38.1.tgz#5d856a9d643f56a8d3e281f6dd8b4f8962155ca5"
   integrity sha512-N3XLAyfzqrFxwRLevBeW7Dke9ZlHRVGSIed5abo4Drvj+zvd2OyWpFa1x4nQUc8Lnvt4Kcn8/5le1peRDybNqg==
 
-sveltestrap@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/sveltestrap/-/sveltestrap-4.1.0.tgz#d8644256605c5572fe49e1b8e595b339d1859feb"
-  integrity sha512-FRUGHtEP0MGWnxdcO9HKWmLiF6MPKgYEbog7wVmWdRU1+OXxHVv8ETec5q619E4oSfN4XiFdDv+m8Wq6/E6cTg==
-  dependencies:
-    "@popperjs/core" "^2.6.0"
-
 tar-fs@^2.0.0, tar-fs@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-2.1.1.tgz#489a15ab85f1f0befabb370b7de4f9eb5cbe8784"
@@ -3493,6 +3476,11 @@ typescript@*, typescript@^4.0.0:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.4.tgz#8610b59747de028fda898a8aef0e103f156d0961"
   integrity sha512-V+evlYHZnQkaz8TRBuxTA92yZBPotr5H+WhQ7bD3hZUndx5tGOa1fuCgeSjxAzM1RiN5IzvadIXTVefuuwZCRg==
+
+uikit@^3.7.2:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/uikit/-/uikit-3.7.2.tgz#d38c2787ce653c1eee5535badd95814f1df64c3e"
+  integrity sha512-r1EUtsm3vCLZPlAi8rWP5diQVtnHYnYiX2NHLciTmC+SIMbRJ/aTOb2A1Vkwa3Kx4Dybx5XRIUwXUrRmssx40Q==
 
 unbzip2-stream@^1.0.9:
   version "1.4.3"
