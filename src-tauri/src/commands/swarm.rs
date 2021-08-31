@@ -3,10 +3,6 @@ use libra_swarm::swarm::LibraSwarm;
 use libra_config::config::NodeConfig;
 use libra_types::chain_id::ChainId;
 use libra_genesis_tool::config_builder::FullnodeType;
-// use ol::application::{OlCliApp, APPLICATION};
-// use ol::prelude::Application;
-// use std::process;
-
 use std::process::Command;
 
 #[tauri::command]

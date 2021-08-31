@@ -1,11 +1,11 @@
 [package]
-authors = ["you"]
+authors = ["OLSF"]
 default-run = "app"
-description = "A Tauri App"
+description = "a light miner for the 0L protocol"
 edition = "2018"
 license = "GPL-3.0 License"
 name = "app"
-repository = "https://github.com/jbarszczewski/tauri-svelte-template"
+repository = "https://github.com/OLSF/carpe"
 version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -18,19 +18,20 @@ tauri = {version = "1.0.0-beta.4", features =["api-all"]}
 serde = {version = "1.0", features = ["serde_derive"]}
 serde_json = "1.0"
 url = {version = "^2.1", features = ["serde"]}
-ol = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-libra-wallet = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-libra-types = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-miner = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-onboard = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-libra-swarm = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-libra-node = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-libra-config = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-libra-logger = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-libra-genesis-tool = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-txs = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-ol-types = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
-ol-keys = {git="https://github.com/olsf/libra.git", branch="tauri-demo"}
+ol = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+diem-wallet = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+diem-types = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+miner = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+onboard = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+diem-swarm = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+diem-node = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+diem-config = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+diem-logger = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+diem-genesis-tool = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+txs = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+ol-types = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+ol-keys = {git="https://github.com/olsf/libra.git", branch="v5-tauri"}
+
 sysinfo = "0.16.4"
 ctrlc = { version = "3.1.6", default-features = false }
 
