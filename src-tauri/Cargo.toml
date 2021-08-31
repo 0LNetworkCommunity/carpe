@@ -11,7 +11,7 @@ version = "0.1.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = {version = "1.0.0-beta-rc.1"}
+tauri-build = {version = "1.0.0-beta.1"}
 
 [dependencies]
 tauri = {version = "1.0.0-beta.4", features =["api-all"]}
