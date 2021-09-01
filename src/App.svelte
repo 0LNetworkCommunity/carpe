@@ -1,16 +1,16 @@
 <script lang="ts">
-
-  import UIkit from 'uikit';
-  import Icons from 'uikit/dist/js/uikit-icons';
   import "uikit/dist/css/uikit.min.css";
-  import Nav from "./Nav.svelte";
-  import DevMode from "./DevMode.svelte";
+  import Layout from "./components/Layout.svelte";
+
+  // TODO: need this?
+  // window.__TAURI__.path.homeDir().then((dir) => {
+  //   home = dir;
+  // });
 
 </script>
 
 <main>
-  <div class="uk-container uk-container-expand uk-margin ">
-    <Nav />
-    <DevMode />
+  <div class="uk-container uk-container-expand uk-margin-top">
+    <Layout />
   </div>
 </main>
