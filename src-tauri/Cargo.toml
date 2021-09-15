@@ -16,19 +16,19 @@ tauri = { version = "1.0.0-beta.8", features = ["api-all"] }
 serde = { version = "1.0", features = [ "serde_derive" ] }
 serde_json = "1.0"
 url = { version = "^2.1", features = [ "serde" ] }
-ol = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-diem-wallet = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-diem-types = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-miner = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-onboard = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-diem-swarm = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-diem-node = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-diem-config = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-diem-logger = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-diem-genesis-tool = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-txs = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-ol-types = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
-ol-keys = { git = "https://github.com/olsf/libra.git", branch = "v5-tauri" }
+ol = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+diem-wallet = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+diem-types = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+miner = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+onboard = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+diem-swarm = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+diem-node = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+diem-config = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+diem-logger = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+diem-genesis-tool = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+txs = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+ol-types = { git = "https://github.com/olsf/libra.git", branch = "v5" }
+ol-keys = { git = "https://github.com/olsf/libra.git", branch = "v5" }
 sysinfo = "0.16.4"
 ctrlc = { version = "3.1.6", default-features = false }
 
