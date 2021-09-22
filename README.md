@@ -11,7 +11,6 @@
 - [ ] TBD: user account can upgrade to validator account.
 - [ ] TBD: validator account can choose operator (delegation).
 
-
 # Tauri Svelte App Template
 
 This is a project template for [Tauri](https://tauri.studio) and [Svelte](https://svelte.dev) apps. It lives at https://github.com/jbarszczewski/tauri-svelte-template.
