@@ -84,10 +84,11 @@
       .catch((e) => console.error(e));
   };
 
-
+  /*
   window.__TAURI__.path.homeDir().then(dir =>{
     home = dir
    });
+   */
 </script>
 
 <main>

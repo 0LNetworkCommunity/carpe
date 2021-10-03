@@ -2,7 +2,7 @@
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
   import Miner from "./Miner.svelte";
-  import Wallet from "./Wallet.svelte";
+  import Wallet from "./wallet/Wallet.svelte";
   import Settings from "./Settings.svelte";
   import DevMode from "./DevMode.svelte";
   UIkit.use(Icons);
@@ -28,43 +28,33 @@
 
   <div id="offcanvas-nav-primary" uk-offcanvas="mode: push">
     <div class="uk-offcanvas-bar uk-flex uk-flex-column uk-offcanvas-bar-override">
-      <span class="uk-align-center uk-text-large uk-text-light">CARPE</span>
+      <span class="uk-align-center uk-text-large uk-text-bold uk-logo">CARPE</span>
       <ul
-        class="uk-nav uk-nav-primary uk-nav-center uk-margin-auto-vertical"
+        class="uk-nav uk-nav-primary uk-nav-left uk-margin-auto-vertical"
         uk-switcher="connect: #component-nav"
       >
-        <li>
-          <a href="#">
-            <span
-              class="uk-margin-large-top uk-text-light"
-              uk-icon="icon: credit-card; ratio: 1"
-            />
+        <li class="uk-margin">
+          <a class="uk-flex uk-flex-column" href="/wallet">
+            <span class="uk-text-light" uk-icon="icon: credit-card; ratio: 2"/>
+            <span class="uk-text-light uk-text-uppercase uk-text-default">Wallet</span>
           </a>
         </li>
-        <li>
-          <a href="#"
-            ><span
-              class="uk-margin-large-top uk-text-light"
-              uk-switcher="connect: #miner-panel"
-              uk-icon="icon: play; ratio: 1"
-            />
+        <li class="uk-margin">
+          <a class="uk-flex uk-flex-column" href="/miner">
+            <span class="uk-text-light" uk-switcher="connect: #miner-panel" uk-icon="icon: play; ratio: 2"/>
+            <span class="uk-text-light uk-text-uppercase uk-text-default">Miner</span>
           </a>
         </li>
-        <li>
-          <a href="#"
-            ><span
-              class="uk-margin-large-top uk-text-light"
-              uk-icon="icon: settings; ratio: 1"
-            />
+        <li class="uk-margin">
+          <a class="uk-flex uk-flex-column" href="/settings">
+            <span class="uk-text-light" uk-icon="icon: settings; ratio: 2"/>
+            <span class="uk-text-light uk-text-uppercase uk-text-default">Settings</span>
           </a>
         </li>
-        <li>
-          <a href="#"
-            ><span
-              class="uk-margin-large-top uk-text-light"
-              uk-toggle="target: #dev-panel"
-              uk-icon="icon: code; ratio: 1"
-            />
+        <li class="uk-margin">
+          <a class="uk-flex uk-flex-column" href="/dev">
+            <span class="uk-text-light" uk-toggle="target: #dev-panel" uk-icon="icon: code; ratio: 2"/>
+            <span class="uk-text-light uk-text-uppercase uk-text-default">Dev</span>
           </a>
         </li>
       </ul>
