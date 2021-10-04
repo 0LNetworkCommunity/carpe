@@ -1,3 +1,6 @@
+mod wallets;
+pub use wallets::*;
+
 mod swarm;
 pub use swarm::*;
 
@@ -23,6 +26,7 @@ use ol::config::AppCfg;
 use ol_keys::wallet;
 use onboard::commands::wizard_user_cmd::check;
 use tauri::Error;
+
 
 #[tauri::command]
 pub fn hello(hello: String) -> String {

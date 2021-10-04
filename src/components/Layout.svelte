@@ -8,9 +8,9 @@
   UIkit.use(Icons);
 </script>
 
-<main>
+<div class="uk-container uk-container-expand uk-margin-top">
   <a uk-navbar-toggle-icon uk-toggle="target: #offcanvas-nav-primary" />
-
+ 
   <ul id="component-nav" class="uk-switcher">
     <li id="miner-panel">
       <Wallet />
@@ -35,29 +35,29 @@
       >
         <li class="uk-margin">
           <a class="uk-flex uk-flex-column" href="/wallet">
-            <span class="uk-text-light" uk-icon="icon: credit-card; ratio: 2"/>
+            <span class="uk-text-light" uk-icon="icon: credit-card; ratio: 1"/>
             <span class="uk-text-light uk-text-uppercase uk-text-default">Wallet</span>
           </a>
         </li>
         <li class="uk-margin">
           <a class="uk-flex uk-flex-column" href="/miner">
-            <span class="uk-text-light" uk-switcher="connect: #miner-panel" uk-icon="icon: play; ratio: 2"/>
+            <span class="uk-text-light" uk-switcher="connect: #miner-panel" uk-icon="icon: play; ratio: 1"/>
             <span class="uk-text-light uk-text-uppercase uk-text-default">Miner</span>
           </a>
         </li>
         <li class="uk-margin">
           <a class="uk-flex uk-flex-column" href="/settings">
-            <span class="uk-text-light" uk-icon="icon: settings; ratio: 2"/>
+            <span class="uk-text-light" uk-icon="icon: settings; ratio: 1"/>
             <span class="uk-text-light uk-text-uppercase uk-text-default">Settings</span>
           </a>
         </li>
         <li class="uk-margin">
           <a class="uk-flex uk-flex-column" href="/dev">
-            <span class="uk-text-light" uk-toggle="target: #dev-panel" uk-icon="icon: code; ratio: 2"/>
+            <span class="uk-text-light" uk-toggle="target: #dev-panel" uk-icon="icon: code; ratio: 1"/>
             <span class="uk-text-light uk-text-uppercase uk-text-default">Dev</span>
           </a>
         </li>
       </ul>
     </div>
   </div>
-</main>
+</div>
