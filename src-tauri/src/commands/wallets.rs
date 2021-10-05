@@ -9,6 +9,8 @@
 use std::fs::{File, create_dir_all};
 use std::io::prelude::*;
 use std::path::Path;
+use diem_wallet::WalletLibrary;
+use ol_keys::wallet;
 
 static DB_FILE: &str = "accounts.json";
 
@@ -45,9 +47,9 @@ pub fn add_account(title: String, address: String, app_handle: tauri::AppHandle)
   all.accounts.push(new_account);
   
   // write to db file
-  create_dir_all(&app_dir);
+  create_dir_all(&app_dir).unwrap();
   let serialized = serde_json::to_vec(&all).expect("Struct Accounts should be converted!");
-  let db_path = Path::new(&app_dir).join(DB_FILE.clone());
+  let db_path = Path::new(&app_dir).join(DB_FILE);
   let mut file = File::create(db_path).expect("DB_FILE should be created!");
   file.write_all(&serialized).expect("DB_FILE should be writen!");
 
@@ -55,11 +57,16 @@ pub fn add_account(title: String, address: String, app_handle: tauri::AppHandle)
 }
 
 fn read_accounts(app_dir: &Path) -> Accounts {
-  let db_path = Path::new(&app_dir).join(DB_FILE.clone());
+  let db_path = Path::new(&app_dir).join(DB_FILE);
   if db_path.exists() {
     let file = File::open(db_path).expect("DB_FILE should be found!");
     serde_json::from_reader(file).expect("file should be proper JSON")
   } else {
     Accounts{accounts: vec![]}
   }
+}
+
+pub fn danger_get_keys(mnemonic: String) -> WalletLibrary {
+  let (_, _, wl) = wallet::get_account_from_mnem(mnemonic);
+  wl
 }

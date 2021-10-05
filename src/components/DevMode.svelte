@@ -8,6 +8,7 @@
 
   let authkey: string = "";
   let account: string = "";
+  let mnemonic: string = "";
 
   let home: string = "";
   // let sourcePath: string = "/Users/ping/workspace/libra/";
@@ -21,6 +22,7 @@
           console.log(o);
           account = o.account;
           authkey = o.authkey;
+          mnemonic = o.mnemonic;
         }
         result = res;
       })
@@ -37,7 +39,7 @@
 
   const initSwarm = async () => {
     invoke("init_swarm", {
-      swarmPath: home.concat('swarm_temp'),
+      swarmPath: home.concat("swarm_temp"),
       swarmPersona: "alice",
       sourcePath: sourcePath,
     })
@@ -55,9 +57,17 @@
       .catch((e) => console.error(e));
   };
 
+  const demoTx = async () => {
+    invoke("demo_tx", {
+      mnemonic,
+    })
+      .then((res) => (result = res))
+      .catch((e) => console.error(e));
+  };
+
   const demo = async () => {
     invoke("demo", {
-      configDir: home.concat('/swarm_temp'),
+      configDir: home.concat("/swarm_temp"),
     })
       .then((res) => (result = res))
       .catch((e) => console.error(e));
@@ -65,7 +75,7 @@
 
   const miner = async () => {
     invoke("swarm_miner", {
-      swarmDir: home.concat('swarm_temp'),
+      swarmDir: home.concat("swarm_temp"),
       swarmPersona: "alice",
     })
       .then((res) => (result = res))
@@ -78,7 +88,7 @@
       .catch((e) => console.error(e));
 
     invoke("swarm_files", {
-      swarmDir: home.concat('swarm_temp'),
+      swarmDir: home.concat("swarm_temp"),
     })
       .then((res) => (swarm_files = res))
       .catch((e) => console.error(e));
@@ -96,19 +106,22 @@
     <div>
       <div>
         <h3>Home {home} account: {account}</h3>
-        <span uk-icon="icon: home"></span>
+        <span uk-icon="icon: home" />
         <!-- <CardSubtitle>Example of async call to Tauri</CardSubtitle> -->
         <!-- <CardText>Write something below and press the a.</CardText> -->
         <!-- <Input type="text" bind:value={input} /> -->
         <!-- <button color="primary" on:click={handleClick}>Call Rust</button> -->
         <!-- <button on:click={hello}>Hello</button> -->
 
-        <button class="uk-button uk-button-default" on:click={keygen}>Keygen</button>
+        <button class="uk-button uk-button-default" on:click={keygen}
+          >Keygen</button
+        >
 
-        <button class="uk-button uk-button-default" on:click={init}>Init</button>
+        <button class="uk-button uk-button-default" on:click={init}>Init</button
+        >
 
         <div>
-          <h3>swarm</h3>
+          <h2>swarm</h2>
           <div>
             <p>start swarm with: needs swarm_temp absolute path</p>
             <p>
@@ -119,26 +132,40 @@
           <p>swarm running: {swarm_running}</p>
           <p>swarm files: {swarm_files}</p>
 
-          <button class="uk-button uk-button-default">Start Swarm</button>
+          <!-- <button class="uk-button uk-button-default">Start Swarm</button> -->
+
           <!-- <button class="uk-button uk-button-default" on:click={easySwarm}>Start Swarm</button> -->
 
-          <button class="uk-button uk-button-default" on:click={swarmCheck}>Check Swarm</button>
+          <button class="uk-button uk-button-default" on:click={swarmCheck}
+            >Check Swarm</button
+          >
 
-          <button class="uk-button uk-button-default" on:click={initSwarm}>Init Alice</button>
+          <button class="uk-button uk-button-default" on:click={initSwarm}
+            >Init Alice</button
+          >
 
-          <button class="uk-button uk-button-default" on:click={demo}>Swarm Demo Tx</button>
+          <button class="uk-button uk-button-default" on:click={demo}
+            >Swarm Demo Tx</button
+          >
 
-          <button class="uk-button uk-button-default" on:click={miner}>Mine Once</button>
+          <button class="uk-button uk-button-default" on:click={miner}
+            >Mine Once</button
+          >
 
-          
+          <h2>TestNet</h2>
+          <button class="uk-button uk-button-default" on:click={demoTx}>Demo Tx</button
+          >
         </div>
       </div>
-      <div>
-        {#if result.length !== 0}
-          {result}
-        {:else}
-          No result yet.
-        {/if}
+      <div class="uk-card uk-card-default uk-card-body uk-width-1-2@m">
+        <h5 class="uk-card-title">Debugging</h5>
+        <p>
+          {#if result.length !== 0}
+            {result}
+          {:else}
+            No result yet.
+          {/if}
+        </p>
       </div>
     </div>
   </div>

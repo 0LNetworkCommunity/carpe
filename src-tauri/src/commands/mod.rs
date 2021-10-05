@@ -1,14 +1,22 @@
 mod wallets;
-pub use wallets::*;
-
 mod swarm;
+mod mining;
+mod client;
+mod tx;
+
+pub use wallets::*;
 pub use swarm::*;
+pub use mining::*;
+pub use client::*;
+pub use tx::*;
+
 
 use diem_types::transaction::authenticator::AuthenticationKey;
 use miner::block::{
   // mine_and_submit,
   mine_once
 };
+
 use miner::commit_proof::commit_proof_tx;
 use ol::commands::init_cmd::initialize_host_swarm;
 use ol_types::config::{self, TxType};
@@ -27,6 +35,8 @@ use ol_keys::wallet;
 use onboard::commands::wizard_user_cmd::check;
 use tauri::Error;
 
+pub const UPSTREAM: &str = "http://64.225.2.108:8080";
+pub const MAINNET_GENESIS_WAYPOINT: &str = "0:3c6cea7bf248248735cae3e9425c56e09c9a625e912da102f244e2b5820f9622";
 
 #[tauri::command]
 pub fn hello(hello: String) -> String {
@@ -75,7 +85,7 @@ pub fn init_swarm(swarm_path: String, swarm_persona: String, source_path: String
 /// Wizard init handler
 #[tauri::command]
 pub fn swarm_process() -> bool {
-  check_process("libra-swarm")
+  check_process("diem-swarm")
 }
 
 fn check_process(process_str: &str) -> bool {
@@ -129,20 +139,48 @@ pub fn swarm_files(swarm_dir: String) -> String {
 
 /// Wizard init handler
 #[tauri::command]
-pub fn init_user(authkey: String, account: String, path_str: String) -> String {
-  let path = PathBuf::from(&path_str);
+pub fn init_user(authkey: String, account: String, _path_str: String) -> String {
+  dbg!("init");
+  let path = dirs::home_dir().unwrap().join(".0L");
+
+  let key = match authkey.parse::<AuthenticationKey>() {
+    Ok(k) => k,
+    Err(_) => {
+      return "could not parse Authentication Key from string.".to_string()
+    }
+  };
+
+  let acc = match account.parse::<AccountAddress>() {
+    Ok(a) => a,
+    Err(_) => {
+      return "could not parse Account from string.".to_string()
+    }
+  };
+
+  
+  // If upstream is valid, then we don't need to pass an epoch and waypoint.
+  let mut waypoint = None;
+  let mut starting_epoch = None;
+
+  let upstream = Url::try_from(UPSTREAM).ok();
+  if upstream.is_none(){
+    waypoint = MAINNET_GENESIS_WAYPOINT.parse().ok();
+    starting_epoch = Some(0);
+  }
+  // let path = PathBuf::from(path);
   ol_types::config::AppCfg::init_app_configs(
-    authkey.parse::<AuthenticationKey>().expect("could not parse Authentication Key from string."), 
-    account.parse::<AccountAddress>().expect("could not parse Account from string."),
+    key, 
+    acc,
     // TODO: how to pick a URL to fetch upstream data from
-    &Some(Url::try_from("http://167.172.248.37:3030/").unwrap()), 
-     &Some(path), 
-     &None, 
-     &None, 
-     &None,
-     Some("Test".to_string()), // TODO
-     Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
-    );
+    &upstream,
+    &Some(path), 
+    &starting_epoch, 
+    &waypoint, 
+    &None, // No need for source path
+    Some("Test".to_string()), // TODO
+    Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
+  );
+
   account
 }
 
@@ -170,9 +208,10 @@ pub fn swarm_params(swarm_path: String) -> Result<TxParams, Error> {
 #[tauri::command]
 /// mine for swarm
 // https://github.com/OLSF/libra/blob/main/ol/documentation/devs/swarm_qa_tools.md
-pub fn demo(config_dir: String) -> String {
+pub fn demo(config_dir: String, mnemonic: String) -> String {
     let toml = Path::new(&config_dir).join("0/0L.toml");
     dbg!(&toml);
+    let wl = wallets::danger_get_keys(mnemonic);
     let appcfg = config::parse_toml(toml.to_str().unwrap().to_string()).unwrap();
     let tx_params = tx_params(
         appcfg,
@@ -183,6 +222,7 @@ pub fn demo(config_dir: String) -> String {
         TxType::Miner,
         false, //  TODO: should be true in production
         false,
+        Some(&wl),
       ).unwrap();
 
   txs::commands::demo_cmd::demo_tx(&tx_params, false, None).unwrap();

@@ -15,7 +15,7 @@ dependencies = [
 [[package]]
 name = "abigen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -84,7 +84,7 @@ dependencies = [
 [[package]]
 name = "accumulator"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "diem-crypto",
@@ -212,9 +212,9 @@ dependencies = [
 
 [[package]]
 name = "anyhow"
-version = "1.0.43"
+version = "1.0.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "28ae2b3dec75a406790005a200b1bd89785afc02517a00ca99ecfe093ee9e6cf"
+checksum = "61604a8f862e1d5c3229fdd78f8b02c68dcf73a4c4b05fd636d12240aaa242c1"
 dependencies = [
  "backtrace",
 ]
@@ -223,6 +223,7 @@ dependencies = [
 name = "app"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "ctrlc",
  "diem-config",
  "diem-genesis-tool",
@@ -230,6 +231,7 @@ dependencies = [
  "diem-node",
  "diem-types",
  "diem-wallet",
+ "dirs 4.0.0",
  "miner",
  "ol",
  "ol-keys",
@@ -291,9 +293,30 @@ dependencies = [
  "parking",
  "polling",
  "slab",
- "socket2 0.4.1",
+ "socket2",
  "waker-fn",
  "winapi 0.3.9",
+]
+
+[[package]]
+name = "async-stream"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "171374e7e3b2504e0e5236e3b59260560f9fe94bfe9ac39ba5e4e929c5590625"
+dependencies = [
+ "async-stream-impl",
+ "futures-core",
+]
+
+[[package]]
+name = "async-stream-impl"
+version = "0.3.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "648ed8c8d2ce5409ccd57453d9d1b214b342a0d69376a6feda1fd6cae3299308"
+dependencies = [
+ "proc-macro2 1.0.29",
+ "quote 1.0.9",
+ "syn 1.0.75",
 ]
 
 [[package]]
@@ -385,7 +408,7 @@ dependencies = [
 [[package]]
 name = "backup-cli"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -410,7 +433,7 @@ dependencies = [
  "itertools 0.10.1",
  "num_cpus",
  "once_cell",
- "pin-project 1.0.8",
+ "pin-project",
  "rand 0.8.4",
  "regex",
  "reqwest",
@@ -420,14 +443,14 @@ dependencies = [
  "structopt",
  "tokio 1.11.0",
  "tokio-stream",
- "tokio-util 0.6.7",
+ "tokio-util",
  "toml",
 ]
 
 [[package]]
 name = "backup-service"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -439,19 +462,13 @@ dependencies = [
  "diem-workspace-hack",
  "diemdb",
  "futures",
- "hyper 0.14.12",
+ "hyper",
  "once_cell",
  "serde",
  "storage-interface",
  "tokio 1.11.0",
- "warp 0.3.1",
+ "warp",
 ]
-
-[[package]]
-name = "base64"
-version = "0.12.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3441f0f7b02788e948e47f457ca01f1d7e6d92c693bc132c22b087d3141c03ff"
 
 [[package]]
 name = "base64"
@@ -622,7 +639,7 @@ dependencies = [
 [[package]]
 name = "boogie-backend"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -650,7 +667,7 @@ dependencies = [
 [[package]]
 name = "borrow-graph"
 version = "0.0.1"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "mirai-annotations",
@@ -659,7 +676,7 @@ dependencies = [
 [[package]]
 name = "bounded-executor"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "futures",
@@ -703,7 +720,7 @@ checksum = "e3b5ca7a04898ad4bcd41c90c5285445ff5b791899bb1b0abdd2a2aa791211d7"
 [[package]]
 name = "bytecode"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "borrow-graph",
  "bytecode-verifier",
@@ -728,7 +745,7 @@ dependencies = [
 [[package]]
 name = "bytecode-interpreter"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bytecode",
@@ -747,7 +764,7 @@ dependencies = [
 [[package]]
 name = "bytecode-source-map"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -763,7 +780,7 @@ dependencies = [
 [[package]]
 name = "bytecode-verifier"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "borrow-graph",
@@ -922,7 +939,7 @@ checksum = "fd16c4719339c4530435d38e511904438d07cce7950afa3718a84ac36c10e89e"
 [[package]]
 name = "channel"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "diem-infallible",
@@ -999,7 +1016,7 @@ dependencies = [
 [[package]]
 name = "classgroup"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "libc",
  "num-traits",
@@ -1008,7 +1025,7 @@ dependencies = [
 [[package]]
 name = "cli"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1175,7 +1192,7 @@ dependencies = [
 [[package]]
 name = "compiler"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1203,7 +1220,7 @@ dependencies = [
 [[package]]
 name = "consensus"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1252,7 +1269,7 @@ dependencies = [
 [[package]]
 name = "consensus-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1416,7 +1433,7 @@ checksum = "dcb25d077389e53838a8158c8e99174c5a9d902dee4904320db714f3c653ffba"
 [[package]]
 name = "crash-handler"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "backtrace",
  "diem-logger",
@@ -1488,7 +1505,7 @@ dependencies = [
  "crossterm_winapi",
  "lazy_static",
  "libc",
- "mio 0.7.13",
+ "mio",
  "parking_lot",
  "signal-hook",
  "winapi 0.3.9",
@@ -1627,7 +1644,7 @@ dependencies = [
 [[package]]
 name = "debug-interface"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bytes 1.1.0",
@@ -1636,7 +1653,7 @@ dependencies = [
  "diem-workspace-hack",
  "reqwest",
  "tokio 1.11.0",
- "warp 0.3.1",
+ "warp",
 ]
 
 [[package]]
@@ -1704,7 +1721,7 @@ dependencies = [
 [[package]]
 name = "diem-bitvec"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "serde",
@@ -1714,7 +1731,7 @@ dependencies = [
 [[package]]
 name = "diem-client"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1734,7 +1751,7 @@ dependencies = [
 [[package]]
 name = "diem-config"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "bcs",
  "diem-crypto",
@@ -1759,7 +1776,7 @@ dependencies = [
 [[package]]
 name = "diem-crypto"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -1790,7 +1807,7 @@ dependencies = [
 [[package]]
 name = "diem-crypto-derive"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "proc-macro2 1.0.29",
  "quote 1.0.9",
@@ -1800,7 +1817,7 @@ dependencies = [
 [[package]]
 name = "diem-framework"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "abigen",
  "anyhow",
@@ -1828,7 +1845,7 @@ dependencies = [
 [[package]]
 name = "diem-framework-releases"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1845,7 +1862,7 @@ dependencies = [
 [[package]]
 name = "diem-genesis-tool"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1885,7 +1902,7 @@ dependencies = [
 [[package]]
 name = "diem-github-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "proxy",
@@ -1898,12 +1915,12 @@ dependencies = [
 [[package]]
 name = "diem-global-constants"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 
 [[package]]
 name = "diem-infallible"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
 ]
@@ -1911,7 +1928,7 @@ dependencies = [
 [[package]]
 name = "diem-jellyfish-merkle"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1934,7 +1951,7 @@ dependencies = [
 [[package]]
 name = "diem-json-rpc"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1950,7 +1967,7 @@ dependencies = [
  "fail",
  "futures",
  "hex",
- "hyper 0.14.12",
+ "hyper",
  "move-core-types",
  "move-explain",
  "network",
@@ -1962,13 +1979,13 @@ dependencies = [
  "serde_json",
  "storage-interface",
  "tokio 1.11.0",
- "warp 0.3.1",
+ "warp",
 ]
 
 [[package]]
 name = "diem-json-rpc-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-client",
  "diem-crypto",
@@ -1982,7 +1999,7 @@ dependencies = [
 [[package]]
 name = "diem-json-rpc-types"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1999,7 +2016,7 @@ dependencies = [
 [[package]]
 name = "diem-log-derive"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "proc-macro2 1.0.29",
@@ -2010,7 +2027,7 @@ dependencies = [
 [[package]]
 name = "diem-logger"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "backtrace",
  "chrono",
@@ -2028,7 +2045,7 @@ dependencies = [
 [[package]]
 name = "diem-management"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2059,7 +2076,7 @@ dependencies = [
 [[package]]
 name = "diem-mempool"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2094,14 +2111,14 @@ dependencies = [
 [[package]]
 name = "diem-metrics"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "diem-logger",
  "diem-metrics-core",
  "diem-workspace-hack",
  "futures",
- "hyper 0.14.12",
+ "hyper",
  "once_cell",
  "prometheus",
  "serde_json",
@@ -2111,7 +2128,7 @@ dependencies = [
 [[package]]
 name = "diem-metrics-core"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "prometheus",
@@ -2120,9 +2137,9 @@ dependencies = [
 [[package]]
 name = "diem-network-address-encryption"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "bcs",
  "diem-global-constants",
  "diem-infallible",
@@ -2137,7 +2154,7 @@ dependencies = [
 [[package]]
 name = "diem-nibble"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "serde",
@@ -2146,7 +2163,7 @@ dependencies = [
 [[package]]
 name = "diem-node"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "backup-service",
  "consensus",
@@ -2185,22 +2202,22 @@ dependencies = [
 [[package]]
 name = "diem-rate-limiter"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-infallible",
  "diem-logger",
  "diem-metrics",
  "diem-workspace-hack",
  "futures",
- "pin-project 1.0.8",
+ "pin-project",
  "tokio 1.11.0",
- "tokio-util 0.6.7",
+ "tokio-util",
 ]
 
 [[package]]
 name = "diem-secure-net"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-logger",
  "diem-secure-push-metrics",
@@ -2213,7 +2230,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-push-metrics"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-logger",
  "diem-metrics-core",
@@ -2224,9 +2241,9 @@ dependencies = [
 [[package]]
 name = "diem-secure-storage"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "bcs",
  "chrono",
  "diem-crypto",
@@ -2247,7 +2264,7 @@ dependencies = [
 [[package]]
 name = "diem-state-view"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "diem-crypto",
@@ -2258,7 +2275,7 @@ dependencies = [
 [[package]]
 name = "diem-temppath"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "hex",
@@ -2268,13 +2285,13 @@ dependencies = [
 [[package]]
 name = "diem-time-service"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-infallible",
  "diem-workspace-hack",
  "enum_dispatch",
  "futures",
- "pin-project 1.0.8",
+ "pin-project",
  "thiserror",
  "tokio 1.11.0",
 ]
@@ -2282,7 +2299,7 @@ dependencies = [
 [[package]]
 name = "diem-transaction-builder"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2295,7 +2312,7 @@ dependencies = [
 [[package]]
 name = "diem-types"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -2321,9 +2338,9 @@ dependencies = [
 [[package]]
 name = "diem-vault-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "chrono",
  "diem-crypto",
  "diem-workspace-hack",
@@ -2338,7 +2355,7 @@ dependencies = [
 [[package]]
 name = "diem-vm"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2364,7 +2381,7 @@ dependencies = [
 [[package]]
 name = "diem-wallet"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -2387,7 +2404,7 @@ dependencies = [
 [[package]]
 name = "diem-workspace-hack"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "Inflector",
  "anyhow",
@@ -2411,7 +2428,7 @@ dependencies = [
  "futures-util",
  "getrandom 0.2.3",
  "hashbrown 0.9.1",
- "hyper 0.14.12",
+ "hyper",
  "indexmap",
  "itertools 0.10.1",
  "itoa",
@@ -2440,17 +2457,17 @@ dependencies = [
  "syn 1.0.75",
  "tiny-keccak",
  "tokio 1.11.0",
- "tokio-util 0.6.7",
+ "tokio-util",
  "toml",
  "tracing",
- "warp 0.3.1",
+ "warp",
  "zeroize",
 ]
 
 [[package]]
 name = "diemdb"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "accumulator",
  "anyhow",
@@ -2522,6 +2539,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "dirs"
+version = "4.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ca3aa72a6f96ea37bbc5aa912f6788242832f75369bdfdadcb0e38423f100059"
+dependencies = [
+ "dirs-sys",
+]
+
+[[package]]
 name = "dirs-next"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2566,7 +2592,7 @@ dependencies = [
 [[package]]
 name = "disassembler"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -2595,7 +2621,7 @@ checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 [[package]]
 name = "docgen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bytecode",
@@ -2729,7 +2755,7 @@ dependencies = [
 [[package]]
 name = "errmapgen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2753,7 +2779,7 @@ dependencies = [
 [[package]]
 name = "execution-correctness"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2780,7 +2806,7 @@ dependencies = [
 [[package]]
 name = "executor"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2808,7 +2834,7 @@ dependencies = [
 [[package]]
 name = "executor-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2842,7 +2868,7 @@ checksum = "e88a8acf291dafb59c2d96e8f59828f3838bb1a70398823ade51a84de6a6deed"
 [[package]]
 name = "fallible"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "thiserror",
@@ -2949,22 +2975,6 @@ name = "fs_extra"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2022715d62ab30faffd124d40b76f4134a550a87792276512b18d63272333394"
-
-[[package]]
-name = "fuchsia-zircon"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e9763c69ebaae630ba35f74888db465e49e259ba1bc0eda7d06f4a067615d82"
-dependencies = [
- "bitflags 1.2.1",
- "fuchsia-zircon-sys",
-]
-
-[[package]]
-name = "fuchsia-zircon-sys"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3dcaa9ae7725d12cdb85b3ad99a434db70b468c09ded17e012d86b5c1010f7a7"
 
 [[package]]
 name = "funty"
@@ -3177,7 +3187,7 @@ dependencies = [
 [[package]]
 name = "generate-key"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "bcs",
  "diem-crypto",
@@ -3514,26 +3524,6 @@ dependencies = [
 
 [[package]]
 name = "h2"
-version = "0.2.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e4728fd124914ad25e99e3d15a9361a879f6620f63cb56bbb08f95abb97a535"
-dependencies = [
- "bytes 0.5.6",
- "fnv",
- "futures-core",
- "futures-sink",
- "futures-util",
- "http",
- "indexmap",
- "slab",
- "tokio 0.2.25",
- "tokio-util 0.3.1",
- "tracing",
- "tracing-futures",
-]
-
-[[package]]
-name = "h2"
 version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d7f3675cfef6a30c8031cf9e6493ebdc3bb3272a3fea3923c4210d1830e6a472"
@@ -3547,7 +3537,7 @@ dependencies = [
  "indexmap",
  "slab",
  "tokio 1.11.0",
- "tokio-util 0.6.7",
+ "tokio-util",
  "tracing",
 ]
 
@@ -3586,7 +3576,7 @@ version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f0b7591fb62902706ae8e7aaff416b1b0fa2c0fd0878b46dc13baa3712d8a855"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "bitflags 1.2.1",
  "bytes 1.1.0",
  "headers-core",
@@ -3690,16 +3680,6 @@ dependencies = [
 
 [[package]]
 name = "http-body"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13d5ff830006f7646652e057693569bfe0d51760c0085a071769d142a205111b"
-dependencies = [
- "bytes 0.5.6",
- "http",
-]
-
-[[package]]
-name = "http-body"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "399c583b2979440c60be0821a6199eca73bc3c8dcd9d070d75ac726e2c6186e5"
@@ -3723,12 +3703,6 @@ checksum = "acd94fdbe1d4ff688b67b04eee2e17bd50995534a61539e45adfefb45e5e5503"
 
 [[package]]
 name = "httpdate"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "494b4d60369511e7dea41cf646832512a94e542f68bb9c49e54518e0f468eb47"
-
-[[package]]
-name = "httpdate"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6456b8a6c8f33fee7d958fcd1b60d55b11940a79e63ae87013e6d22e26034440"
@@ -3741,30 +3715,6 @@ checksum = "02296996cb8796d7c6e3bc2d9211b7802812d36999a51bb754123ead7d37d026"
 
 [[package]]
 name = "hyper"
-version = "0.13.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8a6f157065790a3ed2f88679250419b5cdd96e714a0d65f7797fd337186e96bb"
-dependencies = [
- "bytes 0.5.6",
- "futures-channel",
- "futures-core",
- "futures-util",
- "h2 0.2.7",
- "http",
- "http-body 0.3.1",
- "httparse",
- "httpdate 0.3.2",
- "itoa",
- "pin-project 1.0.8",
- "socket2 0.3.19",
- "tokio 0.2.25",
- "tower-service",
- "tracing",
- "want",
-]
-
-[[package]]
-name = "hyper"
 version = "0.14.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "13f67199e765030fa08fe0bd581af683f0d5bc04ea09c2b1102012c5fb90e7fd"
@@ -3773,14 +3723,14 @@ dependencies = [
  "futures-channel",
  "futures-core",
  "futures-util",
- "h2 0.3.4",
+ "h2",
  "http",
- "http-body 0.4.3",
+ "http-body",
  "httparse",
- "httpdate 1.0.1",
+ "httpdate",
  "itoa",
  "pin-project-lite 0.2.7",
- "socket2 0.4.1",
+ "socket2",
  "tokio 1.11.0",
  "tower-service",
  "tracing",
@@ -3794,7 +3744,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d6183ddfa99b85da61a140bea0efc93fdf56ceaa041b37d553518030827f9905"
 dependencies = [
  "bytes 1.1.0",
- "hyper 0.14.12",
+ "hyper",
  "native-tls",
  "tokio 1.11.0",
  "tokio-native-tls",
@@ -3913,15 +3863,6 @@ dependencies = [
 
 [[package]]
 name = "input_buffer"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "19a8a95243d5a0398cae618ec29477c6e3cb631152be5c19481f80bc71559754"
-dependencies = [
- "bytes 0.5.6",
-]
-
-[[package]]
-name = "input_buffer"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f97967975f448f1a7ddb12b0bc41069d09ed6a1c161a92687e057325db35d413"
@@ -3952,15 +3893,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "iovec"
-version = "0.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b2b3ea6ff95e175473f8ffe6a7eb7c00d054240321b84c57051175fe3c1e075e"
-dependencies = [
- "libc",
-]
-
-[[package]]
 name = "ipnet"
 version = "2.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3969,7 +3901,7 @@ checksum = "68f2d64f2edebec4ce84ad108148e67e1064789bee435edc5b60ad398714a3a9"
 [[package]]
 name = "ir-to-bytecode"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -3988,7 +3920,7 @@ dependencies = [
 [[package]]
 name = "ir-to-bytecode-syntax"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "codespan",
@@ -4091,16 +4023,6 @@ name = "keccak"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67c21572b4949434e4fc1e1978b99c5f77064153c59d998bf13ecd96fb5ecba7"
-
-[[package]]
-name = "kernel32-sys"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
-dependencies = [
- "winapi 0.2.8",
- "winapi-build",
-]
 
 [[package]]
 name = "kuchiki"
@@ -4306,7 +4228,7 @@ dependencies = [
 [[package]]
 name = "miner"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -4380,46 +4302,15 @@ dependencies = [
 
 [[package]]
 name = "mio"
-version = "0.6.23"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4afd66f5b91bf2a3bc13fad0e21caedac168ca4c707504e75585648ae80e4cc4"
-dependencies = [
- "cfg-if 0.1.10",
- "fuchsia-zircon",
- "fuchsia-zircon-sys",
- "iovec",
- "kernel32-sys",
- "libc",
- "log",
- "miow 0.2.2",
- "net2",
- "slab",
- "winapi 0.2.8",
-]
-
-[[package]]
-name = "mio"
 version = "0.7.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8c2bdb6314ec10835cd3293dd268473a835c02b7b352e788be788b3c6ca6bb16"
 dependencies = [
  "libc",
  "log",
- "miow 0.3.7",
+ "miow",
  "ntapi",
  "winapi 0.3.9",
-]
-
-[[package]]
-name = "miow"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ebd808424166322d4a38da87083bfddd3ac4c131334ed55856112eb06d46944d"
-dependencies = [
- "kernel32-sys",
- "net2",
- "winapi 0.2.8",
- "ws2_32-sys",
 ]
 
 [[package]]
@@ -4440,7 +4331,7 @@ checksum = "c9be0862c1b3f26a88803c4a49de6889c10e608b3ee9344e6ef5b45fb37ad3d1"
 [[package]]
 name = "move-binary-format"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "diem-workspace-hack",
@@ -4454,7 +4345,7 @@ dependencies = [
 [[package]]
 name = "move-core-types"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4471,7 +4362,7 @@ dependencies = [
 [[package]]
 name = "move-coverage"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4492,7 +4383,7 @@ dependencies = [
 [[package]]
 name = "move-explain"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "bcs",
  "diem-framework-releases",
@@ -4504,7 +4395,7 @@ dependencies = [
 [[package]]
 name = "move-ir-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "codespan",
@@ -4518,7 +4409,7 @@ dependencies = [
 [[package]]
 name = "move-lang"
 version = "0.0.1"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4545,7 +4436,7 @@ dependencies = [
 [[package]]
 name = "move-model"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -4570,7 +4461,7 @@ dependencies = [
 [[package]]
 name = "move-prover"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "abigen",
  "anyhow",
@@ -4607,7 +4498,7 @@ dependencies = [
 [[package]]
 name = "move-stdlib"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "docgen",
@@ -4619,7 +4510,7 @@ dependencies = [
 [[package]]
 name = "move-vm-natives"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-crypto",
  "diem-global-constants",
@@ -4631,6 +4522,7 @@ dependencies = [
  "move-core-types",
  "move-vm-types",
  "once_cell",
+ "rust_decimal",
  "sha2 0.9.6",
  "smallvec 1.6.1",
  "vdf",
@@ -4639,7 +4531,7 @@ dependencies = [
 [[package]]
 name = "move-vm-runtime"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "bytecode-verifier",
  "diem-crypto",
@@ -4658,7 +4550,7 @@ dependencies = [
 [[package]]
 name = "move-vm-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "bcs",
  "diem-workspace-hack",
@@ -4714,7 +4606,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b1bb540dc6ef51cfe1916ec038ce7a620daf3a111e2502d745197cd53d6bca15"
 dependencies = [
  "libc",
- "socket2 0.4.1",
+ "socket2",
 ]
 
 [[package]]
@@ -4764,37 +4656,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c44922cb3dbb1c70b5e5f443d63b64363a898564d739ba5198e3a9138442868d"
 
 [[package]]
-name = "net2"
-version = "0.2.37"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "391630d12b68002ae1e25e8f974306474966550ad82dac6886fb8910c19568ae"
-dependencies = [
- "cfg-if 0.1.10",
- "libc",
- "winapi 0.3.9",
-]
-
-[[package]]
 name = "netcore"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "bytes 1.1.0",
  "diem-types",
  "diem-workspace-hack",
  "futures",
- "pin-project 1.0.8",
+ "pin-project",
  "proxy",
  "serde",
  "tokio 1.11.0",
- "tokio-util 0.6.7",
+ "tokio-util",
  "url",
 ]
 
 [[package]]
 name = "network"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4817,7 +4698,7 @@ dependencies = [
  "netcore",
  "num-variants",
  "once_cell",
- "pin-project 1.0.8",
+ "pin-project",
  "rand 0.8.4",
  "serde",
  "serde_bytes",
@@ -4826,13 +4707,13 @@ dependencies = [
  "tokio 1.11.0",
  "tokio-retry",
  "tokio-stream",
- "tokio-util 0.6.7",
+ "tokio-util",
 ]
 
 [[package]]
 name = "network-builder"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "bcs",
  "channel",
@@ -4859,7 +4740,7 @@ dependencies = [
 [[package]]
 name = "network-simple-onchain-discovery"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -5087,7 +4968,7 @@ dependencies = [
 [[package]]
 name = "num-variants"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "proc-macro2 1.0.29",
@@ -5171,12 +5052,13 @@ checksum = "a9a7ab5d64814df0fe4a4b5ead45ed6c5f181ee3ff04ba344313a6c80446c5d4"
 [[package]]
 name = "ol"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "abscissa_core",
  "abscissa_tokio",
  "ajson",
  "anyhow",
+ "async-stream",
  "backup-cli",
  "bcs",
  "bitflags 1.2.1",
@@ -5234,18 +5116,18 @@ dependencies = [
  "unicode-width",
  "url",
  "walkdir",
- "warp 0.2.5",
+ "warp",
 ]
 
 [[package]]
 name = "ol-fixtures"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 
 [[package]]
 name = "ol-keys"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-types",
  "diem-wallet",
@@ -5255,7 +5137,7 @@ dependencies = [
 [[package]]
 name = "ol-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "ajson",
  "anyhow",
@@ -5285,7 +5167,7 @@ dependencies = [
 [[package]]
 name = "onboard"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "abscissa_core",
  "anyhow",
@@ -5686,31 +5568,11 @@ dependencies = [
 
 [[package]]
 name = "pin-project"
-version = "0.4.28"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "918192b5c59119d51e0cd221f4d49dde9112824ba717369e903c97d076083d0f"
-dependencies = [
- "pin-project-internal 0.4.28",
-]
-
-[[package]]
-name = "pin-project"
 version = "1.0.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "576bc800220cc65dac09e99e97b08b358cfab6e17078de8dc5fee223bd2d0c08"
 dependencies = [
- "pin-project-internal 1.0.8",
-]
-
-[[package]]
-name = "pin-project-internal"
-version = "0.4.28"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3be26700300be6d9d23264c73211d8190e755b6b5ca7a1b28230025511b52a5e"
-dependencies = [
- "proc-macro2 1.0.29",
- "quote 1.0.9",
- "syn 1.0.75",
+ "pin-project-internal",
 ]
 
 [[package]]
@@ -5996,7 +5858,7 @@ dependencies = [
 [[package]]
 name = "proxy"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "ipnet",
@@ -6313,14 +6175,14 @@ version = "0.11.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "246e9f61b9bb77df069a947682be06e31ac43ea37862e244a69f177694ea6d22"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "bytes 1.1.0",
  "encoding_rs",
  "futures-core",
  "futures-util",
  "http",
- "http-body 0.4.3",
- "hyper 0.14.12",
+ "http-body",
+ "hyper",
  "hyper-tls",
  "ipnet",
  "js-sys",
@@ -6345,7 +6207,7 @@ dependencies = [
 [[package]]
 name = "resource-viewer"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -6427,7 +6289,7 @@ version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4b18820d944b33caa75a71378964ac46f58517c92b6ae5f762636247c09e78fb"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "blake2b_simd",
  "constant_time_eq",
  "crossbeam-utils",
@@ -6471,7 +6333,7 @@ version = "0.19.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "35edb675feee39aec9c99fa5ff985081995a06d594114ae14cbe797ad7b7a6d7"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "log",
  "ring",
  "sct",
@@ -6554,7 +6416,7 @@ checksum = "ef703b7cb59335eae2eb93ceb664c0eb7ea6bf567079d843e09420219668e072"
 [[package]]
 name = "safety-rules"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "bcs",
  "consensus-types",
@@ -6600,7 +6462,7 @@ dependencies = [
 [[package]]
 name = "schemadb"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "diem-config",
@@ -6626,7 +6488,7 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 [[package]]
 name = "scratchpad"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "arc-swap",
  "diem-crypto",
@@ -6960,7 +6822,7 @@ checksum = "43b2853a4d09f215c24cc5489c992ce46052d359b5109343cbafbf26bc62f8a3"
 [[package]]
 name = "short-hex-str"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "diem-workspace-hack",
  "mirai-annotations",
@@ -6976,7 +6838,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7e31d442c16f047a671b5a71e2161d6e68814012b7f5379d269ebd915fac2729"
 dependencies = [
  "libc",
- "mio 0.7.13",
+ "mio",
  "signal-hook-registry",
 ]
 
@@ -7080,17 +6942,6 @@ checksum = "f67ad224767faa3c7d8b6d91985b78e70a1324408abcb1cfcc2be4c06bc06043"
 
 [[package]]
 name = "socket2"
-version = "0.3.19"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "122e570113d28d773067fab24266b66753f6ea915758651696b6e35e49f88d6e"
-dependencies = [
- "cfg-if 1.0.0",
- "libc",
- "winapi 0.3.9",
-]
-
-[[package]]
-name = "socket2"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "765f090f0e423d2b55843402a07915add955e7d60657db13707a159727326cad"
@@ -7147,7 +6998,7 @@ dependencies = [
 [[package]]
 name = "state-sync"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "bcs",
  "channel",
@@ -7187,7 +7038,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "storage-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -7204,7 +7055,7 @@ dependencies = [
 [[package]]
 name = "storage-interface"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -7224,7 +7075,7 @@ dependencies = [
 [[package]]
 name = "storage-service"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -7363,7 +7214,7 @@ dependencies = [
 [[package]]
 name = "subscription-service"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "channel",
@@ -7543,7 +7394,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "79a0579dcc6fb883fe90dd3c66d76b8b8f4a1786e1e915e314b2017a500ede09"
 dependencies = [
  "attohttpc",
- "base64 0.13.0",
+ "base64",
  "bincode",
  "cfg_aliases",
  "dirs-next 2.0.0",
@@ -7857,14 +7708,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6703a273949a90131b290be1fe7b039d0fc884aa1935860dfcbe056f28cd8092"
 dependencies = [
  "bytes 0.5.6",
- "fnv",
- "futures-core",
- "iovec",
- "lazy_static",
- "memchr",
- "mio 0.6.23",
  "pin-project-lite 0.1.12",
- "slab",
 ]
 
 [[package]]
@@ -7877,7 +7721,7 @@ dependencies = [
  "bytes 1.1.0",
  "libc",
  "memchr",
- "mio 0.7.13",
+ "mio",
  "num_cpus",
  "once_cell",
  "parking_lot",
@@ -7914,7 +7758,7 @@ version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7f57eb36ecbe0fc510036adff84824dd3c24bb781e21bfa67b69d556aa85214f"
 dependencies = [
- "pin-project 1.0.8",
+ "pin-project",
  "rand 0.8.4",
  "tokio 1.11.0",
 ]
@@ -7943,42 +7787,15 @@ dependencies = [
 
 [[package]]
 name = "tokio-tungstenite"
-version = "0.11.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6d9e878ad426ca286e4dcae09cbd4e1973a7f8987d97570e2469703dd7f5720c"
-dependencies = [
- "futures-util",
- "log",
- "pin-project 0.4.28",
- "tokio 0.2.25",
- "tungstenite 0.11.1",
-]
-
-[[package]]
-name = "tokio-tungstenite"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e1a5f475f1b9d077ea1017ecbc60890fda8e54942d680ca0b1d2b47cfa2d861b"
 dependencies = [
  "futures-util",
  "log",
- "pin-project 1.0.8",
+ "pin-project",
  "tokio 1.11.0",
- "tungstenite 0.12.0",
-]
-
-[[package]]
-name = "tokio-util"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "be8242891f2b6cbef26a2d7e8605133c2c554cd35b3e4948ea892d6d68436499"
-dependencies = [
- "bytes 0.5.6",
- "futures-core",
- "futures-sink",
- "log",
- "pin-project-lite 0.1.12",
- "tokio 0.2.25",
+ "tungstenite",
 ]
 
 [[package]]
@@ -8045,16 +7862,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tracing-futures"
-version = "0.2.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97d095ae15e245a057c8e8451bab9b3ee1e1f68e9ba2b4fbc18d0ac5237835f2"
-dependencies = [
- "pin-project 1.0.8",
- "tracing",
-]
-
-[[package]]
 name = "tracing-log"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8085,7 +7892,7 @@ dependencies = [
 [[package]]
 name = "transaction-builder-generator"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8122,35 +7929,16 @@ dependencies = [
 
 [[package]]
 name = "tungstenite"
-version = "0.11.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f0308d80d86700c5878b9ef6321f020f29b1bb9d5ff3cab25e75e23f3a492a23"
-dependencies = [
- "base64 0.12.3",
- "byteorder",
- "bytes 0.5.6",
- "http",
- "httparse",
- "input_buffer 0.3.1",
- "log",
- "rand 0.7.3",
- "sha-1 0.9.8",
- "url",
- "utf-8",
-]
-
-[[package]]
-name = "tungstenite"
 version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ada8297e8d70872fa9a551d93250a9f407beb9f37ef86494eb20012a2ff7c24"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "byteorder",
  "bytes 1.1.0",
  "http",
  "httparse",
- "input_buffer 0.4.0",
+ "input_buffer",
  "log",
  "rand 0.8.4",
  "sha-1 0.9.8",
@@ -8170,7 +7958,7 @@ dependencies = [
 [[package]]
 name = "txs"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -8360,7 +8148,7 @@ version = "1.5.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2b8b063c2d59218ae09f22b53c42eaad0d53516457905f5235ca4bc9e99daa71"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "chunked_transfer",
  "log",
  "native-tls",
@@ -8383,12 +8171,6 @@ dependencies = [
  "percent-encoding",
  "serde",
 ]
-
-[[package]]
-name = "urlencoding"
-version = "1.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5a1f0175e03a0973cf4afd476bef05c26e228520400eb1fd473ad417b1c00ffb"
 
 [[package]]
 name = "utf-8"
@@ -8420,7 +8202,7 @@ checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 [[package]]
 name = "vdf"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "bit-vec 0.5.1",
  "classgroup",
@@ -8456,7 +8238,7 @@ checksum = "5fecdca9a5291cc2b8dcf7dc02453fee791a280f3743cb0905f8822ae463b3fe"
 [[package]]
 name = "vm-genesis"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8484,7 +8266,7 @@ dependencies = [
 [[package]]
 name = "vm-validator"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git#634ebd2da4d248ae09d70632a88682d1779aebec"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
 dependencies = [
  "anyhow",
  "diem-state-view",
@@ -8540,34 +8322,6 @@ dependencies = [
 
 [[package]]
 name = "warp"
-version = "0.2.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f41be6df54c97904af01aa23e613d4521eed7ab23537cede692d4058f6449407"
-dependencies = [
- "bytes 0.5.6",
- "futures",
- "headers",
- "http",
- "hyper 0.13.10",
- "log",
- "mime",
- "mime_guess",
- "multipart",
- "pin-project 0.4.28",
- "scoped-tls",
- "serde",
- "serde_json",
- "serde_urlencoded 0.6.1",
- "tokio 0.2.25",
- "tokio-tungstenite 0.11.0",
- "tower-service",
- "tracing",
- "tracing-futures",
- "urlencoding",
-]
-
-[[package]]
-name = "warp"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "332d47745e9a0c38636dbd454729b147d16bd1ed08ae67b3ab281c4506771054"
@@ -8576,13 +8330,13 @@ dependencies = [
  "futures",
  "headers",
  "http",
- "hyper 0.14.12",
+ "hyper",
  "log",
  "mime",
  "mime_guess",
  "multipart",
  "percent-encoding",
- "pin-project 1.0.8",
+ "pin-project",
  "scoped-tls",
  "serde",
  "serde_json",
@@ -8590,8 +8344,8 @@ dependencies = [
  "tokio 1.11.0",
  "tokio-rustls",
  "tokio-stream",
- "tokio-tungstenite 0.13.0",
- "tokio-util 0.6.7",
+ "tokio-tungstenite",
+ "tokio-util",
  "tower-service",
  "tracing",
 ]
@@ -8803,12 +8557,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "winapi-build"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2d315eee3b34aca4797b2da6b13ed88266e6d612562a0c46390af8299fc699bc"
-
-[[package]]
 name = "winapi-i686-pc-windows-gnu"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8897,16 +8645,6 @@ dependencies = [
  "webview2",
  "webview2-sys",
  "winapi 0.3.9",
-]
-
-[[package]]
-name = "ws2_32-sys"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d59cefebd0c892fa2dd6de581e937301d8552cb44489cdff035c6187cb63fa5e"
-dependencies = [
- "winapi 0.2.8",
- "winapi-build",
 ]
 
 [[package]]
