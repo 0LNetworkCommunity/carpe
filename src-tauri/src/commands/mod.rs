@@ -139,7 +139,7 @@ pub fn swarm_files(swarm_dir: String) -> String {
 
 /// Wizard init handler
 #[tauri::command]
-pub fn init_user(authkey: String, account: String, _path_str: String) -> String {
+pub fn init_user(authkey: String, account: String) -> String {
   dbg!("init");
   let path = dirs::home_dir().unwrap().join(".0L");
 

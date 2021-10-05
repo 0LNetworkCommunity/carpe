@@ -51,7 +51,7 @@
     invoke("init_user", {
       authkey: authkey,
       account: account,
-      pathStr: home,
+      // pathStr: home,
     })
       .then((res) => (result = res))
       .catch((e) => console.error(e));
