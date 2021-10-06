@@ -42,9 +42,9 @@ pub fn get_private_key(ol_address: &str) -> Result<Ed25519PrivateKey, anyhow::Er
 pub fn get_keypair(
   ol_address: &str,
 ) -> Result<KeyPair<Ed25519PrivateKey, Ed25519PublicKey>, KeyringError> {
-  let kr = keyring::Keyring::new(KEYRING_APP_NAME, &ol_address);
-  let priv_string = kr.get_password()?;
-  let k: Ed25519PrivateKey = priv_string.as_bytes().try_into().unwrap();
+  // let kr = keyring::Keyring::new(KEYRING_APP_NAME, &ol_address);
+  
+  let k = get_private_key(&ol_address).unwrap();
   let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = k.try_into().unwrap();
   Ok(p)
 }
