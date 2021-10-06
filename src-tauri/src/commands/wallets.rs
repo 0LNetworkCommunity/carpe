@@ -7,7 +7,7 @@ use std::convert::TryFrom;
  * 
  **/
 
-use std::fs::{self, File, create_dir_all};
+use std::fs::{File, create_dir_all};
 use std::io::prelude::*;
 use std::net::Ipv4Addr;
 use std::path::Path;
@@ -16,7 +16,7 @@ use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
 use url::Url;
 use diem_types::account_address::AccountAddress;
-use diem_crypto;
+
 
 use crate::key_manager;
 
@@ -66,7 +66,7 @@ pub fn add_account(title: String, address: String, app_handle: tauri::AppHandle)
 }
 
 #[tauri::command] 
-pub fn init_from_mnem(mnem: String, user_pin_hash: String, app_handle: tauri::AppHandle) -> String {
+pub fn init_from_mnem(mnem: String, _user_pin_hash: String, _app_handle: tauri::AppHandle) -> String {
   // get all accounts
   // let app_dir = app_handle.path_resolver().app_dir().unwrap();
 
@@ -95,7 +95,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
   let path = dirs::home_dir().unwrap().join(".0L");
 
   // TODO: refactor get_account so that it doesn't fail.
-  let (key, acc, wl) = wallet::get_account_from_mnem(mnem.clone());
+  let (key, acc, _wl) = wallet::get_account_from_mnem(mnem.clone());
   
   // If upstream is valid, then we don't need to pass an epoch and waypoint.
   let mut waypoint = None;

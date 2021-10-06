@@ -1,14 +1,14 @@
 //! client
-use anyhow::{bail, Error};
+use anyhow::{Error};
 use diem_types::account_address::AccountAddress;
 use dirs;
 use ol::config::AppCfg;
 use ol_types::config::{self, TxType};
 use txs::submit_tx::get_tx_params_from_keypair;
-use txs::submit_tx::tx_params;
+
 use txs::submit_tx::TxParams;
 
-use crate::{commands::wallets, key_manager};
+use crate::{key_manager};
 
 fn get_cfg() -> AppCfg {
   let config_toml = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
