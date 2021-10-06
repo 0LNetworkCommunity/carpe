@@ -1,5 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
+import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
 
   let result: string = "";
 
@@ -7,7 +8,7 @@
   let swarm_files: string = "";
 
   let authkey: string = "";
-  let account: string = "";
+  let account: string = "4c613c2f4b1e67ca8d98a542ee3f59f5";
   let mnemonic: string = "";
 
   let home: string = "";
@@ -59,7 +60,7 @@
 
   const demoTx = async () => {
     invoke("demo_tx", {
-      mnemonic,
+      account: account,
     })
       .then((res) => (result = res))
       .catch((e) => console.error(e));
@@ -119,6 +120,8 @@
 
         <button class="uk-button uk-button-default" on:click={init}>Init</button
         >
+
+        <AccountFromMnem/>
 
         <div>
           <h2>swarm</h2>
