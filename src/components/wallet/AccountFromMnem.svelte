@@ -27,7 +27,7 @@
 		// }
 
 		// submit
-		invoke('init_from_mnem', {mnem: danger_mnem, userPinHash: pin_number})
+		invoke('init_from_mnem', { mnem: danger_mnem })
 			.then((_) => {
 
 

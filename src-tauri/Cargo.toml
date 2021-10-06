@@ -32,6 +32,7 @@ dirs = "4.0.0"
 keyring = "0.10.1"
 anyhow = "1.0.38"
 aes-gcm = "0.8.0"
+hex = "0.4.3"
 
 
 [features]

@@ -64,7 +64,7 @@ pub fn add_account(title: String, address: String, app_handle: tauri::AppHandle)
 }
 
 #[tauri::command] 
-pub fn init_from_mnem(mnem: String, _user_pin_hash: String, _app_handle: tauri::AppHandle) -> String {
+pub fn init_from_mnem(mnem: String, _app_handle: tauri::AppHandle) -> String {
   // get all accounts
   // let app_dir = app_handle.path_resolver().app_dir().unwrap();
 
@@ -107,7 +107,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
 
   let priv_key = KeyScheme::new_from_mnemonic(mnem).child_0_owner.get_private_key();
 
-  key_manager::set_private_key(&acc.to_string(), &priv_key.to_string())?;
+  key_manager::set_private_key(&acc.to_string(), priv_key)?;
 
   // let path = PathBuf::from(path);
   // TODO: refactor init_app_configs so that it returns a result so we can catch errors.
