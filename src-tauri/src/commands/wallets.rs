@@ -81,8 +81,12 @@ pub fn init_from_mnem(mnem: String, user_pin_hash: String, app_handle: tauri::Ap
 #[test]
 // danger_init_from_mnem
 fn test_init_mnem() {
+  use ol_types::config::parse_toml;
   let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
   danger_init_from_mnem(alice);
+  let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
+  let cfg = parse_toml(path.to_str().unwrap().to_owned());
+  dbg!(&cfg);
 
 }
 pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Error> {
@@ -106,8 +110,6 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
   }
 
   let priv_key = KeyScheme::new_from_mnemonic(mnem).child_0_owner.get_private_key();
-
-  // dbg!();
 
   key_manager::set_private_key(&acc.to_string(), &priv_key.to_string());
 
