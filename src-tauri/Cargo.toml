@@ -29,6 +29,7 @@ ol-keys = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
 sysinfo = "0.16.4"
 ctrlc = { version = "3.1.6", default-features = false }
 dirs = "4.0.0"
+keyring = "0.10.1"
 anyhow = "1.0.38"
 aes-gcm = "0.8.0"
 
