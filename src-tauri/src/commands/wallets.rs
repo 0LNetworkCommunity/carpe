@@ -6,10 +6,7 @@ use std::convert::TryFrom;
  * - update account 
  * 
  **/
-use aes_gcm::Aes256Gcm; // Or `Aes128Gcm`
-use aes_gcm::aead::{Aead, NewAead, generic_array::GenericArray};
-use anyhow::bail;
-use diem_crypto::ed25519::Ed25519PrivateKey;
+
 use std::fs::{self, File, create_dir_all};
 use std::io::prelude::*;
 use std::net::Ipv4Addr;
