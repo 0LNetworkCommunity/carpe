@@ -223,12 +223,11 @@ dependencies = [
 name = "app"
 version = "0.1.0"
 dependencies = [
+ "aes-gcm",
  "anyhow",
  "ctrlc",
  "diem-config",
- "diem-genesis-tool",
- "diem-logger",
- "diem-node",
+ "diem-crypto",
  "diem-types",
  "diem-wallet",
  "dirs 4.0.0",
@@ -448,29 +447,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "backup-service"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "bcs",
- "bytes 1.1.0",
- "diem-crypto",
- "diem-logger",
- "diem-metrics",
- "diem-types",
- "diem-workspace-hack",
- "diemdb",
- "futures",
- "hyper",
- "once_cell",
- "serde",
- "storage-interface",
- "tokio 1.11.0",
- "warp",
-]
-
-[[package]]
 name = "base64"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -671,16 +647,6 @@ source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe0
 dependencies = [
  "diem-workspace-hack",
  "mirai-annotations",
-]
-
-[[package]]
-name = "bounded-executor"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "diem-workspace-hack",
- "futures",
- "tokio 1.11.0",
 ]
 
 [[package]]
@@ -935,18 +901,6 @@ name = "cfg_aliases"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fd16c4719339c4530435d38e511904438d07cce7950afa3718a84ac36c10e89e"
-
-[[package]]
-name = "channel"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "diem-infallible",
- "diem-metrics",
- "diem-workspace-hack",
- "futures",
-]
 
 [[package]]
 name = "chrono"
@@ -1215,55 +1169,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "30ed07550be01594c6026cff2a1d7fe9c8f683caa798e12b68694ac9e88286a3"
 dependencies = [
  "cache-padded",
-]
-
-[[package]]
-name = "consensus"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "async-trait",
- "bcs",
- "byteorder",
- "bytes 1.1.0",
- "channel",
- "consensus-types",
- "diem-config",
- "diem-crypto",
- "diem-infallible",
- "diem-logger",
- "diem-mempool",
- "diem-metrics",
- "diem-secure-storage",
- "diem-temppath",
- "diem-types",
- "diem-vm",
- "diem-workspace-hack",
- "execution-correctness",
- "executor",
- "executor-types",
- "fail",
- "fallible",
- "futures",
- "itertools 0.10.1",
- "mirai-annotations",
- "network",
- "num-derive",
- "num-traits",
- "once_cell",
- "rand 0.8.4",
- "safety-rules",
- "schemadb",
- "serde",
- "serde_json",
- "short-hex-str",
- "state-sync",
- "storage-interface",
- "subscription-service",
- "termion",
- "thiserror",
- "tokio 1.11.0",
 ]
 
 [[package]]
@@ -1642,21 +1547,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "debug-interface"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "bytes 1.1.0",
- "diem-logger",
- "diem-metrics",
- "diem-workspace-hack",
- "reqwest",
- "tokio 1.11.0",
- "warp",
-]
-
-[[package]]
 name = "deflate"
 version = "0.7.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1716,16 +1606,6 @@ dependencies = [
  "lazy_static",
  "tempfile",
  "zeroize",
-]
-
-[[package]]
-name = "diem-bitvec"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "diem-workspace-hack",
- "serde",
- "serde_bytes",
 ]
 
 [[package]]
@@ -1949,40 +1829,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "diem-json-rpc"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "bcs",
- "diem-config",
- "diem-crypto",
- "diem-framework-releases",
- "diem-json-rpc-types",
- "diem-logger",
- "diem-mempool",
- "diem-metrics",
- "diem-types",
- "diem-workspace-hack",
- "fail",
- "futures",
- "hex",
- "hyper",
- "move-core-types",
- "move-explain",
- "network",
- "ol-types",
- "once_cell",
- "rand 0.8.4",
- "regex",
- "serde",
- "serde_json",
- "storage-interface",
- "tokio 1.11.0",
- "warp",
-]
-
-[[package]]
 name = "diem-json-rpc-client"
 version = "0.1.0"
 source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
@@ -2074,41 +1920,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "diem-mempool"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "bcs",
- "bounded-executor",
- "channel",
- "diem-config",
- "diem-crypto",
- "diem-infallible",
- "diem-logger",
- "diem-metrics",
- "diem-types",
- "diem-workspace-hack",
- "fail",
- "futures",
- "itertools 0.10.1",
- "mirai-annotations",
- "netcore",
- "network",
- "once_cell",
- "rand 0.8.4",
- "rayon",
- "serde",
- "serde_json",
- "short-hex-str",
- "storage-interface",
- "subscription-service",
- "tokio 1.11.0",
- "tokio-stream",
- "vm-validator",
-]
-
-[[package]]
 name = "diem-metrics"
 version = "0.1.0"
 source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
@@ -2158,60 +1969,6 @@ source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe0
 dependencies = [
  "diem-workspace-hack",
  "serde",
-]
-
-[[package]]
-name = "diem-node"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "backup-service",
- "consensus",
- "crash-handler",
- "debug-interface",
- "diem-config",
- "diem-crypto",
- "diem-genesis-tool",
- "diem-json-rpc",
- "diem-logger",
- "diem-mempool",
- "diem-metrics",
- "diem-secure-storage",
- "diem-temppath",
- "diem-time-service",
- "diem-types",
- "diem-vm",
- "diem-workspace-hack",
- "diemdb",
- "executor",
- "executor-types",
- "fail",
- "futures",
- "jemallocator",
- "network-builder",
- "state-sync",
- "storage-client",
- "storage-interface",
- "storage-service",
- "structopt",
- "subscription-service",
- "tokio 1.11.0",
- "tokio-stream",
-]
-
-[[package]]
-name = "diem-rate-limiter"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "diem-infallible",
- "diem-logger",
- "diem-metrics",
- "diem-workspace-hack",
- "futures",
- "pin-project",
- "tokio 1.11.0",
- "tokio-util",
 ]
 
 [[package]]
@@ -2290,10 +2047,7 @@ dependencies = [
  "diem-infallible",
  "diem-workspace-hack",
  "enum_dispatch",
- "futures",
- "pin-project",
  "thiserror",
- "tokio 1.11.0",
 ]
 
 [[package]]
@@ -2777,33 +2531,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "execution-correctness"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "bcs",
- "consensus-types",
- "diem-config",
- "diem-crypto",
- "diem-global-constants",
- "diem-infallible",
- "diem-logger",
- "diem-secure-net",
- "diem-secure-storage",
- "diem-temppath",
- "diem-types",
- "diem-vm",
- "diem-workspace-hack",
- "executor",
- "executor-types",
- "rand 0.8.4",
- "serde",
- "storage-client",
- "thiserror",
-]
-
-[[package]]
 name = "executor"
 version = "0.1.0"
 source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
@@ -2864,15 +2591,6 @@ name = "fake-simd"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e88a8acf291dafb59c2d96e8f59828f3838bb1a70398823ade51a84de6a6deed"
-
-[[package]]
-name = "fallible"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "diem-workspace-hack",
- "thiserror",
-]
 
 [[package]]
 name = "fastrand"
@@ -3974,27 +3692,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "jemalloc-sys"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0d3b9f3f5c9b31aa0f5ed3260385ac205db665baa41d49bb8338008ae94ede45"
-dependencies = [
- "cc",
- "fs_extra",
- "libc",
-]
-
-[[package]]
-name = "jemallocator"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "43ae63fcfc45e99ab3d1b29a46782ad679e98436c3169d15a167a1108a724b69"
-dependencies = [
- "jemalloc-sys",
- "libc",
-]
-
-[[package]]
 name = "jni-sys"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4381,18 +4078,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "move-explain"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "bcs",
- "diem-framework-releases",
- "diem-workspace-hack",
- "move-core-types",
- "structopt",
-]
-
-[[package]]
 name = "move-ir-types"
 version = "0.1.0"
 source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
@@ -4654,112 +4339,6 @@ name = "ndk-sys"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c44922cb3dbb1c70b5e5f443d63b64363a898564d739ba5198e3a9138442868d"
-
-[[package]]
-name = "netcore"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "bytes 1.1.0",
- "diem-types",
- "diem-workspace-hack",
- "futures",
- "pin-project",
- "proxy",
- "serde",
- "tokio 1.11.0",
- "tokio-util",
- "url",
-]
-
-[[package]]
-name = "network"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "bcs",
- "bytes 1.1.0",
- "channel",
- "diem-bitvec",
- "diem-config",
- "diem-crypto",
- "diem-crypto-derive",
- "diem-infallible",
- "diem-logger",
- "diem-metrics",
- "diem-rate-limiter",
- "diem-time-service",
- "diem-types",
- "diem-workspace-hack",
- "futures",
- "futures-util",
- "hex",
- "netcore",
- "num-variants",
- "once_cell",
- "pin-project",
- "rand 0.8.4",
- "serde",
- "serde_bytes",
- "short-hex-str",
- "thiserror",
- "tokio 1.11.0",
- "tokio-retry",
- "tokio-stream",
- "tokio-util",
-]
-
-[[package]]
-name = "network-builder"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "bcs",
- "channel",
- "diem-config",
- "diem-crypto",
- "diem-infallible",
- "diem-logger",
- "diem-metrics",
- "diem-network-address-encryption",
- "diem-secure-storage",
- "diem-time-service",
- "diem-types",
- "diem-workspace-hack",
- "futures",
- "netcore",
- "network",
- "network-simple-onchain-discovery",
- "rand 0.8.4",
- "serde",
- "subscription-service",
- "tokio 1.11.0",
-]
-
-[[package]]
-name = "network-simple-onchain-discovery"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "bcs",
- "channel",
- "diem-config",
- "diem-crypto",
- "diem-logger",
- "diem-metrics",
- "diem-network-address-encryption",
- "diem-types",
- "diem-workspace-hack",
- "futures",
- "move-core-types",
- "network",
- "once_cell",
- "short-hex-str",
- "subscription-service",
- "tokio 1.11.0",
-]
 
 [[package]]
 name = "new_debug_unreachable"
@@ -6414,33 +5993,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ef703b7cb59335eae2eb93ceb664c0eb7ea6bf567079d843e09420219668e072"
 
 [[package]]
-name = "safety-rules"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "bcs",
- "consensus-types",
- "crash-handler",
- "diem-config",
- "diem-crypto",
- "diem-global-constants",
- "diem-infallible",
- "diem-logger",
- "diem-secure-net",
- "diem-secure-push-metrics",
- "diem-secure-storage",
- "diem-temppath",
- "diem-types",
- "diem-vault-client",
- "diem-workspace-hack",
- "once_cell",
- "rand 0.8.4",
- "rand_core 0.6.3",
- "serde",
- "thiserror",
-]
-
-[[package]]
 name = "same-file"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6996,61 +6548,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "state-sync"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "bcs",
- "channel",
- "diem-config",
- "diem-crypto",
- "diem-infallible",
- "diem-logger",
- "diem-mempool",
- "diem-metrics",
- "diem-temppath",
- "diem-types",
- "diem-vm",
- "diem-workspace-hack",
- "executor",
- "executor-types",
- "fail",
- "futures",
- "itertools 0.10.1",
- "netcore",
- "network",
- "once_cell",
- "rand 0.8.4",
- "serde",
- "storage-interface",
- "subscription-service",
- "thiserror",
- "tokio 1.11.0",
- "tokio-stream",
-]
-
-[[package]]
 name = "static_assertions"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
-
-[[package]]
-name = "storage-client"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "bcs",
- "diem-crypto",
- "diem-infallible",
- "diem-logger",
- "diem-secure-net",
- "diem-types",
- "diem-workspace-hack",
- "serde",
- "storage-interface",
-]
 
 [[package]]
 name = "storage-interface"
@@ -7070,26 +6571,6 @@ dependencies = [
  "scratchpad",
  "serde",
  "thiserror",
-]
-
-[[package]]
-name = "storage-service"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "bcs",
- "diem-config",
- "diem-crypto",
- "diem-logger",
- "diem-metrics",
- "diem-secure-net",
- "diem-types",
- "diem-workspace-hack",
- "diemdb",
- "futures",
- "storage-interface",
- "tokio 1.11.0",
 ]
 
 [[package]]
@@ -7209,17 +6690,6 @@ dependencies = [
  "proc-macro2 1.0.29",
  "quote 1.0.9",
  "syn 1.0.75",
-]
-
-[[package]]
-name = "subscription-service"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "channel",
- "diem-types",
- "diem-workspace-hack",
 ]
 
 [[package]]
@@ -7753,17 +7223,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tokio-retry"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f57eb36ecbe0fc510036adff84824dd3c24bb781e21bfa67b69d556aa85214f"
-dependencies = [
- "pin-project",
- "rand 0.8.4",
- "tokio 1.11.0",
-]
-
-[[package]]
 name = "tokio-rustls"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8261,21 +7720,6 @@ dependencies = [
  "once_cell",
  "rand 0.8.4",
  "serde",
-]
-
-[[package]]
-name = "vm-validator"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#37034910bdd9564dfe08649b11cd89e6eaa49733"
-dependencies = [
- "anyhow",
- "diem-state-view",
- "diem-types",
- "diem-vm",
- "diem-workspace-hack",
- "fail",
- "scratchpad",
- "storage-interface",
 ]
 
 [[package]]

@@ -20,7 +20,7 @@ fn main() {
     swarm_files,
     swarm_process,
     demo,
-    // start_swarm,
+    init_from_mnem,
     easy_swarm,
 		demo_tx
 	])

@@ -6,7 +6,8 @@
   import Miner from "./components/Miner.svelte";
   import Settings from "./components/Settings.svelte";
   import DevMode from "./components/DevMode.svelte";
-  import AddAccount from "./components/wallet/AddAccount.svelte";
+  import AddAccount from "./components/wallet/AccountFromMnem.svelte";
+  import AccountFromMnem from "./components/wallet/AddAccount.svelte";
 
   // TODO: need this?
   // window.__TAURI__.path.homeDir().then((dir) => {
@@ -31,6 +32,7 @@
       <div class="uk-container">
         <Route path="/" component={Wallet}/>
         <Route path="/add-account" component={AddAccount}/>
+        <Route path="/account-from-mnem" component={AccountFromMnem}/>
         <Route path="/miner" component={Miner}/>
         <Route path="/settings" component={Settings}/>
         <Route path="/dev" component={DevMode}/>

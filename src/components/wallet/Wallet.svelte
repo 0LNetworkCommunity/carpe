@@ -12,7 +12,11 @@
 <main>
   <h1>Wallet
     <Link to="add-account">
-      <button class="uk-button uk-button-primary uk-align-right">Add Account</button>
+      <button class="uk-button uk-button-primary uk-align-right"> Track Account </button>
+    </Link>
+
+    <Link to="account-from-mnem">
+      <button class="uk-button uk-button-primary uk-align-right"> Add Keys </button>
     </Link>
   </h1>
   {#if !accounts}
