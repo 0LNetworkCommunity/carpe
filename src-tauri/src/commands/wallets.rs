@@ -1,4 +1,3 @@
-use std::convert::TryFrom;
 /**
  * OK - get all accounts 
  * OK - add account
@@ -7,6 +6,7 @@ use std::convert::TryFrom;
  * 
  **/
 
+use std::convert::TryFrom;
 use std::fs::{File, create_dir_all};
 use std::io::prelude::*;
 use std::net::Ipv4Addr;
@@ -16,8 +16,6 @@ use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
 use url::Url;
 use diem_types::account_address::AccountAddress;
-
-
 use crate::key_manager;
 
 static DB_FILE: &str = "accounts.json";
@@ -109,7 +107,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
 
   let priv_key = KeyScheme::new_from_mnemonic(mnem).child_0_owner.get_private_key();
 
-  key_manager::set_private_key(&acc.to_string(), &priv_key.to_string());
+  key_manager::set_private_key(&acc.to_string(), &priv_key.to_string())?;
 
   // let path = PathBuf::from(path);
   // TODO: refactor init_app_configs so that it returns a result so we can catch errors.
