@@ -24,7 +24,7 @@ fn main() {
     demo,
     init_from_mnem,
     easy_swarm,
-		demo_tx
+		demo_tx,
 	])
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");

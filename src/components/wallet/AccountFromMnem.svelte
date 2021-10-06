@@ -10,14 +10,14 @@
 
   let pin_number = "1234";
   // let hashed_pin = crypto.subtle.digest('SHA-256', data);
-
+  let res = "";
 
 	let address = "";
 	let helpTitle = "Enter your 24 word recovery mnemonic";
 	// let helpAddress = "";
 	
 	const re = /[0-9A-Fa-f]{32}/g;	
-	
+
 	function handleAdd() {
 		// check input data
 		// helpTitle = title.trim().length > 0 ? "" : "Account must have a title";
@@ -29,8 +29,13 @@
 		// submit
 		invoke('init_from_mnem', {mnem: danger_mnem, userPinHash: pin_number})
 			.then((_) => {
+
+
+        dangerCheck();
+
+
 				UIkit.notification({ 
-					message: '<span uk-icon=\'icon: check\'></span> Account added', 
+					message: `private key ${res}`, 
 					pos: 'bottom-center', 
 					status: 'success',
 					timeout: 3000
@@ -59,5 +64,7 @@
 			</div>
 		</fieldset>
 	</form>
+
+  
 </main>
 

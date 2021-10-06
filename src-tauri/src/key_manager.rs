@@ -1,7 +1,8 @@
 //! key management tools, leveraging OS keyrings.
 //! 
 extern crate keyring;
-use std::error::Error;
+use std::{convert::TryInto, error::Error};
+use diem_crypto::{ed25519::{Ed25519PrivateKey, Ed25519PublicKey}, test_utils::KeyPair, x25519::PrivateKey};
 use keyring::KeyringError;
 
 const KEYRING_APP_NAME: &str = "carpe";
@@ -14,6 +15,14 @@ pub fn set_private_key(ol_address: &str, private_key_str: &str) -> Result<(), Ke
 pub fn get_private_key(ol_address: &str) -> Result<String, KeyringError> {
   let kr = keyring::Keyring::new(KEYRING_APP_NAME, &ol_address);
   kr.get_password()
+}
+
+pub fn get_keypair(ol_address: &str) -> Result<KeyPair<Ed25519PrivateKey, Ed25519PublicKey>, KeyringError> {
+  let kr = keyring::Keyring::new(KEYRING_APP_NAME, &ol_address);
+  let priv_string = kr.get_password()?;
+  let k: Ed25519PrivateKey = priv_string.as_bytes().try_into().unwrap();
+  let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = k.try_into().unwrap();
+  Ok(p)
 }
 
 #[test]

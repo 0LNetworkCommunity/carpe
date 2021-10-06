@@ -78,6 +78,7 @@ pub fn init_from_mnem(mnem: String, user_pin_hash: String, app_handle: tauri::Ap
 }
 
 
+
 #[test]
 // danger_init_from_mnem
 fn test_init_mnem() {
@@ -127,7 +128,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
     Some("Test".to_string()), // TODO
     Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
   );
-
+  
   Ok(acc)
 }
 

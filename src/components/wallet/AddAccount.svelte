@@ -32,6 +32,7 @@
 			.catch((error) => window.alert(error));
 		navigate("/", { replace: true });
 	}
+
 </script>
 
 
