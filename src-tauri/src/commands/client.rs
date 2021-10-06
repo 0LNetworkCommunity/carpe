@@ -18,11 +18,12 @@ fn get_cfg() -> AppCfg {
 }
 
 pub fn get_tx_params(address: AccountAddress) -> Result<TxParams, Error> {
-  let config = get_cfg();
+  let mut config = get_cfg();
   dbg!(&config);
 
   // let url_opt: Option<Url> = "http://64.225.2.108/".parse().ok();
-  
+
+  config.profile.default_node = "http://64.225.2.108/".parse().ok();
   // Requires user input to get OS keyring
   let keypair = key_manager::get_keypair(&address.to_string())?;
   get_tx_params_from_keypair(
