@@ -22,6 +22,4 @@
   };
 </script>
 
-<main>
-  <button class="uk-button uk-button-default" on:click={demoTx}>Demo Tx</button>
-</main>
+<button class="uk-button uk-button-default" on:click={demoTx}>Demo Tx</button>
