@@ -5,7 +5,7 @@
   import Wallet from "./components/wallet/Wallet.svelte";
   import Miner from "./components/Miner.svelte";
   import Settings from "./components/Settings.svelte";
-  import DevMode from "./components/DevMode.svelte";
+  import DevMode from "./components/dev/DevMode.svelte";
   import AccountFromMnem from "./components/wallet/AccountFromMnem.svelte";
   import AddAccount from "./components/wallet/AddAccount.svelte";
 
