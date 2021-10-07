@@ -19,9 +19,24 @@ To create a new project based on this template follow the official guide here: h
 
 ## Get started
 
+### Dependencies
+
+- NodeJS version 16
+- Yarn
+- Rust (version will install on its own)
+
 Before using template please see [Tauri Introduction](https://tauri.studio/en/docs/getting-started/intro) and follow instructions to setup your environment.
 
 Install the dependencies...
+
+First Rust:
+```
+cd src-tauri/
+cargo build
+
+```
+
+Then Javascript:
 
 ```bash
 yarn
