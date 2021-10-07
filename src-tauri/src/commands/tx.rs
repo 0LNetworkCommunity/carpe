@@ -14,3 +14,13 @@ pub fn demo_tx(account: String) -> String {
     Err(e) => format!("{:?}", e)
   }
 }
+
+
+#[tauri::command]
+pub fn debug_error(debug_err: bool) -> Result<String, String> {
+  dbg!(&debug_err);
+  match debug_err {
+    true => Ok("good".to_owned()),
+    false => Err("bad".to_owned())
+  }
+}

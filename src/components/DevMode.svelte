@@ -30,6 +30,16 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
       .catch((e) => console.error(e));
   };
 
+  const makeError = async () => {
+    invoke("debug_error", {
+      debugErr: false
+    })
+      .then((res) => {
+        result = res;
+      })
+      .catch((e) => console.error(e));
+  };
+
   const easySwarm = async () => {
     invoke("easy_swarm", {
       sourcePath: sourcePath,
@@ -108,6 +118,8 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
       <div>
         <!-- <h3>Home {home} account: {account}</h3> -->
         <!-- <span uk-icon="icon: home" /> -->
+        <button class="uk-button uk-button-default" on:click={makeError}>Make Error</button
+          >
 
         <button class="uk-button uk-button-default" on:click={keygen}
           >Keygen</button
@@ -172,8 +184,10 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
                 <!-- {/each} -->
               </tbody>
             </table>
-
+        
+        <h5>Invoke Result</h5> 
         <p>
+
           {#if result.length !== 0}
             {result}
           {:else}
