@@ -3,6 +3,7 @@
 import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
 
   let result: string = "";
+  let error_string: string = "";
 
   let swarm_running: string = "";
   let swarm_files: string = "";
@@ -37,7 +38,11 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
       .then((res) => {
         result = res;
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        error_string = e; //This is a string 
+        console.error(e);
+      }
+      );
   };
 
   const easySwarm = async () => {
@@ -187,9 +192,20 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
         
         <h5>Invoke Result</h5> 
         <p>
-
+          result:
+          <br>
           {#if result.length !== 0}
-            {result}
+
+             {result}
+          {:else}
+            No result yet.
+          {/if}
+
+           error: 
+           <br>
+          {#if error_string.length !== 0}
+
+            {error_string}
           {:else}
             No result yet.
           {/if}
