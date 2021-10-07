@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
+  import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
 
   let result: string = "";
   let error_string: string = "";
@@ -33,16 +33,15 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
 
   const makeError = async () => {
     invoke("debug_error", {
-      debugErr: false
+      debugErr: false,
     })
       .then((res) => {
         result = res;
       })
       .catch((e) => {
-        error_string = e; //This is a string 
+        error_string = e; //This is a string
         console.error(e);
-      }
-      );
+      });
   };
 
   const easySwarm = async () => {
@@ -123,8 +122,9 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
       <div>
         <!-- <h3>Home {home} account: {account}</h3> -->
         <!-- <span uk-icon="icon: home" /> -->
-        <button class="uk-button uk-button-default" on:click={makeError}>Make Error</button
-          >
+        <button class="uk-button uk-button-default" on:click={makeError}
+          >Make Error</button
+        >
 
         <button class="uk-button uk-button-default" on:click={keygen}
           >Keygen</button
@@ -133,7 +133,7 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
         <button class="uk-button uk-button-default" on:click={init}>Init</button
         >
 
-        <AccountFromMnem/>
+        <AccountFromMnem />
 
         <div>
           <h2>swarm</h2>
@@ -164,47 +164,46 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
           >
 
           <h2>TestNet</h2>
-          <button class="uk-button uk-button-default" on:click={demoTx}>Demo Tx</button
+          <button class="uk-button uk-button-default" on:click={demoTx}
+            >Demo Tx</button
           >
         </div>
       </div>
       <div class="uk-card uk-card-default uk-card-body uk-width-1-2@m">
         <h5 class="uk-card-title">Debugging</h5>
 
-            <table class="uk-table uk-table-divider">
-              <thead>
-                <tr>
-                  <th>Path</th>
-                  <th>Address</th>
-                  <th>Mnem</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- {#each accounts as account} -->
-                  <tr>
-                    <td>{home}</td>
-                    <td>{account}</td>
-                    <td>{mnemonic}</td>
-                  </tr>
-                <!-- {/each} -->
-              </tbody>
-            </table>
-        
-        <h5>Invoke Result</h5> 
+        <table class="uk-table uk-table-divider">
+          <thead>
+            <tr>
+              <th>Path</th>
+              <th>Address</th>
+              <th>Mnem</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- {#each accounts as account} -->
+            <tr>
+              <td>{home}</td>
+              <td>{account}</td>
+              <td>{mnemonic}</td>
+            </tr>
+            <!-- {/each} -->
+          </tbody>
+        </table>
+
+        <h5>Invoke Result</h5>
         <p>
           result:
-          <br>
+          <br />
           {#if result.length !== 0}
-
-             {result}
+            {result}
           {:else}
             No result yet.
           {/if}
-
-           error: 
-           <br>
+          <br />
+          error:
+          <br />
           {#if error_string.length !== 0}
-
             {error_string}
           {:else}
             No result yet.
