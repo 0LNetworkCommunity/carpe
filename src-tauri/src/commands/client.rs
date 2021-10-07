@@ -1,5 +1,4 @@
 //! client
-use anyhow::{Error};
 use diem_types::account_address::AccountAddress;
 use dirs;
 use ol::config::AppCfg;

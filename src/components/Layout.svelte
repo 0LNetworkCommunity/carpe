@@ -4,7 +4,7 @@
   import Miner from "./Miner.svelte";
   import Wallet from "./wallet/Wallet.svelte";
   import Settings from "./Settings.svelte";
-  import DevMode from "./DevMode.svelte";
+  import DevMode from "./dev/DevMode.svelte";
   UIkit.use(Icons);
 </script>
 

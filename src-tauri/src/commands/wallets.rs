@@ -68,8 +68,8 @@ pub fn init_from_mnem(mnem: String, _app_handle: tauri::AppHandle) -> String {
   // get all accounts
   // let app_dir = app_handle.path_resolver().app_dir().unwrap();
 
-  danger_init_from_mnem(mnem).unwrap(); //TODO: Don't clone here.
-  "Account initialized".to_string()
+  let acc = danger_init_from_mnem(mnem).unwrap(); //TODO: Don't clone here.
+  acc.to_string()
 }
 
 

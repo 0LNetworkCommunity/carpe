@@ -7,14 +7,11 @@
 </script>
 
 <main>
-  <div class="uk-margin uk-container">
+  <div class="uk-margin uk-container uk-dark">
       <div class="uk-margin">
 
         <DebugCard />
-        <DebugActions />
-        <Swarm />
-        <AccountFromMnem />
-        
+        <DebugActions />        
 
     </div>
   </div>

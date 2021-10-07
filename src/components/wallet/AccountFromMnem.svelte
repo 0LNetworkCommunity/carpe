@@ -1,6 +1,9 @@
 <script>
 	import { Link, useNavigate } from "svelte-navigator";
 	import UIkit from 'uikit';
+  import { responses, errors } from "../../debug";
+  import { account } from "../../accounts"
+  
 	const invoke = window.__TAURI__.invoke;
 	const navigate = useNavigate();
 	
@@ -8,31 +11,18 @@
 
   let danger_mnem = alice_mnem;
 
-  let pin_number = "1234";
-  // let hashed_pin = crypto.subtle.digest('SHA-256', data);
-  let res = "";
-
-	let address = "";
 	let helpTitle = "Enter your 24 word recovery mnemonic";
 	// let helpAddress = "";
 	
 	const re = /[0-9A-Fa-f]{32}/g;	
 
 	function handleAdd() {
-		// check input data
-		// helpTitle = title.trim().length > 0 ? "" : "Account must have a title";
-		// helpAddress = (address.length == 32 && re.test(address)) ? "" : "The address must have 32 valid characters";
-		// if (helpTitle.length > 0 || helpAddress.length > 0) {
-		// 	return;
-		// }
-
 		// submit
 		invoke('init_from_mnem', { mnem: danger_mnem })
-			.then((_) => {
-
-
-        dangerCheck();
-
+			.then((res) => {
+        
+        responses.set(res);
+        account.set(res);
 
 				UIkit.notification({ 
 					message: `private key ${res}`, 
@@ -41,7 +31,11 @@
 					timeout: 3000
 				});				
 			})
-			.catch((error) => window.alert(error));
+			.catch((error) => {
+        window.alert(error);
+        errors.set(error);
+
+      });
 		navigate("/", { replace: true });
 	}
 </script>

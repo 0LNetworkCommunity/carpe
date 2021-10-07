@@ -1,9 +1,19 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import { responses, errors } from "../../debug.ts";
+  import { responses, errors } from "../../debug";
+  import DemoTx from "../txs/DemoTx.svelte";
+  import { account, authkey } from "../../accounts";
 
-  let authkey: string = "";
-  let account: string = "4c613c2f4b1e67ca8d98a542ee3f59f5";
+  let authkey_string: string = "";
+  let account_string: string = "";
+
+  authkey.subscribe((n) => {
+    authkey_string = n
+  })
+
+  account.subscribe((n) => {
+    account_string = n
+  })
 
   const keygen = async () => {
     invoke("keygen", {})
@@ -11,11 +21,13 @@
         let o = JSON.parse(res);
         if ("account" in o) {
           console.log(o);
-          account = o.account;
-          authkey = o.authkey;
+          // account = o.account;
+          // authkey = o.authkey;
+          authkey.set(o.authkey);
+          account.set(o.account);
           // mnemonic = o.mnemonic;
         }
-
+        
         responses.set(res);
         // result = res;
       })
@@ -36,12 +48,10 @@
       });
   };
 
-
-
   const init = async () => {
     invoke("init_user", {
-      authkey: authkey,
-      account: account,
+      authkey: authkey_string,
+      account: account_string,
       // pathStr: home,
     })
       .then((res) => {
@@ -53,16 +63,15 @@
 
 <main>
   <div>
-
     <button class="uk-button uk-button-default" on:click={makeError}
-          >Make Error</button
-        >
+      >Make Error</button
+    >
 
-        <button class="uk-button uk-button-default" on:click={keygen}
-          >Keygen</button
-        >
+    <button class="uk-button uk-button-default" on:click={keygen}>Keygen</button
+    >
 
-        <button class="uk-button uk-button-default" on:click={init}>Init</button
-        >
+    <button class="uk-button uk-button-default" on:click={init}>Init</button>
+
+    <DemoTx />
   </div>
 </main>
