@@ -17,7 +17,7 @@ fn get_cfg() -> AppCfg {
   config::parse_toml(config_toml.to_str().unwrap().to_string()).unwrap()
 }
 
-pub fn get_tx_params(address: AccountAddress) -> Result<TxParams, Error> {
+pub fn get_tx_params(address: AccountAddress) -> Result<TxParams, anyhow::Error> {
   let mut config = get_cfg();
   dbg!(&config);
 

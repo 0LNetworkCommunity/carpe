@@ -10,7 +10,8 @@
 </script>
 
 <main>
-  <h1>Wallet
+  <h1>Wallet</h1>
+  <div>
     <Link to="add-account">
       <button class="uk-button uk-button-primary uk-align-right"> Track Account </button>
     </Link>
@@ -18,7 +19,8 @@
     <Link to="account-from-mnem">
       <button class="uk-button uk-button-primary uk-align-right"> Add Keys </button>
     </Link>
-  </h1>
+
+  </div>
   {#if !accounts}
     <p>loading...</p>
   {:else if accounts.length == 0}

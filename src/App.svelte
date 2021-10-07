@@ -6,8 +6,8 @@
   import Miner from "./components/Miner.svelte";
   import Settings from "./components/Settings.svelte";
   import DevMode from "./components/DevMode.svelte";
-  import AddAccount from "./components/wallet/AccountFromMnem.svelte";
-  import AccountFromMnem from "./components/wallet/AddAccount.svelte";
+  import AccountFromMnem from "./components/wallet/AccountFromMnem.svelte";
+  import AddAccount from "./components/wallet/AddAccount.svelte";
 
   // TODO: need this?
   // window.__TAURI__.path.homeDir().then((dir) => {

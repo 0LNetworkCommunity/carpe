@@ -3,5 +3,5 @@
 </script>
 
 <main>
-  Miner
+  <h1>Miner</h1>
 </main>

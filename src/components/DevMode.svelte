@@ -106,13 +106,8 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
   <div>
     <div>
       <div>
-        <h3>Home {home} account: {account}</h3>
-        <span uk-icon="icon: home" />
-        <!-- <CardSubtitle>Example of async call to Tauri</CardSubtitle> -->
-        <!-- <CardText>Write something below and press the a.</CardText> -->
-        <!-- <Input type="text" bind:value={input} /> -->
-        <!-- <button color="primary" on:click={handleClick}>Call Rust</button> -->
-        <!-- <button on:click={hello}>Hello</button> -->
+        <!-- <h3>Home {home} account: {account}</h3> -->
+        <!-- <span uk-icon="icon: home" /> -->
 
         <button class="uk-button uk-button-default" on:click={keygen}
           >Keygen</button
@@ -134,10 +129,6 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
           </div>
           <p>swarm running: {swarm_running}</p>
           <p>swarm files: {swarm_files}</p>
-
-          <!-- <button class="uk-button uk-button-default">Start Swarm</button> -->
-
-          <!-- <button class="uk-button uk-button-default" on:click={easySwarm}>Start Swarm</button> -->
 
           <button class="uk-button uk-button-default" on:click={swarmCheck}
             >Check Swarm</button
@@ -162,6 +153,26 @@ import AccountFromMnem from "./wallet/AccountFromMnem.svelte";
       </div>
       <div class="uk-card uk-card-default uk-card-body uk-width-1-2@m">
         <h5 class="uk-card-title">Debugging</h5>
+
+            <table class="uk-table uk-table-divider">
+              <thead>
+                <tr>
+                  <th>Path</th>
+                  <th>Address</th>
+                  <th>Mnem</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- {#each accounts as account} -->
+                  <tr>
+                    <td>{home}</td>
+                    <td>{account}</td>
+                    <td>{mnemonic}</td>
+                  </tr>
+                <!-- {/each} -->
+              </tbody>
+            </table>
+
         <p>
           {#if result.length !== 0}
             {result}
