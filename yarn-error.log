@@ -1,14 +1,14 @@
 Arguments: 
-  /usr/local/Cellar/node/16.8.0/bin/node /usr/local/Cellar/yarn/1.22.11/libexec/bin/yarn.js
+  /usr/local/Cellar/node/16.11.1/bin/node /usr/local/Cellar/yarn/1.22.15/libexec/bin/yarn.js
 
 PATH: 
   /usr/local/opt/llvm/bin:/Users/lucas/.cargo/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/MacGPG2/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/usr/local/opt/llvm/bin:/Users/lucas/.cargo/bin
 
 Yarn version: 
-  1.22.11
+  1.22.15
 
 Node version: 
-  16.8.0
+  16.11.1
 
 Platform: 
   darwin x64
@@ -16,10 +16,10 @@ Platform:
 Trace: 
   SyntaxError: /Users/lucas/Library/Caches/Yarn/v6/npm-package-json-6.5.0-integrity/node_modules/package-json/.yarn-metadata.json: Unexpected end of JSON input
       at JSON.parse (<anonymous>)
-      at /usr/local/Cellar/yarn/1.22.11/libexec/lib/cli.js:1625:59
+      at /usr/local/Cellar/yarn/1.22.15/libexec/lib/cli.js:1625:59
       at Generator.next (<anonymous>)
-      at step (/usr/local/Cellar/yarn/1.22.11/libexec/lib/cli.js:310:30)
-      at /usr/local/Cellar/yarn/1.22.11/libexec/lib/cli.js:321:13
+      at step (/usr/local/Cellar/yarn/1.22.15/libexec/lib/cli.js:310:30)
+      at /usr/local/Cellar/yarn/1.22.15/libexec/lib/cli.js:321:13
 
 npm manifest: 
   {

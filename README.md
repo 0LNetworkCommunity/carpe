@@ -1,15 +1,15 @@
-# 0L Light Node
+# 0L Desktop Wallet and Miner
 
 - [x] create new keys & mnemonic
 - [x] initialize local files user-wizard, val-wizard
-- [ ] dev mode, to connect to a swarm (bonus: app can start-up a swarm, and shut down).
+- [x] dev mode, to connect to a swarm (bonus: app can start-up a swarm, and shut down).
+- [ ] create new account
+- [ ] import existing mnemonic (create block 0 if necessary)
 - [ ] ability to start 'miner' and send proofs (send to swarm in dev mode)
-- [ ] ability to send common txs: create account, upgrade, rotate keys (multiple accounts?)
+- [x] ability to send common txs: create account, upgrade, rotate keys (multiple accounts?)
 - [ ] include all web-monitor views
 - [ ] ability to upgrade (tauri self updater)
 - [ ] display help content from a github-hosted markdown file.
-- [ ] TBD: user account can upgrade to validator account.
-- [ ] TBD: validator account can choose operator (delegation).
 
 # Tauri Svelte App Template
 
