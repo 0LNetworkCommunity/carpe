@@ -5,6 +5,7 @@
 
 pub mod commands;
 pub mod key_manager;
+pub mod configs;
 
 use crate::commands::*;
 

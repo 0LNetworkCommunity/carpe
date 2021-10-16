@@ -159,27 +159,27 @@ pub fn init_user(authkey: String, account: String) -> String {
 
   
   // If upstream is valid, then we don't need to pass an epoch and waypoint.
-  let mut waypoint = None;
-  let mut starting_epoch = None;
+  // let mut waypoint = None;
+  // let mut starting_epoch = None;
 
-  let upstream = Url::try_from(UPSTREAM).ok();
-  if upstream.is_none(){
-    waypoint = MAINNET_GENESIS_WAYPOINT.parse().ok();
-    starting_epoch = Some(0);
-  }
-  // let path = PathBuf::from(path);
-  ol_types::config::AppCfg::init_app_configs(
-    key, 
-    acc,
-    // TODO: how to pick a URL to fetch upstream data from
-    &upstream,
-    &Some(path), 
-    &starting_epoch, 
-    &waypoint, 
-    &None, // No need for source path
-    Some("Test".to_string()), // TODO
-    Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
-  );
+  // let upstream = Url::try_from(UPSTREAM).ok();
+  // if upstream.is_none(){
+  //   waypoint = MAINNET_GENESIS_WAYPOINT.parse().ok();
+  //   starting_epoch = Some(0);
+  // }
+  // // let path = PathBuf::from(path);
+  // ol_types::config::AppCfg::init_app_configs(
+  //   key, 
+  //   acc,
+  //   // TODO: how to pick a URL to fetch upstream data from
+  //   &upstream,
+  //   &Some(path), 
+  //   &starting_epoch, 
+  //   &waypoint, 
+  //   &None, // No need for source path
+  //   Some("Test".to_string()), // TODO
+  //   Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
+  // );
 
   account
 }

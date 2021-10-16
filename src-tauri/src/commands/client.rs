@@ -46,8 +46,3 @@ pub fn show_tx_params(account: AccountAddress) -> String {
   let txp = get_tx_params(account, None);
   format!("{:?}", txp)
 }
-
-// #[test]
-// fn test() {
-//   get_tx();
-// }
