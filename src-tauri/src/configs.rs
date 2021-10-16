@@ -26,11 +26,13 @@ pub fn is_initialized() -> bool {
 }
 
 /// initialize default configs.
-pub fn init_configs()  {
-  let mut default_config = AppCfg::default();
-  default_config.workspace.node_home = default_config_path();
-  fs::create_dir_all(&default_config.workspace.node_home).unwrap();
-  default_config.save_file();
+pub fn maybe_init_configs() {
+  if !is_initialized() {
+    let mut default_config = AppCfg::default();
+    default_config.workspace.node_home = default_config_path();
+    fs::create_dir_all(&default_config.workspace.node_home).unwrap();
+    default_config.save_file();
+  }
 }
 
 /// fetch upstream peers.

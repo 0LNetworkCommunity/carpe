@@ -1,7 +1,6 @@
-use crate::key_manager;
+use crate::{configs, key_manager};
 use diem_types::account_address::AccountAddress;
 use diem_wallet::WalletLibrary;
-use tower::block::write_genesis;
 use ol::config::AppCfg;
 use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
@@ -19,6 +18,7 @@ use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 use std::net::Ipv4Addr;
 use std::path::{Path, PathBuf};
+use tower::block::write_genesis;
 use url::Url;
 
 static DB_FILE: &str = "accounts.json";
@@ -34,7 +34,6 @@ pub struct AccountEntry {
   pub title: String,
   pub balance: Option<u64>,
 }
-
 
 #[tauri::command]
 pub fn get_all_accounts(app_handle: tauri::AppHandle) -> Result<Accounts, String> {
@@ -53,11 +52,7 @@ pub fn add_account(
   insert_account_db(title, address, app_dir)
 }
 
-fn insert_account_db(
-  title: String,
-  address: String,
-  app_dir: PathBuf,
-) -> Result<Accounts, String> {
+fn insert_account_db(title: String, address: String, app_dir: PathBuf) -> Result<Accounts, String> {
   // get all accounts
   let mut all = read_accounts(&app_dir);
 
@@ -93,7 +88,13 @@ pub fn remove_accounts(app_handle: tauri::AppHandle) -> Result<String, String> {
       _ => return Err(format!("unable to delete account file found at {:?}", &db_path).to_owned()),
     }
   }
-  return Err(format!("No accounts to remove. No account file found at {:?}", &db_path).to_owned());
+  return Err(
+    format!(
+      "No accounts to remove. No account file found at {:?}",
+      &db_path
+    )
+    .to_owned(),
+  );
 }
 
 #[tauri::command]
@@ -128,14 +129,14 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
   let (key, acc, _wl) = wallet::get_account_from_mnem(mnem.clone());
 
   // If upstream is valid, then we don't need to pass an epoch and waypoint.
-  let mut waypoint = None;
-  let mut starting_epoch = None;
+  // let mut waypoint = None;
+  // let mut starting_epoch = None;
 
-  let upstream = Url::try_from(super::UPSTREAM).ok();
-  if upstream.is_none() {
-    waypoint = super::MAINNET_GENESIS_WAYPOINT.parse().ok();
-    starting_epoch = Some(0);
-  }
+  // let upstream = Url::try_from(super::UPSTREAM).ok();
+  // if upstream.is_none() {
+  //   waypoint = super::MAINNET_GENESIS_WAYPOINT.parse().ok();
+  //   starting_epoch = Some(0);
+  // }
 
   let priv_key = KeyScheme::new_from_mnemonic(mnem)
     .child_0_owner
@@ -143,20 +144,21 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
 
   key_manager::set_private_key(&acc.to_string(), priv_key)?;
 
-  // let path = PathBuf::from(path);
-  // TODO: refactor init_app_configs so that it returns a result so we can catch errors.
-  ol_types::config::AppCfg::init_app_configs(
-    key,
-    acc.clone(),
-    // TODO: how to pick a URL to fetch upstream data from
-    &upstream,
-    &Some(path),
-    &starting_epoch,
-    &waypoint,
-    &None,                           // No need for source path
-    Some("Test".to_string()),        // TODO
-    Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
-  );
+  configs::maybe_init_configs();
+  // // let path = PathBuf::from(path);
+  // // TODO: refactor init_app_configs so that it returns a result so we can catch errors.
+  // ol_types::config::AppCfg::init_app_configs(
+  //   key,
+  //   acc.clone(),
+  //   // TODO: how to pick a URL to fetch upstream data from
+  //   &upstream,
+  //   &Some(path),
+  //   &starting_epoch,
+  //   &waypoint,
+  //   &None,                           // No need for source path
+  //   Some("Test".to_string()),        // TODO
+  //   Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
+  // );
 
   Ok(acc)
 }
