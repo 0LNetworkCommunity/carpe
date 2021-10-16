@@ -1,7 +1,7 @@
 use crate::key_manager;
 use diem_types::account_address::AccountAddress;
 use diem_wallet::WalletLibrary;
-use miner::block::write_genesis;
+use tower::block::write_genesis;
 use ol::config::AppCfg;
 use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
@@ -34,6 +34,7 @@ pub struct AccountEntry {
   pub title: String,
   pub balance: Option<u64>,
 }
+
 
 #[tauri::command]
 pub fn get_all_accounts(app_handle: tauri::AppHandle) -> Result<Accounts, String> {

@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use diem_types::waypoint::Waypoint;
-use miner::{block::mine_once, commit_proof::commit_proof_tx};
+use tower::{block::mine_once, commit_proof::commit_proof_tx};
 use ol::config::AppCfg;
 use ol_types::config::{self, TxType};
 use txs::submit_tx::{eval_tx_status, tx_params};

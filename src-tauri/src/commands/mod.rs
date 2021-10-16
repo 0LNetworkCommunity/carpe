@@ -12,12 +12,12 @@ pub use tx::*;
 
 
 use diem_types::transaction::authenticator::AuthenticationKey;
-use miner::block::{
+use tower::block::{
   // mine_and_submit,
   mine_once
 };
 
-use miner::commit_proof::commit_proof_tx;
+use tower::commit_proof::commit_proof_tx;
 use ol::commands::init_cmd::initialize_host_swarm;
 use ol_types::config::{self, TxType};
 use serde::{Deserialize, Serialize};
