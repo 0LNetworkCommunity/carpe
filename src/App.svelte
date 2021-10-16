@@ -4,18 +4,13 @@
   // import Layout from "./components/Layout.svelte";
   import Wallet from "./components/wallet/Wallet.svelte";
   import Miner from "./components/Miner.svelte";
-  import Settings from "./components/Settings.svelte";
+  import Settings from "./components/settings/Settings.svelte";
   import DevMode from "./components/dev/DevMode.svelte";
   import AccountFromMnem from "./components/wallet/AccountFromMnem.svelte";
   import AddAccount from "./components/wallet/AddAccount.svelte";
-  import { account } from "./accounts";
-import Swarm from "./components/dev/Swarm.svelte";
+  import Swarm from "./components/dev/Swarm.svelte";
+  import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
 
-  let my_account = "";
-
-  account.subscribe(value => {
-    my_account = value;
-  })
   // TODO: need this?
   // window.__TAURI__.path.homeDir().then((dir) => {
   //   home = dir;
@@ -38,8 +33,15 @@ import Swarm from "./components/dev/Swarm.svelte";
           </ul>
         </div>        
       </nav>
+
       <div class="uk-container uk-background-muted uk-background-height-1-1">
-        <p> account: {my_account} </p>
+        <AccountSwitcher />
+
+        <!-- <p> account: {my_account} </p> -->
+
+
+
+
         <Route path="/" component={Wallet}/>
         <Route path="/add-account" component={AddAccount}/>
         <Route path="/account-from-mnem" component={AccountFromMnem}/>

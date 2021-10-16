@@ -15,7 +15,7 @@ use ol_types::block::Block;
  *
  **/
 use std::convert::TryFrom;
-use std::fs::{create_dir_all, File};
+use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 use std::net::Ipv4Addr;
 use std::path::{Path, PathBuf};
@@ -47,8 +47,17 @@ pub fn add_account(
   address: String,
   app_handle: tauri::AppHandle,
 ) -> Result<Accounts, String> {
-  // get all accounts
   let app_dir = app_handle.path_resolver().app_dir().unwrap();
+
+  insert_account_db(title, address, app_dir)
+}
+
+fn insert_account_db(
+  title: String,
+  address: String,
+  app_dir: PathBuf,
+) -> Result<Accounts, String> {
+  // get all accounts
   let mut all = read_accounts(&app_dir);
 
   // push new account
@@ -72,11 +81,29 @@ pub fn add_account(
 }
 
 #[tauri::command]
-pub fn init_from_mnem(mnem: String, _app_handle: tauri::AppHandle) -> String {
+pub fn remove_accounts(app_handle: tauri::AppHandle) -> Result<String, String> {
+  // Note: this only removes the account tracking, doesn't delete account on chain.
+  let app_dir = app_handle.path_resolver().app_dir().unwrap();
+  let db_path = Path::new(&app_dir).join(DB_FILE);
+  dbg!(&db_path);
+  if db_path.exists() {
+    match fs::remove_file(&db_path) {
+      Ok(_) => return Ok("removed all accounts".to_owned()),
+      _ => return Err(format!("unable to delete account file found at {:?}", &db_path).to_owned()),
+    }
+  }
+  return Err(format!("No accounts to remove. No account file found at {:?}", &db_path).to_owned());
+}
+
+#[tauri::command]
+pub fn init_from_mnem(mnem: String, app_handle: tauri::AppHandle) -> String {
+  let app_dir = app_handle.path_resolver().app_dir().unwrap();
   // get all accounts
   // let app_dir = app_handle.path_resolver().app_dir().unwrap();
 
-  let acc = danger_init_from_mnem(mnem).unwrap(); //TODO: Don't clone here.
+  let acc = danger_init_from_mnem(mnem).unwrap();
+  let name = acc.to_string(); //TODO: Don't clone here.
+  insert_account_db(name[..3].to_owned(), name, app_dir).unwrap();
   acc.to_string()
 }
 
@@ -149,7 +176,6 @@ pub fn danger_get_keys(mnemonic: String) -> WalletLibrary {
 }
 
 fn create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>) {
-
   let block = match block_zero {
     Some(b) => Block::parse_block_file(b.to_owned()),
     None => write_genesis(&app_cfg),

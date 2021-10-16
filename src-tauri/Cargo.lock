@@ -15,7 +15,7 @@ dependencies = [
 [[package]]
 name = "abigen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -53,7 +53,7 @@ dependencies = [
  "toml",
  "tracing",
  "tracing-log",
- "tracing-subscriber",
+ "tracing-subscriber 0.1.6",
  "wait-timeout",
 ]
 
@@ -65,7 +65,7 @@ checksum = "74f5722bc48763cb9d81d8427ca05b6aa2842f6632cf8e4c0a29eef9baececcc"
 dependencies = [
  "darling",
  "ident_case",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
  "synstructure",
@@ -84,7 +84,7 @@ dependencies = [
 [[package]]
 name = "accumulator"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "diem-crypto",
@@ -211,6 +211,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "ansi_term"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d52a9bb7ec0cf484c551830a7ce27bd20d67eac647e1befb56b0be4ee39a55d2"
+dependencies = [
+ "winapi 0.3.9",
+]
+
+[[package]]
 name = "anyhow"
 version = "1.0.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -223,7 +232,6 @@ dependencies = [
 name = "app"
 version = "0.1.0"
 dependencies = [
- "aes-gcm",
  "anyhow",
  "ctrlc",
  "diem-config",
@@ -233,7 +241,6 @@ dependencies = [
  "dirs 4.0.0",
  "hex",
  "keyring",
- "miner",
  "ol",
  "ol-keys",
  "ol-types",
@@ -243,6 +250,7 @@ dependencies = [
  "sysinfo",
  "tauri",
  "tauri-build",
+ "tower",
  "txs",
  "url",
 ]
@@ -315,7 +323,7 @@ version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "648ed8c8d2ce5409ccd57453d9d1b214b342a0d69376a6feda1fd6cae3299308"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -326,7 +334,7 @@ version = "0.1.51"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "44318e776df68115a881de9a8fd1b9e53368d7a4a5ce4cc48517da3393233a5e"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -338,7 +346,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a83b21d2aa75e464db56225e1bda2dd5993311ba1095acaa8fa03d1ae67026ba"
 dependencies = [
  "atk-sys",
- "bitflags 1.3.2",
+ "bitflags",
  "glib",
  "libc",
 ]
@@ -409,7 +417,7 @@ dependencies = [
 [[package]]
 name = "backup-cli"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -456,9 +464,9 @@ checksum = "904dfeac50f3cdaba28fc6f57fdcddb75f49ed61346676a78c4ffe55877802fd"
 
 [[package]]
 name = "base64ct"
-version = "1.1.0"
+version = "1.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "40a96587c05c810ddbb79e2674d519cff1379517e7b91d166dff7a7cc0e9af6e"
+checksum = "e6b4d9b1225d28d360ec6a231d65af1fd99a2a095154c8040689617290569c5c"
 
 [[package]]
 name = "bcs"
@@ -485,13 +493,13 @@ version = "0.59.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "453c49e5950bb0eb63bb3df640e31618846c89d5b7faa54040d76e98e0134375"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cexpr",
  "clang-sys",
  "lazy_static",
  "lazycell",
  "peeking_take_while",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "regex",
  "rustc-hash",
@@ -518,12 +526,6 @@ name = "bit-vec"
 version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "349f9b6a179ed607305526ca489b34ad0a41aed5f7980fa90eb03160b69598fb"
-
-[[package]]
-name = "bitflags"
-version = "0.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4efd02e230a02e18f92fc2735f44597385ed02ad8f831e7c1c1156ee5e1ab3a5"
 
 [[package]]
 name = "bitflags"
@@ -633,7 +635,7 @@ checksum = "8d696c370c750c948ada61c69a0ee2cbbb9c50b1019ddb86d9317157a99c2cae"
 [[package]]
 name = "boogie-backend"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -661,7 +663,7 @@ dependencies = [
 [[package]]
 name = "borrow-graph"
 version = "0.0.1"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
  "mirai-annotations",
@@ -704,7 +706,7 @@ checksum = "e3b5ca7a04898ad4bcd41c90c5285445ff5b791899bb1b0abdd2a2aa791211d7"
 [[package]]
 name = "bytecode"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "borrow-graph",
  "bytecode-verifier",
@@ -729,7 +731,7 @@ dependencies = [
 [[package]]
 name = "bytecode-interpreter"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bytecode",
@@ -748,7 +750,7 @@ dependencies = [
 [[package]]
 name = "bytecode-source-map"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -764,7 +766,7 @@ dependencies = [
 [[package]]
 name = "bytecode-verifier"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "borrow-graph",
@@ -831,11 +833,11 @@ checksum = "631ae5198c9be5e753e5cc215e1bd73c2b466a3565173db433f52bb9d3e66dba"
 
 [[package]]
 name = "cairo-rs"
-version = "0.14.7"
+version = "0.14.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9164355c892b026d6257e696dde5f3cb39beb3718297f0f161b562fe2ee3ab86"
+checksum = "33b5725979db0c586d98abad2193cdb612dd40ef95cd26bd99851bf93b3cb482"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cairo-sys-rs",
  "glib",
  "libc",
@@ -844,9 +846,9 @@ dependencies = [
 
 [[package]]
 name = "cairo-sys-rs"
-version = "0.14.0"
+version = "0.14.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d7c9c3928781e8a017ece15eace05230f04b647457d170d2d9641c94a444ff80"
+checksum = "b448b876970834fda82ba3aeaccadbd760206b75388fc5c1b02f1e343b697570"
 dependencies = [
  "glib-sys 0.14.0",
  "libc",
@@ -976,9 +978,9 @@ version = "2.33.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "37e58ac78573c40708d45522f0d80fa2f01cc4f9b4e2bf749807255454312002"
 dependencies = [
- "ansi_term",
+ "ansi_term 0.11.0",
  "atty",
- "bitflags 1.3.2",
+ "bitflags",
  "strsim 0.8.0",
  "textwrap 0.11.0",
  "unicode-width",
@@ -988,7 +990,7 @@ dependencies = [
 [[package]]
 name = "classgroup"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "libc",
  "num-traits",
@@ -997,7 +999,7 @@ dependencies = [
 [[package]]
 name = "cli"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1061,10 +1063,10 @@ version = "0.24.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6f63902e9223530efb4e26ccd0cf55ec30d592d3b42e21a28defc42a9586e832"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "block",
  "cocoa-foundation",
- "core-foundation 0.9.1",
+ "core-foundation 0.9.2",
  "core-graphics 0.22.2",
  "foreign-types",
  "libc",
@@ -1077,9 +1079,9 @@ version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ade49b65d560ca58c403a479bb396592b155c0185eada742ee323d1d68d6318"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "block",
- "core-foundation 0.9.1",
+ "core-foundation 0.9.2",
  "core-graphics-types",
  "foreign-types",
  "libc",
@@ -1146,7 +1148,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7606b05842fea68ddcc89e8053b8860ebcb2a0ba8d6abfe3a148e5d5a8d3f0c1"
 dependencies = [
  "com_macros_support",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "syn 1.0.80",
 ]
 
@@ -1156,7 +1158,7 @@ version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "97e9a6d20f4ac8830e309a455d7e9416e65c6af5a97c88c55fbb4c2012e107da"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -1164,7 +1166,7 @@ dependencies = [
 [[package]]
 name = "compiler"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1192,7 +1194,7 @@ dependencies = [
 [[package]]
 name = "consensus-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1245,6 +1247,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "const-sha1"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fb58b6451e8c2a812ad979ed1d83378caa5e927eef2622017a45f251457c2c9d"
+
+[[package]]
 name = "constant_time_eq"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1268,11 +1276,11 @@ dependencies = [
 
 [[package]]
 name = "core-foundation"
-version = "0.9.1"
+version = "0.9.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0a89e2ae426ea83155dccf10c0fa6b1463ef6d5fcb44cee0b224a408fa640a62"
+checksum = "6888e10551bb93e424d8df1d07f1a8b4fceb0001a3a4b048bfc47554946f47b3"
 dependencies = [
- "core-foundation-sys 0.8.2",
+ "core-foundation-sys 0.8.3",
  "libc",
 ]
 
@@ -1284,9 +1292,9 @@ checksum = "b3a71ab494c0b5b860bdc8407ae08978052417070c2ced38573a9157ad75b8ac"
 
 [[package]]
 name = "core-foundation-sys"
-version = "0.8.2"
+version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ea221b5284a47e40033bf9b66f35f984ec0ea2931eb03505246cd27a963f981b"
+checksum = "5827cebf4670468b8772dd191856768aedcb1b0278a04f989f7766351917b9dc"
 
 [[package]]
 name = "core-graphics"
@@ -1294,7 +1302,7 @@ version = "0.19.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b3889374e6ea6ab25dba90bb5d96202f61108058361f6dc72e8b03e6f8bbe923"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "core-foundation 0.7.0",
  "foreign-types",
  "libc",
@@ -1306,8 +1314,8 @@ version = "0.22.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "269f35f69b542b80e736a20a89a05215c0ce80c2c03c514abb2e318b78379d86"
 dependencies = [
- "bitflags 1.3.2",
- "core-foundation 0.9.1",
+ "bitflags",
+ "core-foundation 0.9.2",
  "core-graphics-types",
  "foreign-types",
  "libc",
@@ -1319,8 +1327,8 @@ version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3a68b68b3446082644c91ac778bf50cd4104bfb002b5a6a7c44cca5a2c70788b"
 dependencies = [
- "bitflags 1.3.2",
- "core-foundation 0.9.1",
+ "bitflags",
+ "core-foundation 0.9.2",
  "foreign-types",
  "libc",
 ]
@@ -1356,7 +1364,7 @@ checksum = "dcb25d077389e53838a8158c8e99174c5a9d902dee4904320db714f3c653ffba"
 [[package]]
 name = "crash-handler"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "backtrace",
  "diem-logger",
@@ -1424,7 +1432,7 @@ version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7c36c10130df424b2f3552fcc2ddcd9b28a27b1e54b358b45874f88d1ca6888c"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "crossterm_winapi",
  "lazy_static",
  "libc",
@@ -1470,7 +1478,7 @@ dependencies = [
  "itoa",
  "matches",
  "phf 0.8.0",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "smallvec 1.7.0",
  "syn 1.0.80",
@@ -1537,7 +1545,7 @@ checksum = "f0c960ae2da4de88a91b2d920c2a7233b400bc33cb28453a2987822d8392519b"
 dependencies = [
  "fnv",
  "ident_case",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "strsim 0.9.3",
  "syn 1.0.80",
@@ -1599,7 +1607,7 @@ version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fcc3dd5e9e9c0b295d6e1e4d811fb6f157d5ffd784b8d202fc62eac8035a770b"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -1611,7 +1619,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "40eebddd2156ce1bb37b20bbe5151340a31828b1f2d22ba4141f3531710e38df"
 dependencies = [
  "convert_case",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "rustc_version",
  "syn 1.0.80",
@@ -1638,7 +1646,7 @@ dependencies = [
 [[package]]
 name = "diem-client"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1658,7 +1666,7 @@ dependencies = [
 [[package]]
 name = "diem-config"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "bcs",
  "diem-crypto",
@@ -1683,7 +1691,7 @@ dependencies = [
 [[package]]
 name = "diem-crypto"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -1714,9 +1722,9 @@ dependencies = [
 [[package]]
 name = "diem-crypto-derive"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -1724,7 +1732,7 @@ dependencies = [
 [[package]]
 name = "diem-framework"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "abigen",
  "anyhow",
@@ -1752,7 +1760,7 @@ dependencies = [
 [[package]]
 name = "diem-framework-releases"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1769,7 +1777,7 @@ dependencies = [
 [[package]]
 name = "diem-genesis-tool"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1809,7 +1817,7 @@ dependencies = [
 [[package]]
 name = "diem-github-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
  "proxy",
@@ -1822,12 +1830,12 @@ dependencies = [
 [[package]]
 name = "diem-global-constants"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 
 [[package]]
 name = "diem-infallible"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
 ]
@@ -1835,7 +1843,7 @@ dependencies = [
 [[package]]
 name = "diem-jellyfish-merkle"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1858,7 +1866,7 @@ dependencies = [
 [[package]]
 name = "diem-json-rpc-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-client",
  "diem-crypto",
@@ -1872,7 +1880,7 @@ dependencies = [
 [[package]]
 name = "diem-json-rpc-types"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1889,10 +1897,10 @@ dependencies = [
 [[package]]
 name = "diem-log-derive"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -1900,7 +1908,7 @@ dependencies = [
 [[package]]
 name = "diem-logger"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "backtrace",
  "chrono",
@@ -1918,7 +1926,7 @@ dependencies = [
 [[package]]
 name = "diem-management"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1949,7 +1957,7 @@ dependencies = [
 [[package]]
 name = "diem-metrics"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "diem-logger",
@@ -1966,7 +1974,7 @@ dependencies = [
 [[package]]
 name = "diem-metrics-core"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
  "prometheus",
@@ -1975,7 +1983,7 @@ dependencies = [
 [[package]]
 name = "diem-network-address-encryption"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "base64",
  "bcs",
@@ -1992,7 +2000,7 @@ dependencies = [
 [[package]]
 name = "diem-nibble"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
  "serde",
@@ -2001,7 +2009,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-net"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-logger",
  "diem-secure-push-metrics",
@@ -2014,7 +2022,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-push-metrics"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-logger",
  "diem-metrics-core",
@@ -2025,7 +2033,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-storage"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "base64",
  "bcs",
@@ -2048,7 +2056,7 @@ dependencies = [
 [[package]]
 name = "diem-state-view"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "diem-crypto",
@@ -2059,7 +2067,7 @@ dependencies = [
 [[package]]
 name = "diem-temppath"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
  "hex",
@@ -2069,7 +2077,7 @@ dependencies = [
 [[package]]
 name = "diem-time-service"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-infallible",
  "diem-workspace-hack",
@@ -2080,7 +2088,7 @@ dependencies = [
 [[package]]
 name = "diem-transaction-builder"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2093,7 +2101,7 @@ dependencies = [
 [[package]]
 name = "diem-types"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -2119,7 +2127,7 @@ dependencies = [
 [[package]]
 name = "diem-vault-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "base64",
  "chrono",
@@ -2136,7 +2144,7 @@ dependencies = [
 [[package]]
 name = "diem-vm"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2162,7 +2170,7 @@ dependencies = [
 [[package]]
 name = "diem-wallet"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -2185,7 +2193,7 @@ dependencies = [
 [[package]]
 name = "diem-workspace-hack"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "Inflector",
  "anyhow",
@@ -2248,7 +2256,7 @@ dependencies = [
 [[package]]
 name = "diemdb"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "accumulator",
  "anyhow",
@@ -2373,7 +2381,7 @@ dependencies = [
 [[package]]
 name = "disassembler"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -2402,7 +2410,7 @@ checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 [[package]]
 name = "docgen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bytecode",
@@ -2498,7 +2506,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bd53b3fde38a39a06b2e66dc282f3e86191e53bd04cc499929c15742beae3df8"
 dependencies = [
  "once_cell",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -2519,7 +2527,7 @@ version = "0.6.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "946ee94e3dbf58fdd324f9ce245c7b238d46a66f00e86a020b71996349e46cce"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -2536,7 +2544,7 @@ dependencies = [
 [[package]]
 name = "errmapgen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2560,7 +2568,7 @@ dependencies = [
 [[package]]
 name = "executor"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2588,7 +2596,7 @@ dependencies = [
 [[package]]
 name = "executor-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2808,7 +2816,7 @@ checksum = "18e4a4b95cea4b4ccbcf1c5675ca7c4ee4e9e75eb79944d07defde18068f79bb"
 dependencies = [
  "autocfg",
  "proc-macro-hack",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -2873,11 +2881,11 @@ checksum = "8f5f3913fa0bfe7ee1fd8248b6b9f42a5af4b9d65ec2dd2c3c26132b950ecfc2"
 
 [[package]]
 name = "gdk"
-version = "0.14.2"
+version = "0.14.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a453eae5ec10345b3a96ca1b547328bfc94edd40aa95b08f14bb4c35863db140"
+checksum = "b9d749dcfc00d8de0d7c3a289e04a04293eb5ba3d8a4e64d64911d481fa9933b"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cairo-rs",
  "gdk-pixbuf",
  "gdk-sys",
@@ -2932,7 +2940,7 @@ dependencies = [
 [[package]]
 name = "generate-key"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "bcs",
  "diem-crypto",
@@ -3044,11 +3052,11 @@ checksum = "f6503fe142514ca4799d4c26297c4248239fe8838d827db6bd6065c6ed29a6ce"
 
 [[package]]
 name = "gio"
-version = "0.14.6"
+version = "0.14.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f3a29d8062af72045518271a2cd98b4e1617ce43f5b4223ad0fb9a0eff8f718c"
+checksum = "711c3632b3ebd095578a9c091418d10fed492da9443f58ebc8f45efbeb215cb0"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "futures-channel",
  "futures-core",
  "futures-io",
@@ -3087,11 +3095,11 @@ dependencies = [
 
 [[package]]
 name = "glib"
-version = "0.14.5"
+version = "0.14.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d4a930b7208e6e0ab839eea5f65ac2b82109f729621430d47fe905e2e09d33f4"
+checksum = "7c515f1e62bf151ef6635f528d05b02c11506de986e43b34a5c920ef0b3796a4"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "futures-channel",
  "futures-core",
  "futures-executor",
@@ -3114,7 +3122,7 @@ dependencies = [
  "heck",
  "proc-macro-crate 1.1.0",
  "proc-macro-error",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -3164,7 +3172,7 @@ version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "93e3af942408868f6934a7b85134a3230832b9977cf66125df2f9edcfce4ddcc"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "ignore",
  "walkdir",
 ]
@@ -3193,12 +3201,12 @@ dependencies = [
 
 [[package]]
 name = "gtk"
-version = "0.14.1"
+version = "0.14.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6603bb79ded6ac6f3bac203794383afa8b1d6a8656d34a93a88f0b22826cd46c"
+checksum = "2eb51122dd3317e9327ec1e4faa151d1fa0d95664cd8fb8dcfacf4d4d29ac70c"
 dependencies = [
  "atk",
- "bitflags 1.3.2",
+ "bitflags",
  "cairo-rs",
  "field-offset",
  "futures-channel",
@@ -3242,7 +3250,7 @@ dependencies = [
  "heck",
  "proc-macro-crate 1.1.0",
  "proc-macro-error",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -3262,7 +3270,7 @@ version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "90454ce4de40b7ca6a8968b5ef367bdab48413962588d0d2b1638d60090c35d7"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -3322,7 +3330,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f0b7591fb62902706ae8e7aaff416b1b0fa2c0fd0878b46dc13baa3712d8a855"
 dependencies = [
  "base64",
- "bitflags 1.3.2",
+ "bitflags",
  "bytes 1.1.0",
  "headers-core",
  "http",
@@ -3407,7 +3415,7 @@ dependencies = [
  "log",
  "mac",
  "markup5ever",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -3573,7 +3581,7 @@ checksum = "0a0c890c85da4bab7bce4204c707396bbd3c6c8a681716a51c8814cfc2b682df"
 dependencies = [
  "anyhow",
  "proc-macro-hack",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -3646,7 +3654,7 @@ checksum = "68f2d64f2edebec4ce84ad108148e67e1064789bee435edc5b60ad398714a3a9"
 [[package]]
 name = "ir-to-bytecode"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -3665,7 +3673,7 @@ dependencies = [
 [[package]]
 name = "ir-to-bytecode-syntax"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "codespan",
@@ -3786,15 +3794,15 @@ checksum = "830d08ce1d1d941e6b30645f1a0eb5643013d835ce3779a5fc208261dbe10f55"
 
 [[package]]
 name = "libc"
-version = "0.2.103"
+version = "0.2.104"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd8f7255a17a627354f321ef0055d63b898c6fb27eff628af4d1b66b7331edf6"
+checksum = "7b2f96d100e1cf1929e7719b7edb3b90ab5298072638fccd77be9ce942ecdfce"
 
 [[package]]
 name = "libloading"
-version = "0.7.0"
+version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6f84d96438c15fcd6c3f244c8fce01d1e2b9c6b5623e9c711dc9286d8fc92d6a"
+checksum = "c0cf036d15402bea3c5d4de17b3fce76b3e4a56ebc1f577be0e7a72f7c607cf0"
 dependencies = [
  "cfg-if 1.0.0",
  "winapi 0.3.9",
@@ -3839,15 +3847,17 @@ dependencies = [
 
 [[package]]
 name = "loom"
-version = "0.5.1"
+version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2111607c723d7857e0d8299d5ce7a0bf4b844d3e44f8de136b13da513eaf8fc4"
+checksum = "b2b9df80a3804094bf49bb29881d18f6f05048db72127e84e09c26fc7c2324f5"
 dependencies = [
  "cfg-if 1.0.0",
  "generator",
  "scoped-tls",
  "serde",
  "serde_json",
+ "tracing",
+ "tracing-subscriber 0.2.25",
 ]
 
 [[package]]
@@ -3962,56 +3972,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "miner"
-version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
-dependencies = [
- "abscissa_core",
- "ajson",
- "anyhow",
- "bcs",
- "byteorder",
- "classgroup",
- "cli",
- "diem-config",
- "diem-crypto",
- "diem-genesis-tool",
- "diem-global-constants",
- "diem-json-rpc-types",
- "diem-logger",
- "diem-management",
- "diem-secure-storage",
- "diem-transaction-builder",
- "diem-types",
- "diem-wallet",
- "diemdb",
- "dirs 2.0.2",
- "glob",
- "gumdrop",
- "hex",
- "machine-ip",
- "move-core-types",
- "ol",
- "ol-fixtures",
- "ol-keys",
- "ol-types",
- "regex",
- "reqwest",
- "rpassword",
- "rustyline 6.3.0",
- "serde",
- "serde_json",
- "storage-interface",
- "thiserror",
- "toml",
- "txs",
- "url",
- "vdf",
- "vm-genesis",
- "wait-timeout",
-]
-
-[[package]]
 name = "minisign-verify"
 version = "0.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4038,9 +3998,9 @@ dependencies = [
 
 [[package]]
 name = "mio"
-version = "0.7.13"
+version = "0.7.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8c2bdb6314ec10835cd3293dd268473a835c02b7b352e788be788b3c6ca6bb16"
+checksum = "8067b404fe97c70829f082dec8bcf4f71225d7eaea1d8645349cb76fa06205cc"
 dependencies = [
  "libc",
  "log",
@@ -4067,7 +4027,7 @@ checksum = "c9be0862c1b3f26a88803c4a49de6889c10e608b3ee9344e6ef5b45fb37ad3d1"
 [[package]]
 name = "move-binary-format"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "diem-workspace-hack",
@@ -4081,7 +4041,7 @@ dependencies = [
 [[package]]
 name = "move-core-types"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4098,7 +4058,7 @@ dependencies = [
 [[package]]
 name = "move-coverage"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4119,7 +4079,7 @@ dependencies = [
 [[package]]
 name = "move-ir-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "codespan",
@@ -4133,7 +4093,7 @@ dependencies = [
 [[package]]
 name = "move-lang"
 version = "0.0.1"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4160,7 +4120,7 @@ dependencies = [
 [[package]]
 name = "move-model"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -4185,7 +4145,7 @@ dependencies = [
 [[package]]
 name = "move-prover"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "abigen",
  "anyhow",
@@ -4222,7 +4182,7 @@ dependencies = [
 [[package]]
 name = "move-stdlib"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
  "docgen",
@@ -4234,7 +4194,7 @@ dependencies = [
 [[package]]
 name = "move-vm-natives"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-crypto",
  "diem-global-constants",
@@ -4255,7 +4215,7 @@ dependencies = [
 [[package]]
 name = "move-vm-runtime"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "bytecode-verifier",
  "diem-crypto",
@@ -4274,7 +4234,7 @@ dependencies = [
 [[package]]
 name = "move-vm-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "bcs",
  "diem-workspace-hack",
@@ -4339,7 +4299,7 @@ version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d64d6af06fde0e527b1ba5c7b79a6cc89cfc46325b0b2887dffe8f70197e0c3c"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "jni-sys",
  "ndk-sys",
  "num_enum",
@@ -4368,7 +4328,7 @@ checksum = "05d1c6307dc424d0f65b9b06e94f88248e6305726b14729fd67a5e47b2dc481d"
 dependencies = [
  "darling",
  "proc-macro-crate 0.1.5",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -4400,7 +4360,7 @@ version = "0.17.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "50e4785f2c3b7589a0d0c1dd60285e1188adac4006e8abd6dd578e1567027363"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cc",
  "cfg-if 0.1.10",
  "libc",
@@ -4413,7 +4373,7 @@ version = "0.18.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "83450fe6a6142ddd95fb064b746083fc4ef1705fe81f64a64e1d4b39f54a1055"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cc",
  "cfg-if 0.1.10",
  "libc",
@@ -4425,7 +4385,7 @@ version = "0.20.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fa9b4819da1bc61c0ea48b63b7bc8604064dd43013e7cc325df098d49cd7c18a"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cc",
  "cfg-if 1.0.0",
  "libc",
@@ -4437,7 +4397,7 @@ version = "0.23.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f305c2c2e4c39a82f7bf0bf65fb557f9070ce06781d4f2454295cc34b1c43188"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cc",
  "cfg-if 1.0.0",
  "libc",
@@ -4464,9 +4424,9 @@ dependencies = [
 
 [[package]]
 name = "notify-rust"
-version = "4.5.3"
+version = "4.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e4b2d5d72d16b6abdb6fa2c364d9363e23d6ed7c20c1a1e85fd8cd880144442c"
+checksum = "825e9c9efdcb4d14920f72e2ef329b4dae0219791834c000c42c1475dad341f8"
 dependencies = [
  "mac-notification-sys",
  "serde",
@@ -4559,7 +4519,7 @@ version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "876a53fff98e03a936a674b29568b0e605f06b29372c2489ff4de23f1949743d"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -4631,10 +4591,10 @@ dependencies = [
 [[package]]
 name = "num-variants"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -4666,7 +4626,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "486ea01961c4a818096de679a8b740b26d9033146ac5291b1c98557658f8cdd9"
 dependencies = [
  "proc-macro-crate 1.1.0",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -4715,7 +4675,7 @@ checksum = "a9a7ab5d64814df0fe4a4b5ead45ed6c5f181ee3ff04ba344313a6c80446c5d4"
 [[package]]
 name = "ol"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "abscissa_core",
  "abscissa_tokio",
@@ -4724,7 +4684,7 @@ dependencies = [
  "async-stream",
  "backup-cli",
  "bcs",
- "bitflags 1.3.2",
+ "bitflags",
  "byteorder",
  "cassowary",
  "chrono",
@@ -4785,12 +4745,12 @@ dependencies = [
 [[package]]
 name = "ol-fixtures"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 
 [[package]]
 name = "ol-keys"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-types",
  "diem-wallet",
@@ -4800,7 +4760,7 @@ dependencies = [
 [[package]]
 name = "ol-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "ajson",
  "anyhow",
@@ -4830,7 +4790,7 @@ dependencies = [
 [[package]]
 name = "onboard"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "abscissa_core",
  "anyhow",
@@ -4842,7 +4802,6 @@ dependencies = [
  "diem-wallet",
  "dirs 2.0.2",
  "gumdrop",
- "miner",
  "ol",
  "ol-fixtures",
  "ol-keys",
@@ -4853,6 +4812,7 @@ dependencies = [
  "serde_json",
  "thiserror",
  "toml",
+ "tower",
  "txs",
  "wait-timeout",
  "zip",
@@ -4892,7 +4852,7 @@ version = "0.10.36"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8d9facdb76fec0b73c406f125d44d86fdad818d66fef0531eec9233ca425ff4a"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cfg-if 1.0.0",
  "foreign-types",
  "libc",
@@ -4958,7 +4918,7 @@ checksum = "03f2cb802b5bdfdf52f1ffa0b54ce105e4d346e91990dd571f86c91321ad49e2"
 dependencies = [
  "Inflector",
  "proc-macro-error",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -4974,11 +4934,11 @@ dependencies = [
 
 [[package]]
 name = "pango"
-version = "0.14.3"
+version = "0.14.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e1fc88307d9797976ea62722ff2ec5de3fae279c6e20100ed3f49ca1a4bf3f96"
+checksum = "546fd59801e5ca735af82839007edd226fe7d3bb06433ec48072be4439c28581"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "glib",
  "libc",
  "once_cell",
@@ -5105,7 +5065,7 @@ checksum = "99b8db626e31e5b81787b9783425769681b347011cc59471e33ea46d2ea0cf55"
 dependencies = [
  "pest",
  "pest_meta",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -5192,7 +5152,7 @@ dependencies = [
  "phf_generator 0.8.0",
  "phf_shared 0.8.0",
  "proc-macro-hack",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -5206,7 +5166,7 @@ dependencies = [
  "phf_generator 0.10.0",
  "phf_shared 0.10.0",
  "proc-macro-hack",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -5244,7 +5204,7 @@ version = "1.0.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6e8fe8163d14ce7f0cdac2e040116f22eac817edabff0be91e8aff7e9accf389"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -5307,7 +5267,7 @@ version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f0b0cabbbd20c2d7f06dbf015e06aad59b6ca3d9ed14848783e98af9aaf19925"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "deflate 0.7.20",
  "inflate",
  "num-iter",
@@ -5319,7 +5279,7 @@ version = "0.16.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3c3287920cb847dee3de33d301c463fba14dda99db24214ddf93f83d3021f4c6"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "crc32fast",
  "deflate 0.8.6",
  "miniz_oxide 0.3.7",
@@ -5357,9 +5317,9 @@ checksum = "325a6d2ac5dee293c3b2612d4993b98aec1dff096b0a2dae70ed7d95784a05da"
 
 [[package]]
 name = "ppv-lite86"
-version = "0.2.10"
+version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ac74c624d6b2d21f425f752262f42188365d7b8ff1aff74c82e45136510a4857"
+checksum = "c3ca011bd0129ff4ae15cd04c4eef202cadf6c51c21e47aba319b4e0501db741"
 
 [[package]]
 name = "precomputed-hash"
@@ -5403,7 +5363,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "da25490ff9892aab3fcf7c36f08cfb902dd3e71ca0f9f9517bea02a73a5ce38c"
 dependencies = [
  "proc-macro-error-attr",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
  "version_check",
@@ -5415,7 +5375,7 @@ version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a1be40180e52ecc98ad80b184934baf3d0d29f979574e439af5a55274b35f869"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "version_check",
 ]
@@ -5443,9 +5403,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.29"
+version = "1.0.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b9f5105d4fdaab20335ca9565e106a5d9b82b6219b5ba735731124ac6711d23d"
+checksum = "edc3358ebc67bc8b7fa0c007f945b0b18226f78437d61bec735a9eb96b61ee70"
 dependencies = [
  "unicode-xid 0.2.2",
 ]
@@ -5471,7 +5431,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1e0d9cc07f18492d879586c92b485def06bc850da3118075cd45d50e9c95b0e5"
 dependencies = [
  "bit-set",
- "bitflags 1.3.2",
+ "bitflags",
  "byteorder",
  "lazy_static",
  "num-traits",
@@ -5513,7 +5473,7 @@ checksum = "169a15f3008ecb5160cba7d37bcd690a7601b6d30cfb87a117d45e59d52af5d4"
 dependencies = [
  "anyhow",
  "itertools 0.9.0",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -5521,7 +5481,7 @@ dependencies = [
 [[package]]
 name = "proxy"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
  "ipnet",
@@ -5550,12 +5510,6 @@ checksum = "a993555f31e5a609f617c12db6250dedcac1b0a85076912c436e6fc9b2c8e6a3"
 
 [[package]]
 name = "quote"
-version = "0.3.15"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a6e920b65c65f10b2ae65c831a81a073a89edd28c7cce89475bff467ab4167a"
-
-[[package]]
-name = "quote"
 version = "0.6.13"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6ce23b6b870e8f94f81fb0a363d65d86675884b34a09043c81e5562f11c1f8e1"
@@ -5569,7 +5523,7 @@ version = "1.0.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "38bc8cc6a5f2e3655e0899c1b848643b2562f853f114bfec7be120678e3ace05"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
 ]
 
 [[package]]
@@ -5743,7 +5697,7 @@ version = "0.2.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8383f39639269cde97d255a32bdb68c047337295414940c68bdd30c2e13203ff"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
 ]
 
 [[package]]
@@ -5791,7 +5745,7 @@ version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4c38e3aecd2b21cb3959637b883bb3714bc7e43f0268b9a29d3743ee3e55cdd2"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -5834,9 +5788,9 @@ dependencies = [
 
 [[package]]
 name = "reqwest"
-version = "0.11.4"
+version = "0.11.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "246e9f61b9bb77df069a947682be06e31ac43ea37862e244a69f177694ea6d22"
+checksum = "51c732d463dd300362ffb44b7b125f299c23d2990411a4253824630ebc7467fb"
 dependencies = [
  "base64",
  "bytes 1.1.0",
@@ -5870,7 +5824,7 @@ dependencies = [
 [[package]]
 name = "resource-viewer"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -6046,7 +6000,7 @@ version = "8.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fbd4eaf7a7738f76c98e4f0395253ae853be3eb018f7b0bb57fe1b6c17e31874"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cfg-if 1.0.0",
  "clipboard-win",
  "dirs-next 2.0.0",
@@ -6098,7 +6052,7 @@ dependencies = [
 [[package]]
 name = "schemadb"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "diem-config",
@@ -6124,7 +6078,7 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 [[package]]
 name = "scratchpad"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "arc-swap",
  "diem-crypto",
@@ -6177,7 +6131,7 @@ version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "64808902d7d99f78eaddd2b4e2509713babc3dc3c85ad6f4c447680f3c01e535"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "core-foundation 0.7.0",
  "core-foundation-sys 0.7.0",
  "libc",
@@ -6190,9 +6144,9 @@ version = "2.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "525bc1abfda2e1998d152c45cf13e696f76d0a4972310b22fac1658b05df7c87"
 dependencies = [
- "bitflags 1.3.2",
- "core-foundation 0.9.1",
- "core-foundation-sys 0.8.2",
+ "bitflags",
+ "core-foundation 0.9.2",
+ "core-foundation-sys 0.8.3",
  "libc",
  "security-framework-sys 2.4.2",
 ]
@@ -6213,7 +6167,7 @@ version = "2.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a9dd14d83160b528b7bfd66439110573efcfbe281b17fc2ca9f39f550d619c7e"
 dependencies = [
- "core-foundation-sys 0.8.2",
+ "core-foundation-sys 0.8.3",
  "libc",
 ]
 
@@ -6223,7 +6177,7 @@ version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df320f1889ac4ba6bc0cdc9c9af7af4bd64bb927bccdf32d81140dc1f9be12fe"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cssparser",
  "derive_more",
  "fxhash",
@@ -6317,9 +6271,9 @@ dependencies = [
 
 [[package]]
 name = "serde-reflection"
-version = "0.3.4"
+version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f1ff587c6f7c8444aaa5ba43c90baa7cafd46e756c00b77a6a7226dfa7b31deb"
+checksum = "167450ba550f903a2b35a81ba3ca387585189e2430e3df6b94b95f3bec2f26bd"
 dependencies = [
  "once_cell",
  "serde",
@@ -6341,7 +6295,7 @@ version = "1.0.130"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d7bc1a1ab1961464eae040d96713baa5a724a8152c1222492465b54322ec508b"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -6364,7 +6318,7 @@ version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "98d0516900518c29efa217c298fa1f4e6c6ffc85ae29fd7f4ee48f176e1a9ed5"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -6479,6 +6433,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "sharded-slab"
+version = "0.1.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "900fba806f70c630b0a382d0d825e17a0f19fcd059a2ade1ff237bcddf446b31"
+dependencies = [
+ "lazy_static",
+]
+
+[[package]]
 name = "shared_child"
 version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6497,7 +6460,7 @@ checksum = "43b2853a4d09f215c24cc5489c992ce46052d359b5109343cbafbf26bc62f8a3"
 [[package]]
 name = "short-hex-str"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "diem-workspace-hack",
  "mirai-annotations",
@@ -6561,9 +6524,9 @@ dependencies = [
 
 [[package]]
 name = "slab"
-version = "0.4.4"
+version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c307a32c1c5c437f38c7fd45d753050587732ba8628319fbdf12a7e289ccc590"
+checksum = "9def91fd1e018fe007022791f865d0ccc9b3a0d5001e01aabb8b40e46000afb5"
 
 [[package]]
 name = "slug"
@@ -6631,7 +6594,7 @@ version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3c7adf08565630bbb71f955f11f8a68464817ded2703a3549747c235b58a13e"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "gio-sys 0.10.1",
  "glib-sys 0.10.1",
  "gobject-sys 0.10.0",
@@ -6679,7 +6642,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "storage-interface"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -6704,12 +6667,13 @@ checksum = "d44a3643b4ff9caf57abcee9c2c621d6c03d9135e0d8b589bd9afb5992cb176a"
 
 [[package]]
 name = "string_cache"
-version = "0.8.1"
+version = "0.8.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8ddb1139b5353f96e429e1a5e19fbaf663bddedaa06d1dbd49f82e352601209a"
+checksum = "923f0f39b6267d37d23ce71ae7235602134b250ace715dd2c90421998ddac0c6"
 dependencies = [
  "lazy_static",
  "new_debug_unreachable",
+ "parking_lot",
  "phf_shared 0.8.0",
  "precomputed-hash",
  "serde",
@@ -6723,7 +6687,7 @@ checksum = "f24c8e5e19d22a726626f1a5e16fe15b132dcf21d10177fa5a45ce7962996b97"
 dependencies = [
  "phf_generator 0.8.0",
  "phf_shared 0.8.0",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
 ]
 
@@ -6758,16 +6722,10 @@ checksum = "134d838a2c9943ac3125cf6df165eda53493451b719f3255b2a26b85f772d0ba"
 dependencies = [
  "heck",
  "proc-macro-error",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
-
-[[package]]
-name = "strum"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4ca6e4730f517e041e547ffe23d29daab8de6b73af4b6ae2a002108169f5e7da"
 
 [[package]]
 name = "strum"
@@ -6780,15 +6738,8 @@ name = "strum"
 version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aaf86bbcfd1fa9670b7a129f64fc0c9fcbbfe4f1bc4210e9e98fe71ffc12cde2"
-
-[[package]]
-name = "strum_macros"
-version = "0.8.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3384590878eb0cab3b128e844412e2d010821e7e091211b9d87324173ada7db8"
 dependencies = [
- "quote 0.3.15",
- "syn 0.11.11",
+ "strum_macros 0.21.1",
 ]
 
 [[package]]
@@ -6798,7 +6749,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "87c85aa3f8ea653bfd3ddf25f7ee357ee4d204731f6aa9ad04002306f6e2774c"
 dependencies = [
  "heck",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -6810,7 +6761,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d06aaeeee809dbc59eb4556183dd927df67db1540de5be8d3ec0b6636358a5ec"
 dependencies = [
  "heck",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -6820,17 +6771,6 @@ name = "subtle"
 version = "2.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6bdef32e8150c2a081110b42772ffe7d7c9032b606bc226c8260fd97e0976601"
-
-[[package]]
-name = "syn"
-version = "0.11.11"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d3b891b9015c88c576343b9b3e41c2c11a51c219ef067b264bd9c8aa9b441dad"
-dependencies = [
- "quote 0.3.15",
- "synom",
- "unicode-xid 0.0.4",
-]
 
 [[package]]
 name = "syn"
@@ -6849,27 +6789,18 @@ version = "1.0.80"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d010a1623fbd906d51d650a9916aaefc05ffa0e4053ff7fe601167f3e715d194"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "unicode-xid 0.2.2",
 ]
 
 [[package]]
-name = "synom"
-version = "0.11.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a393066ed9010ebaed60b9eafa373d4b1baac186dd7e008555b0f702b51945b6"
-dependencies = [
- "unicode-xid 0.0.4",
-]
-
-[[package]]
 name = "synstructure"
-version = "0.12.5"
+version = "0.12.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "474aaa926faa1603c40b7885a9eaea29b444d1cb2850cb7c0e37bb1a4182f4fa"
+checksum = "f36bdaa60a83aca3921b5259d5400cbf5e90fc51931376a9bd4a0eb79aa7210f"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
  "unicode-xid 0.2.2",
@@ -6882,7 +6813,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "567e910ef0207be81a4e1bb0491e9a8d9866cf45b20fe1a52c03d347da9ea51b"
 dependencies = [
  "cfg-if 1.0.0",
- "core-foundation-sys 0.8.2",
+ "core-foundation-sys 0.8.3",
  "doc-comment",
  "libc",
  "ntapi",
@@ -6930,11 +6861,11 @@ version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1aa57de7c282b68f8906278543a724ed8f5a2568f069dd0cc05fc10d1f07036b"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cairo-rs",
  "cc",
  "cocoa",
- "core-foundation 0.9.1",
+ "core-foundation 0.9.2",
  "core-graphics 0.22.2",
  "core-video-sys",
  "crossbeam-channel",
@@ -7036,7 +6967,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3c9c9a9bea25b9d6f5845b8662e18447e17218f99860cab37e39e2b57a9fcd49"
 dependencies = [
  "anyhow",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "serde_json",
  "tauri-utils",
@@ -7051,7 +6982,7 @@ checksum = "1663739ab53e281919676f216fb56a031104d0d2cd1a2dd5b012d279bcdb0ea4"
 dependencies = [
  "blake3",
  "kuchiki",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "regex",
  "serde",
@@ -7068,7 +6999,7 @@ version = "1.0.0-beta.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bddf9f5868402323f35ef94fa6ab1d5d10b29aea9de598d829723aa1db5693b4"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
  "tauri-codegen",
@@ -7118,7 +7049,7 @@ dependencies = [
  "html5ever",
  "kuchiki",
  "phf 0.10.0",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "serde",
  "serde_json",
@@ -7232,20 +7163,20 @@ checksum = "8eaa81235c7058867fa8c0e7314f33dcce9c215f535d1913822a2b3f5e289f3c"
 
 [[package]]
 name = "thiserror"
-version = "1.0.29"
+version = "1.0.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "602eca064b2d83369e2b2f34b09c70b605402801927c65c11071ac911d299b88"
+checksum = "854babe52e4df1653706b98fcfc05843010039b406875930a70e4d9644e5c417"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.29"
+version = "1.0.30"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bad553cc2c78e8de258400763a647e80e6d1b31ee237275d756f6836d204494c"
+checksum = "aa32fd3f627f367fe16f893e2597ae3c05020f8bba2666a4e6ea73d377e5714b"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -7326,11 +7257,11 @@ dependencies = [
 
 [[package]]
 name = "tokio-macros"
-version = "1.4.1"
+version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "154794c8f499c2619acd19e839294703e9e32e7630ef5f46ea80d4ef0fbee5eb"
+checksum = "b2dd85aeaba7b68df939bd357c6afb36c87951be9e80bf9c859f2fc3e9fca0fd"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -7405,6 +7336,56 @@ dependencies = [
 ]
 
 [[package]]
+name = "tower"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
+dependencies = [
+ "abscissa_core",
+ "ajson",
+ "anyhow",
+ "bcs",
+ "byteorder",
+ "classgroup",
+ "cli",
+ "diem-config",
+ "diem-crypto",
+ "diem-genesis-tool",
+ "diem-global-constants",
+ "diem-json-rpc-types",
+ "diem-logger",
+ "diem-management",
+ "diem-secure-storage",
+ "diem-transaction-builder",
+ "diem-types",
+ "diem-wallet",
+ "diemdb",
+ "dirs 2.0.2",
+ "glob",
+ "gumdrop",
+ "hex",
+ "machine-ip",
+ "move-core-types",
+ "ol",
+ "ol-fixtures",
+ "ol-keys",
+ "ol-types",
+ "regex",
+ "reqwest",
+ "rpassword",
+ "rustyline 6.3.0",
+ "serde",
+ "serde_json",
+ "storage-interface",
+ "thiserror",
+ "toml",
+ "txs",
+ "url",
+ "vdf",
+ "vm-genesis",
+ "wait-timeout",
+]
+
+[[package]]
 name = "tower-service"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7429,7 +7410,7 @@ version = "0.1.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f4f480b8f81512e825f337ad51e94c1eb5d3bbdf2b363dcd01e2b19a9ffe3f8e"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -7455,12 +7436,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "tracing-serde"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fb65ea441fbb84f9f6748fd496cf7f63ec9af5bca94dd86456978d055e8eb28b"
+dependencies = [
+ "serde",
+ "tracing-core",
+]
+
+[[package]]
 name = "tracing-subscriber"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "192ca16595cdd0661ce319e8eede9c975f227cdaabc4faaefdc256f43d852e45"
 dependencies = [
- "ansi_term",
+ "ansi_term 0.11.0",
  "chrono",
  "lazy_static",
  "matchers",
@@ -7472,9 +7463,31 @@ dependencies = [
 ]
 
 [[package]]
+name = "tracing-subscriber"
+version = "0.2.25"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0e0d2eaa99c3c2e41547cfa109e910a68ea03823cccad4a0525dcbc9b01e8c71"
+dependencies = [
+ "ansi_term 0.12.1",
+ "chrono",
+ "lazy_static",
+ "matchers",
+ "regex",
+ "serde",
+ "serde_json",
+ "sharded-slab",
+ "smallvec 1.7.0",
+ "thread_local",
+ "tracing",
+ "tracing-core",
+ "tracing-log",
+ "tracing-serde",
+]
+
+[[package]]
 name = "transaction-builder-generator"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -7502,7 +7515,7 @@ version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9ced152a8e9295a5b168adc254074525c17ac4a83c90b2716274cc38118bddc9"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cassowary",
  "termion",
  "unicode-segmentation",
@@ -7540,7 +7553,7 @@ dependencies = [
 [[package]]
 name = "txs"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -7665,9 +7678,9 @@ dependencies = [
 
 [[package]]
 name = "unicode-bidi"
-version = "0.3.6"
+version = "0.3.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "246f4c42e67e7a4e3c6106ff716a5d067d4132a642840b242e357e468a2a0085"
+checksum = "1a01404663e3db436ed2746d9fefef640d868edae3cceb81c3b8d5732fda678f"
 
 [[package]]
 name = "unicode-normalization"
@@ -7689,12 +7702,6 @@ name = "unicode-width"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3ed742d4ea2bd1176e236172c8429aaf54486e7ac098db29ffe6529e0ce50973"
-
-[[package]]
-name = "unicode-xid"
-version = "0.0.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8c1f860d7d29cf02cb2f3f359fd35991af3d30bac52c57d265a3c461074cb4dc"
 
 [[package]]
 name = "unicode-xid"
@@ -7784,7 +7791,7 @@ checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 [[package]]
 name = "vdf"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "bit-vec 0.5.1",
  "classgroup",
@@ -7820,7 +7827,7 @@ checksum = "5fecdca9a5291cc2b8dcf7dc02453fee791a280f3743cb0905f8822ae463b3fe"
 [[package]]
 name = "vm-genesis"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=tauri#7cc69e7ea98cf17f538611a075cbef62dfe77768"
+source = "git+https://github.com/olsf/libra.git?branch=tauri#b19356c301fc5d0b192860304fe88dfab3dd3585"
 dependencies = [
  "anyhow",
  "bcs",
@@ -7936,8 +7943,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "632f73e236b219150ea279196e54e610f5dbafa5d61786303d4da54f84e47fce"
 dependencies = [
  "cfg-if 1.0.0",
- "serde",
- "serde_json",
  "wasm-bindgen-macro",
 ]
 
@@ -7950,7 +7955,7 @@ dependencies = [
  "bumpalo",
  "lazy_static",
  "log",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
  "wasm-bindgen-shared",
@@ -7984,7 +7989,7 @@ version = "0.2.78"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7803e0eea25835f8abdc585cd3021b3deb11543c6fe226dcd30b228857c5c5ab"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
  "wasm-bindgen-backend",
@@ -8013,7 +8018,7 @@ version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e3e47b7f870883fc21612d2a51b74262f7f2cc5371f1621370817292a35300a9"
 dependencies = [
- "bitflags 1.3.2",
+ "bitflags",
  "cairo-rs",
  "gdk",
  "gdk-sys",
@@ -8037,7 +8042,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b66ccc9f0cb4de7c3b92376a5bf64e7ddffb33852f092721731a039ec38dda98"
 dependencies = [
  "atk-sys",
- "bitflags 1.3.2",
+ "bitflags",
  "cairo-sys-rs",
  "gdk-pixbuf-sys",
  "gdk-sys",
@@ -8145,6 +8150,52 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 
 [[package]]
+name = "windows"
+version = "0.21.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b8f5f8d2ea79bf690bbee453fd4a1516ae426e5d5c7215d96cc0c3dc134fc4a0"
+dependencies = [
+ "const-sha1",
+ "windows_gen",
+ "windows_macros",
+ "windows_reader",
+]
+
+[[package]]
+name = "windows_gen"
+version = "0.21.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7e6994f42f8481387778cc608407d6703410672d57f32a66009419d7a18aa912"
+dependencies = [
+ "windows_quote",
+ "windows_reader",
+]
+
+[[package]]
+name = "windows_macros"
+version = "0.21.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "81cc2357b1b03c19f056cb0e6d06011f80f54beadb4e36aee2ca98493c7cfc3c"
+dependencies = [
+ "syn 1.0.80",
+ "windows_gen",
+ "windows_quote",
+ "windows_reader",
+]
+
+[[package]]
+name = "windows_quote"
+version = "0.21.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7cf987b5288c15e1997226848f78f3ed3ef8b78dcfd71a201c8c8684163a7e4d"
+
+[[package]]
+name = "windows_reader"
+version = "0.21.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "237b53e8b40766ea7db5da0d8c6c1442d21d0429f0ee7500d7b5688967bd9d7b"
+
+[[package]]
 name = "winreg"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8163,24 +8214,13 @@ dependencies = [
 ]
 
 [[package]]
-name = "winrt"
+name = "winrt-notification"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7e30cba82e22b083dc5a422c2ee77e20dc7927271a0dc981360c57c1453cb48d"
+checksum = "f0cc832b8c66c42b3ee6b625c124fe2d0b3ff7fb2cec18b28926e9c4bfdb72da"
 dependencies = [
- "winapi 0.3.9",
-]
-
-[[package]]
-name = "winrt-notification"
-version = "0.2.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "57790eb281688a4682dab44df2a1ba8b78373233bd71cb291c3e75fecb1a01c4"
-dependencies = [
- "strum 0.8.0",
- "strum_macros 0.8.0",
- "winapi 0.3.9",
- "winrt",
+ "strum 0.21.0",
+ "windows",
  "xml-rs",
 ]
 
@@ -8253,12 +8293,9 @@ dependencies = [
 
 [[package]]
 name = "xml-rs"
-version = "0.6.1"
+version = "0.8.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e1945e12e16b951721d7976520b0832496ef79c31602c7a29d950de79ba74621"
-dependencies = [
- "bitflags 0.9.1",
-]
+checksum = "d2d7d3948613f75c98fd9328cfdcc45acc4d360655289d0a7d4ec931392200a3"
 
 [[package]]
 name = "yaml-rust"
@@ -8299,7 +8336,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a482c56029e48681b89b92b5db3c446db0915e8dd1052c0328a574eda38d5f93"
 dependencies = [
  "proc-macro-crate 0.1.5",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]
@@ -8319,7 +8356,7 @@ version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bdff2024a851a322b08f179173ae2ba620445aef1e838f0c196820eade4ae0c7"
 dependencies = [
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
  "synstructure",
@@ -8389,7 +8426,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "46ee71e0e88747ec582d290dbe98ff7907ff28770c7a35f16da41e5e6f1f4fa3"
 dependencies = [
  "proc-macro-crate 1.1.0",
- "proc-macro2 1.0.29",
+ "proc-macro2 1.0.30",
  "quote 1.0.10",
  "syn 1.0.80",
 ]

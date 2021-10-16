@@ -26,6 +26,7 @@ fn main() {
     easy_swarm,
 		demo_tx,
     debug_error,
+    remove_accounts,
 	])
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");
