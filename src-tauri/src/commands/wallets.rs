@@ -128,16 +128,6 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
   // TODO: refactor get_account so that it doesn't fail.
   let (key, acc, _wl) = wallet::get_account_from_mnem(mnem.clone());
 
-  // If upstream is valid, then we don't need to pass an epoch and waypoint.
-  // let mut waypoint = None;
-  // let mut starting_epoch = None;
-
-  // let upstream = Url::try_from(super::UPSTREAM).ok();
-  // if upstream.is_none() {
-  //   waypoint = super::MAINNET_GENESIS_WAYPOINT.parse().ok();
-  //   starting_epoch = Some(0);
-  // }
-
   let priv_key = KeyScheme::new_from_mnemonic(mnem)
     .child_0_owner
     .get_private_key();
@@ -145,20 +135,6 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
   key_manager::set_private_key(&acc.to_string(), priv_key)?;
 
   configs::maybe_init_configs();
-  // // let path = PathBuf::from(path);
-  // // TODO: refactor init_app_configs so that it returns a result so we can catch errors.
-  // ol_types::config::AppCfg::init_app_configs(
-  //   key,
-  //   acc.clone(),
-  //   // TODO: how to pick a URL to fetch upstream data from
-  //   &upstream,
-  //   &Some(path),
-  //   &starting_epoch,
-  //   &waypoint,
-  //   &None,                           // No need for source path
-  //   Some("Test".to_string()),        // TODO
-  //   Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
-  // );
 
   Ok(acc)
 }
