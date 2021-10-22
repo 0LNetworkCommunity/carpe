@@ -152,11 +152,9 @@ fn test_init_mnem() {
 }
 pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Error> {
   dbg!("init from mnem");
-  dbg!(&mnem);
 
-  let _path = dirs::home_dir().unwrap().join(".0L");
 
-  // TODO: refactor get_account so that it doesn't fail.
+  // TODO: refactor upstream wallet::get_account so that it returns a result
   let (_key, acc, _wl) = wallet::get_account_from_mnem(mnem.clone());
 
   let priv_key = KeyScheme::new_from_mnemonic(mnem)
