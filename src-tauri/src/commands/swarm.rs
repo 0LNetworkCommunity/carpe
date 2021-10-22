@@ -1,8 +1,9 @@
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use std::process::Command;
 use anyhow::Error;
 use ol::config::AppCfg;
 use ol_types::config;
+use serde_json::json;
 use sysinfo::{SystemExt, ProcessExt};
 
 use ol::commands::init_cmd::initialize_host_swarm;
@@ -10,7 +11,7 @@ use tower::block::mine_once;
 use tower::commit_proof;
 use txs::submit_tx;
 
-use crate::configs::get_cfg;
+use crate::configs::{dev_get_swarm_temp, get_cfg};
 
 #[tauri::command]
 pub async fn easy_swarm(_path: PathBuf) -> Result<String, String>  {
@@ -31,14 +32,25 @@ pub async fn easy_swarm(_path: PathBuf) -> Result<String, String>  {
 
 /// Wizard init handler
 #[tauri::command]
-pub fn init_swarm(swarm_path: String, swarm_persona: String, source_path: String) -> Result<String, String>  {
+pub fn init_swarm() -> Result<String, String>  {
   println!("initializing Alice persona in swarm_path");
-  let swarm_path = PathBuf::from(&swarm_path);
+  let swarm_persona = "alice".to_string();
+  let swarm_path = dev_get_swarm_temp();
+  // let source_path = dirs::home_dir().unwrap().join("code/rust/libra");
+
   let persona_dir = swarm_path.join("0"); // TODO: alice has directory swarm_path/0, bob 1, carol 2... hard-coding this for demo.
-  let source_path = PathBuf::from(&source_path); // TODO: this is not necessary for swarm, but lib requires it.
-  match initialize_host_swarm(swarm_path, persona_dir, Some(swarm_persona), &Some(source_path)) {
-    Ok(_) => Ok("initialized alice configs on host".to_string()),
-    Err(e) => Err(format!("could not initialize alice configs, message: {:?}", e.to_string()))
+  // let source_path = PathBuf::from(&source_path); // TODO: this is not necessary for swarm, but lib requires it.
+  match initialize_host_swarm(swarm_path, persona_dir, Some(swarm_persona), &None) {
+    Ok(_) => {
+      let msg = "Success: initialized alice configs on host";
+      println!("{}", &msg);
+      Ok(msg.to_string())
+    },
+    Err(e) => {
+      let msg = format!("ERROR: could not initialize alice configs, message: {:?}", e.to_string());
+      println!("{}", &msg);
+      Err(msg)
+    }
   }
 }
 
@@ -62,22 +74,49 @@ fn check_process(process_str: &str) -> bool {
     let p = system.get_process_by_name(process_str);
     !p.is_empty()
 }
-
+#[derive(serde::Serialize, serde::Deserialize)]
+pub struct SwarmInit {
+  path: PathBuf,
+  path_exists: bool,
+  config_path: PathBuf,
+  config_path_exists: bool,
+  proof_path: PathBuf,
+  proof_exists: bool,
+}
 /// Wizard init handler
 #[tauri::command]
-pub fn swarm_files(swarm_dir: String) -> String {
-  let swarm_path = Path::new(&swarm_dir);
+pub fn swarm_files() -> Result<SwarmInit, String> {
+    let path = dev_get_swarm_temp();
+    let path_exists = path.exists();
+    let config_path = path.join("0/0L.toml");
+    let config_path_exists = config_path.exists();
+    let proof_path = path.join(format!("0/blocks/block_0.json"));
+    let proof_exists = proof_path.exists();
+
+    // match serde_json::to_string(& SwarmInit {
+    //   path,
+    //   path_exists,
+    //   config_path,
+    //   config_path_exists,
+    //   proof_path,
+    //   proof_exists
+    // }) {
+    //     Ok(s) => Ok(s),
+    //     Err(e) => Err(json!({ "error": e.to_string() }).to_string()),
+    // }
+
+    let s = SwarmInit {
+      path,
+      path_exists,
+      config_path,
+      config_path_exists,
+      proof_path,
+      proof_exists
+    };
+
+    Ok(s)
 
 
-  format!(
-    "{path}: {path_exists}\n
-    /0/0L.toml: {toml_exists},\n
-    /0/blocks/block_0.json: {block_exists}", 
-    path = swarm_dir,
-    path_exists = swarm_path.exists().to_string(),
-    toml_exists = swarm_path.join("0/0L.toml").exists().to_string(),
-    block_exists = swarm_path.join("0/blocks/block_0.json").exists().to_string()
-  )
 
   // TODO: make this JSON not string
   // struct Output {

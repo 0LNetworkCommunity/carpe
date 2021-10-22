@@ -22,6 +22,18 @@ pub fn get_cfg() -> AppCfg {
   config::parse_toml(config_toml.to_str().unwrap().to_string()).unwrap()
 }
 
+/// For devs, get the source path, needed to initialize swarm
+pub fn dev_get_source_path() -> Option<PathBuf> {
+  let c = get_cfg();
+  c.workspace.source_path
+}
+
+/// Where the swarm_temp folder is created, defaults to .0L/swarm_temp
+pub fn dev_get_swarm_temp() -> PathBuf {
+  get_cfg().workspace.node_home.join("swarm_temp")
+}
+
+
 pub fn is_initialized() -> bool {
   default_config_path().exists()
 }
