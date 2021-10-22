@@ -114,7 +114,7 @@ pub fn init_from_mnem(mnem: String, app_handle: tauri::AppHandle) -> String {
 fn test_init_mnem() {
   use ol_types::config::parse_toml;
   let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
-  danger_init_from_mnem(alice);
+  danger_init_from_mnem(alice).unwrap();
   let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
   let cfg = parse_toml(path.to_str().unwrap().to_owned());
   dbg!(&cfg);
@@ -154,7 +154,8 @@ pub fn danger_get_keys(mnemonic: String) -> WalletLibrary {
   wl
 }
 
-fn create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>) {
+//TODO:
+fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>) {
   let block = match block_zero {
     Some(b) => Block::parse_block_file(b.to_owned()),
     None => write_genesis(&app_cfg),

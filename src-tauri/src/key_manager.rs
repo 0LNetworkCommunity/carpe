@@ -85,7 +85,7 @@ fn test_set() -> Result<(), Box<dyn Error>> {
   let private = scheme.child_0_owner.get_private_key();
 
   // let password = "topS3cr3tP4$$w0rd";
-  set_private_key(ol_address, private);
+  set_private_key(ol_address, private).unwrap();
 
   Ok(())
 }
@@ -102,7 +102,7 @@ fn test_get() -> Result<(), Box<dyn Error>> {
   let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
   let private = scheme.child_0_owner.get_private_key();
 
-  set_private_key(ol_address, private.clone());
+  set_private_key(ol_address, private.clone()).unwrap();
 
   let read = get_private_key(ol_address).unwrap();
   assert_eq!(&read, &private);
