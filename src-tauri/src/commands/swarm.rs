@@ -3,11 +3,10 @@ use std::process::Command;
 use anyhow::Error;
 use ol::config::AppCfg;
 use ol_types::config;
-use serde_json::json;
 use sysinfo::{SystemExt, ProcessExt};
 
 use ol::commands::init_cmd::initialize_host_swarm;
-use tower::block::mine_once;
+use tower::proof::mine_once;
 use tower::commit_proof;
 use txs::submit_tx;
 
@@ -93,18 +92,6 @@ pub fn swarm_files() -> Result<SwarmInit, String> {
     let proof_path = path.join(format!("0/blocks/block_0.json"));
     let proof_exists = proof_path.exists();
 
-    // match serde_json::to_string(& SwarmInit {
-    //   path,
-    //   path_exists,
-    //   config_path,
-    //   config_path_exists,
-    //   proof_path,
-    //   proof_exists
-    // }) {
-    //     Ok(s) => Ok(s),
-    //     Err(e) => Err(json!({ "error": e.to_string() }).to_string()),
-    // }
-
     let s = SwarmInit {
       path,
       path_exists,
@@ -115,25 +102,6 @@ pub fn swarm_files() -> Result<SwarmInit, String> {
     };
 
     Ok(s)
-
-
-
-  // TODO: make this JSON not string
-  // struct Output {
-  //   path_exists: String,
-  //   toml_exists: String
-  //   block_exists: String,
-  // }
-  // let output = Output {
-  //   path_exists: mnemonic_string,
-  //   toml_exists,
-  //   block_exists,
-  // };
-  // return match serde_json::to_string(&output) {
-  //   Ok(t) => Ok(t),
-  //   Err(e) => Err(e.to_string()),
-  // };
-
 }
 
 // Get configs from swarm
@@ -146,11 +114,6 @@ pub fn swarm_params(swarm_path: String) -> Result<submit_tx::TxParams, Error> {
   Ok(txp)
 }
 
-
-// fn get_swarm_cfg(config_dir: String) -> AppCfg {
-//   let toml = Path::new(&config_dir).join("0/0L.toml");
-//   config::parse_toml(toml.to_str().unwrap().to_string()).unwrap()
-// }
 
 fn get_swarm_cfg(config_dir: &str, is_swarm: bool) -> AppCfg {
   let mut toml = PathBuf::from(config_dir);

@@ -6,7 +6,7 @@ use ol::config::AppCfg;
 use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
 use ol_types::account::UserConfigs;
-use ol_types::block::Block;
+use ol_types::block::VDFProof;
 /**
  * OK - get all accounts
  * OK - add account
@@ -19,7 +19,7 @@ use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 
 use std::path::{Path, PathBuf};
-use tower::block::write_genesis;
+use tower::proof::write_genesis;
 use serde::{Deserialize, Serialize};
 
 
@@ -188,7 +188,7 @@ pub fn danger_get_keys(mnemonic: String) -> WalletLibrary {
 //TODO:
 fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>) {
   let block = match block_zero {
-    Some(b) => Block::parse_block_file(b.to_owned()),
+    Some(b) => VDFProof::parse_block_file(b.to_owned()),
     None => write_genesis(&app_cfg),
   };
 
