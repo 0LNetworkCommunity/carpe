@@ -194,3 +194,63 @@ fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>)
 
   UserConfigs::new(block).create_manifest(path);
 }
+
+
+// /// Wizard User Check Handler
+// #[tauri::command]
+// pub fn wizard_user_check(home: String) -> bool {
+//   let home_path = if home.is_empty() {
+//     PathBuf::from(".")
+//   } else {
+//     PathBuf::from(home)
+//   };
+//   check(home_path)
+// }
+
+
+// /// Wizard init handler
+// #[tauri::command]
+// pub fn init_user(authkey: String, account: String) -> String {
+//   dbg!("init");
+//   let _path = dirs::home_dir().unwrap().join(".0L");
+
+//   let _key = match authkey.parse::<AuthenticationKey>() {
+//     Ok(k) => k,
+//     Err(_) => {
+//       return "could not parse Authentication Key from string.".to_string()
+//     }
+//   };
+
+//   let _acc = match account.parse::<AccountAddress>() {
+//     Ok(a) => a,
+//     Err(_) => {
+//       return "could not parse Account from string.".to_string()
+//     }
+//   };
+
+  
+//   // If upstream is valid, then we don't need to pass an epoch and waypoint.
+//   // let mut waypoint = None;
+//   // let mut starting_epoch = None;
+
+//   // let upstream = Url::try_from(UPSTREAM).ok();
+//   // if upstream.is_none(){
+//   //   waypoint = MAINNET_GENESIS_WAYPOINT.parse().ok();
+//   //   starting_epoch = Some(0);
+//   // }
+//   // // let path = PathBuf::from(path);
+//   // ol_types::config::AppCfg::init_app_configs(
+//   //   key, 
+//   //   acc,
+//   //   // TODO: how to pick a URL to fetch upstream data from
+//   //   &upstream,
+//   //   &Some(path), 
+//   //   &starting_epoch, 
+//   //   &waypoint, 
+//   //   &None, // No need for source path
+//   //   Some("Test".to_string()), // TODO
+//   //   Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
+//   // );
+
+//   account
+// }

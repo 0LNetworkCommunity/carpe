@@ -15,9 +15,9 @@ fn main() {
 	.invoke_handler(tauri::generate_handler![
 		get_all_accounts,
 		add_account,
-		hello,
+		// hello,
 		keygen,
-    init_user,
+    // init_user,
     init_swarm,
     swarm_miner,
     swarm_files,
