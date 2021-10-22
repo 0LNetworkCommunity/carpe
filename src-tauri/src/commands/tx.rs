@@ -1,12 +1,12 @@
 //! transaction scripts
 
-use std::path::{Path, PathBuf};
+
 
 use diem_types::account_address::AccountAddress;
-use ol_types::config::{self, TxType};
-use txs::{commands::demo_cmd, submit_tx};
 
-use crate::{commands::wallets, configs::get_cfg};
+use txs::{commands::demo_cmd};
+
+
 
 use super::client;
 

@@ -162,7 +162,7 @@ pub fn swarm_demo_tx() -> String {
 #[tauri::command]
 pub async fn easy_swarm() -> Result<String, String>  {
 
-  let cfg = get_cfg();
+  let _cfg = get_cfg();
   let source_path = dev_get_source_path().expect("cant find source path in 0L.toml, to use swarm define it in workspace.source_path");
   let debug_build_diem_node = source_path.join("target/debug/diem-node");
   let swarm_temp_path = dev_get_swarm_temp();

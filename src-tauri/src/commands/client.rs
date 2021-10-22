@@ -1,8 +1,8 @@
 //! client
 use diem_types::account_address::AccountAddress;
-use dirs;
-use ol::config::AppCfg;
-use ol_types::config::{self, TxType};
+
+
+use ol_types::config::{TxType};
 use txs::submit_tx::get_tx_params_from_keypair;
 
 use txs::submit_tx::TxParams;
