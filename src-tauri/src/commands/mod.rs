@@ -12,15 +12,12 @@ pub use tx::*;
 
 
 use diem_types::transaction::authenticator::AuthenticationKey;
-use tower::block::{
-  // mine_and_submit,
-  mine_once
-};
 
-use tower::commit_proof::commit_proof_tx;
+
+
 use ol_types::config::{self, TxType};
 use serde::{Deserialize, Serialize};
-use txs::submit_tx::{TxParams, eval_tx_status, get_tx_params_from_swarm, tx_params};
+use txs::submit_tx::{tx_params};
 
 
 
@@ -28,10 +25,10 @@ use std::path::{Path, PathBuf};
 // use diem_config::config::NodeConfig;
 use diem_types::account_address::AccountAddress;
 use diem_wallet::WalletLibrary;
-use ol::config::AppCfg;
+
 use ol_keys::wallet;
 use onboard::commands::wizard_user_cmd::check;
-use tauri::Error;
+
 
 pub const UPSTREAM: &str = "http://64.225.2.108:8080";
 pub const MAINNET_GENESIS_WAYPOINT: &str = "0:3c6cea7bf248248735cae3e9425c56e09c9a625e912da102f244e2b5820f9622";
