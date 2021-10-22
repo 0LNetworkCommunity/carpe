@@ -22,12 +22,11 @@ fn main() {
     swarm_miner,
     swarm_files,
     swarm_process,
-    demo,
     init_from_mnem,
     easy_swarm,
-		demo_tx,
     debug_error,
     remove_accounts,
+    swarm_demo_tx,
 	])
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");

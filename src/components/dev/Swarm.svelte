@@ -21,9 +21,7 @@
 
 
   const demo = async () => {
-    invoke("demo", {
-      configDir: home_path.concat("/swarm_temp"),
-    })
+    invoke("swarm_demo_tx", {})
       .then((res) => (result = res))
       .catch((e) => console.error(e));
   };

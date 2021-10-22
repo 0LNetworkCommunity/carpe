@@ -2,7 +2,7 @@ use std::path::PathBuf;
 use std::process::Command;
 use anyhow::Error;
 use ol::config::AppCfg;
-use ol_types::config;
+use ol_types::config::{self, TxType};
 use sysinfo::{SystemExt, ProcessExt};
 
 use ol::commands::init_cmd::initialize_host_swarm;
@@ -10,24 +10,7 @@ use tower::proof::mine_once;
 use tower::commit_proof;
 use txs::submit_tx;
 
-use crate::configs::{dev_get_swarm_temp, get_cfg};
-
-#[tauri::command]
-pub async fn easy_swarm(_path: PathBuf) -> Result<String, String>  {
-
-  let cfg = get_cfg();
-  let source_path = cfg.workspace.source_path.expect("cant find source path in 0L.toml, to use swarm define it in workspace.source_path");
-  let debug_build_diem_node = cfg.workspace.node_home.join("target/debug/diem-node");
-  let swarm_temp_path = cfg.workspace.node_home.join("swarm_temp");
-  match Command::new("cargo")
-    .current_dir(source_path)
-    .args(&["run", "-p", "diem-swarm", "--", "--diem-node", debug_build_diem_node.to_str().unwrap(), "-c", swarm_temp_path.to_str().unwrap()])
-    .output() {
-        Ok(o) => Ok(o.status.success().to_string()),
-        Err(e) => Err(e.to_string())
-    }
-}
-
+use crate::configs::{dev_get_source_path, dev_get_swarm_temp, get_cfg};
 
 /// Wizard init handler
 #[tauri::command]
@@ -148,4 +131,52 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
     },
     Err(e) => format!("Error mining proof, message: {:?}", e),
   }
+}
+
+
+#[tauri::command]
+/// mine for swarm
+// https://github.com/OLSF/libra/blob/main/ol/documentation/devs/swarm_qa_tools.md
+pub fn swarm_demo_tx() -> String {
+    let appcfg = get_cfg();
+
+    let tx_params = submit_tx::tx_params(
+        appcfg,
+        None,
+        None,
+        Some(dev_get_swarm_temp()),
+        Some("alice".to_string()),
+        TxType::Miner,
+        false, //  TODO: should be true in production
+        false,
+        None,
+      ).unwrap();
+
+  txs::commands::demo_cmd::demo_tx(&tx_params, false, None).unwrap();
+
+  "Demo tx submitted".to_string()
+}
+
+
+// TODO: this is not able to reliably start swarm, and it will depend on dev configs
+#[tauri::command]
+pub async fn easy_swarm() -> Result<String, String>  {
+
+  let cfg = get_cfg();
+  let source_path = dev_get_source_path().expect("cant find source path in 0L.toml, to use swarm define it in workspace.source_path");
+  let debug_build_diem_node = source_path.join("target/debug/diem-node");
+  let swarm_temp_path = dev_get_swarm_temp();
+  match Command::new("cargo")
+    .current_dir(source_path)
+    .args(&["run", "-p", "diem-swarm", "--", "--diem-node", debug_build_diem_node.to_str().unwrap(), "-c", swarm_temp_path.to_str().unwrap()])
+    .output() {
+        Ok(o) => {
+          println!("Success: started swarm");
+          Ok(o.status.success().to_string())
+        },
+        Err(e) => {
+          println!("ERROR: could not start swarm, message: {:?}", &e.to_string());
+          Err(e.to_string())
+        }
+    }
 }
