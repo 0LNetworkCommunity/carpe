@@ -23,9 +23,9 @@ use ol_types::config::{self, TxType};
 use serde::{Deserialize, Serialize};
 use sysinfo::{ProcessExt, SystemExt};
 use txs::submit_tx::{TxParams, eval_tx_status, get_tx_params_from_swarm, tx_params};
-use url::Url;
-use std::convert::TryFrom;
-use std::net::Ipv4Addr;
+
+
+
 use std::path::{Path, PathBuf};
 // use diem_config::config::NodeConfig;
 use diem_types::account_address::AccountAddress;
@@ -141,16 +141,16 @@ pub fn swarm_files(swarm_dir: String) -> String {
 #[tauri::command]
 pub fn init_user(authkey: String, account: String) -> String {
   dbg!("init");
-  let path = dirs::home_dir().unwrap().join(".0L");
+  let _path = dirs::home_dir().unwrap().join(".0L");
 
-  let key = match authkey.parse::<AuthenticationKey>() {
+  let _key = match authkey.parse::<AuthenticationKey>() {
     Ok(k) => k,
     Err(_) => {
       return "could not parse Authentication Key from string.".to_string()
     }
   };
 
-  let acc = match account.parse::<AccountAddress>() {
+  let _acc = match account.parse::<AccountAddress>() {
     Ok(a) => a,
     Err(_) => {
       return "could not parse Account from string.".to_string()

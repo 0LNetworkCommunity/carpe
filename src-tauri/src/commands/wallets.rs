@@ -13,13 +13,13 @@ use ol_types::block::Block;
  * - update account
  *
  **/
-use std::convert::TryFrom;
+
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
-use std::net::Ipv4Addr;
+
 use std::path::{Path, PathBuf};
 use tower::block::write_genesis;
-use url::Url;
+
 
 static DB_FILE: &str = "accounts.json";
 
@@ -123,10 +123,10 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
   dbg!("init from mnem");
   dbg!(&mnem);
 
-  let path = dirs::home_dir().unwrap().join(".0L");
+  let _path = dirs::home_dir().unwrap().join(".0L");
 
   // TODO: refactor get_account so that it doesn't fail.
-  let (key, acc, _wl) = wallet::get_account_from_mnem(mnem.clone());
+  let (_key, acc, _wl) = wallet::get_account_from_mnem(mnem.clone());
 
   let priv_key = KeyScheme::new_from_mnemonic(mnem)
     .child_0_owner

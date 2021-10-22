@@ -1,6 +1,6 @@
 //! 0L configs file
 
-use std::{fs, path::PathBuf, process::exit};
+use std::{fs, path::PathBuf};
 
 use anyhow::{Error, bail};
 use dirs;
