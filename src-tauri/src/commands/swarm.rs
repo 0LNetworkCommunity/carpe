@@ -31,13 +31,15 @@ pub async fn easy_swarm(_path: PathBuf) -> Result<String, String>  {
 
 /// Wizard init handler
 #[tauri::command]
-pub fn init_swarm(swarm_path: String, swarm_persona: String, source_path: String) -> String {
+pub fn init_swarm(swarm_path: String, swarm_persona: String, source_path: String) -> Result<String, String>  {
+  println!("initializing Alice persona in swarm_path");
   let swarm_path = PathBuf::from(&swarm_path);
   let persona_dir = swarm_path.join("0"); // TODO: alice has directory swarm_path/0, bob 1, carol 2... hard-coding this for demo.
   let source_path = PathBuf::from(&source_path); // TODO: this is not necessary for swarm, but lib requires it.
-  initialize_host_swarm(swarm_path, persona_dir, Some(swarm_persona), &Some(source_path));
-
-  "ok".to_string()
+  match initialize_host_swarm(swarm_path, persona_dir, Some(swarm_persona), &Some(source_path)) {
+    Ok(_) => Ok("initialized alice configs on host".to_string()),
+    Err(e) => Err(format!("could not initialize alice configs, message: {:?}", e.to_string()))
+  }
 }
 
 /// Wizard init handler
@@ -134,7 +136,7 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
   
   match mine_once(&appcfg) {
     Ok(b) => {
-      match commit_proof::commit_proof_tx(&tx_params.unwrap(), b.preimage, b.proof, false) {
+      match commit_proof::commit_proof_tx(&tx_params.unwrap(), b, false) {
           Ok(tx_view) => match submit_tx::eval_tx_status(tx_view) {
               Ok(r) => format!("Success: Proof committed to chain \n {:?}", r),
               Err(e) => format!("ERROR: Proof NOT committed to chain, message: \n{:?}", e),

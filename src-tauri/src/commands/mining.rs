@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use diem_types::waypoint::Waypoint;
-use tower::{block::mine_once, commit_proof::commit_proof_tx};
+use tower::{block::mine_once, commit_proof};
 use ol::config::AppCfg;
 use ol_types::config::{self, TxType};
 use txs::submit_tx::{eval_tx_status, tx_params};
@@ -48,7 +48,7 @@ pub fn demo_miner_once(mnemonic: String) -> String {
   // TODO(Ping): mine_and_submit(config, tx_params, is_operator)
 
   match mine_once(&config) {
-    Ok(b) => match commit_proof_tx(&tx_params.unwrap(), b.preimage, b.proof, false) {
+    Ok(b) => match commit_proof::commit_proof_tx(&tx_params.unwrap(), b, false) {
       Ok(tx_view) => match eval_tx_status(tx_view) {
         Ok(r) => format!("Success: Proof committed to chain \n {:?}", r),
         Err(e) => format!("ERROR: Proof NOT committed to chain, message: \n{:?}", e),
