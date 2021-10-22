@@ -1,7 +1,7 @@
 <script lang="ts">
   import { account, all_accounts } from "../../accounts";
 
-  let my_account = "";
+  let my_account;
 
   let account_list;
   account.subscribe((value) => {
@@ -21,9 +21,11 @@
 </script>
 
 <main>
+  {#if my_account}
   <button class="uk-button uk-button-default" type="button"
     >{my_account}
   </button>
+  {/if}
   <div uk-dropdown>
     <ul class="uk-nav uk-dropdown-nav">
         {#if !account_list}

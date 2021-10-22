@@ -1,24 +1,17 @@
 <script lang="ts">
     import { invoke } from "@tauri-apps/api/tauri";
-    let source_path = "";
     let home_path = "";
     let swarm_running = "";
     let swarm_files = "";
 
-    const easySwarm = async () => {
-    invoke("easy_swarm", {
-      sourcePath: source_path,
-    })
+  const easySwarm = async () => {
+    invoke("easy_swarm", {})
       .then((res) => (result = res))
       .catch((e) => console.error(e));
   };
 
   const initSwarm = async () => {
-    invoke("init_swarm", {
-      swarmPath: home_path.concat("swarm_temp"),
-      swarmPersona: "alice",
-      sourcePath: source_path,
-    })
+    invoke("init_swarm", {})
       .then((res) => (result = res))
       .catch((e) => console.error(e));
   };
@@ -66,6 +59,10 @@
       </div>
       <p>swarm running: {swarm_running}</p>
       <p>swarm files: {swarm_files}</p>
+
+      <button class="uk-button uk-button-default" on:click={easySwarm}
+        >Start Swarm</button
+      >
 
       <button class="uk-button uk-button-default" on:click={swarmCheck}
         >Check Swarm</button
