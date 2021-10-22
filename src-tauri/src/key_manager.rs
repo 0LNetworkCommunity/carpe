@@ -60,7 +60,7 @@ pub fn get_keypair(
 #[test]
 fn encode_keys() {
   let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
-
+  use ol_keys::scheme::KeyScheme;
   let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
   let private = scheme.child_0_owner.get_private_key();
   let bytes: &[u8] = &(private.to_bytes());
@@ -76,6 +76,7 @@ fn encode_keys() {
 #[test]
 #[ignore] // TODO: this needs to be hand tested since it requires OS password input.
 fn test_set() -> Result<(), Box<dyn Error>> {
+  use ol_keys::scheme::KeyScheme;
   let ol_address = "0x0";
 
   let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
