@@ -10,45 +10,34 @@
   import AddAccount from "./components/wallet/AddAccount.svelte";
   import Swarm from "./components/dev/Swarm.svelte";
   import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
-
-  // TODO: need this?
-  // window.__TAURI__.path.homeDir().then((dir) => {
-  //   home = dir;
-  // });
-
 </script>
 
-
-
+<main>
   <Router>
-      <nav class="uk-navbar-container" uk-navbar>
-        <div class="uk-navbar-center">
-          <ul class="uk-navbar-nav">
-            <li><Link to="/">Wallet</Link></li>
-            <li><Link to="miner">Miner</Link></li>
-            <li><Link to="settings">Settings</Link></li>
-            <li><Link to="dev">Debug</Link></li>
-            <li><Link to="swarm">Swarm</Link></li>
-
-          </ul>
-        </div>        
-      </nav>
-
-      <div class="uk-container uk-background-muted uk-background-height-1-1">
-        <AccountSwitcher />
-
-        <!-- <p> account: {my_account} </p> -->
-
-
-
-
-        <Route path="/" component={Wallet}/>
-        <Route path="/add-account" component={AddAccount}/>
-        <Route path="/account-from-mnem" component={AccountFromMnem}/>
-        <Route path="/miner" component={Miner}/>
-        <Route path="/settings" component={Settings}/>
-        <Route path="/dev" component={DevMode}/>
-        <Route path="/swarm" component={Swarm}/>
-
+    <nav class="uk-navbar-container" uk-navbar>
+      <div class="uk-navbar-center">
+        <ul class="uk-navbar-nav">
+          <li><Link to="/">Wallet</Link></li>
+          <li><Link to="miner">Miner</Link></li>
+          <li><Link to="settings">Settings</Link></li>
+          <li><Link to="dev">Debug</Link></li>
+          <li><Link to="swarm">Swarm</Link></li>
+        </ul>
       </div>
+    </nav>
+
+    <div class="uk-container uk-background-muted uk-background-height-1-1">
+      <AccountSwitcher />
+
+      <!-- <p> account: {my_account} </p> -->
+
+      <Route path="/" component={Wallet} primary={false} />
+      <Route path="/add-account" component={AddAccount} primary={false} />
+      <Route path="/account-from-mnem" component={AccountFromMnem} primary={false} />
+      <Route path="/miner" component={Miner} primary={false} />
+      <Route path="/settings" component={Settings} primary={false} />
+      <Route path="/dev" component={DevMode} primary={false} />
+      <Route path="/swarm" component={Swarm} primary={false} />
+    </div>
   </Router>
+</main>

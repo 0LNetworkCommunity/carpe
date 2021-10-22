@@ -12,7 +12,10 @@
 
   const initSwarm = async () => {
     invoke("init_swarm", {})
-      .then((res) => (result = res))
+      .then((res) => {
+        result = res;
+        swarmCheck();
+      })
       .catch((e) => console.error(e));
   };
 

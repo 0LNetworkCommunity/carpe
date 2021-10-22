@@ -89,7 +89,7 @@ pub fn swarm_files() -> Result<SwarmInit, String> {
     let path_exists = path.exists();
     let config_path = path.join("0/0L.toml");
     let config_path_exists = config_path.exists();
-    let proof_path = path.join(format!("0/blocks/block_0.json"));
+    let proof_path = path.join(format!("0/vdf_proofs/proof_0.json"));
     let proof_exists = proof_path.exists();
 
     let s = SwarmInit {
