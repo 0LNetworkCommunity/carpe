@@ -40,7 +40,6 @@
         />
       </div>
 
-      </div>
       <div>
         <span
           on:click={handleAdd}

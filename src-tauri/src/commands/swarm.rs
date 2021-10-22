@@ -1,19 +1,24 @@
 use std::path::PathBuf;
-// use libra_swarm::swarm::LibraSwarm;
-// use libra_config::config::NodeConfig;
-// use libra_types::chain_id::ChainId;
-// use libra_genesis_tool::config_builder::FullnodeType;
 use std::process::Command;
 
-#[tauri::command]
-pub async fn easy_swarm(source_path: PathBuf) -> Result<String,String>  {
-  let output = Command::new("cargo")
-    .current_dir(source_path.to_str().unwrap())
-    .args(&["run", "-p", "libra-swarm", "--", "--libra-node", "/Users/lucas/code/rust/ol/target/debug/libra-node", "-c", "/Users/lucas/swarm_temp"])
-    .output()
-    .expect("failed to execute process");
+use ol_types::config::Workspace;
 
-    Ok(output.status.success().to_string())
+use crate::configs::get_cfg;
+
+#[tauri::command]
+pub async fn easy_swarm(_path: PathBuf) -> Result<String, String>  {
+
+  let cfg = get_cfg();
+  let source_path = cfg.workspace.source_path.expect("cant find source path in 0L.toml, to use swarm define it in workspace.source_path");
+  let debug_build_diem_node = cfg.workspace.node_home.join("target/debug/diem-node");
+  let swarm_temp_path = cfg.workspace.node_home.join("swarm_temp");
+  match Command::new("cargo")
+    .current_dir(source_path)
+    .args(&["run", "-p", "diem-swarm", "--", "--diem-node", debug_build_diem_node.to_str().unwrap(), "-c", swarm_temp_path.to_str().unwrap()])
+    .output() {
+        Ok(o) => Ok(o.status.success().to_string()),
+        Err(e) => Err(e.to_string())
+    }
 }
 
 
