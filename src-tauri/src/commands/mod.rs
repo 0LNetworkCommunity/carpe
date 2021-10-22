@@ -38,33 +38,6 @@ pub fn hello(hello: String) -> String {
   return format!("Hello: {}", hello);
 }
 
-/// Keygen output
-#[derive(Serialize, Deserialize)]
-struct Output {
-  mnemonic: String,
-  account: AccountAddress,
-  authkey: AuthenticationKey,
-}
-
-/// Keygen handler
-#[tauri::command]
-pub fn keygen() -> Result<String, String> {
-  dbg!("keygen");
-  let wallet = WalletLibrary::new();
-  let mnemonic_string = wallet.mnemonic();
-
-  let (authkey, account, _) = wallet::get_account_from_mnem(mnemonic_string.clone());
-
-  let output = Output {
-    mnemonic: mnemonic_string,
-    account,
-    authkey,
-  };
-  return match serde_json::to_string(&output) {
-    Ok(t) => Ok(t),
-    Err(e) => Err(e.to_string()),
-  };
-}
 
 /// Wizard init handler
 #[tauri::command]
