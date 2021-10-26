@@ -6,19 +6,14 @@ use ol_types::config::{TxType};
 use txs::submit_tx::get_tx_params_from_keypair;
 
 use txs::submit_tx::TxParams;
+use txs::submit_tx::get_tx_params_from_toml;
 use url::Url;
 
 use crate::configs::get_cfg;
 use crate::{key_manager};
 
-// fn get_cfg() -> AppCfg {
-//   let config_toml = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
-//   // let mut toml = PathBuf::from(config_dir);
-//   // toml.push("0L.toml");
-//   config::parse_toml(config_toml.to_str().unwrap().to_string()).unwrap()
-// }
 
-pub fn get_tx_params(address: AccountAddress, url: Option<&str>) -> Result<TxParams, anyhow::Error> {
+pub fn get_tx_params(address: AccountAddress, url: Option<&str>, ) -> Result<TxParams, anyhow::Error> {
   let mut config = get_cfg();
   if let Some(s) = url {
     match s.parse::<Url>() {
@@ -26,7 +21,6 @@ pub fn get_tx_params(address: AccountAddress, url: Option<&str>) -> Result<TxPar
         Err(_) => {},
     }
   }
-
   // Requires user input to get OS keyring
   let keypair = key_manager::get_keypair(&address.to_string())?;
   get_tx_params_from_keypair(
