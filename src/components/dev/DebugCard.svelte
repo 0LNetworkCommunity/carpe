@@ -1,22 +1,26 @@
 <script lang="ts">
-  import { responses } from "../../debug.ts"; // TODO: Make this read only
+  import type { CarpeError } from "../../carpeError";
+  import { errors } from "../../carpeError";
 
+  import { responses } from "../../debug.ts"; // TODO: Make this read only
 
   let home = "";
   let account = "";
 
   let result_string = "";
-  let error_string = "";
+  let this_error: CarpeError;
 
-  responses.subscribe(value => {
+  responses.subscribe((value) => {
+    this_error = undefined;
     result_string = value;
   });
 
-  errors.subscribe(value => {
-    error_string = value;
+  errors.subscribe((value) => {
+    result_string = "";
+    if (value != undefined) {
+      this_error = value;
+    }
   });
-
-  
 </script>
 
 <main>
@@ -41,22 +45,19 @@
       </tbody>
     </table>
 
-    <h4>Invoke results</h4>
+    <h4>Debug Invocations</h4>
     <p>
-      result_string:
-      <br />
       {#if result_string.length !== 0}
+        RESULT:
+        <br />
         {result_string}
-      {:else}
-        No result_string yet.
       {/if}
       <br />
-      error:
-      <br />
-      {#if error_string.length !== 0}
-        {error_string}
-      {:else}
-        No result_string yet.
+      {#if this_error != undefined}
+        ERROR:
+        <br />
+        message: {this_error.msg}
+        uid: {this_error.uid}
       {/if}
     </p>
   </div>

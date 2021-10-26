@@ -8,6 +8,8 @@ use txs::{commands::demo_cmd};
 
 
 
+use crate::carpe_error::CarpeError;
+
 use super::client;
 
 #[tauri::command]
@@ -24,10 +26,10 @@ pub fn demo_tx(account: String) -> String {
 
 
 #[tauri::command]
-pub fn debug_error(debug_err: bool) -> Result<String, String> {
+pub fn debug_error(debug_err: bool) -> Result<String, CarpeError> {
   dbg!(&debug_err);
   match debug_err {
     true => Ok("good".to_owned()),
-    false => Err("bad".to_owned())
+    false => Err(CarpeError::misc("test"))
   }
 }

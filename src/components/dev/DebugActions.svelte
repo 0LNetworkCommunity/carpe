@@ -39,14 +39,8 @@
     invoke("debug_error", {
       debugErr: false,
     })
-      .then((res) => {
-        responses.set(res);
-      })
-      .catch((e) => {
-        raise_error(e);
-        // error_string = e; //This is a string
-        console.error(e);
-      });
+    .then((res) => responses.set(res))
+    .catch((e) => raise_error(e));
   };
 
   const init = async () => {
