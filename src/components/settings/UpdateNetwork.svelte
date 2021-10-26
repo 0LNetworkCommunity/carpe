@@ -1,15 +1,14 @@
 <script lang="ts">
   import { Link } from "svelte-navigator";
-  import { onMount } from 'svelte';
-  import type { CarpeError } from '../../carpeError';
-  import { raise_error } from '../../carpeError';
+  import { onMount } from "svelte";
+  import type { CarpeError } from "../../carpeError";
+  import { raise_error } from "../../carpeError";
 
   import UIkit from "uikit";
   const invoke = window.__TAURI__.invoke;
 
   let upstream_url = "http://1.1.1.1:8080";
   let base_waypoint = "";
-
 
   function updateNetwork() {
     // check input data
@@ -23,12 +22,10 @@
           timeout: 3000,
         });
       })
-      .catch((error) => { 
+      .catch((error) => {
         raise_error(error as CarpeError);
-        
       });
   }
-
 
   function get() {
     // check input data
@@ -40,24 +37,37 @@
 
         console.log(res);
 
-        res
+        res;
       })
       .catch((error) => raise_error(error));
   }
 
-    // // TODO: is this the correct event?
-    onMount(async () => {
-      get();
-    });
+  function refreshWaypoint() {
+    // check input data
+    // submit
+    invoke("refresh_waypoint", {})
+      .then((res) => {
+        upstream_url = res.url;
+        base_waypoint = res.base_waypoint;
 
+        console.log(res);
+
+        res;
+      })
+      .catch((error) => raise_error(error));
+  }
+  // // TODO: is this the correct event?
+  onMount(async () => {
+    get();
+  });
 </script>
 
 <main>
-  <h3> Update Network Settings </h3>
+  <h3>Update Network Settings</h3>
 
   <form id="account-form">
     <fieldset class="uk-fieldset">
-      <div class="uk-margin uk-inline-block uk-width-1-1"> 
+      <div class="uk-margin uk-inline-block uk-width-1-1">
         <span> URL of upstream node</span>
         <input
           class="uk-input"
@@ -66,8 +76,8 @@
           bind:value={upstream_url}
         />
       </div>
-      
-      <div class="uk-margin uk-inline-block uk-width-1-1"> 
+
+      <div class="uk-margin uk-inline-block uk-width-1-1">
         <span> Waypoint </span>
         <input
           class="uk-input"
@@ -89,5 +99,6 @@
       </div>
     </fieldset>
   </form>
-  
+
+  <button class="uk-button uk-button-default" on:click={refreshWaypoint}>Fetch Waypoint</button>
 </main>

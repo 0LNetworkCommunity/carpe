@@ -30,6 +30,7 @@ fn main() {
     swarm_demo_tx,
     update_upstream,
     get_networks,
+    refresh_waypoint,
 	])
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");

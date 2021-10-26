@@ -51,7 +51,7 @@ pub fn set_refresh_upstream(wp: Waypoint) -> Result<AppCfg, Error>  {
 /// Refresh the upstream peers in config, from chain data.
 pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
   let cfg = get_cfg();
-  let (_, wp) = bootstrap_waypoint_from_upstream(&cfg.profile.default_node.unwrap())?;
+  let (_, wp) = bootstrap_waypoint_from_upstream(&cfg.profile.default_node?)?;
   set_waypoint(wp)
 }
 

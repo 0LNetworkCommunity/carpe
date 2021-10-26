@@ -3,7 +3,7 @@
 use diem_types::waypoint::Waypoint;
 use url::Url;
 
-use crate::{carpe_error::CarpeError, configs};
+use crate::{carpe_error::CarpeError, configs::{self, set_waypoint_from_upstream}};
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Networks {
@@ -38,3 +38,11 @@ pub fn update_upstream(url: Url, wp: Waypoint) -> Result<Networks, CarpeError> {
   configs::set_waypoint(wp).map_err(|e| CarpeError::misc(&e.to_string()))?;
   Networks::new()
 }
+
+
+#[tauri::command]
+pub fn refresh_waypoint() -> Result<Networks, CarpeError> {
+  set_waypoint_from_upstream().map_err(|e| CarpeError::misc(&e.to_string()))?;
+  Networks::new()
+}
+
