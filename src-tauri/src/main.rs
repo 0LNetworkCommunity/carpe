@@ -6,6 +6,7 @@
 pub mod commands;
 pub mod key_manager;
 pub mod configs;
+pub mod carpe_error;
 
 use crate::commands::*;
 
@@ -27,6 +28,8 @@ fn main() {
     debug_error,
     remove_accounts,
     swarm_demo_tx,
+    update_upstream,
+    get_networks,
 	])
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");

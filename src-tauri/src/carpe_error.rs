@@ -1,14 +1,15 @@
 //! Carpe error type for client
 
 
-enum ErrorCat {
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
+pub enum ErrorCat {
   Client,
   Tx,
   Configs,
   Misc
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct CarpeError {
   category: ErrorCat,
   uid: u8,
@@ -28,9 +29,9 @@ impl CarpeError {
 
   pub fn misc(msg: &str) -> Self {
     CarpeError {
-      category: ErrorCat(Misc),
+      category: ErrorCat::Misc,
       uid: E_MISC,
-      msg.to_owned()
+      msg: msg.to_owned()
     }
   }
 }

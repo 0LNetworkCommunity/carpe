@@ -1,19 +1,21 @@
 <script lang="ts">
   import { Link, useNavigate } from "svelte-navigator";
+  import { onMount } from 'svelte';
+
   import UIkit from "uikit";
   const invoke = window.__TAURI__.invoke;
   const navigate = useNavigate();
 
-  let ip_address = "1.1.1.1";
-  let title = "";
+
+  let upstream_url = "http://1.1.1.1:8080";
+  let base_waypoint = "";
   let address = "";
-  let helpTitle = "";
-  let helpAddress = "";
+
 
   function updateUpstream() {
     // check input data
     // submit
-    invoke("update_upstream", { url: ip_address, address: address })
+    invoke("update_upstream", { url: upstream_url, address: address })
       .then((_) => {
         UIkit.notification({
           message: "<span uk-icon='icon: check'></span> Account added",
@@ -25,10 +27,33 @@
       .catch((error) => window.alert(error));
     navigate("/", { replace: true });
   }
+
+
+  function getUpstream() {
+    // check input data
+    // submit
+    invoke("get_networks", {})
+      .then((res) => {
+        upstream_url = res.url;
+        base_waypoint = res.base_waypoint;
+
+        console.log(res);
+
+        res
+      })
+      .catch((error) => window.alert(error));
+  }
+
+    // // TODO: is this the correct event?
+    onMount(async () => {
+      getUpstream();
+    });
+
 </script>
 
 <main>
-  <h3> Testnet Settings </h3>
+  <h3> Update Network Settings </h3>
+
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1"> 
@@ -36,8 +61,18 @@
         <input
           class="uk-input"
           type="text"
-          placeholder={ip_address}
-          bind:value={title}
+          placeholder={upstream_url}
+          bind:value={upstream_url}
+        />
+      </div>
+      
+      <div class="uk-margin uk-inline-block uk-width-1-1"> 
+        <span> Waypoint </span>
+        <input
+          class="uk-input"
+          type="text"
+          placeholder={base_waypoint}
+          bind:value={base_waypoint}
         />
       </div>
 
@@ -52,5 +87,5 @@
         </Link>
       </div>
     </fieldset>
-  </form>
+  </form>  
 </main>
