@@ -10,10 +10,10 @@
   let helpTitle = "";
   let helpAddress = "";
 
-  function handleAdd() {
+  function updateUpstream() {
     // check input data
     // submit
-    invoke("add_account", { title: title, address: address })
+    invoke("update_upstream", { url: ip_address, address: address })
       .then((_) => {
         UIkit.notification({
           message: "<span uk-icon='icon: check'></span> Account added",
@@ -28,6 +28,7 @@
 </script>
 
 <main>
+  <h3> Testnet Settings </h3>
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1"> 
@@ -42,7 +43,7 @@
 
       <div>
         <span
-          on:click={handleAdd}
+          on:click={updateUpstream}
           class="uk-button uk-button-primary uk-align-right"
           id="add-btn">Add</span
         >

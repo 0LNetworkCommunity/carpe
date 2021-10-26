@@ -6,7 +6,6 @@ use ol_types::config::{TxType};
 use txs::submit_tx::get_tx_params_from_keypair;
 
 use txs::submit_tx::TxParams;
-use txs::submit_tx::get_tx_params_from_toml;
 use url::Url;
 
 use crate::configs::get_cfg;

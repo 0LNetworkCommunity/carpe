@@ -1,7 +1,7 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
   import { responses, errors } from "../../debug";
-  import Testnet from "./Testnet.svelte";
+  import AddNetwork from "./AddNetwork.svelte";
 
   const removeAccounts = async () => {
     invoke("remove_accounts", {
@@ -21,7 +21,7 @@
 
 <main>
   Settings
-  <Testnet />
+  <AddNetwork />
 
 
   <button class="uk-button uk-button-default" on:click={removeAccounts}> Remove Accounts </button>

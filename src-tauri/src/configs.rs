@@ -3,12 +3,14 @@
 use std::{fs, path::PathBuf};
 
 use anyhow::{Error, bail};
+use diem_types::waypoint::Waypoint;
 use dirs;
 use ol::{
   config::AppCfg,
   node::{client, node::Node},
 };
-use ol_types::config;
+use ol_types::config::{self, bootstrap_waypoint_from_upstream};
+use url::Url;
 
 
 // get the config path for files
@@ -20,6 +22,37 @@ fn default_config_path() -> PathBuf {
 pub fn get_cfg() -> AppCfg {
   let config_toml = default_config_path();
   config::parse_toml(config_toml.to_str().unwrap().to_string()).unwrap()
+}
+
+/// Get all the 0L configs. For tx sending and upstream nodes
+pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
+  let mut cfg = get_cfg();
+  cfg.profile.default_node = Some(url);
+  cfg.save_file();
+  Ok(cfg)
+}
+
+/// Get all the 0L configs. For tx sending and upstream nodes
+pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error>  {
+  let mut cfg = get_cfg();
+  cfg.chain_info.base_waypoint = Some(wp);
+  cfg.save_file();
+  Ok(cfg)
+}
+
+/// Refresh the upstream peers in config, from chain data.
+pub fn set_refresh_upstream(wp: Waypoint) -> Result<AppCfg, Error>  {
+  let mut cfg = get_cfg();
+  cfg.chain_info.base_waypoint = Some(wp);
+  cfg.save_file();
+  Ok(cfg)
+}
+
+/// Refresh the upstream peers in config, from chain data.
+pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
+  let cfg = get_cfg();
+  let (_, wp) = bootstrap_waypoint_from_upstream(&cfg.profile.default_node.unwrap())?;
+  set_waypoint(wp)
 }
 
 /// For devs, get the source path, needed to initialize swarm
