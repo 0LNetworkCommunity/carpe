@@ -5,7 +5,6 @@
  * - update account
  *
  **/
- 
 use crate::carpe_error::CarpeError;
 use crate::configs::default_accounts_db_path;
 use crate::{configs, key_manager};
@@ -66,15 +65,15 @@ fn get_short(acc: AccountAddress) -> String {
 /// default way accounts get initialized in Carpe
 #[tauri::command]
 pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-  danger_init_from_mnem(mnem)
-    .map_err(|_| CarpeError::misc("could not initialize from mnemonic"))
+  danger_init_from_mnem(mnem).map_err(|_| CarpeError::misc("could not initialize from mnemonic"))
 }
 
 /// remove all accounts from ACCOUNTS_DB_FILE
 
 #[tauri::command]
-pub fn get_all_accounts() -> Result<Accounts, String> {
-  Ok(read_accounts())
+pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
+  let all = read_accounts().map_err(|_| CarpeError::misc("could not read accounts file"))?;
+  Ok(all)
 }
 
 /// Add an account for tracking only.
@@ -85,10 +84,12 @@ pub fn add_account(
   address: String,
 ) -> Result<Accounts, CarpeError> {
   // Todo: Does tauri parse the types automatically?
-  let parsed_address: AccountAddress = address.parse()
-  .map_err(|_| CarpeError::misc("cannot parse account address"))?;
+  let parsed_address: AccountAddress = address
+    .parse()
+    .map_err(|_| CarpeError::misc("cannot parse account address"))?;
 
-  let parsed_auth: AuthenticationKey = authkey.parse()
+  let parsed_auth: AuthenticationKey = authkey
+    .parse()
     .map_err(|_| CarpeError::misc("cannot parse authkey"))?;
 
   insert_account_db(nickname, parsed_address, parsed_auth).map_err(|e| {
@@ -106,7 +107,7 @@ fn insert_account_db(
 ) -> Result<Accounts, Error> {
   let app_dir = default_accounts_db_path();
   // get all accounts
-  let mut all = read_accounts();
+  let mut all = read_accounts()?;
 
   // push new account
   let new_account = AccountEntry {
@@ -132,7 +133,7 @@ fn insert_account_db(
 
 // remove all accounts which are being tracked.
 #[tauri::command]
-pub fn remove_accounts() -> Result<String, String> {
+pub fn remove_accounts() -> Result<String, CarpeError> {
   // Note: this only removes the account tracking, doesn't delete account on chain.
 
   let db_path = default_accounts_db_path();
@@ -140,16 +141,21 @@ pub fn remove_accounts() -> Result<String, String> {
   if db_path.exists() {
     match fs::remove_file(&db_path) {
       Ok(_) => return Ok("removed all accounts".to_owned()),
-      _ => return Err(format!("unable to delete account file found at {:?}", &db_path).to_owned()),
+      _ => {
+        return Err(CarpeError::misc(&format!(
+          "unable to delete account file found at {:?}",
+          &db_path
+        )))
+      }
     }
   }
-  return Err(
-    format!(
+  return Err(CarpeError::misc(
+    &format!(
       "No accounts to remove. No account file found at {:?}",
       &db_path
     )
     .to_owned(),
-  );
+  ));
 }
 
 pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, anyhow::Error> {
@@ -171,13 +177,13 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, anyhow::Error
   Ok(AccountEntry::new(address, authkey))
 }
 
-fn read_accounts() -> Accounts {
+fn read_accounts() -> Result<Accounts, Error> {
   let db_path = default_accounts_db_path();
   if db_path.exists() {
-    let file = File::open(db_path).expect("DB_FILE should be found!");
-    serde_json::from_reader(file).expect("file should be proper JSON")
+    let file = File::open(db_path)?;
+    Ok(serde_json::from_reader(file)?)
   } else {
-    Accounts { accounts: vec![] }
+    Ok(Accounts { accounts: vec![] })
   }
 }
 
