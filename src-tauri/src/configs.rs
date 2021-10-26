@@ -51,8 +51,13 @@ pub fn set_refresh_upstream(wp: Waypoint) -> Result<AppCfg, Error>  {
 /// Refresh the upstream peers in config, from chain data.
 pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
   let cfg = get_cfg();
-  let (_, wp) = bootstrap_waypoint_from_upstream(&cfg.profile.default_node?)?;
-  set_waypoint(wp)
+  if let Some(mut json_rpc_node) = cfg.profile.default_node.clone() {
+    let (_, wp) = bootstrap_waypoint_from_upstream(&mut json_rpc_node)?;
+    set_waypoint(wp)
+  } else {
+    bail!("could not find default_node in 0L.toml")
+  }
+
 }
 
 /// For devs, get the source path, needed to initialize swarm

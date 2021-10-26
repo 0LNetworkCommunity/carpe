@@ -42,7 +42,11 @@ pub fn update_upstream(url: Url, wp: Waypoint) -> Result<Networks, CarpeError> {
 
 #[tauri::command]
 pub fn refresh_waypoint() -> Result<Networks, CarpeError> {
-  set_waypoint_from_upstream().map_err(|e| CarpeError::misc(&e.to_string()))?;
+  
+  set_waypoint_from_upstream().map_err(|e|  {
+    let err_msg = format!("could not get epoch data from upstream, message: {}", &e.to_string());
+    CarpeError::misc(&err_msg)
+  })?;
   Networks::new()
 }
 
