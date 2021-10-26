@@ -42,9 +42,9 @@ pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
 
 
 /// For switching between profiles in the Account DB.
-pub fn set_account_profile(acc: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
+pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
   let mut cfg = get_cfg();
-  cfg.profile.account = acc;
+  cfg.profile.account = account;
   cfg.profile.auth_key = authkey;
   cfg.save_file();
   Ok(cfg)
@@ -96,16 +96,19 @@ pub fn is_initialized() -> bool {
 }
 
 /// initialize default configs.
-pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) {
+pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) -> Result<(), Error>{
   if !is_initialized() {
     let mut default_config = AppCfg::default();
     default_config.workspace.node_home = default_config_path();
     default_config.profile.account = account;
     default_config.profile.auth_key = authkey;
 
-    fs::create_dir_all(&default_config.workspace.node_home).unwrap();
+    fs::create_dir_all(&default_config.workspace.node_home)?;
     default_config.save_file();
+  } else {
+    set_account_profile(account, authkey)?;
   }
+  Ok(())
 }
 
 /// fetch upstream peers.

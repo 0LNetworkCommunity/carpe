@@ -2,8 +2,8 @@ import { writable } from 'svelte/store';
 import { raise_error } from './carpeError';
 const invoke = window.__TAURI__.invoke;
 
-interface AccountEntry {
-  address: string,
+export interface AccountEntry {
+  account: string,
   authkey: string,
   nickname: string,
   balance: number,

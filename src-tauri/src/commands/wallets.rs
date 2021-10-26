@@ -29,7 +29,7 @@ pub struct Accounts {
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct AccountEntry {
-  pub address: AccountAddress,
+  pub account: AccountAddress,
   pub authkey: AuthenticationKey,
   pub nickname: String,
   pub balance: Option<u64>,
@@ -38,7 +38,7 @@ pub struct AccountEntry {
 impl AccountEntry {
   pub fn new(address: AccountAddress, authkey: AuthenticationKey) -> Self {
     AccountEntry {
-      address: address.clone(),
+      account: address.clone(),
       authkey,
       nickname: get_short(address),
       balance: None,
@@ -111,7 +111,7 @@ fn insert_account_db(
 
   // push new account
   let new_account = AccountEntry {
-    address: address,
+    account: address,
     authkey: authkey,
     nickname: nickname,
     balance: None,
@@ -170,7 +170,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, anyhow::Error
 
   key_manager::set_private_key(&address.to_string(), priv_key)?;
 
-  configs::maybe_init_configs(address.clone(), authkey.clone());
+  configs::maybe_init_configs(address.clone(), authkey.clone())?;
 
   insert_account_db(get_short(address.clone()), address, authkey)?;
   

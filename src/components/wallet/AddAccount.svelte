@@ -1,8 +1,8 @@
 <script>
 	import { Link, useNavigate } from "svelte-navigator";
 	import UIkit from 'uikit';
+import { raise_error } from "../../carpeError";
 	const invoke = window.__TAURI__.invoke;
-	const navigate = useNavigate();
 	
 	let authkey = "";
 	let address = "";
@@ -29,8 +29,7 @@
 					timeout: 3000
 				});				
 			})
-			.catch((error) => window.alert(error));
-		navigate("/", { replace: true });
+			.catch((error) => raise_error(error));
 	}
 
 </script>

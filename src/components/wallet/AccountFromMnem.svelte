@@ -23,20 +23,16 @@ import { raise_error } from "../../carpeError";
 			.then((res) => {
         
         responses.set(res);
-        account.set(res);
+        account.set(res.account);
 
 				UIkit.notification({ 
-					message: `private key ${res}`, 
+					message: `Account Added:  ${res.account}`, 
 					pos: 'bottom-center', 
 					status: 'success',
 					timeout: 3000
 				});				
 			})
-			.catch((error) => {
-        raise_error(error);
-
-      });
-		navigate("/", { replace: true });
+			.catch((error) => raise_error(error));
 	}
 </script>
 
