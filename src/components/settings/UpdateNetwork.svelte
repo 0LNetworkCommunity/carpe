@@ -8,12 +8,12 @@
   const invoke = window.__TAURI__.invoke;
 
   let upstream_url = "http://1.1.1.1:8080";
-  let base_waypoint = "";
+  let waypoint = "";
 
   function updateNetwork() {
     // check input data
     // submit
-    invoke("update_upstream", { url: upstream_url, wp: base_waypoint })
+    invoke("update_upstream", { url: upstream_url, wp: waypoint })
       .then((_) => {
         UIkit.notification({
           message: "<span uk-icon='icon: check'></span> Account added",
@@ -33,7 +33,7 @@
     invoke("get_networks", {})
       .then((res) => {
         upstream_url = res.url;
-        base_waypoint = res.base_waypoint;
+        waypoint = res.waypoint;
 
         console.log(res);
 
@@ -48,7 +48,7 @@
     invoke("refresh_waypoint", {})
       .then((res) => {
         upstream_url = res.url;
-        base_waypoint = res.base_waypoint;
+        waypoint = res.waypoint;
 
         console.log(res);
 
@@ -82,8 +82,8 @@
         <input
           class="uk-input"
           type="text"
-          placeholder={base_waypoint}
-          bind:value={base_waypoint}
+          placeholder={waypoint}
+          bind:value={waypoint}
         />
       </div>
 
