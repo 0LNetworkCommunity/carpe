@@ -12,7 +12,7 @@
   let address = "";
 
 
-  function updateUpstream() {
+  function updateNetwork() {
     // check input data
     // submit
     invoke("update_upstream", { url: upstream_url, address: address })
@@ -29,7 +29,7 @@
   }
 
 
-  function getUpstream() {
+  function get() {
     // check input data
     // submit
     invoke("get_networks", {})
@@ -46,7 +46,7 @@
 
     // // TODO: is this the correct event?
     onMount(async () => {
-      getUpstream();
+      get();
     });
 
 </script>
@@ -78,7 +78,7 @@
 
       <div>
         <span
-          on:click={updateUpstream}
+          on:click={updateNetwork}
           class="uk-button uk-button-primary uk-align-right"
           id="add-btn">Add</span
         >
@@ -87,5 +87,6 @@
         </Link>
       </div>
     </fieldset>
-  </form>  
+  </form>
+  
 </main>

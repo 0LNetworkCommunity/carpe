@@ -33,9 +33,8 @@ pub fn get_networks() -> Result<Networks, CarpeError> {
 }
 
 #[tauri::command]
-pub fn update_upstream(url: Url) -> Result<String, String> {
-  match configs::set_default_node(url) {
-    Ok(_) => Ok("ok".to_string()), // TODO: use Carpe return types
-    Err(_) => Ok("err".to_string()),
-  }
+pub fn update_upstream(url: Url, wp: Waypoint) -> Result<Networks, CarpeError> {
+  configs::set_default_node(url).map_err(|e| CarpeError::misc(&e.to_string()))?;
+  configs::set_waypoint(wp).map_err(|e| CarpeError::misc(&e.to_string()))?;
+  Networks::new()
 }
