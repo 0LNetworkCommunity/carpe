@@ -1,7 +1,8 @@
 <script>
   import { invoke } from "@tauri-apps/api/tauri";
   import { account } from "../../accounts";
-  import { responses, errors } from "../../debug";
+import { raise_error } from "../../carpeError";
+  import { responses } from "../../debug";
 
   let account_string = "";
   account.subscribe((n) => {
@@ -16,8 +17,7 @@
         responses.set(res);
       })
       .catch((e) => {
-        errors.set(res);
-        console.error(e)
+        raise_error(e);
       });
   };
 </script>

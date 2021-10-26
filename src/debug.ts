@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 export const responses = writable("");
-export const errors = writable("");
+// export const errors = writable("");
 
 // always clear error when a response is updated
 // responses.subscribe(_ => {

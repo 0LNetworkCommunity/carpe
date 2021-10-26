@@ -1,8 +1,9 @@
 <script>
 	import { Link, useNavigate } from "svelte-navigator";
 	import UIkit from 'uikit';
-  import { responses, errors } from "../../debug";
+  import { responses } from "../../debug";
   import { account } from "../../accounts"
+import { raise_error } from "../../carpeError";
   
 	const invoke = window.__TAURI__.invoke;
 	const navigate = useNavigate();
@@ -32,8 +33,7 @@
 				});				
 			})
 			.catch((error) => {
-        window.alert(error);
-        errors.set(error);
+        raise_error(error);
 
       });
 		navigate("/", { replace: true });

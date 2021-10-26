@@ -1,6 +1,7 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import { responses, errors } from "../../debug";
+import { raise_error } from "../../carpeError";
+  import { responses } from "../../debug";
   import UpdateNetwork from "./UpdateNetwork.svelte";
 
   const removeAccounts = async () => {
@@ -11,9 +12,7 @@
         responses.set(res);
       })
       .catch((e) => {
-        errors.set(e);
-        // error_string = e; //This is a string
-        console.error(e);
+        raise_error(e);
       });
   };
 

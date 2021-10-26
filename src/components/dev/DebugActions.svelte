@@ -1,19 +1,20 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import { responses, errors } from "../../debug";
+  import { responses } from "../../debug";
   import DemoTx from "../txs/DemoTx.svelte";
   import { account, authkey } from "../../accounts";
+  import { raise_error } from "../../carpeError";
 
   let authkey_string: string = "";
   let account_string: string = "";
 
   authkey.subscribe((n) => {
-    authkey_string = n
-  })
+    authkey_string = n;
+  });
 
   account.subscribe((n) => {
-    account_string = n
-  })
+    account_string = n;
+  });
 
   const keygen = async () => {
     invoke("keygen", {})
@@ -27,7 +28,7 @@
           account.set(o.account);
           // mnemonic = o.mnemonic;
         }
-        
+
         responses.set(res);
         // result = res;
       })
@@ -42,7 +43,7 @@
         responses.set(res);
       })
       .catch((e) => {
-        errors.set(e);
+        raise_error(e);
         // error_string = e; //This is a string
         console.error(e);
       });

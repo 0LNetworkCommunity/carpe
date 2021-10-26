@@ -1,7 +1,8 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
   import { account } from "../../accounts";
-  import { errors, responses } from "../../debug";
+import { raise_error } from "../../carpeError";
+  import { responses } from "../../debug";
   let home_path = "";
   let swarm_running = "";
   let swarm_files = "";
@@ -9,7 +10,7 @@
   const easySwarm = async () => {
     invoke("easy_swarm", {})
       .then((res) => (result = res))
-      .catch((e) => console.error(e));
+      .catch((e) => raise_error(e));
   };
 
   const initAliceFiles = async () => {
@@ -18,13 +19,13 @@
         result = res;
         swarmCheck();
       })
-      .catch((e) => console.error(e));
+      .catch((e) => raise_error(e));
   };
 
   const demo = async () => {
     invoke("swarm_demo_tx", {})
       .then((res) => (result = res))
-      .catch((e) => console.error(e));
+      .catch((e) => raise_error(e));
   };
 
   const miner = async () => {
@@ -33,20 +34,20 @@
       swarmPersona: "alice",
     })
       .then((res) => (result = res))
-      .catch((e) => console.error(e));
+      .catch((e) => raise_error(e));
   };
 
   const swarmCheck = async () => {
     invoke("swarm_process", {})
       .then((res) => (swarm_running = res))
-      .catch((e) => console.error(e));
+      .catch((e) => raise_error(e));
 
     invoke("swarm_files", {})
       .then((res: JSON) => {
         console.log(res);
         swarm_files = res;
       })
-      .catch((e) => console.error(e));
+      .catch((e) => raise_error(e));
   };
 
   const initAliceKeys = async () => {
@@ -62,9 +63,8 @@
           timeout: 3000,
         });
       })
-      .catch((error) => {
-        window.alert(error);
-        errors.set(error);
+      .catch((e) => {
+        raise_error(e)
       });
   };
 

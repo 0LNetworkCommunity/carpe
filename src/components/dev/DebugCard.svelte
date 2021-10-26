@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { responses, errors } from "../../debug.ts"; // TODO: Make this read only
+  import { responses } from "../../debug.ts"; // TODO: Make this read only
 
 
   let home = "";

@@ -1,21 +1,20 @@
 <script lang="ts">
-  import { Link, useNavigate } from "svelte-navigator";
+  import { Link } from "svelte-navigator";
   import { onMount } from 'svelte';
+  import type { CarpeError } from '../../carpeError';
+  import { raise_error } from '../../carpeError';
 
   import UIkit from "uikit";
   const invoke = window.__TAURI__.invoke;
-  const navigate = useNavigate();
-
 
   let upstream_url = "http://1.1.1.1:8080";
   let base_waypoint = "";
-  let address = "";
 
 
   function updateNetwork() {
     // check input data
     // submit
-    invoke("update_upstream", { url: upstream_url, address: address })
+    invoke("update_upstream", { url: upstream_url, wp: base_waypoint })
       .then((_) => {
         UIkit.notification({
           message: "<span uk-icon='icon: check'></span> Account added",
@@ -24,8 +23,10 @@
           timeout: 3000,
         });
       })
-      .catch((error) => window.alert(error));
-    navigate("/", { replace: true });
+      .catch((error) => { 
+        raise_error(error as CarpeError);
+        
+      });
   }
 
 
@@ -41,7 +42,7 @@
 
         res
       })
-      .catch((error) => window.alert(error));
+      .catch((error) => raise_error(error));
   }
 
     // // TODO: is this the correct event?
