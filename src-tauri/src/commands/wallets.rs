@@ -170,10 +170,10 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, anyhow::Error
 
   key_manager::set_private_key(&address.to_string(), priv_key)?;
 
-  configs::maybe_init_configs();
+  configs::maybe_init_configs(address.clone(), authkey.clone());
 
   insert_account_db(get_short(address.clone()), address, authkey)?;
-
+  
   Ok(AccountEntry::new(address, authkey))
 }
 

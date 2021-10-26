@@ -3,12 +3,14 @@
 use std::{fs, path::PathBuf};
 
 use anyhow::{Error, bail};
-use diem_types::waypoint::Waypoint;
+use diem_types::{transaction::authenticator::AuthenticationKey, waypoint::Waypoint};
 use dirs;
 use ol::{
   config::AppCfg,
   node::{client, node::Node},
 };
+use diem_types::account_address::AccountAddress;
+
 use ol_types::config::{self, bootstrap_waypoint_from_upstream};
 use url::Url;
 
@@ -37,6 +39,17 @@ pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
   cfg.save_file();
   Ok(cfg)
 }
+
+
+/// For switching between profiles in the Account DB.
+pub fn set_account_profile(acc: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
+  let mut cfg = get_cfg();
+  cfg.profile.account = acc;
+  cfg.profile.auth_key = authkey;
+  cfg.save_file();
+  Ok(cfg)
+}
+
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error>  {
@@ -83,10 +96,13 @@ pub fn is_initialized() -> bool {
 }
 
 /// initialize default configs.
-pub fn maybe_init_configs() {
+pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) {
   if !is_initialized() {
     let mut default_config = AppCfg::default();
     default_config.workspace.node_home = default_config_path();
+    default_config.profile.account = account;
+    default_config.profile.auth_key = authkey;
+
     fs::create_dir_all(&default_config.workspace.node_home).unwrap();
     default_config.save_file();
   }
