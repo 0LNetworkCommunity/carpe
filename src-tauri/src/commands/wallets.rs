@@ -1,4 +1,15 @@
+/**
+ * OK - get all accounts
+ * OK - add account
+ * - remove account
+ * - update account
+ *
+ **/
+ 
+use crate::carpe_error::CarpeError;
+use crate::configs::default_accounts_db_path;
 use crate::{configs, key_manager};
+use anyhow::Error;
 use diem_types::account_address::AccountAddress;
 use diem_types::transaction::authenticator::AuthenticationKey;
 use diem_wallet::WalletLibrary;
@@ -7,23 +18,10 @@ use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
 use ol_types::account::UserConfigs;
 use ol_types::block::VDFProof;
-/**
- * OK - get all accounts
- * OK - add account
- * - remove account
- * - update account
- *
- **/
-
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
-
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use tower::proof::write_genesis;
-use serde::{Deserialize, Serialize};
-
-
-static DB_FILE: &str = "accounts.json";
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
@@ -32,75 +30,99 @@ pub struct Accounts {
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct AccountEntry {
-  pub address: String,
-  pub title: String,
+  pub address: AccountAddress,
+  pub authkey: AuthenticationKey,
+  pub nickname: String,
   pub balance: Option<u64>,
 }
 
-
-/// Keygen output
-#[derive(Serialize, Deserialize)]
-struct Output {
-  mnemonic: String,
-  account: AccountAddress,
-  authkey: AuthenticationKey,
+impl AccountEntry {
+  pub fn new(address: AccountAddress, authkey: AuthenticationKey) -> Self {
+    AccountEntry {
+      address: address.clone(),
+      authkey,
+      nickname: get_short(address),
+      balance: None,
+    }
+  }
 }
-
 /// Keygen handler
 #[tauri::command]
-pub fn keygen() -> Result<String, String> {
+pub fn keygen() -> Result<AccountEntry, CarpeError> {
   dbg!("keygen");
   let wallet = WalletLibrary::new();
   let mnemonic_string = wallet.mnemonic();
 
-  let (authkey, account, _) = wallet::get_account_from_mnem(mnemonic_string.clone())
-  .map_err(|e| e.to_string() )?;
+  let (authkey, address, _) = wallet::get_account_from_mnem(mnemonic_string.clone())
+    .map_err(|_| CarpeError::misc("cannot generate keys"))?;
 
-  let output = Output {
-    mnemonic: mnemonic_string,
-    account,
-    authkey,
-  };
-  return match serde_json::to_string(&output) {
-    Ok(t) => Ok(t),
-    Err(e) => Err(e.to_string()),
-  };
+  Ok(AccountEntry::new(address, authkey))
 }
+
+fn get_short(acc: AccountAddress) -> String {
+  acc.to_string()[..3].to_owned()
+}
+
+/// default way accounts get initialized in Carpe
+#[tauri::command]
+pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
+  danger_init_from_mnem(mnem)
+    .map_err(|_| CarpeError::misc("could not initialize from mnemonic"))
+}
+
+/// remove all accounts from ACCOUNTS_DB_FILE
 
 #[tauri::command]
-pub fn get_all_accounts(app_handle: tauri::AppHandle) -> Result<Accounts, String> {
-  let app_dir = app_handle.path_resolver().app_dir().unwrap();
-  Ok(read_accounts(&app_dir))
+pub fn get_all_accounts() -> Result<Accounts, String> {
+  Ok(read_accounts())
 }
 
+/// Add an account for tracking only.
 #[tauri::command]
 pub fn add_account(
-  title: String,
+  nickname: String,
+  authkey: String,
   address: String,
-  app_handle: tauri::AppHandle,
-) -> Result<Accounts, String> {
-  let app_dir = app_handle.path_resolver().app_dir().unwrap();
+) -> Result<Accounts, CarpeError> {
+  // Todo: Does tauri parse the types automatically?
+  let parsed_address: AccountAddress = address.parse()
+  .map_err(|_| CarpeError::misc("cannot parse account address"))?;
 
-  insert_account_db(title, address, app_dir)
+  let parsed_auth: AuthenticationKey = authkey.parse()
+    .map_err(|_| CarpeError::misc("cannot parse authkey"))?;
+
+  insert_account_db(nickname, parsed_address, parsed_auth).map_err(|e| {
+    CarpeError::misc(&format!(
+      "could not add account, message {:?}",
+      e.to_string()
+    ))
+  })
 }
 
-fn insert_account_db(title: String, address: String, app_dir: PathBuf) -> Result<Accounts, String> {
+fn insert_account_db(
+  nickname: String,
+  address: AccountAddress,
+  authkey: AuthenticationKey,
+) -> Result<Accounts, Error> {
+  let app_dir = default_accounts_db_path();
   // get all accounts
-  let mut all = read_accounts(&app_dir);
+  let mut all = read_accounts();
 
   // push new account
   let new_account = AccountEntry {
-    title: title,
     address: address,
+    authkey: authkey,
+    nickname: nickname,
     balance: None,
   };
   all.accounts.push(new_account);
 
   // write to db file
-  create_dir_all(&app_dir).unwrap();
+  // in case it doesn't exist
+  //TODO: remove this.
+  create_dir_all(&app_dir.parent().unwrap()).unwrap();
   let serialized = serde_json::to_vec(&all).expect("Struct Accounts should be converted!");
-  let db_path = Path::new(&app_dir).join(DB_FILE);
-  let mut file = File::create(db_path).expect("DB_FILE should be created!");
+  let mut file = File::create(app_dir).expect("DB_FILE should be created!");
   file
     .write_all(&serialized)
     .expect("DB_FILE should be writen!");
@@ -108,11 +130,12 @@ fn insert_account_db(title: String, address: String, app_dir: PathBuf) -> Result
   Ok(all)
 }
 
+// remove all accounts which are being tracked.
 #[tauri::command]
-pub fn remove_accounts(app_handle: tauri::AppHandle) -> Result<String, String> {
+pub fn remove_accounts() -> Result<String, String> {
   // Note: this only removes the account tracking, doesn't delete account on chain.
-  let app_dir = app_handle.path_resolver().app_dir().unwrap();
-  let db_path = Path::new(&app_dir).join(DB_FILE);
+
+  let db_path = default_accounts_db_path();
   dbg!(&db_path);
   if db_path.exists() {
     match fs::remove_file(&db_path) {
@@ -129,48 +152,27 @@ pub fn remove_accounts(app_handle: tauri::AppHandle) -> Result<String, String> {
   );
 }
 
-#[tauri::command]
-pub fn init_from_mnem(mnem: String, app_handle: tauri::AppHandle) -> String {
-  let app_dir = app_handle.path_resolver().app_dir().unwrap();
-  // get all accounts
-  // let app_dir = app_handle.path_resolver().app_dir().unwrap();
-
-  let acc = danger_init_from_mnem(mnem).unwrap();
-  let name = acc.to_string(); //TODO: Don't clone here.
-  insert_account_db(name[..3].to_owned(), name, app_dir).unwrap();
-  acc.to_string()
-}
-
-#[test]
-// danger_init_from_mnem
-fn test_init_mnem() {
-  use ol_types::config::parse_toml;
-  let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
-  danger_init_from_mnem(alice).unwrap();
-  let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
-  let cfg = parse_toml(path.to_str().unwrap().to_owned());
-  dbg!(&cfg);
-}
-pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Error> {
+pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, anyhow::Error> {
   dbg!("init from mnem");
 
-
   // TODO: refactor upstream wallet::get_account so that it returns a result
-  let (_key, acc, _wl) = wallet::get_account_from_mnem(mnem.clone())?;
+  let (authkey, address, _wl) = wallet::get_account_from_mnem(mnem.clone())?;
 
   let priv_key = KeyScheme::new_from_mnemonic(mnem)
     .child_0_owner
     .get_private_key();
 
-  key_manager::set_private_key(&acc.to_string(), priv_key)?;
+  key_manager::set_private_key(&address.to_string(), priv_key)?;
 
   configs::maybe_init_configs();
 
-  Ok(acc)
+  insert_account_db(get_short(address.clone()), address, authkey)?;
+
+  Ok(AccountEntry::new(address, authkey))
 }
 
-fn read_accounts(app_dir: &Path) -> Accounts {
-  let db_path = Path::new(&app_dir).join(DB_FILE);
+fn read_accounts() -> Accounts {
+  let db_path = default_accounts_db_path();
   if db_path.exists() {
     let file = File::open(db_path).expect("DB_FILE should be found!");
     serde_json::from_reader(file).expect("file should be proper JSON")
@@ -194,7 +196,6 @@ fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>)
   UserConfigs::new(block).create_manifest(path);
 }
 
-
 // /// Wizard User Check Handler
 // #[tauri::command]
 // pub fn wizard_user_check(home: String) -> bool {
@@ -205,7 +206,6 @@ fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>)
 //   };
 //   check(home_path)
 // }
-
 
 // /// Wizard init handler
 // #[tauri::command]
@@ -227,7 +227,6 @@ fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>)
 //     }
 //   };
 
-  
 //   // If upstream is valid, then we don't need to pass an epoch and waypoint.
 //   // let mut waypoint = None;
 //   // let mut starting_epoch = None;
@@ -239,13 +238,13 @@ fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>)
 //   // }
 //   // // let path = PathBuf::from(path);
 //   // ol_types::config::AppCfg::init_app_configs(
-//   //   key, 
+//   //   key,
 //   //   acc,
 //   //   // TODO: how to pick a URL to fetch upstream data from
 //   //   &upstream,
-//   //   &Some(path), 
-//   //   &starting_epoch, 
-//   //   &waypoint, 
+//   //   &Some(path),
+//   //   &starting_epoch,
+//   //   &waypoint,
 //   //   &None, // No need for source path
 //   //   Some("Test".to_string()), // TODO
 //   //   Some(Ipv4Addr::new(1, 1, 1, 1)), // TODO
@@ -253,3 +252,14 @@ fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>)
 
 //   account
 // }
+
+#[test]
+// danger_init_from_mnem
+fn test_init_mnem() {
+  use ol_types::config::parse_toml;
+  let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
+  danger_init_from_mnem(alice).unwrap();
+  let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
+  let cfg = parse_toml(path.to_str().unwrap().to_owned());
+  dbg!(&cfg);
+}

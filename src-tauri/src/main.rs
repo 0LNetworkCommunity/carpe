@@ -27,7 +27,7 @@ fn main() {
     easy_swarm,
     debug_error,
     remove_accounts,
-    swarm_demo_tx,
+    demo_tx,
     update_upstream,
     get_networks,
     refresh_waypoint,

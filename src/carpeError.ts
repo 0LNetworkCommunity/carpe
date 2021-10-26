@@ -18,7 +18,7 @@ export function raise_error(err: CarpeError) {
 
 function error_notification(err: CarpeError) {
   UIkit.notification({
-    message: `<span uk-icon=\'icon: check\'></span> ${err.msg} (error: ${err.uid})`,
+    message: `<span uk-icon=\'icon: check\'></span> ${err.msg} \(code: ${err.uid}\)`,
     pos: 'bottom-center',
     status: 'error',
     timeout: 3000

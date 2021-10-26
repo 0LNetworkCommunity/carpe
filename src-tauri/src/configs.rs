@@ -12,10 +12,16 @@ use ol::{
 use ol_types::config::{self, bootstrap_waypoint_from_upstream};
 use url::Url;
 
+static ACCOUNTS_DB_FILE: &str = "accounts.json";
+static APP_CONFIG_FILE: &str = "0L.toml";
 
 // get the config path for files
-fn default_config_path() -> PathBuf {
-  dirs::home_dir().unwrap().join(".0L").join("0L.toml")
+pub fn default_config_path() -> PathBuf {
+  dirs::home_dir().unwrap().join(".0L").join(APP_CONFIG_FILE)
+}
+
+pub fn default_accounts_db_path() -> PathBuf {
+  dirs::home_dir().unwrap().join(".0L").join(ACCOUNTS_DB_FILE)
 }
 
 /// Get all the 0L configs. For tx sending and upstream nodes

@@ -13,14 +13,15 @@ use crate::carpe_error::CarpeError;
 use super::client;
 
 #[tauri::command]
-pub fn demo_tx(account: String) -> String {
-  let addr: AccountAddress = account.parse().unwrap();
-  let url_str = Some("http://64.225.2.108:8080");
-  let tx_params = client::get_tx_params(addr, url_str).expect("could not load tx params");
+pub fn demo_tx(account: String) -> Result<String, CarpeError> {
+  let addr: AccountAddress = account.parse()
+  .map_err(|_|{ CarpeError::misc("can't parse account") })?;
+  let tx_params = client::get_tx_params(addr, None)
+  .map_err(|_|{ CarpeError::misc("could not load tx params") })?;
   dbg!(&tx_params);
   match demo_cmd::demo_tx(&tx_params, false, None) {
-    Ok(r) => format!("{:?}", r),
-    Err(e) => format!("{:?}", e)
+    Ok(r) => Ok(format!("Tx Success: {:?}", r)),
+    Err(e) => Err(CarpeError::misc(&format!("could not do demo tx, message: {:?}", e.to_string())))
   }
 }
 

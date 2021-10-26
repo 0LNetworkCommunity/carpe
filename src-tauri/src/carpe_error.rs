@@ -31,7 +31,7 @@ impl CarpeError {
     CarpeError {
       category: ErrorCat::Misc,
       uid: E_MISC,
-      msg: msg.to_owned()
+      msg: msg.to_owned(),
     }
   }
 }
