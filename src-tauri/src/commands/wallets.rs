@@ -53,7 +53,8 @@ pub fn keygen() -> Result<String, String> {
   let wallet = WalletLibrary::new();
   let mnemonic_string = wallet.mnemonic();
 
-  let (authkey, account, _) = wallet::get_account_from_mnem(mnemonic_string.clone());
+  let (authkey, account, _) = wallet::get_account_from_mnem(mnemonic_string.clone())
+  .map_err(|e| e.to_string() )?;
 
   let output = Output {
     mnemonic: mnemonic_string,
@@ -155,7 +156,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountAddress, anyhow::Err
 
 
   // TODO: refactor upstream wallet::get_account so that it returns a result
-  let (_key, acc, _wl) = wallet::get_account_from_mnem(mnem.clone());
+  let (_key, acc, _wl) = wallet::get_account_from_mnem(mnem.clone())?;
 
   let priv_key = KeyScheme::new_from_mnemonic(mnem)
     .child_0_owner
@@ -178,9 +179,9 @@ fn read_accounts(app_dir: &Path) -> Accounts {
   }
 }
 
-pub fn danger_get_keys(mnemonic: String) -> WalletLibrary {
-  let (_, _, wl) = wallet::get_account_from_mnem(mnemonic);
-  wl
+pub fn danger_get_keys(mnemonic: String) -> Result<WalletLibrary, anyhow::Error> {
+  let (_, _, wl) = wallet::get_account_from_mnem(mnemonic)?;
+  Ok(wl)
 }
 
 //TODO:

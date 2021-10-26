@@ -26,7 +26,7 @@ pub fn demo_miner_once(mnemonic: String) -> String {
   let config_dir = "$HOME/.0L/";
 
   let config = get_cfg(config_dir);
-  let wl = wallets::danger_get_keys(mnemonic);
+  let wl = wallets::danger_get_keys(mnemonic).unwrap();
 
   let waypoint: Option<Waypoint> = "0:3c6cea7bf248248735cae3e9425c56e09c9a625e912da102f244e2b5820f9622"
     .parse()
