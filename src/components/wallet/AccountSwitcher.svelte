@@ -1,6 +1,9 @@
 <script lang="ts">
   import { account, all_accounts } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
+  import { invoke } from "@tauri-apps/api/tauri";
+import { raise_error } from "../../carpeError";
+import { responses } from "../../debug";
 
   let my_account;
   let account_list: AccountEntry[];
@@ -16,6 +19,12 @@
 
   function setAccount(an_address) {
     account.set(an_address);
+    
+    invoke("switch_profile", {
+      account: my_account,
+    })
+    .then((res) => responses.set(res))
+    .catch((e) => raise_error(e));
   }
   
 </script>

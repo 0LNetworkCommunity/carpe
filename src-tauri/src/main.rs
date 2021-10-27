@@ -31,6 +31,7 @@ fn main() {
     update_upstream,
     get_networks,
     refresh_waypoint,
+    switch_profile,
 	])
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");
