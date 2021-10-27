@@ -45,17 +45,28 @@ impl AccountEntry {
     }
   }
 }
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq)]
+pub struct NewKeygen {
+  entry: AccountEntry,
+  mnem: String
+}
+
 /// Keygen handler
 #[tauri::command]
-pub fn keygen() -> Result<AccountEntry, CarpeError> {
+pub fn keygen() -> Result<NewKeygen, CarpeError> {
   dbg!("keygen");
   let wallet = WalletLibrary::new();
   let mnemonic_string = wallet.mnemonic();
 
   let (authkey, address, _) = wallet::get_account_from_mnem(mnemonic_string.clone())
     .map_err(|_| CarpeError::misc("cannot generate keys"))?;
-
-  Ok(AccountEntry::new(address, authkey))
+  let res = NewKeygen {
+    entry: AccountEntry::new(address, authkey),
+    mnem: mnemonic_string
+  };
+  
+  Ok(res)
 }
 
 /// default way accounts get initialized in Carpe

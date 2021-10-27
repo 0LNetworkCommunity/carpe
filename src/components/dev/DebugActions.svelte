@@ -2,38 +2,42 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import { responses } from "../../debug";
   import DemoTx from "../txs/DemoTx.svelte";
-  import { account, authkey } from "../../accounts";
+  // import { account, authkey } from "../../accounts";
+  // import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
+  import Keygen from "../wallet/Keygen.svelte";
 
-  let authkey_string: string = "";
-  let account_string: string = "";
+  // let authkey_string: string = "";
+  // let account_string: string = "";
 
-  authkey.subscribe((n) => {
-    authkey_string = n;
-  });
+  // authkey.subscribe((n) => {
+  //   authkey_string = n;
+  // });
 
-  account.subscribe((n) => {
-    account_string = n;
-  });
+  // account.subscribe((n) => {
+  //   account_string = n;
+  // });
 
-  const keygen = async () => {
-    invoke("keygen", {})
-      .then((res) => {
-        let o = JSON.parse(res);
-        if ("account" in o) {
-          console.log(o);
-          // account = o.account;
-          // authkey = o.authkey;
-          authkey.set(o.authkey);
-          account.set(o.account);
-          // mnemonic = o.mnemonic;
-        }
+  // const keygen = async () => {
+  //   invoke("keygen", {})
+  //     .then((res: AccountEntry) => {
 
-        responses.set(res);
-        // result = res;
-      })
-      .catch((e) => console.error(e));
-  };
+  //       // let o = JSON.parse(res);
+
+  //       if ("account" in res) {
+  //         console.log(res);
+  //         // account = o.account;
+  //         // authkey = o.authkey;
+  //         authkey.set(res.authkey);
+  //         account.set(res.account);
+  //         // mnemonic = o.mnemonic;
+  //       }
+
+  //       responses.set(res);
+  //       // result = res;
+  //     })
+  //     .catch((e) => console.error(e));
+  // };
 
   const makeError = async () => {
     invoke("debug_error", {
@@ -62,8 +66,7 @@
       >Make Error</button
     >
 
-    <button class="uk-button uk-button-default" on:click={keygen}>Keygen</button
-    >
+    <Keygen />
 
     <button class="uk-button uk-button-default" on:click={init}>Init</button>
 

@@ -1,11 +1,8 @@
 <script lang="ts">
-  import { account, all_accounts } from "../../accounts";
+  import { account, all_accounts, setAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
-  import { invoke } from "@tauri-apps/api/tauri";
-import { raise_error } from "../../carpeError";
-import { responses } from "../../debug";
 
-  let my_account;
+  let my_account: AccountEntry;
   let account_list: AccountEntry[];
 
   account.subscribe((value) => {
@@ -17,26 +14,17 @@ import { responses } from "../../debug";
     account_list = a;
   });
 
-  function setAccount(an_address) {
-    account.set(an_address);
-    
-    invoke("switch_profile", {
-      account: my_account,
-    })
-    .then((res) => responses.set(res))
-    .catch((e) => raise_error(e));
-  }
-  
+
 </script>
 
 <main>
-      <button class="uk-button uk-button-default" type="button">
-        {#if my_account}
-          {my_account}
-        {:else}
-          Select Account
-        {/if}
-    </button>
+  <button class="uk-button uk-button-default" type="button">
+    {#if my_account}
+      {my_account.nickname}
+    {:else}
+      Select Account
+    {/if}
+  </button>
 
   <div uk-dropdown>
     <ul class="uk-nav uk-dropdown-nav">
@@ -45,7 +33,14 @@ import { responses } from "../../debug";
       {:else}
         {#each account_list as acc}
           <li>
-            <a href="#" on:click={() => { setAccount(acc.account); }}> {acc.nickname} </a >
+            <a
+              href="#"
+              on:click={() => {
+                setAccount(acc.account);
+              }}
+            >
+              {acc.nickname}
+            </a>
           </li>
         {/each}
 
