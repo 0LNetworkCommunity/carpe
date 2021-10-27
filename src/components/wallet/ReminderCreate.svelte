@@ -1,0 +1,25 @@
+<script lang="ts">
+import { account } from "../../accounts";
+
+
+  let authkey;
+  account.subscribe(a => authkey = a.authkey)
+
+</script>
+
+<main>
+    <!-- This is the modal -->
+    <div id="modal-example" class="uk-modal-container" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Onboarding</h2>
+            <p>Your account doesn't yet exist on chain. So far you have created the keys.</p>
+            <p>Next, anyone already on 0L can create your account by sending a coin to your address.</p>
+            <h3> AUTH KEY: </h3>
+            <span> {authkey} <span>
+
+            <p class="uk-text-right">
+                <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+            </p>
+        </div>
+    </div>
+</main>

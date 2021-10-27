@@ -4,8 +4,9 @@
   import AccountFromMnem from "./AccountFromMnem.svelte";
   import { onMount } from "svelte";
   import Keygen from "./Keygen.svelte";
-import { Link } from "svelte-navigator";
-import { get_balance } from "../../queries";
+  import { Link } from "svelte-navigator";
+  import { get_balance } from "../../queries";
+  import ReminderCreate from "./ReminderCreate.svelte";
 
   let account_list: AccountEntry[];
 
@@ -13,18 +14,23 @@ import { get_balance } from "../../queries";
     account_list = a;
   });
 
-  function bal() {
-    get_balance(account_list[0])
+  async function bal(i): Promise<number> {
+    let n = await get_balance(account_list[i])
+    console.log(n);
+    return n;
   }
 
   onMount(() => {
     get_all_accounts();
   });
+
+
 </script>
 
 <main class="uk-height-viewport">
   <h1>Wallet</h1>
   <div>
+
     <!-- <Link to="add-account">
       <button class="uk-button uk-button-primary uk-align-right"> Track Account </button>
     </Link> -->
@@ -53,31 +59,47 @@ import { get_balance } from "../../queries";
         </tr>
       </thead>
       <tbody>
-        {#each account_list as a}
-          <tr
-            on:click={() => {
-             setAccount(a.account);
-            }}
-          >
+        {#each account_list as a, i}
+          <tr on:click={() => { setAccount(a.account);}}>
             <!-- <a href="#" on:click={() => { setAccount(acc.account); }}> {acc.nickname} </a > -->
 
             <td>{a.nickname}</td>
             <td>{a.account}</td>
             <td>{a.authkey.slice(0,5)}...</td>
-            <td>{a.balance} </td>
+
+            {#await bal(i)}
+              <td>...</td>
+            {:then data}
+              {#if data }
+              <td>{data}</td>
+              {:else}
+                <td>
+                    <button class="uk-button uk-button-default" uk-toggle="target: #modal-example" onclick={() => {setAccount(a.account)}}>Onboard</button> 
+                
+                </td>
+              {/if}
+            {:catch error}
+              <td>...</td>
+            {/await}
           </tr>
         {/each}
       </tbody>
     </table>
   {/if}
 
+  <div uk-grid>
     <Link to="account-from-mnem">
-      <button class="uk-button uk-button-default uk-align-right"> Bring Account </button>
+      <button class="uk-button uk-button-default"> Restore Account </button>
     </Link>
 
     <Link to="keygen">
-      <button class="uk-button uk-button-primary uk-align-right"> New Account </button>
+      <button class="uk-button uk-button-primary"> New Account </button>
     </Link>
+  </div>
 
-    <button class="uk-button uk-button-primary uk-align-right" on:click={bal}> Check Balance </button>
+
+
+    <!-- Modal -->
+    <ReminderCreate/>
+
 </main>

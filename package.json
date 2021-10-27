@@ -28,6 +28,7 @@
 		"typescript": "^4.0.0"
 	},
 	"dependencies": {
+		"lodash": "^4.17.21",
 		"sirv-cli": "^1.0.0",
 		"svelte-navigator": "^3.1.5",
 		"uikit": "^3.7.4"

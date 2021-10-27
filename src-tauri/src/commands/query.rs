@@ -5,6 +5,7 @@ use crate::{carpe_error::CarpeError, configs::get_node_obj};
 
 #[tauri::command]
 pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError>{
+  dbg!(&account);
   let mut node = get_node_obj()?;
   let bal = node.query(QueryType::Balance{ account });
   bal.parse::<u64>()

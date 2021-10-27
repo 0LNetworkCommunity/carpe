@@ -10,9 +10,7 @@ import { raise_error } from "../../carpeError";
   });
 
   const demoTx = async () => {
-    invoke("demo_tx", {
-      account: account_string,
-    })
+    invoke("demo_tx", {})
       .then((res) => {
         responses.set(res);
       })

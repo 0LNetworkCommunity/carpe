@@ -10,7 +10,8 @@
   import AddAccount from "./components/wallet/AddAccount.svelte";
   import Swarm from "./components/dev/Swarm.svelte";
   import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
-import Keygen from "./components/wallet/Keygen.svelte";
+  import Keygen from "./components/wallet/Keygen.svelte";
+  import Transactions from "./components/txs/Transactions.svelte";
 </script>
 
 <main class="uk-height-viewport">
@@ -20,6 +21,7 @@ import Keygen from "./components/wallet/Keygen.svelte";
         <ul class="uk-navbar-nav">
           <li><Link to="/">Wallet</Link></li>
           <li><Link to="miner">Miner</Link></li>
+          <li><Link to="txs">Transactions</Link></li>
           <li><Link to="settings">Settings</Link></li>
           <li><Link to="dev">Debug</Link></li>
           <li><Link to="swarm">Swarm</Link></li>
@@ -37,9 +39,11 @@ import Keygen from "./components/wallet/Keygen.svelte";
       <Route path="/add-account" component={AddAccount} primary={false} />
       <Route path="/account-from-mnem" component={AccountFromMnem} primary={false} />
       <Route path="/keygen" component={Keygen} primary={false} />
-
       <Route path="/miner" component={Miner} primary={false} />
+      <Route path="/txs" component={Transactions} primary={false} />
       <Route path="/settings" component={Settings} primary={false} />
+
+      <!-- DEV -->
       <Route path="/dev" component={DevMode} primary={false} />
       <Route path="/swarm" component={Swarm} primary={false} />
     </div>
