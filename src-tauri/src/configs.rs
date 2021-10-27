@@ -3,6 +3,7 @@
 use std::{fs, path::PathBuf};
 
 use anyhow::{Error, bail};
+use cli::diem_client::DiemClient;
 use diem_types::{transaction::authenticator::AuthenticationKey, waypoint::Waypoint};
 use dirs;
 use ol::{
@@ -13,6 +14,8 @@ use diem_types::account_address::AccountAddress;
 
 use ol_types::config::{self, bootstrap_waypoint_from_upstream};
 use url::Url;
+
+use crate::carpe_error::CarpeError;
 
 static ACCOUNTS_DB_FILE: &str = "accounts.json";
 static APP_CONFIG_FILE: &str = "0L.toml";
@@ -32,6 +35,17 @@ pub fn get_cfg() -> AppCfg {
   config::parse_toml(config_toml.to_str().unwrap().to_string()).unwrap()
 }
 
+pub fn get_node_obj() -> Result<Node, CarpeError> {
+  let cfg = get_cfg();
+
+  let client = DiemClient::new(
+    cfg.clone().profile.default_node.ok_or(CarpeError::misc("could not load default_node"))?, 
+    cfg.clone().chain_info.base_waypoint.ok_or(CarpeError::misc("could not load base_waypoint"))?
+  )
+  .map_err(|_|{ CarpeError::misc("could not load tx params") })?;
+
+  Ok(Node::new(client, &cfg, false))
+}
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
   let mut cfg = get_cfg();
@@ -128,6 +142,7 @@ pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) 
   Ok(())
 }
 
+// TODO:
 /// fetch upstream peers.
 pub fn refresh_upstream_peers() -> Result<(), Error> {
   let mut cfg = get_cfg();

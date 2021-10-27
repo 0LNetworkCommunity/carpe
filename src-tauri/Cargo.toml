@@ -23,6 +23,7 @@ tower = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
 onboard = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
 diem-crypto = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
 diem-config = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+cli = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
 txs = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
 ol-types = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
 ol-keys = { git = "https://github.com/olsf/libra.git", branch = "tauri"}

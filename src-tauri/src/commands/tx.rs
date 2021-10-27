@@ -16,6 +16,7 @@ use super::client;
 pub fn demo_tx(account: String) -> Result<String, CarpeError> {
   let addr: AccountAddress = account.parse()
   .map_err(|_|{ CarpeError::misc("can't parse account") })?;
+  
   let tx_params = client::get_tx_params(addr, None)
   .map_err(|_|{ CarpeError::misc("could not load tx params") })?;
   dbg!(&tx_params);
