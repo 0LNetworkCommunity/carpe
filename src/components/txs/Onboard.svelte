@@ -1,12 +1,12 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-import { Link } from "svelte-navigator";
+  import { Link } from "svelte-navigator";
   import UIkit from "uikit";
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
 
   let alice_authkey;
-  function handleAdd() {
+  function createUser() {
     // submit
     invoke("create_user_account", { authkey: alice_authkey })
       .then((res) => {
@@ -22,7 +22,7 @@ import { Link } from "svelte-navigator";
   }
 </script>
 
-<main>
+<main class="uk-height-viewport">
   <h3>Onboard Someone</h3>
   <form id="account-form">
     <fieldset class="uk-fieldset">
@@ -37,9 +37,9 @@ import { Link } from "svelte-navigator";
 
       <div>
         <span
-          on:click={handleAdd}
+          on:click={createUser}
           class="uk-button uk-button-primary uk-align-right"
-          id="add-btn">Add</span
+          id="create-acc">Add</span
         >
         <Link to="/">
           <span class="uk-button uk-button-default uk-align-right">Cancel</span>

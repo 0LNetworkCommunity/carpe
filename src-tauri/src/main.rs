@@ -31,6 +31,7 @@ fn main() {
     query_balance,
     // Transactions
     demo_tx,
+    create_user_account,
     // Dev
     init_swarm,
     swarm_miner,

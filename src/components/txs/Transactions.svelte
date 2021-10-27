@@ -4,6 +4,6 @@ import Onboard from "./Onboard.svelte";
 
 </script>
 
-<main>
+<main class="uk-height-viewport">
   <Onboard/>
 </main>
