@@ -45,7 +45,7 @@ import { subscribe } from "svelte/internal";
   <h1>Add Account</h1>
   <form id="account-form">
     <fieldset class="uk-fieldset">
-      <div class="uk-margin uk-inline-block uk-width-1-1">
+      <!-- <div class="uk-margin uk-inline-block uk-width-1-1">
         <input
           class="uk-input"
           type="text"
@@ -56,7 +56,7 @@ import { subscribe } from "svelte/internal";
           class="uk-form-help-inline uk-text-small uk-text-danger uk-position-absolute"
           >{helpTitle}</span
         >
-      </div>
+      </div> -->
 
       <div>
         <span

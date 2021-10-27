@@ -5,11 +5,22 @@
 
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
+import AccountFromMnem from "./AccountFromMnem.svelte";
 
   interface NewKeygen {
-    entry: AccountEntry,
-    mnem: string,
-  };
+    entry: AccountEntry;
+    mnem: string;
+  }
+
+  let display_mnem: string;
+  mnem.subscribe((m) => display_mnem = m);
+
+  let address: string;
+  let authkey: string;
+  account.subscribe((a) => {
+    address = a.account;
+    authkey = a.authkey;
+  });
 
   const keygen = async () => {
     invoke("keygen", {})
@@ -17,12 +28,29 @@
         console.log(res);
         responses.set(JSON.stringify(res));
         account.set(res.entry);
-        mnem.set(res.mnem)
+        mnem.set(res.mnem);
       })
       .catch((e) => raise_error(e));
   };
 </script>
 
-<main>
-  <button class="uk-button uk-button-default" on:click={keygen}>Keygen</button>
+<main class="uk-height-viewport">
+  <h3>Create New Keys <button class="uk-button uk-button-default" on:click={keygen}>Generate Keys</button> </h3>
+  
+  {#if address}
+  <div class="uk-margin uk-card uk-card-default uk-card-body uk-width-1-2@m">
+    
+      <h5>ACCOUNT ADDRESS: {address}</h5>
+      <h5>AUTH KEY: {authkey}</h5>
+      <p> You need this to be able to create the account on chain.</p>
+      <h5>RECOVERY MNEMONIC: </h5>
+      <p> This is your recovery key, if you lose it no one can help you. Write it down now.</p>
+      <div class="uk-margin">
+        <textarea class="uk-textarea" rows="3" placeholder={display_mnem} />
+      </div>
+    
+  </div>
+  <p> Your account does not exist yet on chain. You'll need someone to send funds to the Auth Key above the first time. From then on, people can just use the account address to transfer funds to you.</p>
+  <AccountFromMnem />
+  {/if}
 </main>

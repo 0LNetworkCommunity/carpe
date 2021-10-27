@@ -4,6 +4,7 @@
   import AccountFromMnem from "./AccountFromMnem.svelte";
   import { onMount } from "svelte";
   import Keygen from "./Keygen.svelte";
+import { Link } from "svelte-navigator";
 
   let account_list: AccountEntry[];
 
@@ -16,7 +17,7 @@
   });
 </script>
 
-<main>
+<main class="uk-height-viewport">
   <h1>Wallet</h1>
   <div>
     <!-- <Link to="add-account">
@@ -57,11 +58,19 @@
 
             <td>{a.nickname}</td>
             <td>{a.account}</td>
-            <td>{a.authkey}</td>
-            <td>{a.balance}</td>
+            <td>{a.authkey.slice(0,5)}...</td>
+            <td>{a.balance} </td>
           </tr>
         {/each}
       </tbody>
     </table>
   {/if}
+
+    <Link to="account-from-mnem">
+      <button class="uk-button uk-button-default uk-align-right"> Bring Account </button>
+    </Link>
+
+    <Link to="keygen">
+      <button class="uk-button uk-button-primary uk-align-right"> New Account </button>
+    </Link>
 </main>

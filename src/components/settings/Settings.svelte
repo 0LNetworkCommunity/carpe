@@ -18,7 +18,7 @@ import { raise_error } from "../../carpeError";
 
 </script>
 
-<main>
+<main class="uk-height-viewport">
   Settings
   <UpdateNetwork />
   <button class="uk-button uk-button-default" on:click={removeAccounts}> Remove Accounts </button>
