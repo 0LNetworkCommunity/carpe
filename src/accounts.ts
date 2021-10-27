@@ -41,7 +41,6 @@ export function find_one_account(account: string): AccountEntry {
   let list = get(all_accounts);
   let found = list.find((i) => i.account == account)
   return found
-  
 }
 
 export function setAccount(an_address: string) {

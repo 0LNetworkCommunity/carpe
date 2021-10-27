@@ -3,24 +3,28 @@
   import { onMount } from "svelte";
   import type { CarpeError } from "../../carpeError";
   import { raise_error } from "../../carpeError";
-
+  import { Networks, network_profile } from "../../networks";
+  import type { NetworkProfile } from "../../networks";
   import UIkit from "uikit";
+  
   const invoke = window.__TAURI__.invoke;
 
   let upstream_url = "http://1.1.1.1:8080";
   let waypoint = "";
+  let current_chain_id = "";
 
-  // Note: the string initialized should match the enum in Rust, networks.rs, to easily de/serialize
-  enum Networks {
-    Mainnet = "Mainnet",
-    Testnet = "Rex"
-  }
+  network_profile.subscribe((n) => {
+    upstream_url = n.url;
+    waypoint = n.waypoint;
+    current_chain_id = n.chain_id;
+  });
 
   function updateNetwork() {
     // check input data
     // submit
     invoke("update_upstream", { url: upstream_url, wp: waypoint })
-      .then((_) => {
+      .then((res: NetworkProfile) => {
+        network_profile.set(res);
         UIkit.notification({
           message: "<span uk-icon='icon: check'></span> Account added",
           pos: "bottom-center",
@@ -37,14 +41,7 @@
     // check input data
     // submit
     invoke("get_networks", {})
-      .then((res) => {
-        upstream_url = res.url;
-        waypoint = res.waypoint;
-
-        console.log(res);
-
-        res;
-      })
+      .then((res: NetworkProfile) => network_profile.set(res))
       .catch((error) => raise_error(error));
   }
 
@@ -52,42 +49,32 @@
     // check input data
     // submit
     invoke("refresh_waypoint", {})
-      .then((res) => {
-        upstream_url = res.url;
-        waypoint = res.waypoint;
-
-        console.log(res);
-
-        res;
-      })
+      .then((res: NetworkProfile) => network_profile.set(res))
       .catch((error) => raise_error(error));
   }
 
   function toggleNetwork(network: Networks) {
-    // check input data
-    // submit
     invoke("toggle_network", {network: network})
-      .then((res) => {
-        upstream_url = res.url;
-        waypoint = res.waypoint;
-
-        console.log(res);
-
-        res;
-      })
+      .then((res: NetworkProfile) => network_profile.set(res))
       .catch((error) => raise_error(error));
   }
   // // TODO: is this the correct event?
   onMount(async () => {
     get();
   });
+
+
+  function isChainId(chain: string): boolean {
+    return current_chain_id == chain
+  }
+
 </script>
 
 <main>
   <h3>What network</h3>
   <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-      <label><input class="uk-radio" type="radio" name="radio2" checked> Mainnet </label>
-      <label><input class="uk-radio" type="radio" name="radio2"> Rex (testnet) </label>
+      <label><input class="uk-radio" type="radio" name="radio2" checked={current_chain_id  == "Mainnet"} on:click={() => toggleNetwork(Networks.Mainnet)}> Mainnet </label>
+      <label><input class="uk-radio" type="radio" name="radio2" checked={ current_chain_id == "Rex"} on:click={() => toggleNetwork(Networks.Rex)}> Rex (testnet) </label>
   </div>
 
   <h3>Advanced: Manual Network Settings</h3>

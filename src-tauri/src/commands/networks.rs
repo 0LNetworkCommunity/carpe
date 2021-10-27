@@ -9,10 +9,10 @@ use crate::{carpe_error::CarpeError, configs::{self, set_waypoint_from_upstream}
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NetworkProfile {
-  pub network: String, // Todo, use the Network Enum
+  pub chain_id: String, // Todo, use the Network Enum
   pub url: Url,
   pub waypoint: Waypoint,
-  pub profile: String,
+  pub profile: String, // tbd, to use default node, or to use upstream, or a custom url.
 }
 
 impl NetworkProfile {
@@ -20,7 +20,7 @@ impl NetworkProfile {
     let cfg = configs::get_cfg();
     if let Some(url) = cfg.profile.default_node {
       Ok(NetworkProfile {
-        network: cfg.chain_info.chain_id,
+        chain_id: cfg.chain_info.chain_id,
         url: url,
         waypoint: cfg.chain_info.base_waypoint.unwrap_or_default(),
         profile: "default".to_string(),
@@ -49,6 +49,7 @@ impl fmt::Display for Networks {
 
 #[tauri::command]
 pub fn toggle_network(network: Networks) -> Result<NetworkProfile, CarpeError> {
+  dbg!("toggle network");
   let peers = match network {
     Networks::Mainnet => seed_peers::get_mainnet(),
     Networks::Rex => seed_peers::get_testnet(),
