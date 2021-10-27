@@ -6,7 +6,7 @@ import { raise_error } from "../../carpeError";
 
   let account_string = "";
   account.subscribe((n) => {
-    account_string = n;
+    account_string = n.account;
   });
 
   const demoTx = async () => {
