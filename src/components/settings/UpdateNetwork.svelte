@@ -6,9 +6,8 @@
   import { Networks, network_profile } from "../../networks";
   import type { NetworkProfile } from "../../networks";
   import UIkit from "uikit";
+import { invoke } from "@tauri-apps/api/tauri";
   
-  const invoke = window.__TAURI__.invoke;
-
   let upstream_url = "http://1.1.1.1:8080";
   let waypoint = "";
   let current_chain_id = "";

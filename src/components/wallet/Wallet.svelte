@@ -5,12 +5,17 @@
   import { onMount } from "svelte";
   import Keygen from "./Keygen.svelte";
 import { Link } from "svelte-navigator";
+import { get_balance } from "../../queries";
 
   let account_list: AccountEntry[];
 
   all_accounts.subscribe((a) => {
     account_list = a;
   });
+
+  function bal() {
+    get_balance(account_list[0])
+  }
 
   onMount(() => {
     get_all_accounts();
@@ -73,4 +78,6 @@ import { Link } from "svelte-navigator";
     <Link to="keygen">
       <button class="uk-button uk-button-primary uk-align-right"> New Account </button>
     </Link>
+
+    <button class="uk-button uk-button-primary uk-align-right" on:click={bal}> Check Balance </button>
 </main>

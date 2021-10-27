@@ -1,7 +1,7 @@
+import { invoke } from '@tauri-apps/api/tauri';
 import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
-const invoke = window.__TAURI__.invoke;
 
 export interface AccountEntry {
   account: string,

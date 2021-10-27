@@ -1,15 +1,12 @@
 <script lang="ts">
-  import { Link, useNavigate } from "svelte-navigator";
+  import { Link } from "svelte-navigator";
   import UIkit from "uikit";
   import { responses } from "../../debug";
   import { account, mnem } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
 
   import { raise_error } from "../../carpeError";
-import { subscribe } from "svelte/internal";
-
-  const invoke = window.__TAURI__.invoke;
-  const navigate = useNavigate();
+  import { invoke } from "@tauri-apps/api/tauri";
 
   // let alice_mnem =
   //   "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
@@ -45,7 +42,7 @@ import { subscribe } from "svelte/internal";
   <h1>Add Account</h1>
   <form id="account-form">
     <fieldset class="uk-fieldset">
-      <!-- <div class="uk-margin uk-inline-block uk-width-1-1">
+      <div class="uk-margin uk-inline-block uk-width-1-1">
         <input
           class="uk-input"
           type="text"
@@ -56,7 +53,7 @@ import { subscribe } from "svelte/internal";
           class="uk-form-help-inline uk-text-small uk-text-danger uk-position-absolute"
           >{helpTitle}</span
         >
-      </div> -->
+      </div>
 
       <div>
         <span

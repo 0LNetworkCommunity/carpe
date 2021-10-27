@@ -35,7 +35,7 @@ import AccountFromMnem from "./AccountFromMnem.svelte";
 </script>
 
 <main class="uk-height-viewport">
-  <h3>Create New Keys <button class="uk-button uk-button-default" on:click={keygen}>Generate Keys</button> </h3>
+  <h3>Create New Account <button class="uk-button uk-button-default" on:click={keygen}>Generate Keys</button> </h3>
   
   {#if address}
   <div class="uk-margin uk-card uk-card-default uk-card-body uk-width-1-2@m">

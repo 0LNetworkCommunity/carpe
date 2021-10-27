@@ -27,6 +27,8 @@ fn main() {
     get_networks,
     refresh_waypoint,
     toggle_network,
+    // Queries
+    query_balance,
     // Transactions
     demo_tx,
     // Dev
@@ -36,6 +38,7 @@ fn main() {
     swarm_process,
     easy_swarm,
     debug_error,
+
 
 	])
 	.run(tauri::generate_context!())
