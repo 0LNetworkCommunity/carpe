@@ -245,6 +245,7 @@ dependencies = [
  "ol-keys",
  "ol-types",
  "onboard",
+ "rand 0.8.4",
  "serde",
  "serde_json",
  "sysinfo",

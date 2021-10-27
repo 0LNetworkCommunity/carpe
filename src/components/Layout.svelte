@@ -1,7 +1,7 @@
 <script lang="ts">
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import Miner from "./Miner.svelte";
+  import Miner from "./miner/Miner.svelte";
   import Wallet from "./wallet/Wallet.svelte";
   import Settings from "./settings/Settings.svelte";
   import DevMode from "./dev/DevMode.svelte";

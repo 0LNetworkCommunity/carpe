@@ -32,7 +32,7 @@ dirs = "4.0.0"
 keyring = "0.10.1"
 anyhow = "1.0.38"
 hex = "0.4.3"
-
+rand = "0.8.4"
 
 [features]
 custom-protocol = [ "tauri/custom-protocol" ]

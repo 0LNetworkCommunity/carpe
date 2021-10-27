@@ -3,7 +3,7 @@
   import { Router, Link, Route } from "svelte-navigator";
   // import Layout from "./components/Layout.svelte";
   import Wallet from "./components/wallet/Wallet.svelte";
-  import Miner from "./components/Miner.svelte";
+  import Miner from "./components/miner/Miner.svelte";
   import Settings from "./components/settings/Settings.svelte";
   import DevMode from "./components/dev/DevMode.svelte";
   import AccountFromMnem from "./components/wallet/AccountFromMnem.svelte";

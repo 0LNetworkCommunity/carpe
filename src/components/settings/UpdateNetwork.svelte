@@ -10,6 +10,12 @@
   let upstream_url = "http://1.1.1.1:8080";
   let waypoint = "";
 
+  // Note: the string initialized should match the enum in Rust, networks.rs, to easily de/serialize
+  enum Networks {
+    Mainnet = "Mainnet",
+    Testnet = "Rex"
+  }
+
   function updateNetwork() {
     // check input data
     // submit
@@ -56,6 +62,21 @@
       })
       .catch((error) => raise_error(error));
   }
+
+  function toggleNetwork(network: Networks) {
+    // check input data
+    // submit
+    invoke("toggle_network", {network: network})
+      .then((res) => {
+        upstream_url = res.url;
+        waypoint = res.waypoint;
+
+        console.log(res);
+
+        res;
+      })
+      .catch((error) => raise_error(error));
+  }
   // // TODO: is this the correct event?
   onMount(async () => {
     get();
@@ -63,8 +84,13 @@
 </script>
 
 <main>
-  <h3>Update Network Settings</h3>
+  <h3>What network</h3>
+  <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+      <label><input class="uk-radio" type="radio" name="radio2" checked> Mainnet </label>
+      <label><input class="uk-radio" type="radio" name="radio2"> Rex (testnet) </label>
+  </div>
 
+  <h3>Advanced: Manual Network Settings</h3>
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">

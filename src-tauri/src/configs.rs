@@ -40,6 +40,22 @@ pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
   Ok(cfg)
 }
 
+/// Get all the 0L configs. For tx sending and upstream nodes
+pub fn set_chain_id(chain_id: String) -> Result<AppCfg, Error> {
+  let mut cfg = get_cfg();
+  cfg.chain_info.chain_id = chain_id;
+  cfg.save_file();
+  Ok(cfg)
+}
+
+/// Set the list of upstream nodes
+pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
+  let mut cfg = get_cfg();
+  cfg.profile.upstream_nodes = Some(vec_url);
+  cfg.save_file();
+  Ok(cfg)
+}
+
 
 /// For switching between profiles in the Account DB.
 pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
@@ -49,6 +65,7 @@ pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) 
   cfg.save_file();
   Ok(cfg)
 }
+
 
 
 /// Get all the 0L configs. For tx sending and upstream nodes
