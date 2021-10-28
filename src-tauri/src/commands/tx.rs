@@ -4,7 +4,7 @@ use diem_types::transaction::authenticator::AuthenticationKey;
 use tauri::Window;
 use txs::commands::{create_account_cmd::create_from_auth_and_coin, demo_cmd};
 use crate::{carpe_error::CarpeError, configs};
-use super::client;
+
 
 #[tauri::command]
 pub fn demo_tx() -> Result<String, CarpeError> {

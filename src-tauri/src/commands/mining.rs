@@ -1,10 +1,10 @@
-use std::path::PathBuf;
+
 
 use diem_types::waypoint::Waypoint;
 use tauri::Window;
 use tower::{proof::mine_once, commit_proof};
-use ol::config::AppCfg;
-use ol_types::config::{self, TxType};
+
+use ol_types::config::{TxType};
 use txs::submit_tx::{eval_tx_status, tx_params};
 use url::Url;
 
@@ -18,7 +18,7 @@ pub fn demo_miner_once(mnemonic: String) -> String {
   //   swarm_persona,
   //   false
   // );
-  let config_dir = "$HOME/.0L/";
+  let _config_dir = "$HOME/.0L/";
 
   let config = get_cfg();
   let wl = wallets::danger_get_keys(mnemonic).unwrap();
@@ -57,7 +57,7 @@ pub fn demo_miner_once(mnemonic: String) -> String {
 
 
 #[tauri::command]
-pub fn demo_mining_loop(window: Window) -> Result<String, CarpeError> {
+pub fn demo_mining_loop(_window: Window) -> Result<String, CarpeError> {
   let config = get_cfg();
   let tx_params = get_tx_params(None);
   let res = match mine_once(&config) {
