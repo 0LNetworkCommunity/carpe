@@ -3,7 +3,6 @@
 use diem_types::waypoint::Waypoint;
 use tauri::Window;
 use tower::{proof::mine_once, commit_proof};
-
 use ol_types::config::{TxType};
 use txs::submit_tx::{eval_tx_status, tx_params};
 use url::Url;
@@ -53,8 +52,6 @@ pub fn demo_miner_once(mnemonic: String) -> String {
     Err(e) => format!("Error mining proof, message: {:?}", e),
   }
 }
-
-
 
 #[tauri::command]
 pub fn demo_mining_loop(_window: Window) -> Result<String, CarpeError> {
