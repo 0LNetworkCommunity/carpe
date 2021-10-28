@@ -43,7 +43,7 @@
 
 <main>
 
-  <button class="uk-button uk-button-default" on:click={handleAdd}>Submit</button>
+  <button class="uk-button uk-button-default" on:click|preventDefault={handleAdd}>Submit</button>
   <!-- <h1>Add Account</h1>
   <form id="account-form">
     <fieldset class="uk-fieldset">

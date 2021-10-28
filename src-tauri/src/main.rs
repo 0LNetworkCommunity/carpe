@@ -32,6 +32,7 @@ fn main() {
     // Transactions
     demo_tx,
     create_user_account,
+    wallet_type,
     // Dev
     init_swarm,
     swarm_miner,

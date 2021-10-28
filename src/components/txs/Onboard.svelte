@@ -22,7 +22,7 @@
   }
 </script>
 
-<main class="uk-height-viewport">
+<main>
   <h3>Onboard Someone</h3>
   <form id="account-form">
     <fieldset class="uk-fieldset">

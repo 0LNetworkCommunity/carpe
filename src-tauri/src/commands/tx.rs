@@ -1,11 +1,8 @@
 //! transaction scripts
 
 use diem_types::transaction::authenticator::AuthenticationKey;
-
 use txs::commands::{create_account_cmd::create_from_auth_and_coin, demo_cmd};
-
 use crate::carpe_error::CarpeError;
-
 use super::client;
 
 #[tauri::command]
@@ -34,12 +31,32 @@ pub fn create_user_account(authkey: String) -> Result<String, CarpeError> {
     match create_from_auth_and_coin(key, 1, tx_params, false, None) {
       Ok(r) => Ok(format!("Tx Success: {:?}", r)),
       Err(e) => Err(CarpeError::misc(&format!(
-        "could make account creation tx message: {:?}",
+        "could not make account creation tx message: {:?}",
         e.to_string()
       ))),
     }
   } else {
     Err(CarpeError::misc("could not parse authentication key"))
+  }
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
+pub enum WalletTypes {
+  Slow = 0,
+  Community = 1,
+}
+
+#[tauri::command]
+pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
+  let tx_params =
+    client::get_tx_params(None).map_err(|_| CarpeError::misc("could not load tx params"))?;
+
+  match txs::commands::wallet_cmd::set_wallet_type(type_int, tx_params, false, None) {
+    Ok(r) => Ok(format!("Tx Success: {:?}", r)),
+    Err(e) => Err(CarpeError::misc(&format!(
+      "could not set wallet type: {:?}",
+      e.to_string()
+    ))),
   }
 }
 

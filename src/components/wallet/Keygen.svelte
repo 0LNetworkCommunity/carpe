@@ -54,7 +54,7 @@
       <div class="uk-margin">
         <textarea class="uk-textarea" rows="3"> {display_mnem} </textarea>
       </div>
-      <AccountFromMnemSubmit/>
+      <AccountFromMnemSubmit danger_temp_mnem={""}/>
 
     </div>
     <p>
