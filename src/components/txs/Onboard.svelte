@@ -23,7 +23,7 @@
 </script>
 
 <main>
-  <h3>Onboard Someone</h3>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Onboard an Account</h4>
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">

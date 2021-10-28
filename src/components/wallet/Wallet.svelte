@@ -28,7 +28,10 @@
 </script>
 
 <main class="uk-height-viewport">
-  <h1>Wallet</h1>
+  <div class="uk-flex uk-flex-center">
+    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Wallet</h2>
+  </div>
+  
   <div>
 
     <!-- <Link to="add-account">

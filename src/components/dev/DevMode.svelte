@@ -1,6 +1,7 @@
 <script lang="ts">
   import DebugCard from "./DebugCard.svelte";
   import DebugActions from "./DebugActions.svelte";
+import { Link } from "svelte-navigator";
   // import Swarm from "./Swarm.svelte";
 
 </script>
@@ -10,7 +11,12 @@
       <div class="uk-margin">
 
         <DebugCard />
-        <DebugActions />        
+        <DebugActions />
+        
+        <div class="margin">
+          <Link to="swarm"><button class="uk-button uk-button-default">Swarm Controls</button></Link>
+         </div>
+        
 
     </div>
   </div>

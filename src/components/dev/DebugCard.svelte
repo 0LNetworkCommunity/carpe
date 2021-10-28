@@ -25,7 +25,7 @@
 
 <main>
   <div class="uk-margin uk-card uk-card-default uk-card-body uk-width-1-2@m">
-    <h5 class="uk-card-title">Debug Requests</h5>
+    <h5 class="uk-card-title uk-text-light uk-text-muted uk-text-uppercase">Debug Requests</h5>
 
     <!-- <table class="uk-table uk-table-divider">
       <thead>

@@ -70,13 +70,13 @@ import { invoke } from "@tauri-apps/api/tauri";
 </script>
 
 <main>
-  <h3>What network</h3>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Network Connection</h4>
   <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
       <label><input class="uk-radio" type="radio" name="radio2" checked={current_chain_id  == "Mainnet"} on:click={() => toggleNetwork(Networks.Mainnet)}> Mainnet </label>
       <label><input class="uk-radio" type="radio" name="radio2" checked={ current_chain_id == "Rex"} on:click={() => toggleNetwork(Networks.Rex)}> Rex (testnet) </label>
   </div>
 
-  <h3>Advanced: Manual Network Settings</h3>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Override Settings </h4>
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">

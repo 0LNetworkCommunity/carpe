@@ -12,7 +12,7 @@ import { responses } from "../../debug";
 </script>
 
 <main>
-  <h3> Set Your Wallet Type</h3>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Set your Account Type </h4>
   <p> This is not reversible. A slow wallet and community wallets are permanent.</p>
   <div>
     <button class="uk-button uk-button-default" on:click={() => setWallet(0)}> Set Slow Wallet</button>

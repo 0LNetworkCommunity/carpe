@@ -1,6 +1,6 @@
 <script lang="ts">
   import "uikit/dist/css/uikit.min.css";
-  import { Router, Link, Route } from "svelte-navigator";
+  import { Router, Link, Route, useLocation } from "svelte-navigator";
   // import Layout from "./components/Layout.svelte";
   import Wallet from "./components/wallet/Wallet.svelte";
   import Miner from "./components/miner/Miner.svelte";
@@ -12,19 +12,25 @@
   // import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
+
+  let selected_nav: string;
+
+
 </script>
 
-<main class="uk-height-viewport">
+<main class="uk-height-viewport uk-text-muted">
   <Router>
     <nav class="uk-navbar-container" uk-navbar>
       <div class="uk-navbar-center">
         <ul class="uk-navbar-nav">
+          <!-- TODO: show uk-active based on route selected -->
+
           <li><Link to="/">Wallet</Link></li>
           <li><Link to="miner">Miner</Link></li>
           <li><Link to="txs">Transactions</Link></li>
           <li><Link to="settings">Settings</Link></li>
           <li><Link to="dev">Debug</Link></li>
-          <li><Link to="swarm">Swarm</Link></li>
+          <!-- <li><Link to="swarm">Swarm</Link></li> -->
           
         </ul>
       </div>
