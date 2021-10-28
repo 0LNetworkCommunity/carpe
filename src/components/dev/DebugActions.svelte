@@ -4,6 +4,7 @@
   import DemoTx from "../txs/DemoTx.svelte";
   import { raise_error } from "../../carpeError";
   import { listen } from '@tauri-apps/api/event'
+import { onDestroy, onMount } from "svelte";
 
   const makeError = async () => {
     invoke("debug_error", {
@@ -31,13 +32,23 @@
       .catch((e) => console.error(e));
   };
 
+  let listener_handle;
   // listen to the `event-name` event and get a function to remove the event listener
-  listen('event-name', event => {
-    console.log(event);
-    window.alert(event.payload.message);
-    // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
-    // event.payload is the payload object
-  });
+  // there's also a `once` function that subscribes to an event and automatically unsubscribes the listener on the first event
+  onMount(() => {
+    let listener_handle = listen('event-name', event => {
+      console.log(event);
+      window.alert(event.payload.message);
+      // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
+      // event.payload is the payload object
+    });
+    listener_handle.finally(() => window.alert("hi again"));
+  })
+
+  onDestroy(() => {
+    // destroy listener here?
+    listener_handle
+  })
 
 </script>
 
