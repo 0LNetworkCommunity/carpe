@@ -43,6 +43,7 @@ fn main() {
     debug_error,
     debug_emit_event,
     delay_async,
+    get_onchain_tower_state,
 
 
 	])

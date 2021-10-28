@@ -46,7 +46,7 @@
   // listen to the `event-name` event and get a function to remove the event listener
   // there's also a `once` function that subscribes to an event and automatically unsubscribes the listener on the first event
   onMount(() => {
-    let listener_handle = listen('event-name', event => {
+    let listener_handle = listen('test-event', event => {
       console.log(event);
       window.alert(event.payload.message);
       // event.event is the event name (useful if you want to use a single callback fn for multiple event types)

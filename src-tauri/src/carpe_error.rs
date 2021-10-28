@@ -1,7 +1,7 @@
 //! Carpe error type for client
 
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub enum ErrorCat {
   Client,
   Tx,
@@ -10,7 +10,7 @@ pub enum ErrorCat {
   Tower,
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct CarpeError {
   category: ErrorCat,
   uid: u8,

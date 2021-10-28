@@ -49,7 +49,7 @@ async fn delay() -> String {
 pub async fn delay_async(window: Window) {
     loop {
       let threadpool_future = delay().await; // TODO: need to offload this work onto another thread.
-      window.emit("tower-event", Payload{ message: threadpool_future}).unwrap();
+      window.emit("test-event", Payload{ message: threadpool_future}).unwrap();
     }
     
     // Ok(threadpool_future)

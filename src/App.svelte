@@ -16,7 +16,7 @@ import { onMount } from "svelte";
 import { listen } from "@tauri-apps/api/event";
 
   // Todo: SHhuld this listener only be started in the miner view?
-    onMount(() => {
+  onMount(() => {
     let listener_handle = listen('tower-event', event => {
       console.log(event);
       window.alert(event.payload.msg);

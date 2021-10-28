@@ -237,6 +237,7 @@ dependencies = [
  "ctrlc",
  "diem-config",
  "diem-crypto",
+ "diem-json-rpc-types",
  "diem-types",
  "diem-wallet",
  "dirs 4.0.0",

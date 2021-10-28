@@ -36,7 +36,8 @@ pub fn get_cfg() -> AppCfg {
   config::parse_toml(config_toml.to_str().unwrap().to_string()).unwrap()
 }
 
-pub fn get_tx_params(url: Option<&str>, ) -> Result<TxParams, anyhow::Error> {
+/// get transaction parameters from config file
+pub fn get_tx_params(url: Option<&str>, ) -> Result<TxParams, anyhow::Error> { // TODO: Should the Error type be a CarpeError?
   let mut config = get_cfg();
   if let Some(s) = url {
     match s.parse::<Url>() {
