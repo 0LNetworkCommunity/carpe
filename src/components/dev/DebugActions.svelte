@@ -42,12 +42,11 @@ import { onDestroy, onMount } from "svelte";
       // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
       // event.payload is the payload object
     });
-    listener_handle.finally(() => window.alert("hi again"));
   })
 
   onDestroy(() => {
     // destroy listener here?
-    listener_handle
+
   })
 
 </script>
