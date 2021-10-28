@@ -1,7 +1,7 @@
 <script lang="ts">
   import { get_all_accounts, all_accounts, setAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
-  import AccountFromMnem from "./AccountFromMnem.svelte";
+  // import AccountFromMnem from "./AccountFromMnemSubmit.svelte";
   import { onMount } from "svelte";
   import Keygen from "./Keygen.svelte";
   import { Link } from "svelte-navigator";
@@ -43,12 +43,8 @@
   </div>
   {#if !account_list}
     <p>loading...</p>
-  {:else if account_list.length == 0}
-    <p>Create New Keys</p>
-    <Keygen />
-    <p>Or Add your first account</p>
-    <AccountFromMnem />
-  {:else}
+
+  {:else if account_list.length >0 }
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
@@ -85,16 +81,19 @@
         {/each}
       </tbody>
     </table>
+    {:else}
+      <p> Looks like you don't have any accounts.</p>
   {/if}
 
-  <div uk-grid>
+  <div uk-grid class="uk-flex uk-flex-center">
+    <Link to="keygen">
+      <button class="uk-button uk-button-primary"> New Account </button>
+    </Link>
     <Link to="account-from-mnem">
       <button class="uk-button uk-button-default"> Restore Account </button>
     </Link>
 
-    <Link to="keygen">
-      <button class="uk-button uk-button-primary"> New Account </button>
-    </Link>
+
   </div>
 
 

@@ -27,7 +27,7 @@
       .then((_) => {
         UIkit.notification({
           message: "<span uk-icon='icon: check'></span> Account added",
-          pos: "bottom-center",
+          pos: "bottom-right",
           status: "success",
           timeout: 3000,
         });

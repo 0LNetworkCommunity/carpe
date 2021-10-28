@@ -58,7 +58,7 @@ import { raise_error } from "../../carpeError";
 
         UIkit.notification({
           message: `private key ${res}`,
-          pos: "bottom-center",
+          pos: "bottom-right",
           status: "success",
           timeout: 3000,
         });

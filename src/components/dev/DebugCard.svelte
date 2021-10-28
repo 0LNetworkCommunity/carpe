@@ -2,7 +2,7 @@
   import type { CarpeError } from "../../carpeError";
   import { errors } from "../../carpeError";
 
-  import { responses } from "../../debug.ts"; // TODO: Make this read only
+  import { responses } from "../../debug"; // TODO: Make this read only
 
   let home = "";
   let account = "";
@@ -25,9 +25,9 @@
 
 <main>
   <div class="uk-margin uk-card uk-card-default uk-card-body uk-width-1-2@m">
-    <h5 class="uk-card-title">Debugging</h5>
+    <h5 class="uk-card-title">Debug Requests</h5>
 
-    <table class="uk-table uk-table-divider">
+    <!-- <table class="uk-table uk-table-divider">
       <thead>
         <tr>
           <th>Path</th>
@@ -36,16 +36,14 @@
         </tr>
       </thead>
       <tbody>
-        <!-- {#each accounts as account} -->
         <tr>
           <td>{home}</td>
           <td>{account}</td>
         </tr>
-        <!-- {/each} -->
       </tbody>
-    </table>
+    </table> -->
 
-    <h4>Debug Invocations</h4>
+    <!-- <h4></h4> -->
     <p>
       {#if result_string.length !== 0}
         RESULT:

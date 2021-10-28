@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Link } from "svelte-navigator";
+  import { Link, navigate } from "svelte-navigator";
   import UIkit from "uikit";
   import { responses } from "../../debug";
   import { account, mnem } from "../../accounts";
@@ -11,7 +11,7 @@
   // let alice_mnem =
   //   "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
 
-  let danger_temp_mnem: string;
+  export let danger_temp_mnem: string;
 
   mnem.subscribe((m) => danger_temp_mnem = m);
 
@@ -29,17 +29,22 @@
 
         UIkit.notification({
           message: `Account Added:  ${res.account}`,
-          pos: "bottom-center",
+          pos: "bottom-right",
           status: "success",
           timeout: 3000,
         });
+        navigate("/");
       })
       .catch((error) => raise_error(error));
+
+      
   }
 </script>
 
 <main>
-  <h1>Add Account</h1>
+
+  <button class="uk-button uk-button-default" on:click={handleAdd}>Submit</button>
+  <!-- <h1>Add Account</h1>
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
@@ -66,5 +71,5 @@
         </Link>
       </div>
     </fieldset>
-  </form>
+  </form> -->
 </main>

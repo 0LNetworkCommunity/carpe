@@ -6,10 +6,10 @@
   import Miner from "./components/miner/Miner.svelte";
   import Settings from "./components/settings/Settings.svelte";
   import DevMode from "./components/dev/DevMode.svelte";
-  import AccountFromMnem from "./components/wallet/AccountFromMnem.svelte";
+  import AccountFromMnemForm from "./components/wallet/AccountFromMnemForm.svelte";
   import AddAccount from "./components/wallet/AddAccount.svelte";
   import Swarm from "./components/dev/Swarm.svelte";
-  import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
+  // import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
 </script>
@@ -37,7 +37,7 @@
 
       <Route path="/" component={Wallet} primary={false} />
       <Route path="/add-account" component={AddAccount} primary={false} />
-      <Route path="/account-from-mnem" component={AccountFromMnem} primary={false} />
+      <Route path="/account-from-mnem" component={AccountFromMnemForm} primary={false} />
       <Route path="/keygen" component={Keygen} primary={false} />
       <Route path="/miner" component={Miner} primary={false} />
       <Route path="/txs" component={Transactions} primary={false} />

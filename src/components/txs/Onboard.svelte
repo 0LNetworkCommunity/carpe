@@ -13,7 +13,7 @@
         responses.set(JSON.stringify(res));
         UIkit.notification({
           message: `Account Added`,
-          pos: "bottom-center",
+          pos: "bottom-right",
           status: "success",
           timeout: 3000,
         });

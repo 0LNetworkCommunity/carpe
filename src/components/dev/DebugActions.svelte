@@ -66,8 +66,6 @@
       >Make Error</button
     >
 
-    <Keygen />
-
     <button class="uk-button uk-button-default" on:click={init}>Init</button>
 
     <DemoTx />

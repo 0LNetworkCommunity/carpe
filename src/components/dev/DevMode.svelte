@@ -1,8 +1,7 @@
 <script lang="ts">
-  import AccountFromMnem from "../wallet/AccountFromMnem.svelte";
   import DebugCard from "./DebugCard.svelte";
   import DebugActions from "./DebugActions.svelte";
-  import Swarm from "./Swarm.svelte";
+  // import Swarm from "./Swarm.svelte";
 
 </script>
 

@@ -2,7 +2,6 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
-
 export interface AccountEntry {
   account: string,
   authkey: string,

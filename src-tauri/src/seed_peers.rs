@@ -8,8 +8,8 @@ use url::Url;
 pub fn get_testnet() -> Vec<Url> {
   vec![
     Url::parse("http://64.225.2.108:8080").unwrap(),
-    Url::parse("http://167.71.191.162:8080").unwrap(),
-    Url::parse("http://167.172.17.27:8080").unwrap(),
+    // Url::parse("http://167.71.191.162:8080").unwrap(),
+    // Url::parse("http://167.172.17.27:8080").unwrap(),
     ]
 }
 
@@ -17,8 +17,8 @@ pub fn get_testnet() -> Vec<Url> {
 pub fn get_mainnet() -> Vec<Url> {
   vec![
     Url::parse("http://34.145.88.77:8080").unwrap(),
-    Url::parse("http://35.192.123.205:8080").unwrap(),
-    Url::parse("http://35.231.138.89:8080").unwrap(),
+    // Url::parse("http://35.192.123.205:8080").unwrap(),
+    // Url::parse("http://35.231.138.89:8080").unwrap(),
     ]
 }
 
