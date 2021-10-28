@@ -9,7 +9,6 @@ pub mod configs;
 pub mod carpe_error;
 pub mod seed_peers;
 use crate::commands::*;
-
 #[derive(Clone, serde::Serialize)]
 struct Payload {
   message: String,
@@ -43,6 +42,7 @@ fn main() {
     easy_swarm,
     debug_error,
     debug_emit_event,
+    delay_async,
 
 
 	])

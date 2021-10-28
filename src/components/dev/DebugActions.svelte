@@ -32,6 +32,16 @@
       .catch((e) => console.error(e));
   };
 
+
+  const testAsync = async () => {
+    invoke("delay_async", {})
+      .then((res) => {
+        responses.set(res);
+      })
+      .catch((e) => console.error(e));
+  };
+
+
   let listener_handle;
   // listen to the `event-name` event and get a function to remove the event listener
   // there's also a `once` function that subscribes to an event and automatically unsubscribes the listener on the first event
@@ -60,6 +70,9 @@
     <button class="uk-button uk-button-default" on:click={makeEvent}
       >Emit Event</button
     >
+
+    <button class="uk-button uk-button-default" on:click={testAsync}>Async</button>
+
 
     <button class="uk-button uk-button-default" on:click={init}>Init</button>
 
