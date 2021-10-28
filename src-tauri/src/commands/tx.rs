@@ -62,20 +62,31 @@ pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
 }
 
 
+
+
+#[tauri::command]
+pub fn debug_error(debug_err: bool, _window: Window) -> Result<String, CarpeError> {
+  dbg!(&debug_err);
+
+  match debug_err {
+    true => Ok("good".to_owned()),
+    false => Err(CarpeError::misc("test")),
+  }
+}
+
+
+
 #[derive(Clone, serde::Serialize)]
 struct Payload {
   message: String,
 }
 
 #[tauri::command]
-pub fn debug_error(debug_err: bool, window: Window) -> Result<String, CarpeError> {
-  dbg!(&debug_err);
+pub fn debug_emit_event(window: Window) -> Result<String, CarpeError> {
   dbg!(&window.label());
   
-  window.emit("event-name", Payload { message: "Tauri is awesome!".into() }).unwrap();
+  window.emit("event-name", Payload { message: "Tauri is awesome!".into() })
+    .map_err(|_| CarpeError::misc("emit event error"))?;
 
-  match debug_err {
-    true => Ok("good".to_owned()),
-    false => Err(CarpeError::misc("test")),
-  }
+  Ok("good".to_owned())
 }

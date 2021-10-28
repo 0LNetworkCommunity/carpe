@@ -61,6 +61,7 @@ fn main() {
     swarm_process,
     easy_swarm,
     debug_error,
+    debug_emit_event,
 
 
 	])

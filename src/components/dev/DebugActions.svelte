@@ -2,47 +2,19 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import { responses } from "../../debug";
   import DemoTx from "../txs/DemoTx.svelte";
-  // import { account, authkey } from "../../accounts";
-  // import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
-  import Keygen from "../wallet/Keygen.svelte";
-
-  // let authkey_string: string = "";
-  // let account_string: string = "";
-
-  // authkey.subscribe((n) => {
-  //   authkey_string = n;
-  // });
-
-  // account.subscribe((n) => {
-  //   account_string = n;
-  // });
-
-  // const keygen = async () => {
-  //   invoke("keygen", {})
-  //     .then((res: AccountEntry) => {
-
-  //       // let o = JSON.parse(res);
-
-  //       if ("account" in res) {
-  //         console.log(res);
-  //         // account = o.account;
-  //         // authkey = o.authkey;
-  //         authkey.set(res.authkey);
-  //         account.set(res.account);
-  //         // mnemonic = o.mnemonic;
-  //       }
-
-  //       responses.set(res);
-  //       // result = res;
-  //     })
-  //     .catch((e) => console.error(e));
-  // };
+  import { listen } from '@tauri-apps/api/event'
 
   const makeError = async () => {
     invoke("debug_error", {
       debugErr: false,
     })
+    .then((res) => responses.set(res))
+    .catch((e) => raise_error(e));
+  };
+
+  const makeEvent = async () => {
+    invoke("debug_emit_event", {})
     .then((res) => responses.set(res))
     .catch((e) => raise_error(e));
   };
@@ -58,12 +30,25 @@
       })
       .catch((e) => console.error(e));
   };
+
+  // listen to the `event-name` event and get a function to remove the event listener
+  listen('event-name', event => {
+    console.log(event);
+    window.alert(event.payload.message);
+    // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
+    // event.payload is the payload object
+  });
+
 </script>
 
 <main>
   <div>
     <button class="uk-button uk-button-default" on:click={makeError}
       >Make Error</button
+    >
+
+    <button class="uk-button uk-button-default" on:click={makeEvent}
+      >Emit Event</button
     >
 
     <button class="uk-button uk-button-default" on:click={init}>Init</button>
