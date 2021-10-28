@@ -1,6 +1,7 @@
 //! transaction scripts
 
 use diem_types::transaction::authenticator::AuthenticationKey;
+use tauri::Window;
 use txs::commands::{create_account_cmd::create_from_auth_and_coin, demo_cmd};
 use crate::carpe_error::CarpeError;
 use super::client;
@@ -60,9 +61,19 @@ pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
   }
 }
 
+
+#[derive(Clone, serde::Serialize)]
+struct Payload {
+  message: String,
+}
+
 #[tauri::command]
-pub fn debug_error(debug_err: bool) -> Result<String, CarpeError> {
+pub fn debug_error(debug_err: bool, window: Window) -> Result<String, CarpeError> {
   dbg!(&debug_err);
+  dbg!(&window.label());
+  
+  window.emit("event-name", Payload { message: "Tauri is awesome!".into() }).unwrap();
+
   match debug_err {
     true => Ok("good".to_owned()),
     false => Err(CarpeError::misc("test")),
