@@ -6,7 +6,8 @@ pub enum ErrorCat {
   Client,
   Tx,
   Configs,
-  Misc
+  Misc,
+  Tower,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -17,6 +18,8 @@ pub struct CarpeError {
 }
 
 const E_MISC: u8 = 100;
+const E_TOWER: u8 = 120;
+
 
 impl CarpeError {
   pub fn new(category: ErrorCat, uid: u8, msg: String ) -> Self {
@@ -24,6 +27,13 @@ impl CarpeError {
       category,
       uid,
       msg,
+    }
+  }
+  pub fn tower(msg: &str) -> Self {
+    CarpeError {
+      category: ErrorCat::Tower,
+      uid: E_TOWER,
+      msg: msg.to_owned(),
     }
   }
 

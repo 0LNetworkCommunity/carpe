@@ -4,7 +4,7 @@
   import DemoTx from "../txs/DemoTx.svelte";
   import { raise_error } from "../../carpeError";
   import { listen } from '@tauri-apps/api/event'
-import { onDestroy, onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
 
   const makeError = async () => {
     invoke("debug_error", {
