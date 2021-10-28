@@ -1,13 +1,9 @@
-
-
-
 use std::{thread, time};
-
 use ol_types::block::VDFProof;
 use tauri::Window;
-use tower::{backlog::get_remote_state, commit_proof, proof::mine_once};
+use tower::{commit_proof, proof::mine_once};
 use txs::submit_tx::{eval_tx_status};
-use crate::{carpe_error::CarpeError, configs::{get_cfg, get_tx_params}};
+use crate::{carpe_error::CarpeError, configs::{get_cfg, get_diem_client, get_tx_params}};
 use diem_json_rpc_types::views::{TowerStateResourceView};
 
 #[tauri::command]
@@ -80,10 +76,15 @@ pub async fn build_tower(mock: bool, window: Window) -> Result<(), CarpeError>{
 
 #[tauri::command]
 pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
-  let tx_params = get_tx_params(None)
-    .map_err(|_| CarpeError::tower("could not get tx params"))?;
-
-  get_remote_state(&tx_params)
-    .map_err(|_| CarpeError::tower("could not get tower state from chain"))
-
+  println!("fetching onchain tower state");
+  let cfg = get_cfg();
+  let client = get_diem_client(&cfg)?;
+  
+  match client.get_miner_state(&cfg.profile.account) {
+    Ok(Some(t)) =>{
+      dbg!(&t);
+      Ok(t)
+  },
+    _ => Err(CarpeError::tower("could not get tower state from chain"))
+  }
 }

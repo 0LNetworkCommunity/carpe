@@ -3,8 +3,7 @@ import { get, writable } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
 
-
-interface VDFProof {
+export interface VDFProof {
   height: number,
   elapsed_secs: number,
   preimage: string,
@@ -13,7 +12,7 @@ interface VDFProof {
   security: number
 }
 
-interface TowerStateView {
+export interface TowerStateView {
   previous_proof_hash: string,
   verified_tower_height: number, // user's latest verified_tower_height
   latest_epoch_mining: number,
@@ -23,30 +22,30 @@ interface TowerStateView {
   epochs_since_last_account_creation: number
 }
 
-interface MinerStatus {
+export interface ClientTowerStatus {
   latest_proof: VDFProof,
   on_chain: TowerStateView,
   proofs_this_session: number,
 }
 
-export const miner_status = writable<MinerStatus>({});
+export const tower = writable<ClientTowerStatus>({});
 
-function incrementMinerStatus(new_proof: VDFProof): MinerStatus {
-  let m = get(miner_status);
+function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
+  let m = get(tower);
   m.latest_proof = new_proof;
   m.proofs_this_session = m.proofs_this_session + 1;
 
   return m;
 }
 
-function refreshOnChainData(on_chain: TowerStateView): MinerStatus {
-  let m = get(miner_status);
+function refreshOnChainData(on_chain: TowerStateView): ClientTowerStatus {
+  let m = get(tower);
   m.on_chain = m.on_chain;
   return m;
 }
 
 
-const getTowerChainView = async () => {
+export const getTowerChainView = async () => {
   invoke("get_onchain_tower_state", {})
     .then((res: TowerStateView) => {
       responses.set(JSON.stringify(res))

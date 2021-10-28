@@ -61,15 +61,20 @@ pub fn get_tx_params(url: Option<&str>, ) -> Result<TxParams, anyhow::Error> { /
 
 pub fn get_node_obj() -> Result<Node, CarpeError> {
   let cfg = get_cfg();
-
-  let client = DiemClient::new(
-    cfg.clone().profile.default_node.ok_or(CarpeError::misc("could not load default_node"))?, 
-    cfg.clone().chain_info.base_waypoint.ok_or(CarpeError::misc("could not load base_waypoint"))?
-  )
-  .map_err(|_|{ CarpeError::misc("could not load tx params") })?;
+  let client = get_diem_client(&cfg)?;
 
   Ok(Node::new(client, &cfg, false))
 }
+
+pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
+
+  DiemClient::new(
+    cfg.clone().profile.default_node.ok_or(CarpeError::misc("could not load default_node"))?, 
+    cfg.clone().chain_info.base_waypoint.ok_or(CarpeError::misc("could not load base_waypoint"))?
+  )
+  .map_err(|_|{ CarpeError::misc("could not load tx params") })
+}
+
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
   let mut cfg = get_cfg();
