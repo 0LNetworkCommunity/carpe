@@ -12,15 +12,16 @@
   // import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
-import { onMount } from "svelte";
-import { listen } from "@tauri-apps/api/event";
-import UIkit from 'uikit';
+  import { onMount } from "svelte";
+  import { listen } from "@tauri-apps/api/event";
+  import UIkit from 'uikit';
 
   // Todo: SHhuld this listener only be started in the miner view?
   onMount(() => {
     let listener_handle = listen('tower-event', event => {
+      
       console.log(event);
-        UIkit.notification({
+      UIkit.notification({
         message: `<span uk-icon=\'icon: check\'></span> Proof Mined #${event.payload.height}`,
         pos: 'bottom-center',
         status: 'success',
