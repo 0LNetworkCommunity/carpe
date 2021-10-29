@@ -1,28 +1,21 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { getTowerChainView, tower } from '../../miner';
-  import type { ClientTowerStatus } from '../../miner';
-import { invoke } from '@tauri-apps/api/tauri';
+  import { onMount } from "svelte";
+  import { getTowerChainView, tower } from "../../miner";
+  import type { ClientTowerStatus } from "../../miner";
+  import { mockTowerOnce } from "../../miner";
+  import ToggleMiner from "./ToggleMiner.svelte";
+import MinerProgres from "./MinerProgres.svelte";
 
   let towerState: ClientTowerStatus;
 
-  tower.subscribe(m => {
+  tower.subscribe((m) => {
     console.log(m);
-    towerState = m
+    towerState = m;
   });
 
-  const buildTower = async () => {
-    invoke("build_tower", {mock: true})
-      .then((res) => {
-        responses.set(res);
-      })
-      .catch((e) => console.error(e));
-  };
-
-  onMount(()=>{
+  onMount(() => {
     getTowerChainView();
-  })
-  
+  });
 </script>
 
 <main class="uk-height-viewport">
@@ -30,20 +23,20 @@ import { invoke } from '@tauri-apps/api/tauri';
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
   </div>
 
-  {#if towerState.on_chain }
-  <div class="margin">
-    <span> count_proofs_in_epoch: { towerState.on_chain.previous_proof_hash } </span>
-  </div>
+  {#if towerState.on_chain}
+    <div class="margin">
+      <span>
+        count_proofs_in_epoch: {towerState.on_chain.previous_proof_hash}
+      </span>
+    </div>
   {/if}
 
-    <div class="margin">
-      <button class="uk-button uk-button-default" on:click={buildTower}>Start Tower</button>
-    </div>
-  
-  <progress id="js-progressbar" class="uk-progress" value="10" max="100"></progress>
+  <div class="margin">
+    <button class="uk-button uk-button-default" on:click={mockTowerOnce}>Start Tower</button>
+  </div>
 
-  
+  <ToggleMiner />
 
-
+  <MinerProgres />
   <!-- <p>Lost time is never found again.</p> -->
 </main>
