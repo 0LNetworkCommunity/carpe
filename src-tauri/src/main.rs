@@ -9,10 +9,11 @@ pub mod configs;
 pub mod carpe_error;
 pub mod seed_peers;
 use crate::commands::*;
-#[derive(Clone, serde::Serialize)]
-struct Payload {
-  message: String,
-}
+
+// #[derive(Clone, serde::Serialize)]
+// struct Payload {
+//   message: String,
+// }
 fn main() {
 	tauri::Builder::default()
 	.invoke_handler(tauri::generate_handler![
@@ -35,7 +36,8 @@ fn main() {
     create_user_account,
     wallet_type,
     //Tower
-    build_tower,
+    // build_tower,
+    
     // Dev
     init_swarm,
     swarm_miner,
@@ -46,8 +48,8 @@ fn main() {
     debug_emit_event,
     delay_async,
     get_onchain_tower_state,
-
-
+    receive_event,
+    mock_build_tower,
 	])
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");

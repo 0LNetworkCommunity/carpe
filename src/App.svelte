@@ -31,6 +31,20 @@
       // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
       // event.payload is the payload object
     });
+
+     listen('tower-error', event => {
+      
+      console.log(event);
+      UIkit.notification({
+        message: `<span uk-icon=\'icon: check\'></span> Proof Mined #${event.payload.height}`,
+        pos: 'bottom-center',
+        status: 'error',
+        timeout: 3000
+      });
+      // window.alert(event.payload.message);
+      // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
+      // event.payload is the payload object
+    });
   })
 
 </script>

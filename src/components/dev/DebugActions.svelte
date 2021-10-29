@@ -5,6 +5,7 @@
   import { raise_error } from "../../carpeError";
   import { listen } from '@tauri-apps/api/event'
   import { onDestroy, onMount } from "svelte";
+    import { getCurrent } from '@tauri-apps/api/window'
 
   const makeError = async () => {
     invoke("debug_error", {
@@ -14,10 +15,17 @@
     .catch((e) => raise_error(e));
   };
 
-  const makeEvent = async () => {
+  const triggerEventFromRustToJs = async () => {
     invoke("debug_emit_event", {})
     .then((res) => responses.set(res))
     .catch((e) => raise_error(e));
+  };
+
+  function emitEventFromHereToRust() {
+
+    // emit an event that are only visible to the current window
+    const current = getCurrent();
+    current.emit('receive_event', 'Tauri is awesome!');
   };
 
   const init = async () => {
@@ -41,6 +49,21 @@
       .catch((e) => console.error(e));
   };
 
+  const mockTowerOnce = async () => {
+    invoke("mock_build_tower", {success: true})
+      .then((res) => {
+        responses.set(res);
+      })
+      .catch((e) => console.error(e));
+  };
+
+  const mockTowerOnceFail = async () => {
+    invoke("mock_build_tower", {success: false})
+      .then((res) => {
+        responses.set(res);
+      })
+      .catch((e) => console.error(e));
+  };
 
   let listener_handle;
   // listen to the `event-name` event and get a function to remove the event listener
@@ -67,14 +90,24 @@
       >Make Error</button
     >
 
-    <button class="uk-button uk-button-default" on:click={makeEvent}
-      >Emit Event</button
+    <button class="uk-button uk-button-default" on:click={triggerEventFromRustToJs}
+      >Receive Event</button
     >
+
+    <button class="uk-button uk-button-default" on:click={emitEventFromHereToRust}>Send Event</button>
+
+    <div class="margin">
+      <h5> Tower </h5>
+      <button class="uk-button uk-button-default" on:click={mockTowerOnce}>Mock Tower Once</button>
+      <button class="uk-button uk-button-default" on:click={mockTowerOnceFail}>Mock Tower Once Fail</button>
+      <!-- <button class="uk-button uk-button-default" on:click={emitEventFromHereToRust}>Mock Tower Loop</button> -->
+    </div>
 
     <button class="uk-button uk-button-default" on:click={testAsync}>Async</button>
 
 
     <button class="uk-button uk-button-default" on:click={init}>Init</button>
+
 
     <DemoTx />
   </div>

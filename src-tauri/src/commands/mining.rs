@@ -1,5 +1,6 @@
-use std::{thread, time};
-use ol_types::block::VDFProof;
+
+
+
 use tauri::Window;
 use tower::{commit_proof, proof::mine_once};
 use txs::submit_tx::{eval_tx_status};
@@ -40,40 +41,6 @@ pub fn demo_miner_once(_window: Window) -> Result<String, CarpeError> {
 }
 
 
-
-async fn mock_tower() -> Result<VDFProof, CarpeError> {
-  let time = time::Duration::from_secs(5);
-  thread::sleep(time);
-  dbg!("time!");
-  let proof = VDFProof {
-      height: 1,
-      elapsed_secs: 100,
-      preimage: "a".as_bytes().to_vec(),
-      proof: "b".as_bytes().to_vec(),
-      difficulty: Some(2),
-      security: Some(3),
-  };
-  Ok(proof)
-}
-
-#[tauri::command]
-pub async fn build_tower(mock: bool, window: Window) -> Result<(), CarpeError>{
-    dbg!("start tower");
-    loop {
-      let future = if mock { mock_tower().await } 
-      else { mock_tower().await }; // TODO: need to offload this work onto another thread.
-
-      match future {
-          Ok(p) => window.emit("tower-event", p).unwrap(),
-          Err(e) => {
-            window.emit("tower-event", e.clone()).unwrap();
-            return Err(e)
-          },
-      };
-    }
-    
-    // Ok(threadpool_future)
-}
 
 #[tauri::command]
 pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
