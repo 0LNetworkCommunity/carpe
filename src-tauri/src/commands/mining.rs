@@ -58,6 +58,7 @@ async fn mock_tower() -> Result<VDFProof, CarpeError> {
 
 #[tauri::command]
 pub async fn build_tower(mock: bool, window: Window) -> Result<(), CarpeError>{
+    dbg!("start tower");
     loop {
       let future = if mock { mock_tower().await } 
       else { mock_tower().await }; // TODO: need to offload this work onto another thread.

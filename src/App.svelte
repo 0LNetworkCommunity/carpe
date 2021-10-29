@@ -14,12 +14,19 @@
   import Transactions from "./components/txs/Transactions.svelte";
 import { onMount } from "svelte";
 import { listen } from "@tauri-apps/api/event";
+import UIkit from 'uikit';
 
   // Todo: SHhuld this listener only be started in the miner view?
   onMount(() => {
     let listener_handle = listen('tower-event', event => {
       console.log(event);
-      window.alert(event.payload.msg);
+        UIkit.notification({
+        message: `<span uk-icon=\'icon: check\'></span> Proof Mined #${event.payload.height}`,
+        pos: 'bottom-center',
+        status: 'success',
+        timeout: 3000
+      });
+      // window.alert(event.payload.message);
       // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
       // event.payload is the payload object
     });

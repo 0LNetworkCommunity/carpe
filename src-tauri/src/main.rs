@@ -34,6 +34,8 @@ fn main() {
     demo_tx,
     create_user_account,
     wallet_type,
+    //Tower
+    build_tower,
     // Dev
     init_swarm,
     swarm_miner,

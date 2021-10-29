@@ -34,13 +34,14 @@ function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
   let m = get(tower);
   m.latest_proof = new_proof;
   m.proofs_this_session = m.proofs_this_session + 1;
-
+  tower.set(m);
   return m;
 }
 
 function refreshOnChainData(on_chain: TowerStateView): ClientTowerStatus {
   let m = get(tower);
-  m.on_chain = m.on_chain;
+  m.on_chain = on_chain;
+  tower.set(m);
   return m;
 }
 
@@ -48,8 +49,10 @@ function refreshOnChainData(on_chain: TowerStateView): ClientTowerStatus {
 export const getTowerChainView = async () => {
   invoke("get_onchain_tower_state", {})
     .then((res: TowerStateView) => {
-      responses.set(JSON.stringify(res))
-      refreshOnChainData(res)
+      console.log(res);
+      refreshOnChainData(res);
+      responses.set(res);
+      
     })
     .catch((e) => raise_error(e));
 };
