@@ -28,8 +28,10 @@ jobs:
           rust-version: stable
           components: rustfmt
       - uses: actions/checkout@v1
+      - name: Install Tarui
+        run: cargo install tauri-cli
       - name: Build
-        run: yarn add -D @tauri-apps/cli & yarn tauri build
+        run: yarn tauri build
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
         with:
