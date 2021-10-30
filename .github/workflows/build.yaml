@@ -29,7 +29,7 @@ jobs:
           components: rustfmt
       - uses: actions/checkout@v1
       - name: Build
-        run: yarn & yarn tauri build
+        run: yarn add -D @tauri-apps/cli & yarn tauri build
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
         with:
