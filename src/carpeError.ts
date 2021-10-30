@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import UIkit from 'uikit';
+import { error } from './carpeNotify';
 
 export interface CarpeError {
   category: number;
@@ -13,14 +13,7 @@ export const errors = writable(list_errors);
 export function raise_error(err: CarpeError) {
   errors.set(err);
   console.log(err);
-  error_notification(err);
+  let msg =`Error (${err.uid}): ${err.msg}`
+  error(msg);
 }
 
-function error_notification(err: CarpeError) {
-  UIkit.notification({
-    message: `<span uk-icon=\'icon: check\'></span> ${err.msg} \(code: ${err.uid}\)`,
-    pos: 'bottom-center',
-    status: 'error',
-    timeout: 3000
-  });
-}

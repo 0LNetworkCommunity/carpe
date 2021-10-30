@@ -12,42 +12,30 @@
   import Transactions from "./components/txs/Transactions.svelte";
   import { onMount } from "svelte";
   import { listen } from "@tauri-apps/api/event";
-  import UIkit from 'uikit';
-  import {miner_loop_enabled, mockTowerOnce} from "./miner"
+  import { miner_loop_enabled, towerOnce } from "./miner";
   import { get } from "svelte/store";
+  import { success } from "./carpeNotify";
+  import { raise_error } from "./carpeError";
 
   // Todo: Should this listener only be started in the miner view?
   onMount(() => {
-    let listener_handle = listen('tower-event', event => {
-      
+    listen("tower-event", (event) => {
+      // is a type VDFProof
       console.log(event);
-      UIkit.notification({
-        message: `<span uk-icon=\'icon: check\'></span> Proof Mined #${event.payload.height}`,
-        pos: 'bottom-center',
-        status: 'success',
-        timeout: 3000
-      });
-
+      let height = 1;
+      success(`Proof ${height} mined`);
+      // This section chains the producing of each block
       if (get(miner_loop_enabled)) {
-        mockTowerOnce();
+        towerOnce();
       }
     });
 
-     listen('tower-error', event => {
-      
+    listen("tower-error", (event) => {
+      // is a type CarpeError
       console.log(event);
-      UIkit.notification({
-        message: `<span uk-icon=\'icon: check\'></span> Proof Mined #${event.payload.height}`,
-        pos: 'bottom-center',
-        status: 'error',
-        timeout: 3000
-      });
-      // window.alert(event.payload.message);
-      // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
-      // event.payload is the payload object
+      raise_error(event.payload);
     });
-  })
-
+  });
 </script>
 
 <main class="uk-height-viewport uk-text-muted">
@@ -63,19 +51,21 @@
           <li><Link to="settings">Settings</Link></li>
           <li><Link to="dev">Debug</Link></li>
           <!-- <li><Link to="swarm">Swarm</Link></li> -->
-          
         </ul>
       </div>
     </nav>
 
     <div class="uk-container uk-background-muted uk-background-height-1-1">
-      
       <!-- <AccountSwitcher /> -->
       <!-- <p> account: {my_account} </p> -->
 
       <Route path="/" component={Wallet} primary={false} />
       <Route path="/add-account" component={AddAccount} primary={false} />
-      <Route path="/account-from-mnem" component={AccountFromMnemForm} primary={false} />
+      <Route
+        path="/account-from-mnem"
+        component={AccountFromMnemForm}
+        primary={false}
+      />
       <Route path="/keygen" component={Keygen} primary={false} />
       <Route path="/miner" component={Miner} primary={false} />
       <Route path="/txs" component={Transactions} primary={false} />

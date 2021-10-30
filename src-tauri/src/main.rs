@@ -36,7 +36,7 @@ fn main() {
     create_user_account,
     wallet_type,
     //Tower
-    // build_tower,
+    build_tower,
     
     // Dev
     init_swarm,

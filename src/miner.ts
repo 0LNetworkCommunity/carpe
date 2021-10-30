@@ -31,10 +31,10 @@ export interface ClientTowerStatus {
 export const tower = writable<ClientTowerStatus>({});
 
 
-export const mockTowerOnce = async () => {
+export const towerOnce = async () => {
   console.log("mine tower once")
 
-  let previous_duration = 5 * 1000;
+  let previous_duration = 30 * 60 * 1000;
   let t = get(tower);
   if (t.latest_proof && t.latest_proof.elapsed_secs) {
     previous_duration = t.latest_proof.elapsed_secs * 1000
@@ -46,7 +46,7 @@ export const mockTowerOnce = async () => {
   }
   proofState.set(progress);
 
-  invoke("mock_build_tower", { success: true })
+  invoke("build_tower", {})
     .then((res) => {
       console.log("tower response");
       console.log(res);

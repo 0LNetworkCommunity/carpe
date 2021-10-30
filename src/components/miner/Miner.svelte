@@ -2,9 +2,9 @@
   import { onMount } from "svelte";
   import { getTowerChainView, tower } from "../../miner";
   import type { ClientTowerStatus } from "../../miner";
-  import { mockTowerOnce } from "../../miner";
+  import { towerOnce } from "../../miner";
   import ToggleMiner from "./ToggleMiner.svelte";
-import MinerProgres from "./MinerProgres.svelte";
+  import MinerProgres from "./MinerProgres.svelte";
 
   let towerState: ClientTowerStatus;
 
@@ -32,7 +32,7 @@ import MinerProgres from "./MinerProgres.svelte";
   {/if}
 
   <div class="margin">
-    <button class="uk-button uk-button-default" on:click={mockTowerOnce}>Start Tower</button>
+    <button class="uk-button uk-button-default" on:click={towerOnce}>Start Tower</button>
   </div>
 
   <ToggleMiner />
