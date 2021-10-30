@@ -1,6 +1,6 @@
 <script>
-import { get } from "svelte/store";
-import { toggleMining, miner_loop_enabled} from "../../miner";
+  import { get } from "svelte/store";
+  import { toggleMining, miner_loop_enabled} from "../../miner";
 </script>
 
 <main>

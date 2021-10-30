@@ -92,10 +92,21 @@ export function toggleMining() {
     miner_loop_enabled.set(false);
   } else if (!enabled) {
     miner_loop_enabled.set(true);
+    if (!isInProgress()) {
+      // start miner
+      towerOnce()
+    }
   };
   console.log(get(miner_loop_enabled));
 }
 
+function isInProgress():boolean {
+  let ps = get(proofState);
+  if (ps.time_start && ps.time_start > 0) {
+    return true
+  }
+  return false;
+}
 export interface ProofProgress {
   time_start: number,
   previous_duration: number,

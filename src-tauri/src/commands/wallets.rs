@@ -227,14 +227,14 @@ pub fn danger_get_keys(mnemonic: String) -> Result<WalletLibrary, anyhow::Error>
 }
 
 //TODO:
-fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>) {
-  let block = match block_zero {
-    Some(b) => VDFProof::parse_block_file(b.to_owned()),
-    None => write_genesis(&app_cfg),
-  };
+// fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>) {
+//   let block = match block_zero {
+//     Some(b) => VDFProof::parse_block_file(b.to_owned()),
+//     None => write_genesis(&app_cfg),
+//   };
 
-  UserConfigs::new(block).create_manifest(path);
-}
+//   UserConfigs::new(block).create_manifest(path);
+// }
 
 fn get_short(acc: AccountAddress) -> String {
   acc.to_string()[..3].to_owned()
