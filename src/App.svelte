@@ -34,6 +34,9 @@
       // is a type CarpeError
       console.log(event);
       raise_error(event.payload);
+      // also disable the mining loop.
+      miner_loop_enabled.set(false);
+
     });
   });
 </script>
