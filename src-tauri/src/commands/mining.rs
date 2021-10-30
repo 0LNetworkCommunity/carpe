@@ -34,17 +34,17 @@ pub fn mine_and_commit_one_proof() -> Result<VDFProof, CarpeError> {
       Ok(tx_view) => match eval_tx_status(tx_view) {
         Ok(_) => Ok(b),
         Err(e) => Err(CarpeError::tower(&format!(
-          "ERROR: Proof NOT committed to chain, message: \n{:?}",
+          "ERROR: Tower proof NOT committed to chain, message: \n{:?}",
           e
         ))),
       },
       Err(e) => Err(CarpeError::tower(&format!(
-        "Miner transaction rejected, message: \n{:?}",
+        "Tower transaction rejected, message: \n{:?}",
         e
       ))),
     },
     Err(e) => Err(CarpeError::tower(&format!(
-      "Error mining proof, message: {:?}",
+      "Error mining tower proof, message: {:?}",
       e
     ))),
   }
