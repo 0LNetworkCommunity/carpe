@@ -8,13 +8,13 @@ pub mod key_manager;
 pub mod configs;
 pub mod carpe_error;
 pub mod seed_peers;
+use std::env;
+
 use crate::commands::*;
 
-// #[derive(Clone, serde::Serialize)]
-// struct Payload {
-//   message: String,
-// }
 fn main() {
+  env::set_var("NODE_ENV", "test");
+
 	tauri::Builder::default()
 	.invoke_handler(tauri::generate_handler![
     // Accounts

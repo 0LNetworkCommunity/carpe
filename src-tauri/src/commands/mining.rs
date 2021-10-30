@@ -4,7 +4,7 @@ use crate::{
 };
 use diem_json_rpc_types::views::TowerStateResourceView;
 use ol_types::block::VDFProof;
-use tauri::{Window, async_runtime::spawn};
+use tauri::{async_runtime::spawn, Window};
 use tower::{commit_proof, proof::mine_once};
 use txs::submit_tx::eval_tx_status;
 
@@ -33,20 +33,26 @@ pub fn mine_and_commit_one_proof() -> Result<VDFProof, CarpeError> {
     Ok(b) => match commit_proof::commit_proof_tx(&tx_params.unwrap(), b.clone(), false) {
       Ok(tx_view) => match eval_tx_status(tx_view) {
         Ok(_) => Ok(b),
-        Err(e) => Err(CarpeError::tower(&format!(
-          "ERROR: Tower proof NOT committed to chain, message: \n{:?}",
-          e
-        ))),
+        Err(e) => {
+          let msg = format!(
+            "ERROR: Tower proof NOT committed to chain, message: \n{:?}",
+            e
+          );
+          println!("{}", &msg);
+          Err(CarpeError::tower(&msg))
+        }
       },
-      Err(e) => Err(CarpeError::tower(&format!(
-        "Tower transaction rejected, message: \n{:?}",
-        e
-      ))),
+      Err(e) => {
+        let msg = format!("Tower transaction rejected, message: \n{:?}", e);
+        println!("{}", &msg);
+        Err(CarpeError::tower(&msg))
+      }
     },
-    Err(e) => Err(CarpeError::tower(&format!(
-      "Error mining tower proof, message: {:?}",
-      e
-    ))),
+    Err(e) => {
+      let msg = format!("Error mining tower proof, message: {:?}", e);
+      println!("{}", &msg);
+      Err(CarpeError::tower(&msg))
+    }
   }
 }
 

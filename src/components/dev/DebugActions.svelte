@@ -67,14 +67,12 @@
   };
 
   let listener_handle;
-  // listen to the `event-name` event and get a function to remove the event listener
-  // there's also a `once` function that subscribes to an event and automatically unsubscribes the listener on the first event
+
+
   onMount(() => {
     listener_handle = listen('event-name', event => {
       console.log(event);
       window.alert(event.payload.message);
-      // event.event is the event name (useful if you want to use a single callback fn for multiple event types)
-      // event.payload is the payload object
     });
 
     listener_handle = listen('tower-event', event => {
@@ -82,21 +80,7 @@
       window.alert(JSON.stringify(event.payload));
       mockTowerOnce(); // chain the creation of proofs
     });
-
-    // let 
   })
-
-
-
-  let startMinerLoop = async () => {
-    console.log("start miner loop");
-    if (miner_loop_enabled) {
-      mockTowerOnce();
-    }
-  }
-
-  
-
 
 
   onDestroy(() => {
@@ -123,13 +107,6 @@
       <h5> Tower </h5>
       <button class="uk-button uk-button-default" on:click={mockTowerOnce}>Mock Tower Once</button>
       <button class="uk-button uk-button-default" on:click={mockTowerOnceFail}>Mock Tower Once Fail</button>
-      <button class="uk-button uk-button-default" on:click={startMinerLoop}>Mock Tower Loop</button>
-
-        <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-          <label><input class="uk-radio" type="radio" name="radio2" checked={miner_loop_enabled} on:click={() => toggleMining(true)}> Mining Enabled </label>
-          <label><input class="uk-radio" type="radio" name="radio2" checked={!miner_loop_enabled} on:click={() => toggleMining(false)}> Disabled </label>
-
-        </div>
 
     </div>
 
