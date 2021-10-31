@@ -29,7 +29,7 @@ jobs:
           components: rustfmt
       - uses: actions/checkout@v1
       - name: Install Tarui
-        run: yarn global add @tauri-apps/cli
+        run: yarn install --verbose & ls
       - name: Build
         run: yarn tauri build
       - name: Upload binaries to release
