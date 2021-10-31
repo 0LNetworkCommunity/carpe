@@ -1,21 +1,8 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { getTowerChainView, startTowerListener, tower } from "../../miner";
-  import type { ClientTowerStatus } from "../../miner";
-  import { towerOnce } from "../../miner";
   import ToggleMiner from "./ToggleMiner.svelte";
   import MinerProgres from "./MinerProgres.svelte";
+  import TowerState from "./TowerState.svelte";
 
-  let towerState: ClientTowerStatus;
-
-  tower.subscribe((m) => {
-    console.log(m);
-    towerState = m;
-  });
-
-  onMount(() => {
-    getTowerChainView();
-  });
 </script>
 
 <main class="uk-height-viewport">
@@ -23,24 +10,23 @@
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
   </div>
 
-  {#if towerState.on_chain}
-    <div class="margin">
-      <span>
-        count_proofs_in_epoch: {towerState.on_chain.previous_proof_hash}
-      </span>
-    </div>
-  {/if}
 
-  <div class="margin">
+
+  <!-- <div class="margin">
     <button class="uk-button uk-button-default" on:click={towerOnce}>Start Tower</button>
   </div>
 
   <div class="margin">
     <button class="uk-button uk-button-default" on:click={startTowerListener}>Start Listener</button>
+  </div> -->
+  <div uk-grid>
+    <ToggleMiner />
+
+    <MinerProgres />
   </div>
 
-  <ToggleMiner />
 
-  <MinerProgres />
+
+  <TowerState />
   <!-- <p>Lost time is never found again.</p> -->
 </main>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import { account, mnem } from "../../accounts";
+  import { signingAccount, mnem } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
@@ -16,7 +16,8 @@
 
   let address: string;
   let authkey: string;
-  account.subscribe((a) => {
+
+  signingAccount.subscribe((a) => {
     address = a.account;
     authkey = a.authkey;
   });
@@ -26,7 +27,7 @@
       .then((res: NewKeygen) => {
         console.log(res);
         responses.set(JSON.stringify(res));
-        account.set(res.entry);
+        signingAccount.set(res.entry);
         mnem.set(res.mnem);
       })
       .catch((e) => raise_error(e));

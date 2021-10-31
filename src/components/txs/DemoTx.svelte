@@ -1,11 +1,11 @@
 <script>
   import { invoke } from "@tauri-apps/api/tauri";
-  import { account } from "../../accounts";
-import { raise_error } from "../../carpeError";
+  import { signingAccount } from "../../accounts";
+  import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
 
   let account_string = "";
-  account.subscribe((n) => {
+  signingAccount.subscribe((n) => {
     account_string = n.account;
   });
 

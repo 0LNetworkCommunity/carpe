@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { account, all_accounts, setAccount } from "../../accounts";
+  import { signingAccount, all_accounts, setAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
 
-  account.subscribe((value) => {
+  signingAccount.subscribe((value) => {
     my_account = value;
   });
 
@@ -34,7 +34,7 @@
         {#each account_list as acc}
           <li>
             <a
-              href="#"
+              href={"#"}
               on:click={() => {
                 setAccount(acc.account);
               }}

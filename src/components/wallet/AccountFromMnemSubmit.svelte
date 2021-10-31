@@ -2,7 +2,7 @@
   import { Link, navigate } from "svelte-navigator";
   import UIkit from "uikit";
   import { responses } from "../../debug";
-  import { account, mnem } from "../../accounts";
+  import { signingAccount, mnem } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
 
   import { raise_error } from "../../carpeError";
@@ -25,7 +25,7 @@
     invoke("init_from_mnem", { mnem: danger_temp_mnem })
       .then((res: AccountEntry) => {
         responses.set(JSON.stringify(res));
-        account.set(res);
+        signingAccount.set(res);
 
         UIkit.notification({
           message: `Account Added:  ${res.account}`,

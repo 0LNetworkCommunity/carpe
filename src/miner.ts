@@ -98,7 +98,11 @@ export function toggleMining() {
     miner_loop_enabled.set(false);
   } else if (!enabled) {
     miner_loop_enabled.set(true);
-    if (!isInProgress()) {
+
+    // careful to not start the miner twice.
+    // the miner may be turned off, but a proof may still be running in the background.
+    if (!isInProgress()) { 
+      
       // start miner
       towerOnce()
     }
@@ -108,14 +112,33 @@ export function toggleMining() {
 
 function isInProgress():boolean {
   let ps = get(proofState);
-  if (ps.time_start && ps.time_start > 0) {
+  if (
+    ps.time_start && 
+    ps.time_start > 0 &&
+    !ps.complete &&
+    !ps.error
+   ) {
     return true
   }
   return false;
 }
+
+export function proofError() {
+  let ps = get(proofState);
+  ps.error = true;
+  proofState.set(ps);
+}
+
+export function proofComplete() {
+  let ps = get(proofState);
+  ps.complete = true;
+  proofState.set(ps);
+}
 export interface ProofProgress {
   time_start: number,
   previous_duration: number,
+  complete: boolean,
+  error: boolean
 }
 
 export const proofState = writable<ProofProgress>({});

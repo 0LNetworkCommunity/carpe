@@ -1,7 +1,7 @@
 
 
 use ol_types::block::VDFProof;
-use tauri::{Window, async_runtime::spawn};
+use tauri::{Window};
 use crate::{carpe_error::CarpeError};
 use std::{thread, time};
 
@@ -122,7 +122,7 @@ pub async fn mock_build_tower(success: bool, window: Window) -> Result<(), Carpe
     println!("received tower-make-proof event");
     println!("received event {:?}", e);
 
-    mock_one_proof(success, &window_clone);
+    mock_one_proof(success, &window_clone).unwrap();
     println!("proof complete");
   });
   Ok(())

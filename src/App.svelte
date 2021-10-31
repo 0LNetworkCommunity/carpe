@@ -12,14 +12,16 @@
   import Transactions from "./components/txs/Transactions.svelte";
   import { onMount } from "svelte";
   import { listen } from "@tauri-apps/api/event";
-  import { miner_loop_enabled, towerOnce } from "./miner";
+  import { miner_loop_enabled, proofComplete, proofError, towerOnce } from "./miner";
   import { get } from "svelte/store";
   import { success } from "./carpeNotify";
   import { raise_error } from "./carpeError";
+  import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
 
   // Todo: Should this listener only be started in the miner view?
   onMount(() => {
     listen("tower-event", (event) => {
+      proofComplete();
       // is a type VDFProof
       console.log(event);
       let height = 1;
@@ -31,6 +33,7 @@
     });
 
     listen("tower-error", (event) => {
+      proofError();
       // is a type CarpeError
       console.log(event);
       raise_error(event.payload);
@@ -42,8 +45,11 @@
 </script>
 
 <main class="uk-height-viewport uk-text-muted">
+  
   <Router>
+    
     <nav class="uk-navbar-container" uk-navbar>
+      <span class="uk-align-middle"> <AccountSwitcher/></span>
       <div class="uk-navbar-center">
         <ul class="uk-navbar-nav">
           <!-- TODO: show uk-active based on route selected -->

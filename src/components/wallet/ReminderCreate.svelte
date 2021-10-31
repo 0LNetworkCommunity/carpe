@@ -1,9 +1,9 @@
 <script lang="ts">
-import { account } from "../../accounts";
+import { signingAccount } from "../../accounts";
 
 
   let authkey;
-  account.subscribe(a => authkey = a.authkey)
+  signingAccount.subscribe(a => authkey = a.authkey)
 
 </script>
 

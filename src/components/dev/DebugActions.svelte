@@ -4,7 +4,7 @@
   import DemoTx from "../txs/DemoTx.svelte";
   import { raise_error } from "../../carpeError";
   import { listen } from '@tauri-apps/api/event'
-  import { onDestroy, onMount } from "svelte";
+  import { onMount } from "svelte";
   import { getCurrent } from '@tauri-apps/api/window'
 
   const makeError = async () => {
@@ -27,7 +27,7 @@
     const current = getCurrent();
     current.emit('emit-from-window', 'Tauri is awesome!');
   };
-  const debubStartListener = async () => {
+  const debugStartListener = async () => {
     invoke("debug_start_listener", {})
       .then((res) => {
         responses.set(res);
@@ -105,20 +105,7 @@
       console.log(event);
       window.alert(event.payload.message);
     });
-
-    let b = listen('tower-event', event => {
-      console.log(event);
-      window.alert(JSON.stringify(event.payload));
-      mockTowerOnce(); // chain the creation of proofs
-    });
   })
-
-
-  // onDestroy(() => {
-  //   // destroy listener here?
-  //   listener_handle()
-
-  // })
 
 </script>
 
@@ -130,7 +117,7 @@
       <button class="uk-button uk-button-default" on:click={triggerEventFromRustToJs}>Receive Event</button>
 
       
-      <button class="uk-button uk-button-default" on:click={debubStartListener}>Start Listener</button>
+      <button class="uk-button uk-button-default" on:click={debugStartListener}>Start Listener</button>
 
       <button class="uk-button uk-button-default" on:click={emitEventFromHereToRust}>Send Event</button>
     </div>
