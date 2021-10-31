@@ -10,6 +10,8 @@ pub mod carpe_error;
 pub mod seed_peers;
 use std::env;
 
+use tauri::Manager;
+
 use crate::commands::*;
 
 fn main() {
@@ -50,6 +52,8 @@ fn main() {
     get_onchain_tower_state,
     receive_event,
     mock_build_tower,
+    start_forever_task,
+    debug_start_listener,
 	])
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");

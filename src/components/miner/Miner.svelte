@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { getTowerChainView, tower } from "../../miner";
+  import { getTowerChainView, startTowerListener, tower } from "../../miner";
   import type { ClientTowerStatus } from "../../miner";
   import { towerOnce } from "../../miner";
   import ToggleMiner from "./ToggleMiner.svelte";
@@ -33,6 +33,10 @@
 
   <div class="margin">
     <button class="uk-button uk-button-default" on:click={towerOnce}>Start Tower</button>
+  </div>
+
+  <div class="margin">
+    <button class="uk-button uk-button-default" on:click={startTowerListener}>Start Listener</button>
   </div>
 
   <ToggleMiner />

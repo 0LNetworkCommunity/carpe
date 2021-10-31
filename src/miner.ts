@@ -2,6 +2,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { get, writable } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
+import { getCurrent } from '@tauri-apps/api/window'
 
 export interface VDFProof {
   height: number,
@@ -46,15 +47,20 @@ export const towerOnce = async () => {
   }
   proofState.set(progress);
 
-  invoke("build_tower", {})
+  const current = getCurrent();
+  current.emit('tower-make-proof', 'Tauri is awesome!');
+
+};
+
+export function startTowerListener() {
+    invoke("build_tower", {})
     .then((res) => {
       console.log("tower response");
       console.log(res);
       responses.set(res);
     })
     .catch((e) => raise_error(e));
-};
-
+}
 
 function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
   let m = get(tower);
@@ -112,4 +118,5 @@ export interface ProofProgress {
   previous_duration: number,
 }
 
-export const proofState = writable<ProofProgress>({})
+export const proofState = writable<ProofProgress>({});
+

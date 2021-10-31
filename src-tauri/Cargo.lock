@@ -253,6 +253,7 @@ dependencies = [
  "sysinfo",
  "tauri",
  "tauri-build",
+ "tokio 1.13.0",
  "tower",
  "txs",
  "url",

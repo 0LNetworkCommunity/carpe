@@ -3,20 +3,41 @@ use crate::{
   configs::{get_cfg, get_diem_client, get_tx_params},
 };
 use diem_json_rpc_types::views::TowerStateResourceView;
+use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use tauri::{async_runtime::spawn, Window};
 use tower::{commit_proof, proof::mine_once};
-use txs::submit_tx::eval_tx_status;
+use txs::submit_tx::{TxParams, eval_tx_status};
 
 #[tauri::command]
 pub async fn build_tower(window: Window) -> Result<(), CarpeError> {
-  let _handle = spawn(wrap_tower(window));
+  println!("starting tower builder, listening for events");
+  // prepare listener to receive events
+  let window_clone = window.clone();
+  let config = get_cfg();
+  let tx_params = get_tx_params(None).unwrap();
+
+  let _h = window.listen("tower-make-proof", move |e| {
+    println!("received tower-make-proof event");
+    match mine_and_commit_one_proof(&config, &tx_params) {
+      Ok(proof) => {
+        window_clone.emit("tower-event", proof).unwrap();
+      }
+      Err(e) => {
+        window_clone.emit("tower-error", e).unwrap();
+      }
+    }
+    println!("received event {:?}", e);
+  });
+  // let _handle = spawn(wrap_tower(window));
   Ok(())
 }
 
 async fn wrap_tower(window: Window) {
   // Todo: resubmit  backlog.
-  match mine_and_commit_one_proof() {
+  let config = get_cfg();
+  let tx_params = get_tx_params(None).unwrap();
+  match mine_and_commit_one_proof(&config, &tx_params) {
     Ok(proof) => {
       window.emit("tower-event", proof).unwrap();
     }
@@ -26,11 +47,10 @@ async fn wrap_tower(window: Window) {
   }
 }
 
-pub fn mine_and_commit_one_proof() -> Result<VDFProof, CarpeError> {
-  let config = get_cfg();
-  let tx_params = get_tx_params(None);
+pub fn mine_and_commit_one_proof(config: &AppCfg, tx_params: &TxParams) -> Result<VDFProof, CarpeError> {
+
   match mine_once(&config) {
-    Ok(b) => match commit_proof::commit_proof_tx(&tx_params.unwrap(), b.clone(), false) {
+    Ok(b) => match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
       Ok(tx_view) => match eval_tx_status(tx_view) {
         Ok(_) => Ok(b),
         Err(e) => {
