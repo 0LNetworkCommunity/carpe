@@ -15,7 +15,7 @@
 
   mnem.subscribe((m) => danger_temp_mnem = m);
 
-  let helpTitle = "Enter your 24 word recovery mnemonic";
+  // let helpTitle = "Enter your 24 word recovery mnemonic";
   // let helpAddress = "";
 
   const re = /[0-9A-Fa-f]{32}/g;

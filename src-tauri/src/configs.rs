@@ -171,12 +171,15 @@ pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) 
 
   cfg.workspace.block_dir = vdf_dir_name.clone(); 
   let vdf_path = cfg.workspace.node_home.join(&cfg.workspace.block_dir);
+
   if !cfg.workspace.node_home.exists() {
     fs::create_dir_all(&cfg.workspace.node_home)?;
   }
   if !vdf_path.exists() {
     fs::create_dir_all(&vdf_path)?;
   }
+
+  cfg.save_file();
   Ok(cfg)
 }
 

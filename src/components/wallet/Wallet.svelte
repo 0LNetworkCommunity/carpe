@@ -12,7 +12,6 @@
   import ReminderCreate from "./ReminderCreate.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import Onboard from "../txs/Onboard.svelte";
   UIkit.use(Icons);
 
   let account_list: AccountEntry[];
@@ -105,9 +104,9 @@
     <Link to="keygen">
       <button class="uk-button uk-button-secondary"> New Account </button>
     </Link>
-    <!-- <Link to="account-from-mnem">
-      <a class="uk-text-default"> Restore Account </a>
-    </Link> -->
+    <Link to="account-from-mnem">
+      <button class="uk-button uk-button-default">Restore Account </button>
+    </Link>
   </div>
 
   <!-- Modal -->
