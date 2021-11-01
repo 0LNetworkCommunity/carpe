@@ -3,7 +3,6 @@
   import ToggleMiner from "./ToggleMiner.svelte";
   import MinerProgres from "./MinerProgres.svelte";
   import TowerState from "./TowerState.svelte";
-  import MinerBacklog from "./MinerBacklog.svelte";
   import MinerDebug from "./MinerDebug.svelte";
 
   let debug: boolean;

@@ -32,6 +32,8 @@
         <tr>
             <th></th>
             <th>Tower Height</th>
+            <th>Last Epoch Mined</th>
+            <th>Proofs This Epoch</th>
             <th>Hash</th>
             
         </tr>
@@ -40,6 +42,8 @@
         <tr>
             <td>{my_account.nickname}</td>
             <td>{towerState.on_chain.verified_tower_height}</td>
+            <td>{towerState.on_chain.latest_epoch_mining}</td>
+            <td>{towerState.on_chain.count_proofs_in_epoch}</td>
             <td>{towerState.on_chain.previous_proof_hash.slice(0,3)}</td>
 
             
