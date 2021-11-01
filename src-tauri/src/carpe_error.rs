@@ -17,6 +17,12 @@ pub struct CarpeError {
   msg: String,
 }
 
+impl From<anyhow::Error> for CarpeError {
+    fn from(e: anyhow::Error) -> Self {
+        CarpeError::misc(&format!("misc error, message: {:?}", e.to_string()))
+    }
+}
+
 const E_MISC: u8 = 100;
 const E_TOWER: u8 = 120;
 

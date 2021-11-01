@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 use std::process::Command;
-use anyhow::Error;
+use anyhow::{Error, anyhow};
 use ol::config::AppCfg;
 use ol_types::config::{self, TxType};
 use sysinfo::{SystemExt, ProcessExt};
@@ -10,14 +10,14 @@ use tower::proof::mine_once;
 use tower::commit_proof;
 use txs::submit_tx;
 
-use crate::configs::{dev_get_source_path, dev_get_swarm_temp, get_cfg};
+use crate::{carpe_error::CarpeError, configs::{dev_get_source_path, dev_get_swarm_temp, get_cfg}};
 
 /// Wizard init handler
 #[tauri::command]
-pub fn init_swarm() -> Result<String, String>  {
+pub fn init_swarm() -> Result<String, CarpeError>  {
   println!("initializing Alice persona in swarm_path");
   let swarm_persona = "alice".to_string();
-  let swarm_path = dev_get_swarm_temp();
+  let swarm_path = dev_get_swarm_temp()?;
   // let source_path = dirs::home_dir().unwrap().join("code/rust/libra");
 
   let persona_dir = swarm_path.join("0"); // TODO: alice has directory swarm_path/0, bob 1, carol 2... hard-coding this for demo.
@@ -31,7 +31,7 @@ pub fn init_swarm() -> Result<String, String>  {
     Err(e) => {
       let msg = format!("ERROR: could not initialize alice configs, message: {:?}", e.to_string());
       println!("{}", &msg);
-      Err(msg)
+      Err(anyhow!(msg).into())
     }
   }
 }
@@ -67,8 +67,8 @@ pub struct SwarmInit {
 }
 /// Wizard init handler
 #[tauri::command]
-pub fn swarm_files() -> Result<SwarmInit, String> {
-    let path = dev_get_swarm_temp();
+pub fn swarm_files() -> Result<SwarmInit, CarpeError> {
+    let path = dev_get_swarm_temp()?;
     let path_exists = path.exists();
     let config_path = path.join("0/0L.toml");
     let config_path_exists = config_path.exists();
@@ -137,14 +137,14 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
 #[tauri::command]
 /// mine for swarm
 // https://github.com/OLSF/libra/blob/main/ol/documentation/devs/swarm_qa_tools.md
-pub fn swarm_demo_tx() -> String {
-    let appcfg = get_cfg();
+pub fn swarm_demo_tx() -> Result<String, CarpeError> {
+    let appcfg = get_cfg()?;
 
     let tx_params = submit_tx::tx_params(
         appcfg,
         None,
         None,
-        Some(dev_get_swarm_temp()),
+        Some(dev_get_swarm_temp()?),
         Some("alice".to_string()),
         TxType::Miner,
         false, //  TODO: should be true in production
@@ -154,18 +154,18 @@ pub fn swarm_demo_tx() -> String {
 
   txs::commands::demo_cmd::demo_tx(&tx_params, None).unwrap();
 
-  "Demo tx submitted".to_string()
+  Ok("Demo tx submitted".to_string())
 }
 
 
 // TODO: this is not able to reliably start swarm, and it will depend on dev configs
 #[tauri::command]
-pub async fn easy_swarm() -> Result<String, String>  {
+pub async fn easy_swarm() -> Result<String, CarpeError>  {
 
-  let _cfg = get_cfg();
-  let source_path = dev_get_source_path().expect("cant find source path in 0L.toml, to use swarm define it in workspace.source_path");
+  let _cfg = get_cfg()?;
+  let source_path = dev_get_source_path()?.unwrap();
   let debug_build_diem_node = source_path.join("target/debug/diem-node");
-  let swarm_temp_path = dev_get_swarm_temp();
+  let swarm_temp_path = dev_get_swarm_temp()?;
   match Command::new("cargo")
     .current_dir(source_path)
     .args(&["run", "-p", "diem-swarm", "--", "--diem-node", debug_build_diem_node.to_str().unwrap(), "-c", swarm_temp_path.to_str().unwrap()])
@@ -175,8 +175,9 @@ pub async fn easy_swarm() -> Result<String, String>  {
           Ok(o.status.success().to_string())
         },
         Err(e) => {
-          println!("ERROR: could not start swarm, message: {:?}", &e.to_string());
-          Err(e.to_string())
+          let msg = format!("ERROR: could not start swarm, message: {:?}", &e.to_string());
+          println!("{}", &msg);
+          Err(anyhow!(msg).into())
         }
     }
 }

@@ -25,7 +25,7 @@ pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
   let window_clone = window.clone();
   let new_clone = window_clone.clone();
 
-  let config = get_cfg();
+  let config = get_cfg()?;
   let tx_params = get_tx_params(None).unwrap();
 
   let h = window.listen("tower-make-proof", move |e| {
@@ -58,7 +58,7 @@ struct BacklogSuccess {
 
 #[tauri::command]
 pub async fn submit_backlog(window: Window) -> Result<(), CarpeError> {
-  let config = get_cfg();
+  let config = get_cfg()?;
   let tx_params = get_tx_params(None)
   .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
 
@@ -119,7 +119,7 @@ pub fn mine_and_commit_one_proof(
 #[tauri::command]
 pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
   println!("fetching onchain tower state");
-  let cfg = get_cfg();
+  let cfg = get_cfg()?;
   let client = get_diem_client(&cfg)?;
 
   match client.get_miner_state(&cfg.profile.account) {

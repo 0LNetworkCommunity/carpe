@@ -31,15 +31,15 @@ pub fn default_accounts_db_path() -> PathBuf {
 }
 
 /// Get all the 0L configs. For tx sending and upstream nodes
-pub fn get_cfg() -> AppCfg {
+pub fn get_cfg() -> Result<AppCfg, Error> {
   let config_toml = default_config_path();
   dbg!(&config_toml);
-  config::parse_toml(config_toml.to_str().unwrap().to_string()).unwrap()
+  Ok(config::parse_toml(config_toml.to_str().unwrap().to_string())?)
 }
 
 /// get transaction parameters from config file
 pub fn get_tx_params(url: Option<&str>, ) -> Result<TxParams, anyhow::Error> { // TODO: Should the Error type be a CarpeError?
-  let mut config = get_cfg();
+  let mut config = get_cfg()?;
   if let Some(s) = url {
     match s.parse::<Url>() {
         Ok(u) => config.profile.default_node = Some(u),
@@ -61,7 +61,7 @@ pub fn get_tx_params(url: Option<&str>, ) -> Result<TxParams, anyhow::Error> { /
 
 
 pub fn get_node_obj() -> Result<Node, CarpeError> {
-  let cfg = get_cfg();
+  let cfg = get_cfg()?;
   let client = get_diem_client(&cfg)?;
 
   Ok(Node::new(client, &cfg, false))
@@ -78,7 +78,7 @@ pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
-  let mut cfg = get_cfg();
+  let mut cfg = get_cfg()?;
   cfg.profile.default_node = Some(url);
   cfg.save_file();
   Ok(cfg)
@@ -86,7 +86,7 @@ pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn set_chain_id(chain_id: String) -> Result<AppCfg, Error> {
-  let mut cfg = get_cfg();
+  let mut cfg = get_cfg()?;
   cfg.chain_info.chain_id = chain_id;
   cfg.save_file();
   Ok(cfg)
@@ -94,7 +94,7 @@ pub fn set_chain_id(chain_id: String) -> Result<AppCfg, Error> {
 
 /// Set the list of upstream nodes
 pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
-  let mut cfg = get_cfg();
+  let mut cfg = get_cfg()?;
   cfg.profile.upstream_nodes = Some(vec_url);
   cfg.save_file();
   Ok(cfg)
@@ -107,7 +107,7 @@ pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error>  {
-  let mut cfg = get_cfg();
+  let mut cfg = get_cfg()?;
   cfg.chain_info.base_waypoint = Some(wp);
   cfg.save_file();
   Ok(cfg)
@@ -115,7 +115,7 @@ pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error>  {
 
 /// Refresh the upstream peers in config, from chain data.
 pub fn set_refresh_upstream(wp: Waypoint) -> Result<AppCfg, Error>  {
-  let mut cfg = get_cfg();
+  let mut cfg = get_cfg()?;
   cfg.chain_info.base_waypoint = Some(wp);
   cfg.save_file();
   Ok(cfg)
@@ -123,7 +123,7 @@ pub fn set_refresh_upstream(wp: Waypoint) -> Result<AppCfg, Error>  {
 
 /// Refresh the upstream peers in config, from chain data.
 pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
-  let cfg = get_cfg();
+  let cfg = get_cfg()?;
   if let Some(mut json_rpc_node) = cfg.profile.default_node.clone() {
     let (_, wp) = bootstrap_waypoint_from_upstream(&mut json_rpc_node)?;
     set_waypoint(wp)
@@ -134,14 +134,14 @@ pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
 }
 
 /// For devs, get the source path, needed to initialize swarm
-pub fn dev_get_source_path() -> Option<PathBuf> {
-  let c = get_cfg();
-  c.workspace.source_path
+pub fn dev_get_source_path() -> Result<Option<PathBuf>, Error> {
+  let c = get_cfg()?;
+  Ok(c.workspace.source_path)
 }
 
 /// Where the swarm_temp folder is created, defaults to .0L/swarm_temp
-pub fn dev_get_swarm_temp() -> PathBuf {
-  get_cfg().workspace.node_home.join("swarm_temp")
+pub fn dev_get_swarm_temp() -> Result<PathBuf, Error> {
+  Ok(get_cfg()?.workspace.node_home.join("swarm_temp"))
 }
 
 
@@ -158,13 +158,14 @@ pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) 
 
 /// For switching between profiles in the Account DB.
 pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
+  dbg!(&is_initialized());
   let mut cfg = match is_initialized() {
-    true => get_cfg(),
+    true => get_cfg()?,
     false => AppCfg::default(),
   };
   let vdf_dir_name = format!("vdf_proofs_{}", &account.to_string());
 
-  cfg.workspace.node_home = default_config_path();
+  cfg.workspace.node_home = default_config_path().parent().unwrap().to_owned();
   cfg.profile.account = account;
   cfg.profile.auth_key = authkey;
 
@@ -198,7 +199,7 @@ pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) 
 // TODO:
 /// fetch upstream peers.
 pub fn refresh_upstream_peers() -> Result<(), Error> {
-  let mut cfg = get_cfg();
+  let mut cfg = get_cfg()?;
   let client = match client::pick_client(None, &mut cfg) {
     Ok(c) => c,
     Err(e) => {
