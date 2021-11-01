@@ -12,11 +12,12 @@
   import Transactions from "./components/txs/Transactions.svelte";
   import { onMount } from "svelte";
   import { listen } from "@tauri-apps/api/event";
-  import { miner_loop_enabled, disableMining, proofComplete, proofError, towerOnce } from "./miner";
+  import { miner_loop_enabled, disableMining, proofComplete, proofError, towerOnce, backlog_in_progress } from "./miner";
   import { get } from "svelte/store";
   import { success } from "./carpeNotify";
   import { raise_error } from "./carpeError";
   import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
+import { responses } from "./debug";
 
   let enabled;
   miner_loop_enabled.subscribe(e => enabled = e);
@@ -41,7 +42,19 @@
       raise_error(event.payload);
       // also disable the mining loop.
       disableMining();
+    });
 
+    ///// Backlog ////
+    listen("backlog-success", (event) => {
+      window.alert(event.payload);
+      responses.set(event.payload as string);
+      backlog_in_progress.set(false);
+    });
+
+    listen("backlog-error", (event) => {
+      window.alert(event.payload);
+      raise_error(event.payload);
+      backlog_in_progress.set(false);
     });
   });
 </script>

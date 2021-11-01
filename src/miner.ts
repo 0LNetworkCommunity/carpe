@@ -64,7 +64,10 @@ export const submitBacklog = async () => {
       backlog_in_progress.set(false);
       return res
     })
-    .catch((e) => raise_error(e));
+    .catch((e) => {
+      raise_error(e);
+      backlog_in_progress.set(false);
+    });
 }
 
 export const startTowerListener = async () => {

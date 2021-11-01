@@ -59,11 +59,12 @@ struct BacklogSuccess {
 #[tauri::command]
 pub async fn submit_backlog(window: Window) -> Result<(), CarpeError> {
   let config = get_cfg();
-  let tx_params = get_tx_params(None).unwrap();
+  let tx_params = get_tx_params(None)
+  .map_err(|e| CarpeError::tower("could getch tx_params while sending backlog."))?;
 
   match backlog(&config, &tx_params) {
       Ok(_) => window.emit("backlog-success", BacklogSuccess {success: true}) ,
-      Err(_) =>  window.emit("backlog-error", BacklogSuccess {success: false}),
+      Err(_) =>  window.emit("backlog-error", CarpeError::tower("could not submit backlog)")),
   };
     
   Ok(())
@@ -75,8 +76,9 @@ pub fn backlog(
   config: &AppCfg,
   tx_params: &TxParams,
 ) -> Result<(), CarpeError> {
+  // TODO: This does not return an error on transaction failure. Change in upstream.
   process_backlog(config, tx_params, false)
-  .map_err(|e| { CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}", &e))});
+  .map_err(|e| { CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}", &e))})?;
   Ok(())
 }
 
