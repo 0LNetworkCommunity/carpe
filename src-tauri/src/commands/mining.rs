@@ -1,37 +1,84 @@
 use crate::{
   carpe_error::CarpeError,
-  configs::{get_cfg, get_diem_client},
+  configs::{get_cfg, get_diem_client, get_tx_params},
 };
 use diem_json_rpc_types::views::TowerStateResourceView;
 use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 
-use tower::{commit_proof, proof::mine_once};
+use tauri::Window;
+use tauri::Manager;
+use tower::{backlog::process_backlog, commit_proof, proof::mine_once};
 use txs::submit_tx::{eval_tx_status, TxParams};
+// use crate::configs::{get_cfg, get_tx_params};
 
-// #[tauri::command]
-// pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
-//   println!("starting tower builder, listening for events");
-//   // prepare listener to receive events
-//   let window_clone = window.clone();
-//   let config = get_cfg();
-//   let tx_params = get_tx_params(None).unwrap();
+/// A new listener needs to be started whenever the user changes profiles i.e. using a different signing account.
+/// This is because the private key gets loaded in member when then listener is initialized.
 
-//   let _h = window.listen("tower-make-proof", move |e| {
-//     println!("received tower-make-proof event");
-//     match mine_and_commit_one_proof(&config, &tx_params) {
-//       Ok(proof) => {
-//         window_clone.emit("tower-event", proof).unwrap();
-//       }
-//       Err(e) => {
-//         window_clone.emit("tower-error", e).unwrap();
-//       }
-//     }
-//     println!("received event {:?}", e);
-//   });
-//   // let _handle = spawn(wrap_tower(window));
-//   Ok(())
-// }
+//TODO: there's a risk of multiple tower listeners being initialized. This is handled on the JS window side, but we likely need more guarantees on the rust side. Unsure how to do this without implementing a proper queue.
+#[tauri::command]
+pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
+  
+  println!("starting tower builder, listening for tower-make-proof");
+  // prepare listener to receive events
+  // TODO: this is gross. Prevent cloning when using in closures
+  let window_clone = window.clone();
+  let new_clone = window_clone.clone();
+
+  let config = get_cfg();
+  let tx_params = get_tx_params(None).unwrap();
+
+  let h = window.listen("tower-make-proof", move |e| {
+    println!("received tower-make-proof event");
+    println!("received event {:?}", e);
+
+    match mine_and_commit_one_proof(&config, &tx_params) {
+      Ok(proof) => {
+        window_clone.emit("tower-event", proof).unwrap();
+      }
+      Err(e) => {
+        window_clone.emit("tower-error", e).unwrap();
+      }
+    }
+  });
+
+  window.once("kill-listener", move |_| {
+    println!("received kill listener event");
+    new_clone.unlisten(h);
+  });
+
+  Ok(())
+}
+
+
+#[derive(Clone, serde::Serialize)]
+struct BacklogSuccess {
+  success: bool,
+}
+
+#[tauri::command]
+pub async fn submit_backlog(window: Window) -> Result<(), CarpeError> {
+  let config = get_cfg();
+  let tx_params = get_tx_params(None).unwrap();
+
+  match backlog(&config, &tx_params) {
+      Ok(_) => window.emit("backlog-success", BacklogSuccess {success: true}) ,
+      Err(_) =>  window.emit("backlog-error", BacklogSuccess {success: false}),
+  };
+    
+  Ok(())
+}
+
+
+/// flush a backlog of proofs at once to the chain.
+pub fn backlog(
+  config: &AppCfg,
+  tx_params: &TxParams,
+) -> Result<(), CarpeError> {
+  process_backlog(config, tx_params, false)
+  .map_err(|e| { CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}", &e))});
+  Ok(())
+}
 
 /// creates one proof and submits
 pub fn mine_and_commit_one_proof(

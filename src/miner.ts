@@ -1,9 +1,10 @@
 import { invoke } from '@tauri-apps/api/tauri';
-import { get, writable } from 'svelte/store';
+import { get, readable, writable } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { getCurrent } from '@tauri-apps/api/window'
 
+const current_window = getCurrent();
 export interface VDFProof {
   height: number,
   elapsed_secs: number,
@@ -30,6 +31,7 @@ export interface ClientTowerStatus {
 }
 
 export const tower = writable<ClientTowerStatus>({});
+export const backlog_in_progress = writable(false);
 
 
 export const towerOnce = async () => {
@@ -40,27 +42,48 @@ export const towerOnce = async () => {
   if (t.latest_proof && t.latest_proof.elapsed_secs) {
     previous_duration = t.latest_proof.elapsed_secs * 1000
   }
-  
-  let progress: ProofProgress =  {
+
+  let progress: ProofProgress = {
     time_start: Date.now(),
     previous_duration,
+    complete: false,
+    error: false,
   }
   proofState.set(progress);
-
-  const current = getCurrent();
-  current.emit('tower-make-proof', 'Tauri is awesome!');
+  current_window.emit('tower-make-proof', 'Tauri is awesome!');
 
 };
 
-export function startTowerListener() {
-    invoke("build_tower", {})
+export const submitBacklog = async () => {
+  backlog_in_progress.set(true);
+  invoke("submit_backlog", {})
     .then((res) => {
-      console.log("tower response");
+      console.log("backlog response");
       console.log(res);
-      responses.set(res);
+      responses.set(res as string);
+      backlog_in_progress.set(false);
+      return res
     })
     .catch((e) => raise_error(e));
 }
+
+export const startTowerListener = async () => {
+  await invoke("start_tower_listener", {})
+    .then((res) => {
+      console.log("tower listener response");
+      console.log(res);
+      responses.set(res as string);
+      return res
+    })
+    .catch((e) => raise_error(e));
+}
+
+
+export const killTowerListener = async () => {
+  console.log("kill listener");
+  return current_window.emit("kill-listener")
+}
+
 
 function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
   let m = get(tower);
@@ -84,7 +107,7 @@ export const getTowerChainView = async () => {
       console.log(res);
       refreshOnChainData(res);
       responses.set(res);
-      
+
     })
     .catch((e) => raise_error(e));
 };
@@ -92,32 +115,57 @@ export const getTowerChainView = async () => {
 
 export const miner_loop_enabled = writable(false);
 
+export async function enableMining(): Promise<boolean> {
+  // careful to not start the miner twice.
+  // the miner may be turned off, but a proof may still be running in the background.
+  // if (isInProgress()) return false;
+
+  // start the event listener on the rust side.
+  // wait for it to be ready
+  let started = await startTowerListener()
+    .then((r) => {
+      towerOnce()
+      miner_loop_enabled.set(true);
+      return true;
+    })
+    .catch(e => { return false })
+  return started;
+}
+
+export async function disableMining(): Promise<boolean> {
+  // stop the envent listener.
+
+  await killTowerListener()
+    .catch(e => {
+      raise_error(e);
+      return false
+    });
+  // set mining to disabled
+  miner_loop_enabled.set(false);
+  return true;
+}
+
 export function toggleMining() {
   let enabled = get(miner_loop_enabled)
+  console.log("miner enabled?")
+  console.log(get(miner_loop_enabled));
   if (enabled) {
-    miner_loop_enabled.set(false);
-  } else if (!enabled) {
-    miner_loop_enabled.set(true);
-
-    // careful to not start the miner twice.
-    // the miner may be turned off, but a proof may still be running in the background.
-    if (!isInProgress()) { 
-      
-      // start miner
-      towerOnce()
-    }
+    disableMining();
+  } else {
+    enableMining();
   };
+  console.log("miner enabled?")
   console.log(get(miner_loop_enabled));
 }
 
-function isInProgress():boolean {
+function isInProgress(): boolean {
   let ps = get(proofState);
   if (
-    ps.time_start && 
+    ps.time_start &&
     ps.time_start > 0 &&
     !ps.complete &&
     !ps.error
-   ) {
+  ) {
     return true
   }
   return false;

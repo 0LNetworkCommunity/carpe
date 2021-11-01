@@ -12,12 +12,14 @@
   import Transactions from "./components/txs/Transactions.svelte";
   import { onMount } from "svelte";
   import { listen } from "@tauri-apps/api/event";
-  import { miner_loop_enabled, proofComplete, proofError, towerOnce } from "./miner";
+  import { miner_loop_enabled, disableMining, proofComplete, proofError, towerOnce } from "./miner";
   import { get } from "svelte/store";
   import { success } from "./carpeNotify";
   import { raise_error } from "./carpeError";
   import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
 
+  let enabled;
+  miner_loop_enabled.subscribe(e => enabled = e);
   // Todo: Should this listener only be started in the miner view?
   onMount(() => {
     listen("tower-event", (event) => {
@@ -27,7 +29,7 @@
       let height = 1;
       success(`Proof ${height} mined`);
       // This section chains the producing of each block
-      if (get(miner_loop_enabled)) {
+      if (enabled) {
         towerOnce();
       }
     });
@@ -38,7 +40,7 @@
       console.log(event);
       raise_error(event.payload);
       // also disable the mining loop.
-      miner_loop_enabled.set(false);
+      disableMining();
 
     });
   });
