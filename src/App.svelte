@@ -26,9 +26,12 @@ import { responses } from "./debug";
     listen("tower-event", (event) => {
       proofComplete();
       // is a type VDFProof
-      console.log(event);
-      let height = 1;
-      success(`Proof ${height} mined`);
+      console.log(event.payload);
+      let height = event.payload.height;
+      if (height) {
+        success(`Proof ${height} mined`);
+      }
+      
       // This section chains the producing of each block
       if (enabled) {
         towerOnce();

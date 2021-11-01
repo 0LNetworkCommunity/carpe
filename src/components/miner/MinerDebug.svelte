@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { backlog_in_progress, killTowerListener, startTowerListener, submitBacklog, towerOnce } from "../../miner";
+  import { killTowerListener, startTowerListener, towerOnce } from "../../miner";
 </script>
 
-<main>
-  <div class="uk-card uk-card-body uk-flex">
+<main class="uk-margin" >
+  <div class="uk-card uk-card-body">
     <div class="margin">
       <button class="uk-button uk-button-default" on:click={towerOnce}>Start Tower</button>
     </div>
@@ -16,8 +16,6 @@
       <button class="uk-button uk-button-default" on:click={killTowerListener}>Kill Listener</button>
     </div>
 
-    <div class="margin">
-      <button class="uk-button uk-button-default" on:click={submitBacklog}>Submit Backlog</button>
-    </div>
+
   </div>
 </main>

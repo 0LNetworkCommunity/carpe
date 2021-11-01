@@ -3,10 +3,12 @@
   import ToggleMiner from "./ToggleMiner.svelte";
   import MinerProgres from "./MinerProgres.svelte";
   import TowerState from "./TowerState.svelte";
-  import { backlog_in_progress, killTowerListener, startTowerListener, submitBacklog, towerOnce } from "../../miner";
-import MinerBacklog from "./MinerBacklog.svelte";
-import MinerDebug from "./MinerDebug.svelte";
+  import MinerBacklog from "./MinerBacklog.svelte";
+  import MinerDebug from "./MinerDebug.svelte";
 
+  let debug: boolean;
+
+  let info = true;
 
 </script>
 
@@ -18,16 +20,16 @@ import MinerDebug from "./MinerDebug.svelte";
 
   <div class="uk-flex uk-flex-center">
     <ToggleMiner />
-
+  <!-- <p>Lost time is never found again.</p> -->
     <MinerProgres />
   </div>
 
-  <MinerBacklog />
-
-
-  <TowerState />
-  <!-- <p>Lost time is never found again.</p> -->
-
-  <MinerDebug />
+  {#if info}
+    <TowerState />
+  {/if}
+  
+  {#if debug} 
+    <MinerDebug />
+  {/if}
 
 </main>
