@@ -26,10 +26,6 @@
     my_account = a;
   });
 
-  // const isActiveAccount = (account_string: string):boolean => {
-  //   return account_string == get(account).account
-  // }
-
   async function bal(i): Promise<number> {
     let n = await get_balance(account_list[i]);
     console.log(n);
@@ -45,6 +41,7 @@
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Wallet</h2>
   </div>
+
   <div />
   {#if !account_list}
     <p>loading...</p>
@@ -101,16 +98,16 @@
       </tbody>
     </table>
   {:else}
-    <Onboard />
+    <!-- <Onboard /> -->
   {/if}
 
   <div uk-grid class="uk-flex uk-flex-center">
     <Link to="keygen">
-      <button class="uk-button uk-button-primary"> New Account </button>
+      <button class="uk-button uk-button-secondary"> New Account </button>
     </Link>
-    <Link to="account-from-mnem">
-      <button class="uk-button uk-button-default"> Restore Account </button>
-    </Link>
+    <!-- <Link to="account-from-mnem">
+      <a class="uk-text-default"> Restore Account </a>
+    </Link> -->
   </div>
 
   <!-- Modal -->

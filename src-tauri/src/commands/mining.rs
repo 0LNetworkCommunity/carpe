@@ -60,11 +60,11 @@ struct BacklogSuccess {
 pub async fn submit_backlog(window: Window) -> Result<(), CarpeError> {
   let config = get_cfg();
   let tx_params = get_tx_params(None)
-  .map_err(|e| CarpeError::tower("could getch tx_params while sending backlog."))?;
+  .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
 
   match backlog(&config, &tx_params) {
       Ok(_) => window.emit("backlog-success", BacklogSuccess {success: true}) ,
-      Err(_) =>  window.emit("backlog-error", CarpeError::tower("could not submit backlog)")),
+      Err(_) => window.emit("backlog-error", CarpeError::tower("could not submit backlog)")),
   };
     
   Ok(())
@@ -89,7 +89,7 @@ pub fn mine_and_commit_one_proof(
 ) -> Result<VDFProof, CarpeError> {
   match mine_once(&config) {
     Ok(b) => match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
-      Ok(tx_view) => match eval_tx_status(tx_view) {
+      Ok(tx_view) => match eval_tx_status(&tx_view) {
         Ok(_) => Ok(b),
         Err(e) => {
           let msg = format!(

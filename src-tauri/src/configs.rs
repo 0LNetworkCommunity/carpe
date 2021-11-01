@@ -33,6 +33,7 @@ pub fn default_accounts_db_path() -> PathBuf {
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn get_cfg() -> AppCfg {
   let config_toml = default_config_path();
+  dbg!(&config_toml);
   config::parse_toml(config_toml.to_str().unwrap().to_string()).unwrap()
 }
 
@@ -100,14 +101,7 @@ pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
 }
 
 
-/// For switching between profiles in the Account DB.
-pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
-  let mut cfg = get_cfg();
-  cfg.profile.account = account;
-  cfg.profile.auth_key = authkey;
-  cfg.save_file();
-  Ok(cfg)
-}
+
 
 
 
@@ -155,21 +149,51 @@ pub fn is_initialized() -> bool {
   default_config_path().exists()
 }
 
+// TODO: replace this wrappet
 /// initialize default configs.
 pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) -> Result<(), Error>{
-  if !is_initialized() {
-    let mut default_config = AppCfg::default();
-    default_config.workspace.node_home = default_config_path();
-    default_config.profile.account = account;
-    default_config.profile.auth_key = authkey;
-
-    fs::create_dir_all(&default_config.workspace.node_home)?;
-    default_config.save_file();
-  } else {
-    set_account_profile(account, authkey)?;
-  }
+  set_account_profile(account, authkey)?;
   Ok(())
 }
+
+/// For switching between profiles in the Account DB.
+pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
+  let mut cfg = match is_initialized() {
+    true => get_cfg(),
+    false => AppCfg::default(),
+  };
+  let vdf_dir_name = format!("vdf_proofs_{}", &account.to_string());
+
+  cfg.workspace.node_home = default_config_path();
+  cfg.profile.account = account;
+  cfg.profile.auth_key = authkey;
+
+  cfg.workspace.block_dir = vdf_dir_name.clone(); 
+  let vdf_path = cfg.workspace.node_home.join(&cfg.workspace.block_dir);
+  if !cfg.workspace.node_home.exists() {
+    fs::create_dir_all(&cfg.workspace.node_home)?;
+  }
+  if !vdf_path.exists() {
+    fs::create_dir_all(&vdf_path)?;
+  }
+  Ok(cfg)
+}
+
+/// Todo: is this ever needed if maybe_init_configs always creates the file?
+// fn set_vdf_dir(account: AccountAddress) -> Result<(), Error> {
+//   let mut cfg = get_cfg();
+//   let dir_name = format!("vdf_proofs_{}", account.to_string());
+//   cfg.workspace.block_dir = dir_name.clone(); 
+//   let path = cfg.workspace.node_home.join(&dir_name);
+//   if (!path.exists()) {
+//     match fs::create_dir_all(path) {
+//         Ok(_) => {},
+//         Err(e) => bail!("cannot create directory, message: {:?}", e.to_string()),
+//     }
+//   }
+//   cfg.save_file();
+//   Ok(())
+// }
 
 // TODO:
 /// fetch upstream peers.

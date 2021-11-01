@@ -14,11 +14,11 @@ pub fn demo_tx() -> Result<String, CarpeError> {
   let tx_params =
     configs::get_tx_params(None).map_err(|_| CarpeError::misc("could not load tx params"))?;
   dbg!(&tx_params);
-  match demo_cmd::demo_tx(&tx_params, false, None) {
+  match demo_cmd::demo_tx(&tx_params, None) {
     Ok(r) => Ok(format!("Tx Success: {:?}", r)),
     Err(e) => Err(CarpeError::misc(&format!(
       "could not do demo tx, message: {:?}",
-      e.to_string()
+      e
     ))),
   }
 }
@@ -29,11 +29,11 @@ pub fn create_user_account(authkey: String) -> Result<String, CarpeError> {
     .map_err(|_| CarpeError::misc("could not load tx params"))?;
 
   if let Some(key) = authkey.parse::<AuthenticationKey>().ok() {
-    match create_from_auth_and_coin(key, 1, tx_params, false, None) {
+    match create_from_auth_and_coin(key, 1, tx_params, None) {
       Ok(r) => Ok(format!("Tx Success: {:?}", r)),
       Err(e) => Err(CarpeError::misc(&format!(
         "could not make account creation tx message: {:?}",
-        e.to_string()
+        e
       ))),
     }
   } else {
@@ -52,11 +52,11 @@ pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
   let tx_params =
     configs::get_tx_params(None).map_err(|_| CarpeError::misc("could not load tx params"))?;
 
-  match txs::commands::wallet_cmd::set_wallet_type(type_int, tx_params, false, None) {
+  match txs::commands::wallet_cmd::set_wallet_type(type_int, tx_params, None) {
     Ok(r) => Ok(format!("Tx Success: {:?}", r)),
     Err(e) => Err(CarpeError::misc(&format!(
       "could not set wallet type: {:?}",
-      e.to_string()
+      e
     ))),
   }
 }
