@@ -24,7 +24,6 @@
   miner_loop_enabled.subscribe(e => enabled = e);
   // Todo: Should this listener only be started in the miner view?
   onMount(() => {
-    setNetwork(Networks.Rex);
 
     listen("tower-event", (event) => {
       proofComplete();

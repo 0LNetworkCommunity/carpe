@@ -2,6 +2,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
+import { Networks, setNetwork } from './networks';
 export interface AccountEntry {
   account: string,
   authkey: string,
@@ -42,13 +43,17 @@ export function findOneAccount(account: string): AccountEntry {
   return found
 }
 
-export function setAccount(an_address: string) {
+export async function setAccount(an_address: string) {
   let a = findOneAccount(an_address);
   signingAccount.set(a);
 
-  invoke("switch_profile", {
+  await invoke("switch_profile", {
     account: a.account,
   })
-    .then((res) => responses.set(res))
+    .then((res) => {
+      responses.set(res);
+      // for testnet
+      setNetwork(Networks.Rex);
+    })
     .catch((e) => raise_error(e));
 }
