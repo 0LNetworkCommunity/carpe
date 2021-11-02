@@ -13,7 +13,7 @@ import { signingAccount } from "../../accounts";
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Onboarding</h2>
             <p>Your account doesn't yet exist on chain. So far you have created the keys.</p>
-            <p>Next, anyone already on 0L can create your account by sending a coin to your address.</p>
+            <h4> Give your Authkey to someone who already has an account, to send the account onboarding transaction.</h4>
             <h3> AUTH KEY: </h3>
             <span> {authkey} <span>
 

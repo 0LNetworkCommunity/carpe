@@ -17,10 +17,12 @@
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
   </div>
 
+  <MinerProgres />
+
   <div class="uk-flex uk-flex-center">
     <ToggleMiner />
   <!-- <p>Lost time is never found again.</p> -->
-    <MinerProgres />
+    
   </div>
 
   {#if info}

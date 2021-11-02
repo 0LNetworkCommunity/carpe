@@ -17,12 +17,15 @@
   import { raise_error } from "./carpeError";
   import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
   import { responses } from "./debug";
-import { get } from "svelte/store";
+  import { get } from "svelte/store";
+  import { Networks, setNetwork } from "./networks";
 
   let enabled;
   miner_loop_enabled.subscribe(e => enabled = e);
   // Todo: Should this listener only be started in the miner view?
   onMount(() => {
+    setNetwork(Networks.Rex);
+
     listen("tower-event", (event) => {
       proofComplete();
       // is a type VDFProof

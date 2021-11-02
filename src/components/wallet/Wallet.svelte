@@ -12,6 +12,7 @@
   import ReminderCreate from "./ReminderCreate.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
+import Onboard from "../txs/Onboard.svelte";
   UIkit.use(Icons);
 
   let account_list: AccountEntry[];
@@ -28,7 +29,8 @@
   async function bal(i): Promise<number> {
     let n = await get_balance(account_list[i]);
     console.log(n);
-    return n;
+    return n / 1000000; // NOTE: divide by scaling factor. 
+    // TODO: Rust should have already returned the scaled value.
   }
 
   onMount(() => {
@@ -43,7 +45,7 @@
 
   <div />
   {#if !account_list}
-    <p>loading...</p>
+    <Onboard />
   {:else if account_list.length > 0}
     <table class="uk-table uk-table-divider">
       <thead>
