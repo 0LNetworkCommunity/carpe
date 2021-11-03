@@ -7,20 +7,20 @@ on:
 
 jobs:
   publish:
-    name: Publish for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            artifact_name: carpe
-            asset_name: carpe-linux-amd64
-          - os: windows-latest
-            artifact_name: carpe.exe
-            asset_name: carpe-windows-amd64
-          - os: macos-latest
-            artifact_name: carpe
-            asset_name: carpe-macos-amd64
+    name: Publish for #${{ matrix.os }}
+    runs-on: ubuntu-latest #${{ matrix.os }}
+#    strategy:
+#      matrix:
+#        include:
+#          - os: ubuntu-latest
+#            artifact_name: carpe
+#            asset_name: carpe-linux-amd64
+#          - os: windows-latest
+#            artifact_name: carpe.exe
+#            asset_name: carpe-windows-amd64
+#          - os: macos-latest
+#            artifact_name: carpe
+#            asset_name: carpe-macos-amd64
 
     steps:
       - uses: hecrj/setup-rust-action@v1
@@ -28,8 +28,8 @@ jobs:
           rust-version: stable
           components: rustfmt
       - uses: actions/checkout@v1
-      - name: Install Tarui
-        run: pwd
+      - name: yarn info
+        run: sudo apt install libvips-dev
       - name: yarn info
         run: yarn install --modules-folder ./node_modules
       - name: Build
