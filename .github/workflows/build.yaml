@@ -31,7 +31,7 @@ jobs:
       - name: Install Tarui
         run: pwd
       - name: yarn info
-        run: yarn version
+        run: yarn install --modules-folder ./node_modules
       - name: Build
         run: yarn run tauri build
       - name: Upload binaries to release
