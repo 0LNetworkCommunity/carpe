@@ -15,7 +15,7 @@ jobs:
           - os: ubuntu-latest
             artifact_name: carpe
             asset_name: carpe-linux-amd64
-            dir: ubuntu
+            dir: deb
 #          - os: windows-latest
 #            artifact_name: carpe.exe
 #            asset_name: carpe-windows-amd64
@@ -42,7 +42,15 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: src-tauri/target/release/bundle/${{ matrix.dir }}/*
-#          asset_name: ${{ matrix.asset_name }}
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
+      - name: Upload for ubuntu
+          if: ${{ matrix.os == 'ubuntu-latest' }}
+          uses: svenstaro/upload-release-action@v1-release
+          with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            file: src-tauri/target/release/bundle/appimage/*
+            tag: ${{ github.ref }}
+            overwrite: true
+            file_glob: true
