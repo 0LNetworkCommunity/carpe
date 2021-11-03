@@ -12,7 +12,7 @@ use ol::{
 };
 use diem_types::account_address::AccountAddress;
 
-use ol_types::config::{self, TxType, bootstrap_waypoint_from_rpc, bootstrap_waypoint_from_upstream};
+use ol_types::config::{self, TxType, bootstrap_waypoint_from_rpc};
 use txs::submit_tx::{TxParams, get_tx_params_from_keypair};
 use url::Url;
 
@@ -76,63 +76,37 @@ pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
   .map_err(|_|{ CarpeError::misc("could not load tx params") })
 }
 
-/// Get all the 0L configs. For tx sending and upstream nodes
-pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
-  let mut cfg = get_cfg()?;
-  cfg.profile.default_node = Some(url);
-  cfg.save_file();
-  Ok(cfg)
-}
-
-/// Get all the 0L configs. For tx sending and upstream nodes
-pub fn set_chain_id(chain_id: String) -> Result<AppCfg, Error> {
-  let mut cfg = get_cfg()?;
-  cfg.chain_info.chain_id = chain_id;
-  cfg.save_file();
-  Ok(cfg)
-}
-
-/// Set the list of upstream nodes
-pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
-  let mut cfg = get_cfg()?;
-  cfg.profile.upstream_nodes = Some(vec_url);
-  cfg.save_file();
-  Ok(cfg)
-}
 
 
 
 
 
 
-/// Get all the 0L configs. For tx sending and upstream nodes
-pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error>  {
-  let mut cfg = get_cfg()?;
-  cfg.chain_info.base_waypoint = Some(wp);
-  cfg.save_file();
-  Ok(cfg)
-}
+
+
+
+
+
+// /// Refresh the upstream peers in config, from chain data.
+// pub fn set_refresh_upstream(wp: Waypoint) -> Result<AppCfg, Error>  {
+//   let mut cfg = get_cfg()?;
+//   cfg.chain_info.base_waypoint = Some(wp);
+//   cfg.save_file();
+//   Ok(cfg)
+// }
 
 /// Refresh the upstream peers in config, from chain data.
-pub fn set_refresh_upstream(wp: Waypoint) -> Result<AppCfg, Error>  {
-  let mut cfg = get_cfg()?;
-  cfg.chain_info.base_waypoint = Some(wp);
-  cfg.save_file();
-  Ok(cfg)
-}
+// pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
+//   let cfg = get_cfg()?;
+//   if let Some(json_rpc_node) = cfg.profile.default_node.clone() {
+//     let wp = bootstrap_waypoint_from_rpc(json_rpc_node)?;
+//     // let (_, wp) = bootstrap_waypoint_from_upstream(&mut json_rpc_node)?;
+//     set_waypoint(wp)
+//   } else {
+//     bail!("could not find default_node in 0L.toml")
+//   }
 
-/// Refresh the upstream peers in config, from chain data.
-pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
-  let cfg = get_cfg()?;
-  if let Some(mut json_rpc_node) = cfg.profile.default_node.clone() {
-    let wp = bootstrap_waypoint_from_rpc(json_rpc_node)?;
-    // let (_, wp) = bootstrap_waypoint_from_upstream(&mut json_rpc_node)?;
-    set_waypoint(wp)
-  } else {
-    bail!("could not find default_node in 0L.toml")
-  }
-
-}
+// }
 
 /// For devs, get the source path, needed to initialize swarm
 pub fn dev_get_source_path() -> Result<Option<PathBuf>, Error> {
@@ -156,6 +130,8 @@ pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) 
   set_account_profile(account, authkey)?;
   Ok(())
 }
+
+
 
 /// For switching between profiles in the Account DB.
 pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
