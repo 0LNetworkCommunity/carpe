@@ -12,15 +12,15 @@ use anyhow::{bail, Error};
 use diem_types::account_address::AccountAddress;
 use diem_types::transaction::authenticator::AuthenticationKey;
 use diem_wallet::WalletLibrary;
-use ol::config::AppCfg;
+
 use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
-use ol_types::account::UserConfigs;
-use ol_types::block::VDFProof;
+
+
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
-use std::path::PathBuf;
-use tower::proof::write_genesis;
+
+
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {

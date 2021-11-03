@@ -1,7 +1,12 @@
 <script>
   import { get } from "svelte/store";
   import { toggleMining, miner_loop_enabled} from "../../miner";
+
+  let enabled; 
+  miner_loop_enabled.subscribe(e => enabled = e);
+
 </script>
+
 
 <main>
   <div>
@@ -9,7 +14,7 @@
       <input
         type="checkbox"
         on:click={() => toggleMining()}
-        checked={get(miner_loop_enabled)}
+        checked={enabled}
       />
       <div class="uk-switch-slider uk-switch-on-off round" />
     </label>

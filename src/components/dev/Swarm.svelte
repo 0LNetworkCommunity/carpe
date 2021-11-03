@@ -1,7 +1,7 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import { account } from "../../accounts";
-import { raise_error } from "../../carpeError";
+  import { signingAccount } from "../../accounts";
+  import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
   let home_path = "";
   let swarm_running = "";
@@ -54,14 +54,7 @@ import { raise_error } from "../../carpeError";
     invoke("init_from_mnem", { mnem: alice_mnem })
       .then((res) => {
         responses.set(res);
-        account.set(res);
-
-        UIkit.notification({
-          message: `private key ${res}`,
-          pos: "bottom-right",
-          status: "success",
-          timeout: 3000,
-        });
+        signingAccount.set(res);
       })
       .catch((e) => {
         raise_error(e)

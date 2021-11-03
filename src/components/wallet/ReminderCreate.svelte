@@ -1,9 +1,9 @@
 <script lang="ts">
-import { account } from "../../accounts";
+import { signingAccount } from "../../accounts";
 
 
   let authkey;
-  account.subscribe(a => authkey = a.authkey)
+  signingAccount.subscribe(a => authkey = a.authkey)
 
 </script>
 
@@ -13,7 +13,7 @@ import { account } from "../../accounts";
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Onboarding</h2>
             <p>Your account doesn't yet exist on chain. So far you have created the keys.</p>
-            <p>Next, anyone already on 0L can create your account by sending a coin to your address.</p>
+            <h4> Give your Authkey to someone who already has an account, to send the account onboarding transaction.</h4>
             <h3> AUTH KEY: </h3>
             <span> {authkey} <span>
 

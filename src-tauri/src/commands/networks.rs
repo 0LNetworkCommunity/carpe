@@ -17,7 +17,7 @@ pub struct NetworkProfile {
 
 impl NetworkProfile {
   pub fn new() -> Result<Self, CarpeError> {
-    let cfg = configs::get_cfg();
+    let cfg = configs::get_cfg()?;
     if let Some(url) = cfg.profile.default_node {
       Ok(NetworkProfile {
         chain_id: cfg.chain_info.chain_id,
