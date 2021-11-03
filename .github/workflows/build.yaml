@@ -41,7 +41,7 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: src-tauri/target/release/bundle/${{ matrix.dir }}/*
+          file: src-tauri/target/release/bundle/${{ matrix.dir }}/*.${{ matrix.dir}}
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
@@ -50,7 +50,7 @@ jobs:
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: src-tauri/target/release/bundle/appimage/*
+          file: src-tauri/target/release/bundle/appimage/*.AppImage
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
