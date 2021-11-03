@@ -28,8 +28,10 @@ jobs:
           rust-version: stable
           components: rustfmt
       - uses: actions/checkout@v1
-#      - name: Install Tarui
-#        run: yarn install --verbose & ls
+      - name: Install Tarui
+        run: pwd
+      - name: yarn info
+        run: yarn version
       - name: Build
         run: yarn run tauri build
       - name: Upload binaries to release
