@@ -1,6 +1,6 @@
 //! networks to connect to
 
-use std::fmt;
+
 
 use diem_types::waypoint::Waypoint;
 use url::Url;

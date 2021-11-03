@@ -4,7 +4,7 @@ use std::{fs, path::PathBuf};
 
 use anyhow::{Error, bail};
 use cli::diem_client::DiemClient;
-use diem_types::{transaction::authenticator::AuthenticationKey, waypoint::Waypoint};
+use diem_types::{transaction::authenticator::AuthenticationKey};
 use dirs;
 use ol::{
   config::AppCfg,
@@ -12,7 +12,7 @@ use ol::{
 };
 use diem_types::account_address::AccountAddress;
 
-use ol_types::config::{self, TxType, bootstrap_waypoint_from_rpc};
+use ol_types::config::{self, TxType};
 use txs::submit_tx::{TxParams, get_tx_params_from_keypair};
 use url::Url;
 
