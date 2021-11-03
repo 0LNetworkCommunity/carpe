@@ -15,9 +15,9 @@ jobs:
           - os: ubuntu-latest
             artifact_name: carpe
             asset_name: carpe-linux-amd64
-          - os: windows-latest
-            artifact_name: carpe.exe
-            asset_name: carpe-windows-amd64
+#          - os: windows-latest
+#            artifact_name: carpe.exe
+#            asset_name: carpe-windows-amd64
           - os: macos-latest
             artifact_name: carpe
             asset_name: carpe-macos-amd64
