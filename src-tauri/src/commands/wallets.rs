@@ -89,7 +89,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, anyhow::Error
   // it will error if the account already exists.
   insert_account_db(get_short(address.clone()), address, authkey)?;
 
-  key_manager::set_private_key(&address.to_string(), priv_key)?;
+  let _a = key_manager::set_private_key(&address.to_string(), priv_key);
 
   configs::maybe_init_configs(address.clone(), authkey.clone())?;
 
