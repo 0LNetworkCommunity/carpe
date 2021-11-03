@@ -7,20 +7,20 @@ on:
 
 jobs:
   publish:
-    name: Publish for #${{ matrix.os }}
-    runs-on: ubuntu-latest #${{ matrix.os }}
-#    strategy:
-#      matrix:
-#        include:
-#          - os: ubuntu-latest
-#            artifact_name: carpe
-#            asset_name: carpe-linux-amd64
-#          - os: windows-latest
-#            artifact_name: carpe.exe
-#            asset_name: carpe-windows-amd64
-#          - os: macos-latest
-#            artifact_name: carpe
-#            asset_name: carpe-macos-amd64
+    name: Publish for ${{ matrix.os }}
+    runs-on: ubuntu-latest ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: carpe
+            asset_name: carpe-linux-amd64
+          - os: windows-latest
+            artifact_name: carpe.exe
+            asset_name: carpe-windows-amd64
+          - os: macos-latest
+            artifact_name: carpe
+            asset_name: carpe-macos-amd64
 
     steps:
       - uses: hecrj/setup-rust-action@v1
@@ -28,7 +28,8 @@ jobs:
           rust-version: stable
           components: rustfmt
       - uses: actions/checkout@v1
-      - name: yarn info
+      - name: Ubuntu dependency
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: sudo apt update && sudo apt install libwebkit2gtk-4.0-dev libglib2.0-* libssl-dev libgtk-3-dev libappindicator3-dev patchelf librsvg2-dev libvips-dev -y
       - name: yarn info
         run: yarn install
