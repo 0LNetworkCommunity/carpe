@@ -38,7 +38,6 @@ jobs:
       - name: Build
         run: yarn run tauri build
       - name: Upload binaries to release
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: svenstaro/upload-release-action@v1-release
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
