@@ -101,3 +101,8 @@ pub fn refresh_waypoint() -> Result<NetworkProfile, CarpeError> {
   NetworkProfile::new()
 }
 
+#[test]
+fn test_waypoint() {
+  
+}
+

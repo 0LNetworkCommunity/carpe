@@ -12,7 +12,7 @@ use ol::{
 };
 use diem_types::account_address::AccountAddress;
 
-use ol_types::config::{self, TxType, bootstrap_waypoint_from_upstream};
+use ol_types::config::{self, TxType, bootstrap_waypoint_from_rpc, bootstrap_waypoint_from_upstream};
 use txs::submit_tx::{TxParams, get_tx_params_from_keypair};
 use url::Url;
 
@@ -125,7 +125,8 @@ pub fn set_refresh_upstream(wp: Waypoint) -> Result<AppCfg, Error>  {
 pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
   let cfg = get_cfg()?;
   if let Some(mut json_rpc_node) = cfg.profile.default_node.clone() {
-    let (_, wp) = bootstrap_waypoint_from_upstream(&mut json_rpc_node)?;
+    let wp = bootstrap_waypoint_from_rpc(json_rpc_node)?;
+    // let (_, wp) = bootstrap_waypoint_from_upstream(&mut json_rpc_node)?;
     set_waypoint(wp)
   } else {
     bail!("could not find default_node in 0L.toml")

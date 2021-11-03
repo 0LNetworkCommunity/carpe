@@ -16,7 +16,7 @@ pub fn get_testnet() -> Vec<Url> {
 /// get mainnet seed peers
 pub fn get_mainnet() -> Vec<Url> {
   vec![
-    Url::parse("http://34.145.88.77:8080").unwrap(),
+    Url::parse("http://35.184.98.21:8080").unwrap(),
     // Url::parse("http://35.192.123.205:8080").unwrap(),
     // Url::parse("http://35.231.138.89:8080").unwrap(),
     ]
