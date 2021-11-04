@@ -62,9 +62,9 @@ pub async fn submit_backlog(window: Window) -> Result<(), CarpeError> {
   let tx_params = get_tx_params(None)
     .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
 
-  match backlog(&config, &tx_params) {
-      Ok(_) => window.emit("backlog-success", BacklogSuccess {success: true}).unwrap(),
-      Err(_) => window.emit("backlog-error", CarpeError::tower("could not submit backlog)")).unwrap()
+  let _ = match backlog(&config, &tx_params) {
+      Ok(_) => window.emit("backlog-success", BacklogSuccess {success: true}),
+      Err(_) => window.emit("backlog-error", CarpeError::tower("could not submit backlog)"))
   };
     
   Ok(())

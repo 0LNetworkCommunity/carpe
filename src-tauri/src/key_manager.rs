@@ -1,7 +1,7 @@
 //! key management tools, leveraging OS keyrings.
 
 extern crate keyring;
-use anyhow::bail;
+use anyhow::{bail, anyhow};
 use diem_crypto::{
   ed25519::{Ed25519PrivateKey, Ed25519PublicKey},
   test_utils::KeyPair
@@ -35,7 +35,7 @@ pub fn get_private_key(ol_address: &str) -> Result<Ed25519PrivateKey, anyhow::Er
         Err(e) => bail!(e),
       }
     }
-    Err(e) => bail!(e),
+    Err(e) => Err(anyhow!("{:?}", e)),
   }
 }
 
