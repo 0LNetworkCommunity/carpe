@@ -43,17 +43,17 @@ export function findOneAccount(account: string): AccountEntry {
   return found
 }
 
-export async function setAccount(an_address: string) {
+export async function setAccount(an_address: string, is_first_account: boolean) {
   let a = findOneAccount(an_address);
   signingAccount.set(a);
 
   await invoke("switch_profile", {
     account: a.account,
   })
-    .then((res) => {
-      responses.set(res);
-      // for testnet
-      setNetwork(Networks.Rex);
-    })
-    .catch((e) => raise_error(e));
+  .then((res) => {
+    responses.set(res);
+    // for testnet
+  })
+  .catch((e) => raise_error(e));
 }
+
