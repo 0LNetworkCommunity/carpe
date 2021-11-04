@@ -4,7 +4,7 @@ use std::fmt;
 
 use anyhow::{Error, bail};
 use diem_types::waypoint::Waypoint;
-use ol::config::AppCfg;
+use ol::{config::AppCfg, node::{client, node::Node}};
 use ol_types::config::bootstrap_waypoint_from_rpc;
 use url::Url;
 use rand::seq::SliceRandom;
@@ -123,4 +123,27 @@ pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
   cfg.profile.upstream_nodes = Some(vec_url);
   cfg.save_file();
   Ok(cfg)
+}
+
+
+// TODO:
+/// fetch upstream peers.
+pub fn refresh_upstream_peers() -> Result<(), Error> {
+  let mut cfg = configs::get_cfg()?;
+  let client = match client::pick_client(None, &mut cfg) {
+    Ok(c) => c,
+    Err(e) => {
+      println!(
+        "ERROR: Could not create a client to connect to network, exiting. Message: {:?}",
+        e
+      );
+      bail!("cannot connect to a client");
+      // exit(1);
+    }
+  };
+
+  let mut node = Node::new(client, &cfg, false);
+
+  let path = configs::default_config_path();
+  node.refresh_peers_update_toml(path)
 }

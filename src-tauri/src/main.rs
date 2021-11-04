@@ -7,6 +7,7 @@ pub mod commands;
 pub mod key_manager;
 pub mod configs;
 pub mod configs_network;
+pub mod configs_profile;
 pub mod carpe_error;
 pub mod seed_peers;
 use std::env;

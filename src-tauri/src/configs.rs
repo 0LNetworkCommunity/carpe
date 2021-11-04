@@ -77,37 +77,6 @@ pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-// /// Refresh the upstream peers in config, from chain data.
-// pub fn set_refresh_upstream(wp: Waypoint) -> Result<AppCfg, Error>  {
-//   let mut cfg = get_cfg()?;
-//   cfg.chain_info.base_waypoint = Some(wp);
-//   cfg.save_file();
-//   Ok(cfg)
-// }
-
-/// Refresh the upstream peers in config, from chain data.
-// pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
-//   let cfg = get_cfg()?;
-//   if let Some(json_rpc_node) = cfg.profile.default_node.clone() {
-//     let wp = bootstrap_waypoint_from_rpc(json_rpc_node)?;
-//     // let (_, wp) = bootstrap_waypoint_from_upstream(&mut json_rpc_node)?;
-//     set_waypoint(wp)
-//   } else {
-//     bail!("could not find default_node in 0L.toml")
-//   }
-
-// }
-
 /// For devs, get the source path, needed to initialize swarm
 pub fn dev_get_source_path() -> Result<Option<PathBuf>, Error> {
   let c = get_cfg()?;
@@ -120,9 +89,7 @@ pub fn dev_get_swarm_temp() -> Result<PathBuf, Error> {
 }
 
 
-pub fn is_initialized() -> bool {
-  default_config_path().exists()
-}
+
 
 // TODO: replace this wrappet
 /// initialize default configs.
@@ -133,67 +100,3 @@ pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) 
 
 
 
-/// For switching between profiles in the Account DB.
-pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
-  dbg!(&is_initialized());
-  let mut cfg = match is_initialized() {
-    true => get_cfg()?,
-    false => AppCfg::default(),
-  };
-  let vdf_dir_name = format!("vdf_proofs_{}", &account.to_string());
-
-  cfg.workspace.node_home = default_config_path().parent().unwrap().to_owned();
-  cfg.profile.account = account;
-  cfg.profile.auth_key = authkey;
-
-  cfg.workspace.block_dir = vdf_dir_name.clone(); 
-  let vdf_path = cfg.workspace.node_home.join(&cfg.workspace.block_dir);
-
-  if !cfg.workspace.node_home.exists() {
-    fs::create_dir_all(&cfg.workspace.node_home)?;
-  }
-  if !vdf_path.exists() {
-    fs::create_dir_all(&vdf_path)?;
-  }
-
-  cfg.save_file();
-  Ok(cfg)
-}
-
-/// Todo: is this ever needed if maybe_init_configs always creates the file?
-// fn set_vdf_dir(account: AccountAddress) -> Result<(), Error> {
-//   let mut cfg = get_cfg();
-//   let dir_name = format!("vdf_proofs_{}", account.to_string());
-//   cfg.workspace.block_dir = dir_name.clone(); 
-//   let path = cfg.workspace.node_home.join(&dir_name);
-//   if (!path.exists()) {
-//     match fs::create_dir_all(path) {
-//         Ok(_) => {},
-//         Err(e) => bail!("cannot create directory, message: {:?}", e.to_string()),
-//     }
-//   }
-//   cfg.save_file();
-//   Ok(())
-// }
-
-// TODO:
-/// fetch upstream peers.
-pub fn refresh_upstream_peers() -> Result<(), Error> {
-  let mut cfg = get_cfg()?;
-  let client = match client::pick_client(None, &mut cfg) {
-    Ok(c) => c,
-    Err(e) => {
-      println!(
-        "ERROR: Could not create a client to connect to network, exiting. Message: {:?}",
-        e
-      );
-      bail!("cannot connect to a client");
-      // exit(1);
-    }
-  };
-
-  let mut node = Node::new(client, &cfg, false);
-
-  let path = default_config_path();
-  node.refresh_peers_update_toml(path)
-}
