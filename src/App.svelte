@@ -12,19 +12,27 @@
   import Transactions from "./components/txs/Transactions.svelte";
   import { onMount } from "svelte";
   import { listen } from "@tauri-apps/api/event";
-  import { miner_loop_enabled, disableMining, proofComplete, proofError, towerOnce, backlog_in_progress, tower } from "./miner";
+  import {
+    miner_loop_enabled,
+    disableMining,
+    proofComplete,
+    proofError,
+    towerOnce,
+    backlog_in_progress,
+    tower,
+  } from "./miner";
   import { success } from "./carpeNotify";
   import { raise_error } from "./carpeError";
   import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
   import { responses } from "./debug";
   import { get } from "svelte/store";
   import { Networks, setNetwork } from "./networks";
+  import Nav from "./components/Nav.svelte";
 
   let enabled;
-  miner_loop_enabled.subscribe(e => enabled = e);
+  miner_loop_enabled.subscribe((e) => (enabled = e));
   // Todo: Should this listener only be started in the miner view?
   onMount(() => {
-
     listen("tower-event", (event) => {
       proofComplete();
       // is a type VDFProof
@@ -36,7 +44,7 @@
       let t = get(tower);
       t.latest_proof = event.payload;
       tower.set(t);
-      
+
       // This section triggers the next block to start
       // it sends a listener event to the Rust side.
       if (enabled) {
@@ -68,55 +76,29 @@
   });
 </script>
 
-<main class="uk-height-viewport uk-text-muted">
+<main class="uk-background-muted">
+  <div class="uk-container">
+    <Router>
+       <Nav />
 
-  <Router>
+      <div class="uk-background-muted uk-margin-large">
+        <Route path="/" component={Wallet} primary={false} />
+        <Route path="/add-account" component={AddAccount} primary={false} />
+        <Route
+          path="/account-from-mnem"
+          component={AccountFromMnemForm}
+          primary={false}
+        />
+        <Route path="/keygen" component={Keygen} primary={false} />
+        <Route path="/miner" component={Miner} primary={false} />
+        <Route path="/txs" component={Transactions} primary={false} />
+        <Route path="/settings" component={Settings} primary={false} />
 
-    <nav class="uk-navbar-container" uk-navbar>
-
-      <div class="uk-navbar-center">
-        <ul class="uk-navbar-nav">
-          <!-- TODO: show uk-active based on route selected -->
-
-          <li><Link to="/">Wallet</Link></li>
-          <li><Link to="miner">Miner</Link></li>
-          <li><Link to="txs">Transactions</Link></li>
-
-          <!-- <li><Link to="settings">Settings</Link></li> -->
-          <!-- <li><Link to="dev">Debug</Link></li> -->
-          <!-- <li><Link to="swarm">Swarm</Link></li> -->
-        </ul>
+        <!-- DEV -->
+        <Route path="/dev" component={DevMode} primary={false} />
+        <Route path="/swarm" component={Swarm} primary={false} />
       </div>
-
-      <div class="uk-navbar-right">
-        <ul class="uk-navbar-nav">
-          <li>
-            <AccountSwitcher/>
-          </li>
-          
-        </ul>
-      </div>
-    </nav>
-
-    <div class="uk-container uk-background-muted uk-background-height-1-1">
-      <!-- <AccountSwitcher /> -->
-      <!-- <p> account: {my_account} </p> -->
-
-      <Route path="/" component={Wallet} primary={false} />
-      <Route path="/add-account" component={AddAccount} primary={false} />
-      <Route
-        path="/account-from-mnem"
-        component={AccountFromMnemForm}
-        primary={false}
-      />
-      <Route path="/keygen" component={Keygen} primary={false} />
-      <Route path="/miner" component={Miner} primary={false} />
-      <Route path="/txs" component={Transactions} primary={false} />
-      <Route path="/settings" component={Settings} primary={false} />
-
-      <!-- DEV -->
-      <Route path="/dev" component={DevMode} primary={false} />
-      <Route path="/swarm" component={Swarm} primary={false} />
-    </div>
-  </Router>
+    </Router>
+  </div>
+  
 </main>

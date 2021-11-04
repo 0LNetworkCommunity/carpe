@@ -25,6 +25,7 @@ export const new_account = function (account: string, authkey: string, nickname:
 export const signingAccount = writable<AccountEntry>(new_account("", "", ""));
 
 export const mnem = writable("");
+export const isInit = writable(false);
 
 // export const account = writable("");
 // export const authkey = writable("");
@@ -36,6 +37,22 @@ export function getAllAccounts() {
     .catch((error) => raise_error(error));
 }
 
+export async function is_initialized(): Promise<boolean> {
+  console.log("is_init");
+
+  invoke("is_init", {})
+    .then((res) => {
+      console.log("is_init res");
+      console.log(res);
+      responses.set(res);
+      if (res) {
+        isInit.set(true);
+      }
+      // for testnet
+      res
+    })
+    .catch((e) => raise_error(e));
+}
 
 export function findOneAccount(account: string): AccountEntry {
   let list = get(all_accounts);

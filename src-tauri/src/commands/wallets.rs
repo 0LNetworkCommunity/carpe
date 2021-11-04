@@ -12,16 +12,10 @@ use anyhow::{bail, Error};
 use diem_types::account_address::AccountAddress;
 use diem_types::transaction::authenticator::AuthenticationKey;
 use diem_wallet::WalletLibrary;
-
 use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
-
-
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
-
-
-
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
   pub accounts: Vec<AccountEntry>,
@@ -71,7 +65,13 @@ pub fn keygen() -> Result<NewKeygen, CarpeError> {
 
 /// default way accounts get initialized in Carpe
 #[tauri::command]
-pub async fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
+pub fn is_init() -> Result<bool, CarpeError> {
+  Ok(configs::is_initialized())
+}
+
+/// default way accounts get initialized in Carpe
+#[tauri::command]
+pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
   danger_init_from_mnem(mnem).map_err(|_| CarpeError::misc("could not initialize from mnemonic"))
 }
 
