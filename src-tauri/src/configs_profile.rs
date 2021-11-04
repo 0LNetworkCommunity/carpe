@@ -4,21 +4,20 @@
 
 use std::fs;
 
-use anyhow::{Error, bail};
-use cli::diem_client::DiemClient;
+use anyhow::{Error};
+
 use diem_types::{transaction::authenticator::AuthenticationKey};
-use dirs;
+
 use ol::{
   config::AppCfg,
-  node::{client, node::Node},
 };
 use diem_types::account_address::AccountAddress;
 
-use ol_types::config::{self, TxType};
-use txs::submit_tx::{TxParams, get_tx_params_from_keypair};
-use url::Url;
 
-use crate::{carpe_error::CarpeError, configs, key_manager};
+
+
+
+use crate::{configs};
 
 pub fn is_initialized() -> bool {
   configs::default_config_path().exists()

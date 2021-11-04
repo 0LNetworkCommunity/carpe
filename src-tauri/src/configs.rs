@@ -1,14 +1,14 @@
 //! 0L configs file
 
-use std::{fs, path::PathBuf};
+use std::{path::PathBuf};
 
-use anyhow::{Error, bail};
+use anyhow::{Error};
 use cli::diem_client::DiemClient;
 use diem_types::{transaction::authenticator::AuthenticationKey};
 use dirs;
 use ol::{
   config::AppCfg,
-  node::{client, node::Node},
+  node::{node::Node},
 };
 use diem_types::account_address::AccountAddress;
 
@@ -16,7 +16,7 @@ use ol_types::config::{self, TxType};
 use txs::submit_tx::{TxParams, get_tx_params_from_keypair};
 use url::Url;
 
-use crate::{carpe_error::CarpeError, key_manager};
+use crate::{carpe_error::CarpeError, configs_profile::set_account_profile, key_manager};
 
 static ACCOUNTS_DB_FILE: &str = "accounts.json";
 static APP_CONFIG_FILE: &str = "0L.toml";

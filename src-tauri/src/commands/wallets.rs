@@ -6,8 +6,8 @@
  *
  **/
 use crate::carpe_error::CarpeError;
-use crate::configs::{default_accounts_db_path, set_account_profile};
-use crate::{configs, key_manager};
+use crate::configs::{default_accounts_db_path};
+use crate::{configs, configs_profile, key_manager};
 use anyhow::{bail, Error};
 use diem_types::account_address::AccountAddress;
 use diem_types::transaction::authenticator::AuthenticationKey;
@@ -140,7 +140,7 @@ pub fn add_account(
 pub fn switch_profile(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
   match find_account_data(account) {
     Ok(entry) => {
-      set_account_profile(account, entry.authkey.clone())
+      configs_profile::set_account_profile(account, entry.authkey.clone())
         .map_err(|_| CarpeError::misc("could not switch profile"))?;
       Ok(AccountEntry::new(account, entry.authkey))
     }
