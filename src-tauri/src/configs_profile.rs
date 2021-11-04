@@ -13,20 +13,13 @@ use ol::{
 };
 use diem_types::account_address::AccountAddress;
 
-
-
-
-
 use crate::{configs};
 
-pub fn is_initialized() -> bool {
-  configs::default_config_path().exists()
-}
+
 
 /// For switching between profiles in the Account DB.
 pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
-  dbg!(&is_initialized());
-  let mut cfg = match is_initialized() {
+  let mut cfg = match configs::is_initialized() {
     true => configs::get_cfg()?,
     false => AppCfg::default(),
   };
