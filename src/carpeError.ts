@@ -10,10 +10,12 @@ export interface CarpeError {
 let list_errors: CarpeError;
 export const errors = writable(list_errors);
 
-export function raise_error(err: CarpeError) {
+export function raise_error(err: CarpeError, quiet: boolean) {
   errors.set(err);
   console.log(err);
   let msg =`Error (${err.uid}): ${err.msg}`
-  error(msg);
+  if (!quiet) {
+    error(msg);
+  }
 }
 

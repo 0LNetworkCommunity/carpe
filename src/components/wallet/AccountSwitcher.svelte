@@ -17,6 +17,7 @@
 </script>
 
 <main>
+  {#if account_list.length > 0}
   <div>
     <button class="uk-button uk-button-default" type="button">
       {#if my_account}
@@ -59,4 +60,5 @@
       </ul>
     </div>
   </div>
+  {/if}
 </main>

@@ -37,10 +37,10 @@ export function getAllAccounts() {
     .catch((error) => raise_error(error));
 }
 
-export async function is_initialized(): boolean {
+export async function is_initialized(): Promise<boolean> {
   console.log("is_init");
 
-  await invoke("is_init", {})
+  invoke("is_init", {})
     .then((res) => {
       console.log("is_init res");
       console.log(res);
@@ -49,6 +49,7 @@ export async function is_initialized(): boolean {
         isInit.set(true);
       }
       // for testnet
+      res
     })
     .catch((e) => raise_error(e));
 }

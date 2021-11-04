@@ -113,7 +113,7 @@ export const getTowerChainView = async () => {
       responses.set(res);
 
     })
-    .catch((e) => raise_error(e));
+    .catch((e) => raise_error(e, true));
 };
 
 
