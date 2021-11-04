@@ -4,19 +4,17 @@ use std::{path::PathBuf};
 
 use anyhow::{Error};
 use cli::diem_client::DiemClient;
-use diem_types::{transaction::authenticator::AuthenticationKey};
 use dirs;
 use ol::{
   config::AppCfg,
   node::{node::Node},
 };
-use diem_types::account_address::AccountAddress;
 
 use ol_types::config::{self, TxType};
 use txs::submit_tx::{TxParams, get_tx_params_from_keypair};
 use url::Url;
 
-use crate::{carpe_error::CarpeError, configs_profile::set_account_profile, key_manager};
+use crate::{carpe_error::CarpeError, key_manager};
 
 static ACCOUNTS_DB_FILE: &str = "accounts.json";
 static APP_CONFIG_FILE: &str = "0L.toml";
@@ -91,12 +89,15 @@ pub fn dev_get_swarm_temp() -> Result<PathBuf, Error> {
 
 
 
-// TODO: replace this wrappet
-/// initialize default configs.
-pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) -> Result<(), Error>{
-  set_account_profile(account, authkey)?;
-  Ok(())
-}
+// // TODO: replace this wrappet
+// /// initialize default configs.
+// pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) -> Result<(), Error>{
+//   set_account_profile(account, authkey)?;
+//   Ok(())
+// }
 
+pub fn is_initialized() -> bool {
+  default_config_path().exists()
+}
 
 

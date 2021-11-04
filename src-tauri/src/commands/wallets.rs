@@ -7,7 +7,7 @@
  **/
 use crate::carpe_error::CarpeError;
 use crate::configs::{default_accounts_db_path};
-use crate::{configs, configs_profile, key_manager};
+use crate::{configs, configs_network, configs_profile, key_manager};
 use anyhow::{bail, Error};
 use diem_types::account_address::AccountAddress;
 use diem_types::transaction::authenticator::AuthenticationKey;
@@ -71,13 +71,13 @@ pub fn keygen() -> Result<NewKeygen, CarpeError> {
 
 /// default way accounts get initialized in Carpe
 #[tauri::command]
-pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
+pub async fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
   danger_init_from_mnem(mnem).map_err(|_| CarpeError::misc("could not initialize from mnemonic"))
 }
 
-pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, anyhow::Error> {
+pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
   dbg!("init from mnem");
-
+  let init = configs::is_initialized();
   // TODO: refactor upstream wallet::get_account so that it returns a result
   let (authkey, address, _wl) = wallet::get_account_from_mnem(mnem.clone())?;
 
@@ -89,9 +89,15 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, anyhow::Error
   // it will error if the account already exists.
   insert_account_db(get_short(address.clone()), address, authkey)?;
 
-  key_manager::set_private_key(&address.to_string(), priv_key)?;
+  key_manager::set_private_key(&address.to_string(), priv_key)
+  .map_err(|e|{ CarpeError::misc(&e.to_string()) })?;
 
-  configs::maybe_init_configs(address.clone(), authkey.clone())?;
+  configs_profile::set_account_profile(address.clone(), authkey.clone())?;
+  
+  // this may be the first account and may not yet be initialized.
+  if !init {
+    configs_network::set_network_configs(configs_network::Networks::Mainnet)?;
+  }
 
   Ok(AccountEntry::new(address, authkey))
 }
