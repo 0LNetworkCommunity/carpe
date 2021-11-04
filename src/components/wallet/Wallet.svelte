@@ -4,17 +4,20 @@
     getAllAccounts,
     all_accounts,
     setAccount,
+isInit,
+is_initialized,
   } from "../../accounts";
-  import type { AccountEntry } from "../../accounts";
+  import type { AccountEntry, isInit } from "../../accounts";
   import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
   import { get_balance } from "../../queries";
   import ReminderCreate from "./ReminderCreate.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-import Onboard from "../txs/Onboard.svelte";
+  import Newbie from "./Newbie.svelte";
   UIkit.use(Icons);
 
+  let init: boolean;
   let account_list: AccountEntry[];
   let my_account: AccountEntry;
 
@@ -35,6 +38,8 @@ import Onboard from "../txs/Onboard.svelte";
 
   onMount(() => {
     getAllAccounts();
+    init = is_initialized();
+    window.alert(init);
   });
 </script>
 
@@ -43,9 +48,15 @@ import Onboard from "../txs/Onboard.svelte";
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Wallet</h2>
   </div>
 
-  <div />
+
+  <div>
+    {#if !init}
+     <Newbie />
+     {/if}
+  </div>
+
   {#if !account_list}
-    <Onboard />
+   LOADING
   {:else if account_list.length > 0}
     <table class="uk-table uk-table-divider">
       <thead>

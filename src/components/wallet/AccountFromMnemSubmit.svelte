@@ -29,7 +29,7 @@
 
         UIkit.notification({
           message: `Account Added:  ${res.account}`,
-          pos: "bottom-right",
+          pos: "bottom-center",
           status: "success",
           timeout: 3000,
         });

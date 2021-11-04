@@ -21,6 +21,7 @@ fn main() {
 	tauri::Builder::default()
 	.invoke_handler(tauri::generate_handler![
     // Accounts
+    is_init,
 		get_all_accounts,
 		add_account,
 		keygen,
