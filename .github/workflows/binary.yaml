@@ -34,9 +34,9 @@ jobs:
       - name: Ubuntu dependency
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: sudo apt update && sudo apt install libwebkit2gtk-4.0-dev libglib2.0-* libssl-dev libgtk-3-dev libappindicator3-dev patchelf librsvg2-dev libvips-dev -y
-      - name: Install Clang on Windows
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: choco install llvm
+#      - name: Install Clang on Windows
+#        if: ${{ matrix.os == 'windows-latest' }}
+#        run: choco install llvm
 #        uses: msys2/setup-msys2@v2
 #        with:
 #          location: C:\\msys64
@@ -48,7 +48,7 @@ jobs:
       - name: yarn info
         run: yarn install
       - name: Build
-        run: yarn run tauri build
+        run: RUST_BACKTRACE=1 yarn run tauri build
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
         with:
