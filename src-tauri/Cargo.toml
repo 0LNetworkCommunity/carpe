@@ -2,7 +2,7 @@
 authors = [ "OLSF" ]
 default-run = "app"
 description = "a light miner for the 0L protocol"
-edition = "2018"
+edition = "2021"
 license = "MIT"
 name = "app"
 repository = "https://github.com/OLSF/carpe"
