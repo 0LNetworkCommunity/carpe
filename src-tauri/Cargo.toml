@@ -1,3 +1,5 @@
+cargo-features = ["edition2021"]
+
 [package]
 authors = [ "OLSF" ]
 default-run = "app"
