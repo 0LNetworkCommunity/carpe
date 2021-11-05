@@ -38,10 +38,12 @@ jobs:
         if: ${{ matrix.os == 'windows-latest' }}
         uses: msys2/setup-msys2@v2
         with:
-          location: C:\\msys64\\mingw64
+          location: C:\\msys64
+          install: >-
+            mingw-w64-x86_64-clang
       - name: Show Clang on Windows
         if: ${{ matrix.os == 'windows-latest' }}
-        run: dir C:\\msys64
+        run: dir C:\\msys64\\mingw64\\bin
       - name: yarn info
         run: yarn install
       - name: Build
