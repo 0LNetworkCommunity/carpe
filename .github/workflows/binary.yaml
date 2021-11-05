@@ -37,6 +37,11 @@ jobs:
       - name: Install Clang on Windows
         if: ${{ matrix.os == 'windows-latest' }}
         uses: msys2/setup-msys2@v2
+        with:
+          location: C:\\msys64
+      - name: Install Clang on Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: dir
       - name: yarn info
         run: yarn install
       - name: Build
