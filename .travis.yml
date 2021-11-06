@@ -1,4 +1,6 @@
-language: node_js
+language: rust
+rust:
+  - stable
 node_js:
   - node
 os:
@@ -21,8 +23,8 @@ addons:
       - librsvg2-dev
       - libvips-dev
 
-install:
-  - if [ $TRAVIS_OS_NAME = windows ]; then choco install -y rust; else curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; fi
+#install:
+#  - if [ $TRAVIS_OS_NAME = windows ]; then choco install -y rust; else curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; fi
 
 script:
   - yarn install --frozen-lockfile
