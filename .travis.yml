@@ -5,9 +5,11 @@ os:
   - windows
   - osx
   - linux
+
+env:
+  - RUST_BACKTRACE=1
+
 addons:
-  pkg:
-    - rust
   apt:
     packages:
       - libwebkit2gtk-4.0-dev
@@ -18,6 +20,10 @@ addons:
       - patchelf
       - librsvg2-dev
       - libvips-dev
+
+install:
+  - if [ $TRAVIS_OS_NAME = windows ]; then choco install -y rust; else curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; fi
+
 script:
   - yarn install --frozen-lockfile
   - yarn run tauri build
