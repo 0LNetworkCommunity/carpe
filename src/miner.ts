@@ -37,8 +37,8 @@ export const backlog_in_progress = writable(false);
 export const towerOnce = async () => {
   console.log("mine tower once")
 
-  // let previous_duration = 30 * 60 * 1000;
-  let previous_duration = 5 * 1000; // for test net
+  let previous_duration = 30 * 60 * 1000;
+  // let previous_duration = 5 * 1000; // for test net
   let t = get(tower);
   if (t.latest_proof && t.latest_proof.elapsed_secs) {
     previous_duration = t.latest_proof.elapsed_secs * 1000

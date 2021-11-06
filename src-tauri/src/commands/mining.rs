@@ -89,6 +89,7 @@ pub fn mine_and_commit_one_proof(
   config: &AppCfg,
   tx_params: &TxParams,
 ) -> Result<VDFProof, CarpeError> {
+  println!("Mining one proof");
   match mine_once(&config) {
     Ok(b) => match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
       Ok(tx_view) => match eval_tx_status(&tx_view) {
