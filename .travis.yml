@@ -2,6 +2,8 @@ language: node_js
 node_js:
   - node
 os: windows
+before_install:
+  - choco install rust
 script:
   - yarn upgrade-interactive --latest
   - yarn install --frozen-lockfile
