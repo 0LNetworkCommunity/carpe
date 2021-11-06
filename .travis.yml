@@ -1,4 +1,4 @@
-language: rust
+language: node_js
 rust:
   - stable
 node_js:
