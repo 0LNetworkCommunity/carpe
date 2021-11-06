@@ -1,9 +1,23 @@
 language: node_js
 node_js:
   - node
-os: windows
-before_install:
-  - choco install rust
+os:
+  - windows
+  - osx
+  - linux
+addons:
+  pkg:
+    - rust
+  apt:
+    packages:
+      - libwebkit2gtk-4.0-dev
+      - libglib2.0-*
+      - libssl-dev
+      - libgtk-3-dev
+      - libappindicator3-dev
+      - patchelf
+      - librsvg2-dev
+      - libvips-dev
 script:
   - yarn install --frozen-lockfile
   - yarn run tauri build
