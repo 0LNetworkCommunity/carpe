@@ -23,12 +23,13 @@ addons:
       - librsvg2-dev
       - libvips-dev
 
-#install:
-#  - if [ $TRAVIS_OS_NAME = windows ]; then choco install -y rust; else curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; fi
-jobs:
-  include:
-    - language: rust
-      rust: stable
+install:
+  - if [ $TRAVIS_OS_NAME = windows ]; then choco install -y rust; else curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh; fi
+
+#jobs:
+#  include:
+#    - language: rust
+#      rust: stable
 
 script:
   - yarn install --frozen-lockfile
