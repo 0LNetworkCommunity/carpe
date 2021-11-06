@@ -3,6 +3,6 @@ node_js:
   - node
 os: windows
 script:
-  - yarn install
+  - yarn install --frozen-lockfile
   - yarn run tauri build
   
