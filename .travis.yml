@@ -1,4 +1,6 @@
-language: rust
+language: nodejs
+os: windows
 script:
   - yarn install
+  - yarn run tauri build
   
