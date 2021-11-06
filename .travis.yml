@@ -5,8 +5,8 @@ node_js:
   - node
 os:
   - windows
-  - osx
-  - linux
+#  - osx
+#  - linux
 
 env:
   - RUST_BACKTRACE=1
