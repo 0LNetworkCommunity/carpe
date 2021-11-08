@@ -24,7 +24,7 @@ addons:
       - libvips-dev
 
 install:
-  - if [ $TRAVIS_OS_NAME = windows ]; then choco install -y rust visualstudio2019-workload-nativedesktop --productId visualstudio2019community --all; fi
+  - if [ $TRAVIS_OS_NAME = windows ]; then choco install -y visualstudio2019-workload-nativedesktop --productId visualstudio2019community rust; fi
 
 #jobs:
 #  include:
