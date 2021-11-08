@@ -1,3 +1,5 @@
+use std::env;
+
 use crate::{
   carpe_error::CarpeError,
   configs::{get_cfg, get_diem_client, get_tx_params},
@@ -133,3 +135,25 @@ pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
     _ => Err(CarpeError::tower("could not get tower state from chain")),
   }
 }
+
+
+#[tauri::command]
+pub fn set_env(env: String) -> Result<String, CarpeError> {
+  match env.as_ref() {
+    "test" => env::set_var("NODE_ENV", "test"),
+    "prod" => env::set_var("NODE_ENV", "prod"),
+    _ => {},
+
+  }
+
+  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("could not get node_env") })?;
+  Ok(v)
+  
+}
+
+#[tauri::command]
+pub fn get_env() -> Result<String, CarpeError> {
+  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("could not get node_env") })?;
+  Ok(v)
+}
+

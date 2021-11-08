@@ -195,3 +195,22 @@ export interface ProofProgress {
 
 export const proofState = writable<ProofProgress>({});
 
+export function setDebugProdTest(env: string) {
+  invoke("set_env", { env: env })
+    .then((res: string) => {
+      window.alert(res);
+      nodeEnv.set(res);
+    })
+    .catch((error) => raise_error(error, false));
+}
+
+export function getEnv() {
+  invoke("get_env", { })
+    .then((res: string) => {
+      // window.alert(res);
+      nodeEnv.set(res);
+    })
+    .catch((error) => raise_error(error, false));
+}
+
+export const nodeEnv = writable<string>("");
