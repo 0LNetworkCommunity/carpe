@@ -18,18 +18,18 @@ tauri = { version = "1.0.0-beta.8", features = ["api-all"] }
 serde = { version = "1.0", features = [ "serde_derive" ] }
 serde_json = "1.0"
 url = { version = "^2.1", features = [ "serde" ] }
-ol = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-diem-wallet = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-diem-types = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-tower = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-onboard = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-diem-crypto = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-diem-config = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-cli = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-txs = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-ol-types = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-ol-keys = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
-diem-json-rpc-types = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
+ol = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+diem-wallet = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+diem-types = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+tower = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+onboard = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+diem-crypto = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+diem-config = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+cli = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+txs = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+ol-types = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+ol-keys = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
+diem-json-rpc-types = { git = "https://github.com/olsf/libra.git", branch = "tauri"}
 sysinfo = "0.16.4"
 ctrlc = { version = "3.1.6", default-features = false }
 dirs = "4.0.0"
