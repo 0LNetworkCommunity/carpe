@@ -71,6 +71,20 @@ export const submitBacklog = async () => {
     });
 }
 
+export const submitProofZero = async () => {
+  backlog_in_progress.set(true);
+  invoke("debug_submit_proof_zero", {})
+    .then((res) => {
+      console.log(res);
+      responses.set(res as string);
+      return res
+    })
+    .catch((e) => {
+      raise_error(e);
+    });
+}
+
+
 export const startTowerListener = async () => {
   await invoke("start_tower_listener", {})
     .then((res) => {

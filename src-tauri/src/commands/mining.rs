@@ -4,13 +4,14 @@ use crate::{
   carpe_error::CarpeError,
   configs::{get_cfg, get_diem_client, get_tx_params},
 };
+use anyhow::Error;
 use diem_json_rpc_types::views::TowerStateResourceView;
 use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 
 use tauri::Window;
 use tauri::Manager;
-use tower::{backlog::process_backlog, commit_proof, proof::mine_once};
+use tower::{backlog::process_backlog, commit_proof::{self, commit_proof_tx}, proof::mine_once};
 use txs::submit_tx::{eval_tx_status, TxParams};
 // use crate::configs::{get_cfg, get_tx_params};
 
@@ -79,11 +80,36 @@ pub fn backlog(
   tx_params: &TxParams,
 ) -> Result<(), CarpeError> {
   // TODO: This does not return an error on transaction failure. Change in upstream.
-  process_backlog(config, tx_params, false)
+  process_backlog(config, tx_params, false) 
     .map_err(|e| { 
       CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}", &e))
     })?;
   Ok(())
+}
+
+fn get_proof_zero() -> Result<VDFProof, Error> {
+  let cfg = get_cfg()?;
+  let path = cfg.workspace.node_home.join(cfg.workspace.block_dir).join("proof_0.json");
+  let string = std::fs::read_to_string(path)?;
+  let proof: VDFProof = serde_json::from_str(&string)?;
+  dbg!(&proof);
+  // .parse();
+  Ok(proof)
+}
+
+#[tauri::command]
+pub fn debug_submit_proof_zero() -> Result<(), CarpeError>{
+  let tx_params = get_tx_params(None)
+    .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
+  let proof = get_proof_zero()?;
+  commit_proof_tx(&tx_params,proof, false)?;
+  Ok(())
+}
+
+
+#[test]
+fn test_proof_zero() {
+  dbg!(&get_proof_zero());
 }
 
 /// creates one proof and submits

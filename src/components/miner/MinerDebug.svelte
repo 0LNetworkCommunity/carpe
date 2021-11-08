@@ -1,5 +1,8 @@
 <script lang="ts">
-  import { killTowerListener, startTowerListener, towerOnce } from "../../miner";
+import { invoke } from "@tauri-apps/api/tauri";
+
+  import { killTowerListener, startTowerListener, submitProofZero, towerOnce } from "../../miner";
+
 </script>
 
 <main class="uk-margin" >
@@ -14,6 +17,12 @@
 
     <div class="margin">
       <button class="uk-button uk-button-default" on:click={killTowerListener}>Kill Listener</button>
+    </div>
+
+    <div>  
+      <button class="uk-button uk-button-default" on:click={submitProofZero}>
+        Resend Proof Zero
+      </button>
     </div>
 
 

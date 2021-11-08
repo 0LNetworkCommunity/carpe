@@ -43,6 +43,7 @@ fn main() {
     submit_backlog,
     get_env,
     set_env,
+    debug_submit_proof_zero,
  
     // Debug
     init_swarm,
