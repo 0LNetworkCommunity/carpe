@@ -139,6 +139,7 @@ pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
 
 #[tauri::command]
 pub fn set_env(env: String) -> Result<String, CarpeError> {
+  dbg!(&env);
   match env.as_ref() {
     "test" => env::set_var("NODE_ENV", "test"),
     "prod" => env::set_var("NODE_ENV", "prod"),
@@ -147,6 +148,7 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
   }
 
   let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("could not get node_env") })?;
+  dbg!(&v);
   Ok(v)
   
 }
@@ -154,6 +156,7 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
 #[tauri::command]
 pub fn get_env() -> Result<String, CarpeError> {
   let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("could not get node_env") })?;
+  dbg!(&v);
   Ok(v)
 }
 

@@ -10,7 +10,6 @@ pub mod configs_network;
 pub mod configs_profile;
 pub mod carpe_error;
 pub mod seed_peers;
-use std::env;
 
 
 use crate::{commands::*};
@@ -42,6 +41,8 @@ fn main() {
     //Tower
     start_tower_listener,
     submit_backlog,
+    get_env,
+    set_env,
  
     // Debug
     init_swarm,

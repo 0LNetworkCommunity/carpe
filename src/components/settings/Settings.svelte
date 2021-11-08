@@ -1,5 +1,7 @@
 <script lang="ts">
-  import MinerBacklog from "../miner/MinerBacklog.svelte";
+  import { Link } from "svelte-navigator";
+import DevMode from "../dev/DevMode.svelte";
+import MinerBacklog from "../miner/MinerBacklog.svelte";
 import AccountSettings from "./AccountSettings.svelte";
 import UpdateNetwork from "./UpdateNetwork.svelte";
 
@@ -16,5 +18,9 @@ import UpdateNetwork from "./UpdateNetwork.svelte";
   <AccountSettings />
   
   <MinerBacklog />
+
+  <div>
+    <Link to="dev"> Dev Mode </Link>
+  </div>
 
 </main>

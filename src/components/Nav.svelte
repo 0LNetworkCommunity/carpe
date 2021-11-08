@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Link } from "svelte-navigator";
+  import { Link } from "svelte-navigator";
 
   import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
 </script>
@@ -13,7 +13,7 @@ import { Link } from "svelte-navigator";
           <li><Link to="txs">Transactions</Link></li>
 
           <!-- <li><Link to="settings">Settings</Link></li> -->
-          <!-- <li><Link to="dev">Debug</Link></li> -->
+          <li><Link to="dev">Debug</Link></li>
           <!-- <li><Link to="swarm">Swarm</Link></li> -->
         </ul>
       </div>

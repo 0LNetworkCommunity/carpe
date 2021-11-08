@@ -111,7 +111,7 @@
 
 <main>
   <div>
-    <div class="margin">
+    <div class="uk-margin uk-flex">
       <button class="uk-button uk-button-default" on:click={makeError}>Make Error</button>
 
       <button class="uk-button uk-button-default" on:click={triggerEventFromRustToJs}>Receive Event</button>
@@ -122,7 +122,7 @@
       <button class="uk-button uk-button-default" on:click={emitEventFromHereToRust}>Send Event</button>
     </div>
 
-    <div class="margin">
+    <div class="uk-margin uk-flex">
       <h4> Tower </h4>
       
       <button class="uk-button uk-button-default" on:click={startMockTowerListener}>Start Mock Tower Listener </button>
@@ -133,7 +133,7 @@
     </div>
 
 
-    <div class="margin">
+    <div class="uk-margin uk-flex">
 
     <button class="uk-button uk-button-default" on:click={testAsync}>Async</button>
     <button class="uk-button uk-button-default" on:click={startForever}>Start Forever</button>

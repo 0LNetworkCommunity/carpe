@@ -1,5 +1,7 @@
 <script lang="ts">
-import { nodeEnv, setDebugProdTest } from "../../miner";
+import { onMount } from "svelte";
+
+import { getEnv, nodeEnv, setDebugProdTest } from "../../miner";
 
 let current_env;
 
@@ -7,6 +9,9 @@ nodeEnv.subscribe((env) => {
   current_env = env;
 })
 
+onMount(()=> {
+  current_env = getEnv(); // TODO: this should be async and awaited
+})
 
 </script>
 
