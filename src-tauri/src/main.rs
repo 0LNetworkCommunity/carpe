@@ -16,7 +16,7 @@ use std::env;
 use crate::{commands::*};
 
 fn main() {
-  env::set_var("NODE_ENV", "test");
+  // env::set_var("NODE_ENV", "test");
 
 	tauri::Builder::default()
 	.invoke_handler(tauri::generate_handler![
