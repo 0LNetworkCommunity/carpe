@@ -1,25 +1,26 @@
 # language: rust
 # rust:
 #   - stable
+os: osx
+osx_image: xcode7.3
 
-  matrix:
-  include:
-    - os: osx
-    osx_image: xcode7.3
-    - language: rust
-      rust:
-        - stable
-      jobs:
-        allow_failures:
-          - rust: nightly
-        fast_finish: true
-    - language: node.js
-      node_js: "12.0"
-      before_script:
-        - cd angular-application
-      script:
-        - npm install
-        - ng build --prod
+  jobs:
+    include:
+
+      - language: rust
+        rust:
+          - stable
+        jobs:
+          allow_failures:
+            - rust: nightly
+          fast_finish: true
+      - language: node.js
+        node_js: "12.0"
+        before_script:
+          - cd angular-application
+        script:
+          - npm install
+          - ng build --prod
 
 node_js:
   - node
@@ -48,11 +49,11 @@ env:
 #    - language: rust
 #      rust: stable
 
-env:
-  - NODE_VERSION="0.16"
+# env:
+#   - NODE_VERSION="0.16"
 
-before_install:
-  - nvm install $NODE_VERSION
+# before_install:
+#   - nvm install $NODE_VERSION
 
 script:
   - yarn install --frozen-lockfile
