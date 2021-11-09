@@ -9,17 +9,6 @@ addons:
   homebrew:
     packages:
     - llvm
-# jobs:
-#   include:
-#     - language: rust
-#       rust:
-#         - stable
-#     - language: node_js
-#       node_js: "16.0"
-
-
-# node_js:
-#   - node
 
 
 # env:
@@ -39,11 +28,6 @@ addons:
 
 # install:
 #   - if [ $TRAVIS_OS_NAME = windows ]; then choco install -y visualstudio2019buildtools --package-parameters "--productId visualstudio2019community --allWorkloads --includeRecommended --includeOptional --passive --locale en-US" rust; fi
-
-# jobs:
-#  include:
-#    - language: rust
-#      rust: stable
 
 env:
   - NODE_VERSION="16.0"
