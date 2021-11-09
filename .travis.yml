@@ -54,8 +54,8 @@ before_install:
   - nvm install $NODE_VERSION
   - node -v
   - npm install --global yarn
-  - brew install --with-toolchain llvm
-  - brew info llvm
+  # - brew install --with-toolchain llvm
+  # - brew info llvm
 
 script:
   - yarn install --frozen-lockfile
