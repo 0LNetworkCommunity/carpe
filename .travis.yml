@@ -5,6 +5,10 @@ rust:
 os: osx
 osx_image: xcode7.3
 
+addons:
+  homebrew:
+    packages:
+    - llvm
 # jobs:
 #   include:
 #     - language: rust
