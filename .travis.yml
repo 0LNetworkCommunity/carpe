@@ -5,13 +5,13 @@ rust:
 os: osx
 osx_image: xcode7.3
 
-jobs:
-  include:
-    - language: rust
-      rust:
-        - stable
-    - language: node_js
-      node_js: "16.0"
+# jobs:
+#   include:
+#     - language: rust
+#       rust:
+#         - stable
+#     - language: node_js
+#       node_js: "16.0"
 
 
 # node_js:
@@ -41,10 +41,13 @@ jobs:
 #    - language: rust
 #      rust: stable
 
-# env:
-#   - NODE_VERSION="0.16"
+env:
+  - NODE_VERSION="16.0"
 
 before_install:
+  - node -v
+  - nvm ls
+  - nvm install $NODE_VERSION
   - node -v
   - npm install --global yarn
 
