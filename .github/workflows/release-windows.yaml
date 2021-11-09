@@ -3,7 +3,7 @@ name: Build Binaries for OSs
 on:
   push:
     tags:
-      - '*win'
+      - '*win*'
 
 jobs:
   publish:
