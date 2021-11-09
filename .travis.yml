@@ -1,6 +1,6 @@
-# language: rust
-# rust:
-#   - stable
+language: rust
+rust:
+  - stable
 os: osx
 osx_image: xcode7.3
 
@@ -14,13 +14,10 @@ jobs:
         allow_failures:
           - rust: nightly
         fast_finish: true
-    - language: node.js
-      node_js: "12.0"
-      before_script:
-        - cd angular-application
+    - language: node_js
+      node_js: "16.0"
       script:
-        - npm install
-        - ng build --prod
+        - npm install --global yarn
 
 # node_js:
 #   - node
