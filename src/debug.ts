@@ -1,6 +1,10 @@
 import { writable } from 'svelte/store';
 
 export const responses = writable("");
+
+export const debugMode = writable(false);
+
+
 // export const errors = writable("");
 
 // always clear error when a response is updated

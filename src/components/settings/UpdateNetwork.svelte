@@ -32,7 +32,7 @@
         });
       })
       .catch((error) => {
-        raise_error(error as CarpeError);
+        raise_error(error as CarpeError, false);
       });
   }
 
@@ -41,7 +41,7 @@
     // submit
     invoke("get_networks", {})
       .then((res: NetworkProfile) => network_profile.set(res))
-      .catch((error) => raise_error(error));
+      .catch((error) => raise_error(error, false));
   }
 
   function refreshWaypoint() {
@@ -49,7 +49,7 @@
     // submit
     invoke("refresh_waypoint", {})
       .then((res: NetworkProfile) => network_profile.set(res))
-      .catch((error) => raise_error(error));
+      .catch((error) => raise_error(error, false));
   }
 
   // function toggleNetwork(network: Networks) {

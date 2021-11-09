@@ -6,7 +6,6 @@
   import Settings from "./components/settings/Settings.svelte";
   import DevMode from "./components/dev/DevMode.svelte";
   import AccountFromMnemForm from "./components/wallet/AccountFromMnemForm.svelte";
-  import AddAccount from "./components/wallet/AddAccount.svelte";
   import Swarm from "./components/dev/Swarm.svelte";
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
@@ -23,11 +22,15 @@
   } from "./miner";
   import { success } from "./carpeNotify";
   import { raise_error } from "./carpeError";
-  import AccountSwitcher from "./components/wallet/AccountSwitcher.svelte";
-  import { responses } from "./debug";
+  import { debugMode, responses } from "./debug";
   import { get } from "svelte/store";
-  import { Networks, setNetwork } from "./networks";
   import Nav from "./components/Nav.svelte";
+import DebugCard from "./components/dev/DebugCard.svelte";
+
+  let debug = false;
+  debugMode.subscribe((d) => {
+    debug = d;
+  })
 
   let enabled;
   miner_loop_enabled.subscribe((e) => (enabled = e));
@@ -56,7 +59,7 @@
       proofError();
       // is a type CarpeError
       console.log(event);
-      raise_error(event.payload);
+      raise_error(event.payload, false);
       // also disable the mining loop.
       disableMining();
     });
@@ -70,7 +73,7 @@
 
     listen("backlog-error", (event) => {
       window.alert(event.payload);
-      raise_error(event.payload);
+      raise_error(event.payload, false);
       backlog_in_progress.set(false);
     });
   });
@@ -83,7 +86,7 @@
 
       <div class="uk-background-muted uk-margin-large">
         <Route path="/" component={Wallet} primary={false} />
-        <Route path="/add-account" component={AddAccount} primary={false} />
+        <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
         <Route
           path="/account-from-mnem"
           component={AccountFromMnemForm}
@@ -97,8 +100,14 @@
         <!-- DEV -->
         <Route path="/dev" component={DevMode} primary={false} />
         <Route path="/swarm" component={Swarm} primary={false} />
+        {#if debug}
+          <DebugCard/>
+        {/if}
       </div>
+
     </Router>
   </div>
+
+
   
 </main>

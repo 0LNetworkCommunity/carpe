@@ -66,7 +66,7 @@ export const submitBacklog = async () => {
       return res
     })
     .catch((e) => {
-      raise_error(e);
+      raise_error(e, false);
       backlog_in_progress.set(false);
     });
 }
@@ -80,7 +80,7 @@ export const submitProofZero = async () => {
       return res
     })
     .catch((e) => {
-      raise_error(e);
+      raise_error(e, false);
     });
 }
 
@@ -93,7 +93,7 @@ export const startTowerListener = async () => {
       responses.set(res as string);
       return res
     })
-    .catch((e) => raise_error(e));
+    .catch((e) => raise_error(e, false));
 }
 
 
@@ -124,7 +124,7 @@ export const getTowerChainView = async () => {
     .then((res: TowerStateView) => {
       console.log(res);
       refreshOnChainData(res);
-      responses.set(res);
+      responses.set(JSON.stringify(res));
 
     })
     .catch((e) => raise_error(e, true));
@@ -155,7 +155,7 @@ export async function disableMining(): Promise<boolean> {
 
   await killTowerListener()
     .catch(e => {
-      raise_error(e);
+      raise_error(e, false);
       return false
     });
   // set mining to disabled

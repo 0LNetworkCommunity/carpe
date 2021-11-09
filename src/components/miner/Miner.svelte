@@ -4,8 +4,12 @@
   import MinerProgres from "./MinerProgres.svelte";
   import TowerState from "./TowerState.svelte";
   import MinerDebug from "./MinerDebug.svelte";
+  import { debugMode } from "../../debug";
 
   let debug: boolean;
+  debugMode.subscribe((d) => {
+    debug = d;
+  });
 
   let info = true;
 

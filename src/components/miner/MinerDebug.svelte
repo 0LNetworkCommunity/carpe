@@ -6,7 +6,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 </script>
 
 <main class="uk-margin" >
-  <div class="uk-card uk-card-body">
+  <div class="uk-grid">
     <div class="margin">
       <button class="uk-button uk-button-default" on:click={towerOnce}>Start Tower</button>
     </div>
@@ -19,12 +19,14 @@ import { invoke } from "@tauri-apps/api/tauri";
       <button class="uk-button uk-button-default" on:click={killTowerListener}>Kill Listener</button>
     </div>
 
-    <div>  
+
+
+
+  </div>
+
+  <div>  
       <button class="uk-button uk-button-default" on:click={submitProofZero}>
         Resend Proof Zero
       </button>
     </div>
-
-
-  </div>
 </main>
