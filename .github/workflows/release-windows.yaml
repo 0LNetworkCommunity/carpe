@@ -1,9 +1,9 @@
-name: Release Mac Latest
+name: Build Binaries for OSs
 
 on:
   push:
     tags:
-      - '*mac'
+      - '*win'
 
 jobs:
   publish:
@@ -12,23 +12,23 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: macos-latest
-            artifact_name: carpe
-            dir: dmg
-            asset_name: carpe-macos-10.15
-          - os: macos-11
-            artifact_name: carpe
-            dir: dmg
-            asset_name: carpe-macos-11
+          - os: windows-latest
+            artifact_name: carpe.exe
+            asset_name: carpe-windows-amd64
+            dir: exe
+
     steps:
       - uses: hecrj/setup-rust-action@v1
         with:
           rust-version: stable
           components: rustfmt
       - uses: actions/checkout@v1
-      - name: yarn installation
+      - name: Show Clang on Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: dir C:\\msys64\\mingw64\\bin
+      - name: yarn info
         run: yarn install
-      - name: Build Tauri
+      - name: Build
         run: RUST_BACKTRACE=1 yarn run tauri build
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
