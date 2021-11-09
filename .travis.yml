@@ -1,6 +1,7 @@
 language: rust
 rust:
   - stable
+
 os: osx
 osx_image: xcode7.3
 
@@ -11,8 +12,7 @@ jobs:
         - stable
     - language: node_js
       node_js: "16.0"
-      script:
-        - npm install --global yarn
+
 
 # node_js:
 #   - node
@@ -44,8 +44,9 @@ jobs:
 # env:
 #   - NODE_VERSION="0.16"
 
-# before_install:
-#   - nvm install $NODE_VERSION
+before_install:
+  - node -v
+  - npm install --global yarn
 
 script:
   - yarn install --frozen-lockfile
