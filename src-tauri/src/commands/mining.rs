@@ -1,5 +1,5 @@
 use std::env;
-
+use tokio::task;
 use crate::{
   carpe_error::CarpeError,
   configs::{get_cfg, get_diem_client, get_tx_params},
@@ -27,22 +27,32 @@ pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
   // TODO: this is gross. Prevent cloning when using in closures
   let window_clone = window.clone();
   let new_clone = window_clone.clone();
-
   let config = get_cfg()?;
-  let tx_params = get_tx_params(None).unwrap();
 
+  // This is tauri's event listener for the tower proof.
+  // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("tower-make-proof", move |e| {
     println!("received tower-make-proof event");
     println!("received event {:?}", e);
 
-    match mine_and_commit_one_proof(&config, &tx_params) {
-      Ok(proof) => {
-        window_clone.emit("tower-event", proof).unwrap();
+    let third_clone = window_clone.clone();
+    let config_clone = config.clone();
+
+    // The VDF by definition will block the thread. The work needs to be sent to a thread that can be blocked.
+    let _ = task::spawn_blocking( move || {
+        // TODO: how to cehck for this before it get here?
+        // tx params cannot be cloned.
+        let tx_params = get_tx_params(None).expect("could not load tx params, this should have been checked before");
+        // some blocking work here
+        match mine_and_commit_one_proof(&config_clone, &tx_params) {
+        Ok(proof) => {
+          third_clone.emit("tower-event", proof).unwrap();
+        }
+        Err(e) => {
+          third_clone.emit("tower-error", e).unwrap();
+        }
       }
-      Err(e) => {
-        window_clone.emit("tower-error", e).unwrap();
-      }
-    }
+    });
   });
 
   window.once("kill-listener", move |_| {
