@@ -4,30 +4,30 @@
 os: osx
 osx_image: xcode7.3
 
-  jobs:
-    include:
+jobs:
+  include:
 
-      - language: rust
-        rust:
-          - stable
-        jobs:
-          allow_failures:
-            - rust: nightly
-          fast_finish: true
-      - language: node.js
-        node_js: "12.0"
-        before_script:
-          - cd angular-application
-        script:
-          - npm install
-          - ng build --prod
+    - language: rust
+      rust:
+        - stable
+      jobs:
+        allow_failures:
+          - rust: nightly
+        fast_finish: true
+    - language: node.js
+      node_js: "12.0"
+      before_script:
+        - cd angular-application
+      script:
+        - npm install
+        - ng build --prod
 
-node_js:
-  - node
+# node_js:
+#   - node
 
 
-env:
-  - RUST_BACKTRACE=1
+# env:
+#   - RUST_BACKTRACE=1
 
 # addons:
 #   apt:
