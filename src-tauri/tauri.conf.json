@@ -1,7 +1,7 @@
 {
 	"package": {
 		"productName": "carpe",
-		"version": "0.0.1-alpha.0"
+		"version": "0.0.1-alpha.2"
 	},
 	"build": {
 		"distDir": "../public",
@@ -46,9 +46,14 @@
 				"timestampUrl": ""
 			}
 		},
-		"updater": {
-			"active": false
-		},
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://releases.myapp.com/{{target}}/{{current_version}}"
+      ],
+      "dialog": true,
+      "pubkey": ""
+    },
 		"allowlist": {
 			"all": true,
 			"fs": {
