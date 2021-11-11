@@ -10,19 +10,13 @@ pub mod configs_network;
 pub mod configs_profile;
 pub mod carpe_error;
 pub mod seed_peers;
-
-
-use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
-
+use tauri::{Menu, MenuItem, Submenu};
 use crate::{commands::*};
 
 
 fn main() {
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
-    fn custom_menu(name: &str) -> CustomMenuItem {
-    let c = CustomMenuItem::new(name.to_string(), name);
-    return c;
-  } 
+
     let menu = Menu::new()
     .add_submenu(Submenu::new(
       "Carpe",
