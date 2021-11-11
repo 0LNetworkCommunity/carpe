@@ -5,8 +5,6 @@
     getAllAccounts,
     all_accounts,
     setAccount,
-    is_initialized,
-    isInit,
   } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { onMount } from "svelte";
@@ -15,17 +13,16 @@
   import ReminderCreate from "./ReminderCreate.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import Newbie from "./Newbie.svelte";
   UIkit.use(Icons);
 
-  let init: boolean;
-  let account_list: AccountEntry[];
-  let my_account: AccountEntry;
+  let account_list: AccountEntry[] = [];
+  let pendingAccounts: AccountEntry[] = [];
 
-  isInit.subscribe(i => init = i);
+  let my_account: AccountEntry;
 
   all_accounts.subscribe((a) => {
     account_list = a;
+    pendingAccounts = a.filter(x => !x.balance);
   });
 
   signingAccount.subscribe((a) => {
@@ -40,7 +37,6 @@
   }
 
   onMount(() => {
-    // is_initialized();
     getAllAccounts();
   });
 </script>
@@ -75,31 +71,18 @@
             <td>{a.nickname}</td>
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
-
-            {#await bal(i)}
-              <td>...</td>
-            {:then data}
-              {#if data}
-                <td>{data}</td>
-              {:else}
-                <td>
-                  <button
-                    class="uk-button uk-button-default"
-                    uk-toggle="target: #modal-example"
-                    onclick={() => {
-                      setAccount(a.account);
-                    }}>
-                    Onboard
-                  </button>
-                </td>
-              {/if}
-            {:catch error}
-              <td>...</td>
-            {/await}
+            {#if a.balance }
+            <td>{a.balance}</td>
+            {:else}
+            <td>Account Not On Chain</td>
+            {/if}
           </tr>
+          
         {/each}
       </tbody>
     </table>
+
+    <ReminderCreate pendingAccounts={pendingAccounts}/>
   {:else}
     <!-- <Onboard /> -->
   {/if}
@@ -111,8 +94,5 @@
     <Link to="account-from-mnem">
       <button class="uk-button uk-button-default">Restore Account </button>
     </Link>
-  </div>
-
-  <!-- Modal -->
-  <ReminderCreate />
+  </div>  
 </main>
