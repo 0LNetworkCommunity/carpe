@@ -9,7 +9,7 @@
 </script>
 
 <main>
-  <div>
+  <div class="uk-margin-large">
     <div class="uk-card uk-card-primary uk-card-hover uk-card-body uk-light">
       <h3 class="uk-card-title">Onboarding</h3>
       <!-- <h2 class=""></h2> -->
@@ -23,8 +23,9 @@
         <span>
           {#if pendingAccounts}
             {#each pendingAccounts as a}
-             <span> ACCOUNT: {a.nickname} </span>
-             <span> AUTH KEY: {a.authkey} </span>
+            <br/>
+             <!-- <p> ACCOUNT: {a.nickname} </p> -->
+             <p> AUTH KEY: {a.authkey} </p>
             {/each}
           {/if}
         </span></span
