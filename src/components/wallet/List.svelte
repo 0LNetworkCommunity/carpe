@@ -5,7 +5,6 @@
     getAllAccounts,
     all_accounts,
     setAccount,
-    is_initialized,
     isInit,
   } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
@@ -15,14 +14,10 @@
   import ReminderCreate from "./ReminderCreate.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import Newbie from "./Newbie.svelte";
   UIkit.use(Icons);
 
-  let init: boolean;
   let account_list: AccountEntry[];
   let my_account: AccountEntry;
-
-  isInit.subscribe(i => init = i);
 
   all_accounts.subscribe((a) => {
     account_list = a;
@@ -40,7 +35,6 @@
   }
 
   onMount(() => {
-    // is_initialized();
     getAllAccounts();
   });
 </script>
