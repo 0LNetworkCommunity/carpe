@@ -3,7 +3,7 @@
   import { onMount } from "svelte";
   import type { CarpeError } from "../../carpeError";
   import { raise_error } from "../../carpeError";
-  import { Networks, network_profile, setNetwork } from "../../networks";
+  import { network_profile, setNetwork, getNetwork, refreshWaypoint } from "../../networks";
   import type { NetworkProfile} from "../../networks";
   import UIkit from "uikit";
   import { invoke } from "@tauri-apps/api/tauri";
@@ -36,47 +36,14 @@
       });
   }
 
-  function get() {
-    // check input data
-    // submit
-    invoke("get_networks", {})
-      .then((res: NetworkProfile) => network_profile.set(res))
-      .catch((error) => raise_error(error, false));
-  }
-
-  function refreshWaypoint() {
-    // check input data
-    // submit
-    invoke("refresh_waypoint", {})
-      .then((res: NetworkProfile) => network_profile.set(res))
-      .catch((error) => raise_error(error, false));
-  }
-
-  // function toggleNetwork(network: Networks) {
-  //   invoke("toggle_network", {network: network})
-  //     .then((res: NetworkProfile) => network_profile.set(res))
-  //     .catch((error) => raise_error(error));
-  // }
-  // // TODO: is this the correct event?
   onMount(async () => {
-    get();
+    getNetwork();
   });
-
-
-  function isChainId(chain: string): boolean {
-    return current_chain_id == chain
-  }
 
 </script>
 
 <main>
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Network Connection</h4>
-  <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-      <label><input class="uk-radio" type="radio" name="radio2" checked={current_chain_id  == "Mainnet"} on:click={() => setNetwork(Networks.Mainnet)}> Mainnet </label>
-      <label><input class="uk-radio" type="radio" name="radio2" checked={ current_chain_id == "Rex"} on:click={() => setNetwork(Networks.Rex)}> Rex (testnet) </label>
-  </div>
-
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Override Settings </h4>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Override Settings for connection to: {current_chain_id}</h4>
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">

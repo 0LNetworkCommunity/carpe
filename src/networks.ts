@@ -9,6 +9,13 @@ export enum Networks {
   Rex = "Rex"
 }
 
+export const network_profile = writable<NetworkProfile>({
+  chain_id: "string", // Todo, use the Network Enum
+  url: "string",
+  waypoint: "string",
+  profile: "string",
+});
+
 // should match the Rust type Network Profile
 export interface NetworkProfile {
   chain_id: string, // Todo, use the Network Enum
@@ -17,22 +24,20 @@ export interface NetworkProfile {
   profile: string,
 }
 
-
-export const network_profile = writable<NetworkProfile>({
-  chain_id: "string", // Todo, use the Network Enum
-  url: "string",
-  waypoint: "string",
-  profile: "string",
-});
-
-
 export function setNetwork(network: Networks) {
     invoke("toggle_network", { network: network })
       .then((res: NetworkProfile) => network_profile.set(res))
-      .catch((error) => raise_error(error));
+      .catch((error) => raise_error(error, false));
 }
 
+export function getNetwork() {
+  invoke("get_networks", {})
+    .then((res: NetworkProfile) => network_profile.set(res))
+    .catch((error) => raise_error(error, false));
+}
 
-export function get_profile(account: string): NetworkProfile {
-  return get(network_profile)
+export function refreshWaypoint() {
+  invoke("refresh_waypoint", {})
+    .then((res: NetworkProfile) => network_profile.set(res))
+    .catch((error) => raise_error(error, false));
 }
