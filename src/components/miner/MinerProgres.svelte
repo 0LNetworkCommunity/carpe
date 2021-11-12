@@ -30,5 +30,7 @@
 </script>
 
 <main>
-  <progress id="js-progressbar" class="uk-progress" value="0" max="1" />
+  <div class="uk-flex uk-flex-middle">
+      <progress id="js-progressbar" class="uk-progress" value="0.5" max="1" />
+  </div>
 </main>
