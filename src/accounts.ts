@@ -2,11 +2,11 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
-import { Networks, setNetwork } from './networks';
 export interface AccountEntry {
   account: string,
   authkey: string,
   nickname: string,
+  on_chain: boolean,
   balance: number,
 }
 
@@ -18,6 +18,7 @@ export const new_account = function (account: string, authkey: string, nickname:
     account: account,
     authkey: authkey,
     nickname: nickname,
+    on_chain: false,
     balance: 0,
   }
 };

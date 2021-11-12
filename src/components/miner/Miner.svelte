@@ -8,8 +8,8 @@
   import { signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import Status from "./cards/Status.svelte";
-import FirstProof from "./cards/FirstProof.svelte";
-import Oops from "./cards/Oops.svelte";
+  import FirstProof from "./cards/FirstProof.svelte";
+  import Oops from "./cards/Oops.svelte";
 
   let debug: boolean;
   debugMode.subscribe((d) => {
@@ -20,17 +20,17 @@ import Oops from "./cards/Oops.svelte";
     account = a;
   });
 
-  let info = false;
+  let info = true;
 </script>
 
 <main class="uk-height-viewport">
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
   </div>
-  {#if !account.balance}
-    <CantStart />
-  {:else}
-    <div class="uk-grid">
+  <div class="uk-grid uk-margin-large">
+    {#if !account.on_chain}
+      <CantStart />
+    {:else}
       <div class="uk-width-auto">
         <ToggleMiner />
       </div>
@@ -38,29 +38,26 @@ import Oops from "./cards/Oops.svelte";
         <MinerProgres />
       </div>
       <!-- <p>Lost time is never found again.</p> -->
-    </div>
-  {/if}
+      <!-- <Oops/> -->
 
+      <div class="uk-grid uk-grid-match uk-margin-large" uk-grid>
+        <div class="uk-width-expand">
+          {#if info}
+            <TowerState />
+          {:else}
+            <FirstProof />
+          {/if}
+        </div>
+        <div class="uk-width-1-3">
+          <div class="uk-card uk-card-default uk-card-body">
+            <Status />
+          </div>
+        </div>
+      </div>
+    {/if}
+  </div>
 
   {#if debug}
     <MinerDebug />
   {/if}
-
-  <Oops/>
-
-  <div class="uk-grid uk-grid-match" uk-grid>
-      <div class="uk-width-expand">
-              {#if info}
-                <TowerState />
-              {:else}
-                <FirstProof/>
-              {/if}
-      </div>
-      <div class="uk-width-1-3">
-          <div class="uk-card uk-card-default uk-card-body">
-            <Status/>
-          </div>
-      </div>
-  </div>
 </main>
-

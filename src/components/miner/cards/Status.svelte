@@ -5,6 +5,6 @@ import Check from "../Check.svelte";
   
 </script>
 <main>
-  Status
-  <Check isTrue={true} />
+  <Check isTrue={true} title="Saved Proof" description="proof_x.json"/>
+  <Check isTrue={true} title="CPU Running" description=""/>
 </main>

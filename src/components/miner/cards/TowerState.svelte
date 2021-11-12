@@ -2,7 +2,6 @@
   import {tower, getTowerChainView} from "../../../miner";
   import { onMount } from "svelte";
   import { signingAccount } from "../../../accounts";
-  import type { AccountEntry } from "../../../accounts";
 
   let towerState;
   let my_account; // Todo change to be a template Prop
@@ -26,7 +25,7 @@
 
 <main>
 
-  {#if towerState.on_chain}
+  {#if towerState.on_chain && towerState.on_chain.previous_proof_hash}
     <table class="uk-table uk-table-divider">
     <thead>
         <tr>
@@ -51,7 +50,13 @@
         </tr>
     </tbody>
 </table>
-
+    {:else}
+    <div>
+      <h3 class="uk-text-muted"> 
+        You haven't submitted any mining proofs
+      </h3> 
+      <p>When you successfully submit your first proof, you will see some stats here</p>
+    </div>
   {/if}
 
 </main>

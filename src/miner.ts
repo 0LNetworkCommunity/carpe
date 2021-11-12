@@ -111,23 +111,31 @@ function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
   return m;
 }
 
-function refreshOnChainData(on_chain: TowerStateView): ClientTowerStatus {
-  let m = get(tower);
-  m.on_chain = on_chain;
-  tower.set(m);
-  return m;
-}
+// function refreshOnChainData(on_chain: TowerStateView): ClientTowerStatus {
+//   let m = get(tower);
+//   m.on_chain = on_chain;
+//   tower.set(m);
+//   return m;
+// }
 
 
 export const getTowerChainView = async () => {
   invoke("get_onchain_tower_state", {})
     .then((res: TowerStateView) => {
       console.log(res);
-      refreshOnChainData(res);
+      // if res.
+      let m = get(tower);
+      m.on_chain = res;
+      tower.set(m);
       responses.set(JSON.stringify(res));
-
     })
-    .catch((e) => raise_error(e, true));
+    .catch((e) => {
+      let m = get(tower);
+      m.on_chain = {};
+      tower.set(m);
+      
+      raise_error(e, true)
+    });
 };
 
 
