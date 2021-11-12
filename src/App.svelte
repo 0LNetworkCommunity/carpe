@@ -25,12 +25,18 @@
   import { debugMode, responses } from "./debug";
   import { get } from "svelte/store";
   import Nav from "./components/Nav.svelte";
-import DebugCard from "./components/dev/DebugCard.svelte";
+  import DebugCard from "./components/dev/DebugCard.svelte";
+  import { all_accounts } from "./accounts";
 
   let debug = false;
   debugMode.subscribe((d) => {
     debug = d;
   })
+
+  let has_account = false;
+  all_accounts.subscribe((list) => {
+    has_account = list.length > 0;
+  });
 
   let enabled;
   miner_loop_enabled.subscribe((e) => (enabled = e));
@@ -82,8 +88,9 @@ import DebugCard from "./components/dev/DebugCard.svelte";
 <main class="uk-background-muted">
   <div class="uk-container">
     <Router>
-       <Nav />
-
+      {#if has_account}
+        <Nav />
+      {/if}
       <div class="uk-background-muted uk-margin-large">
         <Route path="/" component={Wallet} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
@@ -104,10 +111,6 @@ import DebugCard from "./components/dev/DebugCard.svelte";
           <DebugCard/>
         {/if}
       </div>
-
     </Router>
-  </div>
-
-
-  
+  </div>  
 </main>

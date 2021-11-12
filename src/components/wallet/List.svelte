@@ -36,6 +36,14 @@
     // TODO: Rust should have already returned the scaled value.
   }
 
+  function formatBalance(balance) {
+    const balanceScaled = balance / 1000000
+    return balanceScaled.toLocaleString('en-ES', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
+
   onMount(() => {
     getAllAccounts();
   });
@@ -58,8 +66,16 @@
       <tbody>
         {#each account_list as a, i}
           <tr
+            class="{my_account.account == a.account ? 'uk-text-primary' : ''}"
             on:click={() => {
               setAccount(a.account);
+              // TODO: add notification as callback function
+              UIkit.notification({
+                message: "<span uk-icon='icon: check'></span>Account switched to " + a.nickname,
+                pos: "bottom-center",
+                status: "success",
+                timeout: 3000,
+              });
             }}
           >
             <!-- <a href="#" on:click={() => { setAccount(acc.account); }}> {acc.nickname} </a > -->
@@ -72,12 +88,11 @@
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
             {#if a.balance }
-            <td>{a.balance}</td>
+              <td>{formatBalance(a.balance)}</td>
             {:else}
-            <td>Account Not On Chain</td>
+              <td>Account Not On Chain</td>
             {/if}
           </tr>
-          
         {/each}
       </tbody>
     </table>

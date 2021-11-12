@@ -10,8 +10,6 @@ export interface AccountEntry {
   balance: number,
 }
 
-
-
 export const new_account = function (account: string, authkey: string, nickname: string): AccountEntry {
 
   return {
@@ -33,7 +31,18 @@ export const all_accounts = writable<AccountEntry[]>([]);
 
 export function getAllAccounts() {
   invoke('get_all_accounts')
-    .then((result: object) => all_accounts.set(result.accounts))
+    .then((result: object) => {
+      all_accounts.set(result.accounts);
+      
+      // set signingAccount
+      if (result.accounts.length > 0) {
+        signingAccount.set(result.accounts[0]);
+      } else {
+        /* TODO no accounts in the current network
+        signingAccount.set(new_account("", "", ""));
+        */
+      }
+    })
     .catch((error) => raise_error(error));
 }
 

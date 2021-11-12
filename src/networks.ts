@@ -1,6 +1,7 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { get, writable } from "svelte/store";
 import { raise_error } from "./carpeError";
+import { getAllAccounts } from "./accounts";
 
 
   // Note: the string initialized should match the enum in Rust, networks.rs, to easily de/serialize
@@ -28,7 +29,11 @@ export const network_profile = writable<NetworkProfile>({
 
 export function setNetwork(network: Networks) {
     invoke("toggle_network", { network: network })
-      .then((res: NetworkProfile) => network_profile.set(res))
+      .then((res: NetworkProfile) => {
+        network_profile.set(res);
+        // update accounts from current network
+        getAllAccounts(); // TODO notify as an event dependency
+      })
       .catch((error) => raise_error(error));
 }
 

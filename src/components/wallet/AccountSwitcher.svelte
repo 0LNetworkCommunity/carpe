@@ -2,6 +2,7 @@
   import { signingAccount, all_accounts, setAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { Link } from "svelte-navigator";
+  import UIkit from "uikit";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -21,7 +22,7 @@
   <div>
     <button class="uk-button uk-button-default" type="button">
       {#if my_account}
-        {my_account.nickname}
+      <span uk-icon="icon: user" class="uk-margin-small-right"/> {my_account.nickname}
       {:else}
         Select Account
       {/if}
@@ -38,8 +39,16 @@
             <li>
               <a
                 href={"#"}
+                class="{my_account.account == acc.account ? 'uk-text-primary' : ''}"
                 on:click={() => {
                   setAccount(acc.account);
+                  // TODO: add notification as callback function
+                  UIkit.notification({
+                    message: "<span uk-icon='icon: check'></span>Account switched to " + acc.nickname,
+                    pos: "bottom-center",
+                    status: "success",
+                    timeout: 3000,
+                  });
                 }}
               >
                 {acc.nickname}
@@ -52,10 +61,6 @@
             <a href={"#"}>
               <Link to="settings" class="uk-text-muted">Go to Settings</Link></a>
           </li>
-          <!-- <li class="uk-active"><a href="#">Active</a></li>
-      <li><a href="#">Item</a></li>
-
-      <li><a href="#">Item</a></li> -->
         {/if}
       </ul>
     </div>
