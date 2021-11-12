@@ -1,5 +1,5 @@
 <script lang="ts">
-import Check from "./Check.svelte";
+import Check from "../Check.svelte";
 
 
   
