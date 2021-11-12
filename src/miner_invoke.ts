@@ -3,7 +3,7 @@ import { getCurrent } from "@tauri-apps/api/window";
 import { get } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { responses } from "./debug";
-import { backlog_in_progress, tower, TowerStateView } from "./miner";
+import { backlog_in_progress, ProofProgress, tower, TowerStateView } from "./miner";
 
 
 const current_window = getCurrent();
@@ -30,7 +30,7 @@ export const killTowerListener = async () => {
 }
 
 export const getTowerChainView = async () => {
-  invoke("get_onchain_tower_state", {})
+  await invoke("get_onchain_tower_state", {})
     .then((res: TowerStateView) => {
       console.log(res);
       // if res.
@@ -47,6 +47,54 @@ export const getTowerChainView = async () => {
       raise_error(e, true)
     });
 };
+
+export const towerOnce = async () => {
+  console.log("mine tower once")
+
+  let previous_duration = 30 * 60 * 1000;
+  // let previous_duration = 5 * 1000; // for test net
+  let t = get(tower);
+  if (t.latest_proof && t.latest_proof.elapsed_secs) {
+    previous_duration = t.latest_proof.elapsed_secs * 1000
+  }
+
+  let progress: ProofProgress = {
+    time_start: Date.now(),
+    previous_duration,
+    complete: false,
+    error: false,
+    pct_complete: 0
+  }
+  t.progress = progress;
+  tower.set(t);
+  current_window.emit('tower-make-proof', 'Tauri is awesome!');
+
+};
+
+
+// function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
+//   let m = get(tower);
+//   m.latest_proof = new_proof;
+//   m.count_proofs_this_session = m.count_proofs_this_session + 1;
+//   tower.set(m);
+//   return m;
+// }
+
+
+
+
+
+export function proofError() {
+  let t = get(tower);
+  t.progress.error = true;
+  tower.set(t);
+}
+
+export function proofComplete() {
+  let t = get(tower);
+  t.progress.complete = true;
+  tower.set(t);
+}
 
 // submit any transactions that are in the backlog. Proofs that have been mined but for any reason were not committed.
 export const submitBacklog = async () => {

@@ -13,10 +13,6 @@
   import { listen } from "@tauri-apps/api/event";
   import {
     miner_loop_enabled,
-    disableMining,
-    proofComplete,
-    proofError,
-    towerOnce,
     backlog_in_progress,
     tower,
   } from "./miner";
@@ -26,6 +22,8 @@
   import { get } from "svelte/store";
   import Nav from "./components/Nav.svelte";
 import DebugCard from "./components/dev/DebugCard.svelte";
+import { proofComplete, proofError, towerOnce } from "./miner_invoke";
+import { disableMining } from "./miner_toggle";
 
   let debug = false;
   debugMode.subscribe((d) => {

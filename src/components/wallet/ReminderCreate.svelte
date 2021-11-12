@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { AccountEntry } from "../../accounts";
+  
   export let pendingAccounts: AccountEntry[];
 </script>
 

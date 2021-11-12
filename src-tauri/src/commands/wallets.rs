@@ -119,7 +119,7 @@ fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError>  
     all_accounts.accounts = all_accounts.accounts.into_iter()
     .map(|mut e| {
       e.balance = get_balance(e.account).ok();
-      e.on_chain = true;
+      if e.balance.is_some() { e.on_chain = true; }
       e
     })
     .collect();

@@ -1,5 +1,8 @@
-export function healthCheck() {
+import { getTowerChainView } from "./miner_invoke";
 
+export function healthCheck() {
+  console.log("healthcheck");
+  getTowerChainView();
 }
 
 

@@ -22,6 +22,7 @@
 
   all_accounts.subscribe((a) => {
     account_list = a;
+    console.log(a);
     pendingAccounts = a.filter(x => !x.on_chain);
   });
 
