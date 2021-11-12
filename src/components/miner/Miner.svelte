@@ -10,6 +10,11 @@
   import Status from "./cards/Status.svelte";
   import FirstProof from "./cards/FirstProof.svelte";
   import Oops from "./cards/Oops.svelte";
+  import { tower } from "../../miner";
+  
+  tower.subscribe((s) => {
+
+  });
 
   let debug: boolean;
   debugMode.subscribe((d) => {

@@ -1,13 +1,11 @@
 <script>
-  import { get } from "svelte/store";
-  import { proofState, tower } from "../../miner";
+  import { getProgess } from "../../miner";
 
-  tower.subscribe((s) => {
     let percent = 0;
     var bar = document.getElementById("js-progressbar");
 
     var animate = setInterval(function () {
-      let ps = get(proofState);
+      let ps = getProgess();
       console.log(ps);
       // window.alert(JSON.stringify(ps));
       if (ps && ps.time_start > 0) {
@@ -23,10 +21,9 @@
         clearInterval(animate);
       }
     } else {
-      bar.value = 0
+      bar.value = 0;
     }
-    }, 1000);
-  })
+    }, 10000);
 </script>
 
 <main>

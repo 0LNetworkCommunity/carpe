@@ -1,7 +1,8 @@
 <script lang="ts">
 import { invoke } from "@tauri-apps/api/tauri";
 
-  import { killTowerListener, startTowerListener, submitProofZero, towerOnce } from "../../miner";
+  import { towerOnce } from "../../miner";
+  import { killTowerListener, startTowerListener, submitProofZero } from "../../miner_invoke";
 
 </script>
 

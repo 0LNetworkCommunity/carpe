@@ -1,10 +1,19 @@
 import { invoke } from '@tauri-apps/api/tauri';
-import { get, readable, writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { getCurrent } from '@tauri-apps/api/window'
 
 const current_window = getCurrent();
+export interface ClientTowerStatus {
+  latest_proof: VDFProof,
+  on_chain?: TowerStateView,
+  count_proofs_this_session: number,
+  last_local_proof?: string,
+  cpu_usage: number,
+  progress: ProofProgress,
+}
+
 export interface VDFProof {
   height: number,
   elapsed_secs: number,
@@ -13,7 +22,6 @@ export interface VDFProof {
   difficulty: number,
   security: number
 }
-
 export interface TowerStateView {
   previous_proof_hash: string,
   verified_tower_height: number, // user's latest verified_tower_height
@@ -24,15 +32,22 @@ export interface TowerStateView {
   epochs_since_last_account_creation: number
 }
 
-export interface ClientTowerStatus {
-  latest_proof: VDFProof,
-  on_chain: TowerStateView,
-  count_proofs_this_session: number,
+export interface ProofProgress {
+  time_start: number,
+  previous_duration: number,
+  complete: boolean,
+  error: boolean,
+  pct_complete: number,
+
 }
 
 export const tower = writable<ClientTowerStatus>({});
 export const backlog_in_progress = writable(false);
+export const miner_loop_enabled = writable(false);
 
+export function getProgess(): ProofProgress {
+  return get(tower).progress
+}
 
 export const towerOnce = async () => {
   console.log("mine tower once")
@@ -49,58 +64,13 @@ export const towerOnce = async () => {
     previous_duration,
     complete: false,
     error: false,
+    pct_complete: 0
   }
-  proofState.set(progress);
+  t.progress = progress;
+  tower.set(t);
   current_window.emit('tower-make-proof', 'Tauri is awesome!');
 
 };
-
-export const submitBacklog = async () => {
-  backlog_in_progress.set(true);
-  invoke("submit_backlog", {})
-    .then((res) => {
-      console.log("backlog response");
-      console.log(res);
-      responses.set(res as string);
-      backlog_in_progress.set(false);
-      return res
-    })
-    .catch((e) => {
-      raise_error(e, false);
-      backlog_in_progress.set(false);
-    });
-}
-
-export const submitProofZero = async () => {
-  backlog_in_progress.set(true);
-  invoke("debug_submit_proof_zero", {})
-    .then((res) => {
-      console.log(res);
-      responses.set(res as string);
-      return res
-    })
-    .catch((e) => {
-      raise_error(e, false);
-    });
-}
-
-
-export const startTowerListener = async () => {
-  await invoke("start_tower_listener", {})
-    .then((res) => {
-      console.log("tower listener response");
-      console.log(res);
-      responses.set(res as string);
-      return res
-    })
-    .catch((e) => raise_error(e, false));
-}
-
-
-export const killTowerListener = async () => {
-  console.log("kill listener");
-  return current_window.emit("kill-listener")
-}
 
 
 function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
@@ -111,35 +81,7 @@ function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
   return m;
 }
 
-// function refreshOnChainData(on_chain: TowerStateView): ClientTowerStatus {
-//   let m = get(tower);
-//   m.on_chain = on_chain;
-//   tower.set(m);
-//   return m;
-// }
 
-
-export const getTowerChainView = async () => {
-  invoke("get_onchain_tower_state", {})
-    .then((res: TowerStateView) => {
-      console.log(res);
-      // if res.
-      let m = get(tower);
-      m.on_chain = res;
-      tower.set(m);
-      responses.set(JSON.stringify(res));
-    })
-    .catch((e) => {
-      let m = get(tower);
-      m.on_chain = {};
-      tower.set(m);
-      
-      raise_error(e, true)
-    });
-};
-
-
-export const miner_loop_enabled = writable(false);
 
 export async function enableMining(): Promise<boolean> {
   // careful to not start the miner twice.
@@ -185,12 +127,12 @@ export function toggleMining() {
 }
 
 function isInProgress(): boolean {
-  let ps = get(proofState);
+  let t = get(tower);
   if (
-    ps.time_start &&
-    ps.time_start > 0 &&
-    !ps.complete &&
-    !ps.error
+    t.progress.time_start &&
+    t.progress.time_start > 0 &&
+    !t.progress.complete &&
+    !t.progress.error
   ) {
     return true
   }
@@ -198,41 +140,13 @@ function isInProgress(): boolean {
 }
 
 export function proofError() {
-  let ps = get(proofState);
-  ps.error = true;
-  proofState.set(ps);
+  let t = get(tower);
+  t.progress.error = true;
+  tower.set(t);
 }
 
 export function proofComplete() {
-  let ps = get(proofState);
-  ps.complete = true;
-  proofState.set(ps);
+  let t = get(tower);
+  t.progress.complete = true;
+  tower.set(t);
 }
-export interface ProofProgress {
-  time_start: number,
-  previous_duration: number,
-  complete: boolean,
-  error: boolean
-}
-
-export const proofState = writable<ProofProgress>({});
-
-export function setDebugProdTest(env: string) {
-  invoke("set_env", { env: env })
-    .then((res: string) => {
-      window.alert(res);
-      nodeEnv.set(res);
-    })
-    .catch((error) => raise_error(error, false));
-}
-
-export function getEnv() {
-  invoke("get_env", { })
-    .then((res: string) => {
-      // window.alert(res);
-      nodeEnv.set(res);
-    })
-    .catch((error) => raise_error(error, false));
-}
-
-export const nodeEnv = writable<string>("");

@@ -1,7 +1,8 @@
 <script lang="ts">
-  import {tower, getTowerChainView} from "../../../miner";
+  import {tower} from "../../../miner";
   import { onMount } from "svelte";
   import { signingAccount } from "../../../accounts";
+import { getTowerChainView } from "../../../miner_invoke";
 
   let towerState;
   let my_account; // Todo change to be a template Prop
