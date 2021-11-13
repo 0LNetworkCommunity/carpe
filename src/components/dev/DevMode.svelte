@@ -3,6 +3,7 @@
   import DebugActions from "./DebugActions.svelte";
   import { Link } from "svelte-navigator";
 import DebugSwitchProdTest from "./DebugSwitchProdTest.svelte";
+import DebugSwitchRexMainnet from "./DebugSwitchRexMainnet.svelte";
   // import Swarm from "./Swarm.svelte";
 
 </script>
@@ -13,6 +14,7 @@ import DebugSwitchProdTest from "./DebugSwitchProdTest.svelte";
 
         <DebugCard />
         <DebugActions />
+        <DebugSwitchRexMainnet />
         <DebugSwitchProdTest />
         
         <div class="margin">
