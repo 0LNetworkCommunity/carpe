@@ -20,7 +20,6 @@ static APP_CONFIG_FILE: &str = "0L.toml";
 
 static ACCOUNTS_DB_FILE: &str = "accounts.json";
 static ACCOUNTS_DB_FILE_REX: &str = "accounts-rex.json";
-static ACCOUNTS_DB_FILE_UNKNOWN: &str = "accounts-unknown.json";
 
 // get the config path for files
 pub fn default_config_path() -> PathBuf {
@@ -38,12 +37,11 @@ pub fn default_accounts_db_path() -> PathBuf {
   let db_file = match get_cfg() {
     Ok(cfg) => {
       match cfg.chain_info.chain_id.as_str() {
-        "Mainnet" => ACCOUNTS_DB_FILE,
         "Rex" => ACCOUNTS_DB_FILE_REX,
-        _ => ACCOUNTS_DB_FILE_UNKNOWN
+        _ => ACCOUNTS_DB_FILE
       }
     },
-    Err(_) => ACCOUNTS_DB_FILE_UNKNOWN
+    Err(_) => ACCOUNTS_DB_FILE
   };
   dirs::home_dir().unwrap().join(".0L").join(db_file)
 }
