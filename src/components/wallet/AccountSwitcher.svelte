@@ -3,6 +3,7 @@
   import type { AccountEntry } from "../../accounts";
   import { Link } from "svelte-navigator";
   import UIkit from "uikit";
+  import NetworkIcon from "./NetworkIcon.svelte";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -22,7 +23,7 @@
   <div>
     <button class="uk-button uk-button-default" type="button">
       {#if my_account}
-      <span uk-icon="icon: user" class="uk-margin-small-right"/> {my_account.nickname}
+        <NetworkIcon /> {my_account.nickname}
       {:else}
         Select Account
       {/if}
