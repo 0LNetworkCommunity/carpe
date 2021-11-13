@@ -3,6 +3,8 @@ import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { Networks, setNetwork } from './networks';
+import { miner_loop_enabled} from "./miner";
+import { success, error } from './carpeNotify';
 export interface AccountEntry {
   account: string,
   authkey: string,
@@ -47,8 +49,6 @@ export function getAllAccounts() {
 }
 
 export async function is_initialized(): Promise<boolean> {
-  console.log("is_init");
-
   invoke("is_init", {})
     .then((res) => {
       console.log("is_init res");
@@ -70,6 +70,12 @@ export function findOneAccount(account: string): AccountEntry {
 }
 
 export async function setAccount(an_address: string, is_first_account: boolean) {
+  // cannot switch profile with miner running
+  if (get(miner_loop_enabled)) {
+    error("To switch accounts you need to turn miner off first.");
+    return
+  }
+
   let a = findOneAccount(an_address);
   signingAccount.set(a);
 
@@ -77,6 +83,7 @@ export async function setAccount(an_address: string, is_first_account: boolean) 
     account: a.account,
   })
   .then((res) => {
+    success("Account switched to " + a.nickname);
     responses.set(res);
     // for testnet
   })

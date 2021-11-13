@@ -67,16 +67,7 @@
         {#each account_list as a, i}
           <tr
             class="{my_account.account == a.account ? 'uk-text-primary' : ''}"
-            on:click={() => {
-              setAccount(a.account);
-              // TODO: add notification as callback function
-              UIkit.notification({
-                message: "<span uk-icon='icon: check'></span>Account switched to " + a.nickname,
-                pos: "bottom-center",
-                status: "success",
-                timeout: 3000,
-              });
-            }}
+            on:click={() => setAccount(a.account) }
           >
             <!-- <a href="#" on:click={() => { setAccount(acc.account); }}> {acc.nickname} </a > -->
             <td>

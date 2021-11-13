@@ -41,16 +41,7 @@
               <a
                 href={"#"}
                 class="{my_account.account == acc.account ? 'uk-text-primary' : ''}"
-                on:click={() => {
-                  setAccount(acc.account);
-                  // TODO: add notification as callback function
-                  UIkit.notification({
-                    message: "<span uk-icon='icon: check'></span>Account switched to " + acc.nickname,
-                    pos: "bottom-center",
-                    status: "success",
-                    timeout: 3000,
-                  });
-                }}
+                on:click={() => setAccount(acc.account)}
               >
                 {acc.nickname}
               </a>
