@@ -2,6 +2,8 @@
   import { signingAccount, all_accounts, setAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { Link } from "svelte-navigator";
+  import UIkit from "uikit";
+  import NetworkIcon from "./NetworkIcon.svelte";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -21,7 +23,7 @@
   <div>
     <button class="uk-button uk-button-default" type="button">
       {#if my_account}
-        {my_account.nickname}
+        <NetworkIcon /> {my_account.nickname}
       {:else}
         Select Account
       {/if}
@@ -38,9 +40,8 @@
             <li>
               <a
                 href={"#"}
-                on:click={() => {
-                  setAccount(acc.account);
-                }}
+                class="{my_account.account == acc.account ? 'uk-text-primary' : ''}"
+                on:click={() => setAccount(acc.account)}
               >
                 {acc.nickname}
               </a>
@@ -52,10 +53,6 @@
             <a href={"#"}>
               <Link to="settings" class="uk-text-muted">Go to Settings</Link></a>
           </li>
-          <!-- <li class="uk-active"><a href="#">Active</a></li>
-      <li><a href="#">Item</a></li>
-
-      <li><a href="#">Item</a></li> -->
         {/if}
       </ul>
     </div>

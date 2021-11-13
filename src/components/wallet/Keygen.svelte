@@ -49,15 +49,15 @@
     <p>
       Here are some random account keys. Your account does not exist yet on chain. You'll need someone to send funds to the Auth Key below. At that point your account will exist on chain. From then on, people can just use the Account Address to transfer funds to you.
     </p>
-    <div class="uk-margin uk-card uk-card-default uk-card-body uk-text-muted uk-width-1-2@m">
+    <div class="uk-margin uk-card uk-card-default uk-card-body uk-text-muted">
       <h5 class="uk-text-muted uk-text-uppercase">ACCOUNT ADDRESS</h5>
       <p class="uk-text-emphasis uk-text-uppercase">{address}</p>
       <h5 class="uk-text-muted uk-text-uppercase">AUTH KEY</h5>
       <p class="uk-text-emphasis uk-text-uppercase">{authkey}</p>
       <p>You need this to be able to create the account on chain.</p>
       
-      <h5 class="uk-text-muted uk-text-uppercase">RECOVERY MNEMONIC</h5>
-      <p>
+      <h5 class="uk-text-muted uk-text-uppercase uk-text-danger">RECOVERY MNEMONIC</h5>
+      <p class="uk-text-danger">
         This is your recovery key, if you lose it no one can help you. Write it
         down now.
       </p>
