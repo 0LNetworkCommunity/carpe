@@ -2,7 +2,6 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
-import { Networks, setNetwork } from './networks';
 import { miner_loop_enabled} from "./miner";
 import { success, error } from './carpeNotify';
 export interface AccountEntry {
@@ -70,6 +69,10 @@ export function findOneAccount(account: string): AccountEntry {
 }
 
 export async function setAccount(an_address: string, is_first_account: boolean) {
+  if (get(signingAccount).account == an_address) {
+    return
+  }
+ 
   // cannot switch profile with miner running
   if (get(miner_loop_enabled)) {
     error("To switch accounts you need to turn miner off first.");

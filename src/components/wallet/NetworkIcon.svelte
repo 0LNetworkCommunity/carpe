@@ -1,14 +1,14 @@
 <script>
   import { Networks, network_profile } from "../../networks";
 
-  let isMainnet = true;
+  let isRex = false;
   network_profile.subscribe((network) => {
-    isMainnet = Networks.Mainnet == network.chain_id;
+    isRex = Networks.Rex == network.chain_id;
   });
 </script>
 
-{#if isMainnet}
-  <span uk-icon="icon: user" class="uk-margin-small-right"/>
+{#if isRex}
+  <img alt="test network icon" src="/images/crash-test.jpg"/>
 {:else}
-  <img alt="test network icon" class="uk-margin-small-right" src="/images/crash-test.jpg"/>
+  <span uk-icon="icon: user"/>  
 {/if}

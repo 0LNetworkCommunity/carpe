@@ -72,9 +72,7 @@
     const current = getCurrent();
     current.emit('kill_forever', 'Tauri is awesome!');
   };
-
-
-  
+ 
   const startMockTowerListener = async () => {
     console.log("start tower listener")
     invoke("mock_build_tower", {success: true})
@@ -111,40 +109,32 @@
 
 <main>
   <div>
-    <div class="uk-margin uk-flex">
+    <div class="uk-margin-medium-bottom">
+      <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Helpers </h4>
       <button class="uk-button uk-button-default" on:click={makeError}>Make Error</button>
-
       <button class="uk-button uk-button-default" on:click={triggerEventFromRustToJs}>Receive Event</button>
-
-      
       <button class="uk-button uk-button-default" on:click={debugStartListener}>Start Listener</button>
-
       <button class="uk-button uk-button-default" on:click={emitEventFromHereToRust}>Send Event</button>
     </div>
 
-    <div class="uk-margin uk-flex">
-      <h4> Tower </h4>
-      
+    <div class="uk-margin-medium-bottom">
+      <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Tower </h4>
       <button class="uk-button uk-button-default" on:click={startMockTowerListener}>Start Mock Tower Listener </button>
-
       <button class="uk-button uk-button-default" on:click={mockTowerOnce}>Mock Tower Once</button>
       <button class="uk-button uk-button-default" on:click={mockTowerOnceFail}>Mock Tower Once Fail</button>
-
     </div>
 
 
-    <div class="uk-margin uk-flex">
-
-    <button class="uk-button uk-button-default" on:click={testAsync}>Async</button>
-    <button class="uk-button uk-button-default" on:click={startForever}>Start Forever</button>
-    <button class="uk-button uk-button-default" on:click={killForever}>Kill Forever</button>
-
+    <div class="uk-margin-medium-bottom">
+      <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Tests </h4>
+      <button class="uk-button uk-button-default" on:click={testAsync}>Async</button>
+      <button class="uk-button uk-button-default" on:click={startForever}>Start Forever</button>
+      <button class="uk-button uk-button-default" on:click={killForever}>Kill Forever</button>
     </div>
 
-
-
-    <button class="uk-button uk-button-default" on:click={init}>Init</button>
-
+    <div class="uk-margin-medium-bottom">
+      <button class="uk-button uk-button-default" on:click={init}>Init</button>
+    </div>
 
     <DemoTx />
   </div>
