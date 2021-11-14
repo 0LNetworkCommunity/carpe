@@ -3,6 +3,8 @@
 ## Initial start
 After successful installation and first start, you should see an initial screen, which let's you create your account:
 
+![screen01](https://user-images.githubusercontent.com/82731659/141700707-bf340c8b-3837-45f8-807d-5ff981144e3b.png)
+
 ### Create an account
 
 If this is your first usage, you should just click on "new account" and then on "generate keys". You can click on "generate keys" as often as you like until you are happy with the proposed account number.
