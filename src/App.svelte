@@ -26,17 +26,11 @@
   import { get } from "svelte/store";
   import Nav from "./components/Nav.svelte";
   import DebugCard from "./components/dev/DebugCard.svelte";
-  import { all_accounts } from "./accounts";
 
   let debug = false;
   debugMode.subscribe((d) => {
     debug = d;
   })
-
-  let has_account = false;
-  all_accounts.subscribe((list) => {
-    has_account = list.length > 0;
-  });
 
   let enabled;
   miner_loop_enabled.subscribe((e) => (enabled = e));
@@ -82,15 +76,14 @@
       raise_error(event.payload, false);
       backlog_in_progress.set(false);
     });
+
   });
 </script>
 
 <main class="uk-background-muted">
   <div class="uk-container">
     <Router>
-      {#if has_account}
-        <Nav />
-      {/if}
+      <Nav />
       <div class="uk-background-muted uk-margin-large">
         <Route path="/" component={Wallet} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->

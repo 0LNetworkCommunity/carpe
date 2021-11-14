@@ -16,7 +16,7 @@ onMount(()=> {
 </script>
 
 <main>
-  <h3>Miner Difficulty</h3>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">Miner Difficulty</h4>
   <div>
     <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
       <label

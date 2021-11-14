@@ -8,7 +8,7 @@
 </script>
 
 {#if isRex}
-  <img alt="test network icon" class="uk-margin-small-right" src="/images/crash-test.jpg"/>
+  <img alt="test network icon" src="/images/crash-test.jpg"/>
 {:else}
-  <span uk-icon="icon: user" class="uk-margin-small-right"/>  
+  <span uk-icon="icon: user"/>  
 {/if}

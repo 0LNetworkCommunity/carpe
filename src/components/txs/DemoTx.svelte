@@ -20,4 +20,6 @@
   };
 </script>
 
-<button class="uk-button uk-button-default" on:click={demoTx}>Demo Tx</button>
+<div class="uk-margin-medium-bottom">
+  <button class="uk-button uk-button-default" on:click={demoTx}>Demo Tx</button>
+</div>
