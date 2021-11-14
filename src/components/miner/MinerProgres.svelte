@@ -1,13 +1,14 @@
 <script>
-import { onDestroy } from "svelte";
-
-  import { getProgess } from "../../miner";
-  import { healthCheck } from "../../miner_health";
+  import { onDestroy, onMount } from "svelte";
+  import { getProgess, miner_loop_enabled } from "../../miner";
 
   let percent = 0;
-  let bar = document.getElementById("js-progressbar");
+  let animate;
 
-  let animate = setInterval(function () { 
+  onMount(() =>{
+    let bar = document.getElementById("js-progressbar");
+
+    animate = setInterval(function () { 
 
     let ps = getProgess();
     
@@ -23,11 +24,19 @@ import { onDestroy } from "svelte";
       console.log(percent);
       bar.value = percent;
     } 
-    // else {
-    //   // we are starting over
-    //   bar.value = 0;
-    // }
+    else {
+      // we are starting over
+      bar.value = 0;
+    }
   }, 10000);
+
+  });
+
+  miner_loop_enabled.subscribe(b => {
+    if (!b) { // if the miner switched to be disabled.
+     clearInterval(animate);
+    }
+  })
 
   onDestroy(() => {
     clearInterval(animate)

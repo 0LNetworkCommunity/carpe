@@ -1,6 +1,6 @@
 <script lang="ts">
   import "uikit/dist/css/uikit.min.css";
-  import { Router, Link, Route } from "svelte-navigator";
+  import { Router, Route } from "svelte-navigator";
   import Wallet from "./components/wallet/Wallet.svelte";
   import Miner from "./components/miner/Miner.svelte";
   import Settings from "./components/settings/Settings.svelte";
@@ -21,9 +21,9 @@
   import { debugMode, responses } from "./debug";
   import { get } from "svelte/store";
   import Nav from "./components/Nav.svelte";
-import DebugCard from "./components/dev/DebugCard.svelte";
-import { proofComplete, proofError, towerOnce } from "./miner_invoke";
-import { disableMining } from "./miner_toggle";
+  import DebugCard from "./components/dev/DebugCard.svelte";
+  import { proofComplete, proofError, towerOnce } from "./miner_invoke";
+  import { disableMining } from "./miner_toggle";
 
   let debug = false;
   debugMode.subscribe((d) => {
