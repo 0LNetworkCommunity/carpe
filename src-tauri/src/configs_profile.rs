@@ -2,8 +2,8 @@
 
 
 
-use std::fs;
-
+use std::{fs, path::PathBuf};
+use glob::glob;
 use anyhow::{Error};
 
 use diem_types::{transaction::authenticator::AuthenticationKey};
@@ -13,7 +13,7 @@ use ol::{
 };
 use diem_types::account_address::AccountAddress;
 
-use crate::{configs};
+use crate::{configs::{self, get_cfg}};
 
 
 
@@ -41,4 +41,18 @@ pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) 
 
   cfg.save_file();
   Ok(cfg)
+}
+
+/// helper to get local proofs
+pub fn get_local_proofs_this_profile() -> Result<Vec<PathBuf>, Error> {
+  println!("fetching local proofs");
+  // Default is to fetch last 10 proofs.
+  let cfg = get_cfg()?;
+  let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
+  let str_path = block_dir.to_str().unwrap();
+  let p= glob(str_path)?
+  .filter_map(Result::ok) 
+  .collect();
+  dbg!(&p);
+  Ok(p)
 }

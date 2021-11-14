@@ -1,14 +1,10 @@
-use std::env;
+use std::{env, path::PathBuf};
 use tokio::task;
-use crate::{
-  carpe_error::CarpeError,
-  configs::{get_cfg, get_diem_client, get_tx_params},
-};
+use crate::{carpe_error::CarpeError, configs::{get_cfg, get_diem_client, get_tx_params}, configs_profile::get_local_proofs_this_profile};
 use anyhow::Error;
 use diem_json_rpc_types::views::TowerStateResourceView;
 use ol::config::AppCfg;
 use ol_types::block::VDFProof;
-
 use tauri::Window;
 use tauri::Manager;
 use tower::{backlog::process_backlog, commit_proof::{self, commit_proof_tx}, proof::mine_once};
@@ -171,6 +167,18 @@ pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
     _ => Err(CarpeError::tower("could not get tower state from chain")),
   }
 }
+
+
+#[tauri::command]
+pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
+
+  get_local_proofs_this_profile()
+  // TODO: Why is the CarpeError From anyhow not working?
+  .map_err(|e| { CarpeError::misc(&format!("could not get local files, message: {:?}", e.to_string()) ) })
+}
+
+
+
 
 
 #[tauri::command]

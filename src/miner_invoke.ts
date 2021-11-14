@@ -48,6 +48,25 @@ export const getTowerChainView = async () => {
     });
 };
 
+export const getLocalProofs = async () => {
+  await invoke("get_local_proofs", {})
+    .then((res: TowerStateView) => {
+      console.log(res);
+      // if res.
+      let t = get(tower);
+      t.on_chain = res;
+      tower.set(t);
+      responses.set(JSON.stringify(res));
+    })
+    .catch((e) => {
+      let t = get(tower);
+      t.on_chain = {};
+      tower.set(t);
+
+      raise_error(e, true)
+    });
+};
+
 export const towerOnce = async () => {
   console.log("mine tower once")
 
