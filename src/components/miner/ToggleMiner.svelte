@@ -1,6 +1,6 @@
 <script>
-  import { get } from "svelte/store";
-  import { toggleMining, miner_loop_enabled} from "../../miner";
+  import { toggleMining } from "../../miner_toggle";
+  import { miner_loop_enabled } from "../../miner";
 
   let enabled; 
   miner_loop_enabled.subscribe(e => enabled = e);

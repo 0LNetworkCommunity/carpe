@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { backlog_in_progress, submitBacklog } from "../../miner";
+  import { backlog_in_progress } from "../../miner";
+  import { submitBacklog } from "../../miner_invoke";
+
 
   let inProgress;
   backlog_in_progress.subscribe((b) => (inProgress = b));

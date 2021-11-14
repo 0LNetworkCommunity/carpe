@@ -20,7 +20,8 @@
   let pendingAccounts: AccountEntry[] = []; 
   all_accounts.subscribe((a) => {
     account_list = a;
-    pendingAccounts = a.filter(x => !x.balance);
+    console.log(a);
+    pendingAccounts = a.filter(x => !x.on_chain);
   });
   
   let my_account: AccountEntry;

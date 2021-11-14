@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import UIkit from "uikit";
   import Clipboard from "svelte-clipboard";

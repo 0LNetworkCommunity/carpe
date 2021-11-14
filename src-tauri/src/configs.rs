@@ -29,7 +29,7 @@ pub fn default_config_path() -> PathBuf {
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn get_cfg() -> Result<AppCfg, Error> {
   let config_toml = default_config_path();
-  dbg!(&config_toml);
+  // dbg!(&config_toml);
   Ok(config::parse_toml(config_toml.to_str().unwrap().to_string())?)
 }
 
