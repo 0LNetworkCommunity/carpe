@@ -13,7 +13,7 @@ Currently there are 2 versions available:
 
 ## Development
 
-If you are a developer and want to contribute to the project, please continue with the [development environment setup](devs/get-started.md).
+If you are a developer and want to contribute to the project, please continue with the [development environment setup](docs/devs/get-started.md).
 
 
 
