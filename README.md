@@ -10,8 +10,8 @@ Like any account-based blockchain, any new account address you create in the Car
 
 Currently there are 2 versions available:
 
-- [carpe for mac osx](docs/start-carpe-mac.md)
-- [carpe for windows](docs/start-carpe-windows.md)
+- [mac osx 10.15+](docs/start-carpe-mac.md)
+- [windows 10+](docs/start-carpe-windows.md)
 
 On Windows, currently, Microsoft Edge WebView2 must be installed manually first.
 https://developer.microsoft.com/en-us/microsoft-edge/webview2/consum
