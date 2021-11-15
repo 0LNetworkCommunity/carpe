@@ -16,25 +16,6 @@ addons:
     - llvm
     - gmp
 
-
-# env:
-#   - RUST_BACKTRACE=1
-
-# addons:
-#   apt:
-#     packages:
-#       - libwebkit2gtk-4.0-dev
-#       - libglib2.0-*
-#       - libssl-dev
-#       - libgtk-3-dev
-#       - libappindicator3-dev
-#       - patchelf
-#       - librsvg2-dev
-#       - libvips-dev
-
-# install:
-#   - if [ $TRAVIS_OS_NAME = windows ]; then choco install -y visualstudio2019buildtools --package-parameters "--productId visualstudio2019community --allWorkloads --includeRecommended --includeOptional --passive --locale en-US" rust; fi
-
 env:
   - NODE_VERSION="16.0"
 
@@ -44,8 +25,7 @@ before_install:
   - nvm install $NODE_VERSION
   - node -v
   - npm install --global yarn
-  # - brew install --with-toolchain llvm
-  # - brew info llvm
+
 
 script:
   - yarn install --frozen-lockfile

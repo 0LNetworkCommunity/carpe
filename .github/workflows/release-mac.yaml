@@ -3,7 +3,7 @@ name: Release Mac Latest
 on:
   push:
     tags:
-      - '*mac'
+      - '*'
 
 jobs:
   publish:
