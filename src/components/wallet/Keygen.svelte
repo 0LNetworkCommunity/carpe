@@ -62,7 +62,7 @@
         down now.
       </p>
       <div class="uk-margin">
-        <textarea class="uk-textarea uk-text-warning" rows="3"> {display_mnem} </textarea>
+        <textarea class="uk-textarea" rows="3"> {display_mnem} </textarea>
       </div>
       <AccountFromMnemSubmit danger_temp_mnem={""}/>
 

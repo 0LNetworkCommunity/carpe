@@ -20,7 +20,8 @@
   let pendingAccounts: AccountEntry[] = []; 
   all_accounts.subscribe((a) => {
     account_list = a;
-    pendingAccounts = a.filter(x => !x.balance);
+    console.log(a);
+    pendingAccounts = a.filter(x => !x.on_chain);
   });
   
   let my_account: AccountEntry;
@@ -70,9 +71,7 @@
           <tr
             class="{
               my_account.account == a.account 
-                ? isMining
-                  ? 'uk-text-success' 
-                  : 'uk-text-primary'
+                ? 'uk-text-primary'
                 : ''
               }"
             on:click={() => setAccount(a.account) }
@@ -81,7 +80,7 @@
             <td>
               {#if a.account == my_account.account}
                 {#if isMining} 
-                  <img alt="mining icon" src="/images/mining.png">
+                  <img alt="mining icon" src="/images/shovel.png">
                 {:else}
                   <span uk-icon="user" />
                 {/if}

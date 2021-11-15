@@ -1,7 +1,7 @@
 <script lang="ts">
 import { onMount } from "svelte";
 
-import { getEnv, nodeEnv, setDebugProdTest } from "../../miner";
+import { getEnv, nodeEnv, setDebugProdTest } from "../../debug";
 
 let current_env;
 

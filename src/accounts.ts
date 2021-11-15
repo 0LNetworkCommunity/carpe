@@ -8,6 +8,7 @@ export interface AccountEntry {
   account: string,
   authkey: string,
   nickname: string,
+  on_chain: boolean,
   balance: number,
 }
 
@@ -17,6 +18,7 @@ export const new_account = function (account: string, authkey: string, nickname:
     account: account,
     authkey: authkey,
     nickname: nickname,
+    on_chain: false,
     balance: 0,
   }
 };
