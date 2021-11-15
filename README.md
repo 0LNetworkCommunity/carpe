@@ -14,7 +14,7 @@ Currently there are 2 versions available:
 - [windows 10+](docs/start-carpe-windows.md)
 
 On Windows, currently, Microsoft Edge WebView2 must be installed manually first.
-https://developer.microsoft.com/en-us/microsoft-edge/webview2/consum
+https://developer.microsoft.com/en-us/microsoft-edge/webview2/consumer
 
 ## Development
 
