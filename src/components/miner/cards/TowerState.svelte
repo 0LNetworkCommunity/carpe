@@ -37,15 +37,15 @@ import { healthCheck } from "../../../miner_health";
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
-          <th />
-          <th>Tower Height</th>
-          <th>Last Epoch Mined</th>
-          <th>Proofs This Epoch</th>
-          <th>Hash</th>
+          <th class="uk-text-center" />
+          <th class="uk-text-center">Tower Height</th>
+          <th class="uk-text-center">Last Epoch Mined</th>
+          <th class="uk-text-center">Proofs This Epoch</th>
+          <th class="uk-text-center">Hash</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr class="uk-text-center">
           <td>{my_account.nickname}</td>
           <td>{towerState.on_chain.verified_tower_height}</td>
           <td>{towerState.on_chain.latest_epoch_mining}</td>

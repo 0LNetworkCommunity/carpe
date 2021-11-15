@@ -32,32 +32,33 @@
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
   </div>
-  <div class="uk-grid uk-margin-large">
+  <div class="uk-grid uk-margin-small">
     {#if !account.on_chain}
       <CantStart />
     {:else}
-      <div class="uk-width-auto">
+      <div class="uk-width-1-1 uk-align-center">
         <ToggleMiner />
-      </div>
-      <div class="uk-width-expand">
-        <MinerProgres />
-      </div>
+      
       <!-- <p>Lost time is never found again.</p> -->
       <!-- <Oops/> -->
 
-      <div class="uk-grid uk-grid-match uk-margin-large" uk-grid>
-        <div class="uk-width-expand">
-          {#if info}
-            <TowerState />
-          {:else}
-            <FirstProof />
-          {/if}
+      </div>
+      <!--
+      <div class="uk-width-1-3">
+        <div class="uk-card uk-card-default uk-card-body">
+          <Status />
         </div>
-        <div class="uk-width-1-3">
-          <div class="uk-card uk-card-default uk-card-body">
-            <Status />
-          </div>
-        </div>
+      </div>
+    -->
+      <div class="uk-width-1-1">
+        {#if info}
+          <TowerState />
+        {:else}
+          <FirstProof />
+        {/if}
+      </div>
+      <div class="uk-width-expand uk-margin-small">
+        <MinerProgres />
       </div>
     {/if}
   </div>

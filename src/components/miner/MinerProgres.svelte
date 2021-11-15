@@ -32,9 +32,11 @@
 
   });
 
-  miner_loop_enabled.subscribe(b => {
-    if (!b) { // if the miner switched to be disabled.
-     clearInterval(animate);
+  let enable = false;
+  miner_loop_enabled.subscribe(boo => {
+    enable = boo;
+    if (!enable) { // if the miner switched to be disabled.
+      clearInterval(animate);
     }
   })
 
@@ -44,8 +46,9 @@
 
 </script>
 
-<main>
-  <div class="uk-flex uk-flex-middle">
-    <progress id="js-progressbar" class="uk-progress" value="0.5" max="1" />
-  </div>
-</main>
+{#if enable}
+  <main>
+      <p class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">Mining progress</p>
+      <progress id="js-progressbar" class="uk-progress" value="0.5" max="1" />
+  </main>
+{/if}
