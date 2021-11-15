@@ -1,8 +1,10 @@
-# 0L Desktop Wallet and Miner
+# Carpe - The 0L Desktop Wallet and Miner
 
-Welcome to carpe, the 0L desktop miner.
+This desktop app connects to the 0L network and lets you create accounts, do some account management, and also participate in the network by mining coins. To learn more about 0L itself follow the link: [0L introduction](https://github.com/OLSF/libra#readme).
 
-This tool connects to the 0L network and lets you mine coins. You need an 0L member to onboard you. Please see the 0L intoduction on how to get in contact to the team e.g. via discord: [0L introduction](https://github.com/OLSF/libra#readme).
+Like any account-based blockchain, any new account address you create in the Carpe app will be inactive (will not exist on the chain). For the account to become active, someone needs to send you at least one coin to it. Until that happens your account does not exist "on chain". If you don't know anyone yet on 0L, come into the Discord chat and just ask anyone there. Many people will be happy to help get you onboarded. Otherwise the app should guide you through it.
+
+[Discord](https://discord.gg/AzCp63pggW)
 
 ## Download and install the tool
 
@@ -10,6 +12,7 @@ Currently there are 2 versions available:
 
 - [carpe for mac osx](docs/start-carpe-mac.md)
 - [carpe for windows](docs/start-carpe-windows.md)
+
 
 ## Development
 
