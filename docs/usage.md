@@ -1,4 +1,4 @@
-# Usage of carpe
+# Usage of Carpe
 
 ## Initial start
 After successful installation and first start, you should see an initial screen, which let's you create your account:
@@ -15,9 +15,15 @@ This is essential, as otherwise you will very likely loose your earned coins.
 
 After writing this down, click on "submit". 
 
+### About private keys
+
+Since Carpe needs to send transactions to the blockchain, it will need a private key (which is derived from the mnemonic above). Carpe stores the private key on the OS "keyring", as is the best practice for wallets.
+
+On MacOS you will be prompted for your OS login password (on Windows and Ubuntu you may be prompted based on your settings). As you can see from the instructions, this authorization is only used to read and write to the Carpe Keystore.
+
 ### Wait for account creation on chain
 
-Until you can use the just created account, you need some 0L user who "onboards" you. Please send the displayed authkey to this person. 
+Until you can use the newly created account, you need some 0L user who "onboards" you. Please send the displayed "authkey" to this person. 
 
 After the onboarding transaction has been done, the wallet will show some BALANCE for your account and no longer the text "Account not on chain".
 
