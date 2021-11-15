@@ -2,7 +2,7 @@
   import type { AccountEntry } from "../../accounts";
   import { signingAccount } from "../../accounts";
   import UIkit from "uikit";
-  import Clipboard from "svelte-clipboard";
+  // import Clipboard from "svelte-clipboard";
 
   export let pendingAccounts: AccountEntry[];
 
@@ -21,7 +21,7 @@
         {#each pendingAccounts as a}
           <p> 
             AUTH KEY: {a.authkey}  
-            <Clipboard
+            <!-- <Clipboard
               text="{a.authkey}"
               let:copy
               on:copy={() => {
@@ -35,7 +35,7 @@
               <a href={"#"} on:click={copy}>
                 <span uk-icon="copy" />
               </a>
-            </Clipboard>
+            </Clipboard> -->
           </p>
         {/each}
       </div>

@@ -70,7 +70,7 @@
         {#each account_list as a, i}
           <tr
             class="{
-              my_account.account == a.account 
+              isMining 
                 ? 'uk-text-primary'
                 : ''
               }"
