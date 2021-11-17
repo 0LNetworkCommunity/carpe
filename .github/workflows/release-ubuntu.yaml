@@ -24,7 +24,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Ubuntu dependency
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        run: sudo apt update && sudo apt install libwebkit2gtk-4.0-dev libglib2.0-* libssl-dev libgtk-3-dev libappindicator3-dev patchelf librsvg2-dev libvips-dev -y
+        run: sudo apt update && sudo apt install libwebkit2gtk-4.0-dev libglib2.0-* libssl-dev libgtk-3-dev libappindicator3-dev patchelf librsvg2-dev libvips-dev libgmp-dev -y
 
       - name: yarn info
         run: yarn install
