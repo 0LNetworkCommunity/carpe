@@ -3,6 +3,8 @@
 	windows_subsystem = "windows"
 )]
 
+extern crate url;
+
 pub mod commands;
 pub mod key_manager;
 pub mod configs;
