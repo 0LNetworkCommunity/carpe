@@ -46,14 +46,6 @@
 				"timestampUrl": ""
 			}
 		},
-    "updater": {
-      "active": true,
-      "endpoints": [
-        "https://releases.myapp.com/{{target}}/{{current_version}}"
-      ],
-      "dialog": true,
-      "pubkey": ""
-    },
 		"allowlist": {
 			"all": true,
 			"fs": {
