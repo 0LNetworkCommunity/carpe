@@ -1,4 +1,4 @@
-name: Build Binaries for OSs
+name: Build Binaries for Ubuntu
 
 on:
   push:

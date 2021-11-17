@@ -31,7 +31,7 @@ jobs:
       - name: Build Tauri
         run: RUST_BACKTRACE=1 yarn run tauri build
       - name: Rename binary
-        run: mv src-tauri/target/release/bundle/${{ matrix.dir }}/*.${{ matrix.dir}} src-tauri/target/release/bundle/${{ matrix.dir }}/{{matrix.asset_name}}.{{matrix.dir}}
+        run: mv src-tauri/target/release/bundle/${{ matrix.dir }}/*.${{ matrix.dir}} src-tauri/target/release/bundle/${{ matrix.dir }}/${{matrix.asset_name}}.${{matrix.dir}}
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
         with:
