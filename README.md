@@ -1,68 +1,24 @@
-# 0L Desktop Wallet and Miner
+# Carpe - The 0L Desktop Wallet and Miner
 
-- [x] create new keys & mnemonic
-- [x] initialize local files user-wizard, val-wizard
-- [x] dev mode, to connect to a swarm (bonus: app can start-up a swarm, and shut down).
-- [ ] create new account
-- [ ] import existing mnemonic (create block 0 if necessary)
-- [ ] ability to start 'miner' and send proofs (send to swarm in dev mode)
-- [x] ability to send common txs: create account, upgrade, rotate keys (multiple accounts?)
-- [ ] include all web-monitor views
-- [ ] ability to upgrade (tauri self updater)
-- [ ] display help content from a github-hosted markdown file.
+This desktop app connects to the 0L network and lets you create accounts, do some account management, and also participate in the network by mining coins. To learn more about 0L itself follow the link: [0L introduction](https://github.com/OLSF/libra#readme).
 
-# Tauri Svelte App Template
+Like any account-based blockchain, any new account address you create in the Carpe app will be inactive (will not exist on the chain). For the account to become active, someone needs to send you at least one coin to it. Until that happens your account does not exist "on chain". If you don't know anyone yet on 0L, come into the Discord chat and just ask anyone there. Many people will be happy to help get you onboarded. Otherwise the app should guide you through it.
 
-This is a project template for [Tauri](https://tauri.studio) and [Svelte](https://svelte.dev) apps. It lives at https://github.com/jbarszczewski/tauri-svelte-template.
+[Discord](https://discord.gg/AzCp63pggW)
 
-To create a new project based on this template follow the official guide here: https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template
+## Download and install the tool
 
-## Get started
+Currently there are 2 versions available:
 
-### Dependencies
+- [mac osx 10.15+](docs/start-carpe-mac.md)
+- [windows 10+](docs/start-carpe-windows.md)
 
-- NodeJS version 16
-- Yarn
-- Rust (version will install on its own)
+On Windows, currently, Microsoft Edge WebView2 must be installed manually first.
+https://developer.microsoft.com/en-us/microsoft-edge/webview2/consumer
 
-Before using template please see [Tauri Introduction](https://tauri.studio/en/docs/getting-started/intro) and follow instructions to setup your environment.
+## Development
 
-Install the dependencies...
+If you are a developer and want to contribute to the project, please continue with the [development environment setup](docs/devs/get-started.md).
 
-First Rust:
-```
-cd src-tauri/
-cargo build
 
-```
-
-Then Javascript:
-
-```bash
-yarn
-```
-
-...then start development server:
-
-```bash
-yarn tauri dev
-```
-
-This will take care of running both frontend and backend of your app with watch attached to both. That means whenever you change something in `src` (svelte frontend code) or `src-tauri` (rust backend code), it will be automatically processed and hot reloaded. To finish dev/debug mode simply close the app window.
-
-## Building and running in production mode
-
-To create an optimised version of the app:
-
-```bash
-yarn tauri build
-```
-
-This will create standalone app and installer in `src-tauri/target/release` directory.
-
-## Useful links
-
--   [Tauri](https://tauri.studio)
--   [Svelte](https://svelte.dev)
--   [Sveltestrap](https://sveltestrap.js.org)
 

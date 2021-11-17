@@ -16,6 +16,8 @@ use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
+
+use super::get_balance;
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
   pub accounts: Vec<AccountEntry>,
@@ -26,6 +28,7 @@ pub struct AccountEntry {
   pub account: AccountAddress,
   pub authkey: AuthenticationKey,
   pub nickname: String,
+  pub on_chain: bool,
   pub balance: Option<u64>,
 }
 
@@ -35,6 +38,7 @@ impl AccountEntry {
       account: address.clone(),
       authkey,
       nickname: get_short(address),
+      on_chain: false,
       balance: None,
     }
   }
@@ -105,12 +109,26 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 /// read all accounts from ACCOUNTS_DB_FILE
 #[tauri::command]
 pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
-  let all = read_accounts().map_err(|_| CarpeError::misc("could not read accounts file"))?;
-  Ok(all)
+  let all = read_accounts()?;
+  
+  Ok(map_get_balance(all)?)
+}
+
+
+fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError>  {
+    all_accounts.accounts = all_accounts.accounts.into_iter()
+    .map(|mut e| {
+      e.balance = get_balance(e.account).ok();
+      if e.balance.is_some() { e.on_chain = true; }
+      e
+    })
+    .collect();
+    // all_accounts.accounts =
+    Ok(all_accounts)
 }
 
 fn find_account_data(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
-  let all = get_all_accounts()?;
+  let all = read_accounts()?;
   match all.accounts.into_iter().find(|a| a.account == account) {
     Some(entry) => Ok(entry),
     None => Err(CarpeError::misc("could not find an account")),
@@ -168,6 +186,7 @@ fn insert_account_db(
     account: address,
     authkey: authkey,
     nickname: nickname,
+    on_chain: false,
     balance: None,
   };
 

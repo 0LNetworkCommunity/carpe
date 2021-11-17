@@ -12,13 +12,36 @@ pub mod configs_network;
 pub mod configs_profile;
 pub mod carpe_error;
 pub mod seed_peers;
-use std::env;
-
-
+use tauri::{Menu, MenuItem, Submenu};
 use crate::{commands::*};
 
+
 fn main() {
-  // env::set_var("NODE_ENV", "test");
+  // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
+
+    let menu = Menu::new()
+    .add_submenu(Submenu::new(
+      "Carpe",
+      Menu::new()
+        .add_native_item(MenuItem::About("Carpe".to_string()))
+        .add_native_item(MenuItem::Quit),
+    ))
+    .add_submenu(Submenu::new("Edit", {
+      let mut menu = Menu::new();
+      menu = menu.add_native_item(MenuItem::Undo);
+      menu = menu.add_native_item(MenuItem::Redo);
+      menu = menu.add_native_item(MenuItem::Separator);
+      menu = menu.add_native_item(MenuItem::Cut);
+      menu = menu.add_native_item(MenuItem::Copy);
+      menu = menu.add_native_item(MenuItem::Paste);
+      #[cfg(not(target_os = "macos"))]
+      {
+        menu = menu.add_native_item(MenuItem::Separator);
+      }
+      menu = menu.add_native_item(MenuItem::SelectAll);
+      menu
+    }));
+
 
 	tauri::Builder::default()
 	.invoke_handler(tauri::generate_handler![
@@ -44,6 +67,9 @@ fn main() {
     //Tower
     start_tower_listener,
     submit_backlog,
+    get_env,
+    set_env,
+    debug_submit_proof_zero,
  
     // Debug
     init_swarm,
@@ -60,6 +86,7 @@ fn main() {
     start_forever_task,
     debug_start_listener,
 	])
+  .menu(menu)
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");
 }

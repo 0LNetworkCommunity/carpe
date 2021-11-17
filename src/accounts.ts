@@ -2,15 +2,15 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
-import { Networks, setNetwork } from './networks';
+import { miner_loop_enabled} from "./miner";
+import { success, error } from './carpeNotify';
 export interface AccountEntry {
   account: string,
   authkey: string,
   nickname: string,
+  on_chain: boolean,
   balance: number,
 }
-
-
 
 export const new_account = function (account: string, authkey: string, nickname: string): AccountEntry {
 
@@ -18,6 +18,7 @@ export const new_account = function (account: string, authkey: string, nickname:
     account: account,
     authkey: authkey,
     nickname: nickname,
+    on_chain: false,
     balance: 0,
   }
 };
@@ -33,13 +34,22 @@ export const all_accounts = writable<AccountEntry[]>([]);
 
 export function getAllAccounts() {
   invoke('get_all_accounts')
-    .then((result: object) => all_accounts.set(result.accounts))
+    .then((result: object) => {
+      all_accounts.set(result.accounts);
+      
+      // set signingAccount
+      if (result.accounts.length > 0) {
+        signingAccount.set(result.accounts[0]);
+      } else {
+        /* TODO no accounts in the current network
+        signingAccount.set(new_account("", "", ""));
+        */
+      }
+    })
     .catch((error) => raise_error(error));
 }
 
 export async function is_initialized(): Promise<boolean> {
-  console.log("is_init");
-
   invoke("is_init", {})
     .then((res) => {
       console.log("is_init res");
@@ -61,6 +71,16 @@ export function findOneAccount(account: string): AccountEntry {
 }
 
 export async function setAccount(an_address: string, is_first_account: boolean) {
+  if (get(signingAccount).account == an_address) {
+    return
+  }
+ 
+  // cannot switch profile with miner running
+  if (get(miner_loop_enabled)) {
+    error("To switch accounts you need to turn miner off first.");
+    return
+  }
+
   let a = findOneAccount(an_address);
   signingAccount.set(a);
 
@@ -68,6 +88,7 @@ export async function setAccount(an_address: string, is_first_account: boolean) 
     account: a.account,
   })
   .then((res) => {
+    success("Account switched to " + a.nickname);
     responses.set(res);
     // for testnet
   })

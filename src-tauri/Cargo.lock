@@ -241,6 +241,7 @@ dependencies = [
  "diem-types",
  "diem-wallet",
  "dirs 4.0.0",
+ "glob",
  "hex",
  "keyring",
  "ol",

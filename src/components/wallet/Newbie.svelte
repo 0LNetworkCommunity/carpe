@@ -1,10 +1,9 @@
 <script  lang="ts">
-import { Link } from "svelte-navigator";
-
-
+  import { Link } from "svelte-navigator";
 
 </script>
-<main class="uk-position-center">
+
+<main class="uk-position-center uk-margin-large">
   <div class="uk-container uk-align-center">
     <h1 class="uk-text-light uk-text-muted uk-text-uppercase uk-text-center">CARPE</h1>
     <h5 class="uk-text-light uk-text-muted uk-text-uppercase uk-text-center">Looks like you don't have any accounts</h5>

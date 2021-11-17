@@ -1,0 +1,42 @@
+name: Build Binaries for OSs
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    name: Build Binary for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            artifact_name: carpe.exe
+            asset_name: carpe-windows-amd64
+            dir: exe
+
+    steps:
+      - uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: stable
+          components: rustfmt
+      - uses: actions/checkout@v1
+      - name: Show Clang on Windows
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: dir C:\\msys64\\mingw64\\bin
+      - name: Install vc packages
+        run: vcpkg install gmp:x64-windows-static
+      - name: yarn info
+        run: yarn install
+      - name: Build
+        run: RUST_BACKTRACE=1 yarn run tauri build
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: src-tauri/target/release/bundle/${{ matrix.dir }}/*.${{ matrix.dir}}
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true

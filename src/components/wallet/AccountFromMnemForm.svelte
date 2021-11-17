@@ -6,7 +6,9 @@
 </script>
 
 <main class="uk-height-viewport">
-  <h1>Add Account</h1>
+  
+  <h3 class="uk-text-light uk-text-muted uk-text-uppercase">Restore Account</h3>
+  <p> Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions</p>
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">

@@ -16,23 +16,34 @@ use url::Url;
 
 use crate::{carpe_error::CarpeError, key_manager};
 
-static ACCOUNTS_DB_FILE: &str = "accounts.json";
 static APP_CONFIG_FILE: &str = "0L.toml";
+
+static ACCOUNTS_DB_FILE: &str = "accounts.json";
+static ACCOUNTS_DB_FILE_REX: &str = "accounts-rex.json";
 
 // get the config path for files
 pub fn default_config_path() -> PathBuf {
   dirs::home_dir().unwrap().join(".0L").join(APP_CONFIG_FILE)
 }
 
-pub fn default_accounts_db_path() -> PathBuf {
-  dirs::home_dir().unwrap().join(".0L").join(ACCOUNTS_DB_FILE)
-}
-
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn get_cfg() -> Result<AppCfg, Error> {
   let config_toml = default_config_path();
-  dbg!(&config_toml);
+  // dbg!(&config_toml);
   Ok(config::parse_toml(config_toml.to_str().unwrap().to_string())?)
+}
+
+pub fn default_accounts_db_path() -> PathBuf {
+  let db_file = match get_cfg() {
+    Ok(cfg) => {
+      match cfg.chain_info.chain_id.as_str() {
+        "Rex" => ACCOUNTS_DB_FILE_REX,
+        _ => ACCOUNTS_DB_FILE
+      }
+    },
+    Err(_) => ACCOUNTS_DB_FILE
+  };
+  dirs::home_dir().unwrap().join(".0L").join(db_file)
 }
 
 /// get transaction parameters from config file

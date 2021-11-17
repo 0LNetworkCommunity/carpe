@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { killTowerListener, startTowerListener, towerOnce } from "../../miner";
+  import { killTowerListener, startTowerListener, submitProofZero, towerOnce } from "../../miner_invoke";
 </script>
 
 <main class="uk-margin" >
-  <div class="uk-card uk-card-body">
+  <div class="uk-grid">
     <div class="margin">
       <button class="uk-button uk-button-default" on:click={towerOnce}>Start Tower</button>
     </div>
@@ -17,5 +17,13 @@
     </div>
 
 
+
+
   </div>
+
+  <div>  
+      <button class="uk-button uk-button-default" on:click={submitProofZero}>
+        Resend Proof Zero
+      </button>
+    </div>
 </main>
