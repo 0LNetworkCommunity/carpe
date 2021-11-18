@@ -1,5 +1,5 @@
 ---
-name: "Carpe Feature request"
+name: "\U0001F680 Carpe Feature request"
 about: Suggest a new feature in Carpe
 title: "[Feature Request]"
 labels: enhancement
