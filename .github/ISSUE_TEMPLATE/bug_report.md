@@ -1,5 +1,5 @@
 ---
-name: "Carpe Bug report"
+name: "\U0001F41B Carpe Bug report"
 about: Create a bug report to help improve Carpe
 title: "[Bug]"
 labels: bug
