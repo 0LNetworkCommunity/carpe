@@ -71,7 +71,7 @@
         {#each account_list as a, i}
           <tr
             class="{
-              isMining 
+              isMining && a.account == my_account.account
                 ? 'uk-text-primary'
                 : ''
               }"
