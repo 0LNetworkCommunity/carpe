@@ -12,6 +12,7 @@
   import { Link } from "svelte-navigator";
   import { get_balance } from "../../queries";
   import ReminderCreate from "./ReminderCreate.svelte";
+  import IconMining from '../icons/IconMining.svelte';
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
   UIkit.use(Icons);
@@ -80,7 +81,7 @@
             <td>
               {#if a.account == my_account.account}
                 {#if isMining} 
-                  <img alt="mining icon" src="/images/shovel.png">
+                  <IconMining />
                 {:else}
                   <span uk-icon="user" />
                 {/if}
