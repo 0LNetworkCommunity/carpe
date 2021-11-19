@@ -8,6 +8,7 @@
   import { invoke } from "@tauri-apps/api/tauri";
 
   export let danger_temp_mnem: string;
+  export let is_new = false;
 
   mnem.subscribe((m) => danger_temp_mnem = m);
 
@@ -20,13 +21,15 @@
     // submit
     invoke("init_from_mnem", { mnem: danger_temp_mnem })
       .then((res: AccountEntry) => {
-        UIkit.modal("#submit-confirmation-modal").hide();
+        if (is_new) { 
+          UIkit.modal("#submit-confirmation-modal").hide() 
+        };
         isSubmitting  = false;
         responses.set(JSON.stringify(res));
         signingAccount.set(res);
 
         UIkit.notification({
-          message: `Account Added:  ${res.account}`,
+          message: `Account Added: ${res.account}`,
           pos: "bottom-center",
           status: "success",
           timeout: 3000,
@@ -34,43 +37,62 @@
         navigate("/");
       })
       .catch((error) => {
-        UIkit.modal("#submit-confirmation-modal").hide();
+        if (is_new) { 
+          UIkit.modal("#submit-confirmation-modal").hide() 
+        };
         isSubmitting  = false;
         raise_error(error)
       });      
   }
 </script>
 
-<button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #submit-confirmation-modal">Submit</button>
+{#if is_new}   
+  <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #submit-confirmation-modal">Submit</button>
 
-<div id="submit-confirmation-modal" uk-modal>
-  <div class="uk-modal-dialog uk-modal-body">
-    <h2 class="uk-modal-title">Heads Up!</h2>
-    <p>Are you sure you wrote down your mnemonic key?</p>
-    <p>Remember that you won't be able to recover your account without it. No one can help you if loose it.</p>
-    <p>This is the last opportunity to write it down.</p>
-    <p class="uk-text-right">
-      <button 
-        class="uk-button uk-button-default uk-modal-close" 
-        type="button"
-        disabled={isSubmitting}
-      >
-        Let me check again
-      </button>
-      <button 
-        class="uk-button uk-button-primary" 
-        type="button" 
-        disabled={isSubmitting}
-        on:click|preventDefault={handleAdd}
-      >
-        {#if isSubmitting}
-          Submitting...
-        {:else}
-          Submit Now
-        {/if}
-      </button>
-    </p>
+  <div id="submit-confirmation-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      <h2 class="uk-modal-title">Heads Up!</h2>
+      <p>Are you sure you wrote down your mnemonic key?</p>
+      <p>Remember that you won't be able to recover your account without it. No one can help you if loose it.</p>
+      <p>This is the last opportunity to write it down.</p>
+      <p class="uk-text-right">
+        <button 
+          class="uk-button uk-button-default uk-modal-close" 
+          type="button"
+          disabled={isSubmitting}
+        >
+          Let me check again
+        </button>
+        <button 
+          class="uk-button uk-button-primary" 
+          type="button" 
+          disabled={isSubmitting}
+          on:click|preventDefault={handleAdd}
+        >
+          {#if isSubmitting}
+            Submitting...
+          {:else}
+            Submit Now
+          {/if}
+        </button>
+      </p>
+    </div>
   </div>
-</div>
+{:else}
+  <button 
+    class="uk-button uk-button-primary" 
+    type="button" 
+    disabled={isSubmitting}
+    on:click|preventDefault={handleAdd}
+    >
+    {#if isSubmitting}
+      Submitting...
+    {:else}
+      Submit
+    {/if}
+  </button>
+{/if}
+
+
 
   
