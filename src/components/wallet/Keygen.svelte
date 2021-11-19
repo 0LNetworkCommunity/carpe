@@ -62,11 +62,9 @@
         down now.
       </p>
       <div class="uk-margin">
-        <textarea class="uk-textarea" rows="3"> {display_mnem} </textarea>
+        <textarea class="uk-textarea" rows="3" readonly>{display_mnem}</textarea>
       </div>
-      <AccountFromMnemSubmit danger_temp_mnem={""}/>
-
+      <AccountFromMnemSubmit danger_temp_mnem={""} is_new=true/>
     </div>
-
   {/if}
 </main>

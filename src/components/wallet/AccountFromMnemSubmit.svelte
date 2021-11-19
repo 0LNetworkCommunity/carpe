@@ -4,72 +4,95 @@
   import { responses } from "../../debug";
   import { signingAccount, mnem } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
-
   import { raise_error } from "../../carpeError";
   import { invoke } from "@tauri-apps/api/tauri";
 
-  // let alice_mnem =
-  //   "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
-
   export let danger_temp_mnem: string;
+  export let is_new = false;
 
   mnem.subscribe((m) => danger_temp_mnem = m);
 
-  // let helpTitle = "Enter your 24 word recovery mnemonic";
-  // let helpAddress = "";
-
   const re = /[0-9A-Fa-f]{32}/g;
 
+  let isSubmitting  = false;
   function handleAdd() {
+    isSubmitting = true;
+
     // submit
     invoke("init_from_mnem", { mnem: danger_temp_mnem })
       .then((res: AccountEntry) => {
+        if (is_new) { 
+          UIkit.modal("#submit-confirmation-modal").hide() 
+        };
+        isSubmitting  = false;
         responses.set(JSON.stringify(res));
         signingAccount.set(res);
 
         UIkit.notification({
-          message: `Account Added:  ${res.account}`,
+          message: `Account Added: ${res.account}`,
           pos: "bottom-center",
           status: "success",
           timeout: 3000,
         });
         navigate("/");
       })
-      .catch((error) => raise_error(error));
-
-      
+      .catch((error) => {
+        if (is_new) { 
+          UIkit.modal("#submit-confirmation-modal").hide() 
+        };
+        isSubmitting  = false;
+        raise_error(error)
+      });      
   }
 </script>
 
-<main>
+{#if is_new}   
+  <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #submit-confirmation-modal">Submit</button>
 
-  <button class="uk-button uk-button-default" on:click|preventDefault={handleAdd}>Submit</button>
-  <!-- <h1>Add Account</h1>
-  <form id="account-form">
-    <fieldset class="uk-fieldset">
-      <div class="uk-margin uk-inline-block uk-width-1-1">
-        <input
-          class="uk-input"
-          type="text"
-          placeholder="Recovery Mnemonic"
-          bind:value={danger_temp_mnem}
-        />
-        <span
-          class="uk-form-help-inline uk-text-small uk-text-danger uk-position-absolute"
-          >{helpTitle}</span
+  <div id="submit-confirmation-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      <h2 class="uk-modal-title">Heads Up!</h2>
+      <p>Are you sure you wrote down your mnemonic key?</p>
+      <p>Remember that you won't be able to recover your account without it. No one can help you if loose it.</p>
+      <p>This is the last opportunity to write it down.</p>
+      <p class="uk-text-right">
+        <button 
+          class="uk-button uk-button-default uk-modal-close" 
+          type="button"
+          disabled={isSubmitting}
         >
-      </div>
+          Let me check again
+        </button>
+        <button 
+          class="uk-button uk-button-primary" 
+          type="button" 
+          disabled={isSubmitting}
+          on:click|preventDefault={handleAdd}
+        >
+          {#if isSubmitting}
+            Submitting...
+          {:else}
+            Submit Now
+          {/if}
+        </button>
+      </p>
+    </div>
+  </div>
+{:else}
+  <button 
+    class="uk-button uk-button-primary" 
+    type="button" 
+    disabled={isSubmitting}
+    on:click|preventDefault={handleAdd}
+    >
+    {#if isSubmitting}
+      Submitting...
+    {:else}
+      Submit
+    {/if}
+  </button>
+{/if}
 
-      <div>
-        <span
-          on:click={handleAdd}
-          class="uk-button uk-button-primary uk-align-right"
-          id="add-btn">Add</span
-        >
-        <Link to="/">
-          <span class="uk-button uk-button-default uk-align-right">Cancel</span>
-        </Link>
-      </div>
-    </fieldset>
-  </form> -->
-</main>
+
+
+  
