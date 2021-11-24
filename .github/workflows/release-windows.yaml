@@ -2,8 +2,7 @@ name: Test Windows Build
 
 on:
   push:
-    tags:
-      - "*"
+    branches: dboreham/fix-windows-ci
 
 jobs:
   publish:
@@ -35,13 +34,14 @@ jobs:
           components: rustfmt
       - name: Build
         run: yarn && yarn run tauri build # Can this be : yarn build ?
+      - name: Set tag
+        run: echo "::set-env name=NOW::v$(date +'%Y%m%d.%H%M%S')"
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
         with:
           asset_name: carpe-windows-amd64 # TODO: figure out how to make these conditional on matrix.os
-          dir: exe
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: src-tauri/target/release/bundle/${{ dir }}/*.${{ dir}}
-          tag: ${{ github.ref }}
+          file: src-tauri/target/release/bundle/exe/*.exe
+          tag: ${{ env.NOW }}
           overwrite: true
           file_glob: true
