@@ -35,7 +35,7 @@ jobs:
       - name: Build
         run: yarn && yarn run tauri build # Can this be : yarn build ?
       - name: Set tag
-        run: echo "::set-env name=NOW::v$(date +'%Y%m%d.%H%M%S')"
+        run: echo "NOW=v$(date +'%Y%m%d.%H%M%S')" >> $GITHUB_ENV
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
         with:
