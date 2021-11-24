@@ -1,9 +1,9 @@
-name: Build Binaries for OSs
+name: Test Windows Build
 
 on:
   push:
-    tags:
-      - '*'
+    branches:
+      - dboreham/fix-windows-ci
 
 jobs:
   publish:
