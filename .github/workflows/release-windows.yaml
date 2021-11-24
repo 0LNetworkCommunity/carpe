@@ -41,7 +41,7 @@ jobs:
           asset_name: carpe-windows-amd64 # TODO: figure out how to make these conditional on matrix.os
           dir: exe
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: src-tauri/target/release/bundle/${{ dir }}/*.${{ dir }}
+          file: src-tauri/target/release/bundle/${{ dir }}/*.${{ dir}}
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
