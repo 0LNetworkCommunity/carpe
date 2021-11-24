@@ -13,11 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         platform: [windows-latest]
-
-    artifact_name: carpe.exe
-    asset_name: carpe-windows-amd64
-    dir: exe
-
     steps:
       - uses: actions/checkout@v2
       - name: Install node.js
