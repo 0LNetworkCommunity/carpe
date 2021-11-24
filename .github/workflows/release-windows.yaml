@@ -38,6 +38,9 @@ jobs:
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
         with:
+          artifact_name: carpe.exe # TODO: figure out how to make these conditional on matrix.os
+          asset_name: carpe-windows-amd64
+          dir: exe
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: src-tauri/target/release/bundle/${{ matrix.dir }}/*.${{ matrix.dir}}
           tag: ${{ github.ref }}
