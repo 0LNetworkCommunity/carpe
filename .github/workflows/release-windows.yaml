@@ -7,20 +7,16 @@ on:
 
 jobs:
   publish:
+    runs-on: ${{ matrix.os }}
+    name: Build Binary for ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         platform: [windows-latest]
 
-    name: Build Binary for ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: windows-latest
-            artifact_name: carpe.exe
-            asset_name: carpe-windows-amd64
-            dir: exe
+    artifact_name: carpe.exe
+    asset_name: carpe-windows-amd64
+    dir: exe
 
     steps:
       - uses: actions/checkout@v2
