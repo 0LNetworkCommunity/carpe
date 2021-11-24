@@ -2,8 +2,8 @@ name: Test Windows Build
 
 on:
   push:
-    branches:
-      - dboreham/fix-windows-ci
+    tags:
+      - "*"
 
 jobs:
   publish:
