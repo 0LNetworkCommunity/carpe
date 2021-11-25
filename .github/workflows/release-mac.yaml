@@ -1,4 +1,4 @@
-name: Release Mac Latest
+name: Build Binaries for Mac
 
 on:
   push:
