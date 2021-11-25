@@ -2,7 +2,8 @@ name: Build Binaries for Windows
 
 on:
   push:
-    branches: dboreham/fix-windows-ci
+    tags:
+      - '*'
 
 jobs:
   publish:
@@ -35,13 +36,13 @@ jobs:
       - name: Build
         run: yarn && yarn run tauri build
       - name: Set tag
-        run: echo "NOW=v$(date +'%Y%m%d.%H%M%S')" >> $env:GITHUB_ENV
+        run: echo "NOW=v$(date +'%Y%m%d.%H%M%S')" >> $env:GITHUB_ENV # tag: ${{ env.NOW }} for a timestamped tag
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
         with:
           asset_name: carpe-windows-amd64 # TODO: figure out how to make these conditional on matrix.os
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: src-tauri/target/release/bundle/msi/*.msi
-          tag: ${{ env.NOW }}
+          tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
