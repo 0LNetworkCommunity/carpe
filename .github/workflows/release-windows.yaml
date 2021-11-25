@@ -1,4 +1,4 @@
-name: Test Windows Build
+name: Windows Build
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
           rust-version: stable
           components: rustfmt
       - name: Build
-        run: yarn && yarn run tauri build # Can this be : yarn build ?
+        run: yarn && yarn run tauri build
       - name: Set tag
         run: echo "NOW=v$(date +'%Y%m%d.%H%M%S')" >> $env:GITHUB_ENV
       - name: Upload binaries to release
