@@ -24,6 +24,7 @@ pub fn get_mainnet() -> Vec<Url> {
     Some(nodes_from_repo) => nodes_from_repo,
     None => // hard fallback to some well known nodes
       vec![
+        String::from("http://34.130.188.187:8080"), // br 
         String::from("http://35.184.98.21:8080"),   // o-de
         String::from("http://176.57.189.120:8080"), // mb 
         String::from("http://165.232.136.149:8080") // db
