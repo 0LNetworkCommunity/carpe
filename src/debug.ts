@@ -1,5 +1,5 @@
 import { invoke } from '@tauri-apps/api/tauri';
-import { writable } from 'svelte/store';
+import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 
 export const responses = writable("");
@@ -39,4 +39,9 @@ export function getEnv() {
       nodeEnv.set(res);
     })
     .catch((error) => raise_error(error, false));
+}
+
+
+export function debugModeToggle() {
+  debugMode.set(!get(debugMode));
 }

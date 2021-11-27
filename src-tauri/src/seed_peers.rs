@@ -1,6 +1,7 @@
 //! seed peers for connecting to various networks.
 
 use url::Url;
+use std::time::Duration;
 
 // Note: peers are hardcoded for beta testing.
 
@@ -27,10 +28,15 @@ pub fn get_mainnet() -> Vec<Url> {
   seeds
 }
 
-pub fn is_available( url: &str) -> bool {
-  let client = reqwest::blocking::Client::new();
-  match client.post(url).send() {
-    Ok(response) => response.status() == 200,
+fn is_available( url: &str) -> bool {
+  let client = reqwest::blocking::Client::builder()
+    .timeout(Duration::from_secs(2))
+    .build().unwrap();
+  let response = client.get(url).send();
+  match response {
+    Ok(response) =>   // full nodes answer 40* are ok for GET"
+      response.status().as_u16() == 200 || (
+      response.status().as_u16() >= 400 && response.status().as_u16() <= 405 ),
     Err(_) => false,
   }
 }

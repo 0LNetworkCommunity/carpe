@@ -37,7 +37,7 @@
   };
 </script>
 
-<main class="uk-height-viewport">
+<main>
   <div class="uk-flex">
     <h3 class="uk-text-light uk-text-muted uk-text-uppercase">Create New Account</h3>
     <button class="uk-button uk-button-default uk-align-right" on:click={keygen}>
@@ -64,7 +64,7 @@
       <div class="uk-margin">
         <textarea class="uk-textarea" rows="3" readonly>{display_mnem}</textarea>
       </div>
-      <AccountFromMnemSubmit danger_temp_mnem={""} is_new=true/>
+      <AccountFromMnemSubmit danger_temp_mnem={""} action="open modal"/>
     </div>
   {/if}
 </main>
