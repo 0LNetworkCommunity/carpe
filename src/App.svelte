@@ -24,7 +24,9 @@
   import DebugCard from "./components/dev/DebugCard.svelte";
   import { proofComplete, proofError, towerOnce } from "./miner_invoke";
   import { disableMining } from "./miner_toggle";
-
+import Teams from "./components/teams/Teams.svelte";
+import Announce from "./components/announce/Announce.svelte";
+  
   let debug = false;
   debugMode.subscribe((d) => {
     debug = d;
@@ -81,7 +83,11 @@
 <main class="uk-background-muted">
   <div class="uk-container">
     <Router>
+      
       <Nav />
+      
+      <Announce/>
+      
       <div class="uk-background-muted uk-margin-large">
         <Route path="/" component={Wallet} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
@@ -92,12 +98,15 @@
         />
         <Route path="/keygen" component={Keygen} primary={false} />
         <Route path="/miner" component={Miner} primary={false} />
+        <Route path="/teams" component={Teams} primary={false} />
+
         <Route path="/txs" component={Transactions} primary={false} />
         <Route path="/settings" component={Settings} primary={false} />
 
         <!-- DEV -->
         <Route path="/dev" component={DevMode} primary={false} />
         <Route path="/swarm" component={Swarm} primary={false} />
+
         {#if debug}
           <DebugCard/>
         {/if}

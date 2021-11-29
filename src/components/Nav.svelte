@@ -34,8 +34,9 @@
   <nav class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-center">
       <ul class="uk-navbar-nav">
+        <li><Link to="/">Wallet</Link></li>        
+
         {#if myAccountIsOnChain && has_account}
-          <li><Link to="/">Wallet</Link></li>        
           <li><Link to="miner">Miner</Link></li>
           <li><Link to="txs">Transactions</Link></li>
         {/if}
