@@ -37,7 +37,7 @@ export function getAllTeams() {
         // TODO: Handle this
       }
     })
-    .catch((error) => raise_error(error));
+    .catch((error) => raise_error(error, true));
 }
 
 
@@ -52,5 +52,19 @@ export function getMyTeam() {
         // TODO: Handle this
       }
     })
-    .catch((error) => raise_error(error));
+    .catch((error) => raise_error(error, true));
+}
+
+export function setMyTeam(team_captain: string) {
+  invoke('set_my_team', { team_captain })
+    .then((result: object) => {
+
+      // set signingAccount
+      if (result.my_team) {
+        myTeam.set(result.my_team);
+      } else {
+        // TODO: Handle this
+      }
+    })
+    .catch((error) => raise_error(error, false));
 }
