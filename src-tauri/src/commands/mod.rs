@@ -5,6 +5,7 @@ mod client;
 mod tx;
 mod networks;
 mod query;
+mod teams;
 mod examples;
 
 pub use wallets::*;
@@ -15,3 +16,4 @@ pub use tx::*;
 pub use networks::*;
 pub use query::*;
 pub use examples::*;
+pub use teams::*;

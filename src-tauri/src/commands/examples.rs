@@ -5,12 +5,6 @@ use tauri::{Window};
 use crate::{carpe_error::CarpeError};
 use std::{thread, time};
 
-
-
-// use crate::{carpe_error::CarpeError, configs::{get_cfg, get_tx_params}};
-
-
-
 #[tauri::command]
 pub fn debug_error(debug_err: bool, _window: Window) -> Result<String, CarpeError> {
   dbg!(&debug_err);
@@ -24,8 +18,6 @@ pub fn debug_error(debug_err: bool, _window: Window) -> Result<String, CarpeErro
 
 #[tauri::command]
 pub async fn receive_event(window: Window) -> Result<String, String> {
-
-        // window.emit("test-event", Payload{ message: threadpool_future}).unwrap();
   window.listen("hello-rust", |event|{ 
     dbg!("event received: {:?}", event);
   });

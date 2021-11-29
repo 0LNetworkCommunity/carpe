@@ -70,7 +70,8 @@ fn main() {
     get_env,
     set_env,
     debug_submit_proof_zero,
- 
+    // Teams
+    get_all_teams,
     // Debug
     init_swarm,
     swarm_miner,
