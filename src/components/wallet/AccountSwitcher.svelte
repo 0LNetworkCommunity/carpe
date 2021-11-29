@@ -4,6 +4,7 @@
   import { Link } from "svelte-navigator";
   import UIkit from "uikit";
   import NetworkIcon from "./NetworkIcon.svelte";
+  import { routes } from "../../routes";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -57,7 +58,7 @@
         {/if}
         <li>
           <a href={"#"}>
-            <Link to="settings" class="uk-text-muted">Go to Settings</Link></a>
+            <Link to={routes.settings} class="uk-text-muted">Go to Settings</Link></a>
         </li>
       </ul>
     </div>

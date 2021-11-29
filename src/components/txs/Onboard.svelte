@@ -4,6 +4,7 @@
   import UIkit from "uikit";
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
+  import { routes } from "../../routes";
 
   let alice_authkey;
   function createUser() {
@@ -41,7 +42,7 @@
           class="uk-button uk-button-primary uk-align-right"
           id="create-acc">Add</span
         >
-        <Link to="/">
+        <Link to={routes.home}>
           <span class="uk-button uk-button-default uk-align-right">Cancel</span>
         </Link>
       </div>

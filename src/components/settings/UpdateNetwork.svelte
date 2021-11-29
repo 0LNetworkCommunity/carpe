@@ -7,6 +7,7 @@
   import type { NetworkProfile} from "../../networks";
   import UIkit from "uikit";
   import { invoke } from "@tauri-apps/api/tauri";
+  import { routes } from "../../routes";
   
   let upstream_url = "http://1.1.1.1:8080";
   let waypoint = "";
@@ -72,7 +73,7 @@
           class="uk-button uk-button-primary uk-align-right"
           id="add-btn">Add</span
         >
-        <Link to="/">
+        <Link to={routes.home}>
           <span class="uk-button uk-button-default uk-align-right">Cancel</span>
         </Link>
       </div>

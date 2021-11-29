@@ -1,5 +1,6 @@
 <script  lang="ts">
   import { Link } from "svelte-navigator";
+  import { routes } from "../../routes";
 
 </script>
 
@@ -10,10 +11,10 @@
   </div>
 
     <div uk-grid class="uk-margin uk-flex uk-flex-center">
-    <Link to="keygen">
+    <Link to={routes.keygen}>
       <button class="uk-button uk-button-secondary"> New Account </button>
     </Link>
-    <Link to="account-from-mnem">
+    <Link to={routes.accountFromMnem}>
       <button class="uk-button uk-button-default">Restore Account </button>
     </Link>
   </div>

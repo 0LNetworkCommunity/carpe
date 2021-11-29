@@ -15,6 +15,7 @@
   import IconMining from '../icons/IconMining.svelte';
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
+  import { routes } from "../../routes";
   UIkit.use(Icons);
 
   let account_list: AccountEntry[] = [];
@@ -106,10 +107,10 @@
   {/if}
 
   <div uk-grid class="uk-flex uk-flex-center">
-    <Link to="keygen">
+    <Link to={routes.keygen}>
       <button class="uk-button uk-button-secondary"> New Account </button>
     </Link>
-    <Link to="account-from-mnem">
+    <Link to={routes.accountFromMnem}>
       <button class="uk-button uk-button-default">Restore Account </button>
     </Link>
   </div>  
