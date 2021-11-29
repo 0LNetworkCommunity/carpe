@@ -1,6 +1,11 @@
-<script src="ts">
+<script lang="ts">
+  import { mockTeam } from "../../teams";
+  import type {TeamEntry} from "../../teams";
 
-let teamsList = [];
+
+  let teamsList = [mockTeam];
+
+  let myTeam:TeamEntry = mockTeam;
 
 </script>
 
@@ -19,7 +24,7 @@ let teamsList = [];
         {#each teamsList as a, i}
           <tr
             class="{
-              a.account == myTeam
+              a.captain_address == myTeam.captain_address
                 ? 'uk-text-primary'
                 : ''
               }"

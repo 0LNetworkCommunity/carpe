@@ -1,4 +1,11 @@
-<script src="ts"></script>
+<script lang="ts">
+  import { mockTeam } from "../../teams";
+  import type {TeamEntry} from "../../teams";
+
+
+
+  let myTeam:TeamEntry = mockTeam;
+</script>
 <main>
-  My team is XYZ
+  My team is {myTeam.name}
 </main>

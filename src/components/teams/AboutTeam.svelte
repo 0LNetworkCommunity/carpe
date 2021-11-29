@@ -1,5 +1,5 @@
 
-<script src="ts"></script>
+<script lang="ts"></script>
 
 <main>
   <div class="uk-card uk-card-default uk-card-body">

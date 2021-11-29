@@ -18,4 +18,3 @@ export function raise_error(err: CarpeError, quiet: boolean) {
     error(msg);
   }
 }
-

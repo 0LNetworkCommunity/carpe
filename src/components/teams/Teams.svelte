@@ -1,4 +1,4 @@
-<script src="ts">
+<script lang="ts">
 import AboutTeam from "./AboutTeam.svelte";
 import MyTeam from "./MyTeam.svelte";
 import TeamsTable from "./TeamsTable.svelte";
