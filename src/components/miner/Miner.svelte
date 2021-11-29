@@ -11,21 +11,21 @@
   import FirstProof from "./cards/FirstProof.svelte";
   import Oops from "./cards/Oops.svelte";
   import { tower } from "../../miner";
+import AccountFromMnemForm from "../wallet/AccountFromMnemForm.svelte";
+import AccountFromMnemSubmit from "../wallet/AccountFromMnemSubmit.svelte";
   
-  tower.subscribe((s) => {
-
+  let isFirstProof = null;
+  tower.subscribe((towerState) => {
+    console.log('>>> tower subscribed');
+    isFirstProof = towerState.on_chain == null || towerState.on_chain.verified_tower_height == 0
   });
 
   let debug: boolean;
-  debugMode.subscribe((d) => {
-    debug = d;
-  });
-  let account: AccountEntry;
-  signingAccount.subscribe((a) => {
-    account = a;
-  });
+  debugMode.subscribe((d) => debug = d);
 
-  let info = true;
+  let account: AccountEntry;
+  signingAccount.subscribe((a) => account = a);
+  
 </script>
 
 <main class="uk-height-viewport">
@@ -51,10 +51,12 @@
       </div>
     -->
       <div class="uk-width-1-1">
-        {#if info}
-          <TowerState />
+        {#if isFirstProof == null}
+          Loading...
+        {:else if isFirstProof}
+          <FirstProof />  
         {:else}
-          <FirstProof />
+          <TowerState />
         {/if}
       </div>
       <div class="uk-width-expand uk-margin-small">

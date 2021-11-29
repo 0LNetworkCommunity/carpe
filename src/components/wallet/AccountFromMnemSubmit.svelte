@@ -8,7 +8,7 @@
   import { invoke } from "@tauri-apps/api/tauri";
 
   export let danger_temp_mnem: string;
-  export let is_new = false;
+  export let action: string = "none";
 
   mnem.subscribe((m) => danger_temp_mnem = m);
 
@@ -21,7 +21,7 @@
     // submit
     invoke("init_from_mnem", { mnem: danger_temp_mnem })
       .then((res: AccountEntry) => {
-        if (is_new) { 
+        if (action == "open modal") { 
           UIkit.modal("#submit-confirmation-modal").hide() 
         };
         isSubmitting  = false;
@@ -37,16 +37,16 @@
         navigate("/");
       })
       .catch((error) => {
-        if (is_new) { 
+        if (action == "open modal") { 
           UIkit.modal("#submit-confirmation-modal").hide() 
         };
         isSubmitting  = false;
         raise_error(error)
-      });      
+      });
   }
 </script>
 
-{#if is_new}   
+{#if action == "open modal"}   
   <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #submit-confirmation-modal">Submit</button>
 
   <div id="submit-confirmation-modal" uk-modal>

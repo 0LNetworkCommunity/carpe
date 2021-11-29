@@ -1,7 +1,5 @@
 //! account configurations
 
-
-
 use std::{fs, path::PathBuf};
 use glob::glob;
 use anyhow::{Error};
@@ -50,7 +48,7 @@ pub fn get_local_proofs_this_profile() -> Result<Vec<PathBuf>, Error> {
   let cfg = get_cfg()?;
   let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
   let str_path = block_dir.to_str().unwrap();
-  let p= glob(str_path)?
+  let p = glob(str_path)?
   .filter_map(Result::ok) 
   .collect();
   dbg!(&p);
