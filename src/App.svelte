@@ -24,9 +24,15 @@
   import DebugCard from "./components/dev/DebugCard.svelte";
   import { proofComplete, proofError, towerOnce } from "./miner_invoke";
   import { disableMining } from "./miner_toggle";
-import Teams from "./components/teams/Teams.svelte";
-import Announce from "./components/announce/Announce.svelte";
+  import Teams from "./components/teams/Teams.svelte";
+  import Announce from "./components/announce/Announce.svelte";
+  import { hasAnnouncement } from "./announce";
   
+  let showAnnounce
+  hasAnnouncement.subscribe((s)=> {
+    showAnnounce = s;
+  });
+
   let debug = false;
   debugMode.subscribe((d) => {
     debug = d;
@@ -81,12 +87,13 @@ import Announce from "./components/announce/Announce.svelte";
 </script>
 
 <main class="uk-background-muted">
-  <div class="uk-container">
+  <div class="uk-container uk-height-viewport">
     <Router>
       
       <Nav />
-      
-      <Announce/>
+      {#if showAnnounce }
+        <Announce/>
+      {/if}
       
       <div class="uk-background-muted uk-margin-large">
         <Route path="/" component={Wallet} primary={false} />
