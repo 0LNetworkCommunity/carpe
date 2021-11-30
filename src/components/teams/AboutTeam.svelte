@@ -11,12 +11,13 @@
 
 <main>
   <div class="uk-card uk-card-default uk-card-body">
-      <h3 class="uk-card-title"> About team </h3>
+    {#if teamToView}
+      <h3 class="uk-card-title"> About {teamToView.name} </h3>
       <div>
+        
         {teamToView.captain_address}
-
-        hello team
+        
       </div>
-      
+    {/if}
     </div>
 </main>
