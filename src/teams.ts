@@ -2,7 +2,6 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { writable } from "svelte/store";
 import { raise_error } from "./carpeError";
 
-
 export interface TeamEntry {
   name: string,
   captain_address: string,
@@ -13,8 +12,10 @@ export interface TeamEntry {
 }
 
 
-export const all_teams = writable<TeamEntry[]>([]);
+export const allTeams = writable<TeamEntry[]>([]);
 export const myTeam = writable<TeamEntry>();
+export const teamView = writable<TeamEntry>();
+
 
 
 export const mockTeam: TeamEntry = {
@@ -26,13 +27,17 @@ export const mockTeam: TeamEntry = {
   estimated_epoch_reward: 123
 };
 
+export function viewThisTeam(team: TeamEntry) {
+  teamView.set(team);
+};
+
 export function getAllTeams() {
   invoke('get_all_teams')
-    .then((result: object) => {
+    .then((result: TeamEntry[]) => {
 
       // set signingAccount
-      if (result.teams.length > 0) {
-        all_teams.set(result.teams);
+      if (result.length > 0) {
+        allTeams.set(result);
       } else {
         // TODO: Handle this
       }
@@ -41,13 +46,13 @@ export function getAllTeams() {
 }
 
 
-export function getMyTeam() {
-  invoke('get_my_team')
-    .then((result: object) => {
+export function getMyTeam(account: String) {
+  invoke('get_my_team', { account: account })
+    .then((result: TeamEntry) => {
 
       // set signingAccount
-      if (result.my_team) {
-        myTeam.set(result.my_team);
+      if (result) {
+        myTeam.set(result);
       } else {
         // TODO: Handle this
       }

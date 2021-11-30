@@ -12,7 +12,7 @@ pub struct TeamEntry {
 
 /// get list of teams from chain
 #[tauri::command]
-pub fn get_all_teams() -> Result<TeamEntry, CarpeError>  {
+pub fn get_all_teams() -> Result<Vec<TeamEntry>, CarpeError>  {
   let team = TeamEntry {
       name: "test".to_string(),
       captain_address: "test".to_string(),
@@ -22,16 +22,17 @@ pub fn get_all_teams() -> Result<TeamEntry, CarpeError>  {
       estimated_epoch_reward: 123,
   };
 
-  Ok(team)
+  Ok(vec![team])
 
 }
 
 
 /// get the team of the user
 #[tauri::command]
-pub fn get_my_team(_account: AccountAddress ) -> Result<TeamEntry, CarpeError>  {
+pub fn get_my_team(account: AccountAddress ) -> Result<TeamEntry, CarpeError>  {
+  dbg!(&account);
   let team = TeamEntry {
-      name: "test".to_string(),
+      name: "this is my team".to_string(),
       captain_address: "test".to_string(),
       description: "test".to_string(),
       count_members: 1,

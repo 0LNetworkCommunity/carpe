@@ -72,6 +72,8 @@ fn main() {
     debug_submit_proof_zero,
     // Teams
     get_all_teams,
+    get_my_team,
+    set_my_team,
     // Debug
     init_swarm,
     swarm_miner,
