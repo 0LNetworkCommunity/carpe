@@ -24,7 +24,7 @@
 </script>
 
 <main>
-  <div class="uk-margin uk-card uk-card-default uk-card-body uk-width-1-2@m">
+  <div class="uk-margin-top uk-margin-bottom uk-card uk-card-default uk-card-body uk-width-1-2@m">
     <h5 class="uk-card-title uk-text-light uk-text-muted uk-text-uppercase">Debug Requests</h5>
 
     <!-- <table class="uk-table uk-table-divider">

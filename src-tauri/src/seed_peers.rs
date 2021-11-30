@@ -44,13 +44,16 @@ pub fn get_mainnet() -> Vec<Url> {
   seeds
 }
 
-
 // try to fetch current fullnodes for mainnet from github
 fn get_known_fullnodes() -> Option<Vec<String>> {
 
   let url = "https://raw.githubusercontent.com/OLSF/carpe/main/public/fullnodes.json";
 
-  let result = reqwest::blocking::get(url);
+  let client = reqwest::blocking::Client::builder()
+    .timeout(Duration::from_secs(2))
+    .build().unwrap();
+  let result = client.get(url).send();
+
   let response = match result {
     Ok(res) => res,
     Err(err) => { println!("error reading from url: {:?}", err); return None },

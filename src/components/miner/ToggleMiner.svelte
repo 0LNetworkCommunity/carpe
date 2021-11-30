@@ -17,11 +17,6 @@
         checked={enabled}
       />
       <div class="uk-switch-slider uk-switch-on-off round" />     
-      {#if enabled}
-        <span style="position:absolute; left: 8px; top: 10px; bottom: 0px; color: white; font-size: 10px">ON</span>  
-      {:else}
-        <span style="position:absolute; right: 6px; top: 10px; bottom: 0px; color: white; font-size: 10px">OFF</span>
-      {/if}
     </label>
   </div>
 </main>
