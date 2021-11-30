@@ -1,10 +1,11 @@
 
 <script lang="ts">
-  import {TeamEntry, viewThisTeam} from "../../teams";
+  import {teamView} from "../../teams";
+  import type {TeamEntry} from "../../teams";
+  
+  let teamToView: TeamEntry;
 
-  export let teamToView: TeamEntry;
-
-  viewThisTeam.subscribe(t => teamToView = t);
+  teamView.subscribe(t => teamToView = t);
 
 </script>
 
