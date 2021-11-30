@@ -4,7 +4,6 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { miner_loop_enabled} from "./miner";
 import { success, error } from './carpeNotify';
-import { getTowerChainView } from "./miner_invoke";
 export interface AccountEntry {
   account: string,
   authkey: string,
@@ -69,12 +68,6 @@ export function findOneAccount(account: string): AccountEntry {
   return found
 }
 
-export function addAccount(account: AccountEntry) {
-  let list = get(all_accounts);
-  list.push(account);
-  all_accounts.set(list);
-}
-
 export async function setAccount(an_address: string, is_first_account: boolean) {
   if (get(signingAccount).account == an_address) {
     return
@@ -100,3 +93,34 @@ export async function setAccount(an_address: string, is_first_account: boolean) 
   .catch((e) => raise_error(e));
 }
 
+export function addNewAccount(account: AccountEntry) {
+  let list = get(all_accounts);
+  account.on_chain = false;
+  list.push(account);    
+  all_accounts.set(list);
+}
+
+export function addRestoredAccount(account: AccountEntry) {
+  invoke('query_balance', {account: account.account})
+    .then((balance: number) => {
+      let list = get(all_accounts);
+      account.on_chain = true;
+      account.balance = Number(balance);
+      list.push(account);    
+      all_accounts.set(list);
+    })
+    .catch((e) => raise_error(e));
+}
+
+export async function init_account_balance(authkey: string) {
+  let list = get(all_accounts);
+  let account = list.find((a) => a.authkey == authkey);
+  invoke('query_balance', {account: account.account})
+    .then((balance: number) => {
+      console.log('>>> init balance: ' + balance);      
+      account.on_chain = true;
+      account.balance = Number(balance);
+      all_accounts.set(list);
+    })
+    .catch((e) => raise_error(e));
+}

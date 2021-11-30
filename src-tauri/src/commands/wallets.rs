@@ -114,16 +114,14 @@ pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
   Ok(map_get_balance(all)?)
 }
 
-
 fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError>  {
     all_accounts.accounts = all_accounts.accounts.into_iter()
     .map(|mut e| {
       e.balance = get_balance(e.account).ok();
-      if e.balance.is_some() { e.on_chain = true; }
+      e.on_chain = e.balance.is_some();
       e
     })
     .collect();
-    // all_accounts.accounts =
     Ok(all_accounts)
 }
 

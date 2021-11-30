@@ -15,6 +15,7 @@
   import IconMining from '../icons/IconMining.svelte';
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
+import AccountFromMnemForm from "./AccountFromMnemForm.svelte";
   UIkit.use(Icons);
 
   let account_list: AccountEntry[] = null;
@@ -78,7 +79,9 @@
             <td>{a.nickname}</td>
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
-            {#if a.balance }
+            {#if a.on_chain == null}
+              offline... 
+            {:else if a.on_chain}
               <td>{formatBalance(a.balance)}</td>
             {:else}
               <td>Account Not On Chain</td>
