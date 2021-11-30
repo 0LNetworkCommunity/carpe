@@ -2,7 +2,7 @@
   import { Link, navigate } from "svelte-navigator";
   import UIkit from "uikit";
   import { responses } from "../../debug";
-  import { signingAccount, mnem } from "../../accounts";
+  import { signingAccount, mnem, addAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
   import { invoke } from "@tauri-apps/api/tauri";
@@ -14,19 +14,25 @@
 
   const re = /[0-9A-Fa-f]{32}/g;
 
+  function openConfirmationModal() {
+    UIkit.modal("#submit-confirmation-modal").show() 
+  }
+
   let isSubmitting  = false;
   function handleAdd() {
     isSubmitting = true;
 
     // submit
     invoke("init_from_mnem", { mnem: danger_temp_mnem })
-      .then((res: AccountEntry) => {
+    .then((res: AccountEntry) => {
         if (action == "open modal") { 
           UIkit.modal("#submit-confirmation-modal").hide() 
+          UIkit.modal('#submit-confirmation-modal').$destroy(true); // known bug https://github.com/uikit/uikit/issues/1370
         };
-        isSubmitting  = false;
         responses.set(JSON.stringify(res));
         signingAccount.set(res);
+        addAccount(res);
+        isSubmitting = false;
 
         UIkit.notification({
           message: `Account Added: ${res.account}`,
@@ -34,6 +40,7 @@
           status: "success",
           timeout: 3000,
         });
+        
         navigate("/");
       })
       .catch((error) => {
@@ -47,7 +54,7 @@
 </script>
 
 {#if action == "open modal"}   
-  <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #submit-confirmation-modal">Submit</button>
+  <button class="uk-button uk-button-default uk-margin-small-right" disabled={isSubmitting} type="button" on:click|preventDefault={openConfirmationModal}>Submit</button>
 
   <div id="submit-confirmation-modal" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">

@@ -16,7 +16,6 @@ import AccountFromMnemSubmit from "../wallet/AccountFromMnemSubmit.svelte";
   
   let isFirstProof = null;
   tower.subscribe((towerState) => {
-    console.log('>>> tower subscribed');
     isFirstProof = towerState.on_chain == null || towerState.on_chain.verified_tower_height == 0
   });
 

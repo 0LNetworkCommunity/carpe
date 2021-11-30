@@ -4,6 +4,7 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { miner_loop_enabled} from "./miner";
 import { success, error } from './carpeNotify';
+import { getTowerChainView } from "./miner_invoke";
 export interface AccountEntry {
   account: string,
   authkey: string,
@@ -37,8 +38,8 @@ export function getAllAccounts() {
     .then((result: object) => {
       all_accounts.set(result.accounts);
       
-      // set signingAccount
-      if (result.accounts.length > 0) {
+      // set initial signingAccount
+      if (get(signingAccount).account == "" && result.accounts.length > 0) {
         signingAccount.set(result.accounts[0]);
       } else {
         /* TODO no accounts in the current network
@@ -52,8 +53,6 @@ export function getAllAccounts() {
 export async function is_initialized(): Promise<boolean> {
   invoke("is_init", {})
     .then((res) => {
-      console.log("is_init res");
-      console.log(res);
       responses.set(res);
       if (res) {
         isInit.set(true);
@@ -68,6 +67,12 @@ export function findOneAccount(account: string): AccountEntry {
   let list = get(all_accounts);
   let found = list.find((i) => i.account == account)
   return found
+}
+
+export function addAccount(account: AccountEntry) {
+  let list = get(all_accounts);
+  list.push(account);
+  all_accounts.set(list);
 }
 
 export async function setAccount(an_address: string, is_first_account: boolean) {

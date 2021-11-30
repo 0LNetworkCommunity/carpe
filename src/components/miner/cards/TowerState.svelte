@@ -16,7 +16,6 @@ import { healthCheck } from "../../../miner_health";
   signingAccount.subscribe((m) => {
     console.log(m);
     my_account = m;
-    // getTowerChainView();
   });
 
   let healthTick = setInterval(() => {

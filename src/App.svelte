@@ -24,6 +24,9 @@
   import DebugCard from "./components/dev/DebugCard.svelte";
   import { proofComplete, proofError, towerOnce } from "./miner_invoke";
   import { disableMining } from "./miner_toggle";
+  import { getAllAccounts } from "./accounts";
+  
+  getAllAccounts();
 
   let debug = false;
   debugMode.subscribe((d) => {
