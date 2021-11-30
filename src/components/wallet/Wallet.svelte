@@ -22,12 +22,12 @@
 <main class="uk-height-viewport">
   <div>
     {#if !init}
-     <Newbie />
-     {:else}
+      <Newbie />
+    {:else}
       <div class="uk-flex uk-flex-center">
         <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Wallet</h2>
       </div>
-     <List />
-     {/if}
+      <List />
+    {/if}
   </div>
 </main>
