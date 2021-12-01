@@ -13,10 +13,16 @@
   import { tower } from "../../miner";
 import AccountFromMnemForm from "../wallet/AccountFromMnemForm.svelte";
 import AccountFromMnemSubmit from "../wallet/AccountFromMnemSubmit.svelte";
-  
+import { getTowerChainView } from "../../miner_invoke";  
+import { onMount } from "svelte";
+
+  onMount(() => {
+    getTowerChainView();
+  })  
+
   let isFirstProof = null;
   tower.subscribe((towerState) => {
-    isFirstProof = towerState.on_chain == null || towerState.on_chain.verified_tower_height == 0
+    isFirstProof = towerState.on_chain == null || towerState.on_chain.verified_tower_height == null
   });
 
   let debug: boolean;

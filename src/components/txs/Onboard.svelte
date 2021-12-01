@@ -4,6 +4,7 @@
   import UIkit from "uikit";
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
+  import { init_account_balance } from '../../accounts';
 
   let alice_authkey;
   function createUser() {
@@ -11,9 +12,13 @@
     invoke("create_user_account", { authkey: alice_authkey })
       .then((res) => {
         responses.set(JSON.stringify(res));
+
+        // TODO move to an account controller
+        init_account_balance(alice_authkey);
+
         UIkit.notification({
-          message: `Account Added`,
-          pos: "bottom-right",
+          message: `<span uk-icon='icon: check'></span>Account Added`,
+          pos: "bottom-center",
           status: "success",
           timeout: 3000,
         });

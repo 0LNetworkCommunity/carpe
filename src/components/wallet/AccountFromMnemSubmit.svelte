@@ -2,13 +2,13 @@
   import { Link, navigate } from "svelte-navigator";
   import UIkit from "uikit";
   import { responses } from "../../debug";
-  import { signingAccount, mnem, addAccount } from "../../accounts";
+  import { signingAccount, mnem, addNewAccount, addRestoredAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
   import { invoke } from "@tauri-apps/api/tauri";
 
   export let danger_temp_mnem: string;
-  export let action: string = "none";
+  export let isNewAccount: boolean = true;
 
   mnem.subscribe((m) => danger_temp_mnem = m);
 
@@ -25,17 +25,19 @@
     // submit
     invoke("init_from_mnem", { mnem: danger_temp_mnem })
     .then((res: AccountEntry) => {
-        if (action == "open modal") { 
-          UIkit.modal("#submit-confirmation-modal").hide() 
+        if (isNewAccount) { 
+          // UIkit.modal("#submit-confirmation-modal").hide() 
           UIkit.modal('#submit-confirmation-modal').$destroy(true); // known bug https://github.com/uikit/uikit/issues/1370
-        };
+          addNewAccount(res);
+        } else {
+          addRestoredAccount(res);
+        }
         responses.set(JSON.stringify(res));
-        signingAccount.set(res);
-        addAccount(res);
+        signingAccount.set(res);       
         isSubmitting = false;
 
         UIkit.notification({
-          message: `Account Added: ${res.account}`,
+          message: `<span uk-icon='icon: check'></span>Account Added: ${res.nickname}`,
           pos: "bottom-center",
           status: "success",
           timeout: 3000,
@@ -44,7 +46,7 @@
         navigate("/");
       })
       .catch((error) => {
-        if (action == "open modal") { 
+        if (isNewAccount) { 
           UIkit.modal("#submit-confirmation-modal").hide() 
         };
         isSubmitting  = false;
@@ -53,7 +55,7 @@
   }
 </script>
 
-{#if action == "open modal"}   
+{#if isNewAccount}   
   <button class="uk-button uk-button-default uk-margin-small-right" disabled={isSubmitting} type="button" on:click|preventDefault={openConfirmationModal}>Submit</button>
 
   <div id="submit-confirmation-modal" uk-modal>
@@ -99,7 +101,3 @@
     {/if}
   </button>
 {/if}
-
-
-
-  
