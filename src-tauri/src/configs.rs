@@ -99,14 +99,6 @@ pub fn dev_get_swarm_temp() -> Result<PathBuf, Error> {
 
 
 
-
-// // TODO: replace this wrappet
-// /// initialize default configs.
-// pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) -> Result<(), Error>{
-//   set_account_profile(account, authkey)?;
-//   Ok(())
-// }
-
 pub fn is_initialized() -> bool {
   default_config_path().exists()
 }

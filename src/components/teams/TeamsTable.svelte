@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { allTeams, getAllTeams, getMyTeam, mockTeam, myTeam, viewThisTeam } from "../../teams";
-  import type {TeamEntry} from "../../teams";
+  import { allTeams, getAllTeams, getMyTeam, myTeam, viewThisTeam } from "../../teams";
   import { onMount } from "svelte";
   import { get } from "svelte/store";
   import { signingAccount } from "../../accounts";

@@ -122,7 +122,7 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
   match mine_once(&appcfg) {
     Ok(b) => {
       match commit_proof::commit_proof_tx(&tx_params.unwrap(), b, false) {
-          Ok(tx_view) => match submit_tx::eval_tx_status(&tx_view) {
+          Ok(tx_view) => match submit_tx::eval_tx_status(tx_view) {
               Ok(r) => format!("Success: Proof committed to chain \n {:?}", r),
               Err(e) => format!("ERROR: Proof NOT committed to chain, message: \n{:?}", e),
           },
