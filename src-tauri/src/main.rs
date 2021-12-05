@@ -12,11 +12,14 @@ pub mod configs_network;
 pub mod configs_profile;
 pub mod carpe_error;
 pub mod seed_peers;
+pub mod version;
+
 use tauri::{Menu, MenuItem, Submenu};
 use crate::{commands::*};
 
 
 fn main() {
+  //  println!("{}", version::version());
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
 
     let menu = Menu::new()
