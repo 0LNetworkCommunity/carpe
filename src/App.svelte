@@ -24,6 +24,7 @@
   import DebugCard from "./components/dev/DebugCard.svelte";
   import { proofComplete, proofError, towerOnce } from "./miner_invoke";
   import { disableMining } from "./miner_toggle";
+  import { routes } from "./routes";
   import { getAllAccounts } from "./accounts";
   
   getAllAccounts();
@@ -86,21 +87,21 @@
     <Router>
       <Nav />
       <div class="uk-background-muted uk-margin-large">
-        <Route path="/" component={Wallet} primary={false} />
+        <Route path={routes.home} component={Wallet} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
         <Route
-          path="/account-from-mnem"
+          path={routes.accountFromMnem}
           component={AccountFromMnemForm}
           primary={false}
         />
-        <Route path="/keygen" component={Keygen} primary={false} />
-        <Route path="/miner" component={Miner} primary={false} />
-        <Route path="/txs" component={Transactions} primary={false} />
-        <Route path="/settings" component={Settings} primary={false} />
+        <Route path={routes.keygen} component={Keygen} primary={false} />
+        <Route path={routes.miner} component={Miner} primary={false} />
+        <Route path={routes.transactions} component={Transactions} primary={false} />
+        <Route path={routes.settings} component={Settings} primary={false} />
 
         <!-- DEV -->
-        <Route path="/dev" component={DevMode} primary={false} />
-        <Route path="/swarm" component={Swarm} primary={false} />
+        <Route path={routes.developer} component={DevMode} primary={false} />
+        <Route path={routes.swarm} component={Swarm} primary={false} />
         {#if debug}
           <DebugCard/>
         {/if}

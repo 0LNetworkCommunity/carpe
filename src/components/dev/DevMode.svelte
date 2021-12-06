@@ -4,6 +4,7 @@
   import { Link } from "svelte-navigator";
   import DebugSwitchProdTest from "./DebugSwitchProdTest.svelte";
   import DebugSwitchRexMainnet from "./DebugSwitchRexMainnet.svelte";
+  import { routes } from "../../routes";
   // import Swarm from "./Swarm.svelte";
 
 </script>
@@ -16,7 +17,7 @@
     <DebugSwitchProdTest />
 
     <div class="margin">
-      <Link to="swarm"><button class="uk-button uk-button-default">Swarm Controls</button></Link>
+      <Link to={routes.swarm} ><button class="uk-button uk-button-default">Swarm Controls</button></Link>
     </div>       
   </div>
 </main>
