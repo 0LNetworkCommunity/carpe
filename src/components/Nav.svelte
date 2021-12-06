@@ -2,6 +2,7 @@
   import { Link, useLocation } from "svelte-navigator";
   import { debugMode } from "../debug";
   import { signingAccount, all_accounts } from "../accounts";
+  import { app_version } from "../version";
   import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
   import { routes } from "../routes";
 
@@ -21,6 +22,9 @@
   all_accounts.subscribe((list) => {
     has_account = list.length > 0;
   }); 
+
+  let appVersion = {};
+  app_version.subscribe(v => appVersion = v)
 
 </script>
 <!--
@@ -60,5 +64,7 @@
         </li>
       </ul>
     </div>
+
+    Release {appVersion.version}
   </nav>
 </main>

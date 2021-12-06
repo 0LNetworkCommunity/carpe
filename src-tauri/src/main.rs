@@ -73,6 +73,8 @@ fn main() {
     get_env,
     set_env,
     debug_submit_proof_zero,
+    // Version
+    get_version,
  
     // Debug
     init_swarm,
