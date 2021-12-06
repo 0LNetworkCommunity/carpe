@@ -16,13 +16,13 @@
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
   import { routes } from "../../routes";
+  import AccountFromMnemForm from "./AccountFromMnemForm.svelte";
   UIkit.use(Icons);
 
-  let account_list: AccountEntry[] = [];
+  let account_list: AccountEntry[] = null;
   let pendingAccounts: AccountEntry[] = []; 
   all_accounts.subscribe((a) => {
     account_list = a;
-    console.log(a);
     pendingAccounts = a.filter(x => !x.on_chain);
   });
   
@@ -34,13 +34,6 @@
   let isMining = false; 
   miner_loop_enabled.subscribe(boo => isMining = boo);
 
-  async function bal(i): Promise<number> {
-    let n = await get_balance(account_list[i]);
-    console.log(n);
-    return n / 1000000; // NOTE: divide by scaling factor. 
-    // TODO: Rust should have already returned the scaled value.
-  }
-
   function formatBalance(balance) {
     const balanceScaled = balance / 1000000
     return balanceScaled.toLocaleString('en-ES', {
@@ -48,14 +41,10 @@
       maximumFractionDigits: 2
     });
   }
-
-  onMount(() => {
-    getAllAccounts();
-  });
 </script>
 
 <main>
-  {#if !account_list}
+  {#if account_list == null}
    LOADING
   {:else if account_list.length > 0}
     <table class="uk-table uk-table-divider">
@@ -91,7 +80,9 @@
             <td>{a.nickname}</td>
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
-            {#if a.balance }
+            {#if a.on_chain == null}
+              offline... 
+            {:else if a.on_chain}
               <td>{formatBalance(a.balance)}</td>
             {:else}
               <td>Account Not On Chain</td>

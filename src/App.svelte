@@ -25,6 +25,9 @@
   import { proofComplete, proofError, towerOnce } from "./miner_invoke";
   import { disableMining } from "./miner_toggle";
   import { routes } from "./routes";
+  import { getAllAccounts } from "./accounts";
+  
+  getAllAccounts();
 
   let debug = false;
   debugMode.subscribe((d) => {

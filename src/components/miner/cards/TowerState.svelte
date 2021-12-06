@@ -2,8 +2,7 @@
   import { tower } from "../../../miner";
   import { onDestroy, onMount } from "svelte";
   import { signingAccount } from "../../../accounts";
-  import { getTowerChainView } from "../../../miner_invoke";
-import { healthCheck } from "../../../miner_health";
+  import { healthCheck } from "../../../miner_health";
 
   let towerState;
   let my_account; // Todo change to be a template Prop
@@ -16,7 +15,6 @@ import { healthCheck } from "../../../miner_health";
   signingAccount.subscribe((m) => {
     console.log(m);
     my_account = m;
-    // getTowerChainView();
   });
 
   let healthTick = setInterval(() => {
