@@ -6,6 +6,7 @@ export const routes = {
   miner: '/miner',
   transactions: '/txs',
   settings: '/settings',
+  about: '/about',
   developer: '/dev',
   swarm: '/swarm'
 }

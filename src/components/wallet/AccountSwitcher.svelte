@@ -5,6 +5,7 @@
   import UIkit from "uikit";
   import NetworkIcon from "./NetworkIcon.svelte";
   import { app_version } from "../../version";
+  import AboutLink from "../about/AboutLink.svelte";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -65,7 +66,7 @@
         </li>
         <!-- move to footer or About view-->
         <li class="uk-text-muted">
-          Release v{appVersion.version}
+          <AboutLink />
         </li>
       </ul>
     </div>
