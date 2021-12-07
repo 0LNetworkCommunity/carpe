@@ -4,7 +4,7 @@
   import { Link } from "svelte-navigator";
   import UIkit from "uikit";
   import NetworkIcon from "./NetworkIcon.svelte";
-  import { routes } from "../../routes";
+  import { app_version } from "../../version";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -17,6 +17,9 @@
     console.log(a);
     account_list = a;
   });
+
+  let appVersion = {};
+  app_version.subscribe(v => appVersion = v)
 </script>
 
 <main>
@@ -58,7 +61,11 @@
         {/if}
         <li>
           <a href={"#"}>
-            <Link to={routes.settings} class="uk-text-muted">Go to Settings</Link></a>
+            <Link to="settings" class="uk-text-muted">Go to Settings</Link></a>
+        </li>
+        <!-- move to footer or About view-->
+        <li class="uk-text-muted">
+          Release v{appVersion.version}
         </li>
       </ul>
     </div>

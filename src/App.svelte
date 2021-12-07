@@ -25,9 +25,13 @@
   import { proofComplete, proofError, towerOnce } from "./miner_invoke";
   import { disableMining } from "./miner_toggle";
   import { routes } from "./routes";
+
+  // move to main ??
   import { getAllAccounts } from "./accounts";
+  import { getVersion } from "./version";
   
   getAllAccounts();
+  getVersion();
 
   let debug = false;
   debugMode.subscribe((d) => {
