@@ -9,6 +9,7 @@
   import Swarm from "./components/dev/Swarm.svelte";
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
+  import About from "./components/about/About.svelte";
   import { onMount } from "svelte";
   import { listen } from "@tauri-apps/api/event";
   import {
@@ -25,9 +26,13 @@
   import { proofComplete, proofError, towerOnce } from "./miner_invoke";
   import { disableMining } from "./miner_toggle";
   import { routes } from "./routes";
+
+  // move to main ??
   import { getAllAccounts } from "./accounts";
+  import { getVersion } from "./version";
   
   getAllAccounts();
+  getVersion();
 
   let debug = false;
   debugMode.subscribe((d) => {
@@ -98,6 +103,7 @@
         <Route path={routes.miner} component={Miner} primary={false} />
         <Route path={routes.transactions} component={Transactions} primary={false} />
         <Route path={routes.settings} component={Settings} primary={false} />
+        <Route path={routes.about} component={About} primary={false} />
 
         <!-- DEV -->
         <Route path={routes.developer} component={DevMode} primary={false} />

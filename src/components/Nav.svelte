@@ -22,20 +22,16 @@
     has_account = list.length > 0;
   }); 
 
+  const secondaryRoutes = [
+    routes.settings,
+    routes.about
+  ]
+
 </script>
-<!--
-{#if has_account}
-        <Nav />
-      {:else}
-        {#if current.pathname != "/"}
-          <p> back </p>
-        {/if}
-      {/if}
--->
 
 <main class="uk-margin-top">
   <nav class="uk-navbar-container" uk-navbar>
-    {#if $location.pathname === routes.settings}
+    {#if secondaryRoutes.includes($location.pathname)}
       <Link to={routes.home}><span uk-icon="icon: arrow-left; ratio: 2" /></Link>
     {/if}
 

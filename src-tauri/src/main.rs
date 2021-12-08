@@ -12,7 +12,6 @@ pub mod configs_network;
 pub mod configs_profile;
 pub mod carpe_error;
 pub mod seed_peers;
-pub mod version;
 
 use tauri::{Menu, MenuItem, Submenu};
 use crate::{commands::*};
@@ -73,6 +72,8 @@ fn main() {
     get_env,
     set_env,
     debug_submit_proof_zero,
+    // Version
+    get_app_version,
  
     // Debug
     init_swarm,
