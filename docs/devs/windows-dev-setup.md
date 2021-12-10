@@ -47,7 +47,7 @@ The LLVM toolchain must be downloaded and installed from here: [https://github.c
 
 Select add to the system PATH as shown here:
 
-[<img src="./img/win-screen-shot-4.png" width="750"/>](win-screen-shot-4.png)
+[<img src="./img/win-screen-shot-4.png" width="500"/>](win-screen-shot-4.png)
 ## Step 6: Set LLVM Environment Variable
 The environment variable `LIBCLANG_PATH` must be set to `c:\Program Files\LLVM\bin`
 
