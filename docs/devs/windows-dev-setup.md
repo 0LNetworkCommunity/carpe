@@ -1,9 +1,12 @@
 # Windows Development Environment Setup
 
-Successfully building Carpe for Windows requires a specific mix of installed tools and configuration that is not detailed completely in the Tauri docs. In addition, Carpe's Rust code requires its own special tools and config in addition to that needed for Tauri. These instructions assume, and were tested on, a "stock" Windows 11 installation, but should work on Windows 10 too. These instructions are intended to be usable by those with only minimal knowledge of Windows.
+Successfully building Carpe for Windows requires a specific mix of installed tools and configuration that is not detailed completely in the Tauri docs. In addition, Carpe's Rust code requires its own special tools and config in addition to that needed for Tauri. These instructions assume, and were tested on, a "stock" Windows 11 installation, but should work on Windows 10 too, and are intended to be usable by those with only minimal knowledge of Windows.
 
 ```
-Note: while it is common to use a Unix-like environment such as Cygwin or WSL for development on Windows, this approach won't work at present for Tauri apps builds because they depend on using the Microsoft compiler and Windows SDK which are currently only available hosted on native Windows.
+Note: while it is common to use a Unix-like environment such as Cygwin or WSL
+for development on Windows, this approach won't work at present for Tauri app
+builds because they depend on using the Microsoft compiler and Windows SDK
+which are currently only available hosted on native Windows.
 ```
 ## Step 1: Install Git
 Note: if you already have working git on the machine, this step can be skipped.
