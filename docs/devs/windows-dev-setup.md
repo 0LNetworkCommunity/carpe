@@ -33,27 +33,27 @@ You should see a bunch of confused-looking output that ends with somethign about
 ## Step 4 : Install MS Compiler and Tools
 Microsoft ships a compiler toolchain that runs entirely from the command line, similar to gcc or clang on Linux. This is called "Build Tools for Visual Studio". Confusing because it exists specificially to allow development _without_ Visual Studio. The "BTFVS" has a complex installation process. First go to the download page which tends to move around, but at time of writing is here: [https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022). You're looking for a download choice that looks like this:
 
-[<img src="./img/win-screen-shot-1.png" width="500"/>](win-screen-shot-1.png)
+[<img src="./img/win-screen-shot-1.png" width="750"/>](win-screen-shot-1.png)
 
 Click download and run the downloaded file. This will open a 747-cockpit-UI installer that looks like the screen shot below. Now, proceed carefully: select "Desktop development with C++", but then additionally select the various checkboxes on the right as shown below (these are not the defaults):
 
-[<img src="./img/win-screen-shot-2.png" width="500"/>](win-screen-shot-2.png)
+[<img src="./img/win-screen-shot-2.png" width="850"/>](win-screen-shot-2.png)
 
 After some time you should see the installer display somethign like the screen shot below. You can now exit the installer.
 
-[<img src="./img/win-screen-shot-3.png" width="500"/>](win-screen-shot-3.png)
+[<img src="./img/win-screen-shot-3.png" width="750"/>](win-screen-shot-3.png)
 ## Step 5: Install LLVM
 The LLVM toolchain must be downloaded and installed from here: [https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.0](https://github.com/llvm/llvm-project/releases/tag/llvmorg-13.0.0)
 
 Select add to the system PATH as shown here:
 
-[<img src="./img/win-screen-shot-4.png" width="500"/>](win-screen-shot-4.png)
+[<img src="./img/win-screen-shot-4.png" width="750"/>](win-screen-shot-4.png)
 ## Step 6: Set LLVM Environment Variable
 The environment variable `LIBCLANG_PATH` must be set to `c:\Program Files\LLVM\bin`
 
 The easiest way to do this is with the control panel as shown below:
 
-[<img src="./img/win-screen-shot-6.png" width="500"/>](win-screen-shot-6.png)
+[<img src="./img/win-screen-shot-6.png" width="850"/>](win-screen-shot-6.png)
 ## Step 6: Install Rust
 Install the latest Rust toolchain by visiting this URL in a browser then running the downloaded file: [https://win.rustup.rs/x86_64](https://win.rustup.rs/x86_64)
 
@@ -75,6 +75,6 @@ yarn tauri dev
 ```
 The build takes some time, particularly the Rust phase. Eventually you should see output like this, indicating that an installable package (`.msi` file) has been generated:
 
-[<img src="./img/win-screen-shot-7.png" width="500"/>](win-screen-shot-7.png)
+[<img src="./img/win-screen-shot-7.png" width="850"/>](win-screen-shot-7.png)
 [
 ## Step 9: Relax and enjoy your new Carpe
