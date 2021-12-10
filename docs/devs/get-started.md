@@ -14,6 +14,7 @@ To create a new project based on this template follow the official guide here: h
 - Yarn
 - Rust (version will install on its own)
 - Setup your environment: https://tauri.studio/en/docs/getting-started/intro#setting-up-your-environment
+- Windows development environment setup: [instructions](./windows-dev-setup.md)
 
 Install the dependencies...
 
