@@ -24,7 +24,8 @@
 
   const secondaryRoutes = [
     routes.settings,
-    routes.about
+    routes.about,
+    routes.developer
   ]
 
 </script>
