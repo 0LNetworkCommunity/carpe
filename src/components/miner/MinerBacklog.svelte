@@ -1,10 +1,12 @@
 <script lang="ts">
   import { backlog_in_progress } from "../../miner";
   import { submitBacklog } from "../../miner_invoke";
-
+  import { onMount } from "svelte";
 
   let inProgress;
-  backlog_in_progress.subscribe((b) => (inProgress = b));
+  onMount(async () => {
+    backlog_in_progress.subscribe((b) => (inProgress = b));
+  });
 </script>
 
 <main class="uk-margin" >

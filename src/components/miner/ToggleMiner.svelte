@@ -1,9 +1,12 @@
 <script>
   import { toggleMining } from "../../miner_toggle";
   import { miner_loop_enabled } from "../../miner";
+  import { onMount } from "svelte";
 
   let enabled; 
-  miner_loop_enabled.subscribe(e => enabled = e);
+  onMount(async () => {
+    miner_loop_enabled.subscribe(e => enabled = e);
+  });
 
 </script>
 

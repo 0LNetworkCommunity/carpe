@@ -3,6 +3,7 @@
   import type { CarpeError } from "../../../carpeError";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
+  import { onMount } from "svelte";
 
   let result_string;
   let this_error: CarpeError;
@@ -14,12 +15,13 @@
   };
 
   this_error = test;
-
-  errors.subscribe((e) => {
-    result_string = "";
-    if (e) {
-      this_error = e;
-    }
+  onMount(async () => {
+    errors.subscribe((e) => {
+      result_string = "";
+      if (e) {
+        this_error = e;
+      }
+    });
   });
 </script>
 

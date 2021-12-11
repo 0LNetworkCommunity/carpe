@@ -1,10 +1,12 @@
 <script>
   import CardAlert from "../../layout/CardAlert.svelte";
   import { miner_loop_enabled } from "../../../miner";
+  import { onMount } from "svelte";
 
   let enabled = false; 
-  miner_loop_enabled.subscribe(boo => enabled = boo);
-
+  onMount(async () => {
+    miner_loop_enabled.subscribe(boo => enabled = boo);
+  });
 </script>
 
 <CardAlert>

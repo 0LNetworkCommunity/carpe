@@ -22,7 +22,7 @@
   }
   
   let enable = false;
-  onMount(() =>{   
+  onMount(async () =>{   
     miner_loop_enabled.subscribe(boo => {
       enable = boo;
       if (enable) {
