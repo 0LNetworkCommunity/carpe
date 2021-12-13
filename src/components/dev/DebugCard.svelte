@@ -2,14 +2,19 @@
   import { onMount } from "svelte";
   import type { CarpeError } from "../../carpeError";
   import { errors } from "../../carpeError";
-  import { responses } from "../../debug"; // TODO: Make this read only
+  import { responses, debugMode } from "../../debug"; // TODO: Make this read only
 
+  /*
   let home = "";
   let account = "";
+  */
 
+  let mode: boolean = false;
   let result_string = "";
   let this_error: CarpeError;
+
   onMount(async () => {
+    debugMode.subscribe(boo => mode = boo);
     responses.subscribe((value) => {
       this_error = undefined;
       result_string = value;
@@ -25,7 +30,7 @@
   
 </script>
 
-<main>
+{#if mode}
   <div class="uk-margin-top uk-margin-bottom uk-card uk-card-default uk-card-body uk-width-1-2@m">
     <h5 class="uk-card-title uk-text-light uk-text-muted uk-text-uppercase">Debug Requests</h5>
 
@@ -47,7 +52,7 @@
 
     <!-- <h4></h4> -->
     <p>
-      {#if result_string.length !== 0}
+      {#if result_string && result_string.length !== 0}
         RESULT:
         <br />
         {result_string}
@@ -61,4 +66,4 @@
       {/if}
     </p>
   </div>
-</main>
+{/if}
