@@ -1,32 +1,32 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { Link, useLocation } from "svelte-navigator";
   import { debugMode } from "../debug";
   import { signingAccount, all_accounts } from "../accounts";
   import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
   import { routes } from "../routes";
 
-  const location = useLocation();
-  
-  let debug = false;
-  debugMode.subscribe((d) => {
-    debug = d;
-  })
-
-  let myAccountIsOnChain = false;
-  signingAccount.subscribe((myAccount) => {
-    myAccountIsOnChain = myAccount != null && myAccount.balance != null
-  });
-
-  let has_account = false;
-  all_accounts.subscribe((list) => {
-    has_account = list.length > 0;
-  }); 
-
   const secondaryRoutes = [
     routes.settings,
     routes.about,
     routes.developer
   ]
+
+  const location = useLocation();
+  
+  let debug = false;
+  let myAccountIsOnChain = false;
+  let has_account = false;
+  
+  onMount(async () => {
+    debugMode.subscribe(d => debug = d);
+    
+    all_accounts.subscribe(list => has_account = list.length > 0);
+
+    signingAccount.subscribe(myAccount => {
+      myAccountIsOnChain = myAccount != null && myAccount.balance != null
+    });
+  });
 
 </script>
 

@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { tower } from "../../../miner";
   import { onDestroy, onMount } from "svelte";
-  import { signingAccount } from "../../../accounts";
   import { healthCheck } from "../../../miner_health";
+  import { tower } from "../../../miner";
 
   export let account;
   let towerState;

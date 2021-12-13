@@ -44,12 +44,12 @@ fn main() {
       menu
     }));
 
-
 	tauri::Builder::default()
 	.invoke_handler(tauri::generate_handler![
     // Accounts
     is_init,
 		get_all_accounts,
+    refresh_accounts,
 		add_account,
 		keygen,
     init_from_mnem,
@@ -93,4 +93,6 @@ fn main() {
   .menu(menu)
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");
+
+  
 }

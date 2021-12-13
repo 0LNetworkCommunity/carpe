@@ -1,17 +1,12 @@
 <script lang="ts">
-import { onMount } from "svelte";
+  import { onMount } from "svelte";
+  import { getEnv, nodeEnv, setDebugProdTest } from "../../debug";
 
-import { getEnv, nodeEnv, setDebugProdTest } from "../../debug";
-
-let current_env;
-
-nodeEnv.subscribe((env) => {
-  current_env = env;
-})
-
-onMount(()=> {
-  current_env = getEnv(); // TODO: this should be async and awaited
-})
+  let current_env;
+  onMount(async ()=> {
+    current_env = getEnv(); // TODO: this should be async and awaited
+    nodeEnv.subscribe(env => current_env = env);
+  });
 
 </script>
 

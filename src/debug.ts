@@ -3,21 +3,7 @@ import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 
 export const responses = writable("");
-
 export const debugMode = writable(false);
-
-
-// export const errors = writable("");
-
-// always clear error when a response is updated
-// responses.subscribe(_ => {
-//   errors.set("")
-// })
-
-// // same for reponses
-// errors.subscribe(_ => {
-//   responses.set("")
-// })
 
 // set the Environment to debug or test
 export function setDebugProdTest(env: string) {
@@ -40,7 +26,6 @@ export function getEnv() {
     })
     .catch((error) => raise_error(error, false));
 }
-
 
 export function debugModeToggle() {
   debugMode.set(!get(debugMode));

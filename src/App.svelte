@@ -27,22 +27,15 @@
   import { disableMining } from "./miner_toggle";
   import { routes } from "./routes";
 
-  // move to main ??
-  import { getAllAccounts } from "./accounts";
-  import { getVersion } from "./version";
-  
-  getAllAccounts();
-  getVersion();
-
   let debug = false;
-  debugMode.subscribe((d) => {
-    debug = d;
-  })
-
   let enabled;
-  miner_loop_enabled.subscribe((e) => (enabled = e));
+
   // Todo: Should this listener only be started in the miner view?
-  onMount(() => {
+  /*
+  onMount(async () => {
+    debugMode.subscribe(d => debug = d);
+    miner_loop_enabled.subscribe(e => enabled = e);
+
     listen("tower-event", (event) => {
       proofComplete();
       // is a type VDFProof
@@ -85,6 +78,7 @@
     });
 
   });
+  */
 </script>
 
 <main class="uk-background-muted">

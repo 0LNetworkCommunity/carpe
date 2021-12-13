@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { invoke } from "@tauri-apps/api/tauri";
   import { signingAccount, mnem } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
@@ -12,18 +13,18 @@
   }
 
   let display_mnem: string;
-  mnem.subscribe((m) => (display_mnem = m));
-
   let address: string;
   let authkey: string;
-
-  signingAccount.subscribe((a) => {
-    address = a.account;
-    authkey = a.authkey;
+  
+  onMount(async () => {
+    mnem.subscribe((m) => (display_mnem = m));
+    signingAccount.subscribe((a) => {
+      address = a.account;
+      authkey = a.authkey;
+    });
   });
 
   let hide = true;
-
   const keygen = async () => {
     invoke("keygen", {})
       .then((res: NewKeygen) => {

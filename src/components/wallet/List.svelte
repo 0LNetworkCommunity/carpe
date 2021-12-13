@@ -1,14 +1,14 @@
 <script lang="ts">
-
+  
+  import { onMount } from "svelte";
   import {
     signingAccount,
-    getAllAccounts,
+    loadAccounts,
     all_accounts,
     setAccount,
   } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { miner_loop_enabled } from "../../miner";
-  import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
   import { get_balance } from "../../queries";
   import ReminderCreate from "./ReminderCreate.svelte";
@@ -17,22 +17,24 @@
   import Icons from "uikit/dist/js/uikit-icons";
   import { routes } from "../../routes";
   import AccountFromMnemForm from "./AccountFromMnemForm.svelte";
+  
   UIkit.use(Icons);
-
-  let account_list: AccountEntry[] = null;
-  let pendingAccounts: AccountEntry[] = []; 
-  all_accounts.subscribe((a) => {
-    account_list = a;
-    pendingAccounts = a.filter(x => !x.on_chain);
-  });
   
   let my_account: AccountEntry;
-  signingAccount.subscribe((a) => {
-    my_account = a;
-  });
-  
+  let account_list: AccountEntry[] = null;
+  let pendingAccounts: AccountEntry[] = []; 
   let isMining = false; 
-  miner_loop_enabled.subscribe(boo => isMining = boo);
+
+  onMount(async () => {
+    loadAccounts();
+    
+    all_accounts.subscribe(all => {
+      account_list = all;
+      pendingAccounts = all.filter(x => !x.on_chain);
+    });
+    signingAccount.subscribe(a => my_account = a);
+    miner_loop_enabled.subscribe(boo => isMining = boo);
+  })
 
   function formatBalance(balance) {
     const balanceScaled = balance / 1000000
@@ -41,11 +43,12 @@
       maximumFractionDigits: 2
     });
   }
+
 </script>
 
 <main>
   {#if account_list == null}
-   LOADING
+    <span uk-spinner></span>
   {:else if account_list.length > 0}
     <table class="uk-table uk-table-divider">
       <thead>
@@ -84,6 +87,8 @@
               offline... 
             {:else if a.on_chain}
               <td>{formatBalance(a.balance)}</td>
+            {:else if a.on_chain == undefined}
+              loading...
             {:else}
               <td>Account Not On Chain</td>
             {/if}

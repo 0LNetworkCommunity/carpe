@@ -1,7 +1,7 @@
 <script>
+  import { onMount } from "svelte";
   import { toggleMining } from "../../miner_toggle";
   import { miner_loop_enabled } from "../../miner";
-  import { onMount } from "svelte";
 
   let enabled; 
   onMount(async () => {
@@ -9,7 +9,6 @@
   });
 
 </script>
-
 
 <main>
   <div class="uk-text-center" style="position: relative">

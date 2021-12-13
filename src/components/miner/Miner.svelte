@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import ToggleMiner from "./ToggleMiner.svelte";
   import MinerProgres from "./MinerProgres.svelte";
   import TowerState from "./cards/TowerState.svelte";
@@ -13,7 +14,6 @@
   import AccountFromMnemForm from "../wallet/AccountFromMnemForm.svelte";
   import AccountFromMnemSubmit from "../wallet/AccountFromMnemSubmit.svelte";
   import { getTowerChainView } from "../../miner_invoke";  
-  import { onMount } from "svelte";
 
   let isFirstProof = null;
   let account: AccountEntry;

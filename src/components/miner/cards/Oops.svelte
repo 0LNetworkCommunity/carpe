@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { errors } from "../../../carpeError";
   import type { CarpeError } from "../../../carpeError";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
-  import { onMount } from "svelte";
 
   let result_string;
   let this_error: CarpeError;
@@ -23,6 +23,7 @@
       }
     });
   });
+  
 </script>
 
 <main>

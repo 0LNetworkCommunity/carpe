@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import type { CarpeError } from "../../carpeError";
   import { errors } from "../../carpeError";
-
   import { responses } from "../../debug"; // TODO: Make this read only
 
   let home = "";
@@ -9,18 +9,20 @@
 
   let result_string = "";
   let this_error: CarpeError;
+  onMount(async () => {
+    responses.subscribe((value) => {
+      this_error = undefined;
+      result_string = value;
+    });
 
-  responses.subscribe((value) => {
-    this_error = undefined;
-    result_string = value;
+    errors.subscribe((value) => {
+      result_string = "";
+      if (value != undefined) {
+        this_error = value;
+      }
+    });
   });
-
-  errors.subscribe((value) => {
-    result_string = "";
-    if (value != undefined) {
-      this_error = value;
-    }
-  });
+  
 </script>
 
 <main>

@@ -3,14 +3,12 @@
   import { Networks, setNetwork, getNetwork, network_profile } from '../../networks';
 
   let current_chain_id = "";
-
-  network_profile.subscribe((n) => {
-      current_chain_id = n.chain_id;
-  });
-
+ 
   onMount(async () => {
-      getNetwork();
+    getNetwork();
+    network_profile.subscribe(n => current_chain_id = n.chain_id);
   });
+
 </script>
 
 <div class="uk-margin-medium-bottom">

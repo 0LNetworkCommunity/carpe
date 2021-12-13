@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import type { AccountEntry } from "../../accounts";
   import { signingAccount } from "../../accounts";
   import UIkit from "uikit";
@@ -7,7 +8,9 @@
   export let pendingAccounts: AccountEntry[];
 
   let authkey;
-  signingAccount.subscribe((a) => (authkey = a.authkey));
+  onMount(async () => {
+    signingAccount.subscribe(a => authkey = a.authkey);
+  });
 
 </script>
 
