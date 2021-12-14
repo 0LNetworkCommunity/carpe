@@ -57,7 +57,7 @@
     -->
       <div class="uk-width-1-1">
         {#if isFirstProof == null}
-          Loading...
+          <span uk-spinner></span>
         {:else if isFirstProof}
           <FirstProof />  
         {:else}
