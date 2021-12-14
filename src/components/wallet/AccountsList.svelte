@@ -1,37 +1,15 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { Link } from "svelte-navigator";
-  import {
-    signingAccount,
-    loadAccounts,
-    all_accounts,
-    setAccount,
-  } from "../../accounts";
+  import { setAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
-  import { miner_loop_enabled } from "../../miner";
-  import { routes } from "../../routes";
-  import ReminderCreate from "./ReminderCreate.svelte";
   import IconMining from '../icons/IconMining.svelte';
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
 
   UIkit.use(Icons);
   
-  let my_account: AccountEntry;
-  let account_list: AccountEntry[] = null;
-  let pendingAccounts: AccountEntry[] = []; 
-  let isMining = false; 
-
-  onMount(async () => {
-    loadAccounts();
-    
-    all_accounts.subscribe(all => {
-      account_list = all;
-      pendingAccounts = all.filter(x => !x.on_chain);
-    });
-    signingAccount.subscribe(a => my_account = a);
-    miner_loop_enabled.subscribe(boo => isMining = boo);
-  })
+  export let my_account: AccountEntry;
+  export let account_list: AccountEntry[];
+  export let isMining: boolean; 
 
   // TODO: move to tauri commands
   function formatBalance(balance) {
@@ -93,19 +71,6 @@
           </tr>
         {/each}
       </tbody>
-    </table>
-
-    <ReminderCreate pendingAccounts={pendingAccounts}/>
-  {:else}
-    <!-- <Onboard /> -->
+    </table>    
   {/if}
-
-  <div uk-grid class="uk-flex uk-flex-center">
-    <Link to={routes.keygen}>
-      <button class="uk-button uk-button-secondary"> New Account </button>
-    </Link>
-    <Link to={routes.accountFromMnem}>
-      <button class="uk-button uk-button-default">Restore Account </button>
-    </Link>
-  </div>  
 </main>
