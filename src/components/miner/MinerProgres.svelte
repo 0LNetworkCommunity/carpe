@@ -6,13 +6,14 @@
   let looper;
 
   function animate(bar) { 
-    let ps = getProgess();      
+    let ps = getProgess();   
+
     if (ps && ps.time_start > 0) {
       let duration = ps.previous_duration;
       let since_start = Date.now() - ps.time_start;
       percent = since_start / duration;
       
-      percent = percent >= 1 ? 0.99 : percent; // never 100%
+      percent = percent >= 1 ? 0.9999 : percent; // never 100%
       bar.value = percent;
     } 
     else {
@@ -29,7 +30,7 @@
         percent = 0;
         let bar = document.getElementById("mining-progressbar");
         animate(bar);
-        looper = setInterval(() => animate(bar), 10000);
+        looper = setInterval(() => animate(bar), 1000);
       } else {
         clearInterval(looper);
       }

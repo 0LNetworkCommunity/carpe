@@ -26,7 +26,7 @@ export interface NetworkProfile {
 }
 
 export function setNetwork(network: Networks) {
-    invoke("toggle_network", { network: network })
+  invoke("toggle_network", { network: network })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         // update accounts from current network

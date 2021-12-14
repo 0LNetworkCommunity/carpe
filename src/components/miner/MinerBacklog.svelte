@@ -3,9 +3,12 @@
   import { submitBacklog } from "../../miner_invoke";
   import { onMount } from "svelte";
 
-  let inProgress;
+  let inProgress = false;
   onMount(async () => {
-    backlog_in_progress.subscribe((b) => (inProgress = b));
+    backlog_in_progress.subscribe(b => {
+      console.log(b);
+      inProgress = b
+    });
   });
 </script>
 
@@ -15,12 +18,12 @@
   </h4>
   <div class="uk-margin uk-grid">
     <div>
-      {#if !inProgress}
-        <button class="uk-button uk-button-default" on:click={submitBacklog}>
+      {#if inProgress}
+        <button class="uk-button" disabled>Backlog in Progress</button>
+      {:else}
+        <button class="uk-button uk-button-default" on:click={() => submitBacklog()}>
           Submit Backlog
         </button>
-      {:else}
-        <button class="uk-button" disabled>Backlog in Progress</button>
       {/if}
     </div>
 

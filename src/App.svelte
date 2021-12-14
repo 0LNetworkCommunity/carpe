@@ -1,6 +1,10 @@
 <script lang="ts">
+  import { listen } from "@tauri-apps/api/event";
+  import { onDestroy, onMount } from "svelte";
+  import { get } from "svelte/store";
   import { Router, Route } from "svelte-navigator";
-  import { routes } from "./routes";
+  import Nav from "./components/Nav.svelte";
+  import DebugCard from "./components/dev/DebugCard.svelte";
   import Wallet from "./components/wallet/Wallet.svelte";
   import Miner from "./components/miner/Miner.svelte";
   import Settings from "./components/settings/Settings.svelte";
@@ -10,19 +14,30 @@
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
   import About from "./components/about/About.svelte";
-  import Nav from "./components/Nav.svelte";
-  import DebugCard from "./components/dev/DebugCard.svelte";
+  import {
+    miner_loop_enabled,
+    backlog_in_progress,
+    tower,
+  } from "./miner";
+  import { success } from "./carpeNotify";
+  import { raise_error } from "./carpeError";
+  import { debugMode, responses } from "./debug";
+  import { proofComplete, proofError, towerOnce } from "./miner_invoke";
+  import { disableMining } from "./miner_toggle";
+  import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
 
-  let debug = false;
+  let enabled;
+  let unlistenTowerEvent;
+  let unlistenTowerError;
+  let unlistenBacklogSuccess;
+  let unlistenBacklogError;
 
   // Todo: Should this listener only be started in the miner view?
-  /*
-  onMount(async () => {
-    debugMode.subscribe(d => debug = d);
+  onMount(async () => {    
     miner_loop_enabled.subscribe(e => enabled = e);
 
-    listen("tower-event", (event) => {
+    unlistenTowerEvent = await listen("tower-event", (event) => {
       proofComplete();
       // is a type VDFProof
       console.log(event.payload);
@@ -41,7 +56,7 @@
       }
     });
 
-    listen("tower-error", (event) => {
+    unlistenTowerError = await listen("tower-error", (event) => {
       proofError();
       // is a type CarpeError
       console.log(event);
@@ -51,20 +66,25 @@
     });
 
     ///// Backlog ////
-    listen("backlog-success", (event) => {
+    unlistenBacklogSuccess = await listen("backlog-success", (event) => {
       window.alert(event.payload);
       responses.set(event.payload as string);
       backlog_in_progress.set(false);
     });
 
-    listen("backlog-error", (event) => {
+    unlistenBacklogError = await listen("backlog-error", (event) => {
       window.alert(event.payload);
       raise_error(event.payload, false);
       backlog_in_progress.set(false);
     });
-
   });
-  */
+
+  onDestroy(() => {
+    unlistenTowerEvent();
+    unlistenTowerError();
+    unlistenBacklogSuccess();
+    unlistenBacklogError();
+  })
 </script>
 
 <main class="uk-background-muted">

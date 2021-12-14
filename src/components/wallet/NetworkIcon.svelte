@@ -1,14 +1,19 @@
 <script>
-  import { Networks, network_profile } from "../../networks";
+import { onMount } from "svelte";
 
-  let isRex = false;
-  network_profile.subscribe((network) => {
-    isRex = Networks.Rex == network.chain_id;
-  });
+  import { getNetwork, Networks, network_profile } from "../../networks";
+
+  let isMainnet = true;
+  onMount(async () => {
+    getNetwork();
+    network_profile.subscribe((network) => {
+      isMainnet = network.chain_id == Networks.Mainnet;
+    });
+  })
 </script>
 
-{#if isRex}
-  <img alt="test network icon" src="/images/crash-test.jpg"/>
-{:else}
+{#if isMainnet}
   <span uk-icon="icon: user"/>  
+{:else}
+  <img alt="test network icon" src="/images/crash-test.jpg"/>
 {/if}

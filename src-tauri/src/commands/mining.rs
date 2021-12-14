@@ -65,20 +65,19 @@ struct BacklogSuccess {
   success: bool,
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub async fn submit_backlog(window: Window) -> Result<(), CarpeError> {
   let config = get_cfg()?;
   let tx_params = get_tx_params(None)
     .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
 
   let _ = match backlog(&config, &tx_params) {
-      Ok(_) => window.emit("backlog-success", BacklogSuccess {success: true}),
-      Err(_) => window.emit("backlog-error", CarpeError::tower("could not submit backlog)"))
+    Ok(_) => window.emit("backlog-success", BacklogSuccess {success: true}),
+    Err(_) => window.emit("backlog-error", CarpeError::tower("could not submit backlog)"))
   };
     
   Ok(())
 }
-
 
 /// flush a backlog of proofs at once to the chain.
 pub fn backlog(
@@ -153,7 +152,7 @@ pub fn mine_and_commit_one_proof(
 
 // TODO: Resubmit backlog
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
   println!("fetching onchain tower state");
   let cfg = get_cfg()?;
@@ -168,7 +167,6 @@ pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
   }
 }
 
-
 #[tauri::command]
 pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
 
@@ -177,10 +175,6 @@ pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
   .map_err(|e| { CarpeError::misc(&format!("could not get local files, message: {:?}", e.to_string()) ) })
 }
 
-
-
-
-
 #[tauri::command]
 pub fn set_env(env: String) -> Result<String, CarpeError> {
   dbg!(&env);
@@ -188,13 +182,11 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
     "test" => env::set_var("NODE_ENV", "test"),
     "prod" => env::set_var("NODE_ENV", "prod"),
     _ => {},
-
   }
 
   let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("could not get node_env") })?;
   dbg!(&v);
   Ok(v)
-  
 }
 
 #[tauri::command]
