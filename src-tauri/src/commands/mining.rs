@@ -36,11 +36,18 @@ pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
 
     // The VDF by definition will block the thread. The work needs to be sent to a thread that can be blocked.
     let _ = task::spawn_blocking( move || {
-        // TODO: how to cehck for this before it get here?
-        // tx params cannot be cloned.
-        let tx_params = get_tx_params(None).expect("could not load tx params, this should have been checked before");
-        // some blocking work here
-        match mine_and_commit_one_proof(&config_clone, &tx_params) {
+      // TODO: how to cehck for this before it get here?
+      
+      // always start tower processing backlog
+      let _ = backlog(
+        &config_clone.clone(),
+        &get_tx_params(None).expect("could not load tx params, this should have been checked before")
+      );
+
+      // tx params cannot be cloned.
+      let tx_params = get_tx_params(None).expect("could not load tx params, this should have been checked before");
+      // some blocking work here
+      match mine_and_commit_one_proof(&config_clone, &tx_params) {
         Ok(proof) => {
           third_clone.emit("tower-event", proof).unwrap();
         }
@@ -58,7 +65,6 @@ pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
 
   Ok(())
 }
-
 
 #[derive(Clone, serde::Serialize)]
 struct BacklogSuccess {

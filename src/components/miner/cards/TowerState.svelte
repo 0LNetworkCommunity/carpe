@@ -1,11 +1,13 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
+  import { listen } from "@tauri-apps/api/event";
   import { healthCheck } from "../../../miner_health";
   import { tower } from "../../../miner";
 
   export let account;
   let towerState;
   let healthTick;
+  let unlistenTowerEvent;
   
   onMount(async () => {
     healthCheck();
@@ -15,10 +17,16 @@
     }, 10000) // do a healthcheck this is async
 
     tower.subscribe(m => towerState = m);
-  })
+
+    unlistenTowerEvent = await listen(
+      "tower-event", 
+      event => healthCheck
+    );
+  });
 
   onDestroy(() => {
     clearInterval(healthTick);
+    unlistenTowerEvent();
   });
 </script>
 

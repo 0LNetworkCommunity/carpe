@@ -15,8 +15,6 @@ const current_window = getCurrent();
 export const startTowerListener = async () => {
   await invoke("start_tower_listener", {})
     .then((res) => {
-      console.log("tower listener response");
-      console.log(res);
       responses.set(res as string);
       return res
     })
@@ -32,9 +30,6 @@ export const killTowerListener = async () => {
 export const getTowerChainView = async () => {
   await invoke("get_onchain_tower_state", {})
     .then((res: TowerStateView) => {
-      console.log('>>> get_onchain_tower_state')
-      console.log(res);
-      // if res.
       let t = get(tower);
       t.on_chain = res;
       tower.set(t);
@@ -75,10 +70,7 @@ export const towerOnce = async () => {
     ? 30 * 60 * 1000
     : 5 * 1000;
 
-  let t = get(tower);
-  console.log('>>> tower')
-  console.log(t)
-  
+  let t = get(tower); 
   if (t.progress && t.progress.time_start) {
     previous_duration = Date.now() - t.progress.time_start;
   }
