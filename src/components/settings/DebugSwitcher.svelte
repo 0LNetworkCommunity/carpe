@@ -1,8 +1,12 @@
 <script>
+	import { onMount } from "svelte";
   import { debugMode, debugModeToggle } from "../../debug";
-	
-	let debugEnabled = false;
-	debugMode.subscribe(boo => debugEnabled = boo);
+
+  let debugEnabled = false;
+	onMount(async () => {
+	  debugMode.subscribe(boo => debugEnabled = boo);
+  });
+  
 </script>
 
 <div>

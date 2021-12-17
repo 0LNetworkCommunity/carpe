@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { Link, navigate } from "svelte-navigator";
   import UIkit from "uikit";
   import { responses } from "../../debug";
@@ -10,7 +11,9 @@
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;
 
-  mnem.subscribe((m) => danger_temp_mnem = m);
+  onMount(async () => {
+    mnem.subscribe(m => danger_temp_mnem = m);
+  });
 
   const re = /[0-9A-Fa-f]{32}/g;
 

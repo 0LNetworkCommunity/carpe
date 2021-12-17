@@ -24,15 +24,15 @@ export const new_account = function (account: string, authkey: string, nickname:
 };
 
 export const signingAccount = writable<AccountEntry>(new_account("", "", ""));
-
 export const mnem = writable("");
 export const isInit = writable(false);
+export const isRefreshingAccounts = writable(false);
 
 // export const account = writable("");
 // export const authkey = writable("");
 export const all_accounts = writable<AccountEntry[]>([]);
 
-export function getAllAccounts() {
+export function loadAccounts() {
   invoke('get_all_accounts')
     .then((result: object) => {
       all_accounts.set(result.accounts);
@@ -45,8 +45,22 @@ export function getAllAccounts() {
         signingAccount.set(new_account("", "", ""));
         */
       }
+      // fetch data from the chain
+      refreshAccounts();
     })
     .catch((error) => raise_error(error));
+}
+
+function refreshAccounts() {
+  isRefreshingAccounts.set(true);
+  invoke('refresh_accounts')
+    .then((result: object) => {
+      all_accounts.set(result.accounts);
+      isRefreshingAccounts.set(false);
+    })
+    .catch(error => {
+      isRefreshingAccounts.set(false);
+    })
 }
 
 export async function is_initialized(): Promise<boolean> {

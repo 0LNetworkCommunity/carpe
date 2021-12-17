@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Link } from "svelte-navigator";
   import { onMount } from "svelte";
+  import { Link } from "svelte-navigator";
   import type { CarpeError } from "../../carpeError";
   import { raise_error } from "../../carpeError";
   import { network_profile, setNetwork, getNetwork, refreshWaypoint } from "../../networks";
@@ -12,11 +12,15 @@
   let upstream_url = "http://1.1.1.1:8080";
   let waypoint = "";
   let current_chain_id = "";
+  
+  onMount(async () => {
+    getNetwork();
 
-  network_profile.subscribe((n) => {
-    upstream_url = n.url;
-    waypoint = n.waypoint;
-    current_chain_id = n.chain_id;
+    network_profile.subscribe((n) => {
+      upstream_url = n.url;
+      waypoint = n.waypoint;
+      current_chain_id = n.chain_id;
+    });
   });
 
   function updateNetwork() {
@@ -36,10 +40,6 @@
         raise_error(error as CarpeError, false);
       });
   }
-
-  onMount(async () => {
-    getNetwork();
-  });
 
 </script>
 

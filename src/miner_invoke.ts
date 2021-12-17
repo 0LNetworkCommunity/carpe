@@ -4,6 +4,7 @@ import { get } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { responses } from "./debug";
 import { backlog_in_progress, ProofProgress, tower, TowerStateView } from "./miner";
+import { network_profile } from "./networks";
 
 
 const current_window = getCurrent();
@@ -14,14 +15,11 @@ const current_window = getCurrent();
 export const startTowerListener = async () => {
   await invoke("start_tower_listener", {})
     .then((res) => {
-      console.log("tower listener response");
-      console.log(res);
       responses.set(res as string);
       return res
     })
     .catch((e) => raise_error(e, false));
 }
-
 
 // Stop listening on the rust side for new requests to mine a proof.
 export const killTowerListener = async () => {
@@ -32,8 +30,6 @@ export const killTowerListener = async () => {
 export const getTowerChainView = async () => {
   await invoke("get_onchain_tower_state", {})
     .then((res: TowerStateView) => {
-      console.log(res);
-      // if res.
       let t = get(tower);
       t.on_chain = res;
       tower.set(t);
@@ -70,11 +66,13 @@ export const getLocalProofs = async () => {
 export const towerOnce = async () => {
   console.log("mine tower once")
 
-  let previous_duration = 30 * 60 * 1000;
-  // let previous_duration = 5 * 1000; // for test net
-  let t = get(tower);
-  if (t.latest_proof && t.latest_proof.elapsed_secs) {
-    previous_duration = t.latest_proof.elapsed_secs * 1000
+  let previous_duration = get(network_profile).chain_id == "Mainnet"
+    ? 30 * 60 * 1000
+    : 5 * 1000;
+
+  let t = get(tower); 
+  if (t.progress && t.progress.time_start) {
+    previous_duration = Date.now() - t.progress.time_start;
   }
 
   let progress: ProofProgress = {
@@ -90,7 +88,6 @@ export const towerOnce = async () => {
 
 };
 
-
 // function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
 //   let m = get(tower);
 //   m.latest_proof = new_proof;
@@ -98,10 +95,6 @@ export const towerOnce = async () => {
 //   tower.set(m);
 //   return m;
 // }
-
-
-
-
 
 export function proofError() {
   let t = get(tower);
@@ -117,21 +110,21 @@ export function proofComplete() {
 
 // submit any transactions that are in the backlog. Proofs that have been mined but for any reason were not committed.
 export const submitBacklog = async () => {
+  console.log('>>> submitBacklog called');
   backlog_in_progress.set(true);
   invoke("submit_backlog", {})
-    .then((res) => {
-      console.log("backlog response");
-      console.log(res);
-      responses.set(res as string);
+    .then(res => {
       backlog_in_progress.set(false);
+      console.log('>>> submit_backlog response: ' + res);
+      responses.set(res as string);
       return res
     })
-    .catch((e) => {
-      raise_error(e, false);
+    .catch(e => {
       backlog_in_progress.set(false);
+      console.log('>>> submit_backlog error: ' + e);
+      raise_error(e, false);
     });
 }
-
 
 // For debugging or rescue purposes. Sometimes the user may have a proof that for some reason was not committed to the chain.
 

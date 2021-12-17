@@ -12,7 +12,7 @@ export async function enableMining(): Promise<boolean> {
   // wait for it to be ready
   let started = await startTowerListener()
     .then((r) => {
-      towerOnce()
+      towerOnce();
       miner_loop_enabled.set(true);
       return true;
     })
@@ -35,15 +35,11 @@ export async function disableMining(): Promise<boolean> {
 
 export function toggleMining() {
   let enabled = get(miner_loop_enabled)
-  console.log("miner enabled?")
-  console.log(get(miner_loop_enabled));
   if (enabled) {
     disableMining();
   } else {
     enableMining();
   };
-  console.log("miner enabled?")
-  console.log(get(miner_loop_enabled));
 }
 
 function isInProgress(): boolean {

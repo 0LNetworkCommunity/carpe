@@ -1,12 +1,14 @@
 <script>
+  import { onMount } from "svelte";
   import { toggleMining } from "../../miner_toggle";
   import { miner_loop_enabled } from "../../miner";
 
   let enabled; 
-  miner_loop_enabled.subscribe(e => enabled = e);
+  onMount(async () => {
+    miner_loop_enabled.subscribe(e => enabled = e);
+  });
 
 </script>
-
 
 <main>
   <div class="uk-text-center" style="position: relative">

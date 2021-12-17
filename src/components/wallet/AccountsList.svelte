@@ -1,39 +1,17 @@
 <script lang="ts">
-
-  import {
-    signingAccount,
-    getAllAccounts,
-    all_accounts,
-    setAccount,
-  } from "../../accounts";
+  import { setAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
-  import { miner_loop_enabled } from "../../miner";
-  import { onMount } from "svelte";
-  import { Link } from "svelte-navigator";
-  import { get_balance } from "../../queries";
-  import ReminderCreate from "./ReminderCreate.svelte";
   import IconMining from '../icons/IconMining.svelte';
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import { routes } from "../../routes";
-  import AccountFromMnemForm from "./AccountFromMnemForm.svelte";
+
   UIkit.use(Icons);
-
-  let account_list: AccountEntry[] = null;
-  let pendingAccounts: AccountEntry[] = []; 
-  all_accounts.subscribe((a) => {
-    account_list = a;
-    pendingAccounts = a.filter(x => !x.on_chain);
-  });
   
-  let my_account: AccountEntry;
-  signingAccount.subscribe((a) => {
-    my_account = a;
-  });
-  
-  let isMining = false; 
-  miner_loop_enabled.subscribe(boo => isMining = boo);
+  export let my_account: AccountEntry;
+  export let account_list: AccountEntry[];
+  export let isMining: boolean; 
 
+  // TODO: move to tauri commands
   function formatBalance(balance) {
     const balanceScaled = balance / 1000000
     return balanceScaled.toLocaleString('en-ES', {
@@ -41,11 +19,12 @@
       maximumFractionDigits: 2
     });
   }
+
 </script>
 
 <main>
   {#if account_list == null}
-   LOADING
+    <span uk-spinner></span>
   {:else if account_list.length > 0}
     <table class="uk-table uk-table-divider">
       <thead>
@@ -84,25 +63,14 @@
               offline... 
             {:else if a.on_chain}
               <td>{formatBalance(a.balance)}</td>
+            {:else if a.on_chain == undefined}
+              loading...
             {:else}
               <td>Account Not On Chain</td>
             {/if}
           </tr>
         {/each}
       </tbody>
-    </table>
-
-    <ReminderCreate pendingAccounts={pendingAccounts}/>
-  {:else}
-    <!-- <Onboard /> -->
+    </table>    
   {/if}
-
-  <div uk-grid class="uk-flex uk-flex-center">
-    <Link to={routes.keygen}>
-      <button class="uk-button uk-button-secondary"> New Account </button>
-    </Link>
-    <Link to={routes.accountFromMnem}>
-      <button class="uk-button uk-button-default">Restore Account </button>
-    </Link>
-  </div>  
 </main>

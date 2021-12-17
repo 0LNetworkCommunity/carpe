@@ -1,8 +1,13 @@
 <script>
-  import { app_version } from "../../version";
+  import { onMount } from "svelte";
+  import { getVersion, app_version } from "../../version";
   
   let release = {};
-  app_version.subscribe(v => release = v)
+  onMount(async () => {
+    getVersion();
+    app_version.subscribe(v => release = v)
+  });
+
 </script>
 
 <main class="uk-height-viewport">

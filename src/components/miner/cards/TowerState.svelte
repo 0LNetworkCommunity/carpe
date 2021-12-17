@@ -1,37 +1,37 @@
 <script lang="ts">
-  import { tower } from "../../../miner";
   import { onDestroy, onMount } from "svelte";
-  import { signingAccount } from "../../../accounts";
+  import { listen } from "@tauri-apps/api/event";
   import { healthCheck } from "../../../miner_health";
+  import { tower } from "../../../miner";
 
+  export let account;
   let towerState;
-  let my_account; // Todo change to be a template Prop
-
-  tower.subscribe((m) => {
-    console.log(m);
-    towerState = m;
-  });
-
-  signingAccount.subscribe((m) => {
-    console.log(m);
-    my_account = m;
-  });
-
-  let healthTick = setInterval(() => {
-    healthCheck();
-  }, 10000)    // do a healthcheck this is async
+  let healthTick;
+  let unlistenTowerEvent;
   
-  onMount(() => {
+  onMount(async () => {
     healthCheck();
-  })
+    
+    healthTick = setInterval(() => {
+      healthCheck();
+    }, 10000) // do a healthcheck this is async
+
+    tower.subscribe(m => towerState = m);
+
+    unlistenTowerEvent = await listen(
+      "tower-event", 
+      event => healthCheck
+    );
+  });
 
   onDestroy(() => {
     clearInterval(healthTick);
+    unlistenTowerEvent();
   });
 </script>
 
 <main>
-  {#if towerState.on_chain && towerState.on_chain.previous_proof_hash}
+  {#if towerState && towerState.on_chain && towerState.on_chain.previous_proof_hash}
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
@@ -44,7 +44,7 @@
       </thead>
       <tbody>
         <tr class="uk-text-center">
-          <td>{my_account.nickname}</td>
+          <td>{account.nickname}</td>
           <td>{towerState.on_chain.verified_tower_height}</td>
           <td>{towerState.on_chain.latest_epoch_mining}</td>
           <td>{towerState.on_chain.count_proofs_in_epoch}</td>

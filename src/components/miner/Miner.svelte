@@ -1,36 +1,34 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import ToggleMiner from "./ToggleMiner.svelte";
   import MinerProgres from "./MinerProgres.svelte";
   import TowerState from "./cards/TowerState.svelte";
   import MinerDebug from "./MinerDebug.svelte";
-  import CantStart from "./cards/CantStart.svelte";
-  import { debugMode } from "../../debug";
+  import CantStart from "./cards/CantStart.svelte";  
   import { signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import Status from "./cards/Status.svelte";
   import FirstProof from "./cards/FirstProof.svelte";
   import Oops from "./cards/Oops.svelte";
   import { tower } from "../../miner";
-import AccountFromMnemForm from "../wallet/AccountFromMnemForm.svelte";
-import AccountFromMnemSubmit from "../wallet/AccountFromMnemSubmit.svelte";
-import { getTowerChainView } from "../../miner_invoke";  
-import { onMount } from "svelte";
-
-  onMount(() => {
-    getTowerChainView();
-  })  
+  import AccountFromMnemForm from "../wallet/AccountFromMnemForm.svelte";
+  import AccountFromMnemSubmit from "../wallet/AccountFromMnemSubmit.svelte";
+  import { getTowerChainView } from "../../miner_invoke";  
 
   let isFirstProof = null;
-  tower.subscribe((towerState) => {
-    isFirstProof = towerState.on_chain == null || towerState.on_chain.verified_tower_height == null
-  });
-
-  let debug: boolean;
-  debugMode.subscribe((d) => debug = d);
-
   let account: AccountEntry;
-  signingAccount.subscribe((a) => account = a);
+
+  onMount(async () => {
+    getTowerChainView();
+
+    tower.subscribe((towerState) => {
+      if (towerState.on_chain) {
+        isFirstProof = towerState.on_chain.verified_tower_height == null
+      }      
+    });
   
+    signingAccount.subscribe((a) => account = a);
+  })
 </script>
 
 <main class="uk-height-viewport">
@@ -38,7 +36,9 @@ import { onMount } from "svelte";
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
   </div>
   <div class="uk-grid uk-margin-small">
-    {#if !account.on_chain}
+    {#if account == null}
+      Loading...
+    {:else if !account.on_chain}
       <CantStart />
     {:else}
       <div class="uk-width-1-1 uk-align-center">
@@ -57,11 +57,11 @@ import { onMount } from "svelte";
     -->
       <div class="uk-width-1-1">
         {#if isFirstProof == null}
-          Loading...
+          <span uk-spinner></span>
         {:else if isFirstProof}
           <FirstProof />  
         {:else}
-          <TowerState />
+          <TowerState account={account} />
         {/if}
       </div>
       <div class="uk-width-expand uk-margin-small">
@@ -69,8 +69,6 @@ import { onMount } from "svelte";
       </div>
     {/if}
   </div>
-
-  {#if debug}
-    <MinerDebug />
-  {/if}
+ 
+  <MinerDebug />
 </main>
