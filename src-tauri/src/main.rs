@@ -14,11 +14,12 @@ pub mod carpe_error;
 pub mod seed_peers;
 use tauri::{Menu, MenuItem, Submenu};
 use crate::{commands::*};
-
+use pretty_env_logger;
 
 fn main() {
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
-
+    pretty_env_logger::init();
+    
     let menu = Menu::new()
     .add_submenu(Submenu::new(
       "Carpe",

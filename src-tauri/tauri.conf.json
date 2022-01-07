@@ -1,7 +1,7 @@
 {
 	"package": {
 		"productName": "carpe",
-		"version": "0.0.1.8"
+		"version": "0.1.8"
 	},
 	"build": {
 		"distDir": "../public",
@@ -11,6 +11,13 @@
 		"withGlobalTauri": true
 	},
 	"tauri": {
+    "updater": {
+      "active": false,
+      "endpoints": [
+        "https://mockbin.org/bin/09709b1c-37b4-49d7-9e68-851439156193/?target={{target}}&version={{current_version}}"
+      ],
+      "dialog": true
+    },
 		"bundle": {
 			"active": true,
 			"targets": "all",

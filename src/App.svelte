@@ -34,6 +34,10 @@
   miner_loop_enabled.subscribe((e) => (enabled = e));
   // Todo: Should this listener only be started in the miner view?
   onMount(() => {
+    listen("tauri://update-available",  (res: JSON) => {
+      window.alert(`New version available`);
+    });
+
     listen("tower-event", (event) => {
       proofComplete();
       // is a type VDFProof
@@ -83,7 +87,7 @@
     <Router>
       <Nav />
       <div class="uk-background-muted uk-margin-large">
-        <Route path="/" component={Wallet} primary={false} />
+        <Route path="/" component={Settings} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
         <Route
           path="/account-from-mnem"
