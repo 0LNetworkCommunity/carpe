@@ -1,0 +1,16 @@
+{
+  "name": "v1.0.0",
+  "notes": "Test version",
+  "pub_date": "2020-06-22T19:25:57Z",
+  "platforms": {
+    "darwin": {
+      "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/carpe.app.tar.gz"
+    },
+    "linux": {
+      "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/carpe.app.tar.gz"
+    },
+    "win64": {
+      "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/carpe.app.tar.gz"
+    }
+  }
+}
