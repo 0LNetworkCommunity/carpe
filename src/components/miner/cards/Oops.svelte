@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { errors } from "../../../carpeError";
   import type { CarpeError } from "../../../carpeError";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
@@ -14,13 +15,15 @@
   };
 
   this_error = test;
-
-  errors.subscribe((e) => {
-    result_string = "";
-    if (e) {
-      this_error = e;
-    }
+  onMount(async () => {
+    errors.subscribe((e) => {
+      result_string = "";
+      if (e) {
+        this_error = e;
+      }
+    });
   });
+  
 </script>
 
 <main>

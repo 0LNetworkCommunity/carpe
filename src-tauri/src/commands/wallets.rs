@@ -110,20 +110,25 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 #[tauri::command]
 pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
   let all = read_accounts()?;
-  
-  Ok(map_get_balance(all)?)
+  Ok(all)
 }
 
+#[tauri::command(async)]
+pub fn refresh_accounts() -> Result<Accounts, CarpeError> {
+  let all = read_accounts()?;
+  let updated = map_get_balance(all)?;
+  update_accounts_db(&updated);
+  Ok(updated)
+}
 
 fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError>  {
     all_accounts.accounts = all_accounts.accounts.into_iter()
     .map(|mut e| {
       e.balance = get_balance(e.account).ok();
-      if e.balance.is_some() { e.on_chain = true; }
+      e.on_chain = e.balance.is_some();
       e
     })
     .collect();
-    // all_accounts.accounts =
     Ok(all_accounts)
 }
 
@@ -207,6 +212,15 @@ fn insert_account_db(
   } else {
     bail!("account already exists")
   }
+}
+
+fn update_accounts_db(accounts: &Accounts) {
+  let app_dir = default_accounts_db_path();
+  let serialized = serde_json::to_vec(accounts).expect("Struct Accounts should be converted!");
+  let mut file = File::create(app_dir).expect("DB_FILE should be created!");
+  file
+    .write_all(&serialized)
+    .expect("DB_FILE should be writen!");
 }
 
 // remove all accounts which are being tracked.

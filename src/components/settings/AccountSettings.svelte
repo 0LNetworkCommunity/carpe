@@ -1,11 +1,13 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
+  import { loadAccounts } from "../../accounts";
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
   const removeAccounts = async () => {
     invoke("remove_accounts", {})
       .then((res: any) => {
         responses.set(res);
+        loadAccounts()
       })
       .catch((e) => {
         raise_error(e);

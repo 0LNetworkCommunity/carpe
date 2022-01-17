@@ -19,7 +19,7 @@
         />
       </div>
       
-      <AccountFromMnemSubmit danger_temp_mnem={danger_temp_mnem} />
+      <AccountFromMnemSubmit danger_temp_mnem={danger_temp_mnem} isNewAccount={false} />
     </fieldset>
   </form>
 </main>

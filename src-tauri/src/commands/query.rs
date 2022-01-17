@@ -3,7 +3,7 @@ use diem_types::account_address::AccountAddress;
 use ol::node::query::QueryType;
 use crate::{carpe_error::CarpeError, configs::get_node_obj};
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError>{
   get_balance(account)
 }

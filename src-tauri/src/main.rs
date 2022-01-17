@@ -12,11 +12,13 @@ pub mod configs_network;
 pub mod configs_profile;
 pub mod carpe_error;
 pub mod seed_peers;
+
 use tauri::{Menu, MenuItem, Submenu};
 use crate::{commands::*};
 use pretty_env_logger;
 
 fn main() {
+  //  println!("{}", version::version());
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
     pretty_env_logger::init();
     
@@ -43,12 +45,12 @@ fn main() {
       menu
     }));
 
-
 	tauri::Builder::default()
 	.invoke_handler(tauri::generate_handler![
     // Accounts
     is_init,
 		get_all_accounts,
+    refresh_accounts,
 		add_account,
 		keygen,
     init_from_mnem,
@@ -71,6 +73,8 @@ fn main() {
     get_env,
     set_env,
     debug_submit_proof_zero,
+    // Version
+    get_app_version,
  
     // Debug
     init_swarm,
@@ -90,4 +94,6 @@ fn main() {
   .menu(menu)
 	.run(tauri::generate_context!())
 	.expect("error while running tauri application");
+
+  
 }

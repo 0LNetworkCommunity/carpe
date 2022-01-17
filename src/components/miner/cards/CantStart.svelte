@@ -1,9 +1,8 @@
 <script>
-import CardAlert from "../../layout/CardAlert.svelte";
-
+  import CardAlert from "../../layout/CardAlert.svelte";
 </script>
-<main>
 
+<main>
   <CardAlert>
     <span slot="title">Your account does not exist on chain yet </span>
     <div slot="body">
