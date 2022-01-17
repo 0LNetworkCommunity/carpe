@@ -34,10 +34,6 @@
   miner_loop_enabled.subscribe((e) => (enabled = e));
   // Todo: Should this listener only be started in the miner view?
   onMount(() => {
-    listen("tauri://update-available",  (res: JSON) => {
-      window.alert(`New version available`);
-    });
-
     listen("tower-event", (event) => {
       proofComplete();
       // is a type VDFProof
