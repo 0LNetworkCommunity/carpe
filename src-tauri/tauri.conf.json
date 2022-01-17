@@ -11,6 +11,13 @@
 		"withGlobalTauri": true
 	},
 	"tauri": {
+    "updater": {
+      "active": false,
+      "endpoints": [
+        "https://raw.githubusercontent.com/OLSF/carpe/main/autoupdater_payload.json"
+      ],
+      "dialog": true
+    },
 		"bundle": {
 			"active": true,
 			"targets": "all",
