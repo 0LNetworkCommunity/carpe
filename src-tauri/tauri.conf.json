@@ -12,7 +12,7 @@
 	},
 	"tauri": {
     "updater": {
-      "active": false,
+      "active": true,
       "endpoints": [
         "https://raw.githubusercontent.com/OLSF/carpe/main/autoupdater_payload.json"
       ],
@@ -43,7 +43,7 @@
 				"frameworks": [],
 				"minimumSystemVersion": "",
 				"useBootstrapper": false,
-				"exceptionDomain": "",
+				"exceptionDomain": "localhost",
 				"signingIdentity": null,
 				"entitlements": null
 			},
