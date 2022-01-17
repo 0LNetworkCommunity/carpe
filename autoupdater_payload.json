@@ -10,7 +10,7 @@
       "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/carpe.app.tar.gz"
     },
     "win64": {
-      "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/carpe.app.tar.gz"
+      "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/app.AppImage.tar.gz"
     }
   }
 }

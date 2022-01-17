@@ -14,7 +14,7 @@
     "updater": {
       "active": false,
       "endpoints": [
-        "https://mockbin.org/bin/09709b1c-37b4-49d7-9e68-851439156193/?target={{target}}&version={{current_version}}"
+        "https://raw.githubusercontent.com/OLSF/carpe/main/autoupdater_payload.json"
       ],
       "dialog": true
     },
