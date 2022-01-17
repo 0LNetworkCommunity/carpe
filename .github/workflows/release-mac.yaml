@@ -40,3 +40,11 @@ jobs:
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
+      - name: Upload Updater Builds
+        uses: svenstaro/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: src-tauri/target/release/bundle/${{ matrix.dir }}/macos/carpe.app.tar.gz
+          tag: ${{ github.ref }}
+          overwrite: true
+          file_glob: true
