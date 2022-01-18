@@ -47,4 +47,4 @@ jobs:
           file: src-tauri/target/release/bundle/${{ matrix.dir }}/macos/carpe.app.tar.gz
           tag: ${{ github.ref }}
           overwrite: true
-          file_glob: true
+          file_glob: false
