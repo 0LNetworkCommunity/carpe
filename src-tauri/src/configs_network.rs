@@ -7,7 +7,7 @@ use diem_types::waypoint::Waypoint;
 use ol::{config::AppCfg, node::{client, node::Node}};
 use ol_types::config::bootstrap_waypoint_from_rpc;
 use url::Url;
-use rand::seq::SliceRandom;
+use rand::{seq::SliceRandom, thread_rng};
 use crate::{carpe_error::CarpeError, configs::{self}, seed_peers};
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -38,7 +38,7 @@ impl NetworkProfile {
 pub enum Networks {
   Mainnet,
   Rex,
-  Custom,
+  Custom { playlist_url: Url },
 }
 
 impl fmt::Display for Networks {
@@ -52,24 +52,35 @@ impl fmt::Display for Networks {
 
 pub fn set_network_configs(network: Networks) -> Result<NetworkProfile, CarpeError> {
   dbg!("toggle network");
-  let peers = match network {
-    Networks::Mainnet => seed_peers::get_mainnet(),
-    Networks::Rex => seed_peers::get_testnet(),
-    Networks::Custom => todo!(),
+  let hostinfo = match &network {
+    Networks::Mainnet => seed_peers::get_known_fullnodes(None)?,
+
+    Networks::Rex => seed_peers::get_known_fullnodes(Some("https://raw.githubusercontent.com/OLSF/carpe/main/public/fullnode_seed_playlist_testnet.json".parse().unwrap()))?,
+    Networks::Custom { playlist_url } => seed_peers::get_known_fullnodes(Some(playlist_url.to_owned()))?,
   };
 
-  let random = peers.choose(&mut rand::thread_rng()).unwrap().to_owned();
+  let mut peers: Vec<Url> = hostinfo.into_iter()
+  .map(|h| {
+    h.url
+  })
+  .collect();
+
+  // Ensure the upstream_peers list is random, and the default peer is also random.
+  let mut rng = thread_rng();
+  peers.shuffle(&mut rng);
+  let random_for_default = peers[0].clone();
 
   set_upstream_nodes(peers).map_err(|e|  {
     let err_msg = format!("could not set upstream nodes, message: {}", &e.to_string());
     CarpeError::misc(&err_msg)
   })?;
 
-  set_default_node(random).map_err(|e|  {
+  set_default_node(random_for_default).map_err(|e|  {
     let err_msg = format!("could not set default node, message: {}", &e.to_string());
     CarpeError::misc(&err_msg)
   })?;
 
+  // TODO: I don't think chain ID needs to change.
   set_chain_id(network.to_string()).map_err(|e|  {
     let err_msg = format!("could not set chain id, message: {}", &e.to_string());
     CarpeError::misc(&err_msg)
