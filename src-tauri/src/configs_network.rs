@@ -102,6 +102,8 @@ pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
   }
 
 }
+
+
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error>  {
   let mut cfg = configs::get_cfg()?;

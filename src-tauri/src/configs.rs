@@ -7,7 +7,7 @@ use cli::diem_client::DiemClient;
 use dirs;
 use ol::{
   config::AppCfg,
-  node::{node::Node},
+  node::{node::Node, client::find_a_remote_jsonrpc},
 };
 
 use ol_types::config::{self, TxType};
@@ -77,12 +77,17 @@ pub fn get_node_obj() -> Result<Node, CarpeError> {
 }
 
 pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
-
-  DiemClient::new(
-    cfg.clone().profile.default_node.ok_or(CarpeError::misc("could not load default_node"))?, 
+  find_a_remote_jsonrpc(
+    cfg,
     cfg.clone().chain_info.base_waypoint.ok_or(CarpeError::misc("could not load base_waypoint"))?
   )
   .map_err(|_|{ CarpeError::misc("could not load tx params") })
+  // .map_err(|_|{ CarpeError::misc("could not load tx params") })
+  // DiemClient::new(
+  //   cfg.clone().profile.default_node.ok_or(CarpeError::misc("could not load default_node"))?, 
+  //   cfg.clone().chain_info.base_waypoint.ok_or(CarpeError::misc("could not load base_waypoint"))?
+  // )
+  // .map_err(|_|{ CarpeError::misc("could not load tx params") })
 }
 
 
