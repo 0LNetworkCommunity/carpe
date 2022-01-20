@@ -1,8 +1,7 @@
 use std::{env, path::PathBuf};
 use tokio::task;
-use crate::{carpe_error::CarpeError, configs::{get_cfg, get_diem_client, get_tx_params}, configs_profile::get_local_proofs_this_profile};
+use crate::{carpe_error::CarpeError, configs::{get_cfg, get_tx_params}, configs_profile::get_local_proofs_this_profile};
 use anyhow::Error;
-use diem_json_rpc_types::views::TowerStateResourceView;
 use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use tauri::Window;
@@ -158,20 +157,7 @@ pub fn mine_and_commit_one_proof(
 
 // TODO: Resubmit backlog
 
-#[tauri::command(async)]
-pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
-  println!("fetching onchain tower state");
-  let cfg = get_cfg()?;
-  let client = get_diem_client(&cfg)?;
 
-  match client.get_miner_state(&cfg.profile.account) {
-    Ok(Some(t)) => {
-      dbg!(&t);
-      Ok(t)
-    }
-    _ => Err(CarpeError::tower("could not get tower state from chain")),
-  }
-}
 
 #[tauri::command]
 pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {

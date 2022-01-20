@@ -114,6 +114,8 @@ pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error>  {
 
 
 /// Get all the 0L configs. For tx sending and upstream nodes
+/// Note: The default_node key in 0L is not used by Carpe. Carpe randomly tests 
+/// all the endpoints in upstream_peers on every TX.
 pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
   let mut cfg = configs::get_cfg()?;
   cfg.profile.default_node = Some(url);

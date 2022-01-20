@@ -1,4 +1,5 @@
 //! query the chain
+use diem_json_rpc_types::views::TowerStateResourceView;
 use diem_types::account_address::AccountAddress;
 use ol::node::query::QueryType;
 use crate::{carpe_error::CarpeError, configs::get_node_obj};
@@ -6,6 +7,22 @@ use crate::{carpe_error::CarpeError, configs::get_node_obj};
 #[tauri::command(async)]
 pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError>{
   get_balance(account)
+}
+
+#[tauri::command(async)]
+pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
+  println!("fetching onchain tower state");
+  // let cfg = get_cfg()?;
+  let node = get_node_obj()?;
+  // let client = get_diem_client(&cfg)?;
+
+  match node.client.get_miner_state(&node.app_conf.profile.account) {
+    Ok(Some(t)) => {
+      dbg!(&t);
+      Ok(t)
+    }
+    _ => Err(CarpeError::tower("could not get tower state from chain")),
+  }
 }
 
 pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError>{
