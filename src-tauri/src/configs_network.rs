@@ -55,7 +55,7 @@ pub fn set_network_configs(network: Networks) -> Result<NetworkProfile, CarpeErr
   let hostinfo = match &network {
     Networks::Mainnet => seed_peers::get_known_fullnodes(None)?,
 
-    Networks::Rex => seed_peers::get_known_fullnodes(Some("https://raw.githubusercontent.com/OLSF/carpe/main/public/fullnode_seed_playlist_testnet.json".parse().unwrap()))?,
+    Networks::Rex => seed_peers::get_known_fullnodes(Some("https://raw.githubusercontent.com/OLSF/carpe/main/seed_peers/fullnode_seed_playlist_testnet.json".parse().unwrap()))?,
     Networks::Custom { playlist_url } => seed_peers::get_known_fullnodes(Some(playlist_url.to_owned()))?,
   };
 

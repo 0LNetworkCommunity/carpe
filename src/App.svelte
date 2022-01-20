@@ -108,7 +108,12 @@
         <!-- DEV -->
         <Route path={routes.developer} component={DevMode} primary={false} />
         <Route path={routes.swarm} component={Swarm} primary={false} />
+
+
+        <!-- Show Debug Card Below -->
         <DebugCard/>
+
+
       </div>
     </Router>
   </div>  

@@ -12,7 +12,7 @@ export function success(s: string) {
 }
 
 
-export function error(s: string) {
+export function notify_error(s: string) {
   UIkit.notification({
     message: `<span uk-icon=\'icon: warning\'></span> ${s}`,
     pos: 'bottom-center',

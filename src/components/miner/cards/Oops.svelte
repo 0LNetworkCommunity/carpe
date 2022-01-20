@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { errors } from "../../../carpeError";
+  import { carpeErrorLog } from "../../../carpeError";
   import type { CarpeError } from "../../../carpeError";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
@@ -16,7 +16,7 @@
 
   this_error = test;
   onMount(async () => {
-    errors.subscribe((e) => {
+    carpeErrorLog.subscribe((e) => {
       result_string = "";
       if (e) {
         this_error = e;
