@@ -2,12 +2,12 @@
 import UIkit from 'uikit';
 
 
-export function success(s: string) {
+export function notify_success(s: string) {
   UIkit.notification({
     message: `<span uk-icon=\'icon: check\'></span> ${s}`,
     pos: 'bottom-center',
     status: 'success',
-    timeout: 3000
+    timeout: 30000
   });
 }
 
@@ -17,6 +17,6 @@ export function notify_error(s: string) {
     message: `<span uk-icon=\'icon: warning\'></span> ${s}`,
     pos: 'bottom-center',
     status: 'error',
-    timeout: 3000
+    timeout: 10000
   });
 }

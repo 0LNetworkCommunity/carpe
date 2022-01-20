@@ -8,6 +8,7 @@
   import UIkit from "uikit";
   import { invoke } from "@tauri-apps/api/tauri";
   import { routes } from "../../routes";
+import { notify_success } from "../../carpeNotify";
   
   let upstream_url = "http://1.1.1.1:8080";
   let waypoint = "";
@@ -29,12 +30,8 @@
     invoke("update_upstream", { url: upstream_url, wp: waypoint })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
-        UIkit.notification({
-          message: "<span uk-icon='icon: check'></span> Network Settings Updated",
-          pos: "bottom-center",
-          status: "success",
-          timeout: 3000,
-        });
+        notify_success("Network Settings Updated");
+
       })
       .catch((error) => {
         raise_error(error as CarpeError, false);

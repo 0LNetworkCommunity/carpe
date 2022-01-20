@@ -19,7 +19,7 @@
     backlog_in_progress,
     tower,
   } from "./miner";
-  import { success } from "./carpeNotify";
+  import { notify_success } from "./carpeNotify";
   import { raise_error } from "./carpeError";
   import { debugMode, responses } from "./debug";
   import { proofComplete, proofError, towerOnce } from "./miner_invoke";
@@ -43,7 +43,7 @@
       console.log(event.payload);
       let height = event.payload.height;
       if (height) {
-        success(`Proof ${height} mined`);
+        notify_success(`Proof ${height} mined`);
       }
       let t = get(tower);
       t.latest_proof = event.payload;
