@@ -169,22 +169,19 @@ pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
 
 #[tauri::command]
 pub fn set_env(env: String) -> Result<String, CarpeError> {
-  dbg!(&env);
   match env.as_ref() {
     "test" => env::set_var("NODE_ENV", "test"),
     "prod" => env::set_var("NODE_ENV", "prod"),
     _ => {},
   }
 
-  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("could not get node_env") })?;
-  dbg!(&v);
+  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("environment variable NODE_ENV is not set") })?;
   Ok(v)
 }
 
 #[tauri::command]
 pub fn get_env() -> Result<String, CarpeError> {
-  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("could not get node_env") })?;
-  dbg!(&v);
+  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("environment variable NODE_ENV is not set") })?;
   Ok(v)
 }
 

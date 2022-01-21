@@ -24,8 +24,13 @@ pub fn update_from_playlist(url: Url) -> Result<NetworkProfile, CarpeError> {
 }
 
 #[tauri::command]
-pub fn force_upstream(url: Url, wp: Waypoint) -> Result<NetworkProfile, CarpeError> {
+pub fn force_upstream(url: Url) -> Result<NetworkProfile, CarpeError> {
   override_upstream_node(url).map_err(|e| CarpeError::misc(&e.to_string()))?;
+  NetworkProfile::new()
+}
+
+#[tauri::command]
+pub fn force_waypoint(wp: Waypoint) -> Result<NetworkProfile, CarpeError> {
   set_waypoint(wp).map_err(|e| CarpeError::misc(&e.to_string()))?;
   NetworkProfile::new()
 }

@@ -58,6 +58,7 @@ fn main() {
     switch_profile,
     // Networks
     force_upstream,
+    force_waypoint,
     update_from_playlist,
     get_networks,
     refresh_waypoint,

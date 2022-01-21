@@ -33,7 +33,7 @@
 <main class="uk-margin-top">
   <nav class="uk-navbar-container" uk-navbar>
     {#if secondaryRoutes.includes($location.pathname)}
-      <Link to={routes.home}><span uk-icon="icon: arrow-left; ratio: 2" /></Link>
+      <Link to={routes.home}><span class="uk-text-muted" uk-icon="icon: arrow-left; ratio: 2" /></Link>
     {/if}
 
     <div class="uk-navbar-center">
