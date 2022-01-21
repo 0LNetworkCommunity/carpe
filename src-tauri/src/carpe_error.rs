@@ -32,6 +32,7 @@ const E_RPC_FAIL: u8 = 101;
 
 // Tower Errors
 const E_TOWER: u8 = 120;
+const E_TOWER_LIMIT: u8 = 121;
 
 
 impl CarpeError {
@@ -49,6 +50,15 @@ impl CarpeError {
       uid: E_TOWER,
       msg: msg.to_owned(),
       trace: msg.to_owned(),
+    }
+  }
+
+  pub fn tower_at_epoch_limit() -> Self {
+    CarpeError {
+      category: ErrorCat::Tower,
+      uid: E_TOWER_LIMIT,
+      msg: "Tower is at epoch limit".to_owned(),
+      trace: "Tower is at epoch limit".to_owned(),
     }
   }
 

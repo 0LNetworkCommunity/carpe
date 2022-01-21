@@ -1,12 +1,12 @@
 use std::{env, path::PathBuf};
 use tokio::task;
-use crate::{carpe_error::CarpeError, configs::{get_cfg, get_tx_params}, configs_profile::get_local_proofs_this_profile};
+use crate::{carpe_error::CarpeError, configs::{get_cfg, get_tx_params}, configs_profile::get_local_proofs_this_profile, commands::get_onchain_tower_state};
 use anyhow::Error;
 use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use tauri::Window;
 use tauri::Manager;
-use tower::{backlog::process_backlog, commit_proof::{self, commit_proof_tx}, proof::mine_once};
+use tower::{backlog::{process_backlog, MAX_PROOFS_PER_EPOCH}, commit_proof::{self, commit_proof_tx}, proof::mine_once};
 use txs::{tx_params::TxParams, submit_tx::eval_tx_status};
 // use crate::configs::{get_cfg, get_tx_params};
 
@@ -128,8 +128,16 @@ pub fn mine_and_commit_one_proof(
   tx_params: &TxParams,
 ) -> Result<VDFProof, CarpeError> {
   println!("Mining one proof");
+
   match mine_once(&config) {
-    Ok(b) => match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
+    Ok(b) => {
+      let ts = get_onchain_tower_state()?;
+      if !(ts.actual_count_proofs_in_epoch < MAX_PROOFS_PER_EPOCH) {
+        println!("maximum proofs submitted in epoch, will continue mining but not send proofs.");
+        // TODO: need to surface this information on client side.
+        return Ok(b)
+      }
+    match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
       Ok(tx_view) => match eval_tx_status(tx_view) {
         Ok(_) => Ok(b),
         Err(e) => {
@@ -146,7 +154,8 @@ pub fn mine_and_commit_one_proof(
         println!("{}", &msg);
         Err(CarpeError::tower(&msg))
       }
-    },
+    }
+  },
     Err(e) => {
       let msg = format!("Error mining tower proof, message: {:?}", e);
       println!("{}", &msg);

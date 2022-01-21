@@ -18,7 +18,6 @@ pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
 
   match node.client.get_miner_state(&node.app_conf.profile.account) {
     Ok(Some(t)) => {
-      dbg!(&t);
       Ok(t)
     }
     _ => Err(CarpeError::tower("could not get tower state from chain")),
