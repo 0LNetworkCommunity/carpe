@@ -57,7 +57,8 @@ fn main() {
     remove_accounts,
     switch_profile,
     // Networks
-    update_upstream,
+    force_upstream,
+    update_from_playlist,
     get_networks,
     refresh_waypoint,
     toggle_network,

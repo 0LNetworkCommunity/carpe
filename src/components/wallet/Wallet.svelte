@@ -30,7 +30,7 @@
 
   onMount(async () => {
     loadAccounts();
-    refreshWaypoint();
+    // refreshWaypoint();
 
     connected.subscribe((b) => (isConnected = b));
 

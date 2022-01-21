@@ -8,26 +8,15 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import { routes } from "../../routes";
   import { notify_success } from "../../carpeNotify";
-import SetNetworkPlaylist from "./SetNetworkPlaylist.svelte";
-  
-  let upstream_url = "http://1.1.1.1:8080";
-  let waypoint = "";
-  let current_chain_id = "";
-  
-  onMount(async () => {
-    getNetwork();
 
-    network_profile.subscribe((n) => {
-      upstream_url = n.url;
-      waypoint = n.waypoint;
-      current_chain_id = n.chain_id;
-    });
-  });
+  // default playlist which is provided in Carpe.
+  // TODO: move this to another repo
+  let playlist_json_url = "https://raw.githubusercontent.com/OLSF/carpe/main/seed_peers/fullnode_seed_playlist.json";
 
   function updateNetwork() {
     // check input data
     // submit
-    invoke("force_upstream", { url: upstream_url, wp: waypoint })
+    invoke("update_from_playlist", { url: playlist_json_url })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");
@@ -41,29 +30,15 @@ import SetNetworkPlaylist from "./SetNetworkPlaylist.svelte";
 </script>
 
 <main>
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Override Settings for connection to: {current_chain_id}</h4>
-
-  <SetNetworkPlaylist />
-  
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
-        <span> URL of upstream node</span>
+        <span> Update Playlist of Network Servers</span>
         <input
           class="uk-input"
           type="text"
-          placeholder={upstream_url}
-          bind:value={upstream_url}
-        />
-      </div>
-
-      <div class="uk-margin uk-inline-block uk-width-1-1">
-        <span> Waypoint </span>
-        <input
-          class="uk-input"
-          type="text"
-          placeholder={waypoint}
-          bind:value={waypoint}
+          placeholder={playlist_json_url}
+          bind:value={playlist_json_url}
         />
       </div>
 
@@ -71,7 +46,7 @@ import SetNetworkPlaylist from "./SetNetworkPlaylist.svelte";
         <span
           on:click={updateNetwork}
           class="uk-button uk-button-primary uk-align-right"
-          id="add-btn">Update</span
+          id="add-btn">Use Playlist</span
         >
         <Link to={routes.home}>
           <span class="uk-button uk-button-default uk-align-right">Cancel</span>

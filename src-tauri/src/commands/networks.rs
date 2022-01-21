@@ -5,7 +5,7 @@
 use diem_types::waypoint::Waypoint;
 use url::Url;
 
-use crate::{carpe_error::CarpeError, configs_network::{NetworkProfile, Networks, set_network_configs, set_waypoint, set_waypoint_from_upstream, set_default_node}};
+use crate::{carpe_error::CarpeError, configs_network::{NetworkProfile, Networks, set_network_configs, set_waypoint, set_waypoint_from_upstream, override_upstream_node, set_playlist}};
 
 #[tauri::command]
 pub fn toggle_network(network: Networks) -> Result<NetworkProfile, CarpeError> {
@@ -18,8 +18,14 @@ pub fn get_networks() -> Result<NetworkProfile, CarpeError> {
 }
 
 #[tauri::command]
-pub fn update_upstream(url: Url, wp: Waypoint) -> Result<NetworkProfile, CarpeError> {
-  set_default_node(url).map_err(|e| CarpeError::misc(&e.to_string()))?;
+pub fn update_from_playlist(url: Url) -> Result<NetworkProfile, CarpeError> {
+  set_playlist(url).map_err(|e| CarpeError::misc(&e.to_string()))?;
+  NetworkProfile::new()
+}
+
+#[tauri::command]
+pub fn force_upstream(url: Url, wp: Waypoint) -> Result<NetworkProfile, CarpeError> {
+  override_upstream_node(url).map_err(|e| CarpeError::misc(&e.to_string()))?;
   set_waypoint(wp).map_err(|e| CarpeError::misc(&e.to_string()))?;
   NetworkProfile::new()
 }

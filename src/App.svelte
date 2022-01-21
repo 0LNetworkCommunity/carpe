@@ -26,6 +26,7 @@
   import { disableMining } from "./miner_toggle";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
+import { refreshWaypoint } from "./networks";
 
   let enabled;
   let unlistenTowerEvent;
@@ -34,7 +35,11 @@
   let unlistenBacklogError;
 
   // Todo: Should this listener only be started in the miner view?
-  onMount(async () => {    
+  onMount(async () => {
+    // fetch a waypoint to see if we can connect to any fullnode.
+    // If successful this will set the `network.connected` bool to true. And wallet will display a view.
+
+    refreshWaypoint();
     miner_loop_enabled.subscribe(e => enabled = e);
 
     unlistenTowerEvent = await listen("tower-event", (event) => {
