@@ -1,6 +1,5 @@
 <script lang="ts">
 import Onboard from "./Onboard.svelte";
-import SetWalletType from "./SetWalletType.svelte";
 
 
 </script>
@@ -11,5 +10,4 @@ import SetWalletType from "./SetWalletType.svelte";
   </div>
   
   <Onboard/>
-  <SetWalletType/>
 </main>

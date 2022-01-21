@@ -53,6 +53,13 @@
     <div class="uk-flex uk-flex-center">
       <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Wallet</h2>
     </div>
+
+    {#if isRefreshing}
+      <div class="uk-flex uk-flex-center">
+        <span uk-spinner />
+      </div>
+    {/if}
+
     {#if !isConnected}
       <ConnectionError />
     {/if}
@@ -61,12 +68,9 @@
         <span uk-spinner class="uk-margin-left uk-position-absolute" />
       </div>
     {:else if account_list.length > 0}
-      {#if isRefreshing}
-        <span uk-spinner class="uk-margin-left uk-position-absolute" />
-      {/if}
-      <AccountsList {my_account} {account_list} {isMining} {isConnected}/>
+      <AccountsList {my_account} {account_list} {isMining} {isConnected} />
 
-      <ReminderCreate {pendingAccounts} {isConnected}/>
+      <ReminderCreate {pendingAccounts} {isConnected} />
 
       <div uk-grid class="uk-flex uk-flex-center">
         <Link to={routes.keygen}>

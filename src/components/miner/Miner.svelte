@@ -53,7 +53,10 @@
     -->
       <div class="uk-width-1-1">
         {#if isFirstProof == null}
-          <span uk-spinner></span>
+
+          <div class="uk-flex uk-flex-center">
+            <span uk-spinner />
+          </div>
         {:else if isFirstProof}
           <FirstProof />  
         {:else}

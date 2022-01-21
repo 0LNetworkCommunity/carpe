@@ -11,7 +11,7 @@
 </script>
 
 <CardAlert>
-  <span slot="title">Mining your first proof </span>
+  <span slot="title">Let's mine your first proof </span>
   <div slot="body">
     {#if enabled}
       <p> Hang tight! This will take at least 30mins, maybe up to 1hr</p>

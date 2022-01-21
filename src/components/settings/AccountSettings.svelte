@@ -22,9 +22,17 @@
 
   <div class="uk-margin" uk-grid>
     <div>
-      <button class="uk-button uk-button-danger" on:click={removeAccounts}>
-        Remove Accounts
-      </button>
+
+    <div class="uk-inline">
+    <button class="uk-button uk-button-danger" type="button">Remove Accounts</button>
+      <div uk-dropdown="mode: click">
+          <p>Confirm remove accounts from this device? This is not reversable.</p>
+          <button class="uk-button uk-button-danger" on:click={removeAccounts}>
+            Remove Accounts
+          </button>
+      </div>
+    </div>
+
     </div>
     <div>
       <span>
