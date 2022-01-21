@@ -8,9 +8,10 @@
     setNetwork,
     getNetwork,
     network_profile,
+    Networks,
   } from "../../networks";
 
-  import type { Networks, NetworkProfile} from "../../networks";
+  import type { NetworkProfile} from "../../networks";
 
   let current_chain_id = "";
   let waypoint = "";
