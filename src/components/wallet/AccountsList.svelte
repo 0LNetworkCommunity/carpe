@@ -10,6 +10,7 @@
   export let my_account: AccountEntry;
   export let account_list: AccountEntry[];
   export let isMining: boolean; 
+  export let isConnected: boolean;
 
   // TODO: move to tauri commands
   function formatBalance(balance) {
@@ -65,6 +66,8 @@
               <td>{formatBalance(a.balance)}</td>
             {:else if a.on_chain == undefined}
               loading...
+            {:else if !isConnected}
+              <td>offline...</td>
             {:else}
               <td>Account Not On Chain</td>
             {/if}

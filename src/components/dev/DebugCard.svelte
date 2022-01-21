@@ -2,7 +2,7 @@
   import { afterUpdate } from "svelte";
   import { get } from "svelte/store";
   import { carpeErrorLog, clearErrors } from "../../carpeError";
-  import { responses, debugMode } from "../../debug"; // TODO: Make this read only
+  import { responses, debugMode, debugModeToggle } from "../../debug"; // TODO: Make this read only
 
   /*
   let home = "";
@@ -30,16 +30,22 @@
     <div
       class="uk-margin-top uk-margin-bottom uk-card uk-card-default uk-card-body uk-width-1-2@m"
     >
-      <h5 class="uk-card-title uk-text-light uk-text-muted uk-text-uppercase">
-        Debug
-      </h5>
+      <div class="uk-row">
+          <h5 class="uk-card-title uk-text-light uk-text-muted uk-text-uppercase">
+            Debug
+          </h5>
+      </div>
+
 
       <div>
         <div class="uk-vertical-align-middle">
           <span class="uk-margin-small-right"> ERRORS </span> 
-          <span uk-icon="trash" uk-tooltip="title: Clear Errors" on:click={() => clearErrors()} ></span>
+          <div class="uk-align-right">
+            <span class="uk-margin-medium" uk-icon="trash" uk-tooltip="title: Clear Errors" on:click={() => clearErrors()} ></span>
+            <span uk-icon="sign-out" uk-tooltip="title: Exit Debug Mode" on:click={() => debugModeToggle()} ></span>
+          </div>
         </div>
-        
+
         
         {#if this_error != undefined}
           {#each this_error as e}

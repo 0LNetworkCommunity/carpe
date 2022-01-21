@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
   import type { CarpeError } from "../../carpeError";
   import { raise_error } from "../../carpeError";
-  import { network_profile, getNetwork, refreshWaypoint } from "../../networks";
+  import { network_profile, refreshWaypoint } from "../../networks";
   import type { NetworkProfile} from "../../networks";
   import { invoke } from "@tauri-apps/api/tauri";
   import { routes } from "../../routes";
@@ -54,6 +53,4 @@
       </div>
     </fieldset>
   </form>
-
-  <button class="uk-button uk-button-default" on:click={refreshWaypoint}>Fetch Waypoint</button>
 </main>

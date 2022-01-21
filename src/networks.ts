@@ -51,6 +51,6 @@ export function refreshWaypoint() {
     })
     .catch((error) => {
       connected.set(false);
-      raise_error(error, false);
+      raise_error(error, true); // we have a purpose-built error component for this
     });
 }

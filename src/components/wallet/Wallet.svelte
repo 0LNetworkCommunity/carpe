@@ -30,7 +30,10 @@
 
   onMount(async () => {
     loadAccounts();
-    // refreshWaypoint();
+
+    // fetch a waypoint to see if we can connect to any fullnode.
+    // If successful this will set the `network.connected` bool to true. And wallet will display a view.
+    refreshWaypoint();
 
     connected.subscribe((b) => (isConnected = b));
 
@@ -46,41 +49,35 @@
 </script>
 
 <main>
-  {#if isConnected}
-    <div>
-      {#if account_list == null}
-        <div class="uk-align-center">
-          <span uk-spinner class="uk-margin-left uk-position-absolute" />
-        </div>
-      {:else if account_list.length == 0}
-        <Newbie />
-      {:else}
-        <div class="uk-flex uk-flex-center">
-          <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
-            Wallet
-            {#if isRefreshing}
-              <span uk-spinner class="uk-margin-left uk-position-absolute" />
-            {/if}
-          </h2>
-        </div>
-
-        <AccountsList {my_account} {account_list} {isMining} />
-
-        <ReminderCreate {pendingAccounts} />
-
-        <div uk-grid class="uk-flex uk-flex-center">
-          <Link to={routes.keygen}>
-            <button class="uk-button uk-button-secondary"> New Account </button>
-          </Link>
-          <Link to={routes.accountFromMnem}>
-            <button class="uk-button uk-button-default"
-              >Restore Account
-            </button>
-          </Link>
-        </div>
-      {/if}
+  <div>
+    <div class="uk-flex uk-flex-center">
+      <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Wallet</h2>
     </div>
-  {:else}
-    <ConnectionError />
-  {/if}
+    {#if !isConnected}
+      <ConnectionError />
+    {/if}
+    {#if account_list == null}
+      <div class="uk-align-center">
+        <span uk-spinner class="uk-margin-left uk-position-absolute" />
+      </div>
+    {:else if account_list.length > 0}
+      {#if isRefreshing}
+        <span uk-spinner class="uk-margin-left uk-position-absolute" />
+      {/if}
+      <AccountsList {my_account} {account_list} {isMining} {isConnected}/>
+
+      <ReminderCreate {pendingAccounts} {isConnected}/>
+
+      <div uk-grid class="uk-flex uk-flex-center">
+        <Link to={routes.keygen}>
+          <button class="uk-button uk-button-secondary"> New Account </button>
+        </Link>
+        <Link to={routes.accountFromMnem}>
+          <button class="uk-button uk-button-default">Restore Account </button>
+        </Link>
+      </div>
+    {:else if account_list.length == 0 && !isRefreshing}
+      <Newbie />
+    {/if}
+  </div>
 </main>

@@ -2,10 +2,11 @@
   import { onMount } from "svelte";
   import type { AccountEntry } from "../../accounts";
   import { signingAccount } from "../../accounts";
-  import UIkit from "uikit";
   // import Clipboard from "svelte-clipboard";
 
   export let pendingAccounts: AccountEntry[];
+  export let isConnected: bool;
+
 
   let authkey;
   onMount(async () => {
@@ -15,7 +16,7 @@
 </script>
 
 <main>
-  {#if pendingAccounts.length > 0}
+  {#if pendingAccounts.length > 0 && isConnected }
     <div class="uk-margin-large">
       <div class="uk-card uk-card-primary uk-card-hover uk-card-body uk-light">
         <h3 class="uk-card-title">Onboarding</h3>
@@ -24,6 +25,7 @@
         {#each pendingAccounts as a}
           <p> 
             AUTH KEY: {a.authkey}  
+            <!-- Todo: clipboard component was causing render issues with Router -->
             <!-- <Clipboard
               text="{a.authkey}"
               let:copy

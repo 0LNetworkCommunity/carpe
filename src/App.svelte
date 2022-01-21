@@ -36,10 +36,6 @@ import { refreshWaypoint } from "./networks";
 
   // Todo: Should this listener only be started in the miner view?
   onMount(async () => {
-    // fetch a waypoint to see if we can connect to any fullnode.
-    // If successful this will set the `network.connected` bool to true. And wallet will display a view.
-
-    refreshWaypoint();
     miner_loop_enabled.subscribe(e => enabled = e);
 
     unlistenTowerEvent = await listen("tower-event", (event) => {
@@ -92,7 +88,7 @@ import { refreshWaypoint } from "./networks";
   })
 </script>
 
-<main class="uk-background-muted">
+<main class="uk-background-muted uk-height-viewport">
   <div class="uk-container">
     <Router>
       <Nav />
