@@ -7,7 +7,7 @@ export function notify_success(s: string) {
     message: `<span uk-icon=\'icon: check\'></span> ${s}`,
     pos: 'bottom-center',
     status: 'success',
-    timeout: 30000
+    timeout: 3000
   });
 }
 

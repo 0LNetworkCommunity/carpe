@@ -45,7 +45,7 @@
   });
 </script>
 
-<main class="WWuk-height-viewport">
+<main>
   {#if isConnected}
     <div>
       {#if account_list == null}

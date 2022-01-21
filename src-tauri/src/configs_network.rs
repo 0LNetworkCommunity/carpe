@@ -9,7 +9,7 @@ use crate::{
 };
 use anyhow::{bail, Error};
 use diem_types::waypoint::Waypoint;
-use ol::{config::AppCfg, node::client::find_a_remote_jsonrpc};
+use ol::config::AppCfg;
 use ol_types::config::bootstrap_waypoint_from_rpc;
 use rand::{seq::SliceRandom, thread_rng};
 use url::Url;
@@ -25,11 +25,10 @@ pub struct NetworkProfile {
 impl NetworkProfile {
   pub fn new() -> Result<Self, CarpeError> {
     let cfg = configs::get_cfg()?;
-    let client = find_a_remote_jsonrpc(&cfg, cfg.chain_info.base_waypoint.unwrap_or_default())?;
 
     Ok(NetworkProfile {
       chain_id: cfg.chain_info.chain_id,
-      url: client.url()?,
+      url: "http://0.0.0.0".parse().unwrap(), // TODO: This information is not used on the client side. Remove?
       waypoint: cfg.chain_info.base_waypoint.unwrap_or_default(),
       profile: "default".to_string(),
     })

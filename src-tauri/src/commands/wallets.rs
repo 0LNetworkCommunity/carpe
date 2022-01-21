@@ -68,7 +68,7 @@ pub fn keygen() -> Result<NewKeygen, CarpeError> {
 }
 
 /// default way accounts get initialized in Carpe
-#[tauri::command]
+#[tauri::command(async)]
 pub fn is_init() -> Result<bool, CarpeError> {
   Ok(configs::is_initialized())
 }
@@ -107,7 +107,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 }
 
 /// read all accounts from ACCOUNTS_DB_FILE
-#[tauri::command]
+#[tauri::command(async)]
 pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
   let all = read_accounts()?;
   Ok(all)
