@@ -4,7 +4,7 @@ use std::fmt;
 
 use anyhow::{Error, bail};
 use diem_types::waypoint::Waypoint;
-use ol::{config::AppCfg, node::{client, node::Node}};
+use ol::{config::AppCfg, node::{client::find_a_remote_jsonrpc}};
 use ol_types::config::bootstrap_waypoint_from_rpc;
 use url::Url;
 use rand::{seq::SliceRandom, thread_rng};
@@ -21,16 +21,14 @@ pub struct NetworkProfile {
 impl NetworkProfile {
   pub fn new() -> Result<Self, CarpeError> {
     let cfg = configs::get_cfg()?;
-    if let Some(url) = cfg.profile.default_node {
-      Ok(NetworkProfile {
+    let client = find_a_remote_jsonrpc(&cfg, cfg.chain_info.base_waypoint.unwrap_or_default())?;
+
+    Ok(NetworkProfile {
         chain_id: cfg.chain_info.chain_id,
-        url: url,
+        url: client.url()?,
         waypoint: cfg.chain_info.base_waypoint.unwrap_or_default(),
         profile: "default".to_string(),
       })
-    } else {
-      Err(CarpeError::misc("could not retrive network profile"))
-    }
   }
 }
 
@@ -68,15 +66,9 @@ pub fn set_network_configs(network: Networks) -> Result<NetworkProfile, CarpeErr
   // Ensure the upstream_peers list is random, and the default peer is also random.
   let mut rng = thread_rng();
   peers.shuffle(&mut rng);
-  let random_for_default = peers[0].clone();
 
   set_upstream_nodes(peers).map_err(|e|  {
     let err_msg = format!("could not set upstream nodes, message: {}", &e.to_string());
-    CarpeError::misc(&err_msg)
-  })?;
-
-  set_default_node(random_for_default).map_err(|e|  {
-    let err_msg = format!("could not set default node, message: {}", &e.to_string());
     CarpeError::misc(&err_msg)
   })?;
 
@@ -93,14 +85,18 @@ pub fn set_network_configs(network: Networks) -> Result<NetworkProfile, CarpeErr
 
 pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error>  {
   let cfg = configs::get_cfg()?;
-  if let Some(json_rpc_node) = cfg.profile.default_node.clone() {
-    let wp = bootstrap_waypoint_from_rpc(json_rpc_node)?;
-    // let (_, wp) = bootstrap_waypoint_from_upstream(&mut json_rpc_node)?;
-    set_waypoint(wp)
+  let wp: Option<Waypoint> = cfg.profile.upstream_nodes.clone()
+  .into_iter()
+  .find_map(|url| {
+    bootstrap_waypoint_from_rpc(url.to_owned()).ok()
+  });
+
+  if let Some(w) = wp {
+    set_waypoint(w)?;
+    Ok(cfg)
   } else {
     bail!("could not find default_node in 0L.toml")
   }
-
 }
 
 
@@ -118,7 +114,7 @@ pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error>  {
 /// all the endpoints in upstream_peers on every TX.
 pub fn set_default_node(url: Url) -> Result<AppCfg, Error> {
   let mut cfg = configs::get_cfg()?;
-  cfg.profile.default_node = Some(url);
+  cfg.profile.upstream_nodes = vec![url];
   cfg.save_file();
   Ok(cfg)
 }
@@ -135,30 +131,30 @@ pub fn set_chain_id(chain_id: String) -> Result<AppCfg, Error> {
 /// Set the list of upstream nodes
 pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
   let mut cfg = configs::get_cfg()?;
-  cfg.profile.upstream_nodes = Some(vec_url);
+  cfg.profile.upstream_nodes = vec_url;
   cfg.save_file();
   Ok(cfg)
 }
 
 
-// TODO:
-/// fetch upstream peers.
-pub fn refresh_upstream_peers() -> Result<(), Error> {
-  let mut cfg = configs::get_cfg()?;
-  let client = match client::pick_client(None, &mut cfg) {
-    Ok(c) => c,
-    Err(e) => {
-      println!(
-        "ERROR: Could not create a client to connect to network, exiting. Message: {:?}",
-        e
-      );
-      bail!("cannot connect to a client");
-      // exit(1);
-    }
-  };
+// // TODO:
+// /// fetch upstream peers.
+// pub fn refresh_upstream_peers() -> Result<(), Error> {
+//   let mut cfg = configs::get_cfg()?;
+//   let client = match client::pick_client(None, &mut cfg) {
+//     Ok(c) => c,
+//     Err(e) => {
+//       println!(
+//         "ERROR: Could not create a client to connect to network, exiting. Message: {:?}",
+//         e
+//       );
+//       bail!("cannot connect to a client");
+//       // exit(1);
+//     }
+//   };
 
-  let mut node = Node::new(client, &cfg, false);
+//   let mut node = Node::new(client, &cfg, false);
 
-  let path = configs::default_config_path();
-  node.refresh_peers_update_toml(path)
-}
+//   let path = configs::default_config_path();
+//   node.refresh_peers_update_toml(path)
+// }

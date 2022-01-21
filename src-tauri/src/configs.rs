@@ -11,8 +11,7 @@ use ol::{
 };
 
 use ol_types::config::{self, TxType};
-use txs::submit_tx::{TxParams, get_tx_params_from_keypair};
-use url::Url;
+use txs::tx_params::TxParams;
 
 use crate::{carpe_error::CarpeError, key_manager};
 
@@ -30,7 +29,7 @@ pub fn default_config_path() -> PathBuf {
 pub fn get_cfg() -> Result<AppCfg, Error> {
   let config_toml = default_config_path();
   // dbg!(&config_toml);
-  Ok(config::parse_toml(config_toml.to_str().unwrap().to_string())?)
+  Ok(config::parse_toml(config_toml)?)
 }
 
 pub fn default_accounts_db_path() -> PathBuf {
@@ -48,16 +47,11 @@ pub fn default_accounts_db_path() -> PathBuf {
 
 /// get transaction parameters from config file
 pub fn get_tx_params(url: Option<&str>, ) -> Result<TxParams, anyhow::Error> { // TODO: Should the Error type be a CarpeError?
-  let mut config = get_cfg()?;
-  if let Some(s) = url {
-    match s.parse::<Url>() {
-        Ok(u) => config.profile.default_node = Some(u),
-        Err(_) => {},
-    }
-  }
+  let config = get_cfg()?;
+
   // Requires user input to get OS keyring
   let keypair = key_manager::get_keypair(&config.profile.account.to_string())?;
-  get_tx_params_from_keypair(
+  TxParams::get_tx_params_from_keypair(
     config.clone(),
     TxType::Miner,
     keypair,

@@ -5,7 +5,7 @@
 use diem_types::waypoint::Waypoint;
 use url::Url;
 
-use crate::{carpe_error::CarpeError, configs_network::{NetworkProfile, Networks, set_default_node, set_network_configs, set_waypoint, set_waypoint_from_upstream}};
+use crate::{carpe_error::CarpeError, configs_network::{NetworkProfile, Networks, set_network_configs, set_waypoint, set_waypoint_from_upstream, set_default_node}};
 
 #[tauri::command]
 pub fn toggle_network(network: Networks) -> Result<NetworkProfile, CarpeError> {

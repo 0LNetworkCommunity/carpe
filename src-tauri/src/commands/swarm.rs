@@ -8,7 +8,7 @@ use sysinfo::{SystemExt, ProcessExt};
 use ol::commands::init_cmd::initialize_host_swarm;
 use tower::proof::mine_once;
 use tower::commit_proof;
-use txs::submit_tx;
+use txs::{submit_tx, tx_params::TxParams};
 
 use crate::{carpe_error::CarpeError, configs::{dev_get_source_path, dev_get_swarm_temp, get_cfg}};
 
@@ -88,8 +88,8 @@ pub fn swarm_files() -> Result<SwarmInit, CarpeError> {
 }
 
 // Get configs from swarm
-pub fn swarm_params(swarm_path: String) -> Result<submit_tx::TxParams, Error> {
-  let txp = submit_tx::get_tx_params_from_swarm(
+pub fn swarm_params(swarm_path: String) -> Result<TxParams, Error> {
+  let txp = TxParams::get_tx_params_from_swarm(
     PathBuf::from(swarm_path),
     "alice".to_string(),
     false, 
@@ -102,14 +102,14 @@ fn get_swarm_cfg(config_dir: &str, is_swarm: bool) -> AppCfg {
   let mut toml = PathBuf::from(config_dir);
   if is_swarm { toml.push("0/") };
   toml.push("0L.toml");
-  config::parse_toml(toml.to_str().unwrap().to_string()).unwrap()
+  config::parse_toml(toml).unwrap()
 }
 
 #[tauri::command]
 /// mine for swarm
 pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
 
-  let tx_params = submit_tx::get_tx_params_from_swarm(
+  let tx_params = TxParams::get_tx_params_from_swarm(
     PathBuf::from(&swarm_dir),
     swarm_persona, 
     false
@@ -122,7 +122,7 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
   match mine_once(&appcfg) {
     Ok(b) => {
       match commit_proof::commit_proof_tx(&tx_params.unwrap(), b, false) {
-          Ok(tx_view) => match submit_tx::eval_tx_status(&tx_view) {
+          Ok(tx_view) => match submit_tx::eval_tx_status(tx_view) {
               Ok(r) => format!("Success: Proof committed to chain \n {:?}", r),
               Err(e) => format!("ERROR: Proof NOT committed to chain, message: \n{:?}", e),
           },
@@ -140,7 +140,7 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
 pub fn swarm_demo_tx() -> Result<String, CarpeError> {
     let appcfg = get_cfg()?;
 
-    let tx_params = submit_tx::tx_params(
+    let tx_params = TxParams::new(
         appcfg,
         None,
         None,

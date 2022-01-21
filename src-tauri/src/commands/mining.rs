@@ -7,7 +7,7 @@ use ol_types::block::VDFProof;
 use tauri::Window;
 use tauri::Manager;
 use tower::{backlog::process_backlog, commit_proof::{self, commit_proof_tx}, proof::mine_once};
-use txs::submit_tx::{eval_tx_status, TxParams};
+use txs::{tx_params::TxParams, submit_tx::eval_tx_status};
 // use crate::configs::{get_cfg, get_tx_params};
 
 /// A new listener needs to be started whenever the user changes profiles i.e. using a different signing account.
@@ -130,7 +130,7 @@ pub fn mine_and_commit_one_proof(
   println!("Mining one proof");
   match mine_once(&config) {
     Ok(b) => match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
-      Ok(tx_view) => match eval_tx_status(&tx_view) {
+      Ok(tx_view) => match eval_tx_status(tx_view) {
         Ok(_) => Ok(b),
         Err(e) => {
           let msg = format!(
