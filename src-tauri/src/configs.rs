@@ -46,7 +46,7 @@ pub fn default_accounts_db_path() -> PathBuf {
 }
 
 /// get transaction parameters from config file
-pub fn get_tx_params(url: Option<&str>, ) -> Result<TxParams, anyhow::Error> { // TODO: Should the Error type be a CarpeError?
+pub fn get_tx_params() -> Result<TxParams, anyhow::Error> { // TODO: Should the Error type be a CarpeError?
   let config = get_cfg()?;
 
   // Requires user input to get OS keyring

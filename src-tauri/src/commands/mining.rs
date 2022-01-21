@@ -40,11 +40,11 @@ pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
       // always start tower processing backlog
       let _ = backlog(
         &config_clone.clone(),
-        &get_tx_params(None).expect("could not load tx params, this should have been checked before")
+        &get_tx_params().expect("could not load tx params, this should have been checked before")
       );
 
       // tx params cannot be cloned.
-      let tx_params = get_tx_params(None).expect("could not load tx params, this should have been checked before");
+      let tx_params = get_tx_params().expect("could not load tx params, this should have been checked before");
       // some blocking work here
       match mine_and_commit_one_proof(&config_clone, &tx_params) {
         Ok(proof) => {
@@ -73,7 +73,7 @@ struct BacklogSuccess {
 #[tauri::command(async)]
 pub async fn submit_backlog(window: Window) -> Result<(), CarpeError> {
   let config = get_cfg()?;
-  let tx_params = get_tx_params(None)
+  let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
 
   let _ = match backlog(&config, &tx_params) {
@@ -109,7 +109,7 @@ fn get_proof_zero() -> Result<VDFProof, Error> {
 
 #[tauri::command]
 pub fn debug_submit_proof_zero() -> Result<(), CarpeError>{
-  let tx_params = get_tx_params(None)
+  let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
   let proof = get_proof_zero()?;
   commit_proof_tx(&tx_params,proof, false)?;
