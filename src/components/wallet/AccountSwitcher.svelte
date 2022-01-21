@@ -3,7 +3,6 @@
   import { signingAccount, all_accounts, setAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { Link } from "svelte-navigator";
-  import UIkit from "uikit";
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
 

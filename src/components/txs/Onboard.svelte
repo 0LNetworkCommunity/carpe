@@ -6,6 +6,7 @@
   import { responses } from "../../debug";
   import { routes } from "../../routes";
   import { init_account_balance } from '../../accounts';
+import { notify_success } from "../../carpeNotify";
 
   let alice_authkey;
   function createUser() {
@@ -16,13 +17,7 @@
 
         // TODO move to an account controller
         init_account_balance(alice_authkey);
-
-        UIkit.notification({
-          message: `<span uk-icon='icon: check'></span>Account Added`,
-          pos: "bottom-center",
-          status: "success",
-          timeout: 3000,
-        });
+        notify_success("Account Added");
       })
       .catch((error) => raise_error(error));
   }

@@ -12,8 +12,8 @@ import { onMount } from "svelte";
   })
 </script>
 
-{#if isMainnet}
-  <span uk-icon="icon: user"/>  
-{:else}
+{#if !isMainnet}
   <img alt="test network icon" src="/images/crash-test.jpg"/>
+{:else}
+  <span uk-icon="icon: user"/>  
 {/if}

@@ -1,5 +1,5 @@
-import { writable } from 'svelte/store';
-import { error } from './carpeNotify';
+import { get, writable } from 'svelte/store';
+import { notify_error } from './carpeNotify';
 
 export interface CarpeError {
   category: number;
@@ -7,15 +7,22 @@ export interface CarpeError {
   msg: string;
 };
 
-let list_errors: CarpeError;
-export const errors = writable(list_errors);
+// let list_errors: CarpeError;
+export const carpeErrorLog = writable <[CarpeError]>([]);
 
 export function raise_error(err: CarpeError, quiet: boolean = false) {
-  errors.set(err);
   console.log(err);
+  let list = get(carpeErrorLog);
+  list.push(err);
+  carpeErrorLog.set(list);
+  console.log(list);
   let msg =`Error (${err.uid}): ${err.msg}`
   if (!quiet) {
-    error(msg);
+    notify_error(msg);
   }
 }
 
+
+export function clearErrors() {
+  carpeErrorLog.set([]);
+}

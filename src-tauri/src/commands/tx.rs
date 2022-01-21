@@ -12,7 +12,7 @@ pub fn demo_tx() -> Result<String, CarpeError> {
   // .map_err(|_|{ CarpeError::misc("can't parse account") })?;
 
   let tx_params =
-    configs::get_tx_params(None).map_err(|_| CarpeError::misc("could not load tx params"))?;
+    configs::get_tx_params().map_err(|_| CarpeError::misc("could not load tx params"))?;
   dbg!(&tx_params);
   match demo_cmd::demo_tx(&tx_params, None) {
     Ok(r) => Ok(format!("Tx Success: {:?}", r)),
@@ -25,7 +25,7 @@ pub fn demo_tx() -> Result<String, CarpeError> {
 
 #[tauri::command]
 pub fn create_user_account(authkey: String) -> Result<String, CarpeError> {
-  let tx_params = configs::get_tx_params(None)
+  let tx_params = configs::get_tx_params()
     .map_err(|_| CarpeError::misc("could not load tx params"))?;
 
   if let Some(key) = authkey.parse::<AuthenticationKey>().ok() {
@@ -50,7 +50,7 @@ pub enum WalletTypes {
 #[tauri::command]
 pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
   let tx_params =
-    configs::get_tx_params(None).map_err(|_| CarpeError::misc("could not load tx params"))?;
+    configs::get_tx_params().map_err(|_| CarpeError::misc("could not load tx params"))?;
 
   match txs::commands::wallet_cmd::set_wallet_type(type_int, tx_params, None) {
     Ok(r) => Ok(format!("Tx Success: {:?}", r)),

@@ -16,53 +16,57 @@
   import { miner_loop_enabled } from "../../miner";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
+  import { connected, refreshWaypoint } from "../../networks";
+  import ConnectionError from "../layout/ConnectionError.svelte";
   UIkit.use(Icons);
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[] = null;
-  let pendingAccounts: AccountEntry[] = []; 
-  let isMining = false; 
+  let pendingAccounts: AccountEntry[] = [];
+  let isMining = false;
   let isRefreshing: boolean = true;
+
+  let isConnected: boolean = true;
+
   onMount(async () => {
     loadAccounts();
-    
-    all_accounts.subscribe(all => {
+
+    // fetch a waypoint to see if we can connect to any fullnode.
+    // If successful this will set the `network.connected` bool to true. And wallet will display a view.
+    refreshWaypoint();
+
+    connected.subscribe((b) => (isConnected = b));
+
+    all_accounts.subscribe((all) => {
       account_list = all;
-      pendingAccounts = all.filter(x => !x.on_chain);
+      pendingAccounts = all.filter((x) => !x.on_chain);
     });
-    signingAccount.subscribe(a => my_account = a);
-    miner_loop_enabled.subscribe(boo => isMining = boo);
-    isRefreshingAccounts.subscribe(boo => isRefreshing = boo);
+    signingAccount.subscribe((a) => (my_account = a));
+    miner_loop_enabled.subscribe((boo) => (isMining = boo));
+    isRefreshingAccounts.subscribe((boo) => (isRefreshing = boo));
     is_initialized();
   });
-
 </script>
 
-<main class="uk-height-viewport">
+<main>
   <div>
+    <div class="uk-flex uk-flex-center">
+      <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Wallet</h2>
+    </div>
+    {#if !isConnected}
+      <ConnectionError />
+    {/if}
     {#if account_list == null}
       <div class="uk-align-center">
-        <span uk-spinner class="uk-margin-left uk-position-absolute"></span>
+        <span uk-spinner class="uk-margin-left uk-position-absolute" />
       </div>
-    {:else if account_list.length == 0}
-      <Newbie />
-    {:else}
-      <div class="uk-flex uk-flex-center">
-        <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
-          Wallet
-          {#if isRefreshing}
-            <span uk-spinner class="uk-margin-left uk-position-absolute"></span>
-          {/if}
-        </h2>
-      </div>
+    {:else if account_list.length > 0}
+      {#if isRefreshing}
+        <span uk-spinner class="uk-margin-left uk-position-absolute" />
+      {/if}
+      <AccountsList {my_account} {account_list} {isMining} {isConnected}/>
 
-      <AccountsList 
-        my_account={my_account}
-        account_list={account_list}
-        isMining={isMining}
-      />
-      
-      <ReminderCreate pendingAccounts={pendingAccounts}/>
+      <ReminderCreate {pendingAccounts} {isConnected}/>
 
       <div uk-grid class="uk-flex uk-flex-center">
         <Link to={routes.keygen}>
@@ -71,8 +75,9 @@
         <Link to={routes.accountFromMnem}>
           <button class="uk-button uk-button-default">Restore Account </button>
         </Link>
-      </div>  
-
+      </div>
+    {:else if account_list.length == 0 && !isRefreshing}
+      <Newbie />
     {/if}
   </div>
 </main>

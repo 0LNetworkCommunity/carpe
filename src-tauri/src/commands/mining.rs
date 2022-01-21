@@ -1,14 +1,13 @@
 use std::{env, path::PathBuf};
 use tokio::task;
-use crate::{carpe_error::CarpeError, configs::{get_cfg, get_diem_client, get_tx_params}, configs_profile::get_local_proofs_this_profile};
+use crate::{carpe_error::CarpeError, configs::{get_cfg, get_tx_params}, configs_profile::get_local_proofs_this_profile, commands::get_onchain_tower_state};
 use anyhow::Error;
-use diem_json_rpc_types::views::TowerStateResourceView;
 use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use tauri::Window;
 use tauri::Manager;
-use tower::{backlog::process_backlog, commit_proof::{self, commit_proof_tx}, proof::mine_once};
-use txs::submit_tx::{eval_tx_status, TxParams};
+use tower::{backlog::{process_backlog, MAX_PROOFS_PER_EPOCH}, commit_proof::{self, commit_proof_tx}, proof::mine_once};
+use txs::{tx_params::TxParams, submit_tx::eval_tx_status};
 // use crate::configs::{get_cfg, get_tx_params};
 
 /// A new listener needs to be started whenever the user changes profiles i.e. using a different signing account.
@@ -41,11 +40,11 @@ pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
       // always start tower processing backlog
       let _ = backlog(
         &config_clone.clone(),
-        &get_tx_params(None).expect("could not load tx params, this should have been checked before")
+        &get_tx_params().expect("could not load tx params, this should have been checked before")
       );
 
       // tx params cannot be cloned.
-      let tx_params = get_tx_params(None).expect("could not load tx params, this should have been checked before");
+      let tx_params = get_tx_params().expect("could not load tx params, this should have been checked before");
       // some blocking work here
       match mine_and_commit_one_proof(&config_clone, &tx_params) {
         Ok(proof) => {
@@ -74,7 +73,7 @@ struct BacklogSuccess {
 #[tauri::command(async)]
 pub async fn submit_backlog(window: Window) -> Result<(), CarpeError> {
   let config = get_cfg()?;
-  let tx_params = get_tx_params(None)
+  let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
 
   let _ = match backlog(&config, &tx_params) {
@@ -110,7 +109,7 @@ fn get_proof_zero() -> Result<VDFProof, Error> {
 
 #[tauri::command]
 pub fn debug_submit_proof_zero() -> Result<(), CarpeError>{
-  let tx_params = get_tx_params(None)
+  let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
   let proof = get_proof_zero()?;
   commit_proof_tx(&tx_params,proof, false)?;
@@ -129,9 +128,17 @@ pub fn mine_and_commit_one_proof(
   tx_params: &TxParams,
 ) -> Result<VDFProof, CarpeError> {
   println!("Mining one proof");
+
   match mine_once(&config) {
-    Ok(b) => match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
-      Ok(tx_view) => match eval_tx_status(&tx_view) {
+    Ok(b) => {
+      let ts = get_onchain_tower_state()?;
+      if !(ts.actual_count_proofs_in_epoch < MAX_PROOFS_PER_EPOCH) {
+        println!("maximum proofs submitted in epoch, will continue mining but not send proofs.");
+        // TODO: need to surface this information on client side.
+        return Ok(b)
+      }
+    match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
+      Ok(tx_view) => match eval_tx_status(tx_view) {
         Ok(_) => Ok(b),
         Err(e) => {
           let msg = format!(
@@ -147,7 +154,8 @@ pub fn mine_and_commit_one_proof(
         println!("{}", &msg);
         Err(CarpeError::tower(&msg))
       }
-    },
+    }
+  },
     Err(e) => {
       let msg = format!("Error mining tower proof, message: {:?}", e);
       println!("{}", &msg);
@@ -158,20 +166,7 @@ pub fn mine_and_commit_one_proof(
 
 // TODO: Resubmit backlog
 
-#[tauri::command(async)]
-pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
-  println!("fetching onchain tower state");
-  let cfg = get_cfg()?;
-  let client = get_diem_client(&cfg)?;
 
-  match client.get_miner_state(&cfg.profile.account) {
-    Ok(Some(t)) => {
-      dbg!(&t);
-      Ok(t)
-    }
-    _ => Err(CarpeError::tower("could not get tower state from chain")),
-  }
-}
 
 #[tauri::command]
 pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
@@ -183,22 +178,19 @@ pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
 
 #[tauri::command]
 pub fn set_env(env: String) -> Result<String, CarpeError> {
-  dbg!(&env);
   match env.as_ref() {
     "test" => env::set_var("NODE_ENV", "test"),
     "prod" => env::set_var("NODE_ENV", "prod"),
     _ => {},
   }
 
-  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("could not get node_env") })?;
-  dbg!(&v);
+  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("environment variable NODE_ENV is not set") })?;
   Ok(v)
 }
 
 #[tauri::command]
 pub fn get_env() -> Result<String, CarpeError> {
-  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("could not get node_env") })?;
-  dbg!(&v);
+  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("environment variable NODE_ENV is not set") })?;
   Ok(v)
 }
 

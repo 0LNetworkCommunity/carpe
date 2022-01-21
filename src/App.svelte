@@ -19,13 +19,14 @@
     backlog_in_progress,
     tower,
   } from "./miner";
-  import { success } from "./carpeNotify";
+  import { notify_success } from "./carpeNotify";
   import { raise_error } from "./carpeError";
   import { debugMode, responses } from "./debug";
   import { proofComplete, proofError, towerOnce } from "./miner_invoke";
   import { disableMining } from "./miner_toggle";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
+import { refreshWaypoint } from "./networks";
 
   let enabled;
   let unlistenTowerEvent;
@@ -34,7 +35,7 @@
   let unlistenBacklogError;
 
   // Todo: Should this listener only be started in the miner view?
-  onMount(async () => {    
+  onMount(async () => {
     miner_loop_enabled.subscribe(e => enabled = e);
 
     unlistenTowerEvent = await listen("tower-event", (event) => {
@@ -43,7 +44,7 @@
       console.log(event.payload);
       let height = event.payload.height;
       if (height) {
-        success(`Proof ${height} mined`);
+        notify_success(`Proof ${height} mined`);
       }
       let t = get(tower);
       t.latest_proof = event.payload;
@@ -87,7 +88,7 @@
   })
 </script>
 
-<main class="uk-background-muted">
+<main class="uk-background-muted uk-height-viewport">
   <div class="uk-container">
     <Router>
       <Nav />
@@ -108,7 +109,12 @@
         <!-- DEV -->
         <Route path={routes.developer} component={DevMode} primary={false} />
         <Route path={routes.swarm} component={Swarm} primary={false} />
+
+
+        <!-- Show Debug Card Below -->
         <DebugCard/>
+
+
       </div>
     </Router>
   </div>  

@@ -7,12 +7,8 @@
   import CantStart from "./cards/CantStart.svelte";  
   import { signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
-  import Status from "./cards/Status.svelte";
   import FirstProof from "./cards/FirstProof.svelte";
-  import Oops from "./cards/Oops.svelte";
   import { tower } from "../../miner";
-  import AccountFromMnemForm from "../wallet/AccountFromMnemForm.svelte";
-  import AccountFromMnemSubmit from "../wallet/AccountFromMnemSubmit.svelte";
   import { getTowerChainView } from "../../miner_invoke";  
 
   let isFirstProof = null;

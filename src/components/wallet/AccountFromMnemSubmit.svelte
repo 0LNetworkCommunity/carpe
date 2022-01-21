@@ -7,6 +7,7 @@
   import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
   import { invoke } from "@tauri-apps/api/tauri";
+import { notify_success } from "../../carpeNotify";
 
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;
@@ -38,14 +39,7 @@
         responses.set(JSON.stringify(res));
         signingAccount.set(res);       
         isSubmitting = false;
-
-        UIkit.notification({
-          message: `<span uk-icon='icon: check'></span>Account Added: ${res.nickname}`,
-          pos: "bottom-center",
-          status: "success",
-          timeout: 3000,
-        });
-        
+        notify_success(`Account Added: ${res.nickname}`);
         navigate("/");
       })
       .catch((error) => {

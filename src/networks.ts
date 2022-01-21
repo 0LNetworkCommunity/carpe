@@ -17,6 +17,8 @@ export const network_profile = writable<NetworkProfile>({
   profile: "string",
 });
 
+export const connected = writable<boolean>(true);
+
 // should match the Rust type Network Profile
 export interface NetworkProfile {
   chain_id: string, // Todo, use the Network Enum
@@ -43,6 +45,12 @@ export function getNetwork() {
 
 export function refreshWaypoint() {
   invoke("refresh_waypoint", {})
-    .then((res: NetworkProfile) => network_profile.set(res))
-    .catch((error) => raise_error(error, false));
+    .then((res: NetworkProfile) => {
+      network_profile.set(res);
+      connected.set(true);
+    })
+    .catch((error) => {
+      connected.set(false);
+      raise_error(error, true); // we have a purpose-built error component for this
+    });
 }

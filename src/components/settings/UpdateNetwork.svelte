@@ -1,16 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { Link } from "svelte-navigator";
   import type { CarpeError } from "../../carpeError";
   import { raise_error } from "../../carpeError";
-  import { network_profile, setNetwork, getNetwork, refreshWaypoint } from "../../networks";
+  import { network_profile, getNetwork, refreshWaypoint } from "../../networks";
   import type { NetworkProfile} from "../../networks";
-  import UIkit from "uikit";
   import { invoke } from "@tauri-apps/api/tauri";
-  import { routes } from "../../routes";
+  import { notify_success } from "../../carpeNotify";
+  import SetNetworkPlaylist from "./SetNetworkPlaylist.svelte";
   
   let upstream_url = "http://1.1.1.1:8080";
-  let waypoint = "";
   let current_chain_id = "";
   
   onMount(async () => {
@@ -18,7 +16,6 @@
 
     network_profile.subscribe((n) => {
       upstream_url = n.url;
-      waypoint = n.waypoint;
       current_chain_id = n.chain_id;
     });
   });
@@ -26,15 +23,11 @@
   function updateNetwork() {
     // check input data
     // submit
-    invoke("update_upstream", { url: upstream_url, wp: waypoint })
+    invoke("force_upstream", { url: upstream_url })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
-        UIkit.notification({
-          message: "<span uk-icon='icon: check'></span> Network Settings Updated",
-          pos: "bottom-center",
-          status: "success",
-          timeout: 3000,
-        });
+        notify_success("Network Settings Updated");
+
       })
       .catch((error) => {
         raise_error(error as CarpeError, false);
@@ -44,7 +37,15 @@
 </script>
 
 <main>
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Override Settings for connection to: {current_chain_id}</h4>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Network Settings {current_chain_id}</h4>
+
+  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> List of Peers</h5>
+  <p>Choose a playlist of upstream nodes, so you can access the chain. Network connections will try the list in random order until a connection is made. Simply link to any playlist.json file here to update peers.</p>
+  <SetNetworkPlaylist />
+  
+  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Override Peers</h5>
+  <p>You can force using a different peer. You can only choose one peer with this setting. It will remove the playlist. This will now be a list of one element. </p>
+
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
@@ -57,28 +58,16 @@
         />
       </div>
 
-      <div class="uk-margin uk-inline-block uk-width-1-1">
-        <span> Waypoint </span>
-        <input
-          class="uk-input"
-          type="text"
-          placeholder={waypoint}
-          bind:value={waypoint}
-        />
-      </div>
-
-      <div>
-        <span
+      <span
           on:click={updateNetwork}
           class="uk-button uk-button-primary uk-align-right"
-          id="add-btn">Add</span
+          id="add-btn">Update</span
         >
-        <Link to={routes.home}>
-          <span class="uk-button uk-button-default uk-align-right">Cancel</span>
-        </Link>
-      </div>
+
+      <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Fetch a new Waypoint from Upstream</h5>
+      <p>Most waypoint issues can easily be fixed by fetching an updated one from a connected upstream peer.</p>
+      <button class="uk-button uk-button-default" on:click={refreshWaypoint}>Fetch New Waypoint</button>
+
     </fieldset>
   </form>
-
-  <button class="uk-button uk-button-default" on:click={refreshWaypoint}>Fetch Waypoint</button>
 </main>
