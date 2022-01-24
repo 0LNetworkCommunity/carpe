@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { setAccount } from "../../accounts";
+  import { get_locale, setAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import IconMining from '../icons/IconMining.svelte';
   import UIkit from "uikit";
@@ -15,7 +15,8 @@
   // TODO: move to tauri commands
   function formatBalance(balance) {
     const balanceScaled = balance / 1000000
-    return balanceScaled.toLocaleString('en-ES', {
+
+    return balanceScaled.toLocaleString(get_locale(), {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });

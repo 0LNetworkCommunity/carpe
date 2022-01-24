@@ -138,3 +138,12 @@ export async function init_account_balance(authkey: string) {
     })
     .catch((e) => raise_error(e));
 }
+
+
+export function get_locale(): string {
+  let lang = 'en-US';
+  if (window.navigator.language) {
+    lang = window.navigator.language;
+  };
+  lang 
+}
