@@ -145,5 +145,5 @@ export function get_locale(): string {
   if (window.navigator.language) {
     lang = window.navigator.language;
   };
-  lang 
+  return lang 
 }
