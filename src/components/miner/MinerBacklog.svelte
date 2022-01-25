@@ -5,10 +5,7 @@
 
   let inProgress = false;
   onMount(async () => {
-    backlog_in_progress.subscribe(b => {
-      console.log(b);
-      inProgress = b
-    });
+    backlog_in_progress.subscribe(b => inProgress = b);
   });
 </script>
 

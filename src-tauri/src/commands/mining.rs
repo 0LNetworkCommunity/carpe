@@ -71,17 +71,15 @@ struct BacklogSuccess {
 }
 
 #[tauri::command(async)]
-pub async fn submit_backlog(window: Window) -> Result<(), CarpeError> {
+pub async fn submit_backlog(_window: Window) -> Result<(), CarpeError> {
   let config = get_cfg()?;
   let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
 
-  let _ = match backlog(&config, &tx_params) {
-    Ok(_) => window.emit("backlog-success", BacklogSuccess {success: true}),
-    Err(_) => window.emit("backlog-error", CarpeError::tower("could not submit backlog)"))
-  };
-    
-  Ok(())
+  process_backlog(&config, &tx_params, false) 
+    .map_err(|e| { 
+      CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}", &e))
+    })
 }
 
 /// flush a backlog of proofs at once to the chain.
