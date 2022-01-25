@@ -15,7 +15,7 @@ dependencies = [
 [[package]]
 name = "abigen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -84,7 +84,7 @@ dependencies = [
 [[package]]
 name = "accumulator"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "diem-crypto",
@@ -425,7 +425,7 @@ dependencies = [
 [[package]]
 name = "backup-cli"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -643,7 +643,7 @@ checksum = "8d696c370c750c948ada61c69a0ee2cbbb9c50b1019ddb86d9317157a99c2cae"
 [[package]]
 name = "boogie-backend"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -671,7 +671,7 @@ dependencies = [
 [[package]]
 name = "borrow-graph"
 version = "0.0.1"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
  "mirai-annotations",
@@ -724,7 +724,7 @@ checksum = "e3b5ca7a04898ad4bcd41c90c5285445ff5b791899bb1b0abdd2a2aa791211d7"
 [[package]]
 name = "bytecode"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "borrow-graph",
  "bytecode-verifier",
@@ -749,7 +749,7 @@ dependencies = [
 [[package]]
 name = "bytecode-interpreter"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bytecode",
@@ -768,7 +768,7 @@ dependencies = [
 [[package]]
 name = "bytecode-source-map"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -784,7 +784,7 @@ dependencies = [
 [[package]]
 name = "bytecode-verifier"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "borrow-graph",
@@ -1026,7 +1026,7 @@ dependencies = [
 [[package]]
 name = "classgroup"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "libc",
  "num-traits",
@@ -1035,12 +1035,13 @@ dependencies = [
 [[package]]
 name = "cli"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
  "chrono",
  "compiler",
+ "crash-handler",
  "diem-client",
  "diem-config",
  "diem-crypto",
@@ -1065,11 +1066,23 @@ dependencies = [
  "resource-viewer",
  "rpassword",
  "rust_decimal",
+ "rustyline 8.2.0",
  "serde",
  "serde_json",
  "structopt",
  "tokio 1.13.0",
  "walkdir",
+]
+
+[[package]]
+name = "clipboard-win"
+version = "4.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2f3e1238132dc01f081e1cbb9dace14e5ef4c3a51ee244bd982275fb514605db"
+dependencies = [
+ "error-code",
+ "str-buf",
+ "winapi 0.3.9",
 ]
 
 [[package]]
@@ -1190,7 +1203,7 @@ dependencies = [
 [[package]]
 name = "compiler"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1218,7 +1231,7 @@ dependencies = [
 [[package]]
 name = "consensus-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1384,6 +1397,18 @@ name = "cpuid-bool"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dcb25d077389e53838a8158c8e99174c5a9d902dee4904320db714f3c653ffba"
+
+[[package]]
+name = "crash-handler"
+version = "0.1.0"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
+dependencies = [
+ "backtrace",
+ "diem-logger",
+ "diem-workspace-hack",
+ "serde",
+ "toml",
+]
 
 [[package]]
 name = "crc32fast"
@@ -1633,7 +1658,7 @@ dependencies = [
 [[package]]
 name = "diem-client"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1654,7 +1679,7 @@ dependencies = [
 [[package]]
 name = "diem-config"
 version = "5.0.11"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "bcs",
  "diem-crypto",
@@ -1679,7 +1704,7 @@ dependencies = [
 [[package]]
 name = "diem-crypto"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -1710,7 +1735,7 @@ dependencies = [
 [[package]]
 name = "diem-crypto-derive"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "proc-macro2 1.0.32",
  "quote 1.0.10",
@@ -1720,7 +1745,7 @@ dependencies = [
 [[package]]
 name = "diem-framework"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "abigen",
  "anyhow",
@@ -1747,7 +1772,7 @@ dependencies = [
 [[package]]
 name = "diem-framework-releases"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1764,7 +1789,7 @@ dependencies = [
 [[package]]
 name = "diem-genesis-tool"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1785,6 +1810,7 @@ dependencies = [
  "diemdb",
  "dirs 2.0.2",
  "executor",
+ "generate-key",
  "hex",
  "ol-keys",
  "ol-types",
@@ -1802,7 +1828,7 @@ dependencies = [
 [[package]]
 name = "diem-github-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
  "proxy",
@@ -1815,12 +1841,12 @@ dependencies = [
 [[package]]
 name = "diem-global-constants"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 
 [[package]]
 name = "diem-infallible"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
 ]
@@ -1828,7 +1854,7 @@ dependencies = [
 [[package]]
 name = "diem-jellyfish-merkle"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1851,7 +1877,7 @@ dependencies = [
 [[package]]
 name = "diem-json-rpc-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-client",
  "diem-crypto",
@@ -1865,7 +1891,7 @@ dependencies = [
 [[package]]
 name = "diem-json-rpc-types"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1882,7 +1908,7 @@ dependencies = [
 [[package]]
 name = "diem-log-derive"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
  "proc-macro2 1.0.32",
@@ -1893,7 +1919,7 @@ dependencies = [
 [[package]]
 name = "diem-logger"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "backtrace",
  "chrono",
@@ -1911,7 +1937,7 @@ dependencies = [
 [[package]]
 name = "diem-management"
 version = "5.0.11"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1936,7 +1962,7 @@ dependencies = [
 [[package]]
 name = "diem-metrics"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "diem-logger",
@@ -1953,7 +1979,7 @@ dependencies = [
 [[package]]
 name = "diem-metrics-core"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
  "prometheus",
@@ -1962,7 +1988,7 @@ dependencies = [
 [[package]]
 name = "diem-network-address-encryption"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "base64",
  "bcs",
@@ -1979,7 +2005,7 @@ dependencies = [
 [[package]]
 name = "diem-nibble"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
  "serde",
@@ -1988,7 +2014,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-net"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-logger",
  "diem-secure-push-metrics",
@@ -2001,7 +2027,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-push-metrics"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-logger",
  "diem-metrics-core",
@@ -2012,7 +2038,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-storage"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "base64",
  "bcs",
@@ -2035,7 +2061,7 @@ dependencies = [
 [[package]]
 name = "diem-state-view"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "diem-crypto",
@@ -2046,7 +2072,7 @@ dependencies = [
 [[package]]
 name = "diem-temppath"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
  "hex",
@@ -2056,7 +2082,7 @@ dependencies = [
 [[package]]
 name = "diem-time-service"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-infallible",
  "diem-workspace-hack",
@@ -2067,7 +2093,7 @@ dependencies = [
 [[package]]
 name = "diem-transaction-builder"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2080,7 +2106,7 @@ dependencies = [
 [[package]]
 name = "diem-types"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -2106,7 +2132,7 @@ dependencies = [
 [[package]]
 name = "diem-vault-client"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "base64",
  "chrono",
@@ -2123,7 +2149,7 @@ dependencies = [
 [[package]]
 name = "diem-vm"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2149,7 +2175,7 @@ dependencies = [
 [[package]]
 name = "diem-wallet"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -2172,7 +2198,7 @@ dependencies = [
 [[package]]
 name = "diem-workspace-hack"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "Inflector",
  "anyhow",
@@ -2235,7 +2261,7 @@ dependencies = [
 [[package]]
 name = "diemdb"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "accumulator",
  "anyhow",
@@ -2360,7 +2386,7 @@ dependencies = [
 [[package]]
 name = "disassembler"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -2389,7 +2415,7 @@ checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 [[package]]
 name = "docgen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bytecode",
@@ -2473,6 +2499,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "endian-type"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c34f04666d835ff5d62e058c3995147c06f42fe86ff053337632bca83e42702d"
+
+[[package]]
 name = "enum_dispatch"
 version = "0.3.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2530,7 +2562,7 @@ dependencies = [
 [[package]]
 name = "errmapgen"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2542,9 +2574,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "error-code"
+version = "2.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "64f18991e7bf11e7ffee451b5318b5c1a73c52d0d0ada6e5a3017c8c1ced6a21"
+dependencies = [
+ "libc",
+ "str-buf",
+]
+
+[[package]]
 name = "executor"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2572,7 +2614,7 @@ dependencies = [
 [[package]]
 name = "executor-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2610,6 +2652,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b394ed3d285a429378d3b384b9eb1285267e7df4b166df24b7a6939a04dc392e"
 dependencies = [
  "instant",
+]
+
+[[package]]
+name = "fd-lock"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0010f02effd88c702318c5dde0463206be67495d0b4d906ba7c0a8f166cc7f06"
+dependencies = [
+ "libc",
+ "winapi 0.3.9",
 ]
 
 [[package]]
@@ -2896,7 +2948,7 @@ dependencies = [
 [[package]]
 name = "generate-key"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "bcs",
  "diem-crypto",
@@ -3632,7 +3684,7 @@ checksum = "68f2d64f2edebec4ce84ad108148e67e1064789bee435edc5b60ad398714a3a9"
 [[package]]
 name = "ir-to-bytecode"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -3651,7 +3703,7 @@ dependencies = [
 [[package]]
 name = "ir-to-bytecode-syntax"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "codespan",
@@ -4029,7 +4081,7 @@ checksum = "c9be0862c1b3f26a88803c4a49de6889c10e608b3ee9344e6ef5b45fb37ad3d1"
 [[package]]
 name = "move-binary-format"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "diem-workspace-hack",
@@ -4043,7 +4095,7 @@ dependencies = [
 [[package]]
 name = "move-core-types"
 version = "0.0.2"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4060,7 +4112,7 @@ dependencies = [
 [[package]]
 name = "move-coverage"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4081,7 +4133,7 @@ dependencies = [
 [[package]]
 name = "move-ir-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "codespan",
@@ -4095,7 +4147,7 @@ dependencies = [
 [[package]]
 name = "move-lang"
 version = "0.0.1"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4122,7 +4174,7 @@ dependencies = [
 [[package]]
 name = "move-model"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -4147,7 +4199,7 @@ dependencies = [
 [[package]]
 name = "move-prover"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "abigen",
  "anyhow",
@@ -4184,7 +4236,7 @@ dependencies = [
 [[package]]
 name = "move-stdlib"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
  "docgen",
@@ -4196,7 +4248,7 @@ dependencies = [
 [[package]]
 name = "move-vm-natives"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-crypto",
  "diem-global-constants",
@@ -4217,7 +4269,7 @@ dependencies = [
 [[package]]
 name = "move-vm-runtime"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "bytecode-verifier",
  "diem-crypto",
@@ -4236,7 +4288,7 @@ dependencies = [
 [[package]]
 name = "move-vm-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "bcs",
  "diem-workspace-hack",
@@ -4346,6 +4398,15 @@ name = "new_debug_unreachable"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e4a24736216ec316047a1fc4252e27dabb04218aa4a3f37c6e7ddbf1f9782b54"
+
+[[package]]
+name = "nibble_vec"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "77a5d83df9f36fe23f0c3648c6bbb8b0298bb5f1939c8f2704431371f4b84d43"
+dependencies = [
+ "smallvec 1.7.0",
+]
 
 [[package]]
 name = "nix"
@@ -4572,7 +4633,7 @@ dependencies = [
 [[package]]
 name = "num-variants"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
  "proc-macro2 1.0.32",
@@ -4650,7 +4711,7 @@ checksum = "a9a7ab5d64814df0fe4a4b5ead45ed6c5f181ee3ff04ba344313a6c80446c5d4"
 [[package]]
 name = "ol"
 version = "5.0.11"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "abscissa_core",
  "abscissa_tokio",
@@ -4686,7 +4747,7 @@ dependencies = [
  "move-binary-format",
  "move-core-types",
  "move-vm-types",
- "nix 0.20.2",
+ "nix 0.22.2",
  "num-format",
  "ol-keys",
  "ol-types",
@@ -4697,7 +4758,7 @@ dependencies = [
  "reqwest",
  "resource-viewer",
  "rocksdb 0.15.0",
- "rustyline",
+ "rustyline 6.3.0",
  "serde",
  "serde_json",
  "serde_yaml",
@@ -4718,7 +4779,7 @@ dependencies = [
 [[package]]
 name = "ol-keys"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "diem-types",
@@ -4730,7 +4791,7 @@ dependencies = [
 [[package]]
 name = "ol-types"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "ajson",
  "anyhow",
@@ -4760,7 +4821,7 @@ dependencies = [
 [[package]]
 name = "onboard"
 version = "5.0.11"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "abscissa_core",
  "anyhow",
@@ -4778,7 +4839,7 @@ dependencies = [
  "ol-keys",
  "ol-types",
  "reqwest",
- "rustyline",
+ "rustyline 6.3.0",
  "serde",
  "serde_json",
  "thiserror",
@@ -5473,7 +5534,7 @@ dependencies = [
 [[package]]
 name = "proxy"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
  "ipnet",
@@ -5523,6 +5584,16 @@ name = "radium"
 version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "941ba9d78d8e2f7ce474c015eea4d9c6d25b6a3327f9832ee29a4de27f91bbb8"
+
+[[package]]
+name = "radix_trie"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c069c179fcdc6a2fe24d8d18305cf085fdbd4f922c041943e203685d6a1c58fd"
+dependencies = [
+ "endian-type",
+ "nibble_vec",
+]
 
 [[package]]
 name = "rand"
@@ -5797,7 +5868,7 @@ dependencies = [
 [[package]]
 name = "resource-viewer"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -5978,6 +6049,30 @@ dependencies = [
 ]
 
 [[package]]
+name = "rustyline"
+version = "8.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fbd4eaf7a7738f76c98e4f0395253ae853be3eb018f7b0bb57fe1b6c17e31874"
+dependencies = [
+ "bitflags",
+ "cfg-if 1.0.0",
+ "clipboard-win",
+ "dirs-next 2.0.0",
+ "fd-lock",
+ "libc",
+ "log",
+ "memchr",
+ "nix 0.20.2",
+ "radix_trie",
+ "scopeguard",
+ "smallvec 1.7.0",
+ "unicode-segmentation",
+ "unicode-width",
+ "utf8parse",
+ "winapi 0.3.9",
+]
+
+[[package]]
 name = "ryu"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6011,7 +6106,7 @@ dependencies = [
 [[package]]
 name = "schemadb"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "diem-config",
@@ -6037,7 +6132,7 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 [[package]]
 name = "scratchpad"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "arc-swap",
  "diem-crypto",
@@ -6410,7 +6505,7 @@ checksum = "43b2853a4d09f215c24cc5489c992ce46052d359b5109343cbafbf26bc62f8a3"
 [[package]]
 name = "short-hex-str"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "diem-workspace-hack",
  "mirai-annotations",
@@ -6591,7 +6686,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "storage-interface"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -6607,6 +6702,12 @@ dependencies = [
  "serde",
  "thiserror",
 ]
+
+[[package]]
+name = "str-buf"
+version = "1.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d44a3643b4ff9caf57abcee9c2c621d6c03d9135e0d8b589bd9afb5992cb176a"
 
 [[package]]
 name = "string_cache"
@@ -7269,7 +7370,7 @@ dependencies = [
 [[package]]
 name = "tower"
 version = "5.0.11"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -7302,7 +7403,7 @@ dependencies = [
  "regex",
  "reqwest",
  "rpassword",
- "rustyline",
+ "rustyline 6.3.0",
  "serde",
  "serde_json",
  "storage-interface",
@@ -7417,7 +7518,7 @@ dependencies = [
 [[package]]
 name = "transaction-builder-generator"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
@@ -7470,7 +7571,7 @@ dependencies = [
 [[package]]
 name = "txs"
 version = "5.0.11"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -7504,7 +7605,7 @@ dependencies = [
  "reqwest",
  "resource-viewer",
  "rpassword",
- "rustyline",
+ "rustyline 6.3.0",
  "serde",
  "serde_json",
  "storage-interface",
@@ -7716,7 +7817,7 @@ checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 [[package]]
 name = "vdf"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "bit-vec 0.5.1",
  "classgroup",
@@ -7751,7 +7852,7 @@ checksum = "5fecdca9a5291cc2b8dcf7dc02453fee791a280f3743cb0905f8822ae463b3fe"
 [[package]]
 name = "vm-genesis"
 version = "0.1.0"
-source = "git+https://github.com/olsf/libra.git?branch=carpe-build#69da1e456297997bd0e78a3ba43f3168b98b0c98"
+source = "git+https://github.com/olsf/libra.git?branch=carpe-build#af2ae654ef4fcee8f50bac3b8ab1a0561f3c5469"
 dependencies = [
  "anyhow",
  "bcs",
