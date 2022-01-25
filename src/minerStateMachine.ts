@@ -1,6 +1,4 @@
-import { Writable, writable } from "svelte/store";
-import type Miner__SvelteComponent_ from "./components/miner/Miner.svelte";
-
+import { writable } from "svelte/store";
 
 export const enum MinerActivity {
   Off,
@@ -12,57 +10,65 @@ export const enum MinerActivity {
 
 
 export const enum TxState {
+  MakeClient,
   TxSent,
-  TxCantSend,
   TxOk,
-  TxRejected,
-  ProofOk,
-  ProofRejected,
+  ProofComitted,
 }
 
-export const enum ErrorState {
-  ConfigFile,
-  PrivateKey,
-  GasAmount,
-  NoAccount,
-  InvalidProof,
-  TooManyProofs,
+export const enum MinerErrors {
+  ConfigFile, // Carpe not initialized correctly
+  CantMakeClient, // Could not create a client connection
+  PrivateKey, // could not retrieve private key from OS keyring
+  TxRejectGasAmount, // Tx failed on gas error
+  TxRejectNoAccount, // Tx failed on no account found
+  TxRejectInvalidProof, // The proof fails VDF verification e.g. difficulty
+  TxRejectTooManyProofs, // User trying to send more proofs in epoch than threshold.
 }
 
 export interface StateMachine {
   miner: MinerActivity,
   tx?: TxState,
-  error?: ErrorState,
-  advance(success: boolean):void,
+  error?: MinerErrors,
+  advance_miner(success: boolean):void,
   save():void,
 }
 export const machine = writable<StateMachine>({});
 
-
 class M implements StateMachine {
   miner: MinerActivity;
   tx?: TxState;
-  error?: ErrorState;
+  error?: MinerErrors;
 
-  advance(success: boolean): void  {
+  advance_miner(success: boolean): void  {
     switch(this.miner) {
       case MinerActivity.Off: {
-        if (success) MinerActivity.On
+        if (success) this.miner = MinerActivity.On
         break;
       }
 
       case MinerActivity.On: {
-        if (success) MinerActivity.OnDelay
+        if (success) this.miner = MinerActivity.OnDelay
+        else this.miner = MinerActivity.Off
         break;
       }
 
       case MinerActivity.OnDelay: {
-        if (success) MinerActivity.OnProofDone
+        if (success) this.miner = MinerActivity.OnProofDone
+        else this.miner = MinerActivity.Off
         break;
       }
 
       case MinerActivity.OnProofDone: {
         if (success) MinerActivity.OnSubmitBacklog
+        else this.miner = MinerActivity.Off
+
+        break;
+      }
+
+      case MinerActivity.OnSubmitBacklog: {
+        if (success) MinerActivity.On
+        else this.miner = MinerActivity.On // If submit backlog fails, go back to miner start position.
         break;
       }
 
@@ -73,7 +79,28 @@ class M implements StateMachine {
 
   };
 
-  advance_one: () => {}
+  advance_tx(success: boolean, err?: MinerActivity): void{
+    switch (this.tx) {
+      case TxState.MakeClient: {
+        if (success) this.tx = TxState.TxSent
+        break;
+      }
+
+      case TxState.TxSent: {
+        if (success) this.tx = TxState.TxOk
+        break;
+      }
+
+      case TxState.TxOk: {
+        if (success) this.tx = TxState.ProofComitted
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+  }
 
   save(): void {
     machine.set(this);

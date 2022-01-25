@@ -27,9 +27,6 @@ export const signingAccount = writable<AccountEntry>(new_account("", "", ""));
 export const mnem = writable("");
 export const isInit = writable(false);
 export const isRefreshingAccounts = writable(false);
-
-// export const account = writable("");
-// export const authkey = writable("");
 export const all_accounts = writable<AccountEntry[]>([]);
 
 export function loadAccounts() {
