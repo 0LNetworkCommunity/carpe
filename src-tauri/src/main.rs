@@ -71,7 +71,8 @@ fn main() {
     wallet_type,
     //Tower
     miner_loop,
-    start_tower_listener,
+    start_backlog_sender_listener,
+    // start_tower_listener,
     submit_backlog,
     get_env,
     set_env,

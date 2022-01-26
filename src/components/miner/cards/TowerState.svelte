@@ -18,15 +18,15 @@
 
     tower.subscribe(m => towerState = m);
 
-    unlistenTowerEvent = await listen(
-      "tower-event", 
-      event => healthCheck
-    );
+    // unlistenTowerEvent = await listen(
+    //   "tower-event", 
+    //   event => healthCheck
+    // );
   });
 
   onDestroy(() => {
     clearInterval(healthTick);
-    unlistenTowerEvent();
+    // unlistenTowerEvent();
   });
 </script>
 

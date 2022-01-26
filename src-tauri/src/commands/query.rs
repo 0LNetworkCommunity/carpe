@@ -20,7 +20,7 @@ pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
     Ok(Some(t)) => {
       Ok(t)
     }
-    _ => Err(CarpeError::tower("could not get tower state from chain")),
+    _ => Err(CarpeError::client("could not get tower state from chain")),
   }
 }
 
