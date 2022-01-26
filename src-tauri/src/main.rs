@@ -70,6 +70,7 @@ fn main() {
     create_user_account,
     wallet_type,
     //Tower
+    miner_loop,
     start_tower_listener,
     submit_backlog,
     get_env,

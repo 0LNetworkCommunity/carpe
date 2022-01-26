@@ -38,11 +38,8 @@
       <CantStart />
     {:else}
       <div class="uk-width-1-1 uk-align-center">
-        <!-- <ToggleMiner /> -->
+        <ToggleMiner />
       
-
-        <button on:click={() => tower_loop() }> loop </button>
-
       <!-- <p>Lost time is never found again.</p> -->
       <!-- <Oops/> -->
 

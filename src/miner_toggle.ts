@@ -1,7 +1,7 @@
 import { get } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { miner_loop_enabled, tower } from "./miner";
-import { killTowerListener, startTowerListener, towerOnce, towerOnceAlt } from "./miner_invoke";
+import { killTowerListener, startTowerListener, towerOnce, towerOnceAlt, tower_loop as towerLoop } from "./miner_invoke";
 
 export async function enableMining(): Promise<boolean> {
   // careful to not start the miner twice.
@@ -10,24 +10,30 @@ export async function enableMining(): Promise<boolean> {
 
   // start the event listener on the rust side.
   // wait for it to be ready
-  let started = await startTowerListener()
-    .then((r) => {
-      towerOnce();
-      miner_loop_enabled.set(true);
-      return true;
-    })
-    .catch(e => { return false })
-  return started;
+  // let started = await startTowerListener()
+  //   .then((r) => {
+  //     towerOnce();
+  //     miner_loop_enabled.set(true);
+  //     return true;
+  //   })
+  //   .catch(e => { return false })
+  // return started;
+
+  
+  miner_loop_enabled.set(true);
+  // towerLoop needs the "enabled" bit == true
+  towerLoop();
+  return true;
 }
 
 export async function disableMining(): Promise<boolean> {
   // stop the envent listener.
 
-  await killTowerListener()
-    .catch(e => {
-      raise_error(e, false);
-      return false
-    });
+  // await killTowerListener()
+  //   .catch(e => {
+  //     raise_error(e, false);
+  //     return false
+  //   });
   // set mining to disabled
   miner_loop_enabled.set(false);
   return true;
