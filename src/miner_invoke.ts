@@ -3,7 +3,7 @@ import { getCurrent } from "@tauri-apps/api/window";
 import { get } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { responses } from "./debug";
-import { backlog_in_progress, ProofProgress, tower, TowerStateView } from "./miner";
+import { backlog_in_progress, miner_loop_enabled, ProofProgress, tower, TowerStateView } from "./miner";
 import { network_profile } from "./networks";
 
 
@@ -85,6 +85,54 @@ export const towerOnce = async () => {
   t.progress = progress;
   tower.set(t);
   current_window.emit('tower-make-proof', 'Tauri is awesome!');
+
+};
+
+
+export const tower_loop = async () => {
+  console.log("starting loop");
+  let i = 0;
+  while (get(miner_loop_enabled)) {
+    console.log(i);
+    await towerOnceAlt();
+    i = i + 1;
+  }
+}
+
+export const towerOnceAlt = async () => {
+  console.log("mine tower once")
+
+  let previous_duration = get(network_profile).chain_id == "Mainnet"
+    ? 30 * 60 * 1000
+    : 5 * 1000;
+
+  let t = get(tower);
+  if (t.progress && t.progress.time_start) {
+    previous_duration = Date.now() - t.progress.time_start;
+  }
+
+  let progress: ProofProgress = {
+    time_start: Date.now(),
+    previous_duration,
+    complete: false,
+    error: false,
+    pct_complete: 0
+  }
+  t.progress = progress;
+  tower.set(t);
+  
+  return invoke("miner_loop", {})
+    .then(res => {
+      // backlog_in_progress.set(false);
+      console.log('>>> miner_loop response: ' + res);
+      responses.set(res as string);
+      return res
+    })
+    .catch(e => {
+      // backlog_in_progress.set(false);
+      console.log('>>> miner_loop error: ' + e);
+      raise_error(e, false);
+    });
 
 };
 

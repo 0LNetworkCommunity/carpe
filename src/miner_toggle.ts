@@ -1,7 +1,7 @@
 import { get } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { miner_loop_enabled, tower } from "./miner";
-import { killTowerListener, startTowerListener, towerOnce } from "./miner_invoke";
+import { killTowerListener, startTowerListener, towerOnce, towerOnceAlt } from "./miner_invoke";
 
 export async function enableMining(): Promise<boolean> {
   // careful to not start the miner twice.

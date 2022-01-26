@@ -1,13 +1,22 @@
-use std::{env, path::PathBuf};
-use tokio::task;
-use crate::{carpe_error::CarpeError, configs::{get_cfg, get_tx_params}, configs_profile::get_local_proofs_this_profile, commands::get_onchain_tower_state};
+use crate::{
+  carpe_error::CarpeError,
+  commands::get_onchain_tower_state,
+  configs::{get_cfg, get_tx_params},
+  configs_profile::get_local_proofs_this_profile,
+};
 use anyhow::Error;
 use ol::config::AppCfg;
 use ol_types::block::VDFProof;
-use tauri::Window;
+use std::{env, path::PathBuf};
 use tauri::Manager;
-use tower::{backlog::{process_backlog, MAX_PROOFS_PER_EPOCH}, commit_proof::{self, commit_proof_tx}, proof::mine_once};
-use txs::{tx_params::TxParams, submit_tx::eval_tx_status};
+use tauri::Window;
+use tokio::task;
+use tower::{
+  backlog::{process_backlog, MAX_PROOFS_PER_EPOCH},
+  commit_proof::{self, commit_proof_tx},
+  proof::mine_once,
+};
+use txs::{submit_tx::eval_tx_status, tx_params::TxParams};
 // use crate::configs::{get_cfg, get_tx_params};
 
 /// A new listener needs to be started whenever the user changes profiles i.e. using a different signing account.
@@ -16,7 +25,6 @@ use txs::{tx_params::TxParams, submit_tx::eval_tx_status};
 //TODO: there's a risk of multiple tower listeners being initialized. This is handled on the JS window side, but we likely need more guarantees on the rust side. Unsure how to do this without implementing a proper queue.
 #[tauri::command]
 pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
-  
   println!("starting tower builder, listening for tower-make-proof");
   // prepare listener to receive events
   // TODO: this is gross. Prevent cloning when using in closures
@@ -34,17 +42,18 @@ pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
     let config_clone = config.clone();
 
     // The VDF by definition will block the thread. The work needs to be sent to a thread that can be blocked.
-    let _ = task::spawn_blocking( move || {
+    let _ = task::spawn_blocking(move || {
       // TODO: how to cehck for this before it get here?
-      
+
       // always start tower processing backlog
-      let _ = backlog(
-        &config_clone.clone(),
-        &get_tx_params().expect("could not load tx params, this should have been checked before")
-      );
+      // let _ = backlog(
+      //   &config_clone.clone(),
+      //   &get_tx_params().expect("could not load tx params, this should have been checked before")
+      // );
 
       // tx params cannot be cloned.
-      let tx_params = get_tx_params().expect("could not load tx params, this should have been checked before");
+      let tx_params =
+        get_tx_params().expect("could not load tx params, this should have been checked before");
       // some blocking work here
       match mine_and_commit_one_proof(&config_clone, &tx_params) {
         Ok(proof) => {
@@ -74,30 +83,36 @@ struct BacklogSuccess {
 pub async fn submit_backlog(_window: Window) -> Result<(), CarpeError> {
   let config = get_cfg()?;
   let tx_params = get_tx_params()
-    .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
+    .map_err(|_e| CarpeError::tower("could not fetch tx_params while sending backlog."))?;
 
-  process_backlog(&config, &tx_params, false) 
-    .map_err(|e| { 
-      CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}", &e))
-    })
+  process_backlog(&config, &tx_params, false).map_err(|e| {
+    CarpeError::tower(&format!(
+      "could not complete sending of backlog, message: {:?}",
+      &e
+    ))
+  })
 }
 
-/// flush a backlog of proofs at once to the chain.
-pub fn backlog(
-  config: &AppCfg,
-  tx_params: &TxParams,
-) -> Result<(), CarpeError> {
-  // TODO: This does not return an error on transaction failure. Change in upstream.
-  process_backlog(config, tx_params, false) 
-    .map_err(|e| { 
-      CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}", &e))
-    })?;
-  Ok(())
-}
+// /// flush a backlog of proofs at once to the chain.
+// pub fn backlog(
+//   config: &AppCfg,
+//   tx_params: &TxParams,
+// ) -> Result<(), CarpeError> {
+//   // TODO: This does not return an error on transaction failure. Change in upstream.
+//   process_backlog(config, tx_params, false)
+//     .map_err(|e| {
+//       CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}", &e))
+//     })?;
+//   Ok(())
+// }
 
 fn get_proof_zero() -> Result<VDFProof, Error> {
   let cfg = get_cfg()?;
-  let path = cfg.workspace.node_home.join(cfg.workspace.block_dir).join("proof_0.json");
+  let path = cfg
+    .workspace
+    .node_home
+    .join(cfg.workspace.block_dir)
+    .join("proof_0.json");
   let string = std::fs::read_to_string(path)?;
   let proof: VDFProof = serde_json::from_str(&string)?;
   dbg!(&proof);
@@ -106,14 +121,13 @@ fn get_proof_zero() -> Result<VDFProof, Error> {
 }
 
 #[tauri::command]
-pub fn debug_submit_proof_zero() -> Result<(), CarpeError>{
+pub fn debug_submit_proof_zero() -> Result<(), CarpeError> {
   let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::tower("could getch tx_params while sending backlog."))?;
   let proof = get_proof_zero()?;
-  commit_proof_tx(&tx_params,proof, false)?;
+  commit_proof_tx(&tx_params, proof, false)?;
   Ok(())
 }
-
 
 #[test]
 fn test_proof_zero() {
@@ -133,27 +147,27 @@ pub fn mine_and_commit_one_proof(
       if !(ts.actual_count_proofs_in_epoch < MAX_PROOFS_PER_EPOCH) {
         println!("maximum proofs submitted in epoch, will continue mining but not send proofs.");
         // TODO: need to surface this information on client side.
-        return Ok(b)
+        return Ok(b);
       }
-    match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
-      Ok(tx_view) => match eval_tx_status(tx_view) {
-        Ok(_) => Ok(b),
+      match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
+        Ok(tx_view) => match eval_tx_status(tx_view) {
+          Ok(_) => Ok(b),
+          Err(e) => {
+            let msg = format!(
+              "ERROR: Tower proof NOT committed to chain, message: \n{:?}",
+              e
+            );
+            println!("{}", &msg);
+            Err(CarpeError::tower(&msg))
+          }
+        },
         Err(e) => {
-          let msg = format!(
-            "ERROR: Tower proof NOT committed to chain, message: \n{:?}",
-            e
-          );
+          let msg = format!("Tower transaction rejected, message: \n{:?}", e);
           println!("{}", &msg);
           Err(CarpeError::tower(&msg))
         }
-      },
-      Err(e) => {
-        let msg = format!("Tower transaction rejected, message: \n{:?}", e);
-        println!("{}", &msg);
-        Err(CarpeError::tower(&msg))
       }
     }
-  },
     Err(e) => {
       let msg = format!("Error mining tower proof, message: {:?}", e);
       println!("{}", &msg);
@@ -162,16 +176,62 @@ pub fn mine_and_commit_one_proof(
   }
 }
 
-// TODO: Resubmit backlog
+/// creates one proof and submits
+#[tauri::command(async)]
+pub fn miner_loop(
+  window: Window,
+  // config: &AppCfg,
+  // tx_params: &TxParams,
+) -> Result<VDFProof, CarpeError> {
+  println!("Mining one proof");
+  let config = get_cfg()?;
+  let tx_params = get_tx_params()
+    .map_err(|_e| CarpeError::tower("could not fetch tx_params while sending backlog."))?;
 
+  let proof = mine_once(&config)
+    .map_err(|e| CarpeError::tower(&format!("could not mine one proof, message: {:?}", &e)))?;
+  // tell the client it was successful thus far.
+  window.emit("tower-event", &proof).unwrap();
 
+  let ts = get_onchain_tower_state()?;
+  if !(ts.actual_count_proofs_in_epoch < MAX_PROOFS_PER_EPOCH) {
+    println!("maximum proofs submitted in epoch, will continue mining but will not send proofs.");
+
+    // tell the client we wont be submitting the proof now
+    window
+      .emit("tower-error", &CarpeError::tower_at_epoch_limit())
+      .unwrap();
+
+    // TODO: need to surface this information on client side.
+    return Ok(proof);
+  }
+
+  // Always submit the backlog in case a proof was missed.
+  // TODO: Change the order, and have this run before making a proof?
+  match process_backlog(&config, &tx_params, false) {
+    Ok(_) => window.emit("backlog-success", &proof).unwrap(),
+    Err(e) => {
+      window
+        .emit("backlog-error", &CarpeError::tower_at_epoch_limit())
+        .unwrap();
+      
+      return Err(CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}",&e)));
+    }
+  }
+
+  Ok(proof)
+}
 
 #[tauri::command]
 pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
-
   get_local_proofs_this_profile()
-  // TODO: Why is the CarpeError From anyhow not working?
-  .map_err(|e| { CarpeError::misc(&format!("could not get local files, message: {:?}", e.to_string()) ) })
+    // TODO: Why is the CarpeError From anyhow not working?
+    .map_err(|e| {
+      CarpeError::misc(&format!(
+        "could not get local files, message: {:?}",
+        e.to_string()
+      ))
+    })
 }
 
 #[tauri::command]
@@ -179,16 +239,17 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
   match env.as_ref() {
     "test" => env::set_var("NODE_ENV", "test"),
     "prod" => env::set_var("NODE_ENV", "prod"),
-    _ => {},
+    _ => {}
   }
 
-  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("environment variable NODE_ENV is not set") })?;
+  let v = env::var("NODE_ENV")
+    .map_err(|_| CarpeError::misc("environment variable NODE_ENV is not set"))?;
   Ok(v)
 }
 
 #[tauri::command]
 pub fn get_env() -> Result<String, CarpeError> {
-  let v = env::var("NODE_ENV").map_err(|_| { CarpeError::misc("environment variable NODE_ENV is not set") })?;
+  let v = env::var("NODE_ENV")
+    .map_err(|_| CarpeError::misc("environment variable NODE_ENV is not set"))?;
   Ok(v)
 }
-

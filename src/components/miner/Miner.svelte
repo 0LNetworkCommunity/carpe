@@ -9,7 +9,7 @@
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
   import { tower } from "../../miner";
-  import { getTowerChainView } from "../../miner_invoke";  
+  import { getTowerChainView, tower_loop } from "../../miner_invoke";  
 
   let isFirstProof = null;
   let account: AccountEntry;
@@ -38,8 +38,11 @@
       <CantStart />
     {:else}
       <div class="uk-width-1-1 uk-align-center">
-        <ToggleMiner />
+        <!-- <ToggleMiner /> -->
       
+
+        <button on:click={() => tower_loop() }> loop </button>
+
       <!-- <p>Lost time is never found again.</p> -->
       <!-- <Oops/> -->
 

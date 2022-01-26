@@ -21,12 +21,11 @@
   } from "./miner";
   import { notify_success } from "./carpeNotify";
   import { raise_error } from "./carpeError";
-  import { debugMode, responses } from "./debug";
+  import { responses } from "./debug";
   import { proofComplete, proofError, towerOnce } from "./miner_invoke";
   import { disableMining } from "./miner_toggle";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
-import { refreshWaypoint } from "./networks";
 
   let enabled;
   let unlistenTowerEvent;
@@ -50,11 +49,11 @@ import { refreshWaypoint } from "./networks";
       t.latest_proof = event.payload;
       tower.set(t);
 
-      // This section triggers the next block to start
-      // it sends a listener event to the Rust side.
-      if (enabled) {
-        towerOnce();
-      }
+      // // This section triggers the next block to start
+      // // it sends a listener event to the Rust side.
+      // if (enabled) {
+      //   towerOnce();
+      // }
     });
 
     unlistenTowerError = await listen("tower-error", (event) => {
