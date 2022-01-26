@@ -89,7 +89,7 @@ export const towerOnce = async () => {
 };
 
 
-export const tower_loop = async () => {
+export const towerLoop = async () => {
   console.log("starting loop");
   let i = 0;
   while (get(miner_loop_enabled)) {

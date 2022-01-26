@@ -9,7 +9,7 @@
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
   import { tower } from "../../miner";
-  import { getTowerChainView, tower_loop } from "../../miner_invoke";  
+  import { getTowerChainView } from "../../miner_invoke";  
 
   let isFirstProof = null;
   let account: AccountEntry;
