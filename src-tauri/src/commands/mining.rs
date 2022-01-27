@@ -277,7 +277,7 @@ pub fn get_local_height() -> Result<u64, CarpeError> {
   let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
   match parse_block_height(&block_dir).0 {
       Some(h) => Ok(h),
-      None => CarpeError::tower("could not get block height", TowerError::NoLocalBlocks),
+      None => Err(CarpeError::tower("could not get block height", TowerError::NoLocalBlocks.value())),
   }
 }
 
