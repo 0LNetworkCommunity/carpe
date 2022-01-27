@@ -72,6 +72,7 @@ fn main() {
     //Tower
     miner_once,
     start_backlog_sender_listener,
+    get_local_height,
     // start_tower_listener,
     submit_backlog,
     get_env,

@@ -14,7 +14,7 @@ use tauri::Window;
 use tower::{
   backlog::{process_backlog, MAX_PROOFS_PER_EPOCH},
   commit_proof::commit_proof_tx,
-  proof::mine_once, tower_errors::TowerError,
+  proof::{mine_once, parse_block_height}, tower_errors::TowerError,
 };
 // use crate::configs::{get_cfg, get_tx_params};
 
@@ -271,8 +271,15 @@ pub fn debug_submit_proof_zero() -> Result<(), CarpeError> {
 //   }
 // }
 
-
-
+#[tauri::command]
+pub fn get_local_height() -> Result<u64, CarpeError> {
+  let cfg = get_cfg()?;
+  let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
+  match parse_block_height(&block_dir).0 {
+      Some(h) => Ok(h),
+      None => CarpeError::tower("could not get block height", TowerError::NoLocalBlocks),
+  }
+}
 
 #[tauri::command]
 pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
