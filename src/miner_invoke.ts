@@ -3,7 +3,7 @@ import { getCurrent } from "@tauri-apps/api/window";
 import { get } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { responses } from "./debug";
-import { backlog_in_progress, miner_loop_enabled, ProofProgress, tower, TowerStateView } from "./miner";
+import { backlog_in_progress, EpochRules, miner_loop_enabled, ProofProgress, tower, TowerStateView } from "./miner";
 import { network_profile } from "./networks";
 
 
@@ -43,64 +43,48 @@ export const killTowerListener = async () => {
 
 export const getTowerChainView = async () => {
   await invoke("get_onchain_tower_state", {})
-    .then((res: TowerStateView) => {
+    .then((res: EpochRules) => {
       let t = get(tower);
-      t.on_chain = res;
+      t.rules = res;
       tower.set(t);
       responses.set(JSON.stringify(res));
     })
     .catch((e) => {
-      let t = get(tower);
-      t.on_chain = {};
-      tower.set(t);
-
       raise_error(e, true)
     });
 };
 
-export const getLocalProofs = async () => {
-  await invoke("get_local_proofs", {})
-    .then((res: TowerStateView) => {
+// update the `tower.local_proof`
+export const getLocalHeight = async () => {
+  await invoke("get_local_height", {})
+    .then((res: number) => {
       console.log(res);
       // if res.
       let t = get(tower);
-      t.on_chain = res;
+      t.local_height = res;
       tower.set(t);
       responses.set(JSON.stringify(res));
     })
     .catch((e) => {
-      let t = get(tower);
-      t.on_chain = {};
-      tower.set(t);
-
       raise_error(e, true)
     });
 };
 
-// export const towerOnce = async () => {
-//   console.log("mine tower once")
+export const getEpochRules = async () => {
+  await invoke("get_epoch_rules", {})
+    .then((res: number) => {
+      console.log(res);
+      // if res.
+      let t = get(tower);
+      t.local_height = res;
+      tower.set(t);
+      responses.set(JSON.stringify(res));
+    })
+    .catch((e) => {
+      raise_error(e, true)
+    });
+};
 
-//   let previous_duration = get(network_profile).chain_id == "Mainnet"
-//     ? 30 * 60 * 1000
-//     : 5 * 1000;
-
-//   let t = get(tower); 
-//   if (t.progress && t.progress.time_start) {
-//     previous_duration = Date.now() - t.progress.time_start;
-//   }
-
-//   let progress: ProofProgress = {
-//     time_start: Date.now(),
-//     previous_duration,
-//     complete: false,
-//     error: false,
-//     pct_complete: 0
-//   }
-//   t.progress = progress;
-//   tower.set(t);
-//   current_window.emit('tower-make-proof', 'Tauri is awesome!');
-
-// };
 
 
 export const towerLoop = async () => {

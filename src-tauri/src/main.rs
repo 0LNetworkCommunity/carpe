@@ -73,7 +73,7 @@ fn main() {
     miner_once,
     start_backlog_sender_listener,
     get_local_height,
-    // start_tower_listener,
+    get_epoch_rules,
     submit_backlog,
     get_env,
     set_env,

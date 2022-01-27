@@ -293,6 +293,26 @@ pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
     })
 }
 
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+/// the parameter e.g. upper and lower thresholds
+pub struct EpochRules {
+  pub lower: u64,
+  pub upper: u64,
+  pub difficulty: u64,
+  pub security: u64,
+}
+
+#[tauri::command]
+pub fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
+  Ok(EpochRules {
+      lower: tower::EPOCH_MINING_THRES_LOWER,
+      upper: tower::EPOCH_MINING_THRES_UPPER,
+      difficulty: 0, // TODO: get from chain
+      security: 0, // TODO: get from chain
+  })
+}
+
 #[tauri::command]
 pub fn set_env(env: String) -> Result<String, CarpeError> {
   match env.as_ref() {
