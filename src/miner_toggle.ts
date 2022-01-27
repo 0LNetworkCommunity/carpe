@@ -1,6 +1,6 @@
 import { get } from "svelte/store";
 import { miner_loop_enabled, tower } from "./miner";
-import { towerLoop } from "./miner_invoke";
+import { killTowerListener, startBacklogListener, towerLoop } from "./miner_invoke";
 
 export async function enableMining(): Promise<boolean> {
   // careful to not start the miner twice.
@@ -20,6 +20,11 @@ export async function enableMining(): Promise<boolean> {
 
   
   miner_loop_enabled.set(true);
+  // When the user turns on the toggle, they will be prompted for OS password.
+  // the backlog listener prevents the user from having to re-enter the password everytime
+  // a new proof needs to be submitted.
+  // The backlog listener then should be started at the time the user toggles the mining.
+  startBacklogListener();
   // towerLoop needs the "enabled" bit == true
   towerLoop();
   return true;
@@ -35,6 +40,7 @@ export async function disableMining(): Promise<boolean> {
   //   });
   // set mining to disabled
   miner_loop_enabled.set(false);
+  killTowerListener();
   return true;
 }
 

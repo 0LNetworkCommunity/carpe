@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { killTowerListener, startTowerListener, submitProofZero, towerOnce } from "../../miner_invoke";
+  import { killTowerListener, startBacklogListener, submitProofZero, towerOnce, } from "../../miner_invoke";
   import { debugMode } from "../../debug";
   import { onMount } from "svelte";
 
@@ -18,7 +18,7 @@
       </div>
 
       <div class="margin">
-        <button class="uk-button uk-button-default" on:click={startTowerListener}>Start Listener</button>
+        <button class="uk-button uk-button-default" on:click={startBacklogListener}>Start Backlog Listener</button>
       </div>
 
       <div class="margin">

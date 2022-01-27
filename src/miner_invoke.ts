@@ -12,8 +12,18 @@ const current_window = getCurrent();
 // The listener will catch events sent from the window.
 // this listener will wait events that trigger a new proof to be built.
 // TODO: One major issue is that multiple listeners could be created. If so multiple proofs would be started on every event. We need additional checks here.
-export const startTowerListener = async () => {
-  await invoke("start_tower_listener", {})
+// export const startTowerListener = async () => {
+//   await invoke("start_tower_listener", {})
+//     .then((res) => {
+//       responses.set(res as string);
+//       return res
+//     })
+//     .catch((e) => raise_error(e, false));
+// }
+
+// Only the backlog service needs a listener
+export const startBacklogListener = async () => {
+  await invoke("start_backlog_sender_listener", {})
     .then((res) => {
       responses.set(res as string);
       return res
@@ -21,10 +31,14 @@ export const startTowerListener = async () => {
     .catch((e) => raise_error(e, false));
 }
 
+export const emitBacklog = async () => {
+  backlog_in_progress.set(true);
+  current_window.emit('send-backlog', 'please...');
+}
 // Stop listening on the rust side for new requests to mine a proof.
 export const killTowerListener = async () => {
   console.log("kill listener");
-  return current_window.emit("kill-listener")
+  return current_window.emit("kill-backlog-listener")
 }
 
 export const getTowerChainView = async () => {
@@ -63,43 +77,47 @@ export const getLocalProofs = async () => {
     });
 };
 
-export const towerOnce = async () => {
-  console.log("mine tower once")
+// export const towerOnce = async () => {
+//   console.log("mine tower once")
 
-  let previous_duration = get(network_profile).chain_id == "Mainnet"
-    ? 30 * 60 * 1000
-    : 5 * 1000;
+//   let previous_duration = get(network_profile).chain_id == "Mainnet"
+//     ? 30 * 60 * 1000
+//     : 5 * 1000;
 
-  let t = get(tower); 
-  if (t.progress && t.progress.time_start) {
-    previous_duration = Date.now() - t.progress.time_start;
-  }
+//   let t = get(tower); 
+//   if (t.progress && t.progress.time_start) {
+//     previous_duration = Date.now() - t.progress.time_start;
+//   }
 
-  let progress: ProofProgress = {
-    time_start: Date.now(),
-    previous_duration,
-    complete: false,
-    error: false,
-    pct_complete: 0
-  }
-  t.progress = progress;
-  tower.set(t);
-  current_window.emit('tower-make-proof', 'Tauri is awesome!');
+//   let progress: ProofProgress = {
+//     time_start: Date.now(),
+//     previous_duration,
+//     complete: false,
+//     error: false,
+//     pct_complete: 0
+//   }
+//   t.progress = progress;
+//   tower.set(t);
+//   current_window.emit('tower-make-proof', 'Tauri is awesome!');
 
-};
+// };
 
 
 export const towerLoop = async () => {
   console.log("starting loop");
   let i = 0;
-  while (get(miner_loop_enabled)) {
+  // user has to explicitly toggle the miner loop
+  // and the backlog cannot be in-progress
+  while (get(miner_loop_enabled) && !get(backlog_in_progress)) {
     console.log(i);
-    await towerOnceAlt();
+    let a = await towerOnce();
+    if (!a) break;
+    emitBacklog();
     i = i + 1;
   }
 }
 
-export const towerOnceAlt = async () => {
+export const towerOnce = async () => {
   console.log("mine tower once")
 
   let previous_duration = get(network_profile).chain_id == "Mainnet"
@@ -121,17 +139,18 @@ export const towerOnceAlt = async () => {
   t.progress = progress;
   tower.set(t);
   
-  return invoke("miner_loop", {})
+  return invoke("miner_once", {})
     .then(res => {
-      // backlog_in_progress.set(false);
-      console.log('>>> miner_loop response: ' + res);
+      console.log('>>> miner_once response: ' + res);
       responses.set(res as string);
+      proofComplete()
       return res
     })
     .catch(e => {
-      // backlog_in_progress.set(false);
-      console.log('>>> miner_loop error: ' + e);
+      console.log('>>> miner_once error: ' + e);
       raise_error(e, false);
+      proofError()
+      return false
     });
 
 };

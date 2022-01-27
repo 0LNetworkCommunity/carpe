@@ -20,16 +20,16 @@ use tower::{
 
 /// creates one proof and submits
 #[tauri::command(async)]
-pub fn miner_loop(
+pub fn miner_once(
   window: Window,
   // config: &AppCfg,
   // tx_params: &TxParams,
 ) -> Result<VDFProof, CarpeError> {
   println!("Mining one proof");
   let config = get_cfg()?;
-  let tx_params = get_tx_params()
-    .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
-  dbg!(&tx_params);
+  // let tx_params = get_tx_params()
+  //   .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
+  // dbg!(&tx_params);
   let proof = mine_once(&config)
     .map_err(|e| {
       dbg!(&e);
@@ -137,6 +137,10 @@ struct BacklogSuccess {
 }
 
 
+// When the user turns on the toggle, they will be prompted for OS password.
+// the backlog listener prevents the user from having to re-enter the password everytime
+// a new proof needs to be submitted.
+// The backlog listener then should be started at the time the user toggles the mining.
 
 #[tauri::command]
 pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeError> {
@@ -149,14 +153,14 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
   // This is tauri's event listener for the tower proof.
   // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("send-backlog", move |_e| {
+      println!("received backlog event");
+
       match process_backlog(&config, &tx_params, false) {
         Ok(_) => {
-          dbg!("process_backlog");
+          println!("backlog success");
           window_clone.emit("backlog-success", BacklogSuccess { success: true } ).unwrap()
         },
         Err(e) => {
-          
-
           window_clone
             .emit("backlog-error", tower::tower_errors::parse_error(e))
             .unwrap();
