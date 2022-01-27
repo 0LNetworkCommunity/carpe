@@ -7,12 +7,13 @@ use crate::{
 use anyhow::Error;
 // use ol::config::AppCfg;
 use ol_types::block::VDFProof;
+use serde::{Serialize, Deserialize};
 use std::{env, path::PathBuf};
 use tauri::Manager;
 use tauri::Window;
 // use tokio::task;
 use tower::{
-  backlog::{process_backlog, MAX_PROOFS_PER_EPOCH},
+  backlog::process_backlog,
   commit_proof::commit_proof_tx,
   proof::{mine_once, parse_block_height}, tower_errors::TowerError,
 };
@@ -41,7 +42,7 @@ pub fn miner_once(
   dbg!(&proof);
 
   let ts = get_onchain_tower_state()?;
-  if !(ts.actual_count_proofs_in_epoch < MAX_PROOFS_PER_EPOCH) {
+  if !(ts.actual_count_proofs_in_epoch < tower::EPOCH_MINING_THRES_UPPER) {
     println!("maximum proofs submitted in epoch, will continue mining but will not send proofs.");
 
 
