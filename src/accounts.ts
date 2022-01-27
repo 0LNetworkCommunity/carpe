@@ -79,7 +79,7 @@ export function findOneAccount(account: string): AccountEntry {
   return found
 }
 
-export async function setAccount(an_address: string, is_first_account: boolean) {
+export async function setAccount(an_address: string) {
   if (get(signingAccount).account == an_address) {
     return
   }

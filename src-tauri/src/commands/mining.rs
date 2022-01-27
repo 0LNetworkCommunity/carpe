@@ -41,97 +41,16 @@ pub fn miner_once(
   
   dbg!(&proof);
 
-  let ts = get_onchain_tower_state()?;
+  let ts = get_onchain_tower_state(config.profile.account)?;
   if !(ts.actual_count_proofs_in_epoch < tower::EPOCH_MINING_THRES_UPPER) {
     println!("maximum proofs submitted in epoch, will continue mining but will not send proofs.");
-
-
-    // tell the client we wont be submitting the proof now
-    // window
-    //   .emit("tower-error", &CarpeError::tower_at_epoch_limit())
-    //   .unwrap();
 
     return Err(CarpeError::tower_at_epoch_limit())
 
     // TODO: need to surface this information on client side.
   }
-
-  // Always submit the backlog in case a proof was missed.
-  // TODO: Change the order, and have this run before making a proof?
-  // match process_backlog(&config, &tx_params, false) {
-  //   Ok(_) => {
-  //     dbg!("process_backlog");
-  //     window.emit("backlog-success", &proof).unwrap()
-  //   },
-  //   Err(e) => {
-      
-
-  //     window
-  //       .emit("backlog-error", &CarpeError::tower_at_epoch_limit())
-  //       .unwrap();
-      
-  //     return Err(CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}",&e)));
-  //   }
-  // }
-
   Ok(proof)
 }
-
-/// A new listener needs to be started whenever the user changes profiles i.e. using a different signing account.
-/// This is because the private key gets loaded in member when then listener is initialized.
-
-//TODO: there's a risk of multiple tower listeners being initialized. This is handled on the JS window side, but we likely need more guarantees on the rust side. Unsure how to do this without implementing a proper queue.
-// #[tauri::command]
-// pub async fn start_tower_listener(window: Window) -> Result<(), CarpeError> {
-//   println!("starting tower builder, listening for tower-make-proof");
-//   // prepare listener to receive events
-//   // TODO: this is gross. Prevent cloning when using in closures
-//   let window_clone = window.clone();
-//   let new_clone = window_clone.clone();
-//   let config = get_cfg()?;
-
-//   // This is tauri's event listener for the tower proof.
-//   // the front-ent/window will keep calling it when it needs a new proof done.
-//   let h = window.listen("tower-make-proof", move |e| {
-//     println!("received tower-make-proof event");
-//     println!("received event {:?}", e);
-
-//     let third_clone = window_clone.clone();
-//     let config_clone = config.clone();
-
-//     // The VDF by definition will block the thread. The work needs to be sent to a thread that can be blocked.
-//     let _ = task::spawn_blocking(move || {
-//       // TODO: how to cehck for this before it get here?
-
-//       // always start tower processing backlog
-//       // let _ = backlog(
-//       //   &config_clone.clone(),
-//       //   &get_tx_params().expect("could not load tx params, this should have been checked before")
-//       // );
-
-//       // tx params cannot be cloned.
-//       let tx_params =
-//         get_tx_params().expect("could not load tx params, this should have been checked before");
-//       // some blocking work here
-//       match mine_and_commit_one_proof(&config_clone, &tx_params) {
-//         Ok(proof) => {
-//           third_clone.emit("tower-event", proof).unwrap();
-//         }
-//         Err(e) => {
-//           third_clone.emit("tower-error", e).unwrap();
-//         }
-//       }
-//     });
-//   });
-
-//   window.once("kill-listener", move |_| {
-//     println!("received kill listener event");
-//     new_clone.unlisten(h);
-//   });
-
-//   Ok(())
-// }
-
 #[derive(Clone, serde::Serialize)]
 struct BacklogSuccess {
   success: bool,
@@ -143,7 +62,7 @@ struct BacklogSuccess {
 // a new proof needs to be submitted.
 // The backlog listener then should be started at the time the user toggles the mining.
 
-#[tauri::command]
+#[tauri::command(async)]
 pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeError> {
   println!("starting backlog listener");
   // prepare listener to receive events
@@ -272,7 +191,7 @@ pub fn debug_submit_proof_zero() -> Result<(), CarpeError> {
 //   }
 // }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn get_local_height() -> Result<u64, CarpeError> {
   let cfg = get_cfg()?;
   let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
@@ -282,7 +201,7 @@ pub fn get_local_height() -> Result<u64, CarpeError> {
   }
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
   get_local_proofs_this_profile()
     // TODO: Why is the CarpeError From anyhow not working?
@@ -304,7 +223,7 @@ pub struct EpochRules {
   pub security: u64,
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
   Ok(EpochRules {
       lower: tower::EPOCH_MINING_THRES_LOWER,
@@ -314,7 +233,7 @@ pub fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
   })
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn set_env(env: String) -> Result<String, CarpeError> {
   match env.as_ref() {
     "test" => env::set_var("NODE_ENV", "test"),
@@ -327,7 +246,7 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
   Ok(v)
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn get_env() -> Result<String, CarpeError> {
   let v = env::var("NODE_ENV")
     .map_err(|_| CarpeError::misc("environment variable NODE_ENV is not set"))?;

@@ -35,7 +35,6 @@ export interface ProofProgress {
   error: boolean,
   pct_complete: number,
 }
-
 export interface EpochRules {
   lower: number,
   upper: number,

@@ -1,25 +1,14 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { getCurrent } from "@tauri-apps/api/window";
 import { get } from "svelte/store";
+import { signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
 import { responses } from "./debug";
-import { backlog_in_progress, EpochRules, miner_loop_enabled, ProofProgress, tower, TowerStateView } from "./miner";
+import { backlog_in_progress, EpochRules, miner_loop_enabled, ProofProgress, tower } from "./miner";
 import { network_profile } from "./networks";
 
 
 const current_window = getCurrent();
-// Starts a tower listener on the Rust side.
-// The listener will catch events sent from the window.
-// this listener will wait events that trigger a new proof to be built.
-// TODO: One major issue is that multiple listeners could be created. If so multiple proofs would be started on every event. We need additional checks here.
-// export const startTowerListener = async () => {
-//   await invoke("start_tower_listener", {})
-//     .then((res) => {
-//       responses.set(res as string);
-//       return res
-//     })
-//     .catch((e) => raise_error(e, false));
-// }
 
 // Only the backlog service needs a listener
 export const startBacklogListener = async () => {
@@ -36,20 +25,27 @@ export const emitBacklog = async () => {
   current_window.emit('send-backlog', 'please...');
 }
 // Stop listening on the rust side for new requests to mine a proof.
-export const killTowerListener = async () => {
+export const killBacklogListener = async () => {
   console.log("kill listener");
   return current_window.emit("kill-backlog-listener")
 }
 
 export const getTowerChainView = async () => {
-  await invoke("get_onchain_tower_state", {})
+  await invoke("get_onchain_tower_state", {
+    account: get(signingAccount).account
+  })
     .then((res: EpochRules) => {
       let t = get(tower);
-      t.rules = res;
+      t.on_chain = res;
       tower.set(t);
       responses.set(JSON.stringify(res));
     })
     .catch((e) => {
+      //need to reset, otherwise may be looking at wrong account
+      let t = get(tower);
+      t.on_chain = {};
+      tower.set(t);
+
       raise_error(e, true)
     });
 };
@@ -66,17 +62,20 @@ export const getLocalHeight = async () => {
       responses.set(JSON.stringify(res));
     })
     .catch((e) => {
+      let t = get(tower);
+      t.local_height = -1;
+      tower.set(t);
       raise_error(e, true)
     });
 };
 
 export const getEpochRules = async () => {
   await invoke("get_epoch_rules", {})
-    .then((res: number) => {
+    .then((res: EpochRules) => {
       console.log(res);
       // if res.
       let t = get(tower);
-      t.local_height = res;
+      t.rules = res;
       tower.set(t);
       responses.set(JSON.stringify(res));
     })
@@ -139,13 +138,6 @@ export const towerOnce = async () => {
 
 };
 
-// function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
-//   let m = get(tower);
-//   m.latest_proof = new_proof;
-//   m.count_proofs_this_session = m.count_proofs_this_session + 1;
-//   tower.set(m);
-//   return m;
-// }
 
 export function proofError() {
   let t = get(tower);

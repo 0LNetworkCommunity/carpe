@@ -1,6 +1,6 @@
 import { get } from "svelte/store";
 import { miner_loop_enabled, tower } from "./miner";
-import { killTowerListener, startBacklogListener, towerLoop } from "./miner_invoke";
+import { killBacklogListener, startBacklogListener, towerLoop } from "./miner_invoke";
 
 export async function enableMining(): Promise<boolean> {
   // careful to not start the miner twice.
@@ -32,15 +32,9 @@ export async function enableMining(): Promise<boolean> {
 
 export async function disableMining(): Promise<boolean> {
   // stop the envent listener.
-
-  // await killTowerListener()
-  //   .catch(e => {
-  //     raise_error(e, false);
-  //     return false
-  //   });
   // set mining to disabled
   miner_loop_enabled.set(false);
-  killTowerListener();
+  killBacklogListener();
   return true;
 }
 

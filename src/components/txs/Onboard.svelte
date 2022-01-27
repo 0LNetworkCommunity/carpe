@@ -40,7 +40,7 @@ import { notify_success } from "../../carpeNotify";
         <span
           on:click={createUser}
           class="uk-button uk-button-primary uk-align-right"
-          id="create-acc">Add</span
+          id="create-acc">Onboard</span
         >
         <Link to={routes.home}>
           <span class="uk-button uk-button-default uk-align-right">Cancel</span>
