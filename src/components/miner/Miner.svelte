@@ -12,12 +12,15 @@
   import { refreshStats } from "../../miner_health";
   import { killBacklogListener } from "../../miner_invoke";
 import SyncProofs from "./cards/SyncProofs.svelte";
+import { nodeEnv } from "../../debug";
+import { get } from "svelte/store";
 
   let newbie = null;
   let loading = true;
   let backlogInProgress = false;
   let account: AccountEntry;
   let healthTick;
+  let isDevTest = false;
 
   onMount(async () => {
     refreshStats();
@@ -34,6 +37,8 @@ import SyncProofs from "./cards/SyncProofs.svelte";
     backlog_in_progress.subscribe(b => backlogInProgress = b);
     
     signingAccount.subscribe(a => account = a);
+
+    isDevTest = (get(nodeEnv) == "test");
   });
 
   onDestroy(() => {
@@ -46,7 +51,11 @@ import SyncProofs from "./cards/SyncProofs.svelte";
 <main class="uk-height-viewport">
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
+      {#if isDevTest}
+        DEV MODE, RUNNING IN TEST DIFFICULTY
+      {/if}
   </div>
+
   {#if loading}
     <div class="uk-flex uk-flex-center">
       <span uk-spinner />

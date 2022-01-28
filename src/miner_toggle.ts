@@ -34,7 +34,7 @@ export async function disableMining(): Promise<boolean> {
   // stop the envent listener.
   // set mining to disabled
   miner_loop_enabled.set(false);
-  killBacklogListener();
+  // killBacklogListener(); // TODO: how do we prevent zombie listeners from makeing duplicates.
   return true;
 }
 

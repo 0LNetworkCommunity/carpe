@@ -20,51 +20,32 @@
   } from "./miner";
   // import { notify_success } from "./carpeNotify";
   import { raise_error } from "./carpeError";
-  import { responses } from "./debug";
+  import { getEnv, nodeEnvIsTest, responses } from "./debug";
   // import { proofComplete, proofError, towerOnce } from "./miner_invoke";
   // import { disableMining } from "./miner_toggle";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
+import { get } from "svelte/store";
 
-  let enabled;
+  // let enabled;
   let unlistenTowerEvent;
   let unlistenTowerError;
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
+  let isTest = false;
 
-  // Todo: Should this listener only be started in the miner view?
   onMount(async () => {
-    miner_loop_enabled.subscribe(e => enabled = e);
-
-    // unlistenTowerEvent = await listen("tower-event", (event) => {
-    //   proofComplete();
-    //   // is a type VDFProof
-    //   console.log(event.payload);
-    //   let height = event.payload.height;
-    //   if (height) {
-    //     notify_success(`Proof ${height} mined`);
-    //   }
-    //   let t = get(tower);
-    //   t.latest_proof = event.payload;
-    //   tower.set(t);
-
-    //   // // This section triggers the next block to start
-    //   // // it sends a listener event to the Rust side.
-    //   // if (enabled) {
-    //   //   towerOnce();
-    //   // }
-    // });
-
-    // unlistenTowerError = await listen("tower-error", (event) => {
-    //   proofError();
-    //   // is a type CarpeError
-    //   console.log(event);
-    //   raise_error(event.payload, false);
-    //   // also disable the mining loop.
-    //   disableMining();
-    // });
+    getEnv();
+    nodeEnvIsTest.subscribe(b => isTest = b);
 
     ///// Backlog ////
+    // Todo: Should this listener only be started in the miner view?
+
+    // submitted tower txs, which happens with backlog, requires a private key.
+    // so that the user does not need to keep authorizing the key,
+    // there is a listener service which loads the key once, and then waits for a specific
+    // event to trigger the backlog submission.
+
     unlistenBacklogSuccess = await listen("backlog-success", (event) => {
       window.alert(event.payload);
       responses.set(event.payload as string);
@@ -105,9 +86,11 @@
         <Route path={routes.about} component={About} primary={false} />
 
         <!-- DEV -->
+        {#if isTest}
+        <!-- TODO: why does this not show when in test mode? Only if debug mode is set? -->
         <Route path={routes.developer} component={DevMode} primary={false} />
         <Route path={routes.swarm} component={Swarm} primary={false} />
-
+        {/if}
 
         <!-- Show Debug Card Below -->
         <DebugCard/>

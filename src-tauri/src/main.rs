@@ -1,28 +1,47 @@
 #![cfg_attr(
-	all(not(debug_assertions), target_os = "windows"),
-	windows_subsystem = "windows"
+  all(not(debug_assertions), target_os = "windows"),
+  windows_subsystem = "windows"
 )]
 
 extern crate url;
 
+pub mod carpe_error;
 pub mod commands;
-pub mod key_manager;
 pub mod configs;
 pub mod configs_network;
 pub mod configs_profile;
-pub mod carpe_error;
+pub mod key_manager;
 pub mod seed_peers;
 
-use tauri::{Menu, MenuItem, Submenu};
-use crate::{commands::*};
+use std::env;
+
+use crate::commands::*;
 use pretty_env_logger;
+use tauri::{Menu, MenuItem, Submenu};
 
 fn main() {
   //  println!("{}", version::version());
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
-    pretty_env_logger::init();
-    
-    let menu = Menu::new()
+  pretty_env_logger::init();
+  dbg!(&"!!!!!!!!!!");
+  // Check if we are in test mode.
+  set_env("prod".to_owned());
+  match env::var("npm_lifecycle_event") {
+    Ok(s) => {
+      if (s == "tauri") {
+        set_env("test".to_owned());
+        dbg!("setting NODE_ENV to test");
+      }
+    }
+    Err(_) => {}
+  }
+
+  env::vars().into_iter()
+  .for_each(|e| {
+    dbg!(&e);
+  });
+
+  let menu = Menu::new()
     .add_submenu(Submenu::new(
       "Carpe",
       Menu::new()
@@ -45,60 +64,57 @@ fn main() {
       menu
     }));
 
-	tauri::Builder::default()
-	.invoke_handler(tauri::generate_handler![
-    // Accounts
-    is_init,
-		get_all_accounts,
-    refresh_accounts,
-		add_account,
-		keygen,
-    init_from_mnem,
-    remove_accounts,
-    switch_profile,
-    // Networks
-    force_upstream,
-    force_waypoint,
-    update_from_playlist,
-    get_networks,
-    refresh_waypoint,
-    toggle_network,
-    // Queries
-    query_balance,
-    // Transactions
-    demo_tx,
-    create_user_account,
-    wallet_type,
-    //Tower
-    miner_once,
-    start_backlog_sender_listener,
-    get_local_height,
-    get_epoch_rules,
-    submit_backlog,
-    get_env,
-    set_env,
-    debug_submit_proof_zero,
-    // Version
-    get_app_version,
- 
-    // Debug
-    init_swarm,
-    swarm_miner,
-    swarm_files,
-    swarm_process,
-    easy_swarm,
-    debug_error,
-    debug_emit_event,
-    delay_async,
-    get_onchain_tower_state,
-    receive_event,
-    mock_build_tower,
-    start_forever_task,
-    debug_start_listener,
-	])
-  .menu(menu)
-	.run(tauri::generate_context!())
-	.expect("error while running tauri application");
-
-  
+  tauri::Builder::default()
+    .invoke_handler(tauri::generate_handler![
+      // Accounts
+      is_init,
+      get_all_accounts,
+      refresh_accounts,
+      add_account,
+      keygen,
+      init_from_mnem,
+      remove_accounts,
+      switch_profile,
+      // Networks
+      force_upstream,
+      force_waypoint,
+      update_from_playlist,
+      get_networks,
+      refresh_waypoint,
+      toggle_network,
+      // Queries
+      query_balance,
+      // Transactions
+      demo_tx,
+      create_user_account,
+      wallet_type,
+      //Tower
+      miner_once,
+      start_backlog_sender_listener,
+      get_local_height,
+      get_epoch_rules,
+      submit_backlog,
+      get_env,
+      set_env,
+      debug_submit_proof_zero,
+      // Version
+      get_app_version,
+      // Debug
+      init_swarm,
+      swarm_miner,
+      swarm_files,
+      swarm_process,
+      easy_swarm,
+      debug_error,
+      debug_emit_event,
+      delay_async,
+      get_onchain_tower_state,
+      receive_event,
+      mock_build_tower,
+      start_forever_task,
+      debug_start_listener,
+    ])
+    .menu(menu)
+    .run(tauri::generate_context!())
+    .expect("error while running tauri application");
 }

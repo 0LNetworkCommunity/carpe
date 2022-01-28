@@ -16,9 +16,10 @@
 </script>
 
 {#if debug}
-  
-  <p>Latest proof hash: {towerState.on_chain.previous_proof_hash}</p>
 
+  {#if towerState}
+    <p>Latest proof hash: {towerState.on_chain.previous_proof_hash}</p>
+  {/if}
   <main class="uk-margin" >
     <div class="uk-grid">
       <div class="margin">

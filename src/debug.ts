@@ -16,13 +16,14 @@ export function setDebugProdTest(env: string) {
 }
 
 export const nodeEnv = writable<string>("");
+export const nodeEnvIsTest = writable<boolean>(false);
 
 // helper to figure out what environment we are in TEST/PROD
 export function getEnv() {
   invoke("get_env", {})
     .then((res: string) => {
-      // window.alert(res);
       nodeEnv.set(res);
+      if (res == "test") { nodeEnvIsTest.set(true) }
     })
     .catch((error) => raise_error(error, false));
 }

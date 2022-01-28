@@ -3,8 +3,10 @@ import { getCurrent } from "@tauri-apps/api/window";
 import { get } from "svelte/store";
 import { signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
+import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
 import { backlog_in_progress, EpochRules, miner_loop_enabled, ProofProgress, tower } from "./miner";
+import { disableMining } from "./miner_toggle";
 import { network_profile } from "./networks";
 
 
@@ -92,12 +94,25 @@ export const towerLoop = async () => {
   // user has to explicitly toggle the miner loop
   // and the backlog cannot be in-progress
   while (get(miner_loop_enabled) && !get(backlog_in_progress)) {
-    console.log(i);
-    let a = await towerOnce();
+    console.log(`loop idx: ${i}`);
+    let a = await towerOnce()
+    .then(r => {
+      console.log(`tower completed`);
+
+      emitBacklog()
+      .then(b => console.log(`backlog emitted ${b}`));
+      return r;
+    })
+    .catch( _ => {
+      return false; // TODO: this shouldn't be necessary.
+    })
     if (!a) break;
-    emitBacklog();
+    
     i = i + 1;
   }
+  // if we break from the loop, need to disable the miner
+  disableMining()
+    .then(m => console.log(`disable mining: ${m}`));
 }
 
 export const towerOnce = async () => {
@@ -160,6 +175,7 @@ export const submitBacklog = async () => {
       backlog_in_progress.set(false);
       console.log('>>> submit_backlog response: ' + res);
       responses.set(res as string);
+      notify_success("Backlog submitted");
       return res
     })
     .catch(e => {
