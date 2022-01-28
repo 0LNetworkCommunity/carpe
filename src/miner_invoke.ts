@@ -6,7 +6,6 @@ import { raise_error } from "./carpeError";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
 import { backlog_in_progress, EpochRules, miner_loop_enabled, ProofProgress, tower } from "./miner";
-import { disableMining } from "./miner_toggle";
 import { network_profile } from "./networks";
 
 
@@ -24,7 +23,7 @@ export const startBacklogListener = async () => {
 
 export const emitBacklog = async () => {
   backlog_in_progress.set(true);
-  current_window.emit('send-backlog', 'please...');
+  return current_window.emit('send-backlog', 'please...');
 }
 // Stop listening on the rust side for new requests to mine a proof.
 export const killBacklogListener = async () => {
@@ -93,26 +92,31 @@ export const towerLoop = async () => {
   let i = 0;
   // user has to explicitly toggle the miner loop
   // and the backlog cannot be in-progress
-  while (get(miner_loop_enabled) && !get(backlog_in_progress)) {
-    console.log(`loop idx: ${i}`);
-    let a = await towerOnce()
-    .then(r => {
-      console.log(`tower completed`);
 
-      emitBacklog()
-      .then(b => console.log(`backlog emitted ${b}`));
-      return r;
-    })
-    .catch( _ => {
-      return false; // TODO: this shouldn't be necessary.
-    })
-    if (!a) break;
-    
-    i = i + 1;
-  }
-  // if we break from the loop, need to disable the miner
-  disableMining()
-    .then(m => console.log(`disable mining: ${m}`));
+  let h = setInterval(async () => {
+
+    console.log(`towerLoop - loop idx: ${i}`);
+    if (get(miner_loop_enabled) && !get(backlog_in_progress)) {
+      let a = await towerOnce()
+        .then(r => {
+          console.log(`towerLoop - tower completed`);
+          i+=1;
+
+          emitBacklog()
+            .then(b => {
+              console.log("towerLoop - backlog emitted");
+              // console.log(b);
+            });
+          return r;
+        });
+        
+      console.log("towerLoop - done");
+      console.log(a); // TODO: do something with the proof?
+    } else if (!get(miner_loop_enabled)) {
+      clearInterval(h);
+    }
+
+  }, 10000)
 }
 
 export const towerOnce = async () => {

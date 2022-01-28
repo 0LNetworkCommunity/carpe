@@ -98,12 +98,12 @@
   // let listener_handle;
 
 
-  onMount(() => {
-    let a = listen('event-name', event => {
-      console.log(event);
-      window.alert(event.payload.message);
-    });
-  })
+  // onMount(() => {
+  //   let a = listen('event-name', event => {
+  //     console.log(event);
+  //     window.alert(event.payload.message);
+  //   });
+  // })
 
 </script>
 

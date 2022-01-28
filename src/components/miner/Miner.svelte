@@ -11,9 +11,9 @@
   import { backlog_in_progress, tower } from "../../miner";
   import { refreshStats } from "../../miner_health";
   import { killBacklogListener } from "../../miner_invoke";
-import SyncProofs from "./cards/SyncProofs.svelte";
-import { nodeEnv } from "../../debug";
-import { get } from "svelte/store";
+  import SyncProofs from "./cards/SyncProofs.svelte";
+  import { nodeEnv } from "../../debug";
+  import { get } from "svelte/store";
 
   let newbie = null;
   let loading = true;
@@ -34,11 +34,11 @@ import { get } from "svelte/store";
       }
     });
 
-    backlog_in_progress.subscribe(b => backlogInProgress = b);
-    
-    signingAccount.subscribe(a => account = a);
+    backlog_in_progress.subscribe((b) => (backlogInProgress = b));
 
-    isDevTest = (get(nodeEnv) == "test");
+    signingAccount.subscribe((a) => (account = a));
+
+    isDevTest = get(nodeEnv) == "test";
   });
 
   onDestroy(() => {
@@ -51,11 +51,16 @@ import { get } from "svelte/store";
 <main class="uk-height-viewport">
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
-      {#if isDevTest}
-        DEV MODE, RUNNING IN TEST DIFFICULTY
-      {/if}
   </div>
 
+  {#if isDevTest}
+    <div class="uk-flex uk-flex-center">
+      <p class="uk-text-light uk-text-muted uk-text-uppercase">
+        DEV MODE, RUNNING IN TEST DIFFICULTY
+      </p>
+    </div>
+  {/if}
+  
   {#if loading}
     <div class="uk-flex uk-flex-center">
       <span uk-spinner />
@@ -86,7 +91,7 @@ import { get } from "svelte/store";
     </div>
   {/if}
 
-  {#if backlogInProgress }
+  {#if backlogInProgress}
     <SyncProofs />
   {/if}
 
