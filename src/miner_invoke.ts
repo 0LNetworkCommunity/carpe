@@ -5,7 +5,7 @@ import { signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlog_in_progress, EpochRules, miner_loop_enabled, ProofProgress, tower } from "./miner";
+import { backlog_in_progress, EpochRules, ProofProgress, tower } from "./miner";
 import { network_profile } from "./networks";
 
 
@@ -84,40 +84,6 @@ export const getEpochRules = async () => {
       raise_error(e, true)
     });
 };
-
-
-// TODO: should this be synchronized with the health check loop?
-export const towerLoop = async () => {
-  console.log("starting loop");
-  let i = 0;
-  // user has to explicitly toggle the miner loop
-  // and the backlog cannot be in-progress
-
-  let h = setInterval(async () => {
-
-    console.log(`towerLoop - loop idx: ${i}`);
-    if (get(miner_loop_enabled) && !get(backlog_in_progress)) {
-      let a = await towerOnce()
-        .then(r => {
-          console.log(`towerLoop - tower completed`);
-          i+=1;
-
-          emitBacklog()
-            .then(b => {
-              console.log("towerLoop - backlog emitted");
-              // console.log(b);
-            });
-          return r;
-        });
-        
-      console.log("towerLoop - done");
-      console.log(a); // TODO: do something with the proof?
-    } else if (!get(miner_loop_enabled)) {
-      clearInterval(h);
-    }
-
-  }, 30000)
-}
 
 
 

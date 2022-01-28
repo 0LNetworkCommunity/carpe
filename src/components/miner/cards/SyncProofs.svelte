@@ -5,14 +5,19 @@
   import CardAlert from "../../layout/CardAlert.svelte";
   import MinerBacklog from "../MinerBacklog.svelte";
   import CardError from "../../layout/CardError.svelte";
+  import { isRefreshingAccounts } from "../../../accounts";
+  
   let backlogInProgress = false;
-
+  let isRefreshing = true;
   let delta: number;
 
   onMount(() => {
     tower.subscribe(t => {
       delta = t.local_height - t.on_chain.verified_tower_height
     });
+
+    isRefreshingAccounts.subscribe((r) => (isRefreshing = r));
+
     backlog_in_progress.subscribe((b) => (backlogInProgress = b));
 
   })
@@ -27,18 +32,18 @@
       <div class="uk-flex uk-flex-center">
         <span uk-spinner />
       </div>
-      {#if delta >= 0 }
+      {#if delta > 0 }
       <p class="uk-text-muted uk-text-uppercase"> 
-        Proofs waiting to submit: {delta} 
-      </p> 
-      {:else}
+        Proofs awaiting transaction: {delta} 
+      </p>
+      {:else if delta < 0}
       <p class="uk-text-muted uk-text-uppercase"> 
-        Something is wrong, you have more proofs on tower, than locally. You may be missing proofs locally.
+        Something is wrong, you have more proofs on-chain, than on this device. You may be missing proofs locally.
       </p> 
       {/if}
     </div>
   </CardAlert>
-  {:else if delta && delta > 0}
+  {:else if !isRefreshing && delta && delta > 0}
     
     <CardError>
       <span slot="title">Looks like you have {delta} proofs missing on-chain </span>

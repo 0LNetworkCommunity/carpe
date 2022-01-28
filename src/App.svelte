@@ -13,29 +13,26 @@
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
   import About from "./components/about/About.svelte";
-  import {
-    miner_loop_enabled,
-    backlog_in_progress,
-    // tower,
-  } from "./miner";
-  // import { notify_success } from "./carpeNotify";
+  import { backlog_in_progress } from "./miner";
   import { raise_error } from "./carpeError";
   import { getEnv, nodeEnvIsTest, responses } from "./debug";
-  // import { proofComplete, proofError, towerOnce } from "./miner_invoke";
-  // import { disableMining } from "./miner_toggle";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
-import { get } from "svelte/store";
+  import { refreshStats } from "./miner_health";
+  import { loadAccounts } from "./accounts";
 
-  // let enabled;
-  let unlistenTowerEvent;
-  let unlistenTowerError;
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
   let isTest = false;
-
+  let healthTick;
   onMount(async () => {
     getEnv();
+    loadAccounts();
+
+    refreshStats();
+    healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
+
+
     nodeEnvIsTest.subscribe(b => isTest = b);
 
     ///// Backlog ////
@@ -46,11 +43,10 @@ import { get } from "svelte/store";
     // there is a listener service which loads the key once, and then waits for a specific
     // event to trigger the backlog submission.
 
-    unlistenBacklogSuccess = await listen("backlog-success", (event) => {
-      window.alert("backlog success");
-      // responses.set(event.payload as string);
+    unlistenBacklogSuccess = await listen("backlog-success", (event: any) => {
+      responses.set(event.payload.stringify());
+      refreshStats();
       backlog_in_progress.set(false);
-      // console.log()
     });
 
     unlistenBacklogError = await listen("backlog-error", (event) => {
@@ -61,10 +57,9 @@ import { get } from "svelte/store";
   });
 
   onDestroy(() => {
-    unlistenTowerEvent();
-    unlistenTowerError();
     unlistenBacklogSuccess();
     unlistenBacklogError();
+    clearInterval(healthTick);
   })
 </script>
 

@@ -48,7 +48,7 @@ export function loadAccounts() {
     .catch((error) => raise_error(error));
 }
 
-function refreshAccounts() {
+export function refreshAccounts() {
   isRefreshingAccounts.set(true);
   invoke('refresh_accounts')
     .then((result: object) => {

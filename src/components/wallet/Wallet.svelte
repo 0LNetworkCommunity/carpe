@@ -29,11 +29,7 @@
   let isConnected: boolean = true;
 
   onMount(async () => {
-    loadAccounts();
-
-    // fetch a waypoint to see if we can connect to any fullnode.
-    // If successful this will set the `network.connected` bool to true. And wallet will display a view.
-    refreshWaypoint();
+    is_initialized();
 
     connected.subscribe((b) => (isConnected = b));
 
@@ -42,9 +38,11 @@
       pendingAccounts = all.filter((x) => !x.on_chain);
     });
     signingAccount.subscribe((a) => (my_account = a));
+
     miner_loop_enabled.subscribe((boo) => (isMining = boo));
+
     isRefreshingAccounts.subscribe((boo) => (isRefreshing = boo));
-    is_initialized();
+    
   });
 </script>
 

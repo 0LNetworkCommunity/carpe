@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy, onMount } from "svelte";
+  import { onMount } from "svelte";
   import ToggleMiner from "./ToggleMiner.svelte";
   import MinerProgress from "./MinerProgress.svelte";
   import TowerState from "./cards/TowerState.svelte";
@@ -8,27 +8,24 @@
   import { signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
-  import { backlog_in_progress, tower } from "../../miner";
-  import { refreshStats } from "../../miner_health";
-  import { killBacklogListener } from "../../miner_invoke";
-  import SyncProofs from "./cards/SyncProofs.svelte";
+  import { tower } from "../../miner";
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
+import { refreshStats } from "../../miner_health";
 
   let newbie = null;
   let loading = true;
   let account: AccountEntry;
-  let healthTick;
   let isDevTest = false;
 
   onMount(async () => {
     refreshStats();
-    healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 
     tower.subscribe((towerState) => {
-      loading = false;
+      loading = false; 
       console.log(towerState);
       if (towerState.on_chain) {
+        
         newbie = towerState.on_chain.verified_tower_height == null;
       }
     });
@@ -39,11 +36,7 @@
     isDevTest = get(nodeEnv) == "test";
   });
 
-  onDestroy(() => {
-    clearInterval(healthTick);
-    // stop backlog submission listener service
-    killBacklogListener();
-  });
+
 </script>
 
 <main class="uk-height-viewport">
@@ -70,11 +63,14 @@
       {:else}
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />
-
+          <div class="uk-width-expand uk-margin-small">
+            <MinerProgress />
+          </div>
           <!-- <p>Lost time is never found again.</p> -->
           <!-- <Oops/> -->
         </div>
 
+        <!-- {#if tower} -->
         <div class="uk-width-1-1">
           {#if newbie}
             <FirstProof />
@@ -82,9 +78,7 @@
             <TowerState {account} />
           {/if}
         </div>
-        <div class="uk-width-expand uk-margin-small">
-          <MinerProgress />
-        </div>
+
       {/if}
     </div>
   {/if}

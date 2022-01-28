@@ -23,23 +23,17 @@ fn main() {
   //  println!("{}", version::version());
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
   pretty_env_logger::init();
-  dbg!(&"!!!!!!!!!!");
   // Check if we are in test mode.
-  set_env("prod".to_owned());
+  set_env("prod".to_owned()).unwrap();
   match env::var("npm_lifecycle_event") {
     Ok(s) => {
-      if (s == "tauri") {
-        set_env("test".to_owned());
-        dbg!("setting NODE_ENV to test");
+      if s == "tauri" {
+        set_env("test".to_owned()).unwrap();
       }
     }
     Err(_) => {}
   }
 
-  env::vars().into_iter()
-  .for_each(|e| {
-    dbg!(&e);
-  });
 
   let menu = Menu::new()
     .add_submenu(Submenu::new(
