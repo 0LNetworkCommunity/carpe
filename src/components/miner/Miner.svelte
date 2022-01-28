@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
   import ToggleMiner from "./ToggleMiner.svelte";
-  import MinerProgres from "./MinerProgres.svelte";
+  import MinerProgress from "./MinerProgress.svelte";
   import TowerState from "./cards/TowerState.svelte";
   import MinerDebug from "./MinerDebug.svelte";
   import CantStart from "./cards/CantStart.svelte";
@@ -66,7 +66,7 @@
           {/if}
         </div>
         <div class="uk-width-expand uk-margin-small">
-          <MinerProgres />
+          <MinerProgress />
         </div>
       {/if}
     </div>
