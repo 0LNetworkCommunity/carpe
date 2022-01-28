@@ -22,7 +22,7 @@
       <div class="uk-flex uk-flex-center">
         <span uk-spinner />
       </div>
-      {#if delta > 0 }
+      {#if delta >= 0 }
       <p class="uk-text-muted uk-text-uppercase"> 
         Proofs waiting to submit: {delta} 
       </p> 
