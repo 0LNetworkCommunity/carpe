@@ -86,7 +86,7 @@ export const getEpochRules = async () => {
 };
 
 
-
+// TODO: should this be synchronized with the health check loop?
 export const towerLoop = async () => {
   console.log("starting loop");
   let i = 0;
@@ -116,8 +116,10 @@ export const towerLoop = async () => {
       clearInterval(h);
     }
 
-  }, 10000)
+  }, 30000)
 }
+
+
 
 export const towerOnce = async () => {
   console.log("mine tower once")
@@ -145,7 +147,10 @@ export const towerOnce = async () => {
     .then(res => {
       console.log('>>> miner_once response: ' + res);
       responses.set(res as string);
-      proofComplete()
+      proofComplete();
+
+      emitBacklog();
+
       return res
     })
     .catch(e => {

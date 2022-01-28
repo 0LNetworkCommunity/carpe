@@ -47,9 +47,10 @@ import { get } from "svelte/store";
     // event to trigger the backlog submission.
 
     unlistenBacklogSuccess = await listen("backlog-success", (event) => {
-      window.alert(event.payload);
-      responses.set(event.payload as string);
+      window.alert("backlog success");
+      // responses.set(event.payload as string);
       backlog_in_progress.set(false);
+      // console.log()
     });
 
     unlistenBacklogError = await listen("backlog-error", (event) => {

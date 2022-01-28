@@ -26,7 +26,7 @@ export async function enableMining(): Promise<boolean> {
   // The backlog listener then should be started at the time the user toggles the mining.
   startBacklogListener();
   // towerLoop needs the "enabled" bit == true
-  towerLoop();
+  // towerLoop();
   return true;
 }
 

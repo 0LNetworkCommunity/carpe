@@ -17,7 +17,6 @@
 
   let newbie = null;
   let loading = true;
-  let backlogInProgress = false;
   let account: AccountEntry;
   let healthTick;
   let isDevTest = false;
@@ -34,7 +33,6 @@
       }
     });
 
-    backlog_in_progress.subscribe((b) => (backlogInProgress = b));
 
     signingAccount.subscribe((a) => (account = a));
 
@@ -89,10 +87,6 @@
         </div>
       {/if}
     </div>
-  {/if}
-
-  {#if backlogInProgress}
-    <SyncProofs />
   {/if}
 
   <MinerDebug />

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { tower } from "../../../miner";
+import SyncProofs from "./SyncProofs.svelte";
 
   export let account;
   let towerState;
@@ -48,6 +49,9 @@
         </tr>
       </tbody>
     </table>
+
+    <SyncProofs />
+    
   {:else if !towerState }
     <div>
       <h3 class="uk-text-muted">You haven't submitted any mining proofs</h3>
