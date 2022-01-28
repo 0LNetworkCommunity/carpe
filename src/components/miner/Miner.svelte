@@ -8,12 +8,14 @@
   import { signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
-  import { tower } from "../../miner";
+  import { backlog_in_progress, tower } from "../../miner";
   import { refreshStats } from "../../miner_health";
   import { killBacklogListener } from "../../miner_invoke";
+import SyncProofs from "./cards/SyncProofs.svelte";
 
   let newbie = null;
   let loading = true;
+  let backlogInProgress = false;
   let account: AccountEntry;
   let healthTick;
 
@@ -28,7 +30,10 @@
         newbie = towerState.on_chain.verified_tower_height == null;
       }
     });
-    signingAccount.subscribe((a) => (account = a));
+
+    backlog_in_progress.subscribe(b => backlogInProgress = b);
+    
+    signingAccount.subscribe(a => account = a);
   });
 
   onDestroy(() => {
@@ -70,6 +75,10 @@
         </div>
       {/if}
     </div>
+  {/if}
+
+  {#if backlogInProgress }
+    <SyncProofs />
   {/if}
 
   <MinerDebug />
