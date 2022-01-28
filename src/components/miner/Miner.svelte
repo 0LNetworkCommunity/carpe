@@ -4,7 +4,7 @@
   import MinerProgres from "./MinerProgres.svelte";
   import TowerState from "./cards/TowerState.svelte";
   import MinerDebug from "./MinerDebug.svelte";
-  import CantStart from "./cards/CantStart.svelte";  
+  import CantStart from "./cards/CantStart.svelte";
   import { signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
@@ -16,22 +16,20 @@
   let loading = true;
   let account: AccountEntry;
   let healthTick;
-  
+
   onMount(async () => {
     refreshStats();
-    healthTick = setInterval(() => {
-      refreshStats();
-    }, 30000) // do a healthcheck, this is async
+    healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 
     tower.subscribe((towerState) => {
       loading = false;
       console.log(towerState);
       if (towerState.on_chain) {
-        newbie = (towerState.on_chain.verified_tower_height == null)
+        newbie = towerState.on_chain.verified_tower_height == null;
       }
     });
-    signingAccount.subscribe((a) => account = a);
-  })
+    signingAccount.subscribe((a) => (account = a));
+  });
 
   onDestroy(() => {
     clearInterval(healthTick);
@@ -45,40 +43,34 @@
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
   </div>
   {#if loading}
-      <div class="uk-flex uk-flex-center">
-        <span uk-spinner />
-      </div>
+    <div class="uk-flex uk-flex-center">
+      <span uk-spinner />
+    </div>
   {:else}
+    <div class="uk-grid uk-margin-small">
+      {#if account && !account.on_chain}
+        <CantStart />
+      {:else}
+        <div class="uk-width-1-1 uk-align-center">
+          <ToggleMiner />
 
+          <!-- <p>Lost time is never found again.</p> -->
+          <!-- <Oops/> -->
+        </div>
 
-  <div class="uk-grid uk-margin-small">
-    {#if account && !account.on_chain}
-      <CantStart />
-    {:else}
-      <div class="uk-width-1-1 uk-align-center">
-        <ToggleMiner />
-      
-      <!-- <p>Lost time is never found again.</p> -->
-      <!-- <Oops/> -->
+        <div class="uk-width-1-1">
+          {#if newbie}
+            <FirstProof />
+          {:else}
+            <TowerState {account} />
+          {/if}
+        </div>
+        <div class="uk-width-expand uk-margin-small">
+          <MinerProgres />
+        </div>
+      {/if}
+    </div>
+  {/if}
 
-      </div>
-
-      <div class="uk-width-1-1">
-        {#if newbie}
-
-          <!-- <p>Can't retrieve account state, was your account onboarded?</p> -->
-        <!-- {:else if newbie} -->
-          <FirstProof />  
-        {:else}
-          <TowerState account={account} />
-        {/if}
-      </div>
-      <div class="uk-width-expand uk-margin-small">
-        <MinerProgres />
-      </div>
-    {/if}
-  </div>
-    {/if}
- 
   <MinerDebug />
 </main>
