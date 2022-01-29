@@ -29,7 +29,7 @@
 </script>
 
 <main>
-  {#if listenerReady && backlogInProgress && delta}
+  {#if listenerReady && backlogInProgress}
   <CardAlert>
     <span slot="title">Syncing your proofs </span>
     <div slot="body">
