@@ -1,17 +1,20 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { backlog_in_progress, tower } from "../../../miner";
+  import { backlogListenerReady, backlog_in_progress, tower } from "../../../miner";
 
   import CardAlert from "../../layout/CardAlert.svelte";
   import MinerBacklog from "../MinerBacklog.svelte";
   import CardError from "../../layout/CardError.svelte";
   import { isRefreshingAccounts } from "../../../accounts";
   
+  let listenerReady = false;
   let backlogInProgress = false;
   let isRefreshing = true;
   let delta: number;
 
+
   onMount(() => {
+    delta = null;
     tower.subscribe(t => {
       delta = t.local_height - t.on_chain.verified_tower_height
     });
@@ -20,11 +23,13 @@
 
     backlog_in_progress.subscribe((b) => (backlogInProgress = b));
 
+    backlogListenerReady.subscribe((b) => listenerReady = b);
+
   })
 </script>
 
 <main>
-  {#if backlogInProgress }
+  {#if listenerReady && backlogInProgress && delta}
   <CardAlert>
     <span slot="title">Syncing your proofs </span>
     <div slot="body">
@@ -46,7 +51,7 @@
   {:else if !isRefreshing && delta && delta > 0}
     
     <CardError>
-      <span slot="title">Looks like you have {delta} proofs missing on-chain </span>
+      <span slot="title">Looks like you have {delta} proofs not yet on chain </span>
       <div slot="body"> <MinerBacklog/> </div>
     </CardError>    
   {/if} 

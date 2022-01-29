@@ -5,31 +5,89 @@ import { signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlog_in_progress, EpochRules, ProofProgress, tower } from "./miner";
+import { backlogListenerReady, backlog_in_progress, EpochRules, ProofProgress, tower } from "./miner";
 import { network_profile } from "./networks";
 
-
 const current_window = getCurrent();
+
+
+export const towerOnce = async () => {
+  console.log("mine tower once")
+
+  let previous_duration = get(network_profile).chain_id == "Mainnet"
+    ? 30 * 60 * 1000
+    : 5 * 1000;
+
+  let t = get(tower);
+  if (t.progress && t.progress.time_start) {
+    previous_duration = Date.now() - t.progress.time_start;
+  }
+
+  let progress: ProofProgress = {
+    time_start: Date.now(),
+    previous_duration,
+    complete: false,
+    error: false,
+    pct_complete: 0
+  }
+  t.progress = progress;
+  tower.set(t);
+
+  return invoke("miner_once", {})
+    .then(res => {
+      console.log('>>> miner_once response: ' + res);
+      responses.set(res as string);
+      proofComplete();
+
+      // start the sending of txs
+      emitBacklog();
+
+      return res
+    })
+    .catch(e => {
+      console.log('>>> miner_once error: ' + e);
+      raise_error(e, false);
+      proofError()
+      return false
+    });
+
+};
 
 // Only the backlog service needs a listener
 export const startBacklogListener = async () => {
   await invoke("start_backlog_sender_listener", {})
     .then((res) => {
       responses.set(res as string);
+      backlogListenerReady.set(true);
       return res
     })
     .catch((e) => raise_error(e, false));
 }
 
-export const emitBacklog = async () => {
-  backlog_in_progress.set(true);
-  return current_window.emit('send-backlog', 'please...');
-}
 // Stop listening on the rust side for new requests to mine a proof.
 export const killBacklogListener = async () => {
   console.log("kill listener");
-  return current_window.emit("kill-backlog-listener")
+  return current_window.emit("kill-backlog-listener").then( _ => backlogListenerReady.set(false));
 }
+
+export const emitBacklog = async () => {
+  backlog_in_progress.set(true);
+  current_window.emit('send-backlog', 'please...');
+}
+
+export const maybeEmitBacklogDelta = async () => {
+  if (get(backlogListenerReady)) {
+    let t = get(tower);
+    if (t.local_height && t.on_chain.verified_tower_height) {
+      if ((t.local_height - t.on_chain.verified_tower_height) > 0) {
+        emitBacklog();
+      }
+    }
+  } else {
+    console.log("backlog listener not ready")
+  }
+}
+
 
 export const getTowerChainView = async () => {
   await invoke("get_onchain_tower_state", {
@@ -87,48 +145,6 @@ export const getEpochRules = async () => {
 
 
 
-export const towerOnce = async () => {
-  console.log("mine tower once")
-
-  let previous_duration = get(network_profile).chain_id == "Mainnet"
-    ? 30 * 60 * 1000
-    : 5 * 1000;
-
-  let t = get(tower);
-  if (t.progress && t.progress.time_start) {
-    previous_duration = Date.now() - t.progress.time_start;
-  }
-
-  let progress: ProofProgress = {
-    time_start: Date.now(),
-    previous_duration,
-    complete: false,
-    error: false,
-    pct_complete: 0
-  }
-  t.progress = progress;
-  tower.set(t);
-  
-  return invoke("miner_once", {})
-    .then(res => {
-      console.log('>>> miner_once response: ' + res);
-      responses.set(res as string);
-      proofComplete();
-
-      emitBacklog();
-
-      return res
-    })
-    .catch(e => {
-      console.log('>>> miner_once error: ' + e);
-      raise_error(e, false);
-      proofError()
-      return false
-    });
-
-};
-
-
 export function proofError() {
   let t = get(tower);
   t.progress.error = true;
@@ -140,6 +156,8 @@ export function proofComplete() {
   t.progress.complete = true;
   tower.set(t);
 }
+
+
 
 // submit any transactions that are in the backlog. Proofs that have been mined but for any reason were not committed.
 export const submitBacklog = async () => {

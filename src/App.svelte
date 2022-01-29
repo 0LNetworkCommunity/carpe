@@ -25,17 +25,19 @@
   let unlistenBacklogError;
   let isTest = false;
   let healthTick;
+
   onMount(async () => {
     getEnv();
+
     loadAccounts();
 
     refreshStats();
-    healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 
+    healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 
     nodeEnvIsTest.subscribe(b => isTest = b);
 
-    ///// Backlog ////
+    ///// Backlog /////
     // Todo: Should this listener only be started in the miner view?
 
     // submitted tower txs, which happens with backlog, requires a private key.
@@ -44,13 +46,15 @@
     // event to trigger the backlog submission.
 
     unlistenBacklogSuccess = await listen("backlog-success", (event: any) => {
-      responses.set(event.payload.stringify());
+      responses.set(event.payload);
+      //update the tower stats after we show the backlog being up to date.
       refreshStats();
       backlog_in_progress.set(false);
     });
 
     unlistenBacklogError = await listen("backlog-error", (event) => {
-      window.alert(event.payload);
+      // TODO: show an UX in the miner view for this type of error
+
       raise_error(event.payload, false);
       backlog_in_progress.set(false);
     });

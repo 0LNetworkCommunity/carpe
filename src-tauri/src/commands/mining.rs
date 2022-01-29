@@ -1,55 +1,44 @@
 use crate::{
   carpe_error::CarpeError,
-  commands::get_onchain_tower_state,
   configs::{get_cfg, get_tx_params},
   configs_profile::get_local_proofs_this_profile,
 };
 use anyhow::Error;
-// use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use serde::{Serialize, Deserialize};
 use std::{env, path::PathBuf};
 use tauri::Manager;
 use tauri::Window;
-// use tokio::task;
 use tower::{
   backlog::process_backlog,
   commit_proof::commit_proof_tx,
   proof::{mine_once, parse_block_height}, tower_errors::TowerError,
 };
-// use crate::configs::{get_cfg, get_tx_params};
 
 /// creates one proof and submits
 #[tauri::command(async)]
-pub fn miner_once(
-  window: Window,
-  // config: &AppCfg,
-  // tx_params: &TxParams,
-) -> Result<VDFProof, CarpeError> {
+pub fn miner_once() -> Result<VDFProof, CarpeError> {
   println!("Mining one proof");
   let config = get_cfg()?;
-  // let tx_params = get_tx_params()
-  //   .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
-  // dbg!(&tx_params);
-  let proof = mine_once(&config)
+  mine_once(&config)
     .map_err(|e| {
       dbg!(&e);
       CarpeError::tower(&format!("could not mine one proof, message: {:?}", &e), TowerError::ProverError.value())
-    })?;
+    })
   // tell the client it was successful thus far.
-  window.emit("tower-event", &proof).unwrap();
+  // window.emit("tower-event", &proof).unwrap();
   
-  dbg!(&proof);
+  // dbg!(&proof);
 
-  let ts = get_onchain_tower_state(config.profile.account)?;
-  if !(ts.actual_count_proofs_in_epoch < tower::EPOCH_MINING_THRES_UPPER) {
-    println!("maximum proofs submitted in epoch, will continue mining but will not send proofs.");
+  // let ts = get_onchain_tower_state(config.profile.account)?;
+  // if !(ts.actual_count_proofs_in_epoch < tower::EPOCH_MINING_THRES_UPPER) {
+  //   println!("maximum proofs submitted in epoch, will continue mining but will not send proofs.");
 
-    return Err(CarpeError::tower_at_epoch_limit())
+  //   return Err(CarpeError::tower_at_epoch_limit())
 
-    // TODO: need to surface this information on client side.
-  }
-  Ok(proof)
+  //   // TODO: need to surface this information on client side.
+  // }
+  // Ok(proof)
 }
 #[derive(Clone, serde::Serialize)]
 struct BacklogSuccess {
@@ -108,19 +97,6 @@ pub async fn submit_backlog(_window: Window) -> Result<(), CarpeError> {
   .map_err(|e| e.into())
 }
 
-// /// flush a backlog of proofs at once to the chain.
-// pub fn backlog(
-//   config: &AppCfg,
-//   tx_params: &TxParams,
-// ) -> Result<(), CarpeError> {
-//   // TODO: This does not return an error on transaction failure. Change in upstream.
-//   process_backlog(config, tx_params, false)
-//     .map_err(|e| {
-//       CarpeError::tower(&format!("could not complete sending of backlog, message: {:?}", &e))
-//     })?;
-//   Ok(())
-// }
-
 fn get_proof_zero() -> Result<VDFProof, Error> {
   let cfg = get_cfg()?;
   let path = cfg
@@ -144,52 +120,6 @@ pub fn debug_submit_proof_zero() -> Result<(), CarpeError> {
   Ok(())
 }
 
-// #[test]
-// fn test_proof_zero() {
-//   dbg!(&get_proof_zero());
-// }
-
-/// creates one proof and submits
-// pub fn mine_and_commit_one_proof(
-//   config: &AppCfg,
-//   tx_params: &TxParams,
-// ) -> Result<VDFProof, CarpeError> {
-//   println!("Mining one proof");
-
-//   match mine_once(&config) {
-//     Ok(b) => {
-//       let ts = get_onchain_tower_state()?;
-//       if !(ts.actual_count_proofs_in_epoch < MAX_PROOFS_PER_EPOCH) {
-//         println!("maximum proofs submitted in epoch, will continue mining but not send proofs.");
-//         // TODO: need to surface this information on client side.
-//         return Ok(b);
-//       }
-//       match commit_proof::commit_proof_tx(&tx_params, b.clone(), false) {
-//         Ok(tx_view) => match eval_tx_status(tx_view) {
-//           Ok(_) => Ok(b),
-//           Err(e) => {
-//             let msg = format!(
-//               "ERROR: Tower proof NOT committed to chain, message: \n{:?}",
-//               e
-//             );
-//             println!("{}", &msg);
-//             Err(CarpeError::tower(&msg))
-//           }
-//         },
-//         Err(e) => {
-//           let msg = format!("Tower transaction rejected, message: \n{:?}", e);
-//           println!("{}", &msg);
-//           Err(CarpeError::tower(&msg))
-//         }
-//       }
-//     }
-//     Err(e) => {
-//       let msg = format!("Error mining tower proof, message: {:?}", e);
-//       println!("{}", &msg);
-//       Err(CarpeError::tower(&msg))
-//     }
-//   }
-// }
 
 #[tauri::command(async)]
 pub fn get_local_height() -> Result<u64, CarpeError> {
@@ -212,8 +142,6 @@ pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
       ))
     })
 }
-
-
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// the parameter e.g. upper and lower thresholds
 pub struct EpochRules {

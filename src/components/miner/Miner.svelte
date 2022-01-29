@@ -11,7 +11,7 @@
   import { tower } from "../../miner";
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
-import { refreshStats } from "../../miner_health";
+  import { refreshStats } from "../../miner_health";
 
   let newbie = null;
   let loading = true;
@@ -25,18 +25,14 @@ import { refreshStats } from "../../miner_health";
       loading = false; 
       console.log(towerState);
       if (towerState.on_chain) {
-        
         newbie = towerState.on_chain.verified_tower_height == null;
       }
     });
-
 
     signingAccount.subscribe((a) => (account = a));
 
     isDevTest = get(nodeEnv) == "test";
   });
-
-
 </script>
 
 <main class="uk-height-viewport">
@@ -63,19 +59,19 @@ import { refreshStats } from "../../miner_health";
       {:else}
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />
-          <div class="uk-width-expand uk-margin-small">
-            <MinerProgress />
-          </div>
+          
+          <MinerProgress />
+          
           <!-- <p>Lost time is never found again.</p> -->
           <!-- <Oops/> -->
         </div>
 
         <!-- {#if tower} -->
         <div class="uk-width-1-1">
-          {#if newbie}
-            <FirstProof />
-          {:else}
+          {#if !newbie}
             <TowerState {account} />
+          {:else}
+            <FirstProof />
           {/if}
         </div>
 

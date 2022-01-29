@@ -47,6 +47,8 @@ export const backlog_in_progress = writable(false);
 
 export const miner_loop_enabled = writable(false);
 
+export const backlogListenerReady = writable(false);
+
 export function getProgess(): ProofProgress {
   return get(tower).progress
 }

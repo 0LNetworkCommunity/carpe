@@ -1,13 +1,19 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import { isRefreshingAccounts } from "../../../accounts";
   import { tower } from "../../../miner";
-import SyncProofs from "./SyncProofs.svelte";
+  import SyncProofs from "./SyncProofs.svelte";
 
   export let account;
+
   let towerState;
+  let isRefreshing = true;
 
   onMount(async () => {    
     tower.subscribe(m => towerState = m);
+
+    isRefreshingAccounts.subscribe((r) => (isRefreshing = r));
+
   });
 
 </script>
@@ -52,7 +58,7 @@ import SyncProofs from "./SyncProofs.svelte";
 
     <SyncProofs />
     
-  {:else if !towerState }
+  {:else if !isRefreshing && !towerState }
     <div>
       <h3 class="uk-text-muted">You haven't submitted any mining proofs</h3>
       <p>

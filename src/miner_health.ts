@@ -1,7 +1,7 @@
 import { get } from "svelte/store";
 import { refreshAccounts } from "./accounts";
 import { backlog_in_progress, miner_loop_enabled } from "./miner";
-import { getEpochRules, getLocalHeight, getTowerChainView, towerOnce } from "./miner_invoke";
+import { getEpochRules, getLocalHeight, getTowerChainView, maybeEmitBacklogDelta, towerOnce } from "./miner_invoke";
 import { refreshWaypoint } from "./networks";
 
 export function refreshStats() {
@@ -13,6 +13,7 @@ export function refreshStats() {
   getTowerChainView();
   getLocalHeight();
   getEpochRules();
+  maybeEmitBacklogDelta();
 
   if (get(miner_loop_enabled) && !get(backlog_in_progress)) {
     towerOnce();
