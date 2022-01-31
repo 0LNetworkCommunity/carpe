@@ -1,10 +1,10 @@
-# 0L Desktop Wallet and Miner
+# Developing and Building Carpe
 
-# Tauri Svelte App Template
+[Tauri](https://tauri.studio)
+[Svelte](https://svelte.dev) apps. 
 
-This is a project template for [Tauri](https://tauri.studio) and [Svelte](https://svelte.dev) apps. It lives at https://github.com/jbarszczewski/tauri-svelte-template.
+Carpe is based on: https://github.com/jbarszczewski/tauri-svelte-template.
 
-To create a new project based on this template follow the official guide here: https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template
 
 ## Get started
 
