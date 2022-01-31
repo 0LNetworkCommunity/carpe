@@ -177,6 +177,6 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
 #[tauri::command(async)]
 pub fn get_env() -> Result<String, CarpeError> {
   let v = env::var("NODE_ENV")
-    .unwrap_or("prod");
+    .unwrap_or("prod".to_owned());
   Ok(v)
 }
