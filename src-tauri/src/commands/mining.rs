@@ -177,6 +177,6 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
 #[tauri::command(async)]
 pub fn get_env() -> Result<String, CarpeError> {
   let v = env::var("NODE_ENV")
-    .map_err(|_| CarpeError::misc("environment variable NODE_ENV is not set"))?;
+    .unwrap_or("prod");
   Ok(v)
 }
