@@ -10,17 +10,17 @@ pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError>{
 }
 
 #[tauri::command(async)]
-pub fn get_onchain_tower_state() -> Result<TowerStateResourceView, CarpeError> {
+pub fn get_onchain_tower_state(account: AccountAddress) -> Result<TowerStateResourceView, CarpeError> {
   println!("fetching onchain tower state");
   // let cfg = get_cfg()?;
   let node = get_node_obj()?;
   // let client = get_diem_client(&cfg)?;
 
-  match node.client.get_miner_state(&node.app_conf.profile.account) {
+  match node.client.get_miner_state(&account) {
     Ok(Some(t)) => {
       Ok(t)
     }
-    _ => Err(CarpeError::tower("could not get tower state from chain")),
+    _ => Err(CarpeError::client("could not get tower state from chain")),
   }
 }
 

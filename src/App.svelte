@@ -1,7 +1,6 @@
 <script lang="ts">
   import { listen } from "@tauri-apps/api/event";
   import { onDestroy, onMount } from "svelte";
-  import { get } from "svelte/store";
   import { Router, Route } from "svelte-navigator";
   import Nav from "./components/Nav.svelte";
   import DebugCard from "./components/dev/DebugCard.svelte";
@@ -14,77 +13,57 @@
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
   import About from "./components/about/About.svelte";
-  import {
-    miner_loop_enabled,
-    backlog_in_progress,
-    tower,
-  } from "./miner";
-  import { notify_success } from "./carpeNotify";
+  import { backlog_in_progress } from "./miner";
   import { raise_error } from "./carpeError";
-  import { debugMode, responses } from "./debug";
-  import { proofComplete, proofError, towerOnce } from "./miner_invoke";
-  import { disableMining } from "./miner_toggle";
+  import { getEnv, nodeEnvIsTest, responses } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
-import { refreshWaypoint } from "./networks";
+  import { refreshStats } from "./miner_health";
+  import { loadAccounts } from "./accounts";
 
-  let enabled;
-  let unlistenTowerEvent;
-  let unlistenTowerError;
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
+  let isTest = false;
+  let healthTick;
 
-  // Todo: Should this listener only be started in the miner view?
   onMount(async () => {
-    miner_loop_enabled.subscribe(e => enabled = e);
+    getEnv();
 
-    unlistenTowerEvent = await listen("tower-event", (event) => {
-      proofComplete();
-      // is a type VDFProof
-      console.log(event.payload);
-      let height = event.payload.height;
-      if (height) {
-        notify_success(`Proof ${height} mined`);
-      }
-      let t = get(tower);
-      t.latest_proof = event.payload;
-      tower.set(t);
+    loadAccounts();
 
-      // This section triggers the next block to start
-      // it sends a listener event to the Rust side.
-      if (enabled) {
-        towerOnce();
-      }
-    });
+    refreshStats();
 
-    unlistenTowerError = await listen("tower-error", (event) => {
-      proofError();
-      // is a type CarpeError
-      console.log(event);
-      raise_error(event.payload, false);
-      // also disable the mining loop.
-      disableMining();
-    });
+    healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 
-    ///// Backlog ////
-    unlistenBacklogSuccess = await listen("backlog-success", (event) => {
-      window.alert(event.payload);
-      responses.set(event.payload as string);
+    nodeEnvIsTest.subscribe(b => isTest = b);
+
+    ///// Backlog /////
+    // Todo: Should this listener only be started in the miner view?
+
+    // submitted tower txs, which happens with backlog, requires a private key.
+    // so that the user does not need to keep authorizing the key,
+    // there is a listener service which loads the key once, and then waits for a specific
+    // event to trigger the backlog submission.
+
+    unlistenBacklogSuccess = await listen("backlog-success", (event: any) => {
+      responses.set(event.payload);
+      //update the tower stats after we show the backlog being up to date.
+      refreshStats();
       backlog_in_progress.set(false);
     });
 
     unlistenBacklogError = await listen("backlog-error", (event) => {
-      window.alert(event.payload);
+      // TODO: show an UX in the miner view for this type of error
+
       raise_error(event.payload, false);
       backlog_in_progress.set(false);
     });
   });
 
   onDestroy(() => {
-    unlistenTowerEvent();
-    unlistenTowerError();
     unlistenBacklogSuccess();
     unlistenBacklogError();
+    clearInterval(healthTick);
   })
 </script>
 
@@ -107,9 +86,11 @@ import { refreshWaypoint } from "./networks";
         <Route path={routes.about} component={About} primary={false} />
 
         <!-- DEV -->
+        {#if isTest}
+        <!-- TODO: why does this not show when in test mode? Only if debug mode is set? -->
         <Route path={routes.developer} component={DevMode} primary={false} />
         <Route path={routes.swarm} component={Swarm} primary={false} />
-
+        {/if}
 
         <!-- Show Debug Card Below -->
         <DebugCard/>

@@ -3,9 +3,10 @@ export interface ClientTowerStatus {
   latest_proof: VDFProof,
   on_chain?: TowerStateView,
   count_proofs_this_session: number,
-  last_local_proof?: string,
+  local_height: number,
   cpu_usage: number,
   progress: ProofProgress,
+  rules: EpochRules,
 }
 
 export interface VDFProof {
@@ -14,7 +15,7 @@ export interface VDFProof {
   preimage: string,
   proof: string,
   difficulty: number,
-  security: number
+  security: number,
 }
 export interface TowerStateView {
   previous_proof_hash: string,
@@ -23,7 +24,8 @@ export interface TowerStateView {
   count_proofs_in_epoch: number,
   epochs_validating_and_mining: number,
   contiguous_epochs_validating_and_mining: number,
-  epochs_since_last_account_creation: number
+  epochs_since_last_account_creation: number,
+  actual_count_proofs_in_epoch: number,
 }
 
 export interface ProofProgress {
@@ -32,14 +34,20 @@ export interface ProofProgress {
   complete: boolean,
   error: boolean,
   pct_complete: number,
-
 }
-
+export interface EpochRules {
+  lower: number,
+  upper: number,
+  difficulty: number,
+  security: number,
+}
 export const tower = writable<ClientTowerStatus>({});
 
 export const backlog_in_progress = writable(false);
 
 export const miner_loop_enabled = writable(false);
+
+export const backlogListenerReady = writable(false);
 
 export function getProgess(): ProofProgress {
   return get(tower).progress

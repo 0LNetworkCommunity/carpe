@@ -108,7 +108,7 @@ fn mock_one_proof(success: bool, window: &Window) -> Result<VDFProof, CarpeError
     window.emit("tower-event", proof.clone()).unwrap();
     Ok(proof)
   } else {
-    let e = CarpeError::tower("mock error");
+    let e = CarpeError::tower("mock error", 0);
     window.emit("tower-error", e.clone()).unwrap();
     Err(e)
   }

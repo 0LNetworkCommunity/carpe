@@ -27,9 +27,6 @@ export const signingAccount = writable<AccountEntry>(new_account("", "", ""));
 export const mnem = writable("");
 export const isInit = writable(false);
 export const isRefreshingAccounts = writable(false);
-
-// export const account = writable("");
-// export const authkey = writable("");
 export const all_accounts = writable<AccountEntry[]>([]);
 
 export function loadAccounts() {
@@ -51,7 +48,7 @@ export function loadAccounts() {
     .catch((error) => raise_error(error));
 }
 
-function refreshAccounts() {
+export function refreshAccounts() {
   isRefreshingAccounts.set(true);
   invoke('refresh_accounts')
     .then((result: object) => {
@@ -82,7 +79,7 @@ export function findOneAccount(account: string): AccountEntry {
   return found
 }
 
-export async function setAccount(an_address: string, is_first_account: boolean) {
+export async function setAccount(an_address: string) {
   if (get(signingAccount).account == an_address) {
     return
   }

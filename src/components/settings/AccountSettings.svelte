@@ -2,11 +2,13 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import { loadAccounts } from "../../accounts";
   import { raise_error } from "../../carpeError";
+  import { notify_success } from "../../carpeNotify";
   import { responses } from "../../debug";
   const removeAccounts = async () => {
     invoke("remove_accounts", {})
       .then((res: any) => {
         responses.set(res);
+        notify_success("accounts removed successfully");
         loadAccounts()
       })
       .catch((e) => {

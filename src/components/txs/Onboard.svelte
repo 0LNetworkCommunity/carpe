@@ -1,12 +1,11 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
   import { Link } from "svelte-navigator";
-  import UIkit from "uikit";
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
   import { routes } from "../../routes";
   import { init_account_balance } from '../../accounts';
-import { notify_success } from "../../carpeNotify";
+  import { notify_success } from "../../carpeNotify";
 
   let alice_authkey;
   function createUser() {
@@ -40,7 +39,7 @@ import { notify_success } from "../../carpeNotify";
         <span
           on:click={createUser}
           class="uk-button uk-button-primary uk-align-right"
-          id="create-acc">Add</span
+          id="create-acc">Onboard</span
         >
         <Link to={routes.home}>
           <span class="uk-button uk-button-default uk-align-right">Cancel</span>

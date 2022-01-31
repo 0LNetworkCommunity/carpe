@@ -1,5 +1,7 @@
 //! Carpe error type for client
 
+use txs::submit_tx::TxError;
+
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub enum ErrorCat {
@@ -13,7 +15,7 @@ pub enum ErrorCat {
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct CarpeError {
   category: ErrorCat,
-  uid: u8,
+  uid: u64,
   msg: String,
   trace: String,
 }
@@ -24,19 +26,30 @@ impl From<anyhow::Error> for CarpeError {
     }
 }
 
-const E_MISC: u8 = 100;
+impl From<TxError> for CarpeError {
+    fn from(e: TxError) -> Self {
+      // check if the is a tower error
+      match tower::tower_errors::parse_error(e){
+        tower::tower_errors::TowerError::Unknown => CarpeError::tx("unknown tx error submitting tower"),
+        tower::tower_errors::TowerError::Other(v) => CarpeError::tx(&format!("unknown tx error submitting tower, message: {}", &v)),
 
+        a => {
+          CarpeError::tower(&a.to_string(), a.value())
+        }
+      }
+    }
+}
+
+const E_UNKNOWN: u64 = 100; // consistent with TowerError.rs
+
+const E_APP_CONFIG: u64 = 103; // consistent with TowerError.rs
 
 // Client Errors
-const E_RPC_FAIL: u8 = 101;
-
-// Tower Errors
-const E_TOWER: u8 = 120;
-const E_TOWER_LIMIT: u8 = 121;
+const E_CLIENT_CX: u64 = 404; // consistent with TowerError.rs
 
 
 impl CarpeError {
-  pub fn new(category: ErrorCat, uid: u8, msg: String, trace: String) -> Self {
+  pub fn new(category: ErrorCat, uid: u64, msg: String, trace: String) -> Self {
     CarpeError {
       category,
       uid,
@@ -44,10 +57,31 @@ impl CarpeError {
       trace,
     }
   }
-  pub fn tower(msg: &str) -> Self {
+
+  pub fn config(msg: &str) -> Self {
+    CarpeError {
+      category: ErrorCat::Configs,
+      uid: E_APP_CONFIG,
+      msg: msg.to_owned(),
+      trace: msg.to_owned(),
+    }
+  }
+
+  pub fn tx(msg: &str) -> Self {
+    CarpeError {
+      category: ErrorCat::Tx,
+      uid: E_UNKNOWN,
+      msg: msg.to_owned(),
+      trace: msg.to_owned(),
+    }
+  }
+
+
+
+  pub fn tower(msg: &str, uid: u64) -> Self {
     CarpeError {
       category: ErrorCat::Tower,
-      uid: E_TOWER,
+      uid,
       msg: msg.to_owned(),
       trace: msg.to_owned(),
     }
@@ -56,7 +90,7 @@ impl CarpeError {
   pub fn tower_at_epoch_limit() -> Self {
     CarpeError {
       category: ErrorCat::Tower,
-      uid: E_TOWER_LIMIT,
+      uid: 130108,
       msg: "Tower is at epoch limit".to_owned(),
       trace: "Tower is at epoch limit".to_owned(),
     }
@@ -64,8 +98,8 @@ impl CarpeError {
 
   pub fn client(msg: &str) -> Self {
     CarpeError {
-      category: ErrorCat::Misc,
-      uid: E_MISC,
+      category: ErrorCat::Client,
+      uid: E_UNKNOWN,
       msg: msg.to_owned(),
       trace: msg.to_owned(),
     }
@@ -74,7 +108,7 @@ impl CarpeError {
   pub fn rpc_fail(msg: &str) -> Self {
     CarpeError {
       category: ErrorCat::Client,
-      uid: E_RPC_FAIL,
+      uid: E_CLIENT_CX,
       msg: "Network Unreacheable".to_owned(),
       trace: msg.to_owned(),
     }
@@ -83,7 +117,7 @@ impl CarpeError {
   pub fn misc(msg: &str) -> Self {
     CarpeError {
       category: ErrorCat::Misc,
-      uid: E_MISC,
+      uid: E_UNKNOWN,
       msg: msg.to_owned(),
       trace: msg.to_owned(),
     }

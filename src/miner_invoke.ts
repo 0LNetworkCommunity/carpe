@@ -1,67 +1,15 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { getCurrent } from "@tauri-apps/api/window";
 import { get } from "svelte/store";
+import { signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
+import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlog_in_progress, ProofProgress, tower, TowerStateView } from "./miner";
+import { backlogListenerReady, backlog_in_progress, EpochRules, ProofProgress, tower } from "./miner";
 import { network_profile } from "./networks";
 
-
 const current_window = getCurrent();
-// Starts a tower listener on the Rust side.
-// The listener will catch events sent from the window.
-// this listener will wait events that trigger a new proof to be built.
-// TODO: One major issue is that multiple listeners could be created. If so multiple proofs would be started on every event. We need additional checks here.
-export const startTowerListener = async () => {
-  await invoke("start_tower_listener", {})
-    .then((res) => {
-      responses.set(res as string);
-      return res
-    })
-    .catch((e) => raise_error(e, false));
-}
 
-// Stop listening on the rust side for new requests to mine a proof.
-export const killTowerListener = async () => {
-  console.log("kill listener");
-  return current_window.emit("kill-listener")
-}
-
-export const getTowerChainView = async () => {
-  await invoke("get_onchain_tower_state", {})
-    .then((res: TowerStateView) => {
-      let t = get(tower);
-      t.on_chain = res;
-      tower.set(t);
-      responses.set(JSON.stringify(res));
-    })
-    .catch((e) => {
-      let t = get(tower);
-      t.on_chain = {};
-      tower.set(t);
-
-      raise_error(e, true)
-    });
-};
-
-export const getLocalProofs = async () => {
-  await invoke("get_local_proofs", {})
-    .then((res: TowerStateView) => {
-      console.log(res);
-      // if res.
-      let t = get(tower);
-      t.on_chain = res;
-      tower.set(t);
-      responses.set(JSON.stringify(res));
-    })
-    .catch((e) => {
-      let t = get(tower);
-      t.on_chain = {};
-      tower.set(t);
-
-      raise_error(e, true)
-    });
-};
 
 export const towerOnce = async () => {
   console.log("mine tower once")
@@ -70,7 +18,7 @@ export const towerOnce = async () => {
     ? 30 * 60 * 1000
     : 5 * 1000;
 
-  let t = get(tower); 
+  let t = get(tower);
   if (t.progress && t.progress.time_start) {
     previous_duration = Date.now() - t.progress.time_start;
   }
@@ -84,17 +32,118 @@ export const towerOnce = async () => {
   }
   t.progress = progress;
   tower.set(t);
-  current_window.emit('tower-make-proof', 'Tauri is awesome!');
+
+  return invoke("miner_once", {})
+    .then(res => {
+      console.log('>>> miner_once response: ' + res);
+      responses.set(res as string);
+      proofComplete();
+
+      // start the sending of txs
+      emitBacklog();
+
+      return res
+    })
+    .catch(e => {
+      console.log('>>> miner_once error: ' + e);
+      raise_error(e, false);
+      proofError()
+      return false
+    });
 
 };
 
-// function incrementMinerStatus(new_proof: VDFProof): ClientTowerStatus {
-//   let m = get(tower);
-//   m.latest_proof = new_proof;
-//   m.count_proofs_this_session = m.count_proofs_this_session + 1;
-//   tower.set(m);
-//   return m;
-// }
+// Only the backlog service needs a listener
+export const startBacklogListener = async () => {
+  await invoke("start_backlog_sender_listener", {})
+    .then((res) => {
+      responses.set(res as string);
+      backlogListenerReady.set(true);
+      return res
+    })
+    .catch((e) => raise_error(e, false));
+}
+
+// Stop listening on the rust side for new requests to mine a proof.
+export const killBacklogListener = async () => {
+  console.log("kill listener");
+  return current_window.emit("kill-backlog-listener").then( _ => backlogListenerReady.set(false));
+}
+
+export const emitBacklog = async () => {
+  backlog_in_progress.set(true);
+  current_window.emit('send-backlog', 'please...');
+}
+
+export const maybeEmitBacklogDelta = async () => {
+  if (get(backlogListenerReady)) {
+    let t = get(tower);
+    if (t.local_height && t.on_chain.verified_tower_height) {
+      if ((t.local_height - t.on_chain.verified_tower_height) > 0) {
+        emitBacklog();
+      }
+    }
+  } else {
+    console.log("backlog listener not ready")
+  }
+}
+
+
+export const getTowerChainView = async () => {
+  await invoke("get_onchain_tower_state", {
+    account: get(signingAccount).account
+  })
+    .then((res: EpochRules) => {
+      let t = get(tower);
+      t.on_chain = res;
+      tower.set(t);
+      responses.set(JSON.stringify(res));
+    })
+    .catch((e) => {
+      //need to reset, otherwise may be looking at wrong account
+      let t = get(tower);
+      t.on_chain = {};
+      tower.set(t);
+
+      raise_error(e, true)
+    });
+};
+
+// update the `tower.local_proof`
+export const getLocalHeight = async () => {
+  await invoke("get_local_height", {})
+    .then((res: number) => {
+      console.log(res);
+      // if res.
+      let t = get(tower);
+      t.local_height = res;
+      tower.set(t);
+      responses.set(JSON.stringify(res));
+    })
+    .catch((e) => {
+      let t = get(tower);
+      t.local_height = -1;
+      tower.set(t);
+      raise_error(e, true)
+    });
+};
+
+export const getEpochRules = async () => {
+  await invoke("get_epoch_rules", {})
+    .then((res: EpochRules) => {
+      console.log(res);
+      // if res.
+      let t = get(tower);
+      t.rules = res;
+      tower.set(t);
+      responses.set(JSON.stringify(res));
+    })
+    .catch((e) => {
+      raise_error(e, true)
+    });
+};
+
+
 
 export function proofError() {
   let t = get(tower);
@@ -108,6 +157,8 @@ export function proofComplete() {
   tower.set(t);
 }
 
+
+
 // submit any transactions that are in the backlog. Proofs that have been mined but for any reason were not committed.
 export const submitBacklog = async () => {
   console.log('>>> submitBacklog called');
@@ -117,6 +168,7 @@ export const submitBacklog = async () => {
       backlog_in_progress.set(false);
       console.log('>>> submit_backlog response: ' + res);
       responses.set(res as string);
+      notify_success("Backlog submitted");
       return res
     })
     .catch(e => {
