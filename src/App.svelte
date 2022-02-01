@@ -20,6 +20,7 @@
   import "uikit/dist/css/uikit.min.css";
   import { refreshStats } from "./miner_health";
   import { loadAccounts } from "./accounts";
+import { getVersion } from "./version";
 
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
@@ -32,6 +33,8 @@
     loadAccounts();
 
     refreshStats();
+
+    getVersion();
 
     healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 
