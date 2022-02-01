@@ -70,6 +70,8 @@ pub fn keygen() -> Result<NewKeygen, CarpeError> {
 /// default way accounts get initialized in Carpe
 #[tauri::command(async)]
 pub fn is_init() -> Result<bool, CarpeError> {
+  dbg!(&configs::is_initialized());
+
   Ok(configs::is_initialized())
 }
 
@@ -117,7 +119,7 @@ pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
 pub fn refresh_accounts() -> Result<Accounts, CarpeError> {
   let all = read_accounts()?;
   let updated = map_get_balance(all)?;
-  update_accounts_db(&updated);
+  update_accounts_db(&updated)?;
   Ok(updated)
 }
 
@@ -214,13 +216,16 @@ fn insert_account_db(
   }
 }
 
-fn update_accounts_db(accounts: &Accounts) {
+fn update_accounts_db(accounts: &Accounts) -> Result<(), CarpeError> {
   let app_dir = default_accounts_db_path();
-  let serialized = serde_json::to_vec(accounts).expect("Struct Accounts should be converted!");
-  let mut file = File::create(app_dir).expect("DB_FILE should be created!");
-  file
-    .write_all(&serialized)
-    .expect("DB_FILE should be writen!");
+  let serialized = serde_json::to_vec(accounts)
+  .map_err(|e| CarpeError::config(&format!("json account db should serialize, {:?}", &e)))?;
+
+  File::create(app_dir)
+  .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be created!, {:?}", &e)))?
+  .write_all(&serialized)
+  .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be written!, {:?}", &e)))?;
+  Ok(())
 }
 
 // remove all accounts which are being tracked.

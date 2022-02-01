@@ -64,6 +64,7 @@ export async function is_initialized(): Promise<boolean> {
   invoke("is_init", {})
     .then((res) => {
       responses.set(res);
+      window.alert(res);
       if (res) {
         isInit.set(true);
       }
