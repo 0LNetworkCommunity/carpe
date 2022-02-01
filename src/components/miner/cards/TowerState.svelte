@@ -20,11 +20,11 @@
 
 <main>
   {#if towerState && towerState.on_chain && towerState.on_chain.previous_proof_hash}
-    {#if account }
+    <!-- {#if account }
       <div class="uk-flex uk-flex-center">
         <p class="uk-text-muted uk-text-uppercase"> account - {account.nickname} </p> 
       </div>
-    {/if}
+    {/if} -->
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
@@ -56,7 +56,7 @@
       </tbody>
     </table>
 
-    <SyncProofs />
+    <!-- <SyncProofs /> -->
     
   {:else if !isRefreshing && !towerState }
     <div>

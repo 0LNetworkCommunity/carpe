@@ -13,30 +13,35 @@
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
   import About from "./components/about/About.svelte";
-  import { backlog_in_progress } from "./miner";
+  import { backlogInProgress, backlogSubmitted, minerEventReceived, minerProofComplete } from "./miner";
   import { raise_error } from "./carpeError";
-  import { getEnv, nodeEnvIsTest, responses } from "./debug";
+  import { getEnv, responses } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
   import { refreshStats } from "./miner_health";
-  import { loadAccounts } from "./accounts";
+  import { isCarpeInit, loadAccounts } from "./accounts";
+  import { getVersion } from "./version";
 
+  let unlistenProofStart;
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
-  let isTest = false;
   let healthTick;
 
   onMount(async () => {
+    isCarpeInit();
+
     getEnv();
 
     loadAccounts();
 
     refreshStats();
 
+    getVersion();
+
     healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 
-    nodeEnvIsTest.subscribe(b => isTest = b);
-
+    // nodeEnvIsTest.subscribe(b => isTest = b);
+    
     ///// Backlog /////
     // Todo: Should this listener only be started in the miner view?
 
@@ -45,22 +50,33 @@
     // there is a listener service which loads the key once, and then waits for a specific
     // event to trigger the backlog submission.
 
+    unlistenProofStart = await listen("proof-start", (event: any) => {
+      responses.set(event.payload);
+      //update the tower stats after we show the backlog being up to date.
+      minerEventReceived.set(true);
+      backlogInProgress.set(false);
+      backlogSubmitted.set(false);
+    });
+
     unlistenBacklogSuccess = await listen("backlog-success", (event: any) => {
       responses.set(event.payload);
       //update the tower stats after we show the backlog being up to date.
+      backlogInProgress.set(false);
+      backlogSubmitted.set(true);
       refreshStats();
-      backlog_in_progress.set(false);
     });
 
-    unlistenBacklogError = await listen("backlog-error", (event) => {
+    unlistenBacklogError = await listen("backlog-error", (event: any) => {
       // TODO: show an UX in the miner view for this type of error
 
       raise_error(event.payload, false);
-      backlog_in_progress.set(false);
+      backlogInProgress.set(false);
+      backlogSubmitted.set(false);
     });
   });
 
   onDestroy(() => {
+    unlistenProofStart();
     unlistenBacklogSuccess();
     unlistenBacklogError();
     clearInterval(healthTick);

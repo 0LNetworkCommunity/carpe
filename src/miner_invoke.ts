@@ -5,7 +5,7 @@ import { signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlog_in_progress, EpochRules, miner_loop_enabled, ProofProgress, tower } from "./miner";
+import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted } from "./miner";
 import { network_profile } from "./networks";
 
 const current_window = getCurrent();
@@ -13,7 +13,9 @@ const current_window = getCurrent();
 
 export const towerOnce = async () => {
   console.log("mine tower once")
-
+  minerEventReceived.set(false);
+  minerProofComplete.set(false);
+  
   let previous_duration = get(network_profile).chain_id == "Mainnet"
     ? 30 * 60 * 1000
     : 5 * 1000;
@@ -46,6 +48,8 @@ export const towerOnce = async () => {
     })
     .catch(e => {
       console.log('>>> miner_once error: ' + e);
+      // disable mining when there is a proof error.
+      minerLoopEnabled.set(false);
       raise_error(e, false);
       proofError()
       return false
@@ -62,9 +66,9 @@ export const maybeStartMiner = () => {
 
   if (
     // user must have set mining switch on
-    get(miner_loop_enabled) &&
+    get(minerLoopEnabled) &&
     // there should be no backlog in progress
-    !get(backlog_in_progress) &&
+    !get(backlogInProgress) &&
     // only try to restart if a proof has completed.
     proofComplete
   ){ 
@@ -90,7 +94,7 @@ export const killBacklogListener = async () => {
 }
 
 export const emitBacklog = async () => {
-  backlog_in_progress.set(true);
+  backlogInProgress.set(true);
   current_window.emit('send-backlog', 'please...');
 }
 
@@ -174,6 +178,8 @@ export function proofComplete() {
   let t = get(tower);
   t.progress.complete = true;
   tower.set(t);
+
+  minerProofComplete.set(true);
 }
 
 
@@ -181,17 +187,19 @@ export function proofComplete() {
 // submit any transactions that are in the backlog. Proofs that have been mined but for any reason were not committed.
 export const submitBacklog = async () => {
   console.log('>>> submitBacklog called');
-  backlog_in_progress.set(true);
+  backlogInProgress.set(true);
   invoke("submit_backlog", {})
     .then(res => {
-      backlog_in_progress.set(false);
+      backlogInProgress.set(false);
+      backlogSubmitted.set(true);
       console.log('>>> submit_backlog response: ' + res);
       responses.set(res as string);
       notify_success("Backlog submitted");
       return res
     })
     .catch(e => {
-      backlog_in_progress.set(false);
+      backlogInProgress.set(false);
+      backlogSubmitted.set(false);
       console.log('>>> submit_backlog error: ' + e);
       raise_error(e, false);
     });
@@ -200,7 +208,7 @@ export const submitBacklog = async () => {
 // For debugging or rescue purposes. Sometimes the user may have a proof that for some reason was not committed to the chain.
 
 export const submitProofZero = async () => {
-  backlog_in_progress.set(true);
+  backlogInProgress.set(true);
   invoke("debug_submit_proof_zero", {})
     .then((res) => {
       console.log(res);

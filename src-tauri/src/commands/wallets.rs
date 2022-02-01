@@ -76,7 +76,7 @@ pub fn is_init() -> Result<bool, CarpeError> {
 /// default way accounts get initialized in Carpe
 #[tauri::command]
 pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-  danger_init_from_mnem(mnem).map_err(|_| CarpeError::misc("could not initialize from mnemonic"))
+  danger_init_from_mnem(mnem).map_err(|_| CarpeError::config("could not initialize from mnemonic"))
 }
 
 pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
@@ -94,7 +94,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
   insert_account_db(get_short(address.clone()), address, authkey)?;
 
   key_manager::set_private_key(&address.to_string(), priv_key)
-  .map_err(|e|{ CarpeError::misc(&e.to_string()) })?;
+  .map_err(|e|{ CarpeError::config(&e.to_string()) })?;
 
   configs_profile::set_account_profile(address.clone(), authkey.clone())?;
   
@@ -117,7 +117,7 @@ pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
 pub fn refresh_accounts() -> Result<Accounts, CarpeError> {
   let all = read_accounts()?;
   let updated = map_get_balance(all)?;
-  update_accounts_db(&updated);
+  update_accounts_db(&updated)?;
   Ok(updated)
 }
 
@@ -214,13 +214,16 @@ fn insert_account_db(
   }
 }
 
-fn update_accounts_db(accounts: &Accounts) {
+fn update_accounts_db(accounts: &Accounts) -> Result<(), CarpeError> {
   let app_dir = default_accounts_db_path();
-  let serialized = serde_json::to_vec(accounts).expect("Struct Accounts should be converted!");
-  let mut file = File::create(app_dir).expect("DB_FILE should be created!");
-  file
-    .write_all(&serialized)
-    .expect("DB_FILE should be writen!");
+  let serialized = serde_json::to_vec(accounts)
+  .map_err(|e| CarpeError::config(&format!("json account db should serialize, {:?}", &e)))?;
+
+  File::create(app_dir)
+  .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be created!, {:?}", &e)))?
+  .write_all(&serialized)
+  .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be written!, {:?}", &e)))?;
+  Ok(())
 }
 
 // remove all accounts which are being tracked.

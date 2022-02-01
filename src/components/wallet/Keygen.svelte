@@ -15,7 +15,7 @@
   let display_mnem: string;
   let address: string;
   let authkey: string;
-  
+
   onMount(async () => {
     mnem.subscribe((m) => (display_mnem = m));
     signingAccount.subscribe((a) => {
@@ -39,33 +39,65 @@
 </script>
 
 <main>
-  <div class="uk-flex">
-    <h3 class="uk-text-light uk-text-muted uk-text-uppercase">Create New Account</h3>
-    <button class="uk-button uk-button-default uk-align-right" on:click={keygen}>
-      Generate Keys
-    </button>
+  <div class="uk-flex uk-flex-center">
+    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
+      Create New Account
+    </h2>
+  </div>
+
+  <div class="uk-flex uk-flex-center">
+    <h3 class="uk-text-light uk-text-muted uk-text-center">
+      After you generate an account and secret phrase, you'll need someone to send one 0L coin to that account for it to be created on chain.
+    </h3>
   </div>
 
   {#if address && !hide}
-    <p>
-      Here are some random account keys. Your account does not exist yet on chain. You'll need someone to send funds to the Auth Key below. At that point your account will exist on chain. From then on, people can just use the Account Address to transfer funds to you.
-    </p>
+
     <div class="uk-margin uk-card uk-card-default uk-card-body uk-text-muted">
       <h5 class="uk-text-muted uk-text-uppercase">ACCOUNT ADDRESS</h5>
       <p class="uk-text-emphasis uk-text-uppercase">{address}</p>
-      <h5 class="uk-text-muted uk-text-uppercase">AUTH KEY</h5>
+      <h5 class="uk-text-muted uk-text-uppercase">ONBOARDING KEY</h5>
       <p class="uk-text-emphasis uk-text-uppercase">{authkey}</p>
-      <p>You need this to be able to create the account on chain.</p>
-      
-      <h5 class="uk-text-muted uk-text-uppercase uk-text-danger">RECOVERY MNEMONIC</h5>
+      <p>This is also known as an Auth Key. For now you'll need it to be able to create the account on chain.</p>
+
+      <h5 class="uk-text-muted uk-text-uppercase uk-text-danger">
+        SECRET RECOVERY PHRASE
+      </h5>
       <p class="uk-text-danger">
-        This is your recovery key, if you lose it no one can help you. Write it
-        down now.
+        This is your secret account password (mnemonic). If you lose it no one can help you! Write it down now.
       </p>
       <div class="uk-margin">
         <textarea class="uk-textarea" rows="3" readonly>{display_mnem}</textarea>
       </div>
-      <AccountFromMnemSubmit danger_temp_mnem={""} action="open modal"/>
+    </div>
+
+    <div>
+      <p>
+        Your account does not exist yet on chain. You'll need to give someone
+        your Onboarding Key so that they can create your account.
+      </p>
+    </div>
+
+    <div>
+      <AccountFromMnemSubmit danger_temp_mnem={""} action="open modal" />
+
+      <button
+        class="uk-button uk-button-default uk-align-right"
+        on:click={keygen}
+      >
+        Generate Different Keys
+      </button>
+    </div>
+
+  {:else}
+
+    <div class="uk-position-center">
+      <button
+        class="uk-button uk-button-secondary uk-align-right"
+        on:click={keygen}
+      >
+        Generate Keys
+      </button>
     </div>
   {/if}
 </main>

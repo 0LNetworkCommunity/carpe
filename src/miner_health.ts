@@ -1,6 +1,6 @@
 import { get } from "svelte/store";
 import { refreshAccounts } from "./accounts";
-import { backlog_in_progress, miner_loop_enabled } from "./miner";
+import { backlogInProgress, minerLoopEnabled } from "./miner";
 import { getEpochRules, getLocalHeight, getTowerChainView, maybeEmitBacklogDelta, maybeStartMiner, towerOnce } from "./miner_invoke";
 import { refreshWaypoint } from "./networks";
 

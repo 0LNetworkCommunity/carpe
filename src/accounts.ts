@@ -2,7 +2,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
-import { miner_loop_enabled} from "./miner";
+import { minerLoopEnabled} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
 export interface AccountEntry {
   account: string,
@@ -60,10 +60,11 @@ export function refreshAccounts() {
     })
 }
 
-export async function is_initialized(): Promise<boolean> {
+export const isCarpeInit = async () => {
   invoke("is_init", {})
     .then((res) => {
       responses.set(res);
+      window.alert(res);
       if (res) {
         isInit.set(true);
       }
@@ -85,7 +86,7 @@ export async function setAccount(an_address: string) {
   }
  
   // cannot switch profile with miner running
-  if (get(miner_loop_enabled)) {
+  if (get(minerLoopEnabled)) {
     notify_error("To switch accounts you need to turn miner off first.");
     return
   }
@@ -111,7 +112,7 @@ export function addNewAccount(account: AccountEntry) {
   all_accounts.set(list);
 }
 
-export function addRestoredAccount(account: AccountEntry) {
+export function checkAccountBalance(account: AccountEntry) {
   invoke('query_balance', {account: account.account})
     .then((balance: number) => {
       let list = get(all_accounts);
@@ -123,18 +124,18 @@ export function addRestoredAccount(account: AccountEntry) {
     .catch((e) => raise_error(e));
 }
 
-export async function init_account_balance(authkey: string) {
-  let list = get(all_accounts);
-  let account = list.find((a) => a.authkey == authkey);
-  invoke('query_balance', {account: account.account})
-    .then((balance: number) => {
-      console.log('>>> init balance: ' + balance);      
-      account.on_chain = true;
-      account.balance = Number(balance);
-      all_accounts.set(list);
-    })
-    .catch((e) => raise_error(e));
-}
+// export async function init_account_balance(authkey: string) {
+//   let list = get(all_accounts);
+//   let account = list.find((a) => a.authkey == authkey);
+//   invoke('query_balance', {account: account.account})
+//     .then((balance: number) => {
+//       console.log('>>> init balance: ' + balance);      
+//       account.on_chain = true;
+//       account.balance = Number(balance);
+//       all_accounts.set(list);
+//     })
+//     .catch((e) => raise_error(e));
+// }
 
 
 export function get_locale(): string {

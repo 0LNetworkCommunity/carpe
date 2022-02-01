@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  // import { onMount } from "svelte";
   import type { AccountEntry } from "../../accounts";
-  import { signingAccount } from "../../accounts";
+  // import { signingAccount } from "../../accounts";
   // import Clipboard from "svelte-clipboard";
 
   export let pendingAccounts: AccountEntry[];
-  export let isConnected: bool;
+  export let isConnected: boolean;
 
 
-  let authkey;
-  onMount(async () => {
-    signingAccount.subscribe(a => authkey = a.authkey);
-  });
+  // let authkey;
+  // onMount(async () => {
+  //   signingAccount.subscribe(a => authkey = a.authkey);
+  // });
 
 </script>
 

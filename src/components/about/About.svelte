@@ -20,10 +20,10 @@
       <span class="uk-text-bold">Version: </span>v{release.version}
     </p>
     <p class="uk-text-muted">
-      <span class="uk-text-bold">Branch: </span>v{release.head}
+      <span class="uk-text-bold">Branch: </span>{release.head}
     </p>
     <p class="uk-text-muted">
-      <span class="uk-text-bold">Commit: </span>v{release.hash}
+      <span class="uk-text-bold">Commit: </span>{release.hash}
     </p>
   </div>
 </main>

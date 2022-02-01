@@ -8,16 +8,19 @@
   import { signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
-  import { tower } from "../../miner";
+  import { backlogInProgress, tower } from "../../miner";
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
   import { refreshStats } from "../../miner_health";
+import SyncProofs from "./cards/SyncProofs.svelte";
 
   let newbie = null;
   let loading = true;
   let account: AccountEntry;
   let isDevTest = false;
+  let isSendInProgress = false;
 
+  
   onMount(async () => {
     refreshStats();
 
@@ -29,12 +32,15 @@
       }
     });
 
+    backlogInProgress.subscribe((b) =>  isSendInProgress = b);
+
     signingAccount.subscribe((a) => (account = a));
 
     isDevTest = get(nodeEnv) == "test";
   });
 </script>
 
+ 
 <main class="uk-height-viewport">
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
@@ -47,7 +53,7 @@
       </p>
     </div>
   {/if}
-  
+
   {#if loading}
     <div class="uk-flex uk-flex-center">
       <span uk-spinner />
@@ -60,8 +66,11 @@
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />
           
-          <MinerProgress />
-          
+          {#if !isSendInProgress}
+            <MinerProgress />
+          {:else}
+            <SyncProofs />
+          {/if}
           <!-- <p>Lost time is never found again.</p> -->
           <!-- <Oops/> -->
         </div>

@@ -4,7 +4,6 @@
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
   import { routes } from "../../routes";
-  import { init_account_balance } from '../../accounts';
   import { notify_success } from "../../carpeNotify";
 
   let alice_authkey;
@@ -15,7 +14,7 @@
         responses.set(JSON.stringify(res));
 
         // TODO move to an account controller
-        init_account_balance(alice_authkey);
+        // init_account_balance(alice_authkey);
         notify_success("Account Added");
       })
       .catch((error) => raise_error(error));
