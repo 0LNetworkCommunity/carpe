@@ -5,7 +5,7 @@ import { signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlog_in_progress, EpochRules, ProofProgress, tower } from "./miner";
+import { backlogListenerReady, backlog_in_progress, EpochRules, miner_loop_enabled, ProofProgress, tower } from "./miner";
 import { network_profile } from "./networks";
 
 const current_window = getCurrent();
@@ -52,6 +52,25 @@ export const towerOnce = async () => {
     });
 
 };
+
+export const maybeStartMiner = () => {
+  // maybe try to start a new proof
+  let t = get(tower);
+  let proofComplete = (t && t.progress && t.progress.complete);
+  console.log("maybeStartMiner");
+  console.log(proofComplete);
+
+  if (
+    // user must have set mining switch on
+    get(miner_loop_enabled) &&
+    // there should be no backlog in progress
+    !get(backlog_in_progress) &&
+    // only try to restart if a proof has completed.
+    proofComplete
+  ){ 
+    towerOnce(); 
+  };
+}
 
 // Only the backlog service needs a listener
 export const startBacklogListener = async () => {
