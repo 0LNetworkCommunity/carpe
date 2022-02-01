@@ -11,9 +11,9 @@ import { responses } from "../../debug";
   };
 </script>
 
-<main>
+<main class="uk-margin">
   <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Set your Account Type </h4>
-  <p> Make sure you know what you are doing. This is not reversible. A slow wallet and community wallets are permanent.</p>
+  <p> Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.</p>
   <div>
     <div class="uk-inline">
     <button class="uk-button uk-button-default" type="button">Set Slow Wallet</button>
