@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { Link, navigate } from "svelte-navigator";
+  import { navigate } from "svelte-navigator";
   import UIkit from "uikit";
   import { responses } from "../../debug";
-  import { signingAccount, mnem, addNewAccount, addRestoredAccount } from "../../accounts";
+  import { signingAccount, mnem, addNewAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
   import { invoke } from "@tauri-apps/api/tauri";
-import { notify_success } from "../../carpeNotify";
+  import { notify_success } from "../../carpeNotify";
+  import { onMount } from "svelte";
 
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;
@@ -34,7 +34,7 @@ import { notify_success } from "../../carpeNotify";
           UIkit.modal('#submit-confirmation-modal').$destroy(true); // known bug https://github.com/uikit/uikit/issues/1370
           addNewAccount(res);
         } else {
-          addRestoredAccount(res);
+          checkAccountBalance(res);
         }
         responses.set(JSON.stringify(res));
         signingAccount.set(res);       

@@ -16,7 +16,7 @@
   let isBacklogInProgress;
   let isBacklogComplete;
 
-  onMount(() => {
+  onMount(async () => {
     backlogListenerReady.subscribe((b) => (listenerReady = b));
     minerLoopEnabled.subscribe((b) => (loopEnabled = b));
     minerEventReceived.subscribe((b) => (proofStarted = b));

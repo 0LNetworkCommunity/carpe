@@ -60,7 +60,7 @@ export function refreshAccounts() {
     })
 }
 
-export async function isCarpeInit(): Promise<boolean> {
+export const isCarpeInit = async () => {
   invoke("is_init", {})
     .then((res) => {
       responses.set(res);
@@ -112,7 +112,7 @@ export function addNewAccount(account: AccountEntry) {
   all_accounts.set(list);
 }
 
-export function addRestoredAccount(account: AccountEntry) {
+export function checkAccountBalance(account: AccountEntry) {
   invoke('query_balance', {account: account.account})
     .then((balance: number) => {
       let list = get(all_accounts);
@@ -124,18 +124,18 @@ export function addRestoredAccount(account: AccountEntry) {
     .catch((e) => raise_error(e));
 }
 
-export async function init_account_balance(authkey: string) {
-  let list = get(all_accounts);
-  let account = list.find((a) => a.authkey == authkey);
-  invoke('query_balance', {account: account.account})
-    .then((balance: number) => {
-      console.log('>>> init balance: ' + balance);      
-      account.on_chain = true;
-      account.balance = Number(balance);
-      all_accounts.set(list);
-    })
-    .catch((e) => raise_error(e));
-}
+// export async function init_account_balance(authkey: string) {
+//   let list = get(all_accounts);
+//   let account = list.find((a) => a.authkey == authkey);
+//   invoke('query_balance', {account: account.account})
+//     .then((balance: number) => {
+//       console.log('>>> init balance: ' + balance);      
+//       account.on_chain = true;
+//       account.balance = Number(balance);
+//       all_accounts.set(list);
+//     })
+//     .catch((e) => raise_error(e));
+// }
 
 
 export function get_locale(): string {

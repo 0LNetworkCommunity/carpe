@@ -15,7 +15,7 @@
   import About from "./components/about/About.svelte";
   import { backlogInProgress, backlogSubmitted, minerEventReceived, minerProofComplete } from "./miner";
   import { raise_error } from "./carpeError";
-  import { getEnv, nodeEnvIsTest, responses } from "./debug";
+  import { getEnv, responses } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
   import { refreshStats } from "./miner_health";
@@ -25,7 +25,6 @@
   let unlistenProofStart;
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
-  // let isTest = false;
   let healthTick;
 
   onMount(async () => {

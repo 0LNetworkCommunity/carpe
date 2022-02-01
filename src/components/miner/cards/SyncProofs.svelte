@@ -13,7 +13,7 @@
   let delta: number;
 
 
-  onMount(() => {
+  onMount(async () => {
     delta = null;
     tower.subscribe(t => {
       delta = t.local_height - t.on_chain.verified_tower_height
