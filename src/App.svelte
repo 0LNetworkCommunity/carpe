@@ -13,15 +13,16 @@
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
   import About from "./components/about/About.svelte";
-  import { backlogInProgress } from "./miner";
+  import { backlogInProgress, backlogSubmitted, minerEventReceived, minerProofComplete } from "./miner";
   import { raise_error } from "./carpeError";
   import { getEnv, nodeEnvIsTest, responses } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
   import { refreshStats } from "./miner_health";
   import { loadAccounts } from "./accounts";
-import { getVersion } from "./version";
+  import { getVersion } from "./version";
 
+  let unlistenProofStart;
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
   let isTest = false;
@@ -48,22 +49,33 @@ import { getVersion } from "./version";
     // there is a listener service which loads the key once, and then waits for a specific
     // event to trigger the backlog submission.
 
+    unlistenProofStart = await listen("proof-start", (event: any) => {
+      responses.set(event.payload);
+      //update the tower stats after we show the backlog being up to date.
+      minerEventReceived.set(true);
+      backlogInProgress.set(false);
+      backlogSubmitted.set(false);
+    });
+
     unlistenBacklogSuccess = await listen("backlog-success", (event: any) => {
       responses.set(event.payload);
       //update the tower stats after we show the backlog being up to date.
-      refreshStats();
       backlogInProgress.set(false);
+      backlogSubmitted.set(true);
+      refreshStats();
     });
 
-    unlistenBacklogError = await listen("backlog-error", (event) => {
+    unlistenBacklogError = await listen("backlog-error", (event: any) => {
       // TODO: show an UX in the miner view for this type of error
 
       raise_error(event.payload, false);
       backlogInProgress.set(false);
+      backlogSubmitted.set(false);
     });
   });
 
   onDestroy(() => {
+    unlistenProofStart();
     unlistenBacklogSuccess();
     unlistenBacklogError();
     clearInterval(healthTick);

@@ -33,7 +33,7 @@ export interface ProofProgress {
   previous_duration: number,
   complete: boolean,
   error: boolean,
-  pct_complete: number,
+  pct_complete: number, // TODO: this is duplicated with minerProofComplete in miner.ts
 }
 export interface EpochRules {
   lower: number,
@@ -43,16 +43,27 @@ export interface EpochRules {
 }
 export const tower = writable<ClientTowerStatus>({});
 
+// is set to true if when the app starts and Rust emits the backlog-listener-ready event.
 export const backlogListenerReady = writable(false);
 
+// is set to true when the user toggles the miner-toggle
+// is set to false when the user manually sets to off, or the mineOnce async invocation returns error.
 export const minerLoopEnabled = writable(false);
 
+// is set to true when the window.emit event is received
+// is set to false when a new proof starts
 export const minerEventReceived = writable(false);
 
+// is set to true when the asyc MineOnce returns a proof
+// is set to false when a new proof starts 
 export const minerProofComplete = writable(false);
 
+// is set to true when a backlog event is emmitted, or invoking the async backlog command
+// is set to false when a backlog-success or -fail event is received 
 export const backlogInProgress = writable(false);
 
+// is set to true when a backlog-success event is emmitted from rust, or when the async invoked command returns
+// is set to false when a backlog-fail event is received 
 export const backlogSubmitted = writable(false);
 
 

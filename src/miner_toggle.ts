@@ -1,6 +1,5 @@
 import { get } from "svelte/store";
 import { minerLoopEnabled } from "./miner";
-import { refreshStats } from "./miner_health";
 import { getEpochRules, getLocalHeight, getTowerChainView, killBacklogListener, maybeEmitBacklogDelta, startBacklogListener, towerOnce } from "./miner_invoke";
 
 export async function enableMining(): Promise<boolean> {

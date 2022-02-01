@@ -5,7 +5,8 @@ import { signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower } from "./miner";
+import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted } from "./miner";
+import { disableMining } from "./miner_toggle";
 import { network_profile } from "./networks";
 
 const current_window = getCurrent();
@@ -13,7 +14,9 @@ const current_window = getCurrent();
 
 export const towerOnce = async () => {
   console.log("mine tower once")
-
+  minerEventReceived.set(false);
+  minerProofComplete.set(false);
+  
   let previous_duration = get(network_profile).chain_id == "Mainnet"
     ? 30 * 60 * 1000
     : 5 * 1000;
@@ -46,6 +49,8 @@ export const towerOnce = async () => {
     })
     .catch(e => {
       console.log('>>> miner_once error: ' + e);
+      // disable mining when there is a proof error.
+      disableMining();
       raise_error(e, false);
       proofError()
       return false
@@ -174,6 +179,8 @@ export function proofComplete() {
   let t = get(tower);
   t.progress.complete = true;
   tower.set(t);
+
+  minerProofComplete.set(true);
 }
 
 
@@ -185,6 +192,7 @@ export const submitBacklog = async () => {
   invoke("submit_backlog", {})
     .then(res => {
       backlogInProgress.set(false);
+      backlogSubmitted.set(true);
       console.log('>>> submit_backlog response: ' + res);
       responses.set(res as string);
       notify_success("Backlog submitted");
@@ -192,6 +200,7 @@ export const submitBacklog = async () => {
     })
     .catch(e => {
       backlogInProgress.set(false);
+      backlogSubmitted.set(false);
       console.log('>>> submit_backlog error: ' + e);
       raise_error(e, false);
     });

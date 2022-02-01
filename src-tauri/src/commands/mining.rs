@@ -17,8 +17,12 @@ use tower::{
 
 /// creates one proof and submits
 #[tauri::command(async)]
-pub fn miner_once() -> Result<VDFProof, CarpeError> {
-  println!("\nMining one proof");
+pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
+  println!("\nMining one proof\n");
+  
+  window.emit("proof-start", {})
+  .map_err(|_| { CarpeError::misc("could not emit window event") })?;
+
   let config = get_cfg()?;
   mine_once(&config)
     .map_err(|e| {
