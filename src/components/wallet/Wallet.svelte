@@ -2,11 +2,11 @@
   import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
   import {
-    is_initialized,
+    isCarpeInit,
     isRefreshingAccounts,
-    loadAccounts,
     all_accounts,
     signingAccount,
+isInit,
   } from "../../accounts";
   import { routes } from "../../routes";
   import type { AccountEntry } from "../../accounts";
@@ -27,9 +27,10 @@
   let isRefreshing: boolean = true;
 
   let isConnected: boolean = true;
+  // let init = true; // assume true until not.
 
   onMount(async () => {
-    is_initialized();
+    // isInit.subscribe(i => init = i);
 
     connected.subscribe((b) => (isConnected = b));
 
@@ -48,36 +49,39 @@
 
 <main>
   <div>
-    <div class="uk-flex uk-flex-center">
-      <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Wallet</h2>
-    </div>
 
-    {#if isRefreshing}
-      <div class="uk-flex uk-flex-center">
-        <span uk-spinner />
-      </div>
-    {/if}
 
-    {#if !isConnected}
-      <ConnectionError />
-    {/if}
     {#if account_list == null}
       <div class="uk-align-center">
         <span uk-spinner class="uk-margin-left uk-position-absolute" />
       </div>
     {:else if account_list.length > 0}
-      <AccountsList {my_account} {account_list} {isMining} {isConnected} />
 
-      <ReminderCreate {pendingAccounts} {isConnected} />
+      {#if !isConnected}
+        <ConnectionError />
+      {:else}
+        <div class="uk-flex uk-flex-center">
+          <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Wallet</h2>
+        </div>
 
-      <div uk-grid class="uk-flex uk-flex-center">
-        <Link to={routes.keygen}>
-          <button class="uk-button uk-button-secondary"> New Account </button>
-        </Link>
-        <Link to={routes.accountFromMnem}>
-          <button class="uk-button uk-button-default">Restore Account </button>
-        </Link>
-      </div>
+        {#if isRefreshing}
+          <div class="uk-flex uk-flex-center">
+            <span uk-spinner />
+          </div>
+        {/if}
+        <AccountsList {my_account} {account_list} {isMining} {isConnected} />
+
+        <ReminderCreate {pendingAccounts} {isConnected} />
+
+        <div uk-grid class="uk-flex uk-flex-center">
+          <Link to={routes.keygen}>
+            <button class="uk-button uk-button-secondary"> New Account </button>
+          </Link>
+          <Link to={routes.accountFromMnem}>
+            <button class="uk-button uk-button-default">Restore Account </button>
+          </Link>
+        </div>
+      {/if}
     {:else if account_list.length == 0 && !isRefreshing}
       <Newbie />
     {/if}

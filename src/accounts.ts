@@ -60,7 +60,7 @@ export function refreshAccounts() {
     })
 }
 
-export async function is_initialized(): Promise<boolean> {
+export async function isCarpeInit(): Promise<boolean> {
   invoke("is_init", {})
     .then((res) => {
       responses.set(res);

@@ -57,9 +57,9 @@ import { notify_success } from "../../carpeNotify";
 
   <div id="submit-confirmation-modal" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
-      <h2 class="uk-modal-title">Heads Up!</h2>
-      <p>Are you sure you wrote down your mnemonic key?</p>
-      <p>Remember that you won't be able to recover your account without it. No one can help you if loose it.</p>
+      <h2 class="uk-modal-title uk-text-uppercase uk-text-alert">Heads Up!</h2>
+      <p>Are you sure you wrote down your mnemonic phrase?</p>
+      <p>You won't be able to recover your account without it. No one can help you if lose it.</p>
       <p>This is the last opportunity to write it down.</p>
       <p class="uk-text-right">
         <button 

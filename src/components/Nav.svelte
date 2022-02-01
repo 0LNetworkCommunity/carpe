@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { Link, useLocation } from "svelte-navigator";
   import { debugMode } from "../debug";
-  import { signingAccount, all_accounts } from "../accounts";
+  import { signingAccount, all_accounts, isInit } from "../accounts";
   import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
   import { routes } from "../routes";
 
@@ -17,10 +17,13 @@
   let debug = false;
   let myAccountIsOnChain = false;
   let has_account = false;
-  
+  let init = true; // assume initialized until not
+
   onMount(async () => {
     debugMode.subscribe(d => debug = d);
     
+    isInit.subscribe(i => init  = i);
+
     all_accounts.subscribe(list => has_account = list.length > 0);
 
     signingAccount.subscribe(myAccount => {
@@ -50,6 +53,7 @@
       </ul>
     </div>
 
+    {#if init }
     <div class="uk-navbar-right">
       <ul class="uk-navbar-nav">
         <li>
@@ -57,5 +61,6 @@
         </li>
       </ul>
     </div>
+    {/if }
   </nav>
 </main>

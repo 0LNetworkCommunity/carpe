@@ -19,16 +19,18 @@
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
   import { refreshStats } from "./miner_health";
-  import { loadAccounts } from "./accounts";
+  import { isCarpeInit, loadAccounts } from "./accounts";
   import { getVersion } from "./version";
 
   let unlistenProofStart;
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
-  let isTest = false;
+  // let isTest = false;
   let healthTick;
 
   onMount(async () => {
+    isCarpeInit();
+
     getEnv();
 
     loadAccounts();
@@ -39,8 +41,8 @@
 
     healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 
-    nodeEnvIsTest.subscribe(b => isTest = b);
-
+    // nodeEnvIsTest.subscribe(b => isTest = b);
+    
     ///// Backlog /////
     // Todo: Should this listener only be started in the miner view?
 
