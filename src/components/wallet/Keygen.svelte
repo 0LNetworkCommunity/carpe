@@ -58,13 +58,13 @@
       <p class="uk-text-emphasis uk-text-uppercase">{address}</p>
       <h5 class="uk-text-muted uk-text-uppercase">ONBOARDING KEY</h5>
       <p class="uk-text-emphasis uk-text-uppercase">{authkey}</p>
-      <p>This also known as an Auth Key. For now you'll need this to be able to create the account on chain.</p>
+      <p>This is also known as an Auth Key. For now you'll need it to be able to create the account on chain.</p>
 
       <h5 class="uk-text-muted uk-text-uppercase uk-text-danger">
         SECRET RECOVERY PHRASE
       </h5>
       <p class="uk-text-danger">
-        This is your secret account password (mnemonic), if you lose it no one can help you. Write it down now.
+        This is your secret account password (mnemonic). If you lose it no one can help you! Write it down now.
       </p>
       <div class="uk-margin">
         <textarea class="uk-textarea" rows="3" readonly>{display_mnem}</textarea>
@@ -74,8 +74,7 @@
     <div>
       <p>
         Your account does not exist yet on chain. You'll need to give someone
-        your Onboarding Key (above) so that they can add your account on the
-        0L chain.
+        your Onboarding Key so that they can create your account.
       </p>
     </div>
 
