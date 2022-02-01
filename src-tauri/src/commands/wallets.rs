@@ -70,15 +70,13 @@ pub fn keygen() -> Result<NewKeygen, CarpeError> {
 /// default way accounts get initialized in Carpe
 #[tauri::command(async)]
 pub fn is_init() -> Result<bool, CarpeError> {
-  dbg!(&configs::is_initialized());
-
   Ok(configs::is_initialized())
 }
 
 /// default way accounts get initialized in Carpe
 #[tauri::command]
 pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-  danger_init_from_mnem(mnem).map_err(|_| CarpeError::misc("could not initialize from mnemonic"))
+  danger_init_from_mnem(mnem).map_err(|_| CarpeError::config("could not initialize from mnemonic"))
 }
 
 pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
@@ -96,7 +94,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
   insert_account_db(get_short(address.clone()), address, authkey)?;
 
   key_manager::set_private_key(&address.to_string(), priv_key)
-  .map_err(|e|{ CarpeError::misc(&e.to_string()) })?;
+  .map_err(|e|{ CarpeError::config(&e.to_string()) })?;
 
   configs_profile::set_account_profile(address.clone(), authkey.clone())?;
   

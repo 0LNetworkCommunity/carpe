@@ -6,7 +6,6 @@ import { raise_error } from "./carpeError";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
 import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted } from "./miner";
-import { disableMining } from "./miner_toggle";
 import { network_profile } from "./networks";
 
 const current_window = getCurrent();
@@ -50,7 +49,7 @@ export const towerOnce = async () => {
     .catch(e => {
       console.log('>>> miner_once error: ' + e);
       // disable mining when there is a proof error.
-      disableMining();
+      minerLoopEnabled.set(false);
       raise_error(e, false);
       proofError()
       return false

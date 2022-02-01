@@ -2,12 +2,13 @@
   import { navigate } from "svelte-navigator";
   import UIkit from "uikit";
   import { responses } from "../../debug";
-  import { signingAccount, mnem, addNewAccount } from "../../accounts";
+  import { signingAccount, mnem, addNewAccount, isInit } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
   import { invoke } from "@tauri-apps/api/tauri";
   import { notify_success } from "../../carpeNotify";
   import { onMount } from "svelte";
+import { connected, refreshWaypoint } from "../../networks";
 
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;
@@ -33,13 +34,15 @@
           // UIkit.modal("#submit-confirmation-modal").hide() 
           UIkit.modal('#submit-confirmation-modal').$destroy(true); // known bug https://github.com/uikit/uikit/issues/1370
           addNewAccount(res);
-        } else {
-          checkAccountBalance(res);
-        }
+        };
         responses.set(JSON.stringify(res));
         signingAccount.set(res);       
         isSubmitting = false;
         notify_success(`Account Added: ${res.nickname}`);
+        // refresh waypoint check connection status of `connected`.
+        connected.set(true); // provisionally set to true so we don't get flashed an error page.
+        refreshWaypoint();
+        isInit.set(true);
         navigate("/");
       })
       .catch((error) => {
@@ -53,7 +56,7 @@
 </script>
 
 {#if isNewAccount}   
-  <button class="uk-button uk-button-default uk-margin-small-right" disabled={isSubmitting} type="button" on:click|preventDefault={openConfirmationModal}>Submit</button>
+  <button class="uk-button uk-button-secondary uk-margin-small-right" disabled={isSubmitting} type="button" on:click|preventDefault={openConfirmationModal}>Create This Account</button>
 
   <div id="submit-confirmation-modal" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
