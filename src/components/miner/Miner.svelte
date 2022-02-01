@@ -12,6 +12,7 @@
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
   import { refreshStats } from "../../miner_health";
+import MinerPhases from "./MinerPhases.svelte";
 
   let newbie = null;
   let loading = true;
@@ -35,6 +36,7 @@
   });
 </script>
 
+ 
 <main class="uk-height-viewport">
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
@@ -48,6 +50,8 @@
     </div>
   {/if}
   
+  <MinerPhases />
+
   {#if loading}
     <div class="uk-flex uk-flex-center">
       <span uk-spinner />

@@ -13,7 +13,7 @@
   import Newbie from "./Newbie.svelte";
   import AccountsList from "./AccountsList.svelte";
   import ReminderCreate from "./ReminderCreate.svelte";
-  import { miner_loop_enabled } from "../../miner";
+  import { minerLoopEnabled } from "../../miner";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
   import { connected, refreshWaypoint } from "../../networks";
@@ -39,7 +39,7 @@
     });
     signingAccount.subscribe((a) => (my_account = a));
 
-    miner_loop_enabled.subscribe((boo) => (isMining = boo));
+    minerLoopEnabled.subscribe((boo) => (isMining = boo));
 
     isRefreshingAccounts.subscribe((boo) => (isRefreshing = boo));
     

@@ -1,77 +1,91 @@
 <script>
   import { onDestroy, onMount } from "svelte";
-  import { getProgess, backlog_in_progress, miner_loop_enabled, tower } from "../../miner";
+  import {
+    getProgess,
+    backlogInProgress,
+    minerLoopEnabled,
+    tower,
+  } from "../../miner";
 
   let percent = 0;
   let looper;
-  let proofDone = false; 
+  let proofDone = false;
   let backlogDone = false;
+  let bar;
 
-  function animate(bar) { 
-    let ps = getProgess();   
+  // Progress bar only starts when Rust confirms it is starting the miner.
+  // Progress bar ends when:
+  // - Rust side sends event with a proof completed
+  // - Rust side send event with a failure
+
+  function animate(bar) {
+    let ps = getProgess();
 
     if (ps && ps.time_start > 0) {
       let duration = ps.previous_duration;
       let since_start = Date.now() - ps.time_start;
       percent = since_start / duration;
-      
+
       percent = percent >= 1 ? 0.9999 : percent; // never 100%
       if (proofDone) percent = 1;
       if (proofDone && backlogDone) percent = 0;
       bar.value = percent;
-    } 
-    else {
+    } else {
       // we are starting over
       bar.value = 0;
-    }    
+    }
   }
-  
+
   let enable = false;
-  onMount(async () =>{
-    tower.subscribe(t => {
+  onMount(async () => {
+    bar = document.getElementById("mining-progressbar");
+
+    tower.subscribe((t) => {
       console.log("tower subscribe");
       console.log(t.progress);
+
+      animate(bar);
+      looper = setInterval(() => animate(bar), 1000);
+
       if (t.progress && t.progress.complete) {
         proofDone = t.progress.complete;
+        clearInterval(looper);
       }
     });
 
-    backlog_in_progress.subscribe(b => {
+    backlogInProgress.subscribe((b) => {
       backlogDone = b;
     });
 
-    miner_loop_enabled.subscribe(boo => {
-      enable = boo;
+    minerLoopEnabled.subscribe((b) => {
+      enable = b;
       if (enable) {
-        percent = 0;
-        let bar = document.getElementById("mining-progressbar");
+        // create the bar if not yet started.
         animate(bar);
-        looper = setInterval(() => animate(bar), 1000);
-      } else {
-        clearInterval(looper);
       }
-    })
+    });
   });
 
   onDestroy(() => {
-    clearInterval(looper)
+    clearInterval(looper);
   });
 
   function formatPercent(decimal) {
-    return (decimal * 100).toFixed(0) + "%"
+    return (decimal * 100).toFixed(0) + "%";
   }
-
 </script>
 
-<main class="{enable ? "" : "uk-invisible"} uk-margin-top">
-  <p class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
-    Mining progress: 
-    {#if !proofDone }
-      <span uk-spinner class="uk-margin-left"></span>
-    {/if}
+<main>
+  <div class="{enable ? '' : 'uk-invisible'} uk-margin-top">
+    <p class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+      Mining progress:
+      {#if !proofDone}
+        <span uk-spinner class="uk-margin-left" />
+      {/if}
+
       <span class="uk-margin-left">{formatPercent(percent)}</span>
-  </p>
+    </p>
 
-  <progress id="mining-progressbar" class="uk-progress" value="0" max="1" />
+    <progress id="mining-progressbar" class="uk-progress" value="0" max="1" />
+  </div>
 </main>
-

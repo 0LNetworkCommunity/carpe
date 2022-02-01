@@ -13,7 +13,7 @@
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
   import About from "./components/about/About.svelte";
-  import { backlog_in_progress } from "./miner";
+  import { backlogInProgress } from "./miner";
   import { raise_error } from "./carpeError";
   import { getEnv, nodeEnvIsTest, responses } from "./debug";
   import { routes } from "./routes";
@@ -52,14 +52,14 @@ import { getVersion } from "./version";
       responses.set(event.payload);
       //update the tower stats after we show the backlog being up to date.
       refreshStats();
-      backlog_in_progress.set(false);
+      backlogInProgress.set(false);
     });
 
     unlistenBacklogError = await listen("backlog-error", (event) => {
       // TODO: show an UX in the miner view for this type of error
 
       raise_error(event.payload, false);
-      backlog_in_progress.set(false);
+      backlogInProgress.set(false);
     });
   });
 

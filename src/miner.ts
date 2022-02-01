@@ -43,11 +43,21 @@ export interface EpochRules {
 }
 export const tower = writable<ClientTowerStatus>({});
 
-export const backlog_in_progress = writable(false);
-
-export const miner_loop_enabled = writable(false);
-
 export const backlogListenerReady = writable(false);
+
+export const minerLoopEnabled = writable(false);
+
+export const minerEventReceived = writable(false);
+
+export const minerProofComplete = writable(false);
+
+export const backlogInProgress = writable(false);
+
+export const backlogSubmitted = writable(false);
+
+
+
+
 
 export function getProgess(): ProofProgress {
   return get(tower).progress

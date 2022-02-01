@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { backlogListenerReady, backlog_in_progress, tower } from "../../../miner";
+  import { backlogListenerReady, backlogInProgress, tower } from "../../../miner";
 
   import CardAlert from "../../layout/CardAlert.svelte";
   import MinerBacklog from "../MinerBacklog.svelte";
@@ -8,7 +8,7 @@
   import { isRefreshingAccounts } from "../../../accounts";
   
   let listenerReady = false;
-  let backlogInProgress = false;
+  let inProgress = false;
   let isRefreshing = true;
   let delta: number;
 
@@ -21,7 +21,7 @@
 
     isRefreshingAccounts.subscribe((r) => (isRefreshing = r));
 
-    backlog_in_progress.subscribe((b) => (backlogInProgress = b));
+    backlogInProgress.subscribe((b) => (inProgress = b));
 
     backlogListenerReady.subscribe((b) => listenerReady = b);
 
@@ -29,7 +29,7 @@
 </script>
 
 <main>
-  {#if listenerReady && backlogInProgress}
+  {#if listenerReady && inProgress}
   <CardAlert>
     <span slot="title">Syncing your proofs </span>
     <div slot="body">
