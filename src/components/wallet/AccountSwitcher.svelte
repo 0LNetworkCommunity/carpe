@@ -57,6 +57,10 @@
           <a href={"#"}>
             <Link to="settings" class="uk-text-muted">Go to Settings</Link></a>
         </li>
+        <li>
+          <a href={"#"}>
+            <Link to="dev" class="uk-text-muted">Developers</Link></a>
+        </li>
         <li class="uk-text-muted">
           <AboutLink />
         </li>
