@@ -23,16 +23,19 @@ fn main() {
   //  println!("{}", version::version());
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
   pretty_env_logger::init();
-  // Check if we are in test mode.
-  set_env("prod".to_owned()).unwrap();
-  match env::var("npm_lifecycle_event") {
-    Ok(s) => {
-      if s == "tauri" {
-        set_env("test".to_owned()).unwrap();
-      }
-    }
-    Err(_) => {}
+  // need to explicitly set test, prod
+  // but if unset, and we are in dev mode, default to test
+  if let Some(env) = env::var("NODE_ENV").ok() {
+    set_env(env).unwrap();
+  } else {
+    set_env("prod".to_owned()).unwrap();
+    // default to test if using test environment.
+    match env::var("npm_lifecycle_event") {
+      Ok(s) => if s == "tauri".to_owned() { set_env("test".to_owned()).unwrap(); },
+      _ => {}
+    };
   }
+
 
 
   let menu = Menu::new()
