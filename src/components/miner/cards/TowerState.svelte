@@ -2,10 +2,7 @@
   import { onMount } from "svelte";
   import { isRefreshingAccounts } from "../../../accounts";
   import { tower } from "../../../miner";
-  import SyncProofs from "./SyncProofs.svelte";
-
-  export let account;
-
+  
   let towerState;
   let isRefreshing = true;
 
@@ -20,11 +17,6 @@
 
 <main>
   {#if towerState && towerState.on_chain && towerState.on_chain.previous_proof_hash}
-    <!-- {#if account }
-      <div class="uk-flex uk-flex-center">
-        <p class="uk-text-muted uk-text-uppercase"> account - {account.nickname} </p> 
-      </div>
-    {/if} -->
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
