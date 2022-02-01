@@ -29,6 +29,8 @@
   let enable = false;
   onMount(async () =>{
     tower.subscribe(t => {
+      console.log("tower subscribe");
+      console.log(t.progress);
       if (t.progress && t.progress.complete) {
         proofDone = t.progress.complete;
       }

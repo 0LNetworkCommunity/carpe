@@ -86,11 +86,8 @@
         <Route path={routes.about} component={About} primary={false} />
 
         <!-- DEV -->
-        {#if isTest}
-        <!-- TODO: why does this not show when in test mode? Only if debug mode is set? -->
         <Route path={routes.developer} component={DevMode} primary={false} />
         <Route path={routes.swarm} component={Swarm} primary={false} />
-        {/if}
 
         <!-- Show Debug Card Below -->
         <DebugCard/>

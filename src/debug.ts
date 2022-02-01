@@ -23,6 +23,8 @@ export const nodeEnvIsTest = writable<boolean>(false);
 export function getEnv() {
   invoke("get_env", {})
     .then((res: string) => {
+      console.log("get env")
+      console.log(res);
       nodeEnv.set(res);
       if (res == "test") { nodeEnvIsTest.set(true) }
     })

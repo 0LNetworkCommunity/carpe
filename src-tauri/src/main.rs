@@ -13,7 +13,7 @@ pub mod configs_profile;
 pub mod key_manager;
 pub mod seed_peers;
 
-use std::env;
+// use std::env;
 
 use crate::commands::*;
 use pretty_env_logger;
@@ -23,18 +23,12 @@ fn main() {
   //  println!("{}", version::version());
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
   pretty_env_logger::init();
-  // need to explicitly set test, prod
-  // but if unset, and we are in dev mode, default to test
-  if let Some(env) = env::var("NODE_ENV").ok() {
-    set_env(env).unwrap();
-  } else {
-    set_env("prod".to_owned()).unwrap();
-    // default to test if using test environment.
-    match env::var("npm_lifecycle_event") {
-      Ok(s) => if s == "tauri".to_owned() { set_env("test".to_owned()).unwrap(); },
-      _ => {}
-    };
-  }
+
+  //////// FORCE TEST SETTINGS ON START ////////////////////
+  // uncomment below to explicitly set "test" env 
+  // Tauri builder does not take env variable from terminal
+  // set_env("prod".to_owned()).unwrap();
+  //////////////////////////////////////////////////////////
 
 
 

@@ -2,9 +2,10 @@
   import { onMount } from "svelte";
   import { getEnv, nodeEnv, setDebugProdTest } from "../../debug";
 
-  let current_env;
-  onMount(async ()=> {
-    current_env = getEnv(); // TODO: this should be async and awaited
+  let current_env = "prod";
+  
+  onMount(()=> {
+    getEnv(); // TODO: this should be async and awaited
     nodeEnv.subscribe(env => current_env = env);
   });
 

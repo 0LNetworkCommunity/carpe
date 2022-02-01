@@ -15,9 +15,6 @@
     <DebugActions />
     <DebugSwitchRexMainnet />
     <DebugSwitchProdTest />
-
-    <div class="margin">
-      <Link to={routes.swarm} ><button class="uk-button uk-button-default">Swarm Controls</button></Link>
-    </div>       
+    
   </div>
 </main>

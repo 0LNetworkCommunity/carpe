@@ -18,27 +18,14 @@ use tower::{
 /// creates one proof and submits
 #[tauri::command(async)]
 pub fn miner_once() -> Result<VDFProof, CarpeError> {
-  println!("Mining one proof");
+  println!("\nMining one proof");
   let config = get_cfg()?;
   mine_once(&config)
     .map_err(|e| {
       dbg!(&e);
       CarpeError::tower(&format!("could not mine one proof, message: {:?}", &e), TowerError::ProverError.value())
     })
-  // tell the client it was successful thus far.
-  // window.emit("tower-event", &proof).unwrap();
-  
-  // dbg!(&proof);
 
-  // let ts = get_onchain_tower_state(config.profile.account)?;
-  // if !(ts.actual_count_proofs_in_epoch < tower::EPOCH_MINING_THRES_UPPER) {
-  //   println!("maximum proofs submitted in epoch, will continue mining but will not send proofs.");
-
-  //   return Err(CarpeError::tower_at_epoch_limit())
-
-  //   // TODO: need to surface this information on client side.
-  // }
-  // Ok(proof)
 }
 #[derive(Clone, serde::Serialize)]
 struct BacklogSuccess {
