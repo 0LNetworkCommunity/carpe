@@ -27,59 +27,37 @@
 </script>
 
 <main>
-  <ul>
-    <li>
-      <span
-        class="uk-margin-left"
-        uk-icon="icon: {listenerReady ? 'check' : 'close'}; ratio: 1"
-      >
+  <div class="uk-margin">
+    <ul class="uk-list uk-list-divider">
+      <li>
+        <span uk-icon={listenerReady ? "check" : "close"} />
         Backlog Listener Started:
-      </span>
-    </li>
+      </li>
 
-    <li>
-      <span
-        class="uk-margin-left"
-        uk-icon="icon: {loopEnabled ? 'check' : 'close'}; ratio: 1"
-      >
+      <li>
+        <span uk-icon={loopEnabled ? "check" : "close"} />
         Mining Enabled:
-      </span>
-    </li>
+      </li>
 
-    <li>
-      <span
-        class="uk-margin-left"
-        uk-icon="icon: {proofStarted ? 'check' : 'close'}; ratio: 1"
-      >
+      <li>
+        <span uk-icon={proofStarted ? "check" : "close"} />
         Proof start request received:
-      </span>
-    </li>
+      </li>
 
-    <li>
-      <span
-        class="uk-margin-left"
-        uk-icon="icon: {isProofComplete ? 'check' : 'close'}; ratio: 1"
-      >
+      <li>
+        <span uk-icon={isProofComplete ? "check" : "close"} />
         Proof Complete:
-      </span>
-    </li>
+      </li>
 
-    <li>
-      <span
-        class="uk-margin-left"
-        uk-icon="icon: {isBacklogInProgress ? 'check' : 'close'}; ratio: 1"
-      >
+      <li>
+        <span uk-icon={isBacklogInProgress ? "check" : "close"} />
         Backlog in Progress:
-      </span>
-    </li>
+      </li>
 
-    <li>
-      <span
-        class="uk-margin-left"
-        uk-icon="icon: {isBacklogComplete ? 'check' : 'close'}; ratio: 1"
-      >
+      <li>
+        <span uk-icon={isBacklogComplete ? "check" : "close"} />
         Backlog Complete:
-      </span>
-    </li>
-  </ul>
+      </li>
+    </ul>
+  </div>
 </main>

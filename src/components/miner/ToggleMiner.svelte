@@ -11,7 +11,7 @@
 </script>
 
 <main>
-  <div class="uk-text-center" style="position: relative">
+  <div class="uk-text-center uk-margin" style="position: relative">
     <label class="uk-switch">
       <input
         type="checkbox"

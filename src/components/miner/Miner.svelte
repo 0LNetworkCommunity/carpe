@@ -8,17 +8,19 @@
   import { signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
-  import { tower } from "../../miner";
+  import { backlogInProgress, tower } from "../../miner";
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
   import { refreshStats } from "../../miner_health";
-import MinerPhases from "./MinerPhases.svelte";
+import SyncProofs from "./cards/SyncProofs.svelte";
 
   let newbie = null;
   let loading = true;
   let account: AccountEntry;
   let isDevTest = false;
+  let isSendInProgress = false;
 
+  
   onMount(async () => {
     refreshStats();
 
@@ -29,6 +31,8 @@ import MinerPhases from "./MinerPhases.svelte";
         newbie = towerState.on_chain.verified_tower_height == null;
       }
     });
+
+    backlogInProgress.subscribe((b) =>  isSendInProgress = b);
 
     signingAccount.subscribe((a) => (account = a));
 
@@ -49,8 +53,6 @@ import MinerPhases from "./MinerPhases.svelte";
       </p>
     </div>
   {/if}
-  
-  <MinerPhases />
 
   {#if loading}
     <div class="uk-flex uk-flex-center">
@@ -64,8 +66,11 @@ import MinerPhases from "./MinerPhases.svelte";
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />
           
-          <MinerProgress />
-          
+          {#if !isSendInProgress}
+            <MinerProgress />
+          {:else}
+            <SyncProofs />
+          {/if}
           <!-- <p>Lost time is never found again.</p> -->
           <!-- <Oops/> -->
         </div>

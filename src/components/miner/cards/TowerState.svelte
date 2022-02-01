@@ -56,7 +56,7 @@
       </tbody>
     </table>
 
-    <SyncProofs />
+    <!-- <SyncProofs /> -->
     
   {:else if !isRefreshing && !towerState }
     <div>
