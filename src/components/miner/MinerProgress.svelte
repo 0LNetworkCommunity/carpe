@@ -40,12 +40,14 @@
   onMount(async () => {
     bar = document.getElementById("mining-progressbar");
 
+    animate(bar);
+    looper = setInterval(() => animate(bar), 1000);
+
     tower.subscribe((t) => {
       console.log("tower subscribe");
       console.log(t.progress);
 
-      animate(bar);
-      looper = setInterval(() => animate(bar), 1000);
+      
 
       if (t.progress && t.progress.complete) {
         proofDone = t.progress.complete;
