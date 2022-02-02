@@ -2,11 +2,9 @@
   import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
   import {
-    isCarpeInit,
     isRefreshingAccounts,
     all_accounts,
     signingAccount,
-isInit,
   } from "../../accounts";
   import { routes } from "../../routes";
   import type { AccountEntry } from "../../accounts";
@@ -25,7 +23,6 @@ isInit,
   let pendingAccounts: AccountEntry[] = [];
   let isMining = false;
   let isRefreshing: boolean = true;
-
   let isConnected: boolean = true;
   // let init = true; // assume true until not.
 
@@ -49,8 +46,6 @@ isInit,
 
 <main>
   <div>
-
-
     {#if account_list == null}
       <div class="uk-align-center">
         <span uk-spinner class="uk-margin-left uk-position-absolute" />
