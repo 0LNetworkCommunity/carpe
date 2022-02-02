@@ -74,7 +74,7 @@
       console.log(event);
       // TODO: show an UX in the miner view for this type of error
       
-      raise_error(event.payload, false, "listen(backlog-error)");
+      raise_error(event.payload, true, "listen(backlog-error)");
       
       
       backlogInProgress.set(false);
