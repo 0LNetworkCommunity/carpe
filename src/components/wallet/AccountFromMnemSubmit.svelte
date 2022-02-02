@@ -63,7 +63,7 @@
           UIkit.modal("#submit-confirmation-modal").hide();
         }
         isSubmitting = false;
-        raise_error(error);
+        raise_error(error, false, "handleAdd");
       });
   }
 </script>

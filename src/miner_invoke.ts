@@ -50,7 +50,7 @@ export const towerOnce = async () => {
       console.log('>>> miner_once error: ' + e);
       // disable mining when there is a proof error.
       minerLoopEnabled.set(false);
-      raise_error(e, false);
+      raise_error(e, false, "invoke");
       proofError()
       return false
     });
@@ -84,7 +84,7 @@ export const startBacklogListener = async () => {
       backlogListenerReady.set(true);
       return res
     })
-    .catch((e) => raise_error(e, false));
+    .catch((e) => raise_error(e, false, "startBacklogListener"));
 }
 
 // Stop listening on the rust side for new requests to mine a proof.
@@ -128,7 +128,7 @@ export const getTowerChainView = async () => {
       t.on_chain = {};
       tower.set(t);
 
-      raise_error(e, true)
+      raise_error(e, true, "getTowerChainView")
     });
 };
 
@@ -147,7 +147,7 @@ export const getLocalHeight = async () => {
       let t = get(tower);
       t.local_height = -1;
       tower.set(t);
-      raise_error(e, true)
+      raise_error(e, true, "getLocalHeight")
     });
 };
 
@@ -162,7 +162,7 @@ export const getEpochRules = async () => {
       responses.set(JSON.stringify(res));
     })
     .catch((e) => {
-      raise_error(e, true)
+      raise_error(e, true, "getEpochRules")
     });
 };
 
@@ -201,7 +201,7 @@ export const submitBacklog = async () => {
       backlogInProgress.set(false);
       backlogSubmitted.set(false);
       console.log('>>> submit_backlog error: ' + e);
-      raise_error(e, false);
+      raise_error(e, false, "submitBacklog");
     });
 }
 
@@ -216,7 +216,7 @@ export const submitProofZero = async () => {
       return res
     })
     .catch((e) => {
-      raise_error(e, false);
+      raise_error(e, false, "submitProofZero");
     });
 }
 

@@ -34,13 +34,13 @@ export function setNetwork(network: Networks) {
         // update accounts from current network
         loadAccounts(); // TODO notify as an event dependency
       })
-      .catch((error) => raise_error(error));
+    .catch((error) => raise_error(error, false, "setNetwork"));
 }
 
 export function getNetwork() {
   invoke("get_networks", {})
     .then((res: NetworkProfile) => network_profile.set(res))
-    .catch((error) => raise_error(error, false));
+    .catch((error) => raise_error(error, false, "getNetwork"));
 }
 
 export function refreshWaypoint() {
@@ -51,6 +51,6 @@ export function refreshWaypoint() {
     })
     .catch((error) => {
       connected.set(false);
-      raise_error(error, true); // we have a purpose-built error component for this
+      raise_error(error, true, "refreshWaypoint"); // we have a purpose-built error component for this
     });
 }

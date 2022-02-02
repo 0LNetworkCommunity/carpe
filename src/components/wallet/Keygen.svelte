@@ -34,7 +34,7 @@
         mnem.set(res.mnem);
         hide = false;
       })
-      .catch((e) => raise_error(e, true));
+      .catch((e) => raise_error(e, true, "keygen"));
   };
 </script>
 

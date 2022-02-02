@@ -22,7 +22,7 @@
 
       })
       .catch((error) => {
-        raise_error(error as CarpeError, false);
+        raise_error(error as CarpeError, false, "updateNetwork");
       });
   }
 

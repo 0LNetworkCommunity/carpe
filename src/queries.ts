@@ -10,6 +10,6 @@ export const get_balance = async (a: AccountEntry): Promise<number> => {
       signingAccount.set(a) // also set to account state
       return Number(b)
     })
-    .catch((e) => raise_error(e, true));
+    .catch((e) => raise_error(e, true, "get_balance"));
   return await p;
 };

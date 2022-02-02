@@ -12,13 +12,13 @@
       debugErr: false,
     })
     .then((res) => responses.set(res))
-    .catch((e) => raise_error(e));
+    .catch((e) => raise_error(e, false, "makeError"));
   };
 
   const triggerEventFromRustToJs = async () => {
     invoke("debug_emit_event", {})
     .then((res) => responses.set(res))
-    .catch((e) => raise_error(e));
+    .catch((e) => raise_error(e, false, "triggerEventFromRustToJs"));
   };
 
   function emitEventFromHereToRust() {

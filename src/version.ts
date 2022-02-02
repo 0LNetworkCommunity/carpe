@@ -19,5 +19,5 @@ export function getVersion() {
     .then((res: AppVersion) => {
       app_version.set(res);
     })
-    .catch((error) => raise_error(error, true));
+    .catch((error) => raise_error(error, true, "getVersion"));
 }

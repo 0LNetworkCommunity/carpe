@@ -12,7 +12,7 @@
         loadAccounts()
       })
       .catch((e) => {
-        raise_error(e);
+        raise_error(e, false, "removeAccounts");
       });
   };
 </script>

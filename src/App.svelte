@@ -15,7 +15,7 @@
   import About from "./components/about/About.svelte";
   import { backlogInProgress, backlogSubmitted, minerEventReceived, minerProofComplete } from "./miner";
   import { raise_error } from "./carpeError";
-  import { getEnv, responses } from "./debug";
+  import { getEnv, responses, debugMode } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
   import { refreshStats } from "./miner_health";
@@ -31,13 +31,13 @@
   onMount(async () => {
     isCarpeInit();
 
-    getEnv();
+    // getEnv();
 
-    loadAccounts();
+    // loadAccounts();
 
-    refreshStats();
+    // refreshStats();
 
-    getVersion();
+    // getVersion();
 
     healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 
@@ -71,7 +71,7 @@
     unlistenBacklogError = await listen("backlog-error", (event: any) => {
       // TODO: show an UX in the miner view for this type of error
 
-      raise_error(event.payload, false);
+      raise_error(event.payload, false, "listen(backlog-error)");
       backlogInProgress.set(false);
       backlogSubmitted.set(false);
     });

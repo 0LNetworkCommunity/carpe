@@ -13,7 +13,7 @@ export function setDebugProdTest(env: string) {
       notify_success(`switched to ${res} mode`);
       nodeEnv.set(res);
     })
-    .catch((error) => raise_error(error, false));
+    .catch((error) => raise_error(error, false, "setDebugProdTest"));
 }
 
 export const nodeEnv = writable<string>("");
@@ -28,7 +28,7 @@ export function getEnv() {
       nodeEnv.set(res);
       if (res == "test") { nodeEnvIsTest.set(true) }
     })
-    .catch((error) => raise_error(error, false));
+    .catch((error) => raise_error(error, false, "getEnv"));
 }
 
 export function debugModeToggle() {

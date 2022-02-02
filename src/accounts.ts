@@ -45,7 +45,7 @@ export function loadAccounts() {
       // fetch data from the chain
       refreshAccounts();
     })
-    .catch((error) => raise_error(error));
+    .catch((error) => raise_error(error, false, "loadAccounts"));
 }
 
 export function refreshAccounts() {
@@ -62,16 +62,13 @@ export function refreshAccounts() {
 
 export const isCarpeInit = async () => {
   invoke("is_init", {})
-    .then((res) => {
-      responses.set(res);
-      window.alert(res);
-      if (res) {
-        isInit.set(true);
-      }
+    .then((res: boolean) => {
+      responses.set(res.toString());
+      isInit.set(res);
       // for testnet
       res
     })
-    .catch((e) => raise_error(e));
+    .catch((e) => raise_error(e, false, "isCarpeInit"));
 }
 
 export function findOneAccount(account: string): AccountEntry {
@@ -102,7 +99,7 @@ export async function setAccount(an_address: string) {
     responses.set(res);
     // for testnet
   })
-  .catch((e) => raise_error(e));
+    .catch((e) => raise_error(e, false, "setAccount"));
 }
 
 export function addNewAccount(account: AccountEntry) {
@@ -121,7 +118,7 @@ export function checkAccountBalance(account: AccountEntry) {
       list.push(account);    
       all_accounts.set(list);
     })
-    .catch((e) => raise_error(e));
+    .catch((e) => raise_error(e, false, "checkAccountBalance"));
 }
 
 // export async function init_account_balance(authkey: string) {

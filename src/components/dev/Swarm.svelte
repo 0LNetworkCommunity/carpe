@@ -10,7 +10,7 @@
   const easySwarm = async () => {
     invoke("easy_swarm", {})
       .then((res) => (result = res))
-      .catch((e) => raise_error(e));
+      .catch((e) => raise_error(e, false, "easySwarm"));
   };
 
   const initAliceFiles = async () => {

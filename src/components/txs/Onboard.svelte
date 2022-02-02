@@ -17,7 +17,7 @@
         // init_account_balance(alice_authkey);
         notify_success("Account Added");
       })
-      .catch((error) => raise_error(error));
+      .catch((error) => raise_error(error, false, "createUser"));
   }
 </script>
 
