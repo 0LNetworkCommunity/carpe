@@ -1,14 +1,15 @@
+
 <script lang="ts">
   import { onMount } from "svelte";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
-  import { displayWrongDifficulty } from "../../../miner";
+  import { displayDiscontinuity, displayTooManyProofs } from "../../../miner";
   import type { CarpeError } from "../../../carpeError";
 
   let display: CarpeError = null;
 
   onMount(async () => {
-    displayWrongDifficulty.subscribe((ce: CarpeError) => {
+    displayDiscontinuity.subscribe((ce: CarpeError) => {
       display = (ce.category? ce : null);
     });
   });
@@ -17,11 +18,10 @@
 {#if display}
   <main>
     <CardError>
-      <span slot="title">Wrong Difficulty</span>
+      <span slot="title">Discontinuity</span>
       <div slot="body">
         <p>
-          Looks like you're sending a proof with the wrong difficulty parameters to the chain.
-          Check you are connected to the right network with the correct difficulty settings.
+          Looks like there's a gap in the proofs you are submitting. Each proof needs to reference the previous one, and the proof was rejected because of this.
         </p>
         <ErrorAccordion error={display} />
       </div>

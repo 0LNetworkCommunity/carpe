@@ -2,13 +2,15 @@
   import { onMount } from "svelte";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
-  import { displayWrongDifficulty } from "../../../miner";
+  import { displayTooManyProofs } from "../../../miner";
   import type { CarpeError } from "../../../carpeError";
 
   let display: CarpeError = null;
 
+  let maxNum = 72; // TODO: this someday needs to be dynamic.
+
   onMount(async () => {
-    displayWrongDifficulty.subscribe((ce: CarpeError) => {
+    displayTooManyProofs.subscribe((ce: CarpeError) => {
       display = (ce.category? ce : null);
     });
   });
@@ -17,11 +19,11 @@
 {#if display}
   <main>
     <CardError>
-      <span slot="title">Wrong Difficulty</span>
+      <span slot="title">Too Many Proofs</span>
       <div slot="body">
         <p>
-          Looks like you're sending a proof with the wrong difficulty parameters to the chain.
-          Check you are connected to the right network with the correct difficulty settings.
+          Looks like you've sent more proofs than expected during the last 24 hours.
+          The chain expects a max {maxNum} proofs during each epoch. On the next epoch your proofs will begin to be submitted again.
         </p>
         <ErrorAccordion error={display} />
       </div>

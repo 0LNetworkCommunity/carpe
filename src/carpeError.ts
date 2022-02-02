@@ -1,6 +1,6 @@
 import { get, writable } from 'svelte/store';
 import { notify_error } from './carpeNotify';
-import { displayWrongDifficulty } from './miner';
+import { displayDiscontinuity, displayInvalidProof, displayTooManyProofs, displayWrongDifficulty } from './miner';
 
 // // wrapper for the Tauri event.
 // export interface CarpeErrorEvent {
@@ -55,24 +55,34 @@ export function clearErrors() {
 export const errAction = (err: CarpeError) => {
   switch (err.uid) {
     case ErrMap.NoClientCx:
-      window.alert("no client connection");
+      // window.alert("no client connection");
       break;
 
     case ErrMap.AccountDNE:
-      window.alert("account does not exist");
+      // window.alert("account does not exist");
       break;
 
     case ErrMap.WrongDifficulty:
-      window.alert("wrong difficulty");
+      // window.alert("wrong difficulty");
       displayWrongDifficulty.set(err);
       break;
       
     case ErrMap.TooManyProofs:
-      window.alert("too many proofs submitted in epoch");
+      displayTooManyProofs.set(err);
+
+      // window.alert("too many proofs submitted in epoch");
       break;
 
+    case ErrMap.Discontinuity:
+      displayDiscontinuity.set(err);
+      // window.alert("your proofs are not chained. Perhaps some proofs have not been sent?");
+      break;
+
+    // TODO: this last one may never/rarely occur. 
     case ErrMap.InvalidProof:
-      window.alert("proof does not verify");
+      // window.alert("proof does not verify");
+      displayInvalidProof.set(err);
+
       break;
 
     default:

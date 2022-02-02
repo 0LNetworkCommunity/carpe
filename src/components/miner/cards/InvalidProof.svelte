@@ -2,13 +2,13 @@
   import { onMount } from "svelte";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
-  import { displayWrongDifficulty } from "../../../miner";
+  import { displayInvalidProof } from "../../../miner";
   import type { CarpeError } from "../../../carpeError";
 
   let display: CarpeError = null;
 
   onMount(async () => {
-    displayWrongDifficulty.subscribe((ce: CarpeError) => {
+    displayInvalidProof.subscribe((ce: CarpeError) => {
       display = (ce.category? ce : null);
     });
   });
@@ -17,11 +17,10 @@
 {#if display}
   <main>
     <CardError>
-      <span slot="title">Wrong Difficulty</span>
+      <span slot="title">Cannot Verify Proof</span>
       <div slot="body">
         <p>
-          Looks like you're sending a proof with the wrong difficulty parameters to the chain.
-          Check you are connected to the right network with the correct difficulty settings.
+          Weird. This proof was rejected because it is not a valid "delay proof". This is usually because parameters are not set correctly.
         </p>
         <ErrorAccordion error={display} />
       </div>
