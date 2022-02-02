@@ -51,6 +51,8 @@ export function loadAccounts() {
 }
 
 export function refreshAccounts() {
+  console.log("refreshAccounts");
+
   isRefreshingAccounts.set(true);
   invoke('refresh_accounts')
     .then((result: object) => {

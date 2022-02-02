@@ -59,9 +59,10 @@ export const towerOnce = async () => {
 
 export const maybeStartMiner = () => {
   // maybe try to start a new proof
+  console.log("maybeStartMiner");
+
   let t = get(tower);
   let proofComplete = (t && t.progress && t.progress.complete);
-  console.log("maybeStartMiner");
   console.log(proofComplete);
 
   if (
@@ -100,6 +101,7 @@ export const emitBacklog = async () => {
 }
 
 export const maybeEmitBacklogDelta = async () => {
+  console.log("maybeEmitBacklogDelta");
   if (get(backlogListenerReady)) {
     let t = get(tower);
     if (t.local_height && t.on_chain.verified_tower_height) {
@@ -114,6 +116,8 @@ export const maybeEmitBacklogDelta = async () => {
 
 
 export const getTowerChainView = async () => {
+  console.log("getTowerChainView");
+
   await invoke("get_onchain_tower_state", {
     account: get(signingAccount).account
   })
@@ -135,6 +139,7 @@ export const getTowerChainView = async () => {
 
 // update the `tower.local_proof`
 export const getLocalHeight = async () => {
+  console.log("getLocalHeight");
   await invoke("get_local_height", {})
     .then((res: number) => {
       console.log(res);
@@ -153,6 +158,7 @@ export const getLocalHeight = async () => {
 };
 
 export const getEpochRules = async () => {
+  console.log("getEpochRules");
   await invoke("get_epoch_rules", {})
     .then((res: EpochRules) => {
       console.log(res);

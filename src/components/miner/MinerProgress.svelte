@@ -59,10 +59,10 @@
 
     minerLoopEnabled.subscribe((b) => {
       enable = b;
-      if (enable) {
-        // create the bar if not yet started.
-        animate(bar);
-      }
+      // if (enable) {
+      //   // create the bar if not yet started.
+      //   animate(bar);
+      // }
     });
   });
 
