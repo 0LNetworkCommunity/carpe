@@ -1,5 +1,6 @@
 import { get, writable } from 'svelte/store';
 import { notify_error } from './carpeNotify';
+import { displayWrongDifficulty } from './miner';
 
 // // wrapper for the Tauri event.
 // export interface CarpeErrorEvent {
@@ -12,7 +13,7 @@ export interface CarpeError {
   msg: string;
 };
 
-export enum TowerErrMap {
+export enum ErrMap {
   NoClientCx = 404,
   AccountDNE = 1004,
   WrongDifficulty = 130102,
@@ -53,23 +54,24 @@ export function clearErrors() {
 
 export const errAction = (err: CarpeError) => {
   switch (err.uid) {
-    case TowerErrMap.NoClientCx:
+    case ErrMap.NoClientCx:
       window.alert("no client connection");
       break;
 
-    case TowerErrMap.AccountDNE:
+    case ErrMap.AccountDNE:
       window.alert("account does not exist");
       break;
 
-    case TowerErrMap.WrongDifficulty:
+    case ErrMap.WrongDifficulty:
       window.alert("wrong difficulty");
+      displayWrongDifficulty.set(err);
       break;
       
-    case TowerErrMap.TooManyProofs:
+    case ErrMap.TooManyProofs:
       window.alert("too many proofs submitted in epoch");
       break;
 
-    case TowerErrMap.InvalidProof:
+    case ErrMap.InvalidProof:
       window.alert("proof does not verify");
       break;
 

@@ -13,6 +13,7 @@
   import { get } from "svelte/store";
   import { refreshStats } from "../../miner_health";
 import SyncProofs from "./cards/SyncProofs.svelte";
+import CommonErrors from "./CommonErrors.svelte";
 
   let newbie = null;
   let loading = true;
@@ -66,11 +67,8 @@ import SyncProofs from "./cards/SyncProofs.svelte";
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />
           
-          {#if !isSendInProgress}
+          
             <MinerProgress />
-          {:else}
-            <SyncProofs />
-          {/if}
           <!-- <p>Lost time is never found again.</p> -->
           <!-- <Oops/> -->
         </div>
@@ -86,7 +84,13 @@ import SyncProofs from "./cards/SyncProofs.svelte";
 
       {/if}
     </div>
-  {/if}
 
+              
+    {#if isSendInProgress}
+      <SyncProofs />
+    {/if}
+  {/if}
+  <CommonErrors />
+  
   <MinerDebug />
 </main>

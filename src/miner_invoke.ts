@@ -5,7 +5,7 @@ import { signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted } from "./miner";
+import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, clearDisplayErrors } from "./miner";
 import { network_profile } from "./networks";
 
 const current_window = getCurrent();
@@ -95,6 +95,7 @@ export const killBacklogListener = async () => {
 
 export const emitBacklog = async () => {
   backlogInProgress.set(true);
+  clearDisplayErrors();
   current_window.emit('send-backlog', 'please...');
 }
 
@@ -186,13 +187,14 @@ export function proofComplete() {
 
 // submit any transactions that are in the backlog. Proofs that have been mined but for any reason were not committed.
 export const submitBacklog = async () => {
-  console.log('>>> submitBacklog called');
+  console.log('submitBacklog called');
+  clearDisplayErrors();
   backlogInProgress.set(true);
   invoke("submit_backlog", {})
     .then(res => {
       backlogInProgress.set(false);
       backlogSubmitted.set(true);
-      console.log('>>> submit_backlog response: ' + res);
+      console.log('submit_backlog response: ' + res);
       responses.set(res as string);
       notify_success("Backlog submitted");
       return res

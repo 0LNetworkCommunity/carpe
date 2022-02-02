@@ -65,8 +65,6 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
           window_clone
             .emit("backlog-error", CarpeError::from(e))
             .unwrap();
-          // let te = tower::tower_errors::parse_error(e);
-          // dbg!(&te);
         }
       }
   });
