@@ -13,11 +13,6 @@
   let backlogDone = false;
   let bar;
 
-  // Progress bar only starts when Rust confirms it is starting the miner.
-  // Progress bar ends when:
-  // - Rust side sends event with a proof completed
-  // - Rust side send event with a failure
-
   function animate(bar) {
     let ps = getProgess();
 
@@ -47,7 +42,10 @@
       console.log("tower subscribe");
       console.log(t.progress);
 
-      
+      // Progress bar only starts when Rust confirms it is starting the miner.
+      // Progress bar ends when:
+      // - Rust side sends event with a proof completed
+      // - Rust side send event with a failure
 
       if (t.progress && t.progress.complete) {
         proofDone = t.progress.complete;
