@@ -26,6 +26,7 @@
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
   let healthTick;
+  let debug = false;
 
   onMount(async () => {
     isCarpeInit();
@@ -40,6 +41,7 @@
 
     healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 
+    debugMode.subscribe(b => debug = b);
     // nodeEnvIsTest.subscribe(b => isTest = b);
     
     ///// Backlog /////
@@ -106,7 +108,9 @@
         <Route path={routes.swarm} component={Swarm} primary={false} />
 
         <!-- Show Debug Card Below -->
-        <DebugCard/>
+        {#if debug }
+          <DebugCard/>
+        {/if}
 
 
       </div>

@@ -11,11 +11,9 @@
   <div class="uk-margin uk-container uk-dark">
     <DebugCard />
     <DebugSwitcher />
-    <p> Turn on debug actions on all screens</p>
-    
-    <DebugActions />
+    <p class="uk-margin-bottom"> Turn on debug actions on all screens</p>
     <DebugSwitchRexMainnet />
     <DebugSwitchProdTest />
-    
+    <DebugActions />
   </div>
 </main>

@@ -2,19 +2,13 @@
   import { afterUpdate } from "svelte";
   import { get } from "svelte/store";
   import { carpeErrorLog, clearErrors } from "../../carpeError";
-  import { responses, debugMode, debugModeToggle } from "../../debug"; // TODO: Make this read only
+  import { responses, debugModeToggle } from "../../debug"; // TODO: Make this read only
 
-  /*
-  let home = "";
-  let account = "";
-  */
-
-  let mode: boolean = false;
   let result_string = "";
   let this_error = get(carpeErrorLog);
 
   afterUpdate(async () => {
-    debugMode.subscribe((boo) => (mode = boo));
+   
     responses.subscribe((value) => {
       result_string = value;
     });
@@ -26,13 +20,12 @@
 </script>
 
 <main>
-  {#if mode}
     <div
-      class="uk-margin-top uk-margin-bottom uk-card uk-card-default uk-card-body uk-width-1-2@m"
+      class="uk-margin-top uk-margin-bottom uk-card uk-card-default uk-card-body uk-width-1-1"
     >
       <div class="uk-row">
           <h5 class="uk-card-title uk-text-light uk-text-muted uk-text-uppercase">
-            Debug
+            LOGS
           </h5>
       </div>
 
@@ -70,5 +63,4 @@
         </p>
       </div>
     </div>
-  {/if}
 </main>

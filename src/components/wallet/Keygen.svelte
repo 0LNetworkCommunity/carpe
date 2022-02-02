@@ -40,16 +40,12 @@
 
 <main>
   <div class="uk-flex uk-flex-center">
-    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
+    <h3 class="uk-text-light uk-text-muted uk-text-uppercase">
       Create New Account
-    </h2>
-  </div>
-
-  <div class="uk-flex uk-flex-center">
-    <h3 class="uk-text-light uk-text-muted uk-text-center">
-      After you generate an account and secret phrase, you'll need someone to send one 0L coin to that account for it to be created on chain.
     </h3>
   </div>
+
+
 
   {#if address && !hide}
 
@@ -91,6 +87,12 @@
 
   {:else}
 
+    <div class="uk-flex uk-flex-center">
+      <h3 class="uk-text-light uk-text-muted uk-text-center">
+        After you generate an account and secret phrase, you'll need someone to send one 0L coin to that account for it to be created on chain.
+      </h3>
+    </div>
+
     <div class="uk-position-center">
       <button
         class="uk-button uk-button-secondary uk-align-right"
@@ -98,6 +100,7 @@
       >
         Generate Keys
       </button>
+
     </div>
   {/if}
 </main>

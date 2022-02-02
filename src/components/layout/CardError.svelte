@@ -1,7 +1,5 @@
 <script lang="ts">
-import DebugSwitcher from "../settings/DebugSwitcher.svelte";
-
-
+  import DebugSwitcher from "../dev/DebugSwitcher.svelte";
 </script>
 
 <main>
@@ -10,8 +8,6 @@ import DebugSwitcher from "../settings/DebugSwitcher.svelte";
       <div>
         <slot name="body"/> 
       </div>
-      
       <DebugSwitcher/>
-      
     </div>
 </main>

@@ -55,7 +55,7 @@ export function refreshAccounts() {
       all_accounts.set(result.accounts);
       isRefreshingAccounts.set(false);
     })
-    .catch(error => {
+    .catch(_ => {
       isRefreshingAccounts.set(false);
     })
 }

@@ -2,7 +2,6 @@
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
   
   let danger_temp_mnem: string;
-
 </script>
 
 <main>  
@@ -22,4 +21,9 @@
       <AccountFromMnemSubmit danger_temp_mnem={danger_temp_mnem} isNewAccount={false} />
     </fieldset>
   </form>
+
+  <div>
+
+  </div>
+
 </main>

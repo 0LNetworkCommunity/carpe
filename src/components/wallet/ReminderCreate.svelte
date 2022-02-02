@@ -1,17 +1,7 @@
 <script lang="ts">
-  // import { onMount } from "svelte";
   import type { AccountEntry } from "../../accounts";
-  // import { signingAccount } from "../../accounts";
-  // import Clipboard from "svelte-clipboard";
-
   export let pendingAccounts: AccountEntry[];
   export let isConnected: boolean;
-
-
-  // let authkey;
-  // onMount(async () => {
-  //   signingAccount.subscribe(a => authkey = a.authkey);
-  // });
 
 </script>
 
@@ -21,35 +11,13 @@
       <div class="uk-card uk-card-primary uk-card-hover uk-card-body uk-light">
         <h3 class="uk-card-title">Onboarding</h3>
         <p> You have generated keys for an account, but it does not yet exist on chain. </p>
-        <p> Have a friend send an onboarding transaction using the authkey for each account that needs to be created. </p>
+        <p> Have a friend send an onboarding transaction using the Onboard Key for each account that needs to be created. </p>
         {#each pendingAccounts as a}
           <p> 
-            AUTH KEY: {a.authkey}  
-            <!-- Todo: clipboard component was causing render issues with Router -->
-            <!-- <Clipboard
-              text="{a.authkey}"
-              let:copy
-              on:copy={() => {
-                UIkit.notification({
-                  message: "<span uk-icon='icon: check'></span>Auth key copied to clipboard",
-                  pos: "bottom-center",
-                  status: "success",
-                  timeout: 3000,
-                });
-              }}>
-              <a href={"#"} on:click={copy}>
-                <span uk-icon="copy" />
-              </a>
-            </Clipboard> -->
+            {a.nickname} - ONBOARD KEY: <span class="uk-text-uppercase"> {a.authkey} </span>  
           </p>
         {/each}
       </div>
     </div>
   {/if}
-
-  <!-- <p class="uk-text-right">
-                <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
-            </p> -->
-  <!-- </div> -->
-  <!-- </div> -->
 </main>

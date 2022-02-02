@@ -2,8 +2,7 @@
   import MinerBacklog from "../miner/MinerBacklog.svelte";
   import AccountSettings from "./AccountSettings.svelte";
   import UpdateNetwork from "./UpdateNetwork.svelte";
-  import DebugSwitcher from "./DebugSwitcher.svelte";
-import SetWalletType from "../txs/SetWalletType.svelte";
+  import SetWalletType from "../txs/SetWalletType.svelte";
 
 </script>
 
@@ -15,6 +14,5 @@ import SetWalletType from "../txs/SetWalletType.svelte";
   <UpdateNetwork />
   <AccountSettings />
   <MinerBacklog />
-  <DebugSwitcher />
   <SetWalletType />
 </main>

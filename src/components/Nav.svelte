@@ -1,33 +1,30 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { Link, useLocation } from "svelte-navigator";
-  import { debugMode } from "../debug";
-  import { signingAccount, all_accounts, isInit } from "../accounts";
+  import { signingAccount, isInit } from "../accounts";
   import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
   import { routes } from "../routes";
 
   const secondaryRoutes = [
     routes.settings,
     routes.about,
-    routes.developer
+    routes.developer,
+    routes.keygen,
+    routes.accountFromMnem,
   ]
 
   const location = useLocation();
   
-  let debug = false;
-  let myAccountIsOnChain = false;
-  let has_account = false;
-  let init = true; // assume initialized until not
+  let myAccountIsOnChain = true;  // assume initialized until not
+  let init = true;  // assume initialized until not
 
-  onMount(async () => {
-    debugMode.subscribe(d => debug = d);
-    
+  onMount(async () => {    
     isInit.subscribe(i => init  = i);
 
-    all_accounts.subscribe(list => has_account = list.length > 0);
-
     signingAccount.subscribe(myAccount => {
-      myAccountIsOnChain = myAccount != null && myAccount.balance != null
+      if (myAccount) {
+        myAccountIsOnChain = myAccount.balance != null
+      };
     });
   });
 
@@ -41,15 +38,9 @@
 
     <div class="uk-navbar-center">
       <ul class="uk-navbar-nav">
-        {#if myAccountIsOnChain && has_account}
-          <li><Link to={routes.home}>Wallet</Link></li>        
-          <li><Link to={routes.miner}>Miner</Link></li>
-          <li><Link to={routes.transactions}>Transactions</Link></li>
-        {/if}
-
-        {#if debug}
-          <li><Link to={routes.developer}>Debug</Link></li>
-        {/if}
+          <li class={ init && myAccountIsOnChain ? "" : "uk-invisible"}><Link to={routes.home}>Wallet</Link></li>        
+          <li class={ init && myAccountIsOnChain ? "" : "uk-invisible"}><Link to={routes.miner}>Miner</Link></li>
+          <li class={ init && myAccountIsOnChain ? "" : "uk-invisible"}><Link to={routes.transactions}>Transactions</Link></li>
       </ul>
     </div>
 
