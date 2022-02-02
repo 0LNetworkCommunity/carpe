@@ -78,13 +78,3 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
   background-color: rgba(255,255,255,0.22);
 }
 
-
-.uk-progress.progress-green::-webkit-progress-value {
-  background-color: #32d296 ;
-}
-.uk-progress.progress-green::-moz-progress-bar {
-  background-color: #32d296 ;
-}
-.uk-progress.progress-green::-ms-fill {
-  background-color: #32d296 ;
-}

@@ -48,7 +48,7 @@ import { setProofProgres } from "../../miner_invoke";
       // - Rust side sends event with a proof completed
       // - Rust side send event with a failure
       if (t.progress && t.progress.pct_complete) {
-        percent = t.progress.pct_complete;
+        bar.value = percent = t.progress.pct_complete;
       }
       
       if (t.progress && t.progress.complete) {
@@ -83,15 +83,33 @@ import { setProofProgres } from "../../miner_invoke";
 
 <main>
   <div class="{enable ? '' : 'uk-invisible'} uk-margin-top">
-    <p class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
-      Mining progress:
-      {#if !proofDone}
-        <span uk-spinner class="uk-margin-left" />
-      {/if}
 
-      <span class="uk-margin-left">{formatPercent(percent)}</span>
-    </p>
+    <div class="uk-inline">
+    <span class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+      {#if proofDone }
+        Proof Complete
+      {:else}
+        Mining In Progress - {formatPercent(percent)}     
+        {#if percent > 1 }
+          <span> Taking longer than expected... </span>
+        {/if}
+      {/if}
+      
+    </span>
+      <!-- <span class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+        </span> -->
+        <div uk-dropdown class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> 
+          The percentage is an estimate. 
+          <br> It is based on your previous proof's elapsed time.
+        </div> 
+    </div>
 
     <progress id="mining-progressbar" class="uk-progress" value="0" max="1" />
+
+
+
+
+
+    
   </div>
 </main>

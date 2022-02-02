@@ -42,7 +42,7 @@
         
         {#if this_error != undefined}
           {#each this_error as e}
-            <p>
+            <p class="uk-text-break">
               Error ID: {e.uid} <br />
               Message: {e.msg}
               <br />
@@ -52,7 +52,7 @@
       </div>
       <hr />
       <div>
-        <p>
+        <p class="uk-text-break">
           {#if result_string && result_string.length !== 0}
           <span>LATEST REQUEST</span>
             
