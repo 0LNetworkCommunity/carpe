@@ -1,7 +1,7 @@
 import { get, writable } from 'svelte/store';
 import type { CarpeError } from './carpeError';
 export interface ClientTowerStatus {
-  latest_proof: VDFProof,
+  last_local_proof: VDFProof,
   on_chain?: TowerStateView,
   count_proofs_this_session: number,
   local_height: number,
@@ -30,11 +30,13 @@ export interface TowerStateView {
 }
 
 export interface ProofProgress {
+  proof_in_progress: number,
   time_start: number,
   previous_duration: number,
-  complete: boolean,
+  complete: boolean, // TODO: this is duplicated with minerProofComplete in miner.ts
   error: boolean,
-  pct_complete: number, // TODO: this is duplicated with minerProofComplete in miner.ts
+  time_elapsed: number,
+  pct_complete: number, 
 }
 export interface EpochRules {
   lower: number,

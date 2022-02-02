@@ -1,11 +1,12 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { getCurrent } from "@tauri-apps/api/window";
+import { now } from "svelte/internal";
 import { get } from "svelte/store";
 import { signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, clearDisplayErrors } from "./miner";
+import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, clearDisplayErrors, VDFProof } from "./miner";
 import { network_profile } from "./networks";
 
 const current_window = getCurrent();
@@ -17,29 +18,33 @@ export const towerOnce = async () => {
   minerProofComplete.set(false);
   
   let previous_duration = get(network_profile).chain_id == "Mainnet"
-    ? 30 * 60 * 1000
-    : 5 * 1000;
+    ? 30 * 60 * 1000 // Prod difficulty
+    : 5 * 1000;      // Test difficulty
 
   let t = get(tower);
-  if (t.progress && t.progress.time_start) {
-    previous_duration = Date.now() - t.progress.time_start;
+  if (t.last_local_proof && t.last_local_proof.elapsed_secs) {
+    previous_duration = t.last_local_proof.elapsed_secs * 1000;
   }
-
+  
   let progress: ProofProgress = {
+    proof_in_progress: t.local_height ? t.local_height + 1 : 1,
     time_start: Date.now(),
     previous_duration,
     complete: false,
     error: false,
-    pct_complete: 0
+    time_elapsed: 0,
+    pct_complete: 0,
   }
   t.progress = progress;
   tower.set(t);
 
+  // This is a long running async call.
+  // when miner_once returnsm, it's with the response of the proof, or error.
   return invoke("miner_once", {})
     .then(res => {
-      console.log('>>> miner_once response: ' + res);
+      console.log('miner_once proof completed' + res);
       responses.set(res as string);
-      proofComplete();
+      setProofComplete();
 
       // start the sending of txs
       emitBacklog();
@@ -140,12 +145,13 @@ export const getTowerChainView = async () => {
 // update the `tower.local_proof`
 export const getLocalHeight = async () => {
   console.log("getLocalHeight");
-  await invoke("get_local_height", {})
-    .then((res: number) => {
+  await invoke("get_last_local_proof", {})
+    .then((res: VDFProof) => {
       console.log(res);
       // if res.
       let t = get(tower);
-      t.local_height = res;
+      t.last_local_proof = res;
+      t.local_height = res.height;
       tower.set(t);
       responses.set(JSON.stringify(res));
     })
@@ -181,7 +187,7 @@ export function proofError() {
   tower.set(t);
 }
 
-export function proofComplete() {
+export function setProofComplete() {
   let t = get(tower);
   t.progress.complete = true;
   tower.set(t);
@@ -189,6 +195,15 @@ export function proofComplete() {
   minerProofComplete.set(true);
 }
 
+export function setProofProgres() {
+  let t = get(tower);
+  t.progress.time_elapsed = Date.now();
+  t.progress.pct_complete = t.progress.time_elapsed / t.progress.previous_duration;
+
+  tower.set(t);
+
+  minerProofComplete.set(true);
+}
 
 
 // submit any transactions that are in the backlog. Proofs that have been mined but for any reason were not committed.
