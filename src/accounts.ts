@@ -30,6 +30,8 @@ export const isRefreshingAccounts = writable(false);
 export const all_accounts = writable<AccountEntry[]>([]);
 
 export function loadAccounts() {
+  console.log("loadAccounts");
+  
   invoke('get_all_accounts')
     .then((result: object) => {
       all_accounts.set(result.accounts);
@@ -61,6 +63,8 @@ export function refreshAccounts() {
 }
 
 export const isCarpeInit = async () => {
+  console.log("isCarpeInit");
+
   invoke("is_init", {})
     .then((res: boolean) => {
       responses.set(res.toString());

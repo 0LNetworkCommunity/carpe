@@ -31,13 +31,13 @@
   onMount(async () => {
     isCarpeInit();
 
-    // getEnv();
+    getEnv();
 
-    // loadAccounts();
+    loadAccounts();
 
-    // refreshStats();
+    refreshStats();
 
-    // getVersion();
+    getVersion();
 
     healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
 

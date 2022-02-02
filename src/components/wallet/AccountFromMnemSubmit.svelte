@@ -8,6 +8,7 @@
     addNewAccount,
     isInit,
     refreshAccounts,
+isCarpeInit,
   } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
@@ -50,6 +51,7 @@
 
         // set as init so we don't get sent back to Newbie account creation.
         isInit.set(true);
+        isCarpeInit();
 
         // refresh waypoint check connection status of `connected`.
         connected.set(true); // provisionally set to true so we don't get flashed an error page.

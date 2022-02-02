@@ -35,12 +35,12 @@
     {#if secondaryRoutes.includes($location.pathname)}
       <Link to={routes.home}><span class="uk-text-muted" uk-icon="icon: arrow-left; ratio: 2" /></Link>
     {/if}
-
-    <div class="uk-navbar-center">
+    
+    <div class="uk-navbar-center { init && myAccountIsOnChain ? "" : "uk-invisible"}">
       <ul class="uk-navbar-nav">
-          <li class={ init && myAccountIsOnChain ? "" : "uk-invisible"}><Link to={routes.home}>Wallet</Link></li>        
-          <li class={ init && myAccountIsOnChain ? "" : "uk-invisible"}><Link to={routes.miner}>Miner</Link></li>
-          <li class={ init && myAccountIsOnChain ? "" : "uk-invisible"}><Link to={routes.transactions}>Transactions</Link></li>
+          <li><Link to={routes.home}>Wallet</Link></li>        
+          <li><Link to={routes.miner}>Miner</Link></li>
+          <li><Link to={routes.transactions}>Transactions</Link></li>
       </ul>
     </div>
 

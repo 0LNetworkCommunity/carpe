@@ -15,6 +15,8 @@ export const app_version = writable<AppVersion>({
 });
 
 export function getVersion() {
+  console.log("getVersion");
+  
   invoke("get_app_version")
     .then((res: AppVersion) => {
       app_version.set(res);
