@@ -12,10 +12,10 @@
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
   import { refreshStats } from "../../miner_health";
-import SyncProofs from "./cards/SyncProofs.svelte";
-import CommonErrors from "./CommonErrors.svelte";
+  import SyncProofs from "./cards/SyncProofs.svelte";
+  import CommonErrors from "./CommonErrors.svelte";
 
-  let newbie = null;
+  let newbie = false;
   let loading = true;
   let account: AccountEntry;
   let isDevTest = false;
@@ -27,9 +27,10 @@ import CommonErrors from "./CommonErrors.svelte";
 
     tower.subscribe((towerState) => {
       loading = false; 
-      console.log(towerState);
-      if (towerState.on_chain) {
-        newbie = towerState.on_chain.verified_tower_height == null;
+      if (towerState.on_chain && towerState.on_chain.verified_tower_height) {
+        // strange behavior with null here, doing a double negative
+        // newbie = towerState.on_chain.verified_tower_height == null;
+        newbie = !(towerState.on_chain.verified_tower_height >= 0);
       }
     });
 
@@ -61,27 +62,27 @@ import CommonErrors from "./CommonErrors.svelte";
     </div>
   {:else}
     <div class="uk-grid uk-margin-small">
-      {#if account && !account.on_chain}
-        <CantStart />
-      {:else}
+      {#if account && account.on_chain}
+
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />
           
           
-            <MinerProgress />
+          <MinerProgress />
           <!-- <p>Lost time is never found again.</p> -->
           <!-- <Oops/> -->
         </div>
 
         <!-- {#if tower} -->
         <div class="uk-width-1-1">
-          {#if !newbie}
-            <TowerState {account} />
-          {:else}
+          {#if newbie}
             <FirstProof />
+          {:else}
+            <TowerState />
           {/if}
         </div>
-
+      {:else if account }
+        <CantStart />
       {/if}
     </div>
 
@@ -91,6 +92,6 @@ import CommonErrors from "./CommonErrors.svelte";
     {/if}
   {/if}
   <CommonErrors />
-  
+
   <MinerDebug />
 </main>
