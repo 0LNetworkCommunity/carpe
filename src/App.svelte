@@ -1,5 +1,6 @@
 <script lang="ts">
   import { listen } from "@tauri-apps/api/event";
+  import type { Event } from "@tauri-apps/api/event";
   import { onDestroy, onMount } from "svelte";
   import { Router, Route } from "svelte-navigator";
   import Nav from "./components/Nav.svelte";
@@ -13,8 +14,9 @@
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
   import About from "./components/about/About.svelte";
-  import { backlogInProgress, backlogSubmitted, minerEventReceived, minerProofComplete } from "./miner";
-  import { raise_error } from "./carpeError";
+  import { backlogInProgress, backlogSubmitted, minerEventReceived } from "./miner";
+  import { errAction, raise_error } from "./carpeError";
+  import type { CarpeError } from "./carpeError";
   import { getEnv, responses, debugMode } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
@@ -68,10 +70,13 @@
       refreshStats();
     });
 
-    unlistenBacklogError = await listen("backlog-error", (event: any) => {
+    unlistenBacklogError = await listen("backlog-error", (event: Event<CarpeError>) => {
+      console.log(event);
       // TODO: show an UX in the miner view for this type of error
-
-      raise_error(event.payload, false, "listen(backlog-error)");
+      
+      raise_error(event.payload, true, "listen(backlog-error)");
+      
+      
       backlogInProgress.set(false);
       backlogSubmitted.set(false);
     });

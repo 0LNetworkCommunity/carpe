@@ -44,6 +44,7 @@ export function getNetwork() {
 }
 
 export function refreshWaypoint() {
+  console.log("refreshWaypoint");
   invoke("refresh_waypoint", {})
     .then((res: NetworkProfile) => {
       network_profile.set(res);
