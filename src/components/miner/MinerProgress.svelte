@@ -37,17 +37,20 @@ import { setProofProgres } from "../../miner_invoke";
     bar = document.getElementById("mining-progressbar");
 
     // animate(bar);
-    looper = setInterval(() => setProofProgres(), 1000);
+    
 
     tower.subscribe((t) => {
-      console.log("tower subscribe");
-      console.log(t.progress);
+      // console.log("tower subscribe");
+      // console.log(t.progress);
 
       // Progress bar only starts when Rust confirms it is starting the miner.
       // Progress bar ends when:
       // - Rust side sends event with a proof completed
       // - Rust side send event with a failure
-
+      if (t.progress && t.progress.pct_complete) {
+        percent = t.progress.pct_complete;
+      }
+      
       if (t.progress && t.progress.complete) {
         proofDone = t.progress.complete;
         clearInterval(looper);
@@ -60,10 +63,12 @@ import { setProofProgres } from "../../miner_invoke";
 
     minerLoopEnabled.subscribe((b) => {
       enable = b;
-      // if (enable) {
-      //   // create the bar if not yet started.
-      //   animate(bar);
-      // }
+      if (enable) {
+        // create the bar if not yet started.
+        // for safety clear the interval
+        clearInterval(looper);
+        looper = setInterval(() => setProofProgres(), 1000);
+      }
     });
   });
 

@@ -16,7 +16,7 @@ export const towerOnce = async () => {
   console.log("mine tower once")
   minerEventReceived.set(false);
   minerProofComplete.set(false);
-  
+
   let previous_duration = get(network_profile).chain_id == "Mainnet"
     ? 30 * 60 * 1000 // Prod difficulty
     : 5 * 1000;      // Test difficulty
@@ -25,7 +25,7 @@ export const towerOnce = async () => {
   if (t.last_local_proof && t.last_local_proof.elapsed_secs) {
     previous_duration = t.last_local_proof.elapsed_secs * 1000;
   }
-  
+
   let progress: ProofProgress = {
     proof_in_progress: t.local_height ? t.local_height + 1 : 1,
     time_start: Date.now(),
@@ -68,7 +68,6 @@ export const maybeStartMiner = () => {
 
   let t = get(tower);
   let proofComplete = (t && t.progress && t.progress.complete);
-  console.log(proofComplete);
 
   if (
     // user must have set mining switch on
@@ -77,8 +76,8 @@ export const maybeStartMiner = () => {
     !get(backlogInProgress) &&
     // only try to restart if a proof has completed.
     proofComplete
-  ){ 
-    towerOnce(); 
+  ) {
+    towerOnce();
   };
 }
 
@@ -96,7 +95,7 @@ export const startBacklogListener = async () => {
 // Stop listening on the rust side for new requests to mine a proof.
 export const killBacklogListener = async () => {
   console.log("kill listener");
-  return current_window.emit("kill-backlog-listener").then( _ => backlogListenerReady.set(false));
+  return current_window.emit("kill-backlog-listener").then(_ => backlogListenerReady.set(false));
 }
 
 export const emitBacklog = async () => {
@@ -122,10 +121,11 @@ export const maybeEmitBacklogDelta = async () => {
 
 export const getTowerChainView = async () => {
   console.log("getTowerChainView");
-
-  await invoke("get_onchain_tower_state", {
-    account: get(signingAccount).account
-  })
+  let a = get(signingAccount).account
+  if (a) {
+    await invoke("get_onchain_tower_state", {
+      account: a
+    })
     .then((res: EpochRules) => {
       let t = get(tower);
       t.on_chain = res;
@@ -140,6 +140,7 @@ export const getTowerChainView = async () => {
 
       raise_error(e, true, "getTowerChainView")
     });
+  }
 };
 
 // update the `tower.local_proof`
@@ -147,7 +148,7 @@ export const getLocalHeight = async () => {
   console.log("getLocalHeight");
   await invoke("get_last_local_proof", {})
     .then((res: VDFProof) => {
-      console.log(res);
+      // console.log(res);
       // if res.
       let t = get(tower);
       t.last_local_proof = res;
@@ -167,7 +168,7 @@ export const getEpochRules = async () => {
   console.log("getEpochRules");
   await invoke("get_epoch_rules", {})
     .then((res: EpochRules) => {
-      console.log(res);
+      // console.log(res);
       // if res.
       let t = get(tower);
       t.rules = res;
@@ -197,12 +198,11 @@ export function setProofComplete() {
 
 export function setProofProgres() {
   let t = get(tower);
-  t.progress.time_elapsed = Date.now();
-  t.progress.pct_complete = t.progress.time_elapsed / t.progress.previous_duration;
-
-  tower.set(t);
-
-  minerProofComplete.set(true);
+  if (t.progress) {
+    t.progress.time_elapsed = Date.now();
+    t.progress.pct_complete = t.progress.time_elapsed / t.progress.previous_duration;
+    tower.set(t);
+  }
 }
 
 

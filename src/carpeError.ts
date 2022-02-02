@@ -33,7 +33,7 @@ export function raise_error(err: CarpeError, quiet: boolean = false, caller: str
     err.msg = `${caller}: ${err.msg}`;
     console.log(err);
   } else {
-    console.log(`WARN: error type returned is not a CarpeError. Payload: ${err}`);
+    console.log(`WARN: ${caller}: error type returned is not a CarpeError. Payload: ${err}`);
   }
 
   let list = get(carpeErrorLog);
