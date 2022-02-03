@@ -40,7 +40,7 @@
           <td>{towerState.on_chain.latest_epoch_mining}</td>
           <td>
             {towerState.on_chain.actual_count_proofs_in_epoch}
-           {#if towerState.on_chain.actual_count_proofs_in_epoch > 7};
+           {#if towerState.on_chain.actual_count_proofs_in_epoch > 7}
             <span uk-icon="icon: check"></span>
            {/if}
           </td>
