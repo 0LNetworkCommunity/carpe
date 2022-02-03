@@ -15,15 +15,14 @@
 
   const location = useLocation();
   
-  let myAccountIsOnChain = true;  // assume initialized until not
-  let init = true;  // assume initialized until not
-
+  let myAccountIsOnChain = false;  // assume initialized until not
+  let init = false;  // assume initialized until not
   onMount(async () => {    
-    isInit.subscribe(i => init  = i);
+    isInit.subscribe(i => init = i);
 
     signingAccount.subscribe(myAccount => {
       if (myAccount) {
-        myAccountIsOnChain = myAccount.balance != null
+        myAccountIsOnChain =  myAccount.on_chain;
       };
     });
   });
@@ -36,9 +35,9 @@
       <Link to={routes.home}><span class="uk-text-muted" uk-icon="icon: arrow-left; ratio: 2" /></Link>
     {/if}
     
-    <div class="uk-navbar-center { init && myAccountIsOnChain ? "" : "uk-invisible"}">
-      <ul class="uk-navbar-nav">
-          <li><Link to={routes.home}>Wallet</Link></li>        
+    <div class="uk-navbar-center">
+      <ul class="uk-navbar-nav { init && myAccountIsOnChain ? "" : "uk-invisible"}">
+          <li><Link to={routes.home}>  Wallet </Link></li> 
           <li><Link to={routes.miner}>Miner</Link></li>
           <li><Link to={routes.transactions}>Transactions</Link></li>
       </ul>

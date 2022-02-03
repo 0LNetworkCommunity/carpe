@@ -5,32 +5,31 @@
   import TowerState from "./cards/TowerState.svelte";
   import MinerDebug from "./MinerDebug.svelte";
   import CantStart from "./cards/CantStart.svelte";
-  import { signingAccount } from "../../accounts";
+  import { isRefreshingAccounts, signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
   import { backlogInProgress, tower } from "../../miner";
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
-  import { refreshStats } from "../../miner_health";
   import SyncProofs from "./cards/SyncProofs.svelte";
   import CommonErrors from "./CommonErrors.svelte";
+  import { getTowerChainView } from "../../miner_invoke";
 
   let newbie = false;
   let loading = true;
   let account: AccountEntry;
   let isDevTest = false;
   let isSendInProgress = false;
-
   
   onMount(async () => {
-    refreshStats();
+    getTowerChainView();
 
-    tower.subscribe((towerState) => {
-      loading = false; 
-      if (towerState.on_chain && towerState.on_chain.verified_tower_height) {
-        // strange behavior with null here, doing a double negative
-        // newbie = towerState.on_chain.verified_tower_height == null;
-        newbie = !(towerState.on_chain.verified_tower_height >= 0);
+    tower.subscribe((ts) => {
+      console.log(ts);
+      if (ts.on_chain && ts.on_chain.verified_tower_height) {
+        newbie = false;
+      } else {
+        newbie = true;
       }
     });
 
@@ -38,7 +37,11 @@
 
     signingAccount.subscribe((a) => (account = a));
 
+    isRefreshingAccounts.subscribe((a) => loading = a );
+
+
     isDevTest = get(nodeEnv) == "test";
+
   });
 </script>
 

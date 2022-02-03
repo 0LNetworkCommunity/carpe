@@ -55,14 +55,27 @@ export function refreshAccounts() {
 
   isRefreshingAccounts.set(true);
   invoke('refresh_accounts')
-    .then((result: object) => {
+    .then((result: object) => { // TODO make this the correct return type
+
       all_accounts.set(result.accounts);
+
+      result.accounts.forEach(el => {
+        tryRefreshSignerAccount(el);
+      });
       isRefreshingAccounts.set(false);
     })
     .catch(_ => {
       isRefreshingAccounts.set(false);
     })
 }
+
+export function tryRefreshSignerAccount(newData: AccountEntry) {
+  let a = get(signingAccount).account;
+  if (newData.account == a) {
+    signingAccount.set(newData);
+  }
+}
+
 
 export const isCarpeInit = async () => {
   console.log("isCarpeInit");

@@ -85,6 +85,7 @@ fn main() {
       get_local_height,
       get_epoch_rules,
       submit_backlog,
+      get_last_local_proof,
       get_env,
       set_env,
       debug_submit_proof_zero,

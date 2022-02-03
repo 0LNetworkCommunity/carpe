@@ -6,6 +6,7 @@
     minerLoopEnabled,
     tower,
   } from "../../miner";
+import { setProofProgres } from "../../miner_invoke";
 
   let percent = 0;
   let looper;
@@ -13,40 +14,43 @@
   let backlogDone = false;
   let bar;
 
-  function animate(bar) {
-    let ps = getProgess();
+  // function animate(bar) {
+  //   let ps = getProgess();
 
-    if (ps && ps.time_start > 0) {
-      let duration = ps.previous_duration;
-      let since_start = Date.now() - ps.time_start;
-      percent = since_start / duration;
+  //   if (ps && ps.time_start > 0) {
+  //     let duration = ps.previous_duration;
+  //     let since_start = Date.now() - ps.time_start;
+  //     percent = since_start / duration;
 
-      percent = percent >= 1 ? 0.9999 : percent; // never 100%
-      if (proofDone) percent = 1;
-      if (proofDone && backlogDone) percent = 0;
-      bar.value = percent;
-    } else {
-      // we are starting over
-      bar.value = 0;
-    }
-  }
+  //     percent = percent >= 1 ? 0.9999 : percent; // never 100%
+  //     if (proofDone) percent = 1;
+  //     if (proofDone && backlogDone) percent = 0;
+  //     bar.value = percent;
+  //   } else {
+  //     // we are starting over
+  //     bar.value = 0;
+  //   }
+  // }
 
   let enable = false;
   onMount(async () => {
     bar = document.getElementById("mining-progressbar");
 
-    animate(bar);
-    looper = setInterval(() => animate(bar), 1000);
+    // animate(bar);
+    
 
     tower.subscribe((t) => {
-      console.log("tower subscribe");
-      console.log(t.progress);
+      // console.log("tower subscribe");
+      // console.log(t.progress);
 
       // Progress bar only starts when Rust confirms it is starting the miner.
       // Progress bar ends when:
       // - Rust side sends event with a proof completed
       // - Rust side send event with a failure
-
+      if (t.progress && t.progress.pct_complete) {
+        bar.value = percent = t.progress.pct_complete;
+      }
+      
       if (t.progress && t.progress.complete) {
         proofDone = t.progress.complete;
         clearInterval(looper);
@@ -59,10 +63,12 @@
 
     minerLoopEnabled.subscribe((b) => {
       enable = b;
-      // if (enable) {
-      //   // create the bar if not yet started.
-      //   animate(bar);
-      // }
+      if (enable) {
+        // create the bar if not yet started.
+        // for safety clear the interval
+        clearInterval(looper);
+        looper = setInterval(() => setProofProgres(), 1000);
+      }
     });
   });
 
@@ -77,15 +83,36 @@
 
 <main>
   <div class="{enable ? '' : 'uk-invisible'} uk-margin-top">
-    <p class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
-      Mining progress:
-      {#if !proofDone}
-        <span uk-spinner class="uk-margin-left" />
-      {/if}
 
-      <span class="uk-margin-left">{formatPercent(percent)}</span>
-    </p>
+    <div class="uk-inline">
+    <span class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+      {#if proofDone }
+        Proof Complete
+      {:else}
+        Mining in Progress - {formatPercent(percent)}     
+
+      {/if}
+      
+    </span>
+      <!-- <span class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+        </span> -->
+        <div uk-dropdown class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> 
+          The percentage is an estimate. 
+          <br> It is based on your previous proof's elapsed time.
+        </div> 
+    </div>
 
     <progress id="mining-progressbar" class="uk-progress" value="0" max="1" />
+    
+    <span class="uk-text-light uk-text-muted uk-text-thin">
+      {#if percent > 1 }
+        <span> Over 100% only means this is taking longer than previous Proof </span>
+      {/if}
+    </span>
+
+
+
+
+    
   </div>
 </main>

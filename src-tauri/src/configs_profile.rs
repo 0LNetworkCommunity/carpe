@@ -2,7 +2,7 @@
 
 use std::{fs, path::PathBuf};
 use glob::glob;
-use anyhow::{Error};
+use anyhow::Error;
 
 use diem_types::{transaction::authenticator::AuthenticationKey};
 

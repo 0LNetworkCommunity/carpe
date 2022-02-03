@@ -12,7 +12,7 @@ use tauri::Window;
 use tower::{
   backlog::process_backlog,
   commit_proof::commit_proof_tx,
-  proof::{mine_once, parse_block_height}, tower_errors::TowerError,
+  proof::{mine_once, parse_block_height, get_latest_proof}, tower_errors::TowerError,
 };
 
 /// creates one proof and submits
@@ -122,6 +122,21 @@ pub fn get_local_height() -> Result<u64, CarpeError> {
       None => Err(CarpeError::tower("could not get block height", TowerError::NoLocalBlocks.value())),
   }
 }
+
+#[tauri::command(async)]
+/// helper to get the latest local proof
+pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
+  let cfg = get_cfg()?;
+
+  Ok(get_latest_proof(&cfg)
+  .map_err(|e| {
+      CarpeError::misc(&format!(
+      "could not get a local proof, message: {:?}",
+      e.to_string()
+    ))
+  })?)
+}
+
 
 #[tauri::command(async)]
 pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
