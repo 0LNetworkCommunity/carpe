@@ -1,4 +1,5 @@
 import { get, writable } from 'svelte/store';
+import { displayInsufficientBalance } from './accounts';
 import { notify_error } from './carpeNotify';
 import { displayDiscontinuity, displayInvalidProof, displayTooManyProofs, displayWrongDifficulty } from './miner';
 
@@ -16,6 +17,7 @@ export interface CarpeError {
 export enum ErrMap {
   NoClientCx = 404,
   AccountDNE = 1004,
+  InsufficientBalance = 12015, // from DiemAccount.move
   WrongDifficulty = 130102,
   TooManyProofs = 130108,
   Discontinuity = 130109,
@@ -25,11 +27,11 @@ export enum ErrMap {
 export const carpeErrorLog = writable <[CarpeError]>([]);
 
 export function raise_error(err: CarpeError, quiet: boolean = false, caller: string) {
-
+  let hasCustomErrorDisplay = false;
   // maybe we need to take an action on this error type
   if (err.category) { // check this is the expected type
     // errAction(event.paylod);
-    errAction(err);
+    hasCustomErrorDisplay = errAction(err);
     err.msg = `${caller}: ${err.msg}`;
     console.log(err);
   } else {
@@ -42,7 +44,7 @@ export function raise_error(err: CarpeError, quiet: boolean = false, caller: str
   console.log(list);
   let display = `Error (${err.uid}): ${err.msg}`
 
-  if (!quiet) {
+  if (!quiet && !hasCustomErrorDisplay) {
     notify_error(display);
   }
 }
@@ -52,14 +54,17 @@ export function clearErrors() {
   carpeErrorLog.set([]);
 }
 
-export const errAction = (err: CarpeError) => {
+// returns true if there is a UI for the error, so we know to display generic error notification.
+export const errAction = (err: CarpeError): boolean => {
   switch (err.uid) {
     case ErrMap.NoClientCx:
       // window.alert("no client connection");
+      return false // todo
       break;
 
     case ErrMap.AccountDNE:
       // window.alert("account does not exist");
+      return false //todo
       break;
 
     case ErrMap.WrongDifficulty:
@@ -84,8 +89,17 @@ export const errAction = (err: CarpeError) => {
       displayInvalidProof.set(err);
 
       break;
+    
+      case ErrMap.InsufficientBalance:
+      // window.alert("proof does not verify");
+      displayInsufficientBalance.set(err);
+
+      break;
+      
 
     default:
+      return false
       break;
   }
+  return true
 }
