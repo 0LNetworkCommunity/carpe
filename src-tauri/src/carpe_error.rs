@@ -45,7 +45,15 @@ impl From<TxError> for CarpeError {
             trace, 
           )
         },
-        tower::tower_errors::TowerError::Other(v) => CarpeError::tx(&format!("unknown tx error submitting tower, message: {}", &v)),
+        tower::tower_errors::TowerError::Other(_v) => {
+          // TODO: Use VMStatusView?
+          CarpeError::new(
+            ErrorCat::Tx,
+            uid,
+            msg,
+            trace, 
+          )
+        },
 
         a => {
           CarpeError::tower(&a.to_string(), a.value())

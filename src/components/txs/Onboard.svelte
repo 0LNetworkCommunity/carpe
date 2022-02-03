@@ -8,12 +8,14 @@
   import { notify_success } from "../../carpeNotify";
   import { onMount } from "svelte";
   import { displayInsufficientBalance } from "../../accounts";
-  import CardAlert from "../layout/CardAlert.svelte";
+  import CardError from "../layout/CardError.svelte";
 
   let onboard_key;
   let noBalance = false;
+  let waiting = false;
 
   function createUser() {
+    waiting = true;
     // submit
     invoke("create_user_account", { authkey: onboard_key })
       .then((res) => {
@@ -22,9 +24,11 @@
         // TODO move to an account controller
         // init_account_balance(alice_authkey);
         notify_success("Account Added");
+        waiting = false;
       })
       .catch((error: CarpeError) => {
         raise_error(error, true, "createUser")
+        waiting = false;
       });
   }
 
@@ -45,17 +49,21 @@
         <input
           class="uk-input"
           type="text"
-          placeholder="Auth Key"
+          placeholder="Onboard Key"
           bind:value={onboard_key}
         />
       </div>
 
       <div>
-        <span
+        {#if waiting}
+          <span class="uk-button uk-align-right" disabled>Awaiting Tx</span>
+        {:else}
+          <span
           on:click={createUser}
-          class="uk-button uk-button-primary uk-align-right"
-          id="create-acc">Onboard</span
-        >
+          class="uk-button uk-button-primary uk-align-right" id="create-acc" 
+          >Onboard</span>
+        {/if}
+
         <Link to={routes.home}>
           <span class="uk-button uk-button-default uk-align-right">Cancel</span>
         </Link>
@@ -63,18 +71,24 @@
     </fieldset>
   </form>
 
+  {#if waiting} 
+    <div class="uk-flex uk-flex-center">
+      <span uk-spinner />
+    </div>
+  {/if}
+
   {#if noBalance}
-    <CardAlert>
+    <CardError>
       <span slot="title">Low Balance</span>
       <div slot="body">
         <p>
           Onboarding {onboard_key} was not successful.
         </p>
         <p>
-          Looks like you have less than 1 Coin in your account, this means you
+          Looks like you have less than 2 coins in your account, this means you
           won't be able to onboard anyone.
         </p>
       </div>
-    </CardAlert>
+    </CardError>
   {/if}
 </main>

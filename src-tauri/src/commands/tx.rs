@@ -23,7 +23,7 @@ pub fn demo_tx() -> Result<String, CarpeError> {
   }
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn create_user_account(authkey: String) -> Result<String, CarpeError> {
   let tx_params = configs::get_tx_params()
     .map_err(|_| CarpeError::misc("could not load tx params"))?;
@@ -32,9 +32,12 @@ pub fn create_user_account(authkey: String) -> Result<String, CarpeError> {
     match create_from_auth_and_coin(key, 1, tx_params, None) {
       Ok(r) => Ok(format!("Tx Success: {:?}", r)),
       Err(e) => { 
+        dbg!(&e);
         let new_msg = format!("could not make account creation tx, message: Location {:?}, Code: {:?}", &e.location, &e.abort_code);
 
         let mut ce: CarpeError  = e.into();
+
+        dbg!(&ce);
         ce.msg = new_msg;
         
         Err(ce)

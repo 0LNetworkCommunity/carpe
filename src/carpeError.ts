@@ -3,11 +3,6 @@ import { displayInsufficientBalance } from './accounts';
 import { notify_error } from './carpeNotify';
 import { displayDiscontinuity, displayInvalidProof, displayTooManyProofs, displayWrongDifficulty } from './miner';
 
-// // wrapper for the Tauri event.
-// export interface CarpeErrorEvent {
-//   msg: string,
-//   payload: CarpeError
-// }
 export interface CarpeError {
   category: number;
   uid: number;
@@ -91,7 +86,7 @@ export const errAction = (err: CarpeError): boolean => {
       break;
     
       case ErrMap.InsufficientBalance:
-      window.alert("insufficient balance");
+      // window.alert("insufficient balance");
       displayInsufficientBalance.set(err);
 
       break;
