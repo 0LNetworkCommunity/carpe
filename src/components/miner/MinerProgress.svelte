@@ -1,12 +1,11 @@
 <script>
   import { onDestroy, onMount } from "svelte";
   import {
-    getProgess,
     backlogInProgress,
     minerLoopEnabled,
     tower,
   } from "../../miner";
-import { setProofProgres } from "../../miner_invoke";
+  import { setProofProgres } from "../../miner_invoke";
 
   let percent = 0;
   let looper;

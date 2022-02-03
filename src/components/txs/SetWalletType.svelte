@@ -1,8 +1,10 @@
 <script lang="ts">
 import { invoke } from "@tauri-apps/api/tauri";
-import { CarpeError, raise_error } from "../../carpeError";
+import { raise_error } from "../../carpeError";
+import type { CarpeError } from "../../carpeError";
 import { notify_success } from "../../carpeNotify";
 import { responses } from "../../debug";
+import UIkit from "uikit";
 
   let loading = false;
   function setWallet (num: number) {
@@ -17,6 +19,10 @@ import { responses } from "../../debug";
         loading = false;
         raise_error(e, false, "setWallet");
       });
+
+    UIkit.dropdown(document.getElementsByClassName("send-drop")).hide(500);
+
+    
   };
 </script>
 
@@ -25,25 +31,23 @@ import { responses } from "../../debug";
   <p> Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.</p>
   <div>
     <div class="uk-inline">
-    <button class="uk-button uk-button-default" type="button">Set Slow Wallet</button>
-      <div uk-dropdown="mode: click">
+    <button class="uk-button uk-button-default" type="button" disabled={loading? true : false}>Set Slow Wallet</button>
+      <div class="send-drop" uk-dropdown="mode: click">
             <p>Confirm Set Slow Wallet? This is not reversable.</p>
             <button 
-            class="uk-button {loading? '' : 'uk-button-danger'}"
+            class="uk-button uk-button-danger"
             on:click={() => setWallet(0)}
-            disabled={loading? true : false}
             > Set Slow </button>
       </div>
     </div>
 
     <div class="uk-inline">
-    <button class="uk-button uk-button-default" type="button">Set Community Wallet</button>
-      <div uk-dropdown="mode: click">
+    <button class="uk-button uk-button-default" type="button" disabled={loading? true : false}>Set Community Wallet</button>
+      <div class="send-drop" uk-dropdown="mode: click">
             <p>Confirm Set Community Wallet? This is not reversable.</p>
             <button 
-            class="uk-button {loading? '' : 'uk-button-danger'}"
+            class="uk-button uk-button-danger"
             on:click={() => setWallet(1)}
-            disabled={loading? true : false}
             > Set Community </button>
       </div>
     </div>
