@@ -63,7 +63,8 @@
     <div class="uk-flex uk-flex-center">
       <span uk-spinner />
     </div>
-  {:else}
+  {/if}
+  <!-- {:else} -->
     <div class="uk-grid uk-margin-small">
       {#if account && account.on_chain}
 
@@ -78,7 +79,7 @@
 
         <!-- {#if tower} -->
         <div class="uk-width-1-1">
-          {#if newbie}
+          {#if newbie && !loading}
             <FirstProof />
           {:else}
             <TowerState />
@@ -93,7 +94,7 @@
     {#if isSendInProgress}
       <SyncProofs />
     {/if}
-  {/if}
+  <!-- {/if} -->
   <CommonErrors />
 
   <MinerDebug />

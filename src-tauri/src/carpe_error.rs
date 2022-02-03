@@ -14,10 +14,14 @@ pub enum ErrorCat {
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct CarpeError {
-  category: ErrorCat,
-  uid: u64,
-  msg: String,
-  trace: String,
+  ///
+  pub category: ErrorCat,
+  ///
+  pub uid: u64,
+  ///
+  pub msg: String,
+  ///
+  pub trace: String,
 }
 
 impl From<anyhow::Error> for CarpeError {
@@ -28,9 +32,19 @@ impl From<anyhow::Error> for CarpeError {
 
 impl From<TxError> for CarpeError {
     fn from(e: TxError) -> Self {
+      let uid = e.abort_code.unwrap_or(E_UNKNOWN);
+      let msg = format!("Transaction Error: Location {:?} AbortCode: {:?}", &e.location, &e.abort_code);
+      let trace = format!("TxView: {:?}",  &e.tx_view);
       // check if the is a tower error
       match tower::tower_errors::parse_error(e){
-        tower::tower_errors::TowerError::Unknown => CarpeError::tx("unknown tx error submitting tower"),
+        tower::tower_errors::TowerError::Unknown => {  // this isn't a tower error, so it must be another TX error
+          CarpeError::new(
+            ErrorCat::Tx,
+            uid,
+            msg,
+            trace, 
+          )
+        },
         tower::tower_errors::TowerError::Other(v) => CarpeError::tx(&format!("unknown tx error submitting tower, message: {}", &v)),
 
         a => {
@@ -40,12 +54,12 @@ impl From<TxError> for CarpeError {
     }
 }
 
-const E_UNKNOWN: u64 = 100; // consistent with TowerError.rs
+pub const E_UNKNOWN: u64 = 100; // consistent with TowerError.rs
 
-const E_APP_CONFIG: u64 = 103; // consistent with TowerError.rs
+pub const E_APP_CONFIG: u64 = 103; // consistent with TowerError.rs
 
 // Client Errors
-const E_CLIENT_CX: u64 = 404; // consistent with TowerError.rs
+pub const E_CLIENT_CX: u64 = 404; // consistent with TowerError.rs
 
 
 impl CarpeError {

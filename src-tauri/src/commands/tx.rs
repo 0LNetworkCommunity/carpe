@@ -31,10 +31,14 @@ pub fn create_user_account(authkey: String) -> Result<String, CarpeError> {
   if let Some(key) = authkey.parse::<AuthenticationKey>().ok() {
     match create_from_auth_and_coin(key, 1, tx_params, None) {
       Ok(r) => Ok(format!("Tx Success: {:?}", r)),
-      Err(e) => Err(CarpeError::misc(&format!(
-        "could not make account creation tx message: {:?}",
-        e
-      ))),
+      Err(e) => { 
+        let new_msg = format!("could not make account creation tx, message: Location {:?}, Code: {:?}", &e.location, &e.abort_code);
+
+        let mut ce: CarpeError  = e.into();
+        ce.msg = new_msg;
+        
+        Err(ce)
+      },
     }
   } else {
     Err(CarpeError::misc("could not parse authentication key"))

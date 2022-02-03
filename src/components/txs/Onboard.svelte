@@ -1,14 +1,14 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
   import { Link } from "svelte-navigator";
-  import { CarpeError, raise_error } from "../../carpeError";
+  import { raise_error } from "../../carpeError";
+  import type { CarpeError } from "../../carpeError";
   import { responses } from "../../debug";
   import { routes } from "../../routes";
-  import { notify_error, notify_success } from "../../carpeNotify";
+  import { notify_success } from "../../carpeNotify";
   import { onMount } from "svelte";
   import { displayInsufficientBalance } from "../../accounts";
   import CardAlert from "../layout/CardAlert.svelte";
-import CardError from "../layout/CardError.svelte";
 
   let onboard_key;
   let noBalance = false;

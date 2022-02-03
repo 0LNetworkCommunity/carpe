@@ -91,7 +91,7 @@ export const errAction = (err: CarpeError): boolean => {
       break;
     
       case ErrMap.InsufficientBalance:
-      // window.alert("proof does not verify");
+      window.alert("insufficient balance");
       displayInsufficientBalance.set(err);
 
       break;
