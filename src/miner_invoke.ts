@@ -203,7 +203,8 @@ export function setProofComplete() {
 
 export function setProofProgres() {
   let t = get(tower);
-  if (t.progress) {
+  let done = get(minerProofComplete);
+  if (t.progress && !done) {
     t.progress.time_elapsed = Date.now() - t.progress.time_start;
     t.progress.pct_complete = t.progress.time_elapsed / t.progress.previous_duration;
     tower.set(t);
