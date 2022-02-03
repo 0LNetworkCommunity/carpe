@@ -3,8 +3,8 @@
   import { onMount } from "svelte";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
-  import { displayDiscontinuity, displayTooManyProofs } from "../../../miner";
   import type { CarpeError } from "../../../carpeError";
+  import { displayDiscontinuity } from "../../../carpeErrorUI";
 
   let display: CarpeError = null;
 

@@ -1,8 +1,6 @@
 import { get, writable } from 'svelte/store';
-import { displayInsufficientBalance } from './accounts';
+import { displayInsufficientBalance, displayDiscontinuity, displayInvalidProof, displayTooManyProofs, displayWrongDifficulty } from './carpeErrorUI';
 import { notify_error } from './carpeNotify';
-import { displayDiscontinuity, displayInvalidProof, displayTooManyProofs, displayWrongDifficulty } from './miner';
-
 export interface CarpeError {
   category: number;
   uid: number;

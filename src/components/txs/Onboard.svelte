@@ -7,8 +7,8 @@
   import { routes } from "../../routes";
   import { notify_success } from "../../carpeNotify";
   import { onMount } from "svelte";
-  import { displayInsufficientBalance } from "../../accounts";
   import CardError from "../layout/CardError.svelte";
+  import { displayInsufficientBalance } from "../../carpeErrorUI";
 
   let onboard_key;
   let noBalance = false;

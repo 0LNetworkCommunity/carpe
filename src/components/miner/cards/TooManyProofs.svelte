@@ -2,8 +2,8 @@
   import { onMount } from "svelte";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
-  import { displayTooManyProofs } from "../../../miner";
   import type { CarpeError } from "../../../carpeError";
+  import { displayTooManyProofs } from "../../../carpeErrorUI";
 
   let display: CarpeError = null;
 

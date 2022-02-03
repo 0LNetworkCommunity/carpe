@@ -4,9 +4,10 @@ import { now } from "svelte/internal";
 import { get } from "svelte/store";
 import { isRefreshingAccounts, signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
+import { clearDisplayErrors } from "./carpeErrorUI";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, clearDisplayErrors, VDFProof } from "./miner";
+import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof } from "./miner";
 import { network_profile } from "./networks";
 
 const current_window = getCurrent();

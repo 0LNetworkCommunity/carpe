@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/tauri';
 import { writable, get } from 'svelte/store';
-import { CarpeError, raise_error } from './carpeError';
+import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { minerLoopEnabled} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
@@ -28,7 +28,6 @@ export const mnem = writable("");
 export const isInit = writable(false);
 export const isRefreshingAccounts = writable(false);
 export const all_accounts = writable<AccountEntry[]>([]);
-export const displayInsufficientBalance = writable<CarpeError>({});
 
 export function loadAccounts() {
   console.log("loadAccounts");
