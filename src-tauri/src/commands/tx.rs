@@ -54,7 +54,7 @@ pub enum WalletTypes {
   Community = 1,
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
   let tx_params =
     configs::get_tx_params().map_err(|_| CarpeError::misc("could not load tx params"))?;

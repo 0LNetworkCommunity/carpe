@@ -1,13 +1,22 @@
 <script lang="ts">
 import { invoke } from "@tauri-apps/api/tauri";
+import { CarpeError, raise_error } from "../../carpeError";
+import { notify_success } from "../../carpeNotify";
 import { responses } from "../../debug";
 
+  let loading = false;
   function setWallet (num: number) {
+    loading = true;
     invoke("wallet_type", {typeInt: num})
       .then((res: string) => {
+        loading = false;
+        notify_success("Account set to Slow Wallet");
         responses.set(res);
       })
-      .catch((e) => console.error(e));
+      .catch((e: CarpeError) => {
+        loading = false;
+        raise_error(e, false, "setWallet");
+      });
   };
 </script>
 
@@ -19,7 +28,11 @@ import { responses } from "../../debug";
     <button class="uk-button uk-button-default" type="button">Set Slow Wallet</button>
       <div uk-dropdown="mode: click">
             <p>Confirm Set Slow Wallet? This is not reversable.</p>
-            <button class="uk-button uk-button-danger" on:click={() => setWallet(0)}> Set Slow </button>
+            <button 
+            class="uk-button {loading? '' : 'uk-button-danger'}"
+            on:click={() => setWallet(0)}
+            disabled={loading? true : false}
+            > Set Slow </button>
       </div>
     </div>
 
@@ -27,9 +40,20 @@ import { responses } from "../../debug";
     <button class="uk-button uk-button-default" type="button">Set Community Wallet</button>
       <div uk-dropdown="mode: click">
             <p>Confirm Set Community Wallet? This is not reversable.</p>
-            <button class="uk-button uk-button-danger" on:click={() => setWallet(1)}> Set Community </button>
+            <button 
+            class="uk-button {loading? '' : 'uk-button-danger'}"
+            on:click={() => setWallet(1)}
+            disabled={loading? true : false}
+            > Set Community </button>
       </div>
     </div>
+
+      {#if loading} 
+        <div class="uk-flex uk-flex-center">
+          <span uk-spinner />
+        </div>
+      {/if}
+
 
 
   </div>
