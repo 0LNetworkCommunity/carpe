@@ -2,7 +2,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { getCurrent } from "@tauri-apps/api/window";
 import { now } from "svelte/internal";
 import { get } from "svelte/store";
-import { signingAccount } from "./accounts";
+import { isRefreshingAccounts, signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
@@ -121,6 +121,8 @@ export const maybeEmitBacklogDelta = async () => {
 
 export const getTowerChainView = async () => {
   console.log("getTowerChainView");
+  isRefreshingAccounts.set(true);
+
   let a = get(signingAccount).account
   if (a) {
     await invoke("get_onchain_tower_state", {
@@ -131,14 +133,16 @@ export const getTowerChainView = async () => {
       t.on_chain = res;
       tower.set(t);
       responses.set(JSON.stringify(res));
+      isRefreshingAccounts.set(false);
     })
     .catch((e) => {
       //need to reset, otherwise may be looking at wrong account
       let t = get(tower);
       t.on_chain = {};
       tower.set(t);
+      raise_error(e, true, "getTowerChainView");
+      isRefreshingAccounts.set(false);
 
-      raise_error(e, true, "getTowerChainView")
     });
   }
 };

@@ -89,10 +89,8 @@ import { setProofProgres } from "../../miner_invoke";
       {#if proofDone }
         Proof Complete
       {:else}
-        Mining In Progress - {formatPercent(percent)}     
-        {#if percent > 1 }
-          <span> Taking longer than expected... </span>
-        {/if}
+        Mining in Progress - {formatPercent(percent)}     
+
       {/if}
       
     </span>
@@ -105,7 +103,12 @@ import { setProofProgres } from "../../miner_invoke";
     </div>
 
     <progress id="mining-progressbar" class="uk-progress" value="0" max="1" />
-
+    
+    <span class="uk-text-light uk-text-muted uk-text-thin">
+      {#if percent > 1 }
+        <span> Over 100% only means this is taking longer than previous Proof </span>
+      {/if}
+    </span>
 
 
 

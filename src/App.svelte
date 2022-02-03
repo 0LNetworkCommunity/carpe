@@ -15,7 +15,7 @@
   import Transactions from "./components/txs/Transactions.svelte";
   import About from "./components/about/About.svelte";
   import { backlogInProgress, backlogSubmitted, minerEventReceived } from "./miner";
-  import { errAction, raise_error } from "./carpeError";
+  import { raise_error } from "./carpeError";
   import type { CarpeError } from "./carpeError";
   import { getEnv, responses, debugMode } from "./debug";
   import { routes } from "./routes";
@@ -75,7 +75,6 @@
       // TODO: show an UX in the miner view for this type of error
       
       raise_error(event.payload, true, "listen(backlog-error)");
-      
       
       backlogInProgress.set(false);
       backlogSubmitted.set(false);
