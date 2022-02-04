@@ -39,6 +39,7 @@
 
     isRefreshingAccounts.subscribe((a) => loading = a );
 
+    // minerProofComplete.subscribe((b) => complete = a)
 
     isDevTest = get(nodeEnv) == "test";
 
@@ -79,7 +80,7 @@
 
         <!-- {#if tower} -->
         <div class="uk-width-1-1">
-          {#if newbie && !loading}
+          {#if newbie }
             <FirstProof />
           {:else}
             <TowerState />
