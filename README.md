@@ -18,7 +18,7 @@ Carpe is a desktop "wallet" that connects to the 0L network and lets you create 
 # Creating Accounts
 Like any account-based blockchain, any new account address you create in the Carpe app will initially be inactive. For the account to become active, someone needs to send you at least one coin to it. Until that happens your account does not exist "on chain". If you don't know anyone yet on 0L, come into the Discord chat and just ask anyone there. Many people will be happy to help get you onboarded. Otherwise the app should guide you through it.
 
-[Discord](https://discord.gg/AzCp63pggW)
+[Join us on Discord and get onboarded](https://discord.gg/AzCp63pggW)
 
 
 ## Development
