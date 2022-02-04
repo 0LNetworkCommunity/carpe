@@ -1,20 +1,24 @@
 # Carpe - The 0L Desktop Wallet and Miner
 
-This desktop app connects to the 0L network and lets you create accounts, do some account management, and also participate in the network by mining coins. To learn more about 0L itself follow the link: [0L introduction](https://github.com/OLSF/libra#readme).
+## Download the App
 
-Like any account-based blockchain, any new account address you create in the Carpe app will be inactive (will not exist on the chain). For the account to become active, someone needs to send you at least one coin to it. Until that happens your account does not exist "on chain". If you don't know anyone yet on 0L, come into the Discord chat and just ask anyone there. Many people will be happy to help get you onboarded. Otherwise the app should guide you through it.
+Currently Mac and Windows are supported:
 
-[Discord](https://discord.gg/AzCp63pggW)
+- [Download MacOs 10.15+](https://github.com/OLSF/carpe/releases/download/v0.2.0/carpe-macos-10.15.dmg) and read the [Mac instructions](docs/start-carpe-mac.md)
 
-## Download and install the tool
-
-Currently there are 2 versions available:
-
-- [mac osx 10.15+](docs/start-carpe-mac.md)
-- [windows 10+](docs/start-carpe-windows.md)
+- [Download Windows 10+](https://github.com/OLSF/carpe/releases/download/v0.2.0/carpe_0.2.0_x64.msi) and read the [Windows instructions](docs/start-carpe-windows.md)
 
 On Windows, currently, Microsoft Edge WebView2 must be installed manually first.
 https://developer.microsoft.com/en-us/microsoft-edge/webview2/consumer
+
+# About
+Carpe is a desktop "wallet" that connects to the 0L network and lets you create accounts, do some account management.  It also is a light "miner" allowing you to mine coins! To learn more about 0L itself follow the link: [0L introduction](https://github.com/OLSF/libra#readme).
+
+# Creating Accounts
+Like any account-based blockchain, any new account address you create in the Carpe app will initially be inactive. For the account to become active, someone needs to send you at least one coin to it. Until that happens your account does not exist "on chain". If you don't know anyone yet on 0L, come into the Discord chat and just ask anyone there. Many people will be happy to help get you onboarded. Otherwise the app should guide you through it.
+
+[Discord](https://discord.gg/AzCp63pggW)
+
 
 ## Development
 
