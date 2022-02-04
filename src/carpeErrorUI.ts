@@ -7,17 +7,17 @@ import type { CarpeError } from "./carpeError";
 // the state get switeched to false whenever a new backlog submission happens.
 // todo: each error needs have its own rules for clearing
 
-export const displayInsufficientBalance = writable<CarpeError>(null);
-export const displayWrongDifficulty = writable<CarpeError>(null);
-export const displayTooManyProofs = writable<CarpeError>(null);
-export const displayDiscontinuity = writable<CarpeError>(null);
-export const displayInvalidProof = writable<CarpeError>(null);
+export const displayInsufficientBalance = writable<CarpeError>({});
+export const displayWrongDifficulty = writable<CarpeError>({});
+export const displayTooManyProofs = writable<CarpeError>({});
+export const displayDiscontinuity = writable<CarpeError>({});
+export const displayInvalidProof = writable<CarpeError>({});
 
 export const clearDisplayErrors = () => {
-  displayWrongDifficulty.set(null);
-  displayTooManyProofs.set(null);
-  displayDiscontinuity.set(null);
-  displayInvalidProof.set(null);
-  displayInsufficientBalance.set(null);
+  displayWrongDifficulty.set({});
+  displayTooManyProofs.set({});
+  displayDiscontinuity.set({});
+  displayInvalidProof.set({});
+  displayInsufficientBalance.set({});
 }
 

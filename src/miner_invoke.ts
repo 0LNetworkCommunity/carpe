@@ -7,7 +7,7 @@ import { raise_error } from "./carpeError";
 import { clearDisplayErrors } from "./carpeErrorUI";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof } from "./miner";
+import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof, TowerStateView } from "./miner";
 import { network_profile } from "./networks";
 
 const current_window = getCurrent();
@@ -129,7 +129,7 @@ export const getTowerChainView = async () => {
     await invoke("get_onchain_tower_state", {
       account: a
     })
-    .then((res: EpochRules) => {
+    .then((res: TowerStateView) => {
       let t = get(tower);
       t.on_chain = res;
       tower.set(t);
