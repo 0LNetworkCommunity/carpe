@@ -4,6 +4,7 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
+import { carpeTick } from './tick';
 export interface AccountEntry {
   account: string,
   authkey: string,
@@ -120,6 +121,8 @@ export const setAccount = async (an_address: string) =>{
     signingAccount.set(a);
     tower.set({});
     mnem.set("");
+    // reset all data
+    carpeTick();
   })
   .catch((e) => raise_error(e, false, "setAccount"));
 }

@@ -17,16 +17,15 @@ export const towerOnce = async () => {
   minerEventReceived.set(false);
   minerProofComplete.set(false);
 
+  // defaults for newbies
   let previous_duration = get(network_profile).chain_id == "Mainnet"
     ? 30 * 60 * 1000 // Prod difficulty
     : 5 * 1000;      // Test difficulty
 
   let t = get(tower);
-  if (t.last_local_proof && t.last_local_proof.elapsed_secs) {
-    previous_duration = t.last_local_proof.elapsed_secs * 1000;
+  if (t.last_local_proof && t.last_local_proof.elapsed_secs != null) {
+    previous_duration = 1 + (t.last_local_proof.elapsed_secs * 1000); // at least 1
   }
-
-  window.alert(`previous_duration ${previous_duration}`);
 
   let progress: ProofProgress = {
     proof_in_progress: t.local_height ? t.local_height + 1 : 1,

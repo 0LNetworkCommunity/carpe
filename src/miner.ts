@@ -1,5 +1,4 @@
 import { get, writable } from 'svelte/store';
-import type { CarpeError } from './carpeError';
 export interface ClientTowerStatus {
   last_local_proof: VDFProof,
   on_chain?: TowerStateView,

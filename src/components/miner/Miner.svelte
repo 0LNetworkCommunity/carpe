@@ -14,7 +14,6 @@
   import SyncProofs from "./cards/SyncProofs.svelte";
   import CommonErrors from "./CommonErrors.svelte";
   import { getTowerChainView } from "../../miner_invoke";
-  import SyncProofsError from "./cards/SyncProofsError.svelte";
 
   let newbie = false;
   let loading = true;
@@ -22,18 +21,15 @@
   let isDevTest = false;
   let isSendInProgress = false;
   let hasProofs = false;
-  let towers;
   onMount(async () => {
     getTowerChainView();
 
     tower.subscribe((t) => {
-      towers = t;
       if (t.last_local_proof) {
         hasProofs = true;
       } else {
         hasProofs = false;
       }
-      
     })
 
     isTowerNewbie.subscribe((b) =>  newbie = b);
@@ -51,12 +47,6 @@
 
  
 <main class="uk-height-viewport">
-  is send in progress: {isSendInProgress}
-  has proofs: {hasProofs}
-  is newbie: {newbie}
-  {#if towers }
-    tower local: {JSON.stringify(towers)}
-  {/if}
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
   </div>
