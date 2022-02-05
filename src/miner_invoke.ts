@@ -113,31 +113,36 @@ export const emitBacklog = async () => {
   window.alert("emit backlog event");
 }
 
-// export const maybeEmitBacklogDelta = async () => {
-//   console.log("maybeEmitBacklogDelta");
-//   if (get(backlogListenerReady)) {
-//     let t = get(tower);
-//     window.alert(`t.local_height ${t.local_height}, onchain ${JSON.stringify(t.on_chain)}`)
-    
-//     if (t.local_height && t.on_chain) {
-//       let remote_height = t.on_chain.verified_tower_height || -1;
+export const hasProofsPending = ():boolean => {
+  let t = get(tower);
+  window.alert(`t.local_height ${t.local_height}, onchain ${JSON.stringify(t.on_chain)}`)
+  // is the user a newbie?
+  // if so, any local height needs to be submitted.
+  if (t.local_height && get(isTowerNewbie)) {
+    return true
+  }
 
-//       // only do this if there is a delta
-//       if ((t.local_height - remote_height) > 0) {
-//         window.alert(`t.local_height ${t.local_height}`)
-//         if (!get(backlogInProgress)) {
-//           // don't duplicate events.
-//           emitBacklog();
-//         } 
-//       }
-//     } 
-//     // else if (t.local_height && !t.on_chain.verified_tower_height) {// newbie, send it anyway
-//     //   emitBacklog();
-//     // }
-//   } else {
-//     console.log("backlog listener not ready")
-//   }
-// }
+  // if the user has local height and has tower state
+  if (t.local_height && t.on_chain && t.on_chain.verified_tower_height) {
+    // only do this if there is a delta
+    if ((t.local_height - t.on_chain.verified_tower_height ) > 0) {
+      return true
+    }
+  } 
+  return false
+}
+export const maybeEmitBacklog = async () => {
+  // only emit a backlog event, if there are any proofs pending 
+  // and there is no backlog already in progress
+  // and finally check that the listener has started.
+  if (
+    hasProofsPending() &&
+    !get(backlogInProgress) &&
+    get(backlogListenerReady)
+  ) {
+    emitBacklog();
+  }
+}
 
 
 export const getTowerChainView = async () => {
