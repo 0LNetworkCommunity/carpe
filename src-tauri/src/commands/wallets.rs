@@ -75,15 +75,18 @@ pub fn is_init() -> Result<bool, CarpeError> {
 
 /// default way accounts get initialized in Carpe
 #[tauri::command]
-pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-  danger_init_from_mnem(mnem).map_err(|_| CarpeError::config("could not initialize from mnemonic"))
+pub fn init_from_mnem(mnem: String, other_address: Option<AccountAddress>) -> Result<AccountEntry, CarpeError> {
+  danger_init_from_mnem(mnem, other_address).map_err(|_| CarpeError::config("could not initialize from mnemonic"))
 }
 
-pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
+pub fn danger_init_from_mnem(mnem: String, other_address: Option<AccountAddress>) -> Result<AccountEntry, CarpeError> {
   dbg!("init from mnem");
   let init = configs::is_initialized();
   // TODO: refactor upstream wallet::get_account so that it returns a result
-  let (authkey, address, _wl) = wallet::get_account_from_mnem(mnem.clone())?;
+  let (authkey, address_from_mnem, _wl) = wallet::get_account_from_mnem(mnem.clone())?;
+  dbg!(&other_address);
+  // The user may have a mnemonic that was rotated to another key
+  let actual_address =  other_address.unwrap_or(address_from_mnem);
 
   let priv_key = KeyScheme::new_from_mnemonic(mnem)
     .child_0_owner
@@ -91,19 +94,19 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 
   // first try to insert into DB.
   // it will error if the account already exists.
-  insert_account_db(get_short(address.clone()), address, authkey)?;
+  insert_account_db(get_short(actual_address.clone()), actual_address, authkey)?;
 
-  key_manager::set_private_key(&address.to_string(), priv_key)
+  key_manager::set_private_key(&actual_address.to_string(), priv_key)
   .map_err(|e|{ CarpeError::config(&e.to_string()) })?;
 
-  configs_profile::set_account_profile(address.clone(), authkey.clone())?;
+  configs_profile::set_account_profile(actual_address.clone(), authkey.clone())?;
   
   // this may be the first account and may not yet be initialized.
   if !init {
     configs_network::set_network_configs(configs_network::Networks::Mainnet)?;
   }
 
-  Ok(AccountEntry::new(address, authkey))
+  Ok(AccountEntry::new(actual_address, authkey))
 }
 
 /// read all accounts from ACCOUNTS_DB_FILE

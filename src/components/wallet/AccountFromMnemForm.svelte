@@ -2,6 +2,7 @@
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
   
   let danger_temp_mnem: string;
+  let other_address: string;
 </script>
 
 <main>  
@@ -16,9 +17,16 @@
           placeholder="Recovery Mnemonic"
           bind:value={danger_temp_mnem}
         />
+        <p> Advanced: If your address has rotated the authkey, we won't be able to derive the address from the mnemonic. Input that here  </p>
+        <input
+          class="uk-input"
+          type="text"
+          placeholder="Optional: Address in case of re-key"
+          bind:value={other_address}
+        />
       </div>
       
-      <AccountFromMnemSubmit danger_temp_mnem={danger_temp_mnem} isNewAccount={false} />
+      <AccountFromMnemSubmit danger_temp_mnem={danger_temp_mnem} other_address={other_address} isNewAccount={false} />
     </fieldset>
   </form>
 
