@@ -27,6 +27,8 @@ export const towerOnce = async () => {
     previous_duration = t.last_local_proof.elapsed_secs * 1000;
   }
 
+  window.alert(`previous_duration ${previous_duration}`);
+
   let progress: ProofProgress = {
     proof_in_progress: t.local_height ? t.local_height + 1 : 1,
     time_start: Date.now(),
@@ -48,15 +50,20 @@ export const towerOnce = async () => {
       setProofComplete();
 
       // start the sending of txs
-      // emitBacklog();
+      // TODO: unsure why when it emits immediately thre is no action on rust side, perhaps listener startup.
+      setTimeout(emitBacklog, 1000);
+
+      // refresh local proofs view, also wait for file to be written
+      setTimeout(getLocalHeight, 1000);
+
 
       return res
     })
     .catch(e => {
-      console.log('>>> miner_once error: ' + e);
+      console.log('miner_once error: ' + e);
       // disable mining when there is a proof error.
       minerLoopEnabled.set(false);
-      raise_error(e, false, "invoke");
+      raise_error(e, false, "towerOnce");
       proofError()
       return false
     });
@@ -111,7 +118,7 @@ export const maybeEmitBacklogDelta = async () => {
   console.log("maybeEmitBacklogDelta");
   if (get(backlogListenerReady)) {
     let t = get(tower);
-    window.alert(`t.local_height ${t.local_height}`)
+    window.alert(`t.local_height ${t.local_height}, onchain ${JSON.stringify(t.on_chain)}`)
     
     if (t.local_height && t.on_chain) {
       let remote_height = t.on_chain.verified_tower_height || -1;
@@ -122,9 +129,10 @@ export const maybeEmitBacklogDelta = async () => {
 
         emitBacklog();
       }
-    } else if (t.local_height && !t.on_chain) {// newbie
-      emitBacklog();
-    }
+    } 
+    // else if (t.local_height && !t.on_chain.verified_tower_height) {// newbie, send it anyway
+    //   emitBacklog();
+    // }
   } else {
     console.log("backlog listener not ready")
   }

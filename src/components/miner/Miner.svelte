@@ -27,7 +27,7 @@
     getTowerChainView();
 
     tower.subscribe((t) => {
-      t.last_local_proof ? hasProofs=true : hasProofs=false;
+      t.last_local_proof != null ? hasProofs=true : hasProofs=false;
     })
 
     isTowerNewbie.subscribe((b) =>  newbie = b);
@@ -77,9 +77,6 @@
         <div class="uk-width-1-1">
           {#if newbie && !hasProofs }
             <FirstProof />
-          {:else if newbie && hasProofs}
-          <!-- the user has no tower state -->
-            <SyncProofsError />
           {:else}
             <TowerState />
           {/if}

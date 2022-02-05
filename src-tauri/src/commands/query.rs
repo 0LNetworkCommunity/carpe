@@ -11,7 +11,7 @@ pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError>{
 
 #[tauri::command(async)]
 pub fn get_onchain_tower_state(account: AccountAddress) -> Result<TowerStateResourceView, CarpeError> {
-  println!("fetching onchain tower state");
+  // println!("fetching onchain tower state");
   let node = get_node_obj()?;
 
   match node.client.get_miner_state(&account) {
