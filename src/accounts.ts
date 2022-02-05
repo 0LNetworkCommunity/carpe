@@ -29,10 +29,10 @@ export const isInit = writable(false);
 export const isRefreshingAccounts = writable(false);
 export const all_accounts = writable<AccountEntry[]>([]);
 
-export function loadAccounts() {
+export const loadAccounts = async () => {
   console.log("loadAccounts");
   
-  invoke('get_all_accounts')
+  return invoke('get_all_accounts')
     .then((result: object) => {
       all_accounts.set(result.accounts);
       
@@ -45,9 +45,9 @@ export function loadAccounts() {
         */
       }
       // fetch data from the chain
-      refreshAccounts();
+      return refreshAccounts();
     })
-    .catch((error) => raise_error(error, false, "loadAccounts"));
+    .catch((error) => raise_error(error, false, "loadAccounts"))
 }
 
 export const refreshAccounts = async () => {

@@ -20,9 +20,9 @@
   import { getEnv, responses, debugMode } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
-  import { refreshStats } from "./miner_health";
   import { isCarpeInit, loadAccounts } from "./accounts";
   import { getVersion } from "./version";
+  import { carpeTick } from "./tick";
 
   let unlistenProofStart;
   let unlistenBacklogSuccess;
@@ -35,16 +35,12 @@
 
     getEnv();
 
-    loadAccounts();
-
-    refreshStats();
-
     getVersion();
 
-    healthTick = setInterval(refreshStats, 30000); // do a healthcheck, this is async
+    carpeTick();
+    healthTick = setInterval(carpeTick, 30000); // do a healthcheck, this is async
 
     debugMode.subscribe(b => debug = b);
-    // nodeEnvIsTest.subscribe(b => isTest = b);
     
     ///// Backlog /////
     // Todo: Should this listener only be started in the miner view?
@@ -72,7 +68,7 @@
       //update the tower stats after we show the backlog being up to date.
       backlogInProgress.set(false);
       backlogSubmitted.set(true);
-      refreshStats();
+      carpeTick();
     });
 
     unlistenBacklogError = await listen("backlog-error", (event: Event<CarpeError>) => {

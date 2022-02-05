@@ -1,9 +1,9 @@
-import { refreshAccounts } from "./accounts";
+import { loadAccounts, refreshAccounts } from "./accounts";
 import { getEpochRules, getLocalHeight, getTowerChainView, maybeEmitBacklogDelta, maybeStartMiner } from "./miner_invoke";
 import { refreshWaypoint } from "./networks";
 
-export const refreshStats = async () => {
-  console.log("refreshStats");
+export const carpeTick = async () => {
+  console.log("carpeTick");
 
   // this should be instant
   await getEpochRules()
@@ -15,7 +15,9 @@ export const refreshStats = async () => {
   
   await refreshWaypoint()
 
-  await refreshAccounts()
+  await loadAccounts()
+    // .finally(refreshAccounts)
+  // await refreshAccounts()
 
   await getTowerChainView()
     .finally(() => {
