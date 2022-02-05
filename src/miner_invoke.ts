@@ -7,7 +7,7 @@ import { raise_error } from "./carpeError";
 import { clearDisplayErrors } from "./carpeErrorUI";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof, TowerStateView } from "./miner";
+import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof, TowerStateView, isTowerNewbie } from "./miner";
 import { network_profile } from "./networks";
 
 const current_window = getCurrent();
@@ -142,6 +142,11 @@ export const getTowerChainView = async () => {
     t.on_chain = res;
     tower.set(t);
     responses.set(JSON.stringify(res));
+
+    if (t.on_chain && t.on_chain.verified_tower_height) {
+      isTowerNewbie.set(false);
+    }
+
     isRefreshingAccounts.set(false);
   })
   .catch((e) => {
@@ -149,6 +154,10 @@ export const getTowerChainView = async () => {
     let t = get(tower);
     t.on_chain = {};
     tower.set(t);
+    
+    if (t.on_chain && !t.on_chain.verified_tower_height) {
+      isTowerNewbie.set(true);
+    }
 
     raise_error(e, true, "getTowerChainView");
     isRefreshingAccounts.set(false);
