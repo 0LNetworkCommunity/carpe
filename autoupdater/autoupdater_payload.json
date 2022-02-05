@@ -4,13 +4,13 @@
   "pub_date": "2020-06-22T19:25:57Z",
   "platforms": {
     "darwin": {
-      "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/carpe.app.tar.gz"
+      "url": "https://github.com/OLSF/carpe/releases/download/v0.2.1-rc.2/carpe.app.tar.gz"
     },
     "linux": {
       "url": "none"
     },
     "win64": {
-      "url": "https://github.com/OLSF/carpe/releases/download/upgrade-test-1/app.AppImage.tar.gz"
+      "url": "https://github.com/OLSF/carpe/releases/download/v0.2.1-rc.2/carpe_0.2.1_x64.msi.zip"
     }
   }
 }
