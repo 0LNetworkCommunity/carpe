@@ -71,18 +71,11 @@ pub fn get_node_obj() -> Result<Node, CarpeError> {
 }
 
 pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
-  dbg!("making a diem client");
   find_a_remote_jsonrpc(
     cfg,
     cfg.clone().chain_info.base_waypoint.ok_or(CarpeError::misc("could not load base_waypoint"))?
   )
-  .map_err(|_|{ CarpeError::misc("could not load tx params") })
-  // .map_err(|_|{ CarpeError::misc("could not load tx params") })
-  // DiemClient::new(
-  //   cfg.clone().profile.default_node.ok_or(CarpeError::misc("could not load default_node"))?, 
-  //   cfg.clone().chain_info.base_waypoint.ok_or(CarpeError::misc("could not load base_waypoint"))?
-  // )
-  // .map_err(|_|{ CarpeError::misc("could not load tx params") })
+  .map_err(|_| CarpeError::misc("could not load tx params") )
 }
 
 
@@ -97,15 +90,6 @@ pub fn dev_get_swarm_temp() -> Result<PathBuf, Error> {
   Ok(get_cfg()?.workspace.node_home.join("swarm_temp"))
 }
 
-
-
-
-// // TODO: replace this wrappet
-// /// initialize default configs.
-// pub fn maybe_init_configs(account: AccountAddress, authkey: AuthenticationKey ) -> Result<(), Error>{
-//   set_account_profile(account, authkey)?;
-//   Ok(())
-// }
 
 pub fn is_initialized() -> bool {
   default_config_path().exists()

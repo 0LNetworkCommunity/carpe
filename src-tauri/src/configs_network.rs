@@ -94,7 +94,9 @@ pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
     .find_map(|url| bootstrap_waypoint_from_rpc(url.to_owned()).ok());
 
   if let Some(w) = wp {
-    set_waypoint(w)?;
+    if cfg.chain_info.base_waypoint != wp {
+      set_waypoint(w)?;
+    }
     Ok(cfg)
   } else {
     bail!("no waypoint found while querying upstream nodes")

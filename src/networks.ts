@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/tauri";
-import { get, writable } from "svelte/store";
+import { writable } from "svelte/store";
 import { raise_error } from "./carpeError";
-import { loadAccounts } from "./accounts";
+import { loadAccounts } from "./accountActions";
 
 
   // Note: the string initialized should match the enum in Rust, networks.rs, to easily de/serialize

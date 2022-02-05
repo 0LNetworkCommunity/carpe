@@ -1,6 +1,7 @@
 import { get } from "svelte/store";
 import { minerLoopEnabled } from "./miner";
-import { getEpochRules, getLocalHeight, getTowerChainView, killBacklogListener, maybeEmitBacklogDelta, startBacklogListener, towerOnce } from "./miner_invoke";
+import { killBacklogListener, startBacklogListener, towerOnce } from "./miner_invoke";
+import { carpeTick } from "./tick";
 
 export async function enableMining(): Promise<boolean> {
 
@@ -17,10 +18,8 @@ export async function enableMining(): Promise<boolean> {
     startBacklogListener();
 
     // start the first iteration of the loop.
-    getTowerChainView();
-    getLocalHeight();
-    getEpochRules();
-    maybeEmitBacklogDelta();
+    carpeTick();
+
     towerOnce();
 
     return true;

@@ -26,13 +26,12 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
   let config = get_cfg()?;
   let vdf = mine_once(&config)
     .map_err(|e| {
-      dbg!(&e);
       CarpeError::tower(&format!("could not mine one proof, message: {:?}", &e), TowerError::ProverError.value())
     })?;
 
   // TODO: Unsure why this is not triggering
-  window.emit("send-backlog", {})
-    .map_err(|_| { CarpeError::misc("could not emit window event") })?;
+  // window.emit("send-backlog", {})
+  //   .map_err(|_| { CarpeError::misc("could not emit window event") })?;
 
   Ok(vdf)
 
@@ -60,6 +59,7 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
   // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("send-backlog", move |_e| {
       println!("\nRECEIVED BACKLOG EVENT\n");
+       window_clone.emit("ack-backlog-request", {} ).unwrap();
 
       if get_onchain_tower_state(tx_params.owner_address).is_err() {
           dbg!("!!!!!!!!!!!!!!!");
@@ -79,6 +79,8 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
             }
           }
       } else { 
+        println!("\nprocessing backlog\n");
+
         match process_backlog(&config, &tx_params, false) {
           Ok(_) => {
             println!("backlog success");

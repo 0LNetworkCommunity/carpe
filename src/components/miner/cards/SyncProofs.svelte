@@ -6,6 +6,7 @@
   import MinerBacklog from "../MinerBacklog.svelte";
   import CardError from "../../layout/CardError.svelte";
   import { isRefreshingAccounts } from "../../../accounts";
+import SyncProofsError from "./SyncProofsError.svelte";
   
   let listenerReady = false;
   let inProgress = false;
@@ -50,9 +51,6 @@
   </CardAlert>
   {:else if !isRefreshing && delta && delta > 0}
     
-    <CardError>
-      <span slot="title">Looks like you have {delta} proofs not yet on chain </span>
-      <div slot="body"> <MinerBacklog/> </div>
-    </CardError>    
+    <SyncProofsError/> 
   {/if} 
 </main>

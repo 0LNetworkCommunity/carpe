@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { get_locale, setAccount } from "../../accounts";
+  import { get_locale, setAccount } from "../../accountActions";
   import type { AccountEntry } from "../../accounts";
   import IconMining from '../icons/IconMining.svelte';
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
+  import { carpeTick } from "../../tick"
 
   UIkit.use(Icons);
   
@@ -40,13 +41,14 @@
       </thead>
       <tbody>
         {#each account_list as a, i}
+          <!-- svelte-ignore missing-declaration -->
           <tr
             class="{
               isMining && a.account == my_account.account
                 ? 'uk-text-primary'
                 : ''
               }"
-            on:click={() => setAccount(a.account) }
+            on:click={() => { setAccount(a.account); carpeTick(); } }
           >
             <!-- <a href="#" on:click={() => { setAccount(acc.account); }}> {acc.nickname} </a > -->
             <td>

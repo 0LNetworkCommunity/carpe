@@ -8,7 +8,7 @@
   import { isRefreshingAccounts, signingAccount } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
-  import { backlogInProgress, tower } from "../../miner";
+  import { backlogInProgress, isTowerNewbie, tower } from "../../miner";
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
   import SyncProofs from "./cards/SyncProofs.svelte";
@@ -20,26 +20,25 @@
   let account: AccountEntry;
   let isDevTest = false;
   let isSendInProgress = false;
-  
+  let hasProofs = false;
   onMount(async () => {
     getTowerChainView();
 
-    tower.subscribe((ts) => {
-      console.log(ts);
-      if (ts.on_chain && ts.on_chain.verified_tower_height) {
-        newbie = false;
+    tower.subscribe((t) => {
+      if (t.last_local_proof) {
+        hasProofs = true;
       } else {
-        newbie = true;
+        hasProofs = false;
       }
-    });
+    })
+
+    isTowerNewbie.subscribe((b) =>  newbie = b);
 
     backlogInProgress.subscribe((b) =>  isSendInProgress = b);
 
     signingAccount.subscribe((a) => (account = a));
 
     isRefreshingAccounts.subscribe((a) => loading = a );
-
-    // minerProofComplete.subscribe((b) => complete = a)
 
     isDevTest = get(nodeEnv) == "test";
 
@@ -75,12 +74,10 @@
           
           <MinerProgress />
           <!-- <p>Lost time is never found again.</p> -->
-          <!-- <Oops/> -->
         </div>
 
-        <!-- {#if tower} -->
         <div class="uk-width-1-1">
-          {#if newbie }
+          {#if newbie && !hasProofs }
             <FirstProof />
           {:else}
             <TowerState />
@@ -95,8 +92,8 @@
     {#if isSendInProgress}
       <SyncProofs />
     {/if}
-  <!-- {/if} -->
-  <CommonErrors />
 
-  <MinerDebug />
+    <CommonErrors />
+
+    <MinerDebug />
 </main>

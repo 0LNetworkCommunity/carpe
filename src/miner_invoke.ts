@@ -1,13 +1,12 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { getCurrent } from "@tauri-apps/api/window";
-import { now } from "svelte/internal";
 import { get } from "svelte/store";
 import { isRefreshingAccounts, signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
 import { clearDisplayErrors } from "./carpeErrorUI";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof, TowerStateView } from "./miner";
+import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof, TowerStateView, isTowerNewbie } from "./miner";
 import { network_profile } from "./networks";
 
 const current_window = getCurrent();
@@ -18,13 +17,14 @@ export const towerOnce = async () => {
   minerEventReceived.set(false);
   minerProofComplete.set(false);
 
+  // defaults for newbies
   let previous_duration = get(network_profile).chain_id == "Mainnet"
     ? 30 * 60 * 1000 // Prod difficulty
     : 5 * 1000;      // Test difficulty
 
   let t = get(tower);
-  if (t.last_local_proof && t.last_local_proof.elapsed_secs) {
-    previous_duration = t.last_local_proof.elapsed_secs * 1000;
+  if (t.last_local_proof && t.last_local_proof.elapsed_secs != null) {
+    previous_duration = 1 + (t.last_local_proof.elapsed_secs * 1000); // at least 1
   }
 
   let progress: ProofProgress = {
@@ -48,15 +48,20 @@ export const towerOnce = async () => {
       setProofComplete();
 
       // start the sending of txs
-      // emitBacklog();
+      // TODO: unsure why when it emits immediately thre is no action on rust side, perhaps listener startup.
+      setTimeout(emitBacklog, 1000);
+
+      // refresh local proofs view, also wait for file to be written
+      setTimeout(getLocalHeight, 1000);
+
 
       return res
     })
     .catch(e => {
-      console.log('>>> miner_once error: ' + e);
+      console.log('miner_once error: ' + e);
       // disable mining when there is a proof error.
       minerLoopEnabled.set(false);
-      raise_error(e, false, "invoke");
+      raise_error(e, false, "towerOnce");
       proofError()
       return false
     });
@@ -101,32 +106,38 @@ export const killBacklogListener = async () => {
 
 export const emitBacklog = async () => {
   console.log("emit backlog");
-  backlogInProgress.set(true);
+  // NOTE: backlog is only in progress is rust emits ack-backlog-request
   clearDisplayErrors();
   current_window.emit('send-backlog', 'please...');
-  window.alert("backlog event");
 }
 
-export const maybeEmitBacklogDelta = async () => {
-  console.log("maybeEmitBacklogDelta");
-  if (get(backlogListenerReady)) {
-    let t = get(tower);
-    window.alert(`t.local_height ${t.local_height}`)
-    
-    if (t.local_height && t.on_chain) {
-      let remote_height = t.on_chain.verified_tower_height || -1;
+export const hasProofsPending = ():boolean => {
+  let t = get(tower);
+  // is the user a newbie?
+  // if so, any local height needs to be submitted.
+  if (t.local_height && get(isTowerNewbie)) {
+    return true
+  }
 
-      // only do this if there is a delta
-      if ((t.local_height - remote_height) > 0) {
-        window.alert(`t.local_height ${t.local_height}`)
-
-        emitBacklog();
-      }
-    } else if (t.local_height && !t.on_chain) {// newbie
-      emitBacklog();
+  // if the user has local height and has tower state
+  if (t.local_height && t.on_chain && t.on_chain.verified_tower_height) {
+    // only do this if there is a delta
+    if ((t.local_height - t.on_chain.verified_tower_height ) > 0) {
+      return true
     }
-  } else {
-    console.log("backlog listener not ready")
+  } 
+  return false
+}
+export const maybeEmitBacklog = async () => {
+  // only emit a backlog event, if there are any proofs pending 
+  // and there is no backlog already in progress
+  // and finally check that the listener has started.
+  if (
+    hasProofsPending() &&
+    !get(backlogInProgress) &&
+    get(backlogListenerReady)
+  ) {
+    maybeEmitBacklog();
   }
 }
 
@@ -142,6 +153,11 @@ export const getTowerChainView = async () => {
     t.on_chain = res;
     tower.set(t);
     responses.set(JSON.stringify(res));
+
+    if (t.on_chain && t.on_chain.verified_tower_height) {
+      isTowerNewbie.set(false);
+    }
+
     isRefreshingAccounts.set(false);
   })
   .catch((e) => {
@@ -149,6 +165,10 @@ export const getTowerChainView = async () => {
     let t = get(tower);
     t.on_chain = {};
     tower.set(t);
+    
+    if (t.on_chain && !t.on_chain.verified_tower_height) {
+      isTowerNewbie.set(true);
+    }
 
     raise_error(e, true, "getTowerChainView");
     isRefreshingAccounts.set(false);
