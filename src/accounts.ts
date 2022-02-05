@@ -2,7 +2,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { writable, get } from 'svelte/store';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
-import { minerLoopEnabled} from "./miner";
+import { minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
 export interface AccountEntry {
   account: string,
@@ -96,7 +96,7 @@ export function findOneAccount(account: string): AccountEntry {
   return found
 }
 
-export async function setAccount(an_address: string) {
+export const setAccount = async (an_address: string) =>{
   if (get(signingAccount).account == an_address) {
     return
   }
@@ -108,17 +108,20 @@ export async function setAccount(an_address: string) {
   }
 
   let a = findOneAccount(an_address);
-  signingAccount.set(a);
+  
 
-  await invoke("switch_profile", {
+  invoke("switch_profile", {
     account: a.account,
   })
   .then((res) => {
-    notify_success("Account switched to " + a.nickname);
     responses.set(res);
-    // for testnet
+    notify_success("Account switched to " + a.nickname);
+    // reset user data
+    signingAccount.set(a);
+    tower.set({});
+    mnem.set("");
   })
-    .catch((e) => raise_error(e, false, "setAccount"));
+  .catch((e) => raise_error(e, false, "setAccount"));
 }
 
 export function addNewAccount(account: AccountEntry) {

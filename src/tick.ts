@@ -20,7 +20,7 @@ export const carpeTick = async () => {
   // await refreshAccounts()
 
   await getTowerChainView()
-    .finally(() => {
+    .finally(() => { // it's possible this is a newbie, and the tower view returns error
       maybeEmitBacklog()
       // maybe a proof needs to be started
       // NOTE: There is no other loop. If we don't start it here, no proof will be created.

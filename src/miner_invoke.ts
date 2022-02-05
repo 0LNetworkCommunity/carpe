@@ -110,12 +110,10 @@ export const emitBacklog = async () => {
   // NOTE: backlog is only in progress is rust emits ack-backlog-request
   clearDisplayErrors();
   current_window.emit('send-backlog', 'please...');
-  window.alert("emit backlog event");
 }
 
 export const hasProofsPending = ():boolean => {
   let t = get(tower);
-  window.alert(`t.local_height ${t.local_height}, onchain ${JSON.stringify(t.on_chain)}`)
   // is the user a newbie?
   // if so, any local height needs to be submitted.
   if (t.local_height && get(isTowerNewbie)) {
@@ -140,7 +138,7 @@ export const maybeEmitBacklog = async () => {
     !get(backlogInProgress) &&
     get(backlogListenerReady)
   ) {
-    emitBacklog();
+    maybeEmitBacklog();
   }
 }
 

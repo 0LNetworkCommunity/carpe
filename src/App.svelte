@@ -61,8 +61,6 @@
     
 
     unlistenAck = await listen ("ack-backlog-request", (event: any) => {
-      // TODO duplicated with emitBacklog();
-      window.alert("ack backlog request");
       backlogInProgress.set(true);
     });
 
@@ -77,7 +75,6 @@
     });
 
     unlistenBacklogError = await listen("backlog-error", (event: Event<CarpeError>) => {
-      console.log(event);
       // TODO: show an UX in the miner view for this type of error
       
       raise_error(event.payload, true, "listen(backlog-error)");

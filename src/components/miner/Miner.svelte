@@ -22,12 +22,18 @@
   let isDevTest = false;
   let isSendInProgress = false;
   let hasProofs = false;
-
+  let towers;
   onMount(async () => {
     getTowerChainView();
 
     tower.subscribe((t) => {
-      t.last_local_proof != null ? hasProofs=true : hasProofs=false;
+      towers = t;
+      if (t.last_local_proof) {
+        hasProofs = true;
+      } else {
+        hasProofs = false;
+      }
+      
     })
 
     isTowerNewbie.subscribe((b) =>  newbie = b);
@@ -46,6 +52,11 @@
  
 <main class="uk-height-viewport">
   is send in progress: {isSendInProgress}
+  has proofs: {hasProofs}
+  is newbie: {newbie}
+  {#if towers }
+    tower local: {JSON.stringify(towers)}
+  {/if}
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
   </div>
