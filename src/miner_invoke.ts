@@ -63,7 +63,7 @@ export const towerOnce = async () => {
 
 };
 
-export const maybeStartMiner = () => {
+export const maybeStartMiner = async () => {
   // maybe try to start a new proof
   console.log("maybeStartMiner");
 
@@ -78,7 +78,7 @@ export const maybeStartMiner = () => {
     // only try to restart if a proof has completed.
     proofComplete
   ) {
-    towerOnce();
+    return towerOnce();
   };
 }
 
@@ -111,7 +111,7 @@ export const maybeEmitBacklogDelta = async () => {
   console.log("maybeEmitBacklogDelta");
   if (get(backlogListenerReady)) {
     let t = get(tower);
-
+    window.alert(`t.local_height ${t.local_height}`)
     
     if (t.local_height && t.on_chain) {
       let remote_height = t.on_chain.verified_tower_height || -1;
@@ -133,36 +133,33 @@ export const maybeEmitBacklogDelta = async () => {
 
 export const getTowerChainView = async () => {
   console.log("getTowerChainView");
-  isRefreshingAccounts.set(true);
+  isRefreshingAccounts.set(true); 
+  return invoke("get_onchain_tower_state", {
+    account: get(signingAccount).account
+  })
+  .then((res: TowerStateView) => {
+    let t = get(tower);
+    t.on_chain = res;
+    tower.set(t);
+    responses.set(JSON.stringify(res));
+    isRefreshingAccounts.set(false);
+  })
+  .catch((e) => {
+    //need to reset, otherwise may be looking at wrong account
+    let t = get(tower);
+    t.on_chain = {};
+    tower.set(t);
 
-  let a = get(signingAccount).account
-  if (a) {
-    await invoke("get_onchain_tower_state", {
-      account: a
-    })
-    .then((res: TowerStateView) => {
-      let t = get(tower);
-      t.on_chain = res;
-      tower.set(t);
-      responses.set(JSON.stringify(res));
-      isRefreshingAccounts.set(false);
-    })
-    .catch((e) => {
-      //need to reset, otherwise may be looking at wrong account
-      let t = get(tower);
-      t.on_chain = {};
-      tower.set(t);
-      raise_error(e, true, "getTowerChainView");
-      isRefreshingAccounts.set(false);
+    raise_error(e, true, "getTowerChainView");
+    isRefreshingAccounts.set(false);
 
-    });
-  }
+  })
 };
 
 // update the `tower.local_proof`
 export const getLocalHeight = async () => {
   console.log("getLocalHeight");
-  await invoke("get_last_local_proof", {})
+  return invoke("get_last_local_proof", {})
     .then((res: VDFProof) => {
       // console.log(res);
       // if res.
@@ -177,12 +174,12 @@ export const getLocalHeight = async () => {
       t.local_height = -1;
       tower.set(t);
       raise_error(e, true, "getLocalHeight")
-    });
+    })
 };
 
 export const getEpochRules = async () => {
   console.log("getEpochRules");
-  await invoke("get_epoch_rules", {})
+  invoke("get_epoch_rules", {})
     .then((res: EpochRules) => {
       // console.log(res);
       // if res.
@@ -193,7 +190,7 @@ export const getEpochRules = async () => {
     })
     .catch((e) => {
       raise_error(e, true, "getEpochRules")
-    });
+    })
 };
 
 
@@ -221,7 +218,6 @@ export function setProofProgres() {
     tower.set(t);
   }
 }
-
 
 // submit any transactions that are in the backlog. Proofs that have been mined but for any reason were not committed.
 export const submitBacklog = async () => {

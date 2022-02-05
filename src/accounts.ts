@@ -50,11 +50,11 @@ export function loadAccounts() {
     .catch((error) => raise_error(error, false, "loadAccounts"));
 }
 
-export function refreshAccounts() {
+export const refreshAccounts = async () => {
   console.log("refreshAccounts");
 
   isRefreshingAccounts.set(true);
-  invoke('refresh_accounts')
+  return invoke('refresh_accounts')
     .then((result: object) => { // TODO make this the correct return type
 
       all_accounts.set(result.accounts);

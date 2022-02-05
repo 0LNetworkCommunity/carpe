@@ -70,6 +70,8 @@ export const backlogInProgress = writable(false);
 export const backlogSubmitted = writable(false);
 
 
+// TODO:
+export const isTowerNewbie = writable(false);
 
 export function getProgess(): ProofProgress {
   return get(tower).progress

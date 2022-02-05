@@ -43,9 +43,9 @@ export function getNetwork() {
     .catch((error) => raise_error(error, false, "getNetwork"));
 }
 
-export function refreshWaypoint() {
+export const refreshWaypoint = async () =>{
   console.log("refreshWaypoint");
-  invoke("refresh_waypoint", {})
+  return invoke("refresh_waypoint", {})
     .then((res: NetworkProfile) => {
       network_profile.set(res);
       connected.set(true);
@@ -53,5 +53,5 @@ export function refreshWaypoint() {
     .catch((error) => {
       connected.set(false);
       raise_error(error, true, "refreshWaypoint"); // we have a purpose-built error component for this
-    });
+    })
 }
