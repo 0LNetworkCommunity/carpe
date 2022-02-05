@@ -51,7 +51,7 @@
   };
 
   const initAliceKeys = async () => {
-    invoke("init_from_mnem", { mnem: alice_mnem })
+    invoke("init_from_mnem", { mnem: alice_mnem, otherAddress: ""})
       .then((res) => {
         responses.set(res);
         signingAccount.set(res);

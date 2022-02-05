@@ -75,16 +75,15 @@ pub fn is_init() -> Result<bool, CarpeError> {
 
 /// default way accounts get initialized in Carpe
 #[tauri::command]
-pub fn init_from_mnem(mnem: String, other_address: Option<AccountAddress>) -> Result<AccountEntry, CarpeError> {
-  danger_init_from_mnem(mnem, other_address).map_err(|_| CarpeError::config("could not initialize from mnemonic"))
+pub fn init_from_mnem(mnem: String, other_address: String) -> Result<AccountEntry, CarpeError> {
+  let addr_opt: Option<AccountAddress> = other_address.parse().ok();
+  danger_init_from_mnem(mnem, addr_opt).map_err(|_| CarpeError::config("could not initialize from mnemonic"))
 }
 
 pub fn danger_init_from_mnem(mnem: String, other_address: Option<AccountAddress>) -> Result<AccountEntry, CarpeError> {
-  dbg!("init from mnem");
   let init = configs::is_initialized();
   // TODO: refactor upstream wallet::get_account so that it returns a result
   let (authkey, address_from_mnem, _wl) = wallet::get_account_from_mnem(mnem.clone())?;
-  dbg!(&other_address);
   // The user may have a mnemonic that was rotated to another key
   let actual_address =  other_address.unwrap_or(address_from_mnem);
 

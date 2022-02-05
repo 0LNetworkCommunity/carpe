@@ -33,9 +33,9 @@
   let isSubmitting = false;
   function handleAdd() {
     isSubmitting = true;
-
+    window.alert(other_address);
     // submit
-    invoke("init_from_mnem", { mnem: danger_temp_mnem.trim(), other_address: other_address.trim() })
+    invoke("init_from_mnem", { mnem: danger_temp_mnem.trim(), otherAddress: other_address.trim() })
       .then((res: AccountEntry) => {
         if (isNewAccount) {
           UIkit.modal("#submit-confirmation-modal").$destroy(true); // known bug https://github.com/uikit/uikit/issues/1370
