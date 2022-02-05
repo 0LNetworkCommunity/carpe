@@ -79,7 +79,7 @@
     
     <span class="uk-text-light uk-text-muted uk-text-thin">
       {#if percent > 1.01 }
-        <span> Over 100% only means this is taking longer than previous Proof </span>
+        <span> Over 100% only means this is taking longer than previous proof </span>
       {/if}
     </span>
   </div>
