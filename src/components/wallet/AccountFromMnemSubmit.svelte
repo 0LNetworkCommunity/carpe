@@ -33,7 +33,6 @@
   let isSubmitting = false;
   function handleAdd() {
     isSubmitting = true;
-    window.alert(other_address);
     // submit
     invoke("init_from_mnem", { mnem: danger_temp_mnem.trim(), otherAddress: other_address.trim() })
       .then((res: AccountEntry) => {

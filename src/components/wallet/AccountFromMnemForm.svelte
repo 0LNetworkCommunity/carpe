@@ -2,7 +2,7 @@
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
 
   let danger_temp_mnem: string;
-  let other_address: string;
+  let other_address: string = "";
 </script>
 
 <main>
