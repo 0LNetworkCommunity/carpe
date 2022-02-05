@@ -1,7 +1,7 @@
 use crate::{
   carpe_error::CarpeError,
   configs::{get_cfg, get_tx_params},
-  configs_profile::get_local_proofs_this_profile,
+  configs_profile::get_local_proofs_this_profile, commands::get_onchain_tower_state,
 };
 use anyhow::Error;
 use ol_types::block::VDFProof;
@@ -24,11 +24,17 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
   .map_err(|_| { CarpeError::misc("could not emit window event") })?;
 
   let config = get_cfg()?;
-  mine_once(&config)
+  let vdf = mine_once(&config)
     .map_err(|e| {
       dbg!(&e);
       CarpeError::tower(&format!("could not mine one proof, message: {:?}", &e), TowerError::ProverError.value())
-    })
+    })?;
+
+  // TODO: Unsure why this is not triggering
+  window.emit("send-backlog", {})
+    .map_err(|_| { CarpeError::misc("could not emit window event") })?;
+
+  Ok(vdf)
 
 }
 #[derive(Clone, serde::Serialize)]
@@ -44,7 +50,7 @@ struct BacklogSuccess {
 
 #[tauri::command(async)]
 pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeError> {
-  println!("starting backlog listener");
+  println!("\nSTARTING BACKLOG LISTENER\n");
   // prepare listener to receive events
   // TODO: this is gross. Prevent cloning when using in closures
   let window_clone = window.clone();
@@ -53,20 +59,41 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
   // This is tauri's event listener for the tower proof.
   // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("send-backlog", move |_e| {
-      println!("received backlog event");
+      println!("\nRECEIVED BACKLOG EVENT\n");
 
-      match process_backlog(&config, &tx_params, false) {
-        Ok(_) => {
-          println!("backlog success");
-          window_clone.emit("backlog-success", BacklogSuccess { success: true } ).unwrap()
-        },
-        Err(e) => {
-          
-          window_clone
-            .emit("backlog-error", CarpeError::from(e))
-            .unwrap();
+      if get_onchain_tower_state(tx_params.owner_address).is_err() {
+          dbg!("!!!!!!!!!!!!!!!");
+          dbg!("cannot get tower state");
+          if let Some(proof) =  get_proof_zero().ok() {
+            match commit_proof_tx(&tx_params, proof, false) {
+              Ok(_) => {
+                println!("submitted proof zero");
+                window_clone.emit("backlog-success", BacklogSuccess { success: true } ).unwrap()
+
+              },
+              Err(e) => {
+                window_clone
+                .emit("backlog-error", CarpeError::from(e))
+                .unwrap();
+              },
+            }
+          }
+      } else { 
+        match process_backlog(&config, &tx_params, false) {
+          Ok(_) => {
+            println!("backlog success");
+            window_clone.emit("backlog-success", BacklogSuccess { success: true } ).unwrap()
+          },
+          Err(e) => {
+            
+            window_clone
+              .emit("backlog-error", CarpeError::from(e))
+              .unwrap();
+          }
         }
       }
+
+
   });
 
   let window_clone = window.clone();
@@ -103,8 +130,8 @@ fn get_proof_zero() -> Result<VDFProof, Error> {
   Ok(proof)
 }
 
-#[tauri::command]
-pub fn debug_submit_proof_zero() -> Result<(), CarpeError> {
+#[tauri::command(async)]
+pub fn submit_proof_zero() -> Result<(), CarpeError> {
   let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::config("could not get configs from file"))?;
   let proof = get_proof_zero()?;

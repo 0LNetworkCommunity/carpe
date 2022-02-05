@@ -61,6 +61,11 @@
       backlogInProgress.set(false);
       backlogSubmitted.set(false);
     });
+    
+    unlistenBacklogSuccess = await listen ("send-backlog", (event: any) => {
+      // TODO duplicated with emitBacklog();
+      backlogInProgress.set(true);
+    });
 
     unlistenBacklogSuccess = await listen("backlog-success", (event: any) => {
       responses.set(event.payload);

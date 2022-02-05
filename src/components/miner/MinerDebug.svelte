@@ -1,5 +1,6 @@
 <script lang="ts">
   import {
+emitBacklog,
     killBacklogListener,
     startBacklogListener,
     submitProofZero,
@@ -37,10 +38,19 @@
           >
         </div>
 
+        
+
         <div class="uk-margin">
           <button
             class="uk-button uk-button-default uk-width-1-1"
             on:click={killBacklogListener}>Kill Listener</button
+          >
+        </div>
+
+        <div class="uk-margin">
+          <button
+            class="uk-button uk-button-default uk-width-1-1"
+            on:click={emitBacklog}>Emit Backlog Event</button
           >
         </div>
 

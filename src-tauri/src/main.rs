@@ -27,7 +27,7 @@ fn main() {
   //////// FORCE TEST SETTINGS ON START ////////////////////
   // uncomment below to explicitly set "test" env 
   // Tauri builder does not take env variable from terminal
-  // set_env("test".to_owned()).unwrap();
+  set_env("test".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
 
 
@@ -88,7 +88,7 @@ fn main() {
       get_last_local_proof,
       get_env,
       set_env,
-      debug_submit_proof_zero,
+      submit_proof_zero,
       // Version
       get_app_version,
       // Debug

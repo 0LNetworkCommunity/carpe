@@ -48,7 +48,7 @@ export const towerOnce = async () => {
       setProofComplete();
 
       // start the sending of txs
-      emitBacklog();
+      // emitBacklog();
 
       return res
     })
@@ -100,6 +100,7 @@ export const killBacklogListener = async () => {
 }
 
 export const emitBacklog = async () => {
+  console.log("emit backlog");
   backlogInProgress.set(true);
   clearDisplayErrors();
   current_window.emit('send-backlog', 'please...');
@@ -110,9 +111,13 @@ export const maybeEmitBacklogDelta = async () => {
   if (get(backlogListenerReady)) {
     let t = get(tower);
     if (t.local_height && t.on_chain.verified_tower_height) {
+      // only do this if there is a delta
       if ((t.local_height - t.on_chain.verified_tower_height) > 0) {
         emitBacklog();
       }
+    } else if (t.local_height && !t.on_chain) {
+      // of if this is the first proof.
+      emitBacklog();
     }
   } else {
     console.log("backlog listener not ready")
@@ -238,7 +243,7 @@ export const submitBacklog = async () => {
 
 export const submitProofZero = async () => {
   backlogInProgress.set(true);
-  invoke("debug_submit_proof_zero", {})
+  invoke("submit_proof_zero", {})
     .then((res) => {
       console.log(res);
       responses.set(res as string);
