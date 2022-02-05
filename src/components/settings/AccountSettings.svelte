@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import { loadAccounts } from "../../accounts";
+  import { loadAccounts } from "../../accountActions";
   import { raise_error } from "../../carpeError";
   import { notify_success } from "../../carpeNotify";
   import { responses } from "../../debug";

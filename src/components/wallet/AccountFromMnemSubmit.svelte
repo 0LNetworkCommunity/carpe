@@ -5,10 +5,7 @@
   import {
     signingAccount,
     mnem,
-    addNewAccount,
     isInit,
-    refreshAccounts,
-isCarpeInit,
   } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
@@ -16,6 +13,7 @@ isCarpeInit,
   import { notify_success } from "../../carpeNotify";
   import { onMount } from "svelte";
   import { connected, refreshWaypoint } from "../../networks";
+  import { addNewAccount, isCarpeInit, refreshAccounts } from "../../accountActions";
 
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;
@@ -24,7 +22,7 @@ isCarpeInit,
     mnem.subscribe((m) => (danger_temp_mnem = m));
   });
 
-  const re = /[0-9A-Fa-f]{32}/g;
+  // const re = /[0-9A-Fa-f]{32}/g;
 
   function openConfirmationModal() {
     UIkit.modal("#submit-confirmation-modal").show();

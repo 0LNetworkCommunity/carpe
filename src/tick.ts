@@ -1,5 +1,5 @@
-import { loadAccounts } from "./accounts";
-import { emitBacklog, getEpochRules, getLocalHeight, getTowerChainView, maybeEmitBacklog, maybeStartMiner } from "./miner_invoke";
+import { loadAccounts } from "./accountActions";
+import { getEpochRules, getLocalHeight, getTowerChainView, maybeEmitBacklog, maybeStartMiner } from "./miner_invoke";
 import { refreshWaypoint } from "./networks";
 
 export const carpeTick = async () => {

@@ -20,7 +20,7 @@
   import { getEnv, responses, debugMode } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
-  import { isCarpeInit, loadAccounts } from "./accounts";
+  import { isCarpeInit} from "./accountActions";
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
 

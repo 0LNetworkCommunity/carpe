@@ -1,10 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { signingAccount, all_accounts, setAccount } from "../../accounts";
+  import { signingAccount, all_accounts } from "../../accounts";
+  import { setAccount } from "../../accountActions";
   import type { AccountEntry } from "../../accounts";
   import { Link } from "svelte-navigator";
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
+import { carpeTick } from "../../tick";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -44,7 +46,7 @@
                 <a
                   href={"#"}
                   class="{my_account.account == acc.account ? 'uk-text-primary' : ''}"
-                  on:click={() => setAccount(acc.account)}
+                  on:click={() => { setAccount(acc.account); carpeTick();}}
                 >
                   {acc.nickname}
                 </a>
