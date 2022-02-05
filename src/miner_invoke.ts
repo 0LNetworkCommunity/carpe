@@ -104,19 +104,25 @@ export const emitBacklog = async () => {
   backlogInProgress.set(true);
   clearDisplayErrors();
   current_window.emit('send-backlog', 'please...');
+  window.alert("backlog event");
 }
 
 export const maybeEmitBacklogDelta = async () => {
   console.log("maybeEmitBacklogDelta");
   if (get(backlogListenerReady)) {
     let t = get(tower);
-    if (t.local_height && t.on_chain.verified_tower_height) {
+
+    
+    if (t.local_height && t.on_chain) {
+      let remote_height = t.on_chain.verified_tower_height || -1;
+
       // only do this if there is a delta
-      if ((t.local_height - t.on_chain.verified_tower_height) > 0) {
+      if ((t.local_height - remote_height) > 0) {
+        window.alert(`t.local_height ${t.local_height}`)
+
         emitBacklog();
       }
-    } else if (t.local_height && !t.on_chain) {
-      // of if this is the first proof.
+    } else if (t.local_height && !t.on_chain) {// newbie
       emitBacklog();
     }
   } else {
