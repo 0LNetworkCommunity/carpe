@@ -59,6 +59,7 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
   // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("send-backlog", move |_e| {
       println!("\nRECEIVED BACKLOG EVENT\n");
+       window_clone.emit("ack-backlog-request", {} ).unwrap();
 
       if get_onchain_tower_state(tx_params.owner_address).is_err() {
           dbg!("!!!!!!!!!!!!!!!");

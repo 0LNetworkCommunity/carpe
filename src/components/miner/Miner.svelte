@@ -45,6 +45,7 @@
 
  
 <main class="uk-height-viewport">
+  is send in progress: {isSendInProgress}
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
   </div>

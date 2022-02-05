@@ -1,5 +1,5 @@
-import { loadAccounts, refreshAccounts } from "./accounts";
-import { getEpochRules, getLocalHeight, getTowerChainView, maybeEmitBacklogDelta, maybeStartMiner } from "./miner_invoke";
+import { loadAccounts } from "./accounts";
+import { emitBacklog, getEpochRules, getLocalHeight, getTowerChainView, maybeStartMiner } from "./miner_invoke";
 import { refreshWaypoint } from "./networks";
 
 export const carpeTick = async () => {
@@ -21,7 +21,7 @@ export const carpeTick = async () => {
 
   await getTowerChainView()
     .finally(() => {
-      maybeEmitBacklogDelta()
+      emitBacklog()
       // maybe a proof needs to be started
       // NOTE: There is no other loop. If we don't start it here, no proof will be created.
       maybeStartMiner()

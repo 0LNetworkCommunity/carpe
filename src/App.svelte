@@ -25,6 +25,7 @@
   import { carpeTick } from "./tick";
 
   let unlistenProofStart;
+  let unlistenAck;
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
   let healthTick;
@@ -58,10 +59,14 @@
       backlogSubmitted.set(false);
     });
     
-    unlistenBacklogSuccess = await listen ("send-backlog", (event: any) => {
+
+    unlistenAck = await listen ("ack-backlog-request", (event: any) => {
       // TODO duplicated with emitBacklog();
+      window.alert("ack backlog request");
       backlogInProgress.set(true);
     });
+
+    
 
     unlistenBacklogSuccess = await listen("backlog-success", (event: any) => {
       responses.set(event.payload);
@@ -84,6 +89,7 @@
 
   onDestroy(() => {
     unlistenProofStart();
+    unlistenAck();
     unlistenBacklogSuccess();
     unlistenBacklogError();
     clearInterval(healthTick);

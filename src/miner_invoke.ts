@@ -1,6 +1,5 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { getCurrent } from "@tauri-apps/api/window";
-import { now } from "svelte/internal";
 import { get } from "svelte/store";
 import { isRefreshingAccounts, signingAccount } from "./accounts";
 import { raise_error } from "./carpeError";
@@ -108,35 +107,37 @@ export const killBacklogListener = async () => {
 
 export const emitBacklog = async () => {
   console.log("emit backlog");
-  backlogInProgress.set(true);
+  // NOTE: backlog is only in progress is rust emits ack-backlog-request
   clearDisplayErrors();
   current_window.emit('send-backlog', 'please...');
-  window.alert("backlog event");
+  window.alert("emit backlog event");
 }
 
-export const maybeEmitBacklogDelta = async () => {
-  console.log("maybeEmitBacklogDelta");
-  if (get(backlogListenerReady)) {
-    let t = get(tower);
-    window.alert(`t.local_height ${t.local_height}, onchain ${JSON.stringify(t.on_chain)}`)
+// export const maybeEmitBacklogDelta = async () => {
+//   console.log("maybeEmitBacklogDelta");
+//   if (get(backlogListenerReady)) {
+//     let t = get(tower);
+//     window.alert(`t.local_height ${t.local_height}, onchain ${JSON.stringify(t.on_chain)}`)
     
-    if (t.local_height && t.on_chain) {
-      let remote_height = t.on_chain.verified_tower_height || -1;
+//     if (t.local_height && t.on_chain) {
+//       let remote_height = t.on_chain.verified_tower_height || -1;
 
-      // only do this if there is a delta
-      if ((t.local_height - remote_height) > 0) {
-        window.alert(`t.local_height ${t.local_height}`)
-
-        emitBacklog();
-      }
-    } 
-    // else if (t.local_height && !t.on_chain.verified_tower_height) {// newbie, send it anyway
-    //   emitBacklog();
-    // }
-  } else {
-    console.log("backlog listener not ready")
-  }
-}
+//       // only do this if there is a delta
+//       if ((t.local_height - remote_height) > 0) {
+//         window.alert(`t.local_height ${t.local_height}`)
+//         if (!get(backlogInProgress)) {
+//           // don't duplicate events.
+//           emitBacklog();
+//         } 
+//       }
+//     } 
+//     // else if (t.local_height && !t.on_chain.verified_tower_height) {// newbie, send it anyway
+//     //   emitBacklog();
+//     // }
+//   } else {
+//     console.log("backlog listener not ready")
+//   }
+// }
 
 
 export const getTowerChainView = async () => {
