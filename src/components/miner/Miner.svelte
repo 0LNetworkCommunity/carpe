@@ -46,9 +46,14 @@
 </script>
 
  
-<main class="uk-height-viewport">
+<main class="uk-height-viewport" style="position:relative">
+  {#if loading}
+    <span style="position:absolute; left:0px; top:0px;" uk-spinner />
+  {/if}
   <div class="uk-flex uk-flex-center">
-    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Miner</h2>
+    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
+      Miner
+    </h2>
   </div>
 
   {#if isDevTest}
@@ -59,11 +64,6 @@
     </div>
   {/if}
 
-  {#if loading}
-    <div class="uk-flex uk-flex-center">
-      <span uk-spinner />
-    </div>
-  {/if}
   <!-- {:else} -->
     <div class="uk-grid uk-margin-small">
       {#if account && account.on_chain}

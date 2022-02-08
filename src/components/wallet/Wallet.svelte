@@ -45,7 +45,11 @@
 </script>
 
 <main>
-  <div>
+  <div style="position:relative">
+    {#if isRefreshing}
+      <span uk-spinner style="position:absolute; top:0px; left:0px"/>
+    {/if}
+
     {#if account_list == null}
       <div class="uk-align-center">
         <span uk-spinner class="uk-margin-left uk-position-absolute" />
@@ -59,11 +63,6 @@
           <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Wallet</h2>
         </div>
 
-        {#if isRefreshing}
-          <div class="uk-flex uk-flex-center">
-            <span uk-spinner />
-          </div>
-        {/if}
         <AccountsList {my_account} {account_list} {isMining} {isConnected} />
 
         <ReminderCreate {pendingAccounts} {isConnected} />
