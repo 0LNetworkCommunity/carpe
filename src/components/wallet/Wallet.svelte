@@ -45,9 +45,11 @@
 </script>
 
 <main>
-  <div style="position:relative">
+  <div>
     {#if isRefreshing}
-      <span uk-spinner style="position:absolute; top:0px; left:0px"/>
+      <div style="position:relative">
+        <span uk-spinner style="position:absolute; top:0px; left:0px"/>
+      </div>
     {/if}
 
     {#if account_list == null}
