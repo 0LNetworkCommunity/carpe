@@ -9,11 +9,13 @@
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
   import { backlogInProgress, isTowerNewbie, tower } from "../../miner";
+  import type { ClientTowerStatus } from "../../miner";
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
   import SyncProofs from "./cards/SyncProofs.svelte";
   import CommonErrors from "./CommonErrors.svelte";
   import { getTowerChainView } from "../../miner_invoke";
+import EpochStatus from "./cards/EpochStatus.svelte";
 
   let newbie = false;
   let loading = true;
@@ -21,11 +23,13 @@
   let isDevTest = false;
   let isSendInProgress = false;
   let hasProofs = false;
+
   onMount(async () => {
     getTowerChainView();
 
     tower.subscribe((t) => {
       if (t.last_local_proof) {
+
         hasProofs = true;
       } else {
         hasProofs = false;
@@ -88,10 +92,15 @@
       {/if}
     </div>
 
-              
-    {#if isSendInProgress}
-      <SyncProofs />
-    {/if}
+    <div class="uk-grid uk-child-width-expand">
+      <EpochStatus/>
+
+      {#if isSendInProgress}
+        <SyncProofs />
+      {/if}
+    </div>
+
+    
 
     <CommonErrors />
 

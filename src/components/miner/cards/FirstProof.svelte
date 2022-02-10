@@ -15,7 +15,8 @@
   <div slot="body">
     {#if enabled}
       <p> Hang tight! This will take at least 30mins, maybe up to 1hr</p>
-      <p> Meanwhile, check your computer settings so that the computer doesn't sleep when the screen shuts off, you want the miner running while you're not here.</p>
+      <p> You will see your balance go down while you mine proofs. If you reach the minimum per day, you will receive a reward, on the next day (epoch).</p>
+      <p> Check your computer settings so that the computer doesn't sleep when the screen shuts off. You want the miner running while you're not here.</p>
     {:else}
       <p> Turn the switch on to start mining! </p>
     {/if}
