@@ -19,7 +19,7 @@ export const towerOnce = async () => {
 
   // defaults for newbies
   let previous_duration = get(network_profile).chain_id == "Mainnet"
-    ? 30 * 60 * 1000 // Prod difficulty
+    ? 60 * 60 * 1000 // Prod difficulty
     : 5 * 1000;      // Test difficulty
 
   let t = get(tower);
