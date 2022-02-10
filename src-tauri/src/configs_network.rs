@@ -17,7 +17,7 @@ use url::Url;
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NetworkProfile {
   pub chain_id: String, // Todo, use the Network Enum
-  pub url: Url,
+  pub urls: Vec<Url>,
   pub waypoint: Waypoint,
   pub profile: String, // tbd, to use default node, or to use upstream, or a custom url.
 }
@@ -25,10 +25,9 @@ pub struct NetworkProfile {
 impl NetworkProfile {
   pub fn new() -> Result<Self, CarpeError> {
     let cfg = configs::get_cfg()?;
-
     Ok(NetworkProfile {
       chain_id: cfg.chain_info.chain_id,
-      url: "http://0.0.0.0".parse().unwrap(), // TODO: This information is not used on the client side. Remove?
+      urls: cfg.profile.upstream_nodes,
       waypoint: cfg.chain_info.base_waypoint.unwrap_or_default(),
       profile: "default".to_string(),
     })

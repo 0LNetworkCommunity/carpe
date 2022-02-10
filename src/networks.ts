@@ -12,7 +12,7 @@ export enum Networks {
 
 export const network_profile = writable<NetworkProfile>({
   chain_id: "string", // Todo, use the Network Enum
-  url: "string",
+  urls: ["string"],
   waypoint: "string",
   profile: "string",
 });
@@ -22,7 +22,7 @@ export const connected = writable<boolean>(true);
 // should match the Rust type Network Profile
 export interface NetworkProfile {
   chain_id: string, // Todo, use the Network Enum
-  url: string,
+  urls: [string],
   waypoint: string,
   profile: string,
 }
