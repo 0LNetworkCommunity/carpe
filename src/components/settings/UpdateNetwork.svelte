@@ -8,14 +8,14 @@
   import { notify_success } from "../../carpeNotify";
   import SetNetworkPlaylist from "./SetNetworkPlaylist.svelte";
   
-  let upstream_url = "http://1.1.1.1:8080";
+  let upstream_url = "";
   let current_chain_id = "";
   
   onMount(async () => {
     getNetwork();
 
     network_profile.subscribe((n) => {
-      upstream_url = n.url;
+      upstream_url = n.urls.length == 1 ? n.urls[0] : ""; // just used to show OVERRIDE PEERS url
       current_chain_id = n.chain_id;
     });
   });
@@ -53,7 +53,7 @@
         <input
           class="uk-input"
           type="text"
-          placeholder={upstream_url}
+          placeholder="http://1.1.1.1:8080"
           bind:value={upstream_url}
         />
       </div>
