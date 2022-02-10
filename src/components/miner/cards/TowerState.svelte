@@ -40,9 +40,13 @@
           <td>{towerState.on_chain.latest_epoch_mining}</td>
           <td>
             {towerState.on_chain.actual_count_proofs_in_epoch}
-           {#if towerState.on_chain.actual_count_proofs_in_epoch > 7}
-            <span uk-icon="icon: check"></span>
-           {/if}
+            {#if towerState.on_chain.actual_count_proofs_in_epoch >= 72}
+              <span class="uk-text-success" uk-icon="icon: check" uk-tooltip="Your account is eligible for rewards at the end of the epoch and can submit up to 72 proofs per epoch."></span>
+            {:else if towerState.on_chain.actual_count_proofs_in_epoch >= 8}
+              <span class="uk-text-success" uk-icon="icon: check" uk-tooltip="In the current epoch, your account has submitted more than 7 proofs and is eligible for rewards at the end of the epoch."></span>
+            {:else}
+              <span uk-icon="icon: minus-circle; ratio: 0.7" uk-tooltip="Your account needs to submit at least 8 proofs in the current epoch to receive rewards at the end of this epoch."></span>
+            {/if}
           </td>
         </tr>
       </tbody>
