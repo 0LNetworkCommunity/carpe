@@ -9,13 +9,12 @@
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
   import { backlogInProgress, isTowerNewbie, tower } from "../../miner";
-  import type { ClientTowerStatus } from "../../miner";
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
   import SyncProofs from "./cards/SyncProofs.svelte";
   import CommonErrors from "./CommonErrors.svelte";
   import { getTowerChainView } from "../../miner_invoke";
-import EpochStatus from "./cards/EpochStatus.svelte";
+  import EpochStatus from "./cards/EpochStatus.svelte";
 
   let newbie = false;
   let loading = true;
@@ -67,14 +66,11 @@ import EpochStatus from "./cards/EpochStatus.svelte";
       </p>
     </div>
   {/if}
-
-  <!-- {:else} -->
     <div class="uk-grid uk-margin-small">
       {#if account && account.on_chain}
 
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />
-          
           
           <MinerProgress />
           <!-- <p>Lost time is never found again.</p> -->
@@ -84,25 +80,29 @@ import EpochStatus from "./cards/EpochStatus.svelte";
           {#if newbie && !hasProofs }
             <FirstProof />
           {:else}
-            <TowerState />
+
+          <div class="uk-grid uk-grid-match">
+            <div class="uk-width-1-3">
+              {#if isSendInProgress}
+                <SyncProofs />
+              {:else}
+                <EpochStatus/>
+              {/if}
+            </div>
+
+            <div class="uk-width-2-3">
+              <TowerState />
+            </div>
+          </div>
           {/if}
         </div>
       {:else if account }
         <CantStart />
       {/if}
     </div>
-
-    <div class="uk-grid uk-child-width-expand">
-      <EpochStatus/>
-
-      {#if isSendInProgress}
-        <SyncProofs />
-      {/if}
-    </div>
-
     
-
     <CommonErrors />
+
 
     <MinerDebug />
 </main>

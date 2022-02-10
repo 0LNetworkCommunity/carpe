@@ -32,12 +32,12 @@ import SyncProofsError from "./SyncProofsError.svelte";
 <main>
   {#if listenerReady && inProgress}
   <CardAlert>
-    <span slot="title">Syncing your proofs </span>
+    <span slot="title" class="uk-text-uppercase">
+      Syncing your proofs  
+      <span class="uk-margin" uk-spinner="ratio: 0.5" />
+    </span>
     <div slot="body">
-      <p>Carpe is submitting any new and backlogged transactions to chain.</p>
-      <div class="uk-flex uk-flex-center">
-        <span uk-spinner />
-      </div>
+      <!-- <p>Carpe is submitting your proofs to chain.</p> -->
       {#if delta > 0 }
       <p class="uk-text-muted uk-text-uppercase"> 
         Proofs awaiting transaction: {delta} 
