@@ -46,9 +46,11 @@
 </script>
 
  
-<main class="uk-height-viewport" style="position:relative">
+<main class="uk-height-viewport">
   {#if loading}
-    <span style="position:absolute; left:0px; top:0px;" uk-spinner />
+    <div style="position:relative">
+      <span style="position:absolute; left:0px; top:0px;" uk-spinner />
+    </div>
   {/if}
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
