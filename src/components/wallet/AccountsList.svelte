@@ -5,6 +5,7 @@
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
   import { carpeTick } from "../../tick"
+import { to_number } from "svelte/internal";
 
   UIkit.use(Icons);
   
@@ -23,9 +24,11 @@
     });
   }
 
+
 </script>
 
 <main>
+
   {#if account_list == null}
     <span uk-spinner></span>
   {:else if account_list.length > 0}
@@ -63,18 +66,24 @@
             <td>{a.nickname}</td>
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
-            <td class="uk-inline">
-              <div uk-dropdown>
-                {#if a.balance < 1}
-                  While mining you will see the balance go down for every proof you send.
-                  If you succeed at mining your balance will go up only on the next day (epoch).
-                {/if}
-              </div>
-
+            <td>
             {#if a.on_chain == null}
               offline... 
             {:else if a.on_chain}
               {formatBalance(a.balance)}
+              
+              
+              <div class="uk-inline">
+                {#if Number(formatBalance(a.balance)) < 1} 
+                <!-- TODO: make this icon align verical middle. -->
+                  <span class="uk-margin-bottom uk-text-warning" uk-icon="icon: minus-circle" />
+                  <div uk-dropdown>
+                    Your balance will go down for every transaction you send, including mining.
+                  </div>
+                  {/if}
+              </div>
+              
+
             {:else if a.on_chain == undefined}
               loading...
             {:else if !isConnected}
