@@ -9,7 +9,6 @@
   import { notify_success } from "../../carpeNotify";
 
   // default playlist which is provided in Carpe.
-  // TODO: move this to another repo
   let playlist_json_url = "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist.json";
 
   function updateNetwork() {

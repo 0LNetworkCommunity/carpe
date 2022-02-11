@@ -27,9 +27,7 @@ pub fn default_config_path() -> PathBuf {
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn get_cfg() -> Result<AppCfg, Error> {
-  let config_toml = default_config_path();
-  // dbg!(&config_toml);
-  Ok(config::parse_toml(config_toml)?)
+  config::parse_toml(None) // gets default toml path.
 }
 
 pub fn default_accounts_db_path() -> PathBuf {

@@ -102,7 +102,7 @@ fn get_swarm_cfg(config_dir: &str, is_swarm: bool) -> AppCfg {
   let mut toml = PathBuf::from(config_dir);
   if is_swarm { toml.push("0/") };
   toml.push("0L.toml");
-  config::parse_toml(toml).unwrap()
+  config::parse_toml(Some(toml)).unwrap()
 }
 
 #[tauri::command]

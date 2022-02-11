@@ -37,7 +37,7 @@ pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) 
     fs::create_dir_all(&vdf_path)?;
   }
 
-  cfg.save_file();
+  cfg.save_file()?;
   Ok(cfg)
 }
 
