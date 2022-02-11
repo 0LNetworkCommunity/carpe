@@ -21,7 +21,7 @@ pub struct HostInfo {
 pub fn get_known_fullnodes(seed_url: Option<Url>) -> Result<Vec<HostInfo>, Error> {
 
   //TODO: Move this default elsewhere, possibly duplicated with src/components/settings/SetNetworkPlaylist.svelte
-  let url = seed_url.unwrap_or("https://raw.githubusercontent.com/OLSF/carpe/main/seed_peers/fullnode_seed_playlist.json".parse().unwrap());
+  let url = seed_url.unwrap_or("https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist.json".parse().unwrap());
 
   Ok(FullnodePlaylist::http_fetch_playlist(url)?.nodes)
 }
