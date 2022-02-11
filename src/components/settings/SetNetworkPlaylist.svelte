@@ -14,7 +14,7 @@
   function updateNetwork() {
     // check input data
     // submit
-    invoke("update_from_playlist", { url: playlist_json_url })
+    invoke("override_playlist", { url: playlist_json_url })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");

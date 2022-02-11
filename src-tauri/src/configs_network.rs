@@ -102,15 +102,6 @@ pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
   Ok(cfg)
 }
 
-/// Set upstream nodes from playlist.
-pub fn set_playlist(url: Url) -> Result<AppCfg, Error> {
-  let mut cfg = configs::get_cfg()?;
-  let fpl = rpc_playlist::FullnodePlaylist::http_fetch_playlist(url)?;
-
-  cfg.profile.upstream_nodes = fpl.get_urls();
-  cfg.save_file()?;
-  Ok(cfg) 
-}
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 /// Note: The default_node key in 0L is not used by Carpe. Carpe randomly tests

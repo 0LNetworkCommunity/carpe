@@ -68,7 +68,7 @@ fn main() {
       // Networks
       force_upstream,
       force_waypoint,
-      update_from_playlist,
+      override_playlist,
       get_networks,
       refresh_waypoint,
       toggle_network,
