@@ -2,17 +2,16 @@
   import { onMount } from "svelte";
   import { isRefreshingAccounts } from "../../../accounts";
   import { tower } from "../../../miner";
-  
+import EpochStatus from "./EpochStatus.svelte";
+
   let towerState;
   let isRefreshing = true;
 
-  onMount(async () => {    
-    tower.subscribe(m => towerState = m);
+  onMount(async () => {
+    tower.subscribe((m) => (towerState = m));
 
     isRefreshingAccounts.subscribe((r) => (isRefreshing = r));
-
   });
-
 </script>
 
 <main>
@@ -33,34 +32,38 @@
             {#if towerState.local_height >= 0}
               {towerState.local_height}
             {:else}
-              <span uk-icon="icon: minus-circle" uk-tooltip="title: No proofs on device"></span>
+              <span
+                uk-icon="icon: minus-circle"
+                uk-tooltip="title: No proofs on device"
+              />
             {/if}
           </td>
           <td>{towerState.on_chain.verified_tower_height}</td>
           <td>{towerState.on_chain.latest_epoch_mining}</td>
           <td>
-            {towerState.on_chain.actual_count_proofs_in_epoch}
-            {#if towerState.on_chain.actual_count_proofs_in_epoch >= 72}
-              <span class="uk-text-success" uk-icon="icon: check" uk-tooltip="Your account is eligible for rewards at the end of the epoch and can submit up to 72 proofs per epoch."></span>
-            {:else if towerState.on_chain.actual_count_proofs_in_epoch >= 8}
-              <span class="uk-text-success" uk-icon="icon: check" uk-tooltip="In the current epoch, your account has submitted more than 7 proofs and is eligible for rewards at the end of the epoch."></span>
-            {:else}
-              <span uk-icon="icon: minus-circle; ratio: 0.7" uk-tooltip="Your account needs to submit at least 8 proofs in the current epoch to receive rewards at the end of this epoch."></span>
-            {/if}
+            <div class="uk-inline">
+              {#if towerState.on_chain.actual_count_proofs_in_epoch >= 8}
+                <span class="uk-text-muted" uk-icon="icon: check" />
+              {:else}
+                <span class="uk-text-warning" uk-icon="icon: minus-circle" />
+              {/if}
+              {towerState.on_chain.actual_count_proofs_in_epoch}
+              <div uk-dropdown>
+                {#if towerState.on_chain.actual_count_proofs_in_epoch >= 72}
+                  You have mined 72 proofs, the max proofs per day.
+                {:else if towerState.on_chain.actual_count_proofs_in_epoch >= 8}
+                  Your account has submitted enough proofs today (minimum 8
+                  proofs per epoch).
+                {:else}
+                  Your account needs to submit at least 8 proofs per day (epoch) to receive a reward.
+                {/if}
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
-
-    <!-- <SyncProofs /> -->
     
-  {:else if !isRefreshing && !towerState }
-    <div>
-      <h3 class="uk-text-muted">You haven't submitted any mining proofs</h3>
-      <p>
-        When you successfully submit your first proof, you will see some stats
-        here.
-      </p>
-    </div>
+    <!-- <EpochStatus actual_proofs={towerState.on_chain.actual_count_proofs_in_epoch} /> -->
   {/if}
 </main>

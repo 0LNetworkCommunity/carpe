@@ -4,7 +4,7 @@
 
 </script>
 
-<main class="uk-position-center uk-margin-large">
+<main style="position:absolute" class="uk-position-center uk-margin-large">
   <div class="uk-container uk-align-center">
     <h1 class="uk-text-light uk-text-muted uk-text-uppercase uk-text-center">CARPE</h1>
     <h5 class="uk-text-light uk-text-muted uk-text-uppercase uk-text-center">Looks like you don't have any accounts</h5>

@@ -63,17 +63,26 @@
             <td>{a.nickname}</td>
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
+            <td class="uk-inline">
+              <div uk-dropdown>
+                {#if a.balance < 1}
+                  While mining you will see the balance go down for every proof you send.
+                  If you succeed at mining your balance will go up only on the next day (epoch).
+                {/if}
+              </div>
+
             {#if a.on_chain == null}
               offline... 
             {:else if a.on_chain}
-              <td>{formatBalance(a.balance)}</td>
+              {formatBalance(a.balance)}
             {:else if a.on_chain == undefined}
               loading...
             {:else if !isConnected}
-              <td>offline...</td>
+              offline..
             {:else}
-              <td>Account Not On Chain</td>
+              Account Not On Chain
             {/if}
+            </td>
           </tr>
         {/each}
       </tbody>
