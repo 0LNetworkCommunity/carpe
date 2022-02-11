@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import ToggleMiner from "./ToggleMiner.svelte";
   import MinerProgress from "./MinerProgress.svelte";
-  import TowerState from "./cards/TowerState.svelte";
+  import TowerState from "./TowerState.svelte";
   import MinerDebug from "./MinerDebug.svelte";
   import CantStart from "./cards/CantStart.svelte";
   import { isRefreshingAccounts, signingAccount } from "../../accounts";

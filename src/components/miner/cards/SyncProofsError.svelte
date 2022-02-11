@@ -17,7 +17,7 @@
 
 <main>
   <CardError>
-    <span slot="title">Looks like you have {delta} proofs not yet on chain </span>
+    <span slot="title"> {delta} proofs missing </span>
     <div slot="body"> <MinerBacklog/> </div>
   </CardError>    
 </main>
