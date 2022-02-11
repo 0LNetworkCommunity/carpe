@@ -11,7 +11,6 @@ pub mod configs;
 pub mod configs_network;
 pub mod configs_profile;
 pub mod key_manager;
-pub mod seed_peers;
 
 // use std::env;
 

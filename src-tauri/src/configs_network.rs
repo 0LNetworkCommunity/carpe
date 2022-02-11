@@ -5,7 +5,6 @@ use std::fmt;
 use crate::{
   carpe_error::CarpeError,
   configs::{self},
-  seed_peers::{self, FullnodePlaylist},
 };
 use anyhow::{bail, Error};
 use diem_types::waypoint::Waypoint;
