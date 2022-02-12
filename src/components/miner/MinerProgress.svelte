@@ -62,8 +62,7 @@
       {#if proofDone }
         Proof Complete
       {:else}
-        Mining in Progress - {formatPercent(percent)}     
-
+        Mining in Progress {formatPercent(percent)}
       {/if}
       
     </span>

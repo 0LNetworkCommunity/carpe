@@ -9,13 +9,12 @@
   import { notify_success } from "../../carpeNotify";
 
   // default playlist which is provided in Carpe.
-  // TODO: move this to another repo
-  let playlist_json_url = "https://raw.githubusercontent.com/OLSF/carpe/main/seed_peers/fullnode_seed_playlist.json";
+  let playlist_json_url = "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist.json";
 
   function updateNetwork() {
     // check input data
     // submit
-    invoke("update_from_playlist", { url: playlist_json_url })
+    invoke("override_playlist", { url: playlist_json_url })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");

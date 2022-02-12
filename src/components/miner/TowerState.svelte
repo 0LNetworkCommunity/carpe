@@ -1,16 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { isRefreshingAccounts } from "../../../accounts";
-  import { tower } from "../../../miner";
-import EpochStatus from "./EpochStatus.svelte";
+  import { tower } from "../../miner";
 
   let towerState;
-  let isRefreshing = true;
 
   onMount(async () => {
     tower.subscribe((m) => (towerState = m));
 
-    isRefreshingAccounts.subscribe((r) => (isRefreshing = r));
   });
 </script>
 
@@ -32,10 +28,14 @@ import EpochStatus from "./EpochStatus.svelte";
             {#if towerState.local_height >= 0}
               {towerState.local_height}
             {:else}
-              <span
-                uk-icon="icon: minus-circle"
-                uk-tooltip="title: No proofs on device"
-              />
+
+            <div class="uk-inline">
+              <span uk-icon="icon: minus-circle"/>
+              <div uk-dropdown>
+                  No proofs found on device
+              </div>
+            </div>
+
             {/if}
           </td>
           <td>{towerState.on_chain.verified_tower_height}</td>
@@ -43,19 +43,18 @@ import EpochStatus from "./EpochStatus.svelte";
           <td>
             <div class="uk-inline">
               {#if towerState.on_chain.actual_count_proofs_in_epoch >= 8}
-                <span class="uk-text-muted" uk-icon="icon: check" />
+                <span class="uk-text-muted uk-margin" uk-icon="icon: check" />
               {:else}
-                <span class="uk-text-warning" uk-icon="icon: minus-circle" />
+                <span class="uk-text-warning uk-margin" uk-icon="icon: minus-circle" />
               {/if}
               {towerState.on_chain.actual_count_proofs_in_epoch}
               <div uk-dropdown>
                 {#if towerState.on_chain.actual_count_proofs_in_epoch >= 72}
-                  You have mined 72 proofs, the max proofs per day.
+                  You have submitted max proofs today (max 72)
                 {:else if towerState.on_chain.actual_count_proofs_in_epoch >= 8}
-                  Your account has submitted enough proofs today (minimum 8
-                  proofs per epoch).
+                  Your account has submitted enough proofs today (min 8)
                 {:else}
-                  Your account needs to submit at least 8 proofs per day (epoch) to receive a reward.
+                  Insufficient proofs to receive a reward today (min 8)
                 {/if}
               </div>
             </div>

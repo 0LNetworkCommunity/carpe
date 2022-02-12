@@ -1,33 +1,33 @@
 <script lang="ts">
   import { get_locale, setAccount } from "../../accountActions";
   import type { AccountEntry } from "../../accounts";
-  import IconMining from '../icons/IconMining.svelte';
+  import IconMining from "../icons/IconMining.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import { carpeTick } from "../../tick"
+  import { carpeTick } from "../../tick";
+  import { to_number } from "svelte/internal";
 
   UIkit.use(Icons);
-  
+
   export let my_account: AccountEntry;
   export let account_list: AccountEntry[];
-  export let isMining: boolean; 
+  export let isMining: boolean;
   export let isConnected: boolean;
 
   // TODO: move to tauri commands
   function formatBalance(balance) {
-    const balanceScaled = balance / 1000000
+    const balanceScaled = balance / 1000000;
 
     return balanceScaled.toLocaleString(get_locale(), {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     });
   }
-
 </script>
 
 <main>
   {#if account_list == null}
-    <span uk-spinner></span>
+    <span uk-spinner />
   {:else if account_list.length > 0}
     <table class="uk-table uk-table-divider">
       <thead>
@@ -43,17 +43,18 @@
         {#each account_list as a, i}
           <!-- svelte-ignore missing-declaration -->
           <tr
-            class="{
-              isMining && a.account == my_account.account
-                ? 'uk-text-primary'
-                : ''
-              }"
-            on:click={() => { setAccount(a.account); carpeTick(); } }
+            class={isMining && a.account == my_account.account
+              ? "uk-text-primary"
+              : ""}
+            on:click={() => {
+              setAccount(a.account);
+              carpeTick();
+            }}
           >
             <!-- <a href="#" on:click={() => { setAccount(acc.account); }}> {acc.nickname} </a > -->
             <td>
               {#if a.account == my_account.account}
-                {#if isMining} 
+                {#if isMining}
                   <IconMining />
                 {:else}
                   <span uk-icon="user" />
@@ -63,29 +64,37 @@
             <td>{a.nickname}</td>
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
-            <td class="uk-inline">
-              <div uk-dropdown>
-                {#if a.balance < 1}
-                  While mining you will see the balance go down for every proof you send.
-                  If you succeed at mining your balance will go up only on the next day (epoch).
-                {/if}
-              </div>
+            <td>
+              {#if a.on_chain == null}
+                offline...
+              {:else if a.on_chain}
+                <div class="uk-inline">
+                  
+                  {#if Number(formatBalance(a.balance)) < 1}
+                    <!-- TODO: make this icon align verical middle. -->
+                    <span
+                      class="uk-margin uk-text-warning"
+                      uk-icon="icon: minus-circle"
+                    />
+                    <div uk-dropdown>
+                      Your balance will go down for every transaction you send,
+                      including mining.
+                    </div>
+                  {/if}
 
-            {#if a.on_chain == null}
-              offline... 
-            {:else if a.on_chain}
-              {formatBalance(a.balance)}
-            {:else if a.on_chain == undefined}
-              loading...
-            {:else if !isConnected}
-              offline..
-            {:else}
-              Account Not On Chain
-            {/if}
+                  {formatBalance(a.balance)}
+                </div>
+              {:else if a.on_chain == undefined}
+                loading...
+              {:else if !isConnected}
+                offline..
+              {:else}
+                Account Not On Chain
+              {/if}
             </td>
           </tr>
         {/each}
       </tbody>
-    </table>    
+    </table>
   {/if}
 </main>

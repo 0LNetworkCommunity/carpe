@@ -1,16 +1,16 @@
 {
-  "name": "v0.2.1",
+  "name": "v0.2.2",
   "notes": "beta release",
-  "pub_date": "2022-02-05T00:00:00Z",
+  "pub_date": "2022-02-12T00:00:00Z",
   "platforms": {
     "darwin": {
-      "url": "https://github.com/OLSF/carpe/releases/download/v0.2.1/carpe.app.tar.gz"
+      "url": "https://github.com/OLSF/carpe/releases/download/v0.2.2/carpe.app.tar.gz"
     },
     "linux": {
       "url": "none"
     },
     "win64": {
-      "url": "https://github.com/OLSF/carpe/releases/download/v0.2.1/carpe_0.2.1_x64.msi.zip"
+      "url": "https://github.com/OLSF/carpe/releases/download/v0.2.2/carpe_0.2.2_x64.msi.zip"
     }
   }
 }

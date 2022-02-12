@@ -11,7 +11,6 @@ pub mod configs;
 pub mod configs_network;
 pub mod configs_profile;
 pub mod key_manager;
-pub mod seed_peers;
 
 // use std::env;
 
@@ -69,7 +68,7 @@ fn main() {
       // Networks
       force_upstream,
       force_waypoint,
-      update_from_playlist,
+      override_playlist,
       get_networks,
       refresh_waypoint,
       toggle_network,

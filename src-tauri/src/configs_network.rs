@@ -5,13 +5,14 @@ use std::fmt;
 use crate::{
   carpe_error::CarpeError,
   configs::{self},
-  seed_peers::{self, FullnodePlaylist},
 };
 use anyhow::{bail, Error};
 use diem_types::waypoint::Waypoint;
 use ol::config::AppCfg;
-use ol_types::config::bootstrap_waypoint_from_rpc;
-use rand::{seq::SliceRandom, thread_rng};
+use ol_types::{
+  config::bootstrap_waypoint_from_rpc,
+  rpc_playlist
+};
 use url::Url;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -51,23 +52,14 @@ impl fmt::Display for Networks {
 
 pub fn set_network_configs(network: Networks) -> Result<NetworkProfile, CarpeError> {
   dbg!("toggle network");
-  let hostinfo = match &network {
-    Networks::Mainnet => seed_peers::get_known_fullnodes(None)?,
+  let playlist = match &network {
+    Networks::Mainnet => rpc_playlist::get_known_fullnodes(None)?,
 
-    Networks::Rex => seed_peers::get_known_fullnodes(Some("https://raw.githubusercontent.com/OLSF/carpe/main/seed_peers/fullnode_seed_playlist_testnet.json".parse().unwrap()))?,
-    Networks::Custom { playlist_url } => seed_peers::get_known_fullnodes(Some(playlist_url.to_owned()))?,
+    Networks::Rex => rpc_playlist::get_known_fullnodes(Some("https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist_testnet.json".parse().unwrap()))?,
+    Networks::Custom { playlist_url } => rpc_playlist::get_known_fullnodes(Some(playlist_url.to_owned()))?,
   };
 
-  let mut peers: Vec<Url> = hostinfo.into_iter().map(|h| h.url).collect();
-
-  // Ensure the upstream_peers list is random, and the default peer is also random.
-  let mut rng = thread_rng();
-  peers.shuffle(&mut rng);
-
-  set_upstream_nodes(peers).map_err(|e| {
-    let err_msg = format!("could not set upstream nodes, message: {}", &e.to_string());
-    CarpeError::misc(&err_msg)
-  })?;
+  playlist.update_config_file(None)?; // None uses default path of 0L.toml
 
   // TODO: I don't think chain ID needs to change.
   set_chain_id(network.to_string()).map_err(|e| {
@@ -106,19 +98,10 @@ pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
 pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
   let mut cfg = configs::get_cfg()?;
   cfg.chain_info.base_waypoint = Some(wp);
-  cfg.save_file();
+  cfg.save_file()?;
   Ok(cfg)
 }
 
-/// Set upstream nodes from playlist.
-pub fn set_playlist(url: Url) -> Result<AppCfg, Error> {
-  let mut cfg = configs::get_cfg()?;
-  let fpl = FullnodePlaylist::http_fetch_playlist(url)?;
-
-  cfg.profile.upstream_nodes = fpl.get_urls();
-  cfg.save_file();
-  Ok(cfg) 
-}
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 /// Note: The default_node key in 0L is not used by Carpe. Carpe randomly tests
@@ -126,7 +109,7 @@ pub fn set_playlist(url: Url) -> Result<AppCfg, Error> {
 pub fn override_upstream_node(url: Url) -> Result<AppCfg, Error> {
   let mut cfg = configs::get_cfg()?;
   cfg.profile.upstream_nodes = vec![url];
-  cfg.save_file();
+  cfg.save_file()?;
   Ok(cfg)
 }
 
@@ -134,7 +117,7 @@ pub fn override_upstream_node(url: Url) -> Result<AppCfg, Error> {
 pub fn set_chain_id(chain_id: String) -> Result<AppCfg, Error> {
   let mut cfg = configs::get_cfg()?;
   cfg.chain_info.chain_id = chain_id;
-  cfg.save_file();
+  cfg.save_file()?;
   Ok(cfg)
 }
 
@@ -142,7 +125,7 @@ pub fn set_chain_id(chain_id: String) -> Result<AppCfg, Error> {
 pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
   let mut cfg = configs::get_cfg()?;
   cfg.profile.upstream_nodes = vec_url;
-  cfg.save_file();
+  cfg.save_file()?;
   Ok(cfg)
 }
 

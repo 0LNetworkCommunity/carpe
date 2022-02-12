@@ -15,18 +15,16 @@
   </h4>
   <div class="uk-margin uk-grid">
     <div>
+      <p>
+        Manually resubmit local proofs
+      </p>
       {#if inProgress}
         <button class="uk-button" disabled>Backlog in Progress</button>
       {:else}
         <button class="uk-button uk-button-default" on:click={() => submitBacklog()}>
-          Submit Local Proof Backlog
+          Submit Local Backlog
         </button>
       {/if}
-    </div>
-    <div class="uk-margin">
-      <span>
-        If any local proofs are not being committed to chain, you will notice the local proof number will be higher than the on-chain count. You can manually resubmit with the button above.
-      </span>
     </div>
   </div>
 </main>
