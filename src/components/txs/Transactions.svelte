@@ -1,6 +1,6 @@
 <script lang="ts">
 import Onboard from "./Onboard.svelte";
-
+import BalanceTransfer from "./BalanceTransfer.svelte";
 
 </script>
 
@@ -10,4 +10,5 @@ import Onboard from "./Onboard.svelte";
   </div>
   
   <Onboard/>
+  <BalanceTransfer/>
 </main>
