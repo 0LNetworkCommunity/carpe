@@ -1,8 +1,9 @@
 //! transaction scripts
 
+use diem_types::account_address::AccountAddress;
 use diem_types::transaction::authenticator::AuthenticationKey;
 
-use txs::commands::{create_account_cmd::create_from_auth_and_coin, demo_cmd};
+use txs::commands::{create_account_cmd::create_from_auth_and_coin, demo_cmd, transfer_cmd};
 use crate::{carpe_error::CarpeError, configs};
 
 
@@ -65,5 +66,24 @@ pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
       "could not set wallet type: {:?}",
       e
     ))),
+  }
+}
+
+#[tauri::command]
+pub fn balance_transfer(address: String, coins: u64) -> Result<String, CarpeError> {
+  let tx_params = configs::get_tx_params()
+      .map_err(|_| CarpeError::misc("Could not load tx params"))?;
+  let address = "0x".to_owned() + &address;
+  if let Ok(account_address) = AccountAddress::from_hex_literal(&*address) {
+    match transfer_cmd::balance_transfer(account_address, coins, tx_params,None) {
+      Ok(r) => Ok(format!("Tx Success: {:?}", r)),
+      Err(_) => {
+        Err(CarpeError::misc(&format!(
+          "Could not do tx"
+        )))
+      },
+    }
+  } else {
+    Err(CarpeError::misc("Could not parse account address"))
   }
 }
