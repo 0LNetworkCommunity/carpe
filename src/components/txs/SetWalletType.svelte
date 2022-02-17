@@ -5,8 +5,10 @@ import type { CarpeError } from "../../carpeError";
 import { notify_success } from "../../carpeNotify";
 import { responses } from "../../debug";
 import UIkit from "uikit";
+import { isWalletTypeChanged } from "../../accounts";
 
   let loading = false;
+
   function setWallet (num: number) {
     loading = true;
     invoke("wallet_type", {typeInt: num})
@@ -14,6 +16,7 @@ import UIkit from "uikit";
         loading = false;
         notify_success("Account set to Slow Wallet");
         responses.set(res);
+        isWalletTypeChanged.update(b => !b)
       })
       .catch((e: CarpeError) => {
         loading = false;
