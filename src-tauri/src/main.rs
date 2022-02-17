@@ -107,6 +107,7 @@ fn main() {
       // Queries
       query_balance,
       query_makewhole,
+      query_wallet_type,
       get_recovery_mode,
       // Transactions
       demo_tx,

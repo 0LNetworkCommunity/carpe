@@ -4,8 +4,9 @@ use crate::{carpe_error::CarpeError, configs::get_node_obj};
 use diem_client::views::EventView;
 use diem_json_rpc_types::views::TowerStateResourceView;
 use diem_types::{account_address::AccountAddress, event::EventKey};
+use ol::commands::query_cmd;
 use ol::node::query;
-use ol::node::{node::Node, query::QueryType};
+use ol::node::{node::Node, query::{QueryType, WalletType};
 use ol_types::makewhole_resource::{CreditResource, MakeWholeResource};
 use resource_viewer::AnnotatedMoveValue;
 
@@ -15,10 +16,21 @@ pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 }
 
 #[tauri::command(async)]
+pub fn query_wallet_type(account: AccountAddress) -> Result<WalletType, CarpeError> {
+  if let Ok(node) = get_node_obj() {
+    Ok(query_cmd::get_wallet_type(account, node))
+  }
+   else {
+    Err(CarpeError::misc("Could not get node object"))
+  }
+}
+
+#[tauri::command(async)]
 pub fn get_onchain_tower_state(
-  account: AccountAddress,
+	account: AccountAddress,
 ) -> Result<TowerStateResourceView, CarpeError> {
   dbg!("get_onchain_tower_state");
+
   let node = get_node_obj()?;
 
   match node.client.get_miner_state(&account) {
