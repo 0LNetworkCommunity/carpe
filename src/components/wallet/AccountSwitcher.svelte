@@ -6,10 +6,16 @@
   import { Link } from "svelte-navigator";
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
-import { carpeTick } from "../../tick";
+  import { carpeTick } from "../../tick";
+	import { isDarkMode } from '../../themes';
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
+	let isDark;
+
+	isDarkMode.subscribe(value => {
+		isDark = value;
+  });
 
   onMount(async () => {
     signingAccount.subscribe(value => my_account = value);
@@ -21,7 +27,7 @@ import { carpeTick } from "../../tick";
 <main>
   <div>
     <button class="uk-button uk-button-default" type="button">
-      <NetworkIcon /> 
+      <NetworkIcon />
       {#if account_list && account_list.length > 0}
         <span class="uk-margin-small-left">
           {#if my_account}
@@ -33,12 +39,12 @@ import { carpeTick } from "../../tick";
       {/if}
     </button>
 
-    <div uk-dropdown>
+    <div class="{isDark ? 'uk-background-secondary' : 'uk-background-muted'} uk-dropdown" uk-dropdown>
       <ul class="uk-nav uk-dropdown-nav">
         {#if account_list && account_list.length > 0}
           <li class="uk-text-muted">Switch Account</li>
           <li class="uk-nav-divider" />
-          {#if !account_list} <!-- TODO: move up --> 
+          {#if !account_list} <!-- TODO: move up -->
             <p>loading...</p>
           {:else}
             {#each account_list as acc}

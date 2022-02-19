@@ -1,9 +1,16 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { isTowerNewbie, tower } from "../../../miner";
+  import { isDarkMode } from '../../../themes';
 
   let actual_proofs: number;
   let newbie = false;
+	let isDark;
+
+	isDarkMode.subscribe(value => {
+		isDark = value;
+  });
+
   onMount(() => {
     tower.subscribe((t) => {
       if (t && t.on_chain) {
@@ -17,7 +24,7 @@
 </script>
 
 <main>
-  <div class="uk-card uk-card-default uk-card-body">
+  <div class="uk-card uk-card-default uk-card-body {isDark ? 'uk-background-secondary' : 'uk-background-muted'}">
     {#if actual_proofs >= 72}
       <h3 class="uk-card-title uk-text-uppercase uk-text-light uk-text-muted">Whoa</h3>
       <p class="uk-text-light uk-text-muted">

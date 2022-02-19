@@ -6,11 +6,18 @@
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
+	import { isDarkMode } from '../../themes';
 
   interface NewKeygen {
     entry: AccountEntry;
     mnem: string;
   }
+
+  let isDark;
+
+  isDarkMode.subscribe(value => {
+    isDark = value;
+  });
 
   let display_mnem: string;
   let address: string;
@@ -49,7 +56,7 @@
 
   {#if address && !hide}
 
-    <div class="uk-margin uk-card uk-card-default uk-card-body uk-text-muted">
+    <div class="uk-margin uk-card uk-card-default uk-card-body uk-text-muted {isDark ? 'uk-background-secondary' : 'uk-background-muted'}">
       <h5 class="uk-text-muted uk-text-uppercase">ACCOUNT ADDRESS</h5>
       <p class="uk-text-emphasis uk-text-uppercase">{address}</p>
       <h5 class="uk-text-muted uk-text-uppercase">ONBOARDING KEY</h5>

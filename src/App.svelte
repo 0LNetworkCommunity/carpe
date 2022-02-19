@@ -23,13 +23,19 @@
   import { isCarpeInit} from "./accountActions";
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
+	import { isDarkMode } from './themes';
 
+	let isDark;
   let unlistenProofStart;
   let unlistenAck;
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
   let healthTick;
   let debug = false;
+
+	isDarkMode.subscribe(value => {
+		isDark = value;
+  });
 
   onMount(async () => {
     isCarpeInit();
@@ -42,7 +48,7 @@
     healthTick = setInterval(carpeTick, 30000); // do a healthcheck, this is async
 
     debugMode.subscribe(b => debug = b);
-    
+
     ///// Backlog /////
     // Todo: Should this listener only be started in the miner view?
 
@@ -58,13 +64,13 @@
       backlogInProgress.set(false);
       backlogSubmitted.set(false);
     });
-    
+
 
     unlistenAck = await listen ("ack-backlog-request", (event: any) => {
       backlogInProgress.set(true);
     });
 
-    
+
 
     unlistenBacklogSuccess = await listen("backlog-success", (event: any) => {
       responses.set(event.payload);
@@ -76,9 +82,9 @@
 
     unlistenBacklogError = await listen("backlog-error", (event: Event<CarpeError>) => {
       // TODO: show an UX in the miner view for this type of error
-      
+
       raise_error(event.payload, true, "listen(backlog-error)");
-      
+
       backlogInProgress.set(false);
       backlogSubmitted.set(false);
     });
@@ -93,11 +99,11 @@
   })
 </script>
 
-<main class="uk-background-muted uk-height-viewport">
+<main class="{isDark ? 'uk-background-secondary uk-light' : 'uk-background-muted uk-dark'} uk-height-viewport">
   <div class="uk-container">
     <Router>
       <Nav />
-      <div class="uk-background-muted uk-margin-large">
+      <div class="{isDark ? 'uk-background-secondary' : 'uk-background-muted'} uk-margin-large">
         <Route path={routes.home} component={Wallet} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
         <Route
@@ -123,5 +129,5 @@
 
       </div>
     </Router>
-  </div>  
+  </div>
 </main>

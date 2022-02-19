@@ -8,6 +8,6 @@ import Onboard from "./Onboard.svelte";
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Transactions</h2>
   </div>
-  
+
   <Onboard/>
 </main>
