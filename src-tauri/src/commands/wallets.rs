@@ -16,8 +16,9 @@ use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
+use ol::node::query::WalletType;
 
-use super::get_balance;
+use super::{get_balance, get_wallet_type};
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
   pub accounts: Vec<AccountEntry>,
@@ -30,6 +31,7 @@ pub struct AccountEntry {
   pub nickname: String,
   pub on_chain: bool,
   pub balance: Option<u64>,
+  pub wallet_type: Option<WalletType>,
 }
 
 impl AccountEntry {
@@ -40,6 +42,7 @@ impl AccountEntry {
       nickname: get_short(address),
       on_chain: false,
       balance: None,
+      wallet_type: None,
     }
   }
 }
@@ -116,15 +119,16 @@ pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
 #[tauri::command(async)]
 pub fn refresh_accounts() -> Result<Accounts, CarpeError> {
   let all = read_accounts()?;
-  let updated = map_get_balance(all)?;
+  let updated = map_get_balance_and_wallet_type(all)?;
   update_accounts_db(&updated)?;
   Ok(updated)
 }
 
-fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError>  {
+fn map_get_balance_and_wallet_type(mut all_accounts: Accounts) -> Result<Accounts, CarpeError>  {
     all_accounts.accounts = all_accounts.accounts.into_iter()
     .map(|mut e| {
       e.balance = get_balance(e.account).ok();
+      e.wallet_type = get_wallet_type(e.account).ok();
       e.on_chain = e.balance.is_some();
       e
     })
@@ -193,6 +197,7 @@ fn insert_account_db(
     nickname: nickname,
     on_chain: false,
     balance: None,
+    wallet_type: None,
   };
 
   if !all.accounts.contains(&new_account) {

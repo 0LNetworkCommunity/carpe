@@ -37,6 +37,7 @@
           <th>Address</th>
           <th>Authkey</th>
           <th>Balance</th>
+          <th>Wallet type</th>
         </tr>
       </thead>
       <tbody>
@@ -90,6 +91,13 @@
                 offline..
               {:else}
                 Account Not On Chain
+              {/if}
+            </td>
+            <td>
+              {#if a.wallet_type != null && a.wallet_type != "None"}
+                {a.wallet_type}
+              {:else}
+                Normal
               {/if}
             </td>
           </tr>
