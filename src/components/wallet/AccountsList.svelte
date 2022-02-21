@@ -28,6 +28,7 @@
           <th>{$_("wallet.account_list.address")}</th>
           <th>{$_("wallet.account_list.authkey")}</th>
           <th class="uk-text-right">{$_("wallet.account_list.balance")}</th>
+		  <th>{$_("wallet.account_list.wallet_type")}</th>
         </tr>
       </thead>
       <tbody>
@@ -76,6 +77,13 @@
                 {$_("wallet.account_list.offline")}...
               {:else}
                 {$_("wallet.account_list.account_on_chain")}
+              {/if}
+            </td>
+            <td>
+              {#if a.wallet_type != null && a.wallet_type != "None"}
+                {a.wallet_type}
+              {:else}
+                Normal
               {/if}
             </td>
           </tr>

@@ -17,7 +17,6 @@ import { _ } from "svelte-i18n";
         loading = false;
         notify_success("Account set to Slow Wallet");
         responses.set(res);
-        isWalletTypeChanged.update(b => !b)
       })
       .catch((e: CarpeError) => {
         loading = false;

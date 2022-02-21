@@ -81,7 +81,7 @@
                 <a
                   href={"#"}
                   class="{my_account.account == acc.account ? 'uk-text-primary' : ''}"
-                  on:click={() => { setAccount(acc.account); carpeTick(); query_wallet_type(); }}
+                  on:click={() => { setAccount(acc.account); carpeTick(); }}
                 >
                   {acc.nickname}
                 </a>
@@ -90,10 +90,6 @@
             <li class="uk-nav-divider" />
           {/if}
         {/if}
-        <li>
-            {wallet_type}
-        </li>
-        <li class="uk-nav-divider" />
         <li>
           <a href={"#"}>
             <Link to="settings" class="uk-text-muted">

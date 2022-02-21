@@ -17,12 +17,7 @@ pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 
 #[tauri::command(async)]
 pub fn query_wallet_type(account: AccountAddress) -> Result<WalletType, CarpeError> {
-  if let Ok(node) = get_node_obj() {
-    Ok(query_cmd::get_wallet_type(account, node))
-  }
-   else {
-    Err(CarpeError::misc("Could not get node object"))
-  }
+  get_wallet_type(account)
 }
 
 #[tauri::command(async)]
@@ -172,5 +167,14 @@ fn try_again_get_events(
       }
     }
     Ok(_) => get_events(account, event_key),
+  }
+}
+
+pub fn get_wallet_type(account: AccountAddress) -> Result<WalletType, CarpeError>{
+  if let Ok(node) = get_node_obj() {
+    Ok(query_cmd::get_wallet_type(account, node))
+  }
+  else {
+    Err(CarpeError::misc("Could not get node object"))
   }
 }

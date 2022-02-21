@@ -17,9 +17,9 @@ use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
+use ol::node::query::WalletType;
 
-use super::get_balance;
-use super::get_payment_events;
+use super::{get_balance, get_payment_events, get_wallet_type};
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
   pub accounts: Vec<AccountEntry>,
@@ -32,6 +32,7 @@ pub struct AccountEntry {
   pub nickname: String,
   pub on_chain: Option<bool>,
   pub balance: Option<u64>,
+  pub wallet_type: Option<WalletType>,
 }
 
 impl AccountEntry {
@@ -42,6 +43,7 @@ impl AccountEntry {
       nickname: get_short(address),
       on_chain: None,
       balance: None,
+      wallet_type: None,
     }
   }
 }
@@ -124,18 +126,17 @@ pub fn get_account_events(account: AccountAddress) -> Result<Vec<EventView>, Car
 #[tauri::command(async)]
 pub fn refresh_accounts() -> Result<Accounts, CarpeError> {
   let all = read_accounts()?;
-  let updated = map_get_balance(all)?;
+  let updated = map_get_balance_and_wallet_type(all)?;
   update_accounts_db(&updated)?;
   Ok(updated)
 }
 
-fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError> {
-  all_accounts.accounts = all_accounts
-    .accounts
-    .into_iter()
+fn map_get_balance_and_wallet_type(mut all_accounts: Accounts) -> Result<Accounts, CarpeError>  {
+    all_accounts.accounts = all_accounts.accounts.into_iter()
     .map(|mut e| {
       e.balance = get_balance(e.account).ok();
-      e.on_chain = Some(e.balance.is_some());
+      e.wallet_type = get_wallet_type(e.account).ok();
+      e.on_chain = e.balance.is_some();
       e
     })
     .collect();
@@ -203,6 +204,7 @@ fn insert_account_db(
     nickname: nickname,
     on_chain: None,
     balance: None,
+    wallet_type: None,
   };
 
   let acc_list: Vec<AccountAddress> = all
