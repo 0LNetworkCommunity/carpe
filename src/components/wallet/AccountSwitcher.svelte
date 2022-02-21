@@ -7,12 +7,9 @@
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
   import { carpeTick } from "../../tick";
-  import { invoke } from "@tauri-apps/api/tauri";
-  import { raise_error } from "../../carpeError";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
-  let wallet_type;
 
   onMount(async () => {
     signingAccount.subscribe(value => my_account = value);
