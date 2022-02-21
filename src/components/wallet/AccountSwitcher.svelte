@@ -13,7 +13,6 @@
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
-  let wallet_type;
 
   let unsubsSigningAccount;
   let unsubsAll_accounts;
