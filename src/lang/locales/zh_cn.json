@@ -1,37 +1,100 @@
 {
-  "title": "title_en",
+  "title": "中文",
   "layout": {
       "connection_error": {
-         "title": "Oops, We Can't Connect to 0L Network",
-         "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
+         "title": "Oops, 我们无法连上OL网络",
+         "body": "<p> 很有可能是你的上游节点已经停机了.</p> <h3> 别担心！你的账号和资产是安全的.</h3> <p>如果你需要更新你的节点，请点这里：</p>"
       },
       "error_accordion": {
-          "title": "Error Report",
-          "category": "Error Category",
+          "title": "错误报告",
+          "category": "错误分类",
           "id": "ID"
       }
   },
   "wallet": {
+    "wallet": "钱包",
     "carpe": "CARPE",
     "btn_new_account": "创建账号",
     "btn_restore_account": "恢复账号",
-    "newbie_message": "Looks like you don't have any accounts",
+    "newbie_message": "看起来你还没有创建账号。",
     "reminder_create": {
-      "card_title": "Onboarding",
-      "message_headline": "You have generated keys for an account, but it does not yet exist on chain.",
-      "message_prefix": "Join our community on ",
-      "message_suffix": " and provide us your Onboard Key to get onboarded.",
-      "onboard_key": "ONBOARD KEY"
+      "card_title": "登录",
+      "message_headline": "您的账号的密钥已经创建成功，但是还没有上链。",
+      "message_prefix": "加我们的",
+      "message_suffix": " 社区并提供您的登录密钥，我们会帮助你完成登录。",
+      "onboard_key": "登录密钥（AuthKey）"
     },
     "account_list": {
-      "nickname": "Nickname",
-      "address": "Address",
-      "authkey": "Authkey",
-      "balance": "Balance",
-      "offline": "offline",
-      "loading": "loading",
-      "account_on_chain": "Account Not On Chain",
-      "message": " Your balance will go down for every transaction you send, including mining."
+      "nickname": "昵称",
+      "address": "地址",
+      "authkey": "授权密钥",
+      "balance": "余额",
+      "offline": "断线",
+      "loading": "加载中",
+      "account_on_chain": "账号未上链",
+      "message": " 所有的发送的交易（包括：挖矿）都会消耗您的余额。"
+    },
+    "keygen": {
+      "title": "创建新账号",
+      "description": "账户创建成功以后，只有有人向您的账户发送至少一个代币，账号才会在链上存在。",
+      "btn_generate_keys": "生成密钥",
+      "btn_generate_keys_2": "换一个密钥",
+      "btn_create_account": "创建这个密钥",
+      "account_address": "账户地址",
+      "onboard_key": "登录密钥（AuthKey）",
+      "onboard_key_description": "这个登录密钥用来将你账户登录到链上的",
+      "securite_recovery_phrase": "账号助记词",
+      "securite_note": "这是您账号的助记词。如果丢失，没有人可以帮你。请把他记下来，不要告诉任何人。",
+      "account_tips": "您的账号还没有上链，您需要将您的登录密钥发给一个人帮助您完成账号创建。"
+    },
+    "account_from_mnem_submit": {
+      "title":" 备份好了吗？",
+      "body": " <p>您确定要使用这个助记词吗?</p> <p>如果助记词丢失或者忘记，您将不能恢复您的账号.</p><p> 这是最后的机会将它写下来.</p>",
+      "btn_cancel": "再检查一下",
+      "btn_submit": "提交保存",
+      "btn_submiting": "提交中"
+    },
+    "account_from_mnem_from": {
+      "title": "恢复账号",
+      "description": "使用您的助记词，在CARPE创建账号，查看资产和发送交易。",
+      "placeholder": "助记词"
+    },
+    "account_switcher": {
+      "select_account": "选择账号",
+      "switch_account": "切换账号",
+      "setting": "设置",
+      "developers": "开发着"
+    },
+    "about": {
+      "about": "关于",
+      "release": "版本信息",
+      "version": "版本号",
+      "branch": "分支",
+      "commit": "Commit"
+    },
+    "settings": {
+      "title": "设置",
+      "network_settings": {
+        "title": "网络设置",
+        "list_of_peers": "节点列表",
+        "description": "选择节点列表，帮助您连上网络，Carpe 会在列表中随机链接列表中的节点，直至链接成功。你可以链接任何的playlist.json文件来更新节点。",
+        "playlist": "更新网络节点",
+        "override_peers": "覆盖节点",
+        "override_peers_description": "您可以强制使用某一个节点，只需要设置一个节点，他会替换上面的节点列表.",
+        "url_of_upstream_node": "上游节点URL",
+        "btn_update": "更新",
+        "upstream_title": "获取新的WAYPOINT",
+        "upstream_subtitle": "大多数的WAYPOINT问题可以痛殴刷新新的Waypoint来解决",
+        "btn_fetch_new_waypoint": "获取新的Waypoint",
+        "btn_cancel": "取消",
+        "btn_submit": "使用节点列表"
+      },
+      "account_settings": {
+        "title": "账号设置",
+        "btn_remove": "删除账号",
+        "comfirm": "确认要从本设备中删除该账号吗？本操作不可逆。",
+        "description": "本操作不会删除链上的账号，只会删除本设备上的信息，如果您没有保存助记词，您的账号就会被锁定，没有人能够帮你恢复这个账号。"
+      }
     }
   }
 }

@@ -58,7 +58,7 @@ import { _ } from "svelte-i18n";
       <p>{$_("wallet.keygen.onboard_key_description")}</p>
 
       <h5 class="uk-text-muted uk-text-uppercase uk-text-danger">
-        {$_("wallet.keygen.secret_recovery_phrase")}
+        {$_("wallet.keygen.securite_recovery_phrase")}
       </h5>
       <p class="uk-text-danger">
         {$_("wallet.keygen.securite_note")}
