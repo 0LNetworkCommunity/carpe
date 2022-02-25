@@ -1,4 +1,76 @@
 {
   "title": "title_en",
-  "test": "test"
+  "layout": {
+      "connection_error": {
+         "title": "Oops, We Can't Connect to 0L Network",
+         "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
+      },
+      "error_accordion": {
+          "title": "Error Report",
+          "category": "Error Category",
+          "id": "ID"
+      }
+  },
+  "wallet": {
+    "wallet": "Wallet",
+    "carpe": "CARPE",
+    "btn_new_account": "New Account",
+    "btn_restore_account": "Restore Account",
+    "newbie_message": "Looks like you don't have any accounts",
+    "reminder_create": {
+      "card_title": "Onboarding",
+      "message_headline": "You have generated keys for an account, but it does not yet exist on chain.",
+      "message_prefix": "Join our community on ",
+      "message_suffix": " and provide us your Onboard Key to get onboarded.",
+      "onboard_key": "ONBOARD KEY"
+    },
+    "account_list": {
+      "nickname": "Nickname",
+      "address": "Address",
+      "authkey": "Authkey",
+      "balance": "Balance",
+      "offline": "offline",
+      "loading": "loading",
+      "account_on_chain": "Account Not On Chain",
+      "message": " Your balance will go down for every transaction you send, including mining."
+    },
+    "keygen": {
+      "title": "Create New Account",
+      "description": "After you generate an account and secret phrase, you'll need someone to send one 0L coin to that account for it to be created on chain.",
+      "btn_generate_keys": "Generate Keys",
+      "btn_generate_keys_2": "Generate Different Keys",
+      "btn_create_account": "Create This Account",
+      "account_address": "Account Address",
+      "onboard_key": "Onboarding Key",
+      "onboard_key_description": "This is also known as an Auth Key. For now you'll need it to be able to create the account on chain.",
+      "securite_recovery_phrase": "SECRET RECOVERY PHRASE",
+      "securite_note": "This is your secret account password (mnemonic). If you lose it no one can help you! Write it down now.",
+      "account_tips": "Your account does not exist yet on chain. You'll need to give someone your Onboarding Key so that they can create your account."
+    },
+    "account_from_mnem_submit": {
+      "title":" Heads Up!",
+      "body": " <p>Are you sure you wrote down your mnemonic phrase?</p> <p>You won't be able to recover your account without it. No one can help you if lose it.</p><p>This is the last opportunity to write it down.</p>",
+      "btn_cancel": "Let me check again",
+      "btn_submit": "Submit Now",
+      "btn_submiting": "Submiting"
+    },
+    "account_from_mnem_from": {
+      "title": "RESTORE ACCOUNT",
+      "description": "Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions",
+      "placeholder": "Recovery Mnemonic"
+    },
+    "account_switcher": {
+      "select_account": "Select Account",
+      "switch_account": "Switch Account",
+      "setting": "Go To Setting",
+      "developers": "Developers"
+    },
+    "about": {
+      "about": "About",
+      "release": "Release",
+      "version": "Version",
+      "branch": "Branch",
+      "commit": "Commit"
+    }
+  }
 }

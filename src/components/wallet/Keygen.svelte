@@ -6,6 +6,7 @@
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
+import { _ } from "svelte-i18n";
 
   interface NewKeygen {
     entry: AccountEntry;
@@ -41,7 +42,7 @@
 <main>
   <div class="uk-flex uk-flex-center">
     <h3 class="uk-text-light uk-text-muted uk-text-uppercase">
-      Create New Account
+      {$_("wallet.keygen.title")}
     </h3>
   </div>
 
@@ -50,17 +51,17 @@
   {#if address && !hide}
 
     <div class="uk-margin uk-card uk-card-default uk-card-body uk-text-muted">
-      <h5 class="uk-text-muted uk-text-uppercase">ACCOUNT ADDRESS</h5>
+      <h5 class="uk-text-muted uk-text-uppercase">{$_("wallet.keygen.account_address")}</h5>
       <p class="uk-text-emphasis uk-text-uppercase">{address}</p>
-      <h5 class="uk-text-muted uk-text-uppercase">ONBOARDING KEY</h5>
+      <h5 class="uk-text-muted uk-text-uppercase">{$_("wallet.keygen.onboard_key")}</h5>
       <p class="uk-text-emphasis uk-text-uppercase">{authkey}</p>
-      <p>This is also known as an Auth Key. For now you'll need it to be able to create the account on chain.</p>
+      <p>{$_("wallet.keygen.onboard_key_description")}</p>
 
       <h5 class="uk-text-muted uk-text-uppercase uk-text-danger">
-        SECRET RECOVERY PHRASE
+        {$_("wallet.keygen.secret_recovery_phrase")}
       </h5>
       <p class="uk-text-danger">
-        This is your secret account password (mnemonic). If you lose it no one can help you! Write it down now.
+        {$_("wallet.keygen.securite_note")}
       </p>
       <div class="uk-margin">
         <textarea class="uk-textarea" rows="3" readonly>{display_mnem}</textarea>
@@ -69,19 +70,18 @@
 
     <div>
       <p>
-        Your account does not exist yet on chain. You'll need to give someone
-        your Onboarding Key so that they can create your account.
+        {$_("wallet.keygen.account_tips")}
       </p>
     </div>
 
     <div>
-      <AccountFromMnemSubmit danger_temp_mnem={""} action="open modal" />
+      <AccountFromMnemSubmit danger_temp_mnem={""} />
 
       <button
         class="uk-button uk-button-default uk-align-right"
         on:click={keygen}
       >
-        Generate Different Keys
+      {$_("wallet.keygen.btn_generate_keys_2")}
       </button>
     </div>
 
@@ -89,7 +89,7 @@
 
     <div class="uk-flex uk-flex-center">
       <h3 class="uk-text-light uk-text-muted uk-text-center">
-        After you generate an account and secret phrase, you'll need someone to send one 0L coin to that account for it to be created on chain.
+        {$_("wallet.keygen.description")}
       </h3>
     </div>
 
@@ -98,7 +98,7 @@
         class="uk-button uk-button-secondary uk-align-right"
         on:click={keygen}
       >
-        Generate Keys
+      {$_("wallet.keygen.btn_generate_keys")}
       </button>
 
     </div>

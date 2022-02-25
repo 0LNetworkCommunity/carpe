@@ -1,4 +1,37 @@
 {
-  "title": "标题",
-  "test": "test"
+  "title": "title_en",
+  "layout": {
+      "connection_error": {
+         "title": "Oops, We Can't Connect to 0L Network",
+         "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
+      },
+      "error_accordion": {
+          "title": "Error Report",
+          "category": "Error Category",
+          "id": "ID"
+      }
+  },
+  "wallet": {
+    "carpe": "CARPE",
+    "btn_new_account": "创建账号",
+    "btn_restore_account": "恢复账号",
+    "newbie_message": "Looks like you don't have any accounts",
+    "reminder_create": {
+      "card_title": "Onboarding",
+      "message_headline": "You have generated keys for an account, but it does not yet exist on chain.",
+      "message_prefix": "Join our community on ",
+      "message_suffix": " and provide us your Onboard Key to get onboarded.",
+      "onboard_key": "ONBOARD KEY"
+    },
+    "account_list": {
+      "nickname": "Nickname",
+      "address": "Address",
+      "authkey": "Authkey",
+      "balance": "Balance",
+      "offline": "offline",
+      "loading": "loading",
+      "account_on_chain": "Account Not On Chain",
+      "message": " Your balance will go down for every transaction you send, including mining."
+    }
+  }
 }
