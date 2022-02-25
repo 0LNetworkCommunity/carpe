@@ -3,12 +3,13 @@
   import AccountSettings from "./AccountSettings.svelte";
   import UpdateNetwork from "./UpdateNetwork.svelte";
   import SetWalletType from "../txs/SetWalletType.svelte";
+  import { _ } from "svelte-i18n";
 
 </script>
 
 <main>
   <div class="uk-flex uk-flex-center">
-    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">Settings</h2>
+    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("wallet.settings.title")}</h2>
   </div>
 
   <UpdateNetwork />

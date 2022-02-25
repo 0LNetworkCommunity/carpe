@@ -71,6 +71,30 @@
       "version": "Version",
       "branch": "Branch",
       "commit": "Commit"
+    },
+    "settings": {
+      "title": "SETTINGS",
+      "network_settings": {
+        "title": "NETWORK SETTINGS",
+        "list_of_peers": "LIST OF PEERS",
+        "description": "Choose a playlist of upstream nodes, so you can access the chain. Network connections will try the list in random order until a connection is made. Simply link to any playlist.json file here to update peers.",
+        "playlist": "Update Playlist of Network Servers",
+        "override_peers": "OVERRIDE PEERS",
+        "override_peers_description": "You can force using a different peer. You can only choose one peer with this setting. It will remove the playlist. This will now be a list of one element.",
+        "url_of_upstream_node": "URL of upstream node",
+        "btn_update": "UPDATE",
+        "upstream_title": "FETCH A NEW WAYPOINT FROM UPSTREAM",
+        "upstream_subtitle": "Most waypoint issues can easily be fixed by fetching an updated one from a connected upstream peer.",
+        "btn_fetch_new_waypoint": "Fetch New Waypoint",
+        "btn_cancel": "Cancel",
+        "btn_submit": "USE PLAYLIST"
+      },
+      "account_settings": {
+        "title": "ACCOUNT SETTINGS",
+        "btn_remove": "REMOVE ACCOUNT",
+        "comfirm": "Confirm remove accounts from this device? This is not reversable.",
+        "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
+      }
     }
   }
 }
