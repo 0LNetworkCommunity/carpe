@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { _ } from 'svelte-i18n';
   import { onMount } from "svelte";
   import { Link } from "svelte-navigator";
   import {
@@ -71,7 +72,7 @@
 
         <div uk-grid class="uk-flex uk-flex-center">
           <Link to={routes.keygen}>
-            <button class="uk-button uk-button-secondary"> New Account </button>
+            <button class="uk-button uk-button-secondary"> New Account {$_('title')}</button>
           </Link>
           <Link to={routes.accountFromMnem}>
             <button class="uk-button uk-button-default">Restore Account </button>

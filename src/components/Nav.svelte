@@ -4,6 +4,8 @@
   import { signingAccount, isInit } from "../accounts";
   import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
   import { routes } from "../routes";
+  import { setupI18n, locale} from "../lang/i18n";
+  import LocaleSelector from "./layout/LocaleSelector.svelte";
 
   const secondaryRoutes = [
     routes.settings,
@@ -34,7 +36,11 @@
     {#if secondaryRoutes.includes($location.pathname)}
       <Link to={routes.home}><span class="uk-text-muted" uk-icon="icon: arrow-left; ratio: 2" /></Link>
     {/if}
-    
+    <div> <LocaleSelector
+      value={$locale}
+      on:locale-changed={e =>
+        setupI18n({ withLocale: e.detail }) }
+    /> </div>
     <div class="uk-navbar-center">
       <ul class="uk-navbar-nav { init && myAccountIsOnChain ? "" : "uk-invisible"}">
           <li><Link to={routes.home}>  Wallet </Link></li> 
