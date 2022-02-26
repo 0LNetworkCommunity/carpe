@@ -1,7 +1,7 @@
 {
   "nav": {
     "wallet": "钱包",
-    "miner": "挖矿",
+    "miner": "矿工",
     "transactions": "交易"
   },
   "layout": {
@@ -99,6 +99,107 @@
       "btn_remove": "删除账号",
       "comfirm": "确认要从本设备中删除该账号吗？本操作不可逆。",
       "description": "本操作不会删除链上的账号，只会删除本设备上的信息，如果您没有保存助记词，您的账号就会被锁定，没有人能够帮你恢复这个账号。"
+    }
+  },
+  "miner": {
+    "title": "矿工",
+    "miner_backlog": {
+      "title": "同步塔（Tower）证明",
+      "subtitle": "手动提交本地证明",
+      "in_process": "进行中",
+      "btn_submit": "提交本地积压证明"
+    },
+    "miner_phases": {
+      "backlog_started": "积压监听启动",
+      "backlog_in_process": "积压提交进行中",
+      "backlog_complete": "积压处理完成",
+      "mining_enabled": "启动挖矿",
+      "proof_started": "证明请求开始",
+      "proof_complete": "证明完成"
+    },
+    "miner_process": {
+      "status_complete": "证明完成",
+      "status_in_process": "挖矿进行中",
+      "notes": "百分比是估算的 <br> 他是根据你前一个证明的消耗时间估算的。",
+      "notes2": "超过100%，意味着它比它前一个证明所花的时间要长。"
+    },
+    "tower_state": {
+      "local_height": "本地塔高",
+      "on_chain_height": "链上塔高",
+      "mined_in_last_epoch": "上期数",
+      "sent_in_this_epoch": "本期数",
+      "empty": "本设备上未发现证明",
+      "proof_more": "您提交的证明数已达到今天的最大值（72）",
+      "proof_less": "证明数量未达到获取奖励的最小值 (8)",
+      "proof_ok": "恭喜你完成了本期需要的最小的证明数（8）"
+    },
+    "cards": {
+      "cant_start": {
+        "title": "您的账号在链上还不存在。",
+        "body": "只有您的账号在链上激活以后，挖矿程序才能启动。可能您已经在本地创建了地址，但是还没有人往您的地址里发送资产。"
+      },
+      "disco_error": {
+        "title": "中断",
+        "body": "（中）Looks like there's a gap in the proofs you are submitting. Each proof needs to reference the previous one, and the proof was rejected because of this."
+      },
+      "epoch_status": {
+        "empty_title": "中No proofs sent",
+        "empty_body": "中There are no proofs saved to the chain. When you successfully submit your first proof, you will see some stats here.",
+        "in_process_title": "中Keep it up",
+        "in_process_body": "中Your account needs to submit at least 8 proofs per day (epoch) to receive a reward. You will receive the reward on the next day.",
+        "complete_title:": "中Success!",
+        "complete_body": "中Your account has submitted enough proofs today (minimum 8 proofs per epoch). You should receive rewards at the start of next epoch.",
+        "exceed_title": "中Whoa",
+        "exceed_body:": "中You have mined 72 proofs, the maximum number of proofs per epoch. The tower can keep making proofs but they will only be accepted in the next epoch."
+      },
+      "first_proof": {
+        "title": "中Let's mine your first proof",
+        "body": "<p>中 Hang tight! This will take at least 30mins, maybe up to 1hr</p> <p> You will see your balance go down while you mine proofs. If you reach the minimum per day, you will receive a reward, on the next day (epoch).</p> <p> Check your computer settings so that the computer doesn't sleep when the screen shuts off. You want the miner running while you're not here.</p>",
+        "body_disabled": "中Turn the switch on to start mining!"
+      },
+      "invalid_proof": {
+        "title": "中Cannot Verify Proof",
+        "body": "中Weird. This proof was rejected because it is not a valid \"delay proof\". This is usually because parameters are not set correctly."
+      },
+      "oops": {
+        "title": "中Oops",
+        "body": "中Looks like there's an error with mining a delay proof"
+      },
+      "too_many_proofs": {
+        "title": "中Too Many Proofs",
+        "body": "Looks like you've sent more proofs than expected during the last 24 hours. The chain expects a max {maxNum} proofs during each epoch. On the next epoch your proofs will begin to be submitted again."
+      },
+      "wrong_difficulty": {
+        "title": "中Wrong Difficulty",
+        "body": "中Looks like you're sending a proof with the wrong difficulty parameters to the chain. Check you are connected to the right network with the correct difficulty settings."
+      },
+      "sync_proof": {
+        "title": "中Syncing your proofs",
+        "body": "中Proofs awaiting transaction: {delta} ",
+        "body_0": "中Something is wrong, you have more proofs on-chain, than on this device. You may be missing proofs locally."
+      }
+    }
+  },
+  "txs": {
+    "deno_tx": "Demo Tx",
+    "onboard": {
+      "title": "中Onboard an Account",
+      "await": "处理中",
+      "btn_onboard": "中Onboard",
+      "btn_cancel": "中Cancel",
+      "no_balance_title": "中Low Balance",
+      "no_balance_body1": "中Onboarding {onboard_key} was not successful.",
+      "no_balance_body2": "中Looks like you have less than 2 coins in your account, this means you won't be able to onboard anyone."
+    },
+    "set_wallet_type": {
+      "title": "中Set your Account Type",
+      "subtitle": " 中Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
+      "btn_slow": "中Set Slow Wallet",
+      "btn_confirm_slow": "中Confirm Set Slow Wallet? This is not reversable.",
+      "slow_confirm": "中Set Slow",
+      "btn_community": "中Set Community Wallet",
+      "btn_confirm_community": "中Set Community",
+      "community_confirm": "中Confirm Set Community Wallet? This is not reversable."
     }
   }
 }
