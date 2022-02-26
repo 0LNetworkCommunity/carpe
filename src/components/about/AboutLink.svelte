@@ -11,4 +11,4 @@
   
 </script>
 
-<Link to="about" class="uk-text-muted">{$_("wallet.about.about")} - v{appVersion.version}</Link>
+<Link to="about" class="uk-text-muted">{$_("about.about")} - v{appVersion.version}</Link>

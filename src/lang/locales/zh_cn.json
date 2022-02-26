@@ -1,5 +1,9 @@
 {
-  "title": "中文",
+  "nav": {
+    "wallet": "钱包",
+    "miner": "挖矿",
+    "transactions": "交易"
+  },
   "layout": {
       "connection_error": {
          "title": "Oops, 我们无法连上OL网络",
@@ -64,37 +68,37 @@
       "switch_account": "切换账号",
       "setting": "设置",
       "developers": "开发着"
+    }
+  },
+  "about": {
+    "about": "关于",
+    "release": "版本信息",
+    "version": "版本号",
+    "branch": "分支",
+    "commit": "Commit"
+  },
+  "settings": {
+    "title": "设置",
+    "network_settings": {
+      "title": "网络设置",
+      "list_of_peers": "节点列表",
+      "description": "选择节点列表，帮助您连上网络，Carpe 会在列表中随机链接列表中的节点，直至链接成功。你可以链接任何的playlist.json文件来更新节点。",
+      "playlist": "更新网络节点",
+      "override_peers": "覆盖节点",
+      "override_peers_description": "您可以强制使用某一个节点，只需要设置一个节点，他会替换上面的节点列表.",
+      "url_of_upstream_node": "上游节点URL",
+      "btn_update": "更新",
+      "upstream_title": "获取新的WAYPOINT",
+      "upstream_subtitle": "大多数的WAYPOINT问题可以痛殴刷新新的Waypoint来解决",
+      "btn_fetch_new_waypoint": "获取新的Waypoint",
+      "btn_cancel": "取消",
+      "btn_submit": "使用节点列表"
     },
-    "about": {
-      "about": "关于",
-      "release": "版本信息",
-      "version": "版本号",
-      "branch": "分支",
-      "commit": "Commit"
-    },
-    "settings": {
-      "title": "设置",
-      "network_settings": {
-        "title": "网络设置",
-        "list_of_peers": "节点列表",
-        "description": "选择节点列表，帮助您连上网络，Carpe 会在列表中随机链接列表中的节点，直至链接成功。你可以链接任何的playlist.json文件来更新节点。",
-        "playlist": "更新网络节点",
-        "override_peers": "覆盖节点",
-        "override_peers_description": "您可以强制使用某一个节点，只需要设置一个节点，他会替换上面的节点列表.",
-        "url_of_upstream_node": "上游节点URL",
-        "btn_update": "更新",
-        "upstream_title": "获取新的WAYPOINT",
-        "upstream_subtitle": "大多数的WAYPOINT问题可以痛殴刷新新的Waypoint来解决",
-        "btn_fetch_new_waypoint": "获取新的Waypoint",
-        "btn_cancel": "取消",
-        "btn_submit": "使用节点列表"
-      },
-      "account_settings": {
-        "title": "账号设置",
-        "btn_remove": "删除账号",
-        "comfirm": "确认要从本设备中删除该账号吗？本操作不可逆。",
-        "description": "本操作不会删除链上的账号，只会删除本设备上的信息，如果您没有保存助记词，您的账号就会被锁定，没有人能够帮你恢复这个账号。"
-      }
+    "account_settings": {
+      "title": "账号设置",
+      "btn_remove": "删除账号",
+      "comfirm": "确认要从本设备中删除该账号吗？本操作不可逆。",
+      "description": "本操作不会删除链上的账号，只会删除本设备上的信息，如果您没有保存助记词，您的账号就会被锁定，没有人能够帮你恢复这个账号。"
     }
   }
 }

@@ -15,6 +15,7 @@
   import CommonErrors from "./CommonErrors.svelte";
   import { getTowerChainView } from "../../miner_invoke";
   import EpochStatus from "./cards/EpochStatus.svelte";
+  import { _ } from "svelte-i18n";
 
   let newbie = false;
   let loading = true;
@@ -57,7 +58,7 @@
   {/if}
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
-      Miner
+      {$_("miner.title")}
     </h2>
   </div>
 

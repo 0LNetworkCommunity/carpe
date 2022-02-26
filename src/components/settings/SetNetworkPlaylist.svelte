@@ -32,7 +32,7 @@ import { _ } from "svelte-i18n";
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
-        <span> {$_("wallet.settings.network_settings.playlist")} </span>
+        <span> {$_("settings.network_settings.playlist")} </span>
         <input
           class="uk-input"
           type="text"
@@ -45,10 +45,10 @@ import { _ } from "svelte-i18n";
         <span
           on:click={updateNetwork}
           class="uk-button uk-button-primary uk-align-right"
-          id="add-btn">{$_("wallet.settings.network_settings.btn_submit")}</span
+          id="add-btn">{$_("settings.network_settings.btn_submit")}</span
         >
         <Link to={routes.home}>
-          <span class="uk-button uk-button-default uk-align-right">{$_("wallet.settings.network_settings.btn_cancel")}</span>
+          <span class="uk-button uk-button-default uk-align-right">{$_("settings.network_settings.btn_cancel")}</span>
         </Link>
       </div>
     </fieldset>

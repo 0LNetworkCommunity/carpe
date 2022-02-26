@@ -20,18 +20,18 @@ import { _ } from "svelte-i18n";
 
 <main class="uk-margin" >
   <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
-    {$_("wallet.settings.account_settings.title")}
+    {$_("settings.account_settings.title")}
   </h4>
 
   <div class="uk-margin" uk-grid>
     <div>
 
     <div class="uk-inline">
-    <button class="uk-button uk-button-danger" type="button">{$_("wallet.settings.account_settings.btn_remove")}</button>
+    <button class="uk-button uk-button-danger" type="button">{$_("settings.account_settings.btn_remove")}</button>
       <div uk-dropdown="mode: click">
-          <p>{$_("wallet.settings.account_settings.confirm")}</p>
+          <p>{$_("settings.account_settings.confirm")}</p>
           <button class="uk-button uk-button-danger" on:click={removeAccounts}>
-            {$_("wallet.settings.account_settings.btn_remove")}
+            {$_("settings.account_settings.btn_remove")}
           </button>
       </div>
     </div>
@@ -39,7 +39,7 @@ import { _ } from "svelte-i18n";
     </div>
     <div>
       <span>
-        {$_("wallet.settings.account_settings.description")}
+        {$_("settings.account_settings.description")}
       </span>
     </div>
   </div>

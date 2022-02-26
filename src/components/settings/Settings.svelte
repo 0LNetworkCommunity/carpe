@@ -9,7 +9,7 @@
 
 <main>
   <div class="uk-flex uk-flex-center">
-    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("wallet.settings.title")}</h2>
+    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("settings.title")}</h2>
   </div>
 
   <UpdateNetwork />

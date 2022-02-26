@@ -38,19 +38,19 @@ import { _ } from "svelte-i18n";
 </script>
 
 <main>
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("wallet.settings.network_settings.title")} {current_chain_id}</h4>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.network_settings.title")} {current_chain_id}</h4>
 
-  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("wallet.settings.network_settings.list_of_peers")} </h5>
-  <p>{$_("wallet.settings.network_settings.description")}</p>
+  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.network_settings.list_of_peers")} </h5>
+  <p>{$_("settings.network_settings.description")}</p>
   <SetNetworkPlaylist />
   
-  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">{$_("wallet.settings.network_settings.override_peers")}</h5>
-  <p>{$_("wallet.settings.network_settings.override_peers_description")}</p>
+  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">{$_("settings.network_settings.override_peers")}</h5>
+  <p>{$_("settings.network_settings.override_peers_description")}</p>
 
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
-        <span>{$_("wallet.settings.network_settings.url_of_upstream_node")}</span>
+        <span>{$_("settings.network_settings.url_of_upstream_node")}</span>
         <input
           class="uk-input"
           type="text"
@@ -62,12 +62,12 @@ import { _ } from "svelte-i18n";
       <span
           on:click={updateNetwork}
           class="uk-button uk-button-primary uk-align-right"
-          id="add-btn">{$_("wallet.settings.network_settings.btn_update")}</span
+          id="add-btn">{$_("settings.network_settings.btn_update")}</span
         >
 
-      <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">{$_("wallet.settings.network_settings.upstream_title")}</h5>
-      <p>{$_("wallet.settings.network_settings.upstream_subtitle")}</p>
-      <button class="uk-button uk-button-default" on:click={refreshWaypoint}>{$_("wallet.settings.network_settings.btn_fetch_new_waypoint")}</button>
+      <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">{$_("settings.network_settings.upstream_title")}</h5>
+      <p>{$_("settings.network_settings.upstream_subtitle")}</p>
+      <button class="uk-button uk-button-default" on:click={refreshWaypoint}>{$_("settings.network_settings.btn_fetch_new_waypoint")}</button>
 
     </fieldset>
   </form>
