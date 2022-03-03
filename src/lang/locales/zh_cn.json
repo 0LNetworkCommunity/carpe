@@ -155,10 +155,10 @@
         "empty_body": "中There are no proofs saved to the chain. When you successfully submit your first proof, you will see some stats here.",
         "in_process_title": "中Keep it up",
         "in_process_body": "中Your account needs to submit at least 8 proofs per day (epoch) to receive a reward. You will receive the reward on the next day.",
-        "complete_title:": "中Success!",
+        "complete_title": "中Success!",
         "complete_body": "中Your account has submitted enough proofs today (minimum 8 proofs per epoch). You should receive rewards at the start of next epoch.",
         "exceed_title": "中Whoa",
-        "exceed_body:": "中You have mined 72 proofs, the maximum number of proofs per epoch. The tower can keep making proofs but they will only be accepted in the next epoch."
+        "exceed_body": "中You have mined 72 proofs, the maximum number of proofs per epoch. The tower can keep making proofs but they will only be accepted in the next epoch."
       },
       "first_proof": {
         "title": "中Let's mine your first proof",
