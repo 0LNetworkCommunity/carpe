@@ -84,7 +84,7 @@
 
                   {formatBalance(a.balance)}
                 </div>
-              {:else if a.on_chain == undefined}
+              {:else if a.balance == null}
                 loading...
               {:else if !isConnected}
                 offline..
