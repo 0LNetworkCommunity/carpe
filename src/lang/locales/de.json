@@ -79,6 +79,14 @@
   },
   "settings": {
     "title": "SETTINGS",
+    "langapp_settings": {
+      "title": "Language and Appearance",
+      "lang": "Language",
+      "lang_description": "Choose the language used to display",
+      "lang_button": "German",
+      "theme": "Theme",
+      "theme_description": "Choose the theme"
+    },
     "network_settings": {
       "title": "NETWORK SETTINGS",
       "list_of_peers": "LIST OF PEERS",

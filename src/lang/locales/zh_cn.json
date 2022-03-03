@@ -79,6 +79,14 @@
   },
   "settings": {
     "title": "设置",
+    "langapp_settings": {
+      "title": "Language and Appearance",
+      "lang": "Language",
+      "lang_description": "Choose the language used to display",
+      "lang_button": "中文",
+      "theme": "Theme",
+      "theme_description": "Choose the theme"
+    },
     "network_settings": {
       "title": "网络设置",
       "list_of_peers": "节点列表",

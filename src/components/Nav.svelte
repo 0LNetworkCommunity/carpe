@@ -4,8 +4,7 @@
   import { signingAccount, isInit } from "../accounts";
   import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
   import { routes } from "../routes";
-  import { setupI18n, locale, _, getLocaleFromNavigator} from "../lang/i18n";
-  import LocaleSelector from "./layout/LocaleSelector.svelte";
+  import { setupI18n, _, getLocaleFromNavigator} from "../lang/i18n";
 
   setupI18n({ withLocale: getLocaleFromNavigator() });
 
@@ -18,10 +17,10 @@
   ]
 
   const location = useLocation();
-  
+
   let myAccountIsOnChain = false;  // assume initialized until not
   let init = false;  // assume initialized until not
-  onMount(async () => {    
+  onMount(async () => {
     isInit.subscribe(i => init = i);
 
     signingAccount.subscribe(myAccount => {
@@ -38,14 +37,9 @@
     {#if secondaryRoutes.includes($location.pathname)}
       <Link to={routes.home}><span class="uk-text-muted" uk-icon="icon: arrow-left; ratio: 2" /></Link>
     {/if}
-    <div> <LocaleSelector
-      value={$locale}
-      on:locale-changed={e =>
-        setupI18n({ withLocale: e.detail }) }
-    /> </div>
     <div class="uk-navbar-center">
       <ul class="uk-navbar-nav { init && myAccountIsOnChain ? "" : "uk-invisible"}">
-          <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li> 
+          <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li>
           <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>
           <li><Link to={routes.transactions}>{$_("nav.transactions")}</Link></li>
       </ul>
