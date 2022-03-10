@@ -80,10 +80,10 @@
               {/if}
             </td>
             <td>
-              {#if a.wallet_type != null && a.wallet_type != "None"}
-                {a.wallet_type}
-              {:else}
+              {#if a.wallet_type === "None"}
                 Normal
+              {:else}
+                {a.wallet_type}
               {/if}
             </td>
           </tr>
