@@ -21,6 +21,7 @@ url = { version = "^2.1", features = [ "serde" ] }
 ol = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
 diem-wallet = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
 diem-types = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
+diem-client = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
 tower = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
 onboard = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}
 diem-crypto = { git = "https://github.com/olsf/libra.git", branch = "carpe-build"}

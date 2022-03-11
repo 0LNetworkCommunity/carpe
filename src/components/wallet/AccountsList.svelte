@@ -5,7 +5,6 @@
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
   import { carpeTick } from "../../tick";
-  import { to_number } from "svelte/internal";
 
   UIkit.use(Icons);
 
@@ -22,7 +21,7 @@
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-  }
+  }   
 </script>
 
 <main>

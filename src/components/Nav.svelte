@@ -40,6 +40,7 @@
           <li><Link to={routes.home}>  Wallet </Link></li> 
           <li><Link to={routes.miner}>Miner</Link></li>
           <li><Link to={routes.transactions}>Transactions</Link></li>
+          <li><Link to={routes.events}>Events</Link></li>
       </ul>
     </div>
 

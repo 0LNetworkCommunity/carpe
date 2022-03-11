@@ -58,8 +58,9 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       // Accounts
       is_init,
-      get_all_accounts,
       refresh_accounts,
+      get_all_accounts,
+      get_account_events,
       add_account,
       keygen,
       init_from_mnem,

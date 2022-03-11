@@ -12,12 +12,14 @@ use anyhow::{bail, Error};
 use diem_types::account_address::AccountAddress;
 use diem_types::transaction::authenticator::AuthenticationKey;
 use diem_wallet::WalletLibrary;
+use diem_client::views::EventView;
 use ol_keys::scheme::KeyScheme;
 use ol_keys::wallet;
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 
 use super::get_balance;
+use super::get_events;
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
   pub accounts: Vec<AccountEntry>,
@@ -111,6 +113,13 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
   let all = read_accounts()?;
   Ok(all)
+}
+
+
+#[tauri::command(async)]
+pub fn get_account_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
+  let events = get_events(account, 0, 1000)?;
+  Ok(events)
 }
 
 #[tauri::command(async)]
