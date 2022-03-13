@@ -112,102 +112,102 @@
   "miner": {
     "title": "Mineur",
     "miner_backlog": {
-      "title": "Sync Tower Proofs",
-      "subtitle": "Manually resubmit local proofs",
-      "in_process": "Backlog in Progress",
-      "btn_submit": "Submit Local Backlog"
+      "title": "Synchroniser vos preuves",
+      "subtitle": "Re-soumettre les preuves locales",
+      "in_process": "Backlog en cours de soumission",
+      "btn_submit": "Soumettre le backlog"
     },
     "miner_phases": {
-      "backlog_started": "Backlog Listener Started",
-      "backlog_in_process": "Backlog in Progress",
-      "backlog_complete": "Backlog Complete",
-      "mining_enabled": "Mining Enabled",
-      "proof_started": "Proof start request received",
-      "proof_complete": "Proof Complete"
+      "backlog_started": "Auditeur du backlog lancé",
+      "backlog_in_process": "Backlog en cours",
+      "backlog_complete": "Backlog complété",
+      "mining_enabled": "Minage activé",
+      "proof_started": "Requête de démarrage recue",
+      "proof_complete": "Preuve complétée"
     },
     "miner_process": {
-      "status_complete": "Proof Complete",
-      "status_in_process": "Mining in Progress",
-      "notes": "The percentage is an estimate. <br> It is based on your previous proof's elapsed time.",
-      "notes2": "Over 100% only means this is taking longer than previous proof"
+      "status_complete": "Preuve complétée",
+      "status_in_process": "Minage en cours",
+      "notes": "Le pourcentage est une estimation. <br>Il est basé sur le temps pris par les preuves précédentes.",
+      "notes2": "Dépassé 100% signifie juste que la preuve en cours prend plus de temps que la précédente."
     },
     "tower_state": {
-      "local_height": "Local Tower Height",
-      "on_chain_height": "On-chain Tower Height",
-      "mined_in_last_epoch": "Last Epoch Mined",
-      "sent_in_this_epoch": "roofs Sent this Epoch",
-      "empty": "No proofs found on device",
-      "proof_more": "You have submitted max proofs today (max 72)",
-      "proof_less": "Insufficient proofs to receive a reward today (min 8)",
-      "proof_ok": "Your account has submitted enough proofs today (min 8)"
+      "local_height": "Hauteur locale de la Tour",
+      "on_chain_height": "Hauteur On-chain de la Tour",
+      "mined_in_last_epoch": "Dernier Epoch Miné",
+      "sent_in_this_epoch": "Preuves envoyées pour cette Epoch",
+      "empty": "Pas de preuve locales trouvée",
+      "proof_more": "Vous avez soumis le maximum de preuves (max 72)",
+      "proof_less": "Nombre de preuves insuffisantes pour recevoir la récompense (min 8)",
+      "proof_ok": "Vous avez soumis suffisament de preuve (min 8)"
     },
     "cards": {
       "cant_start": {
-        "title": "Your account does not exist on chain yet ",
-        "body": "The miner can't start until the account can be found on chain. Maybe you've generated new keys locally, but no one has sent any coins to that address?"
+        "title": "Votre compte n'est présentement pas sur la chaine",
+        "body": "Le mineur ne peut débuter tant que votre compte n'est pas sur la chaine. Si vous avez généré vos clés localement, quelqu'un doit vous envoyer des coins."
       },
       "disco_error": {
-        "title": "Discontinuity ",
-        "body": "Looks like there's a gap in the proofs you are submitting. Each proof needs to reference the previous one, and the proof was rejected because of this."
+        "title": "Discontinuité ",
+        "body": "Il semblerait qu'il y a une preuve manquante dans votre soumission. Chaque preuve a besoin de sa précédente, et votre preuve a été rejetée de fait."
       },
       "epoch_status": {
-        "empty_title": "No proofs sent",
-        "empty_body": "There are no proofs saved to the chain. When you successfully submit your first proof, you will see some stats here.",
-        "in_process_title": "Keep it up",
-        "in_process_body": "Your account needs to submit at least 8 proofs per day (epoch) to receive a reward. You will receive the reward on the next day.",
-        "complete_title": "Success!",
-        "complete_body": "Your account has submitted enough proofs today (minimum 8 proofs per epoch). You should receive rewards at the start of next epoch.",
-        "exceed_title": "Whoa",
-        "exceed_body": "You have mined 72 proofs, the maximum number of proofs per epoch. The tower can keep making proofs but they will only be accepted in the next epoch."
+        "empty_title": "Pas de preuves envoyées",
+        "empty_body": "Aucune preuve présente sur la chaine. Quand vous aurez soumis votre première preuve, vous trouverez vos stats ici.",
+        "in_process_title": "Allez!",
+        "in_process_body": "Votre compte doit soumettre au moins 8 preuves par epoch pour recevoir une récompense. Les récompenses sont distribuée au prochain epoch.",
+        "complete_title": "Victoire!",
+        "complete_body": "Votre compte a soumis assez de preuve pour cet epoch (minimum 8 preuves par epoch). Vous recevrez votre récompense au début du prochain epoch.",
+        "exceed_title": "Whoa!!!",
+        "exceed_body": "Vous avez miné 72 proofs, le nombre maximum de preuves par epoch. La Tower peut continuer de miner des preuves, mais elles seront soumises au prochain epoch."
       },
       "first_proof": {
-        "title": "Let's mine your first proof",
-        "body": "<p> Hang tight! This will take at least 30mins, maybe up to 1hr</p> <p> You will see your balance go down while you mine proofs. If you reach the minimum per day, you will receive a reward, on the next day (epoch).</p> <p> Check your computer settings so that the computer doesn't sleep when the screen shuts off. You want the miner running while you're not here.</p>",
-        "body_disabled": "Turn the switch on to start mining!"
+        "title": "Minons votre première preuve",
+        "body": "<p> Un peu de patience! Cela va prendre de 30mins à 1hr</p> <p> Votre solde diminura en minant vos preuves. Si vous soumettez le minimum requis, vous recevrez votre récompense au prochain epoch.</p> <p> Désactivez les paramètres de Veille sur votre ordinateur afin que le mineur continue de tourner en votre absence.</p>",
+        "body_disabled": "Clickez sur le switch pour démarrer le minage!"
       },
       "invalid_proof": {
-        "title": "Cannot Verify Proof",
-        "body": "Weird. This proof was rejected because it is not a valid \"delay proof\". This is usually because parameters are not set correctly."
+        "title": "Vérification impossible des preuves",
+        "body": "Bizarre. Cette preuve a été rejetée car elle n'est pas une \"delay proof\" valide. Ceci est habituellement dû à des mauvais paramètres."
       },
       "oops": {
         "title": "Oops",
-        "body": "Looks like there's an error with mining a delay proof"
+        "body": "Une erreur s'est passée durant le minage de la \"delay proof\""
       },
       "too_many_proofs": {
-        "title": "Too Many Proofs",
-        "body": "Looks like you've sent more proofs than expected during the last 24 hours. The chain expects a max {maxNum} proofs during each epoch. On the next epoch your proofs will begin to be submitted again."
+        "title": "Trop de preuves",
+        "body": "Vous aurez soumis plus de preuves que prévu durant cet epoch. La chaine supporte un max de {maxNum} preuves durant chaque epoch. Vos preuves additionnelles seront soumises au prochain epoch."
       },
       "wrong_difficulty": {
-        "title": "Wrong Difficulty",
-        "body": "Looks like you're sending a proof with the wrong difficulty parameters to the chain. Check you are connected to the right network with the correct difficulty settings."
+        "title": "Mauvaise Difficulté",
+        "body": "La difficulté de votre preuve ne correspond pas à celle de la chaîne. Vérifiez que vous êtes connecté au bon réseau avec le bon paramètre de difficulté."
       },
       "sync_proof": {
-        "title": "Syncing your proofs",
-        "body": "Proofs awaiting transaction: {delta} ",
-        "body_0": "Something is wrong, you have more proofs on-chain, than on this device. You may be missing proofs locally."
+        "title": "Synchronisation des preuves",
+        "body": "Preuves en attente de la transaction : {delta} ",
+        "body_0": "Vous avez plus de preuves sur la chaîne que sur votre dispositif. Il vous manque des preuves localement."
       }
     }
   },
   "txs": {
     "deno_tx": "Demo Tx",
     "onboard": {
-      "title": "Onboard an Account",
+      "title": "Embarquer un Compte",
       "await": "",
-      "btn_onboard": "Onboard",
-      "btn_cancel": "Cancel",
-      "no_balance_title": "Low Balance",
-      "no_balance_body1": "Onboarding {onboard_key} was not successful.",
-      "no_balance_body2": "Looks like you have less than 2 coins in your account, this means you won't be able to onboard anyone."
+      "btn_onboard": "Embarquer",
+      "btn_cancel": "Annuler",
+      "no_balance_title": "Solde insuffisant",
+      "no_balance_body1": "L'embarquement de {onboard_key} a échoué.",
+      "no_balance_body2": "Vous avez moins que 2 coins dans votre compte, vous ne pouvez donc pas embarquer d'autres comptes."
     },
     "set_wallet_type": {
-      "title": "Set your Account Type",
-      "subtitle": " Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
-      "btn_slow": "Set Slow Wallet",
-      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversable.",
-      "slow_confirm": "Set Slow",
-      "btn_community": "Set Community Wallet",
-      "btn_confirm_community": "Set Community",
-      "community_confirm": "Confirm Set Community Wallet? This is not reversable."
+      "title": "Modifier le Type de Compte",
+      "subtitle": " Soyez sûr de vous, cette opération est irreversible! Les porte-feuilles \"Slow\" et \"Community\" sont permanents.",
+      "btn_slow": "Changer en \"Slow\"",
+      "btn_confirm_slow": "Confirmez le passage en \"Slow\"? Cet opération est irreversible.",
+      "slow_confirm": "Changer en \"Slow\"",
+      "btn_community": "Changer en \"Community\"",
+      "btn_confirm_community": "Changer en \"Community\"",
+      "community_confirm": "Confirmez le passage en \"Community\"? Cet opération est irreversible"
     }
   }
 }
