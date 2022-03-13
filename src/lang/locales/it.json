@@ -1,0 +1,213 @@
+{
+  "nav": {
+    "wallet": "Wallet",
+    "miner": "Miner",
+    "transactions": "Transaction"
+  },
+  "layout": {
+      "connection_error": {
+         "title": "Oops, We Can't Connect to 0L Network",
+         "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
+      },
+      "error_accordion": {
+          "title": "Error Report",
+          "category": "Error Category",
+          "id": "ID"
+      }
+  },
+  "wallet": {
+    "wallet": "Wallet",
+    "carpe": "CARPE",
+    "btn_new_account": "New Account",
+    "btn_restore_account": "Restore Account",
+    "newbie_message": "Looks like you don't have any accounts",
+    "reminder_create": {
+      "card_title": "Onboarding",
+      "message_headline": "You have generated keys for an account, but it does not yet exist on chain.",
+      "message_prefix": "Join our community on ",
+      "message_suffix": " and provide us your Onboard Key to get onboarded.",
+      "onboard_key": "ONBOARD KEY"
+    },
+    "account_list": {
+      "nickname": "Nickname",
+      "address": "Address",
+      "authkey": "Authkey",
+      "balance": "Balance",
+      "offline": "offline",
+      "loading": "loading",
+      "account_on_chain": "Account Not On Chain",
+      "message": " Your balance will go down for every transaction you send, including mining."
+    },
+    "keygen": {
+      "title": "Create New Account",
+      "description": "After you generate an account and secret phrase, you'll need someone to send one 0L coin to that account for it to be created on chain.",
+      "btn_generate_keys": "Generate Keys",
+      "btn_generate_keys_2": "Generate Different Keys",
+      "btn_create_account": "Create This Account",
+      "account_address": "Account Address",
+      "onboard_key": "Onboarding Key",
+      "onboard_key_description": "This is also known as an Auth Key. For now you'll need it to be able to create the account on chain.",
+      "securite_recovery_phrase": "SECRET RECOVERY PHRASE",
+      "securite_note": "This is your secret account password (mnemonic). If you lose it no one can help you! Write it down now.",
+      "account_tips": "Your account does not exist yet on chain. You'll need to give someone your Onboarding Key so that they can create your account."
+    },
+    "account_from_mnem_submit": {
+      "title":" Heads Up!",
+      "body": " <p>Are you sure you wrote down your mnemonic phrase?</p> <p>You won't be able to recover your account without it. No one can help you if lose it.</p><p>This is the last opportunity to write it down.</p>",
+      "btn_cancel": "Let me check again",
+      "btn_submit": "Submit Now",
+      "btn_submiting": "Submiting"
+    },
+    "account_from_mnem_from": {
+      "title": "RESTORE ACCOUNT",
+      "description": "Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions",
+      "placeholder": "Recovery Mnemonic"
+    },
+    "account_switcher": {
+      "select_account": "Select Account",
+      "switch_account": "Switch Account",
+      "setting": "Go To Setting",
+      "developers": "Developers"
+    }
+  },
+  "about": {
+    "about": "About",
+    "release": "Release",
+    "version": "Version",
+    "branch": "Branch",
+    "commit": "Commit"
+  },
+  "settings": {
+    "title": "SETTINGS",
+    "langapp_settings": {
+      "title": "Language and Appearance",
+      "lang": "Language",
+      "lang_description": "Choose the language used to display",
+      "lang_button": "Italian",
+      "theme": "Theme",
+      "theme_description": "Choose the theme"
+    },
+    "network_settings": {
+      "title": "NETWORK SETTINGS",
+      "list_of_peers": "LIST OF PEERS",
+      "description": "Choose a playlist of upstream nodes, so you can access the chain. Network connections will try the list in random order until a connection is made. Simply link to any playlist.json file here to update peers.",
+      "playlist": "Update Playlist of Network Servers",
+      "override_peers": "OVERRIDE PEERS",
+      "override_peers_description": "You can force using a different peer. You can only choose one peer with this setting. It will remove the playlist. This will now be a list of one element.",
+      "url_of_upstream_node": "URL of upstream node",
+      "btn_update": "UPDATE",
+      "upstream_title": "FETCH A NEW WAYPOINT FROM UPSTREAM",
+      "upstream_subtitle": "Most waypoint issues can easily be fixed by fetching an updated one from a connected upstream peer.",
+      "btn_fetch_new_waypoint": "Fetch New Waypoint",
+      "btn_cancel": "Cancel",
+      "btn_submit": "USE PLAYLIST"
+    },
+    "account_settings": {
+      "title": "ACCOUNT SETTINGS",
+      "btn_remove": "REMOVE ACCOUNT",
+      "comfirm": "Confirm remove accounts from this device? This is not reversable.",
+      "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
+    }
+  },
+  "miner": {
+    "title": "Miner",
+    "miner_backlog": {
+      "title": "Sync Tower Proofs",
+      "subtitle": "Manually resubmit local proofs",
+      "in_process": "Backlog in Progress",
+      "btn_submit": "Submit Local Backlog"
+    },
+    "miner_phases": {
+      "backlog_started": "Backlog Listener Started",
+      "backlog_in_process": "Backlog in Progress",
+      "backlog_complete": "Backlog Complete",
+      "mining_enabled": "Mining Enabled",
+      "proof_started": "Proof start request received",
+      "proof_complete": "Proof Complete"
+    },
+    "miner_process": {
+      "status_complete": "Proof Complete",
+      "status_in_process": "Mining in Progress",
+      "notes": "The percentage is an estimate. <br> It is based on your previous proof's elapsed time.",
+      "notes2": "Over 100% only means this is taking longer than previous proof"
+    },
+    "tower_state": {
+      "local_height": "Local Tower Height",
+      "on_chain_height": "On-chain Tower Height",
+      "mined_in_last_epoch": "Last Epoch Mined",
+      "sent_in_this_epoch": "roofs Sent this Epoch",
+      "empty": "No proofs found on device",
+      "proof_more": "You have submitted max proofs today (max 72)",
+      "proof_less": "Insufficient proofs to receive a reward today (min 8)",
+      "proof_ok": "Your account has submitted enough proofs today (min 8)"
+    },
+    "cards": {
+      "cant_start": {
+        "title": "Your account does not exist on chain yet ",
+        "body": "The miner can't start until the account can be found on chain. Maybe you've generated new keys locally, but no one has sent any coins to that address?"
+      },
+      "disco_error": {
+        "title": "Discontinuity ",
+        "body": "Looks like there's a gap in the proofs you are submitting. Each proof needs to reference the previous one, and the proof was rejected because of this."
+      },
+      "epoch_status": {
+        "empty_title": "No proofs sent",
+        "empty_body": "There are no proofs saved to the chain. When you successfully submit your first proof, you will see some stats here.",
+        "in_process_title": "Keep it up",
+        "in_process_body": "Your account needs to submit at least 8 proofs per day (epoch) to receive a reward. You will receive the reward on the next day.",
+        "complete_title": "Success!",
+        "complete_body": "Your account has submitted enough proofs today (minimum 8 proofs per epoch). You should receive rewards at the start of next epoch.",
+        "exceed_title": "Whoa",
+        "exceed_body": "You have mined 72 proofs, the maximum number of proofs per epoch. The tower can keep making proofs but they will only be accepted in the next epoch."
+      },
+      "first_proof": {
+        "title": "Let's mine your first proof",
+        "body": "<p> Hang tight! This will take at least 30mins, maybe up to 1hr</p> <p> You will see your balance go down while you mine proofs. If you reach the minimum per day, you will receive a reward, on the next day (epoch).</p> <p> Check your computer settings so that the computer doesn't sleep when the screen shuts off. You want the miner running while you're not here.</p>",
+        "body_disabled": "Turn the switch on to start mining!"
+      },
+      "invalid_proof": {
+        "title": "Cannot Verify Proof",
+        "body": "Weird. This proof was rejected because it is not a valid \"delay proof\". This is usually because parameters are not set correctly."
+      },
+      "oops": {
+        "title": "Oops",
+        "body": "Looks like there's an error with mining a delay proof"
+      },
+      "too_many_proofs": {
+        "title": "Too Many Proofs",
+        "body": "Looks like you've sent more proofs than expected during the last 24 hours. The chain expects a max {maxNum} proofs during each epoch. On the next epoch your proofs will begin to be submitted again."
+      },
+      "wrong_difficulty": {
+        "title": "Wrong Difficulty",
+        "body": "Looks like you're sending a proof with the wrong difficulty parameters to the chain. Check you are connected to the right network with the correct difficulty settings."
+      },
+      "sync_proof": {
+        "title": "Syncing your proofs",
+        "body": "Proofs awaiting transaction: {delta} ",
+        "body_0": "Something is wrong, you have more proofs on-chain, than on this device. You may be missing proofs locally."
+      }
+    }
+  },
+  "txs": {
+    "deno_tx": "Demo Tx",
+    "onboard": {
+      "title": "Onboard an Account",
+      "await": "",
+      "btn_onboard": "Onboard",
+      "btn_cancel": "Cancel",
+      "no_balance_title": "Low Balance",
+      "no_balance_body1": "Onboarding {onboard_key} was not successful.",
+      "no_balance_body2": "Looks like you have less than 2 coins in your account, this means you won't be able to onboard anyone."
+    },
+    "set_wallet_type": {
+      "title": "Set your Account Type",
+      "subtitle": " Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
+      "btn_slow": "Set Slow Wallet",
+      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversable.",
+      "slow_confirm": "Set Slow",
+      "btn_community": "Set Community Wallet",
+      "btn_confirm_community": "Set Community",
+      "community_confirm": "Confirm Set Community Wallet? This is not reversable."
+    }
+  }
+}
