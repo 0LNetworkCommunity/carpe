@@ -22,20 +22,20 @@
     "btn_restore_account": "恢复账号",
     "newbie_message": "看起来你还没有创建账号。",
     "reminder_create": {
-      "card_title": "登录",
-      "message_headline": "您的账号的密钥已经创建成功，但是还没有上链。",
+      "card_title": "激活",
+      "message_headline": "您的账号已经创建成功，但是还没有激活。",
       "message_prefix": "加我们的",
-      "message_suffix": " 社区并提供您的登录密钥，我们会帮助你完成登录。",
-      "onboard_key": "登录密钥（AuthKey）"
+      "message_suffix": " 社区并提供您的激活码，我们会帮助你完成激活。",
+      "onboard_key": "激活码（AuthKey）"
     },
     "account_list": {
       "nickname": "昵称",
       "address": "地址",
-      "authkey": "授权密钥",
+      "authkey": "激活码",
       "balance": "余额",
       "offline": "断线",
       "loading": "加载中",
-      "account_on_chain": "账号未上链",
+      "account_on_chain": "未激活",
       "message": " 所有的发送的交易（包括：挖矿）都会消耗您的余额。"
     },
     "keygen": {
@@ -45,11 +45,11 @@
       "btn_generate_keys_2": "换一个密钥",
       "btn_create_account": "创建这个密钥",
       "account_address": "账户地址",
-      "onboard_key": "登录密钥（AuthKey）",
-      "onboard_key_description": "这个登录密钥用来将你账户登录到链上的",
+      "onboard_key": "激活码（AuthKey）",
+      "onboard_key_description": "这个激活码用来将你账户激活到链上",
       "securite_recovery_phrase": "账号助记词",
       "securite_note": "这是您账号的助记词。如果丢失，没有人可以帮你。请把他记下来，不要告诉任何人。",
-      "account_tips": "您的账号还没有上链，您需要将您的登录密钥发给一个人帮助您完成账号创建。"
+      "account_tips": "您的账号还没有上链，您需要将您的激活码发给一个人帮助您完成账号创建。"
     },
     "account_from_mnem_submit": {
       "title":" 备份好了吗？",
@@ -80,12 +80,12 @@
   "settings": {
     "title": "设置",
     "langapp_settings": {
-      "title": "Language and Appearance",
-      "lang": "Language",
-      "lang_description": "Choose the language used to display",
+      "title": "语言和显示",
+      "lang": "语言",
+      "lang_description": "请选择您要显示的语言",
       "lang_button": "中文",
-      "theme": "Theme",
-      "theme_description": "Choose the theme"
+      "theme": "主题",
+      "theme_description": "请选择您喜欢的主题"
     },
     "network_settings": {
       "title": "网络设置",
@@ -148,66 +148,66 @@
       },
       "disco_error": {
         "title": "中断",
-        "body": "（中）Looks like there's a gap in the proofs you are submitting. Each proof needs to reference the previous one, and the proof was rejected because of this."
+        "body": "你提交的证明中存在间隙. 每一个证明都需要引用前一个证明，因此您的证明被拒绝了。"
       },
       "epoch_status": {
-        "empty_title": "中No proofs sent",
-        "empty_body": "中There are no proofs saved to the chain. When you successfully submit your first proof, you will see some stats here.",
-        "in_process_title": "中Keep it up",
-        "in_process_body": "中Your account needs to submit at least 8 proofs per day (epoch) to receive a reward. You will receive the reward on the next day.",
-        "complete_title": "中Success!",
-        "complete_body": "中Your account has submitted enough proofs today (minimum 8 proofs per epoch). You should receive rewards at the start of next epoch.",
-        "exceed_title": "中Whoa",
-        "exceed_body": "中You have mined 72 proofs, the maximum number of proofs per epoch. The tower can keep making proofs but they will only be accepted in the next epoch."
+        "empty_title": "尚未提交证明",
+        "empty_body": "尚未在链上找到任何证明，如果你成功提交了一个证明，您就可以在这里看到统计数据了。",
+        "in_process_title": "加油！",
+        "in_process_body": "您的账户每天（epoch）至少提交8个证明，第二天才会收到奖励。",
+        "complete_title": "成功！",
+        "complete_body": "您已经完成了今日所需的证明，（最少8个每天（epoch）. 您将会在明天（下一个epoch）开始的时候收到奖励",
+        "exceed_title": "哇喔！",
+        "exceed_body": "您已经提交了72个证明，这是每天可以提交的最大数量。塔会继续产生证明，但是在下一个周期开始之前不会被接受."
       },
       "first_proof": {
-        "title": "中Let's mine your first proof",
-        "body": "<p>中 Hang tight! This will take at least 30mins, maybe up to 1hr</p> <p> You will see your balance go down while you mine proofs. If you reach the minimum per day, you will receive a reward, on the next day (epoch).</p> <p> Check your computer settings so that the computer doesn't sleep when the screen shuts off. You want the miner running while you're not here.</p>",
-        "body_disabled": "中Turn the switch on to start mining!"
+        "title": "开始我们的第一个证明吧！",
+        "body": "<p>这将会需要大约30分钟或者1小时左右的时间</p> <p> 挖取证明将会消耗您账户中一定数量的资产. 如果您提交的证明数达到每天所需的最小值, 你就会在第二天（epoch）收到奖励.</p> <p> 记得检查你的计算机确保您关闭显示器时，您的机器不会进入休眠状态。这不是运行矿工的地方。</p>",
+        "body_disabled": "打开开关开始挖矿!"
       },
       "invalid_proof": {
-        "title": "中Cannot Verify Proof",
-        "body": "中Weird. This proof was rejected because it is not a valid \"delay proof\". This is usually because parameters are not set correctly."
+        "title": "证明验证失败！",
+        "body": "奇怪. 这个证明被拒绝了，因为它不是一个有效的“延时证明”。这通常是参数设置错误。"
       },
       "oops": {
-        "title": "中Oops",
-        "body": "中Looks like there's an error with mining a delay proof"
+        "title": "Oops",
+        "body": "挖取证明的过程中出错。"
       },
       "too_many_proofs": {
-        "title": "中Too Many Proofs",
-        "body": "Looks like you've sent more proofs than expected during the last 24 hours. The chain expects a max {maxNum} proofs during each epoch. On the next epoch your proofs will begin to be submitted again."
+        "title": "太多错误",
+        "body": "您在最近24小时内已经提交了太多的证明. 每个周期最多接受{maxNum}证明. 您可以在下一个周期开始的时候重新提交."
       },
       "wrong_difficulty": {
-        "title": "中Wrong Difficulty",
-        "body": "中Looks like you're sending a proof with the wrong difficulty parameters to the chain. Check you are connected to the right network with the correct difficulty settings."
+        "title": "错误的难度",
+        "body": "您证明文件中使用了错误的难度参数。检查您链接的网络是否使用了正确的难度参数。"
       },
       "sync_proof": {
-        "title": "中Syncing your proofs",
-        "body": "中Proofs awaiting transaction: {delta} ",
-        "body_0": "中Something is wrong, you have more proofs on-chain, than on this device. You may be missing proofs locally."
+        "title": "同步证明",
+        "body": "等待证明交易确认 {delta} ",
+        "body_0": "有些小错误, 您本地的证明比链上的多，也有可能是您本地丢失了一些证明文件。"
       }
     }
   },
   "txs": {
-    "deno_tx": "Demo Tx",
+    "deno_tx": "测试交易",
     "onboard": {
-      "title": "中Onboard an Account",
+      "title": "激活账号",
       "await": "处理中",
-      "btn_onboard": "中Onboard",
-      "btn_cancel": "中Cancel",
-      "no_balance_title": "中Low Balance",
-      "no_balance_body1": "中Onboarding {onboard_key} was not successful.",
-      "no_balance_body2": "中Looks like you have less than 2 coins in your account, this means you won't be able to onboard anyone."
+      "btn_onboard": "激活",
+      "btn_cancel": "取消",
+      "no_balance_title": "余额不足",
+      "no_balance_body1": "{onboard_key}尚未激活成功.",
+      "no_balance_body2": "您的账户资产少于2个币，您不可以激活任何人。"
     },
     "set_wallet_type": {
-      "title": "中Set your Account Type",
-      "subtitle": " 中Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
-      "btn_slow": "中Set Slow Wallet",
-      "btn_confirm_slow": "中Confirm Set Slow Wallet? This is not reversable.",
-      "slow_confirm": "中Set Slow",
-      "btn_community": "中Set Community Wallet",
-      "btn_confirm_community": "中Set Community",
-      "community_confirm": "中Confirm Set Community Wallet? This is not reversable."
+      "title": "设置账户类型",
+      "subtitle": "确认您知道你在做什么. 本操作不可逆. 慢钱包和社区钱包是永久性的。",
+      "btn_slow": "设为慢钱包",
+      "btn_confirm_slow": "确认设置慢钱包吗？本操作不可逆。",
+      "slow_confirm": "设为慢钱包",
+      "btn_community": "设为社区钱包",
+      "btn_confirm_community": "设为社区钱包",
+      "community_confirm": "确认要设为社区钱包吗？本操作不可逆。"
     }
   }
 }
