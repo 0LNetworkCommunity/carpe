@@ -14,6 +14,8 @@
   export let isMining: boolean;
   export let isConnected: boolean;
 
+  console.log(account_list);
+
   // TODO: move to tauri commands
   function formatBalance(balance) {
     const balanceScaled = balance / 1000000;
@@ -65,8 +67,8 @@
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
             <td>
-              {#if a.on_chain == null}
-              {$_("wallet.account_list.offline")}...
+              {#if !a.on_chain}
+                {$_("wallet.account_list.offline")}...
               {:else if a.on_chain}
                 <div class="uk-inline">
                   
