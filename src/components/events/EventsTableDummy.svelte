@@ -1,9 +1,13 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
+
+  let received = $_("events.received_payment");
+
   let dummyEvents = [
-    { version: 99999999, type: "RRRRRRR RRRRRRRR", amount: "000.00", sender: "00000000000000000000000000000000", receiver: "00000000000000000000000000000000" },
-    { version: 99999999, type: "RRRRRRR RRRRRRRR", amount: "000.00", sender: "00000000000000000000000000000000", receiver: "00000000000000000000000000000000" },
-    { version: 99999999, type: "RRRRRRR RRRRRRRR", amount: "000.00", sender: "00000000000000000000000000000000", receiver: "00000000000000000000000000000000" },
-    { version: 99999999, type: "RRRRRRR RRRRRRRR", amount: "000.00", sender: "00000000000000000000000000000000", receiver: "00000000000000000000000000000000" },
+    { version: 99999999, type: received, amount: "000.00", sender: "00000000000000000000000000000000", receiver: "00000000000000000000000000000000" },
+    { version: 99999999, type: received, amount: "000.00", sender: "00000000000000000000000000000000", receiver: "00000000000000000000000000000000" },
+    { version: 99999999, type: received, amount: "000.00", sender: "00000000000000000000000000000000", receiver: "00000000000000000000000000000000" },
+    { version: 99999999, type: received, amount: "000.00", sender: "00000000000000000000000000000000", receiver: "00000000000000000000000000000000" },
   ]
 </script>
 
@@ -11,11 +15,11 @@
   <table class="uk-table uk-table-divider">
     <thead>
       <tr>
-        <th class="uk-text-right"><span class="dummy-container">Version</span></th>
-        <th class="uk-text-center"><span class="dummy-container">Type</span></th>
-        <th class="uk-text-right"><span class="dummy-container">Amount</span></th>
-        <th class="uk-text-center"><span class="dummy-container">Sender</span></th>
-        <th class="uk-text-center"><span class="dummy-container">Receiver</span></th>
+        <th class="uk-text-right"><span class="dummy-container">{$_("events.version")}</span></th>
+        <th class="uk-text-center"><span class="dummy-container">{$_("events.type")}</span></th>
+        <th class="uk-text-right"><span class="dummy-container">{$_("events.amount")}</span></th>
+        <th class="uk-text-center"><span class="dummy-container">{$_("events.sender")}</span></th>
+        <th class="uk-text-center"><span class="dummy-container">{$_("events.receiver")}</span></th>
       </tr>
     </thead>
     <tbody>

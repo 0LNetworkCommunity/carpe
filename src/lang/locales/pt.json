@@ -209,5 +209,15 @@
       "btn_confirm_community": "Set Community",
       "community_confirm": "Confirm Set Community Wallet? This is not reversable."
     }
+  },
+  "events": {
+    "account_events": "Eventos da Conta",
+    "version": "Versão",
+    "type": "Tipo",
+    "amount": "Valor",
+    "sender": "Pagador",
+    "receiver": "Recebedor",
+    "received_payment": "Pagamento Recebido",
+    "sent_payment": "Pagamento Enviado"
   }
 }

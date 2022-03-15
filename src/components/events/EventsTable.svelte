@@ -2,13 +2,14 @@
   /* Account events table with pagination */
   import { get_locale } from "../../accountActions";
   import PageNumber from "./PageNumber.svelte";
+  import { _ } from "svelte-i18n";
 
   export let events;
   
   const maxPageSize = 5;
   const eventTypesDic = {
-    receivedpayment: "Received Payment",
-    sentpayment: "Sent Payment",
+    receivedpayment: $_("events.received_payment"),
+    sentpayment: $_("events.sent_payment")
   }
 
   /* TODO remove this after local tests
@@ -70,11 +71,11 @@
   <table class="uk-table uk-table-divider">
     <thead>
       <tr>
-        <th class="uk-text-right">Version</th>
-        <th class="uk-text-center">Type</th>
-        <th class="uk-text-right">Amount</th>
-        <th class="uk-text-center">Sender</th>
-        <th class="uk-text-center">Receiver</th>
+        <th class="uk-text-right">{$_("events.version")}</th>
+        <th class="uk-text-center">{$_("events.type")}</th>
+        <th class="uk-text-right">{$_("events.amount")}</th>
+        <th class="uk-text-center">{$_("events.sender")}</th>
+        <th class="uk-text-center">{$_("events.receiver")}</th>
       </tr>
     </thead>
     <tbody>
