@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+import { _ } from "svelte-i18n";
   import { isTowerNewbie, tower } from "../../../miner";
 
   let actual_proofs: number;
@@ -19,30 +20,26 @@
 <main>
   <div class="uk-card uk-card-default uk-card-body">
     {#if actual_proofs >= 72}
-      <h3 class="uk-card-title uk-text-uppercase uk-text-light uk-text-muted">Whoa</h3>
+      <h3 class="uk-card-title uk-text-uppercase uk-text-light uk-text-muted">{$_("miner.cards.epoch_status.exceed_title")}</h3>
       <p class="uk-text-light uk-text-muted">
-        You have mined 72 proofs, the maximum number of proofs per epoch. The
-        tower can keep making proofs but they will only be accepted in the next
-        epoch.
+        {$_("miner.cards.epoch_status.exceed_body")}
       </p>
     {:else if actual_proofs >= 8}
-      <h3 class="uk-card-title uk-text-uppercase uk-text-light uk-text-muted">Success!</h3>
+      <h3 class="uk-card-title uk-text-uppercase uk-text-light uk-text-muted">{$_("miner.cards.epoch_status.complete_title")}</h3>
       <p class="uk-text-light uk-text-muted">
-        Your account has submitted enough proofs today (minimum 8 proofs per
-        epoch). You should receive rewards at the start of next epoch.
+        {$_("miner.cards.epoch_status.complete_body")}
       </p>
 
       {:else if newbie}
       <!-- I don't think this view is ever accessible -->
-      <h3 class="uk-card-title uk-text-uppercase uk-text-light uk-text-muted">No proofs sent</h3>
+      <h3 class="uk-card-title uk-text-uppercase uk-text-light uk-text-muted">{$_("miner.cards.epoch_status.empty_title")}</h3>
       <p class="uk-text-light uk-text-muted">
-        There are no proofs saved to the chain. When you successfully submit your first proof, you will see some stats here.
+        {$_("miner.cards.epoch_status.empty_body")}
       </p>
       {:else}
-      <h3 class="uk-card-title uk-text-uppercase uk-text-light uk-text-muted">Keep it up</h3>
+      <h3 class="uk-card-title uk-text-uppercase uk-text-light uk-text-muted">{$_("miner.cards.epoch_status.in_process_title")}</h3>
       <p class="uk-text-light uk-text-muted">
-        Your account needs to submit at least 8 proofs per day (epoch) to
-        receive a reward. You will receive the reward on the next day.
+        {$_("miner.cards.epoch_status.in_process_body")}
       </p>
     {/if}
   </div>

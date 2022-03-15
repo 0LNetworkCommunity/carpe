@@ -4,6 +4,7 @@
   import type { CarpeError } from "../../../carpeError";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
+  import { _ } from "svelte-i18n";
 
   let result_string;
   let this_error: CarpeError;
@@ -19,7 +20,7 @@
     carpeErrorLog.subscribe((e) => {
       result_string = "";
       if (e) {
-        this_error = e;
+        this_error = e[0];
       }
     });
   });
@@ -28,9 +29,9 @@
 
 <main>
   <CardError>
-    <span slot="title">Oops</span>
+    <span slot="title">{$_("miner.cards.oops.title")}</span>
     <div slot="body">
-      <p>Looks like there's an error with mining a delay proof</p>
+      <p>{$_("miner.cards.oops.body")}</p>
       <ErrorAccordion error={this_error} />
     </div>
   </CardError>

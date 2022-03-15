@@ -5,6 +5,7 @@
   import CardError from "../../layout/CardError.svelte";
   import type { CarpeError } from "../../../carpeError";
   import { displayDiscontinuity } from "../../../carpeErrorUI";
+  import { _ } from "svelte-i18n";
 
   let display: CarpeError = null;
 
@@ -18,10 +19,10 @@
 {#if display}
   <main>
     <CardError>
-      <span slot="title">Discontinuity</span>
+      <span slot="title">{$_("miner.cards.disco_error.title")} </span>
       <div slot="body">
         <p>
-          Looks like there's a gap in the proofs you are submitting. Each proof needs to reference the previous one, and the proof was rejected because of this.
+          {$_("miner.cards.disco_error.body")} 
         </p>
         <ErrorAccordion error={display} />
       </div>

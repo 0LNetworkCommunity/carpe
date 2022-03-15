@@ -2,6 +2,7 @@
   import { backlogInProgress } from "../../miner";
   import { submitBacklog } from "../../miner_invoke";
   import { onMount } from "svelte";
+import { _ } from "svelte-i18n";
 
   let inProgress = false;
   onMount(async () => {
@@ -11,18 +12,18 @@
 
 <main class="uk-margin" >
   <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
-    Sync Tower Proofs
+    {$_("miner.miner_backlog.title")}
   </h4>
   <div class="uk-margin uk-grid">
     <div>
       <p>
-        Manually resubmit local proofs
+        {$_("miner.miner_backlog.subtitle")}
       </p>
       {#if inProgress}
-        <button class="uk-button" disabled>Backlog in Progress</button>
+        <button class="uk-button" disabled>{$_("miner.miner_backlog.in_process")}</button>
       {:else}
         <button class="uk-button uk-button-default" on:click={() => submitBacklog()}>
-          Submit Local Backlog
+          {$_("miner.miner_backlog.btn_submit")}
         </button>
       {/if}
     </div>

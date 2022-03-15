@@ -1,4 +1,8 @@
 {
+  "compilerOptions": {
+    "module": "es2020",
+    "resolveJsonModule": true
+  },
   "extends": "@tsconfig/svelte/tsconfig.json",
 
   "include": ["src/**/*", "tests/**/*.ts"],

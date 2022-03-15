@@ -24,6 +24,10 @@
   import { isCarpeInit} from "./accountActions";
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
+  import { getLocaleFromNavigator, setupI18n } from "./lang/i18n";
+ 
+  // ...
+  setupI18n({ withLocale: getLocaleFromNavigator() });
 
   let unlistenProofStart;
   let unlistenAck;
@@ -33,6 +37,7 @@
   let debug = false;
 
   onMount(async () => {
+
     isCarpeInit();
 
     getEnv();

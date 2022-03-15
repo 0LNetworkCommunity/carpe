@@ -1,19 +1,22 @@
 <script lang="ts">
+import { _ } from "svelte-i18n";
+
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
   
   let danger_temp_mnem: string;
 </script>
 
 <main>  
-  <h3 class="uk-text-light uk-text-muted uk-text-uppercase">Restore Account</h3>
-  <p> Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions</p>
+  <h3 class="uk-text-light uk-text-muted uk-text-uppercase">
+    {$_("wallet.account_from_mnem_from.title")}</h3>
+  <p> {$_("wallet.account_from_mnem_from.description")}</p>
   <form id="account-form">
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
         <input
           class="uk-input"
           type="text"
-          placeholder="Recovery Mnemonic"
+          placeholder="{$_("wallet.account_from_mnem_from.placeholder")}"
           bind:value={danger_temp_mnem}
         />
       </div>

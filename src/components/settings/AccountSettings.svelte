@@ -1,5 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
+import { _ } from "svelte-i18n";
   import { loadAccounts } from "../../accountActions";
   import { raise_error } from "../../carpeError";
   import { notify_success } from "../../carpeNotify";
@@ -19,18 +20,18 @@
 
 <main class="uk-margin" >
   <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
-    Account Settings
+    {$_("settings.account_settings.title")}
   </h4>
 
   <div class="uk-margin" uk-grid>
     <div>
 
     <div class="uk-inline">
-    <button class="uk-button uk-button-danger" type="button">Remove Accounts</button>
+    <button class="uk-button uk-button-danger" type="button">{$_("settings.account_settings.btn_remove")}</button>
       <div uk-dropdown="mode: click">
-          <p>Confirm remove accounts from this device? This is not reversable.</p>
+          <p>{$_("settings.account_settings.confirm")}</p>
           <button class="uk-button uk-button-danger" on:click={removeAccounts}>
-            Remove Accounts
+            {$_("settings.account_settings.btn_remove")}
           </button>
       </div>
     </div>
@@ -38,10 +39,7 @@
     </div>
     <div>
       <span>
-        This does not delete any accounts from the chain. It only removes the
-        accounts from this device. If you do not have your recovery codes
-        (mnemonic) stored somewhere, you may be locked out of this account
-        permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC.
+        {$_("settings.account_settings.description")}
       </span>
     </div>
   </div>

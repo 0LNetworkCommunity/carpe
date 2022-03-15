@@ -11,7 +11,7 @@
 <main>
   
   <div class="uk-container uk-container-expand uk-margin-top">
-    <a uk-navbar-toggle-icon uk-toggle="target: #offcanvas-nav-primary" />
+    <b uk-navbar-toggle-icon uk-toggle="target: #offcanvas-nav-primary" />
 
     <ul id="component-nav" class="uk-switcher">
       <li id="miner-panel">
