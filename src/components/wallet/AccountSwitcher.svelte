@@ -7,6 +7,7 @@
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
 import { carpeTick } from "../../tick";
+import { _ } from "svelte-i18n";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -27,7 +28,7 @@ import { carpeTick } from "../../tick";
           {#if my_account}
             {my_account.nickname}
           {:else}
-            Select Account
+          {$_("wallet.account_switcher.select_account")}
           {/if}
         </span>
       {/if}
@@ -36,7 +37,8 @@ import { carpeTick } from "../../tick";
     <div uk-dropdown>
       <ul class="uk-nav uk-dropdown-nav">
         {#if account_list && account_list.length > 0}
-          <li class="uk-text-muted">Switch Account</li>
+          <li class="uk-text-muted">
+            {$_("wallet.account_switcher.switch_account")}</li>
           <li class="uk-nav-divider" />
           {#if !account_list} <!-- TODO: move up --> 
             <p>loading...</p>
@@ -57,11 +59,13 @@ import { carpeTick } from "../../tick";
         {/if}
         <li>
           <a href={"#"}>
-            <Link to="settings" class="uk-text-muted">Go to Settings</Link></a>
+            <Link to="settings" class="uk-text-muted">
+              {$_("wallet.account_switcher.setting")}</Link></a>
         </li>
         <li>
           <a href={"#"}>
-            <Link to="dev" class="uk-text-muted">Developers</Link></a>
+            <Link to="dev" class="uk-text-muted">
+              {$_("wallet.account_switcher.developers")}</Link></a>
         </li>
         <li class="uk-text-muted">
           <AboutLink />

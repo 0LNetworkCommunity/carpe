@@ -1,4 +1,6 @@
 <script lang="ts">
+import { _ } from "svelte-i18n";
+
 import SetNetworkPlaylist from "../settings/SetNetworkPlaylist.svelte";
 
 import CardError from "./CardError.svelte";
@@ -9,11 +11,9 @@ import CardError from "./CardError.svelte";
 <main>
 
   <CardError>
-    <span slot="title">Oops, We Can't Connect to 0L Network</span>
+    <span slot="title">{$_("layout.connection_error.title")}</span>
     <div slot="body">
-      <p> This is likely because the upstream peer (server) you use is down.</p>
-      <h3> Don't worry, your account and coins are safe.</h3>
-      <p>If you need to update or refresh your peers you can do so here:</p>
+      {@html $_('layout.connection_error.body')}
       <SetNetworkPlaylist />
     </div>
   </CardError>

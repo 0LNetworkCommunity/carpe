@@ -4,6 +4,7 @@
   import CardError from "../../layout/CardError.svelte";
   import type { CarpeError } from "../../../carpeError";
 import { displayInvalidProof } from "../../../carpeErrorUI";
+import { _ } from "svelte-i18n";
 
   let display: CarpeError = null;
 
@@ -17,10 +18,10 @@ import { displayInvalidProof } from "../../../carpeErrorUI";
 {#if display}
   <main>
     <CardError>
-      <span slot="title">Cannot Verify Proof</span>
+      <span slot="title">{$_("miner.cards.invalid_proof.title")}</span>
       <div slot="body">
         <p>
-          Weird. This proof was rejected because it is not a valid "delay proof". This is usually because parameters are not set correctly.
+          {$_("miner.cards.invalid_proof.body")}
         </p>
         <ErrorAccordion error={display} />
       </div>

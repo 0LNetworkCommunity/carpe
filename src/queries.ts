@@ -11,5 +11,5 @@ export const get_balance = async (a: AccountEntry): Promise<number> => {
       return Number(b)
     })
     .catch((e) => raise_error(e, true, "get_balance"));
-  return await p;
+  return 0;
 };

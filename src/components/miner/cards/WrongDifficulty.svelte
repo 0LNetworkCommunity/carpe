@@ -4,6 +4,7 @@
   import CardError from "../../layout/CardError.svelte";
   import type { CarpeError } from "../../../carpeError";
   import { displayWrongDifficulty } from "../../../carpeErrorUI";
+import { _ } from "svelte-i18n";
 
   let display: CarpeError = null;
 
@@ -17,11 +18,10 @@
 {#if display}
   <main>
     <CardError>
-      <span slot="title">Wrong Difficulty</span>
+      <span slot="title">{$_("miner.cards.wrong_difficulty.title")}</span>
       <div slot="body">
         <p>
-          Looks like you're sending a proof with the wrong difficulty parameters to the chain.
-          Check you are connected to the right network with the correct difficulty settings.
+          {$_("miner.cards.wrong_difficulty.body")}
         </p>
         <ErrorAccordion error={display} />
       </div>

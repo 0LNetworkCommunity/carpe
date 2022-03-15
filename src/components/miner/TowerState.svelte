@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+import { _ } from "svelte-i18n";
   import { tower } from "../../miner";
 
   let towerState;
@@ -15,10 +16,10 @@
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
-          <th class="uk-text-center">Local Tower Height</th>
-          <th class="uk-text-center">On-chain Tower Height</th>
-          <th class="uk-text-center">Last Epoch Mined</th>
-          <th class="uk-text-center">Proofs Sent this Epoch</th>
+          <th class="uk-text-center">{$_("miner.tower_state.local_height")}</th>
+          <th class="uk-text-center">{$_("miner.tower_state.on_chain_height")}</th>
+          <th class="uk-text-center">{$_("miner.tower_state.mined_in_last_epoch")}</th>
+          <th class="uk-text-center">{$_("miner.tower_state.sent_in_this_epoch")}</th>
         </tr>
       </thead>
       <tbody>
@@ -32,7 +33,7 @@
             <div class="uk-inline">
               <span uk-icon="icon: minus-circle"/>
               <div uk-dropdown>
-                  No proofs found on device
+                {$_("miner.tower_state.empty")}
               </div>
             </div>
 
@@ -50,11 +51,11 @@
               {towerState.on_chain.actual_count_proofs_in_epoch}
               <div uk-dropdown>
                 {#if towerState.on_chain.actual_count_proofs_in_epoch >= 72}
-                  You have submitted max proofs today (max 72)
+                  {$_("miner.tower_state.proof_more")}
                 {:else if towerState.on_chain.actual_count_proofs_in_epoch >= 8}
-                  Your account has submitted enough proofs today (min 8)
+                  {$_("miner.tower_state.proof_ok")}
                 {:else}
-                  Insufficient proofs to receive a reward today (min 8)
+                  {$_("miner.tower_state.proof_less")}
                 {/if}
               </div>
             </div>

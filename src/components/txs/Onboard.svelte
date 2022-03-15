@@ -9,6 +9,7 @@
   import { onMount } from "svelte";
   import CardError from "../layout/CardError.svelte";
   import { displayInsufficientBalance } from "../../carpeErrorUI";
+import { _ } from "svelte-i18n";
 
   let onboard_key;
   let noBalance = false;
@@ -41,7 +42,7 @@
 
 <main>
   <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
-    Onboard an Account
+    {$_("txs.onboard.title")}
   </h4>
   <form id="account-form">
     <fieldset class="uk-fieldset">
@@ -56,16 +57,16 @@
 
       <div>
         {#if waiting}
-          <span class="uk-button uk-align-right" disabled>Awaiting Tx</span>
+          <span class="uk-button uk-align-right" disabled>{$_("txs.onboard.await")}</span>
         {:else}
           <span
           on:click={createUser}
           class="uk-button uk-button-primary uk-align-right" id="create-acc" 
-          >Onboard</span>
+          >{$_("txs.onboard.btn_onboard")}</span>
         {/if}
 
         <Link to={routes.home}>
-          <span class="uk-button uk-button-default uk-align-right">Cancel</span>
+          <span class="uk-button uk-button-default uk-align-right">{$_("txs.onboard.btn_cancel")}</span>
         </Link>
       </div>
     </fieldset>
@@ -79,14 +80,13 @@
 
   {#if noBalance}
     <CardError>
-      <span slot="title">Low Balance</span>
+      <span slot="title">{$_("txs.onboard.no_balance_title")}</span>
       <div slot="body">
         <p>
-          Onboarding {onboard_key} was not successful.
+          {$_("txs.onboard.no_balance_body1", {values: {onboard_key}})}
         </p>
         <p>
-          Looks like you have less than 2 coins in your account, this means you
-          won't be able to onboard anyone.
+          {$_("txs.onboard.no_balance_body2")}
         </p>
       </div>
     </CardError>

@@ -1,5 +1,6 @@
 <script>
   import { onMount } from "svelte";
+  import { _ } from "svelte-i18n";
   import {
     backlogListenerReady,
     minerLoopEnabled,
@@ -31,32 +32,32 @@
     <ul class="uk-list uk-list-divider">
       <li>
         <span uk-icon={listenerReady ? "check" : "close"} />
-        Backlog Listener Started:
+        {$_("miner.miner_phrases.backlog_started")}:
       </li>
 
       <li>
         <span uk-icon={loopEnabled ? "check" : "close"} />
-        Mining Enabled:
+        {$_("miner.miner_phrases.mining_enabled")}:
       </li>
 
       <li>
         <span uk-icon={proofStarted ? "check" : "close"} />
-        Proof start request received:
+        {$_("miner.miner_phrases.proof_started")}:
       </li>
 
       <li>
         <span uk-icon={isProofComplete ? "check" : "close"} />
-        Proof Complete:
+        {$_("miner.miner_phrases.proof_complete")}:
       </li>
 
       <li>
         <span uk-icon={isBacklogInProgress ? "check" : "close"} />
-        Backlog in Progress:
+        {$_("miner.miner_phrases.backlog_in_process")}:
       </li>
 
       <li>
         <span uk-icon={isBacklogComplete ? "check" : "close"} />
-        Backlog Complete:
+        {$_("miner.miner_phrases.backlog_complete")}:
       </li>
     </ul>
   </div>

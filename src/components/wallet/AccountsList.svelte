@@ -5,6 +5,7 @@
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
   import { carpeTick } from "../../tick";
+  import { _ } from "svelte-i18n";
 
   UIkit.use(Icons);
 
@@ -32,10 +33,10 @@
       <thead>
         <tr>
           <th />
-          <th>Nickname</th>
-          <th>Address</th>
-          <th>Authkey</th>
-          <th>Balance</th>
+          <th>{$_("wallet.account_list.nickname")}</th>
+          <th>{$_("wallet.account_list.address")}</th>
+          <th>{$_("wallet.account_list.authkey")}</th>
+          <th>{$_("wallet.account_list.balance")}</th>
         </tr>
       </thead>
       <tbody>
@@ -65,7 +66,7 @@
             <td>{a.authkey.slice(0, 5)}...</td>
             <td>
               {#if a.on_chain == null}
-                offline...
+              {$_("wallet.account_list.offline")}...
               {:else if a.on_chain}
                 <div class="uk-inline">
                   
@@ -76,19 +77,18 @@
                       uk-icon="icon: minus-circle"
                     />
                     <div uk-dropdown>
-                      Your balance will go down for every transaction you send,
-                      including mining.
+                      {$_("wallet.account_list.message")}
                     </div>
                   {/if}
 
                   {formatBalance(a.balance)}
                 </div>
               {:else if a.balance == null}
-                loading...
+                {$_("wallet.account_list.loading")}...
               {:else if !isConnected}
-                offline..
+                {$_("wallet.account_list.offline")}...
               {:else}
-                Account Not On Chain
+                {$_("wallet.account_list.account_on_chain")}
               {/if}
             </td>
           </tr>

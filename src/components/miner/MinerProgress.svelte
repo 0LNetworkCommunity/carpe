@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
+import { _ } from "svelte-i18n";
   import {
     minerProofComplete,
     minerLoopEnabled,
@@ -60,17 +61,16 @@
     <div class="uk-inline">
     <span class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
       {#if proofDone }
-        Proof Complete
+        {$_("miner.miner_process.status_complete")}
       {:else}
-        Mining in Progress {formatPercent(percent)}
+      {$_("miner.miner_process.status_in_process")} {formatPercent(percent)}
       {/if}
       
     </span>
       <!-- <span class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
         </span> -->
         <div uk-dropdown class="uk-text-light uk-text-muted uk-text-thin"> 
-          The percentage is an estimate. 
-          <br> It is based on your previous proof's elapsed time.
+          {@html $_("miner.miner_process.notes")}
         </div> 
     </div>
 
@@ -78,7 +78,7 @@
     
     <span class="uk-text-light uk-text-muted uk-text-thin">
       {#if percent > 1.01 }
-        <span> Over 100% only means this is taking longer than previous proof </span>
+        <span> {$_("miner.miner_process.notes2")} </span>
       {/if}
     </span>
   </div>
