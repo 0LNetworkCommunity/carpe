@@ -12,18 +12,6 @@
     sentpayment: $_("events.sent_payment")
   }
 
-  /* TODO remove this after local tests
-  let temp = [];
-  for (let x = 0; x < 9; x++) { // 1, 7, 8, 9
-    let pageItens = [];
-    pageItens.push(events[0]);
-    pageItens.push(events[0]);
-    pageItens.push(events[0]);
-    pageItens.push(events[0]);
-    pageItens.push(events[0]);
-    temp = temp.concat(pageItens);
-  }*/
-
   $: pages = splitPages(events, maxPageSize);  
   let pageIndex = 1; // [ 1 ... pages length ]
   
