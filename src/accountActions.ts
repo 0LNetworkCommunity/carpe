@@ -125,8 +125,10 @@ export function getAccountEvents(account: AccountEntry) {
   
   invoke('get_account_events', {account: address.toUpperCase()})
     .then((events: Array<T>) => {
-      let all = get(accountEvents);
-      all[address] = events.reverse();
+      let all = get(accountEvents);     
+      all[address] = events
+        .filter(each => each.data.type == "receivedpayment" || each.data.type == "sentpayment")
+        .reverse();
       accountEvents.set(all);
     })
     .catch((e) => raise_error(e, false, "getAccountEvents"));

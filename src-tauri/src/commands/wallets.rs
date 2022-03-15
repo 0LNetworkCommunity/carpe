@@ -118,7 +118,7 @@ pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
 
 #[tauri::command(async)]
 pub fn get_account_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
-  let events = get_events(account, 0, 1000)?;
+  let events = get_events(account)?;
   Ok(events)
 }
 

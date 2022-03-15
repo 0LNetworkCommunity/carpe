@@ -29,21 +29,42 @@ pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError>{
   bal.parse::<u64>().map_err(|_|{ CarpeError::misc(&format!("Could not get balance from account: {}", account))})
 }
 
-pub fn get_events(account: AccountAddress, start_seq: u64, limit: u64) -> Result<Vec<EventView>, CarpeError> {
+pub fn get_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
   let node = get_node_obj()?;
-  let events = node.client.get_events(
-    EventKey::new_from_address(&account, 0),
-    start_seq, 
-    limit
-  );
+  
+  let limit = 1000;
+  let mut events_count = limit;
+  let mut start = 0;
+  let mut ret: Vec<EventView> = vec!();
+  let mut error = None;
 
+  while events_count == limit {    
+    
+    let result = node.client.get_events(
+      EventKey::new_from_address(&account, 0),
+      start, 
+      limit
+    );
+
+    match result {
+      Ok(mut events) => {
+        events_count = events.len() as u64;
+        start = start + events_count;
+        ret.append(&mut events);
+      },
+      Err(e) => {
+        error = Some(e);
+        break;        
+      }
+    };
+  }
+  
   /* 
     TODO catch case where node DB is currupted:
     Error { inner: Inner { kind: JsonRpcError, source: None, json_rpc_error: Some(JsonRpcError { code: -32000, message: "Server error: DB corrupt: Sequence number not continuous, expected: 0, actual: 5.", data: None }) } }
   */
-
-  match events {
-    Ok(all) => Ok(all),
-    _ => Err(CarpeError::client("Could not get account events from the chain"))
-  }  
+  match error {
+    Some(_) => Err(CarpeError::client("Could not get account events from the chain")),
+    None => Ok(ret)
+  }
 }

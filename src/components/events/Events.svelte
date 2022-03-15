@@ -2,9 +2,15 @@
   import { onMount } from "svelte";
   import { accountEvents, signingAccount } from "../../accounts";
   import { get_locale, getAccountEvents } from "../../accountActions";
+  import EventsTable from "./EventsTable.svelte";
 
   let events = null;
   let myAccount = null;
+
+  const eventTypesDic = {
+    receivedpayment: "Received Payment",
+    sentpayment: "Sent Payment",
+  }
 
   onMount(async () => {
     signingAccount.subscribe((account) => {
@@ -31,6 +37,11 @@
       maximumFractionDigits: 2,
     });
   }
+
+  function formatEventType(type) {
+    const value = eventTypesDic[type];
+    return value || type;
+  }
 </script>
   
 <main class="uk-height-viewport">
@@ -41,10 +52,11 @@
       <span uk-spinner />
       <span class="uk-align-center">loading...</span>
   {:else}
-    <table class="uk-table uk-table-divider">
+    <EventsTable {events} />
+    <!--<table class="uk-table uk-table-divider">
       <thead>
         <tr>
-          <th class="uk-text-right">Sequence</th>
+          <th class="uk-text-right">Version</th>
           <th class="uk-text-center">Type</th>
           <th class="uk-text-right">Amount</th>
           <th class="uk-text-center">Sender</th>
@@ -54,8 +66,8 @@
       <tbody>
         {#each events as event}
           <tr>
-            <td class="uk-text-right">{event.sequence_number}</td>
-            <td class="uk-text-center">{event.data.type}</td>
+            <td class="uk-text-right">{event.transaction_version}</td>
+            <td class="uk-text-center">{formatEventType(event.data.type)}</td>
             <td class="uk-text-right">{formatAmount(event.data.amount.amount)}</td>
             <td class="uk-text-center">{event.data.sender}</td>
             <td class="uk-text-center">{event.data.receiver}</td>
@@ -63,5 +75,8 @@
         {/each}
       </tbody>
     </table>
+
+    
+    -->
   {/if}
 </main>
