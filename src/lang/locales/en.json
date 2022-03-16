@@ -2,7 +2,8 @@
   "nav": {
     "wallet": "Wallet",
     "miner": "Miner",
-    "transactions": "Transaction"
+    "transactions": "Transaction",
+    "events": "Events"
   },
   "layout": {
       "connection_error": {
@@ -209,5 +210,15 @@
       "btn_confirm_community": "Set Community",
       "community_confirm": "Confirm Set Community Wallet? This is not reversable."
     }
+  },
+  "events": {
+    "account_events": "Account Events",
+    "version": "Version",
+    "type": "Type",
+    "amount": "Amount",
+    "sender": "Sender",
+    "receiver": "Receiver",
+    "received_payment": "Received Payment",
+    "sent_payment": "Sent Payment"
   }
 }

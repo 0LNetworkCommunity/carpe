@@ -236,6 +236,7 @@ dependencies = [
  "built",
  "cli",
  "ctrlc",
+ "diem-client",
  "diem-config",
  "diem-crypto",
  "diem-json-rpc-types",

@@ -5,8 +5,7 @@
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
   import { carpeTick } from "../../tick";
-  import { to_number } from "svelte/internal";
-import { _ } from "svelte-i18n";
+  import { _ } from "svelte-i18n";
 
   UIkit.use(Icons);
 
@@ -14,6 +13,8 @@ import { _ } from "svelte-i18n";
   export let account_list: AccountEntry[];
   export let isMining: boolean;
   export let isConnected: boolean;
+
+  console.log(account_list);
 
   // TODO: move to tauri commands
   function formatBalance(balance) {
@@ -23,7 +24,7 @@ import { _ } from "svelte-i18n";
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-  }
+  }   
 </script>
 
 <main>
@@ -66,8 +67,8 @@ import { _ } from "svelte-i18n";
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
             <td>
-              {#if a.on_chain == null}
-              {$_("wallet.account_list.offline")}...
+              {#if !a.on_chain}
+                {$_("wallet.account_list.offline")}...
               {:else if a.on_chain}
                 <div class="uk-inline">
                   
@@ -84,12 +85,12 @@ import { _ } from "svelte-i18n";
 
                   {formatBalance(a.balance)}
                 </div>
-              {:else if a.on_chain == undefined}
-              {$_("wallet.account_list.loading")}...
+              {:else if a.balance == null}
+                {$_("wallet.account_list.loading")}...
               {:else if !isConnected}
-              {$_("wallet.account_list.offline")}...
+                {$_("wallet.account_list.offline")}...
               {:else}
-              {$_("wallet.account_list.account_on_chain")}
+                {$_("wallet.account_list.account_on_chain")}
               {/if}
             </td>
           </tr>

@@ -4,7 +4,7 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
-import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount } from './accounts';
+import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents } from './accounts';
 
 export const loadAccounts = async () => {
   console.log("loadAccounts");
@@ -120,7 +120,19 @@ export function checkAccountBalance(account: AccountEntry) {
     .catch((e) => raise_error(e, false, "checkAccountBalance"));
 }
 
-
+export function getAccountEvents(account: AccountEntry) {
+  const address = account.account;
+  
+  invoke('get_account_events', {account: address.toUpperCase()})
+    .then((events: Array<T>) => {
+      let all = get(accountEvents);     
+      all[address] = events
+        .filter(each => each.data.type == "receivedpayment" || each.data.type == "sentpayment")
+        .reverse();
+      accountEvents.set(all);
+    })
+    .catch((e) => raise_error(e, false, "getAccountEvents"));
+}
 
 export function get_locale(): string {
   let lang = 'en-US';

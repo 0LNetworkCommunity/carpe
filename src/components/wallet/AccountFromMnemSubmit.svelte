@@ -13,8 +13,8 @@
   import { notify_success } from "../../carpeNotify";
   import { onMount } from "svelte";
   import { connected, refreshWaypoint } from "../../networks";
-  import { addNewAccount, isCarpeInit, refreshAccounts } from "../../accountActions";
-import { _ } from "svelte-i18n";
+  import { addNewAccount, isCarpeInit, loadAccounts } from "../../accountActions";
+  import { _ } from "svelte-i18n";
 
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;
@@ -45,8 +45,8 @@ import { _ } from "svelte-i18n";
         isSubmitting = false;
         notify_success(`Account Added: ${res.nickname}`);
 
-        // get the account balance. Also so that the menu displays right a way.
-        refreshAccounts();
+        // load the account restored localy right away. Balance may takes few seconds to be fetched from the chain.
+        loadAccounts();
 
         // set as init so we don't get sent back to Newbie account creation.
         isInit.set(true);

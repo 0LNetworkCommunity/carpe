@@ -42,6 +42,7 @@
           <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li>
           <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>
           <li><Link to={routes.transactions}>{$_("nav.transactions")}</Link></li>
+          <li><Link to={routes.events}>{$_("nav.events")}</Link></li>
       </ul>
     </div>
 
