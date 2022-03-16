@@ -5,6 +5,7 @@ import type { CarpeError } from "../../carpeError";
 import { notify_success } from "../../carpeNotify";
 import { responses } from "../../debug";
 import UIkit from "uikit";
+import { _ } from "svelte-i18n";
 
   let loading = false;
 
@@ -28,28 +29,28 @@ import UIkit from "uikit";
 </script>
 
 <main class="uk-margin">
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Set your Account Type </h4>
-  <p> Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.</p>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("txs.set_wallet_type.title")} </h4>
+  <p> {$_("txs.set_wallet_type.subtitle")}</p>
   <div>
     <div class="uk-inline">
-    <button class="uk-button uk-button-default" type="button" disabled={loading? true : false}>Set Slow Wallet</button>
+    <button class="uk-button uk-button-default" type="button" disabled={loading? true : false}>{$_("txs.set_wallet_type.btn_slow")}</button>
       <div class="send-drop" uk-dropdown="mode: click">
-            <p>Confirm Set Slow Wallet? This is not reversable.</p>
+            <p>{$_("txs.set_wallet_type.confirm_slow")}</p>
             <button 
             class="uk-button uk-button-danger"
             on:click={() => setWallet(0)}
-            > Set Slow </button>
+            > {$_("txs.set_wallet_type.btn_confirm_slow")} </button>
       </div>
     </div>
 
     <div class="uk-inline">
-    <button class="uk-button uk-button-default" type="button" disabled={loading? true : false}>Set Community Wallet</button>
+    <button class="uk-button uk-button-default" type="button" disabled={loading? true : false}>{$_("txs.set_wallet_type.btn_community")}</button>
       <div class="send-drop" uk-dropdown="mode: click">
-            <p>Confirm Set Community Wallet? This is not reversable.</p>
+            <p>{$_("txs.set_wallet_type.confirm_community")}</p>
             <button 
             class="uk-button uk-button-danger"
             on:click={() => setWallet(1)}
-            > Set Community </button>
+            > {$_("txs.set_wallet_type.btn_confirm_community")} </button>
       </div>
     </div>
 

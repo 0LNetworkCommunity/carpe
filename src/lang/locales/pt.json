@@ -1,0 +1,224 @@
+{
+  "nav": {
+    "wallet": "Carteira",
+    "miner": "Minerador",
+    "transactions": "Transações",
+    "events": "Eventos"
+  },
+  "layout": {
+      "connection_error": {
+         "title": "Opa, não foi possível conectar à rede 0L",
+         "body": "<p>Isto geralmente acontece porque o node (servidor) que você está usando está fora do ar.</p> <h3> Não se preocupe, sua conta e moedas estão seguras.</h3> <p>Se você precisar configurar ou atualizar seus nodes, você pode fazer isso aqui:</p>"
+      },
+      "error_accordion": {
+          "title": "Relatório de Erros",
+          "category": "Categoria de Erro",
+          "id": "ID"
+      }
+  },
+  "wallet": {
+    "wallet": "Carteira",
+    "carpe": "CARPE",
+    "btn_new_account": "Criar Conta",
+    "btn_restore_account": "Restaurar Conta",
+    "newbie_message": "Parece que você não tem nenhuma conta ainda",
+    "reminder_create": {
+      "card_title": "Integração",
+      "message_headline": "Você gerou chaves para uma conta, mas ela não existe na rede ainda.",
+      "message_prefix": "Junte-se à nossa comunidade no ",
+      "message_suffix": " e forneça-nos a sua Chave de Integração para criar sua conta na rede.",
+      "onboard_key": "CHAVE DE INTEGRAÇÃO"
+    },
+    "account_list": {
+      "nickname": "Apelido",
+      "address": "Conta",
+      "authkey": "Chave de autenticação",
+      "balance": "Saldo",
+      "offline": "offline",
+      "loading": "carregando",
+      "account_on_chain": "Conta não criada na rede",
+      "message": "Seu saldo diminuirá para cada transação que você enviar, incluindo as de mineração."
+    },
+    "keygen": {
+      "title": "Criar nova conta",
+      "description": "Depois de gerar uma conta e a frase secreta, você precisará que alguém envie uma moeda do 0L para esta conta para que ela seja criada na rede.",
+      "btn_generate_keys": "Gerar Chaves",
+      "btn_generate_keys_2": "Gerar Chaves Diferentes",
+      "btn_create_account": "Criar Esta Conta",
+      "account_address": "Endereço da Conta",
+      "onboard_key": "Chave de Integração",
+      "onboard_key_description": "Isto também é conhecido como Chave de Autenticação. Por enquanto, você precisará dele para poder criar a conta na rede.",
+      "securite_recovery_phrase": "FRASE SECRETA DE RECUPERAÇÃO",
+      "securite_note": "Esta é a chave secreta da sua conta (mnemônico). Se você perder ela, ninguém poderá te ajudar! Escreva ela em algum lugar agora.",
+      "account_tips": "Sua conta não existe na rede ainda. Você precisará enviar para alguém sua Chave de Integração para que possam criar sua conta."
+    },
+    "account_from_mnem_submit": {
+      "title":"Anteção!",
+      "body": "<p>Você tem certeza que escreveu sua frase mnemônica?</p><p>Você não conseguirá recuperar sua conta sem ela de jeito algum. Ninguém pode te ajudar se você perdê-la.</p><p>Esta é a sua última oportunidade de escrevê-la em algum lugar.</p>",
+      "btn_cancel": "Deixe-me verificar novamente",
+      "btn_submit": "Enviar Agora",
+      "btn_submiting": "Enviando"
+    },
+    "account_from_mnem_from": {
+      "title": "RESTAURAR CONTA",
+      "description": "Usando suas palavras de recuperação (mnemônicos), você pode configurar o Carpe como uma carteira para monitorar e enviar transações",
+      "placeholder": "Mnemônico de Recuperação"
+    },
+    "account_switcher": {
+      "select_account": "Selecionar Conta",
+      "switch_account": "Mudar de Conta",
+      "setting": "Ir Para Configuração",
+      "developers": "Desenvolvedores"
+    }
+  },
+  "about": {
+    "about": "Sobre",
+    "release": "Lançamento",
+    "version": "Versão",
+    "branch": "Branch",
+    "commit": "Commit"
+  },
+  "settings": {
+    "title": "CONFIGURAÇÕES",
+    "langapp_settings": {
+      "title": "Língua e Aparência",
+      "lang": "Língua",
+      "lang_description": "Escolha o idioma",
+      "lang_button": "Português",
+      "theme": "Tema",
+      "theme_description": "Escolha o tema"
+    },
+    "network_settings": {
+      "title": "CONFIGURAÇÕES DE REDE",
+      "list_of_peers": "LISTA DE PARES",
+      "description": "Escolha uma lista de nós ascendentes, para que você possa acessar o blockchain. As conexões de rede tentarão a lista em ordem aleatória até que uma conexão seja estabelecida. Basta vincular a qualquer arquivo playlist.json aqui para atualizar os pares.",
+      "playlist": "Atualizar Lista de Servidores de Rede",
+      "override_peers": "SUBSTITUIR PARES",
+      "override_peers_description": "Você pode forçar usando um par diferente. Você só pode escolher um par com essa configuração. Ela irá remover a lista de pares. Esta será agora uma lista de um elemento.",
+      "url_of_upstream_node": "URL do nó ascendente",
+      "btn_update": "ATUALIZAR",
+      "upstream_title": "BUSCAR UM NOVO PONTO DE CAMINHO DO NODE ASCENDENTE",
+      "upstream_subtitle": "A maioria dos problemas de Ponto de Caminho pode ser facilmente corrigida ao buscar um atualizado de um par ascendente conectado.",
+      "btn_fetch_new_waypoint": "Buscar Novo Ponto de Caminho",
+      "btn_cancel": "Cancelar",
+      "btn_submit": "USAR LISTA"
+    },
+    "account_settings": {
+      "title": "CONFIGURAÇÕES DA CONTA",
+      "btn_remove": "REMOVER CONTA",
+      "comfirm": "Confirmar remover contas deste dispositivo? Isso não é reversível.",
+      "description": "Isso não exclui nenhuma conta da rede. Apenas remove as contas deste dispositivo. Se você não tiver seus códigos de recuperação (mnemônicos) armazenados em algum lugar, poderá ser bloqueado desta conta permanentemente. NINGUÉM PODE AJUDÁ-LO A RECUPERAR O MNEMONIC."
+    }
+  },
+  "miner": {
+    "title": "Minerador",
+    "miner_backlog": {
+      "title": "Provas de Sincronização da Torre",
+      "subtitle": "Reenviar manualmente as provas locais",
+      "in_process": "Backlog em Andamento",
+      "btn_submit": "Enviar Backlog Local"
+    },
+    "miner_phases": {
+      "backlog_started": "Ouvinte de backlog iniciado",
+      "backlog_in_process": "Backlog em Andamento",
+      "backlog_complete": "Backlog Concluído",
+      "mining_enabled": "Mineração Ativada",
+      "proof_started": "Solicitação de início de prova recebida",
+      "proof_complete": "Prova Concluída"
+    },
+    "miner_process": {
+      "status_complete": "Prova Concluída",
+      "status_in_process": "Mineração em Andamento",
+      "notes": "A porcentagem é uma estimativa. <br> É baseada no tempo decorrido da sua prova anterior.",
+      "notes2": "Mais de 100% significa apenas que isso está demorando mais do que a prova anterior."
+    },
+    "tower_state": {
+      "local_height": "Altura da Torre Local",
+      "on_chain_height": "Altura da Torre no Blockchain",
+      "mined_in_last_epoch": "Última Época Minerada.",
+      "sent_in_this_epoch": "Provas enviadas nesta época",
+      "empty": "Nenhuma prova encontrada no dispositivo",
+      "proof_more": "Você enviou o máximo de provas hoje (máximo de 72)",
+      "proof_less": "Provas insuficientes para receber uma recompensa hoje (min 8)",
+      "proof_ok": "Sua conta enviou provas suficientes hoje (min 8)"
+    },
+    "cards": {
+      "cant_start": {
+        "title": "Sua conta ainda não existe na rede",
+        "body": "O minerador não pode iniciar até que a conta seja encontrada na rede. Talvez você tenha gerado novas chaves localmente, mas ninguém enviou moedas para esse endereço ainda?"
+      },
+      "disco_error": {
+        "title": "Descontinuidade",
+        "body": "Parece que há uma lacuna nas provas que você está enviando. Cada prova precisa referenciar a anterior, e a prova foi rejeitada por causa disso."
+      },
+      "epoch_status": {
+        "empty_title": "Nenhuma prova enviada",
+        "empty_body": "Não há provas salvas na rede. Quando você enviar sua primeira prova com sucesso, verá algumas estatísticas aqui.",
+        "in_process_title": "Continue assim",
+        "in_process_body": "Sua conta precisa enviar pelo menos 8 provas por dia (época) para receber uma recompensa. Você receberá a recompensa no dia seguinte.",
+        "complete_title": "Sucesso!",
+        "complete_body": "Sua conta enviou provas suficientes hoje (mínimo de 8 provas por época). Você deve receber recompensas no início da próxima época.",
+        "exceed_title": "Uau",
+        "exceed_body": "Você minerou 72 provas, o número máximo de provas por época. A torre pode continuar fazendo provas, mas elas só serão aceitas na próxima época."
+      },
+      "first_proof": {
+        "title": "Vamos minerar sua primeira prova",
+        "body": "<p> Aguente firme! Isso levará pelo menos 30 minutos, talvez até 1 hora.</p> <p> Você verá seu saldo cair enquanto você minera provas. Se você atingir o mínimo por dia, receberá uma recompensa, no dia seguinte (época).</p> <p> Verifique as configurações do seu computador para que o computador não durma quando a tela for desligada. Você quer que o minerador funcione enquanto você não está aqui.</p>",
+        "body_disabled": "Ligue o interruptor para iniciar a mineração!"
+      },
+      "invalid_proof": {
+        "title": "Não é Possível Verificar a Prova",
+        "body": "Esquisito. Esta prova foi rejeitada porque não é uma \"prova de atraso\" válida. Isso geralmente ocorre porque os parâmetros não estão definidos corretamente."
+      },
+      "oops": {
+        "title": "Opa",
+        "body": "Parece que há um erro ao minerar uma prova de atraso"
+      },
+      "too_many_proofs": {
+        "title": "Muitas Provas",
+        "body": "Parece que você enviou mais provas do que o esperado nas últimas 24 horas. A rede espera um máximo de {maxNum} provas durante cada época. Na próxima época suas provas começarão a ser submetidas novamente."
+      },
+      "wrong_difficulty": {
+        "title": "Dificuldade Errada",
+        "body": "Parece que você está enviando uma prova com os parâmetros de dificuldade errados para a rede. Verifique se você está conectado à rede correta com as configurações de dificuldade corretas."
+      },
+      "sync_proof": {
+        "title": "Sincronizando suas provas",
+        "body": "Provas aguardando transação: {delta} ",
+        "body_0": "Algo está errado, você tem mais provas na rede do que neste dispositivo. Pode estar faltando provas localmente."
+      }
+    }
+  },
+  "txs": {
+    "deno_tx": "Demo Tx",
+    "onboard": {
+      "title": "Integrar uma conta",
+      "await": "",
+      "btn_onboard": "Integrar",
+      "btn_cancel": "Cancelar",
+      "no_balance_title": "Saldo Baixo",
+      "no_balance_body1": "A integração de {onboard_key} não foi bem-sucedida.",
+      "no_balance_body2": "Parece que você tem menos de 2 moedas em sua conta, isso significa que você não poderá embarcar ninguém."
+    },
+    "set_wallet_type": {
+      "title": "Defina seu Tipo de Conta",
+      "subtitle": "Certifique-se de que você sabe o que está fazendo. Essa operação não é reversível. As carteiras lentas e comunitárias são permanentes.",
+      "btn_slow": "Definir Carteira Lenta",
+      "btn_confirm_slow": "Confirmar Definir Carteira Lenta? Esta operação não é reversível.",
+      "slow_confirm": "Definir Lenta",
+      "btn_community": "Definir Carteira de Comunidade",
+      "btn_confirm_community": "Definir Comunidade",
+      "community_confirm": "Confirmar Definir Carteira de Comunidade? Esta operação não é reversível."
+    }
+  },
+  "events": {
+    "account_events": "Eventos da Conta",
+    "version": "Versão",
+    "type": "Tipo",
+    "amount": "Valor",
+    "sender": "Pagador",
+    "receiver": "Recebedor",
+    "received_payment": "Pagamento Recebido",
+    "sent_payment": "Pagamento Enviado"
+  }
+}

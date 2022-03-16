@@ -1,4 +1,6 @@
 <script lang="ts">
+import { _ } from "svelte-i18n";
+
   import type { CarpeError } from "../../carpeError";
 
   export let error: CarpeError;
@@ -7,11 +9,11 @@
 <main>
   <ul uk-accordion>
     <li>
-      <a class="uk-accordion-title" href={"#"}> Error Report</a>
+      <a class="uk-accordion-title" href={"#"}>{$_("layout.error_accordion.title")}</a>
 
       <div class="uk-accordion-content">
-        <p>Error Category - {error.category}</p>
-        <p>Id - {error.uid}</p>
+        <p>{$_("layout.error_accordion.category")} - {error.category}</p>
+        <p>{$_("layout.error_accordion.id")} - {error.uid}</p>
         <p>{error.msg}</p>
       </div>
     </li>

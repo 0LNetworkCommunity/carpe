@@ -5,6 +5,7 @@ export const routes = {
   keygen: '/keygen',
   miner: '/miner',
   transactions: '/txs',
+  events: '/events',
   settings: '/settings',
   about: '/about',
   developer: '/dev',

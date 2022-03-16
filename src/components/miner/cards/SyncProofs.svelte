@@ -7,6 +7,7 @@
   import CardError from "../../layout/CardError.svelte";
   import { isRefreshingAccounts } from "../../../accounts";
 import SyncProofsError from "./SyncProofsError.svelte";
+import { _ } from "svelte-i18n";
   
   let listenerReady = false;
   let inProgress = false;
@@ -33,18 +34,18 @@ import SyncProofsError from "./SyncProofsError.svelte";
   {#if listenerReady && inProgress}
   <CardAlert>
     <span slot="title" class="uk-text-uppercase">
-      Syncing your proofs  
+      {$_("miner.cards.sync_proof.title")} 
       <span class="uk-margin" uk-spinner="ratio: 0.5" />
     </span>
     <div slot="body">
       <!-- <p>Carpe is submitting your proofs to chain.</p> -->
       {#if delta > 0 }
       <p class="uk-text-muted uk-text-uppercase"> 
-        Proofs awaiting transaction: {delta} 
+        {$_("miner.cards.sync_proof.body", {values: {delta}})} 
       </p>
       {:else if delta < 0}
       <p class="uk-text-muted uk-text-uppercase"> 
-        Something is wrong, you have more proofs on-chain, than on this device. You may be missing proofs locally.
+        {$_("miner.cards.sync_proof.body_0")} 
       </p> 
       {/if}
     </div>
