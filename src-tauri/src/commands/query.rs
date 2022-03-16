@@ -1,13 +1,19 @@
 //! query the chain
 use diem_json_rpc_types::views::TowerStateResourceView;
+use ol::node::query::{QueryType, WalletType};
+use ol::commands::query_cmd;
 use diem_types::{account_address::AccountAddress, event::EventKey};
 use diem_client::views::EventView;
-use ol::node::query::QueryType;
 use crate::{carpe_error::CarpeError, configs::get_node_obj};
 
 #[tauri::command(async)]
 pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError>{
   get_balance(account)
+}
+
+#[tauri::command(async)]
+pub fn query_wallet_type(account: AccountAddress) -> Result<WalletType, CarpeError> {
+  get_wallet_type(account)
 }
 
 #[tauri::command(async)]
@@ -26,7 +32,16 @@ pub fn get_onchain_tower_state(account: AccountAddress) -> Result<TowerStateReso
 pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError>{
   let mut node = get_node_obj()?;
   let bal = node.query(QueryType::Balance{ account })?;
-  bal.parse::<u64>().map_err(|_|{ CarpeError::misc(&format!("Could not get balance from account: {}", account))})
+  bal.parse::<u64>().map_err(|_|{ CarpeError::misc(&format!("could not get balance from account: {}", account))})
+}
+
+pub fn get_wallet_type(account: AccountAddress) -> Result<WalletType, CarpeError>{
+  if let Ok(node) = get_node_obj() {
+    Ok(query_cmd::get_wallet_type(account, node))
+  }
+  else {
+    Err(CarpeError::misc("Could not get node object"))
+  }
 }
 
 pub fn get_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
