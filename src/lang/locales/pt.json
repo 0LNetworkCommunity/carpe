@@ -67,7 +67,7 @@
     "account_switcher": {
       "select_account": "Selecionar Conta",
       "switch_account": "Mudar de Conta",
-      "setting": "Ir Para Configuração",
+      "setting": "Configurações",
       "developers": "Desenvolvedores"
     }
   },

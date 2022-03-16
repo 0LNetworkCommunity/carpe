@@ -37,7 +37,7 @@ import { _ } from "svelte-i18n";
 
 </script>
 
-<main>
+<main class="uk-margin">
   <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.network_settings.title")} {current_chain_id}</h4>
 
   <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.network_settings.list_of_peers")} </h5>
