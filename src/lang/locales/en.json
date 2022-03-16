@@ -136,7 +136,7 @@
       "local_height": "Local Tower Height",
       "on_chain_height": "On-chain Tower Height",
       "mined_in_last_epoch": "Last Epoch Mined",
-      "sent_in_this_epoch": "roofs Sent this Epoch",
+      "sent_in_this_epoch": "Proofs Sent this Epoch",
       "empty": "No proofs found on device",
       "proof_more": "You have submitted max proofs today (max 72)",
       "proof_less": "Insufficient proofs to receive a reward today (min 8)",
