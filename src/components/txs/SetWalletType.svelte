@@ -8,6 +8,7 @@ import UIkit from "uikit";
 import { _ } from "svelte-i18n";
 
   let loading = false;
+
   function setWallet (num: number) {
     loading = true;
     invoke("wallet_type", {typeInt: num})

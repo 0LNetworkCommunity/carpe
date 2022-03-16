@@ -6,8 +6,8 @@
   import { Link } from "svelte-navigator";
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
-import { carpeTick } from "../../tick";
-import { _ } from "svelte-i18n";
+  import { carpeTick } from "../../tick";
+  import { _ } from "svelte-i18n";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -15,7 +15,7 @@ import { _ } from "svelte-i18n";
   onMount(async () => {
     signingAccount.subscribe(value => my_account = value);
     all_accounts.subscribe(all => account_list = all);
-  });
+  })
 
 </script>
 
@@ -48,7 +48,7 @@ import { _ } from "svelte-i18n";
                 <a
                   href={"#"}
                   class="{my_account.account == acc.account ? 'uk-text-primary' : ''}"
-                  on:click={() => { setAccount(acc.account); carpeTick();}}
+                  on:click={() => { setAccount(acc.account); carpeTick(); }}
                 >
                   {acc.nickname}
                 </a>
