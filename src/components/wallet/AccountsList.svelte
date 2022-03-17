@@ -18,7 +18,7 @@
   function formatBalance(balance) {
     const balanceScaled = coinsScaled(balance);
 
-    return balanceScaled.toLocaleString('en-US', {
+    return balanceScaled.toLocaleString(get_locale(), {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
