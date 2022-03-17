@@ -39,7 +39,6 @@
           <th>{$_("wallet.account_list.address")}</th>
           <th>{$_("wallet.account_list.authkey")}</th>
           <th>{$_("wallet.account_list.balance")}</th>
-          <th>Wallet type</th>
         </tr>
       </thead>
       <tbody>
@@ -92,13 +91,6 @@
                 {$_("wallet.account_list.offline")}...
               {:else}
                 {$_("wallet.account_list.account_on_chain")}
-              {/if}
-            </td>
-            <td>
-              {#if a.wallet_type === "None"}
-                Normal
-              {:else}
-                {a.wallet_type}
               {/if}
             </td>
           </tr>
