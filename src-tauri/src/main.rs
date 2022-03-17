@@ -75,7 +75,6 @@ fn main() {
       toggle_network,
       // Queries
       query_balance,
-      query_wallet_type,
       // Transactions
       demo_tx,
       create_user_account,
