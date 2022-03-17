@@ -18,13 +18,17 @@
 
   // TODO: move to tauri commands
   function formatBalance(balance) {
-    const balanceScaled = balance / 1000000;
+    const balanceScaled = coinsScaled(balance);
 
-    return balanceScaled.toLocaleString('en-US', {
+    return balanceScaled.toLocaleString(get_locale(), {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-  }   
+  }
+
+  function coinsScaled(coins) {
+    return coins / 1000000;
+  }
 </script>
 
 <main>
@@ -72,7 +76,7 @@
               {:else if a.on_chain}
                 <div class="uk-inline">
                   
-                  {#if Number(formatBalance(a.balance)) < 1}
+                  {#if coinsScaled(a.balance) < 1}
                     <!-- TODO: make this icon align verical middle. -->
                     <span
                       class="uk-margin uk-text-warning"
