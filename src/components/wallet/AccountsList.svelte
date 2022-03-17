@@ -20,7 +20,7 @@
   function formatBalance(balance) {
     const balanceScaled = balance / 1000000;
 
-    return balanceScaled.toLocaleString(get_locale(), {
+    return balanceScaled.toLocaleString('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
@@ -38,7 +38,7 @@
           <th>{$_("wallet.account_list.nickname")}</th>
           <th>{$_("wallet.account_list.address")}</th>
           <th>{$_("wallet.account_list.authkey")}</th>
-          <th>{$_("wallet.account_list.balance")}</th>
+          <th class="uk-text-right">{$_("wallet.account_list.balance")}</th>
         </tr>
       </thead>
       <tbody>
@@ -66,9 +66,9 @@
             <td>{a.nickname}</td>
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
-            <td>
+            <td class="uk-text-right">
               {#if !a.on_chain}
-                {$_("wallet.account_list.offline")}...
+                {$_("wallet.account_list.account_on_chain")}
               {:else if a.on_chain}
                 <div class="uk-inline">
                   
@@ -76,7 +76,7 @@
                     <!-- TODO: make this icon align verical middle. -->
                     <span
                       class="uk-margin uk-text-warning"
-                      uk-icon="icon: minus-circle"
+                      uk-icon="icon: info"
                     />
                     <div uk-dropdown>
                       {$_("wallet.account_list.message")}
