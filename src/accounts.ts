@@ -5,7 +5,6 @@ export interface AccountEntry {
   nickname: string,
   on_chain: boolean,
   balance: number,
-  wallet_type: string,
 }
 
 export const new_account = function (account: string, authkey: string, nickname: string): AccountEntry {
@@ -16,7 +15,6 @@ export const new_account = function (account: string, authkey: string, nickname:
     nickname: nickname,
     on_chain: false,
     balance: 0,
-    wallet_type: null,
   }
 };
 
