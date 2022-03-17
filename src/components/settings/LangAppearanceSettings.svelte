@@ -3,13 +3,11 @@
 
 </script>
 
-<main>
+<main class="uk-margin">
   <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.langapp_settings.title")}</h4>
-
-
+  
   <form id="account-form">
     <fieldset class="uk-fieldset">
-
       <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.langapp_settings.lang")} </h5>
       <p>{$_("settings.langapp_settings.lang_description")}</p>
       <button class="uk-button uk-button-default" type="button">{$_("settings.langapp_settings.lang_button")}</button>

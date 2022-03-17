@@ -1,10 +1,10 @@
 [package]
 authors = [ "OLSF" ]
-default-run = "app"
+default-run = "Carpe"
 description = "a light miner for the 0L protocol"
 edition = "2021"
 license = "MIT"
-name = "app"
+name = "Carpe"
 repository = "https://github.com/OLSF/carpe"
 version = "0.2.2"
 

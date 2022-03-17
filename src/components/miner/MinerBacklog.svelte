@@ -10,7 +10,7 @@ import { _ } from "svelte-i18n";
   });
 </script>
 
-<main class="uk-margin" >
+<main class="uk-margin">
   <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
     {$_("miner.miner_backlog.title")}
   </h4>
