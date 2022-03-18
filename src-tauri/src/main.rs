@@ -105,6 +105,9 @@ fn main() {
       mock_build_tower,
       start_forever_task,
       debug_start_listener,
+      // Preferences
+      get_preferences,
+      set_preferences_locale
     ])
     .menu(menu)
     .run(tauri::generate_context!())

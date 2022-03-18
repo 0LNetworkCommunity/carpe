@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { setupI18n, locale, _} from "../../lang/i18n";
+  import { _ } from "../../lang/i18n";
+  import { setLocale } from "../../preferences";
 
 </script>
 
@@ -13,14 +14,14 @@
       <button class="uk-button uk-button-default" type="button">{$_("settings.langapp_settings.lang_button")}</button>
       <div uk-dropdown="mode: click">
         <ul class="uk-nav uk-dropdown-nav">
-          <li><a class="uk-text-muted" href={"#"} on:click={() => { setupI18n({ withLocale: "en" }) }}>English</a></li>
-          <li><a class="uk-text-muted" href={"#"} on:click={() => { setupI18n({ withLocale: "zh_cn" }) }}>中文</a></li>
-          <li><a class="uk-text-muted" href={"#"} on:click={() => { setupI18n({ withLocale: "fr" }) }}>French</a></li>
-          <li><a class="uk-text-muted" href={"#"} on:click={() => { setupI18n({ withLocale: "de" }) }}>German</a></li>
-          <li><a class="uk-text-muted" href={"#"} on:click={() => { setupI18n({ withLocale: "es" }) }}>Spanish</a></li>
-          <li><a class="uk-text-muted" href={"#"} on:click={() => { setupI18n({ withLocale: "it" }) }}>Italian</a></li>
-          <li><a class="uk-text-muted" href={"#"} on:click={() => { setupI18n({ withLocale: "pt" }) }}>Portuguese</a></li>
-          <li><a class="uk-text-muted" href={"#"} on:click={() => { setupI18n({ withLocale: "ar" }) }}>Arabic</a></li>
+          <li><a class="uk-text-muted" href={"#"} on:click={() => setLocale("en")}>English</a></li>
+          <li><a class="uk-text-muted" href={"#"} on:click={() => setLocale("zh_cn")}>中文</a></li>
+          <li><a class="uk-text-muted" href={"#"} on:click={() => setLocale("fr")}>French</a></li>
+          <li><a class="uk-text-muted" href={"#"} on:click={() => setLocale("de")}>German</a></li>
+          <li><a class="uk-text-muted" href={"#"} on:click={() => setLocale("es")}>Spanish</a></li>
+          <li><a class="uk-text-muted" href={"#"} on:click={() => setLocale("it")}>Italian</a></li>
+          <li><a class="uk-text-muted" href={"#"} on:click={() => setLocale("pt")}>Portuguese</a></li>
+          <li><a class="uk-text-muted" href={"#"} on:click={() => setLocale("ar")}>Arabic</a></li>
         </ul>
       </div>
 

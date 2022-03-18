@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+
 export interface AccountEntry {
   account: string,
   authkey: string,

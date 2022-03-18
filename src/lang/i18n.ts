@@ -32,8 +32,7 @@ function setupI18n(options) {
   init({
     initialLocale: locale_,
     fallbackLocale: 'en',
-});
-
+  });
 }
 
 
