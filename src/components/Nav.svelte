@@ -4,9 +4,10 @@
   import { signingAccount, isInit } from "../accounts";
   import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
   import { routes } from "../routes";
-  import { setupI18n, _, getLocaleFromNavigator} from "../lang/i18n";
-
-  setupI18n({ withLocale: getLocaleFromNavigator() });
+  import { _ } from "../lang/i18n";
+  import { init_preferences } from "../preferences";
+  
+  init_preferences();
 
   const secondaryRoutes = [
     routes.settings,

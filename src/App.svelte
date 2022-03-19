@@ -24,11 +24,10 @@
   import { isCarpeInit} from "./accountActions";
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
-  import { getLocaleFromNavigator, setupI18n } from "./lang/i18n";
+  import { init_preferences } from "./preferences";
+  
+  init_preferences();
  
-  // ...
-  setupI18n({ withLocale: getLocaleFromNavigator() });
-
   let unlistenProofStart;
   let unlistenAck;
   let unlistenBacklogSuccess;
