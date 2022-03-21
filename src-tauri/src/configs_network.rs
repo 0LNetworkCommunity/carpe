@@ -129,6 +129,17 @@ pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
   Ok(cfg)
 }
 
+/*
+/// Removes current node from upstream nodes
+/// To be used when DB is corrupted for instance.
+pub fn remove_node(url) {
+  let mut cfg = configs::get_cfg()?;
+  cfg.profile.upstream_nodes = ;
+  cfg.save_file()?;
+  Ok(cfg)
+}*/
+
+
 // // TODO:
 // /// fetch upstream peers.
 // pub fn refresh_upstream_peers() -> Result<(), Error> {

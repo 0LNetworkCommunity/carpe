@@ -120,7 +120,7 @@ export function checkAccountBalance(account: AccountEntry) {
     .catch((e) => raise_error(e, false, "checkAccountBalance"));
 }
 
-export function getAccountEvents(account: AccountEntry) {
+export function getAccountEvents(account: AccountEntry, errorCallback = null) {
   const address = account.account;
   
   invoke('get_account_events', {account: address.toUpperCase()})
@@ -131,7 +131,13 @@ export function getAccountEvents(account: AccountEntry) {
         .reverse();
       accountEvents.set(all);
     })
-    .catch((e) => raise_error(e, false, "getAccountEvents"));
+    .catch(e => {
+      if (errorCallback) {
+        errorCallback(e);
+      } else {
+        raise_error(e, false, "getAccountEvents");
+      }      
+    });
 }
 
 export function get_locale(): string {

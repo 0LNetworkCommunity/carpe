@@ -53,18 +53,24 @@ pub fn get_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError>
         ret.append(&mut events);
       },
       Err(e) => {
+        println!(">>> Current Node URL: {:?}", node.client.url().unwrap().host().unwrap());
         error = Some(e);
         break;        
       }
     };
   }
   
-  /* 
-    TODO catch case where node DB is currupted:
-    Error { inner: Inner { kind: JsonRpcError, source: None, json_rpc_error: Some(JsonRpcError { code: -32000, message: "Server error: DB corrupt: Sequence number not continuous, expected: 0, actual: 5.", data: None }) } }
-  */
   match error {
-    Some(_) => Err(CarpeError::client("Could not get account events from the chain")),
+    Some(e) => {
+      /*if e.to_string().contains("DB corrupt") {
+        println!(">>> Retry fetch_events with different node");
+        match remove_node(node.url) {
+          Err(e) => Err(CarpeError::misc(&error.to_string())),
+          Ok(_) => get_events(account)
+        }        
+      } else {*/
+      Err(CarpeError::misc(&e.to_string()))      
+    },
     None => Ok(ret)
   }
 }
