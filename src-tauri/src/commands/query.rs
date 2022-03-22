@@ -79,7 +79,7 @@ fn try_again_get_events(account: AccountAddress, current_node: &Node) -> Result<
   match remove_node(current_node.client.url().unwrap().to_string()) {
     Err(e) => {
       if e.to_string().contains("Cannot remove last node") {
-        Err(CarpeError::misc("Current connected node database is corrupted."))
+        Err(CarpeError::misc("corrupted_db"))
       } else {
         Err(CarpeError::misc(&format!("Could not query account events, message: {:?}", e)))
       }            

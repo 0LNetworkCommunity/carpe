@@ -1,5 +1,5 @@
-import { invoke } from '@tauri-apps/api/tauri';
 import { get } from 'svelte/store';
+import { invoke } from '@tauri-apps/api/tauri';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { minerLoopEnabled, tower} from "./miner";
