@@ -129,15 +129,27 @@ pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
   Ok(cfg)
 }
 
-/*
+
 /// Removes current node from upstream nodes
 /// To be used when DB is corrupted for instance.
-pub fn remove_node(url) {
-  let mut cfg = configs::get_cfg()?;
-  cfg.profile.upstream_nodes = ;
-  cfg.save_file()?;
-  Ok(cfg)
-}*/
+pub fn remove_node(host: String) -> Result<(), Error> {
+  match configs::get_cfg() {
+    Ok(mut cfg) => {
+      let nodes = cfg.profile.upstream_nodes;
+      match nodes.len() {
+        1 => bail!("Cannot remove last node"),
+        _ => {
+          cfg.profile.upstream_nodes = nodes
+            .into_iter()
+            .filter(|each| { !each.to_string().contains(&host) })
+            .collect();
+          cfg.save_file()
+        }
+      }
+    },
+    Err(_) => Ok(())
+  }
+}
 
 
 // // TODO:

@@ -4,6 +4,7 @@ use diem_types::{account_address::AccountAddress, event::EventKey};
 use diem_client::views::EventView;
 use ol::node::query::QueryType;
 use crate::{carpe_error::CarpeError, configs::get_node_obj};
+use crate::configs_network::remove_node;
 
 #[tauri::command(async)]
 pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError>{
@@ -39,7 +40,6 @@ pub fn get_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError>
   let mut error = None;
 
   while events_count == limit {    
-    
     let result = node.client.get_events(
       EventKey::new_from_address(&account, 0),
       start, 
@@ -53,7 +53,6 @@ pub fn get_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError>
         ret.append(&mut events);
       },
       Err(e) => {
-        println!(">>> Current Node URL: {:?}", node.client.url().unwrap().host().unwrap());
         error = Some(e);
         break;        
       }
@@ -62,14 +61,20 @@ pub fn get_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError>
   
   match error {
     Some(e) => {
-      /*if e.to_string().contains("DB corrupt") {
-        println!(">>> Retry fetch_events with different node");
-        match remove_node(node.url) {
-          Err(e) => Err(CarpeError::misc(&error.to_string())),
+      if e.to_string().contains("DB corrupt") {
+        match remove_node(node.client.url().unwrap().to_string()) {
+          Err(e) => {
+            if e.to_string().contains("Cannot remove last node") {
+              Err(CarpeError::misc("Current connected node database is corrupted."))
+            } else {
+              Err(CarpeError::misc(&format!("Could not query account events, message: {:?}", e)))
+            }            
+          },
           Ok(_) => get_events(account)
         }        
-      } else {*/
-      Err(CarpeError::misc(&e.to_string()))      
+      } else {
+        Err(CarpeError::misc(&format!("Could not query account events, message: {:?}", e)))
+      }
     },
     None => Ok(ret)
   }
