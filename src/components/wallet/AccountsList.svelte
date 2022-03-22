@@ -14,8 +14,6 @@
   export let isMining: boolean;
   export let isConnected: boolean;
 
-  console.log(account_list);
-
   // TODO: move to tauri commands
   function formatBalance(balance) {
     const balanceScaled = coinsScaled(balance);

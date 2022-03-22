@@ -219,6 +219,11 @@
     "sender": "Sender",
     "receiver": "Receiver",
     "received_payment": "Received Payment",
-    "sent_payment": "Sent Payment"
+    "sent_payment": "Sent Payment",
+    "loading": {
+      "error": "Error loading the account events:",
+      "corrupted_db": "Current connected node does not have all account events.", 
+      "data_safe": "Don't worry. Your wallet and coins are safe on the chain. Try connecting to another upstream node."
+    }
   }
 }

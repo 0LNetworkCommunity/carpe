@@ -12,10 +12,19 @@
   let unsubscribeAccount;
   let unsubscribeEvents;
 
+  let loadingError = null;
+
   onMount(async () => {
     unsubscribeAccount = signingAccount.subscribe((account) => {
+      if (myAccount && myAccount.account == account.account) {
+        return;
+      }
       myAccount = account;
-      getAccountEvents(account);
+      getAccountEvents(myAccount, (error) => { 
+        loadingError = error.msg == "corrupted_db" 
+          ? $_("events.loading.corrupted_db")
+          : error.msg
+      });
       unsubscribeEvents = accountEvents.subscribe((all) => { events = all[myAccount.account] });
     });
   });
@@ -31,7 +40,11 @@
     <div class="uk-flex uk-flex-center">
       <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("events.account_events")}</h2>
     </div>
-    {#if events == null} <!-- every account has at least 1 onboarding transaction -->
+    {#if loadingError}
+      <p class="uk-text-center uk-text-warning">{$_("events.loading.error")}</p>
+      <p class="uk-text-center uk-text-warning">{loadingError}</p>
+      <p class="uk-text-center uk-text-warning">{$_("events.loading.data_safe")}</p>
+    {:else if events == null} 
       <span uk-spinner style="position:absolute; top:0px; left:0px"/>
       <EventsTableDummy />
     {:else}

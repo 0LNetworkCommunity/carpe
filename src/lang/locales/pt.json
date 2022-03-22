@@ -219,6 +219,11 @@
     "sender": "Pagador",
     "receiver": "Recebedor",
     "received_payment": "Pagamento Recebido",
-    "sent_payment": "Pagamento Enviado"
+    "sent_payment": "Pagamento Enviado",
+    "loading": {
+      "error": "Erro ao carregar os eventos da conta:",
+      "corrupted_db": "O nó conectado atual não possui todos os eventos da conta.",
+      "data_safe": "Não se preocupe. Sua carteira e moedas estão seguras na rede. Tente conectar-se a outro nó ascendente."
+    }
   }
 }
