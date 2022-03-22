@@ -3,41 +3,6 @@
 version = 3
 
 [[package]]
-name = "Carpe"
-version = "0.3.0"
-dependencies = [
- "anyhow",
- "built",
- "cli",
- "ctrlc",
- "diem-client",
- "diem-config",
- "diem-crypto",
- "diem-json-rpc-types",
- "diem-types",
- "diem-wallet",
- "dirs 4.0.0",
- "glob",
- "hex",
- "keyring",
- "ol",
- "ol-keys",
- "ol-types",
- "onboard",
- "pretty_env_logger",
- "reqwest",
- "serde",
- "serde_json",
- "sysinfo",
- "tauri",
- "tauri-build",
- "tokio 1.13.0",
- "tower",
- "txs",
- "url",
-]
-
-[[package]]
 name = "Inflector"
 version = "0.11.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -888,6 +853,41 @@ dependencies = [
  "semver 1.0.4",
  "serde",
  "toml",
+ "url",
+]
+
+[[package]]
+name = "carpe"
+version = "0.3.0"
+dependencies = [
+ "anyhow",
+ "built",
+ "cli",
+ "ctrlc",
+ "diem-client",
+ "diem-config",
+ "diem-crypto",
+ "diem-json-rpc-types",
+ "diem-types",
+ "diem-wallet",
+ "dirs 4.0.0",
+ "glob",
+ "hex",
+ "keyring",
+ "ol",
+ "ol-keys",
+ "ol-types",
+ "onboard",
+ "pretty_env_logger",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sysinfo",
+ "tauri",
+ "tauri-build",
+ "tokio 1.13.0",
+ "tower",
+ "txs",
  "url",
 ]
 
