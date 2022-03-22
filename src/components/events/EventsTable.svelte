@@ -96,11 +96,13 @@
   -->
   {#if Object.keys(pages).length > 1}
     <div class="pagination-container uk-text-center">
-      <a
-        class="previous-page-btn uk-icon-link uk-align-left uk-text-center" 
-        uk-icon="chevron-left" 
+      <a 
+        href={'#'}
+        class="previous-page-btn uk-align-left uk-text-center" 
         on:click={previousPageClick} 
-      ></a>
+      >
+        <span uk-icon="chevron-left"></span>
+      </a>
       <div class="page-numbers-container uk-align-left">
         <!-- Case 0 -->
         {#if Object.keys(pages).length <= 7}
@@ -137,10 +139,12 @@
         {/if}
       </div>
       <a 
-        class="next-page-btn uk-icon-link uk-align-left uk-text-center"
-        uk-icon="chevron-right"
+        href={'#'}
+        class="next-page-btn uk-align-left uk-text-center"
         on:click={nextPageClick}
-      ></a>
+      >
+        <span uk-icon="chevron-right"></span>
+      </a>
     </div>    
   {/if}   
 </main>
@@ -170,6 +174,7 @@
     width: 20px; 
     height: 20px; 
     border-radius: 100%; 
+    color: grey;
     background-color: #F0F0F0; 
     border-radius: 100%; 
     padding: 5px; 
@@ -180,6 +185,7 @@
     width: 20px; 
     height: 20px; 
     border-radius: 100%; 
+    color: grey;
     background-color: #F0F0F0; 
     border-radius: 100%; 
     padding: 5px; 
