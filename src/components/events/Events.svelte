@@ -37,16 +37,12 @@
       <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("events.account_events")}</h2>
     </div>
     {#if loadingError}
+      <p class="uk-text-center uk-text-warning">{$_("events.loading.error")}</p>
       <p class="uk-text-center uk-text-warning">{loadingError.msg}</p>
-      <p class="uk-text-center uk-text-warning">Don't worry. Your wallet and coins are safe on the chain.</p>
-      <p class="uk-text-center uk-text-warning">Try connecting to another upstream node.</p>
+      <p class="uk-text-center uk-text-warning">{$_("events.loading.data_safe")}</p>
     {:else if events == null} 
       <span uk-spinner style="position:absolute; top:0px; left:0px"/>
       <EventsTableDummy />
-    {:else if events.length == 0} <!-- every account has at least 1 onboarding transaction -->
-      <p class="uk-text-center uk-text-warning">No events found because connected node database is probably corrupted.</p>
-      <p class="uk-text-center uk-text-warning">Don't worry. Your wallet and coins are safe on the chain.</p>
-      <p class="uk-text-center uk-text-warning">Try connecting to another upstream node.</p>
     {:else}
       <EventsTable {events} />
     {/if}

@@ -219,6 +219,10 @@
     "sender": "Pagador",
     "receiver": "Recebedor",
     "received_payment": "Pagamento Recebido",
-    "sent_payment": "Pagamento Enviado"
+    "sent_payment": "Pagamento Enviado",
+    "loading": {
+      "error": "Erro ao carregar os eventos da conta:",
+      "data_safe": "Não se preocupe. Sua carteira e moedas estão seguras na corrente. Tente conectar-se a outro nó ascendente."
+    }
   }
 }

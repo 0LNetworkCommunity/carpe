@@ -2,7 +2,7 @@
 use diem_json_rpc_types::views::TowerStateResourceView;
 use diem_types::{account_address::AccountAddress, event::EventKey};
 use diem_client::views::EventView;
-use ol::node::query::QueryType;
+use ol::node::{query::QueryType, node::Node};
 use crate::{carpe_error::CarpeError, configs::get_node_obj};
 use crate::configs_network::remove_node;
 
@@ -62,20 +62,28 @@ pub fn get_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError>
   match error {
     Some(e) => {
       if e.to_string().contains("DB corrupt") {
-        match remove_node(node.client.url().unwrap().to_string()) {
-          Err(e) => {
-            if e.to_string().contains("Cannot remove last node") {
-              Err(CarpeError::misc("Current connected node database is corrupted."))
-            } else {
-              Err(CarpeError::misc(&format!("Could not query account events, message: {:?}", e)))
-            }            
-          },
-          Ok(_) => get_events(account)
-        }        
+        return try_again_get_events(account, &node)
+      }
+      Err(CarpeError::misc(&format!("Could not query account events, message: {:?}", e)))
+    },
+    None => {
+      if ret.is_empty() {
+        return try_again_get_events(account, &node)
+      }
+      Ok(ret)
+    }
+  }
+}
+
+fn try_again_get_events(account: AccountAddress, current_node: &Node) -> Result<Vec<EventView>, CarpeError> {
+  match remove_node(current_node.client.url().unwrap().to_string()) {
+    Err(e) => {
+      if e.to_string().contains("Cannot remove last node") {
+        Err(CarpeError::misc("Current connected node database is corrupted."))
       } else {
         Err(CarpeError::misc(&format!("Could not query account events, message: {:?}", e)))
-      }
+      }            
     },
-    None => Ok(ret)
-  }
+    Ok(_) => get_events(account)
+  }        
 }
