@@ -17,7 +17,7 @@ export interface Preferences {
 export function init_preferences() {
   console.log(">>> call init_preferences");
   
-  // avoid using lib without init finished on invoke
+  // avoid using lib without init finished
   setupI18n({ 
     withLocale: 'en',
     fallbackLocale: 'en',
