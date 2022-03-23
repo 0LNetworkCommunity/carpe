@@ -193,7 +193,7 @@
     "deno_tx": "Demo Tx",
     "onboard": {
       "title": "Onboard an Account",
-      "await": "",
+      "await": "Awaiting Tx",
       "btn_onboard": "Onboard",
       "btn_cancel": "Cancel",
       "no_balance_title": "Low Balance",

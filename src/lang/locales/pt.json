@@ -193,10 +193,10 @@
     "deno_tx": "Demo Tx",
     "onboard": {
       "title": "Integrar uma conta",
-      "await": "",
+      "await": "Aguardando",
       "btn_onboard": "Integrar",
       "btn_cancel": "Cancelar",
-      "no_balance_title": "Saldo Baixo",
+      "no_balance_title": "Saldo Insuficiente",
       "no_balance_body1": "A integração de {onboard_key} não foi bem-sucedida.",
       "no_balance_body2": "Parece que você tem menos de 2 moedas em sua conta, isso significa que você não poderá embarcar ninguém."
     },
