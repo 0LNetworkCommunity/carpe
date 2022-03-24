@@ -15,7 +15,9 @@ export const loadAccounts = async () => {
       
       // set initial signingAccount
       if (get(signingAccount).account == "" && result.accounts.length > 0) {
-        signingAccount.set(result.accounts[0]);
+        let firstAccount = result.accounts[0];
+        signingAccount.set(firstAccount);
+        getAccountEvents(firstAccount);
       } else {
         /* TODO no accounts in the current network
         signingAccount.set(new_account("", "", ""));
@@ -124,6 +126,10 @@ export function checkAccountBalance(account: AccountEntry) {
 export function getAccountEvents(account: AccountEntry, errorCallback = null) {
   const address = account.account;
   
+  if (!account.on_chain) {
+    return errorCallback && errorCallback("account_not_on_chain");
+  }
+
   invoke('get_account_events', {account: address.toUpperCase()})
     .then((events: Array<T>) => {
       let all = get(accountEvents);     
@@ -134,7 +140,7 @@ export function getAccountEvents(account: AccountEntry, errorCallback = null) {
     })
     .catch(e => {
       if (errorCallback) {
-        errorCallback(e);
+        errorCallback(e.msg);
       } else {
         raise_error(e, false, "getAccountEvents");
       }      
