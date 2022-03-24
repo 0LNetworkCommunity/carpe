@@ -81,17 +81,6 @@ export const setAccount = async (an_address: string) => {
   }
 
   let a = findOneAccount(an_address);
-
-  // optimistic switch
-  let previous = get(signingAccount);
-  signingAccount.set(a);
- 
-  // reset user data
-  tower.set({});
-  mnem.set("");
-  
-  // initi account events for better UX
-  getAccountEvents(a);
   
   invoke("switch_profile", {
     account: a.account,
@@ -99,6 +88,12 @@ export const setAccount = async (an_address: string) => {
   .then((res) => {
     responses.set(res);
     notify_success("Account switched to " + a.nickname);
+    // reset user data
+    signingAccount.set(a);
+    tower.set({});
+    mnem.set("");
+    // initi account events for better UX
+    getAccountEvents(a);
   })
   .catch((e) => {
     raise_error(e, false, "setAccount");
