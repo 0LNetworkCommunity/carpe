@@ -13,9 +13,9 @@ export const loadAccounts = async () => {
       all_accounts.set(result.accounts);
       
       if (get(signingAccount).account == "" && result.accounts.length > 0) {
-        // set initial signingAccount
-        let first = result.accounts[0];
-        setAccount(first.account);
+        let firstAccount = result.accounts[0];
+        signingAccount.set(firstAccount);
+        getAccountEvents(firstAccount);
       } else {
         /* TODO no accounts in the current network
         signingAccount.set(new_account("", "", ""));
