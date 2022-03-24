@@ -86,7 +86,6 @@ export const setAccount = async (an_address: string) =>{
 
   let a = findOneAccount(an_address);
   
-
   invoke("switch_profile", {
     account: a.account,
   })
@@ -97,6 +96,8 @@ export const setAccount = async (an_address: string) =>{
     signingAccount.set(a);
     tower.set({});
     mnem.set("");
+    // initi account events for better UX
+    getAccountEvents(a);
   })
   .catch((e) => raise_error(e, false, "setAccount"));
 }
