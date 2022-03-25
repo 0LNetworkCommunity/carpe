@@ -225,15 +225,5 @@
       "corrupted_db": "Actuellement connecté à un noeud n'ayant pas tous les évènements.",
       "data_safe": "Ne vous inquiétez pas, votre compte est sécurisé sur la chaine. Essayez de vous connecter à un autre noeud en amont."
     }
-  },
-  "events": {
-    "account_events": "Évènements du compte",
-    "version": "Version",
-    "type": "Type",
-    "amount": "Montant",
-    "sender": "Expéditeur",
-    "receiver": "Receveur",
-    "received_payment": "Paiement recu",
-    "sent_payment": "Paiement envoyé"
   }
 }
