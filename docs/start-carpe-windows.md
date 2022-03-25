@@ -4,7 +4,7 @@
 
 You can find the Windows 10 installer in the releases folder:
 
-https://github.com/OLSF/carpe/releases/download/v0.2.0/carpe_0.2.0_x64.msi
+https://github.com/OLSF/carpe/releases/download/v0.3.0/carpe_0.3.0_x64.msi
 
 
 # Important:
