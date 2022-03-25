@@ -81,10 +81,10 @@
   "settings": {
     "title": "PARAMÈTRES",
     "langapp_settings": {
-      "title": "Language and Appearance",
+      "title": "Language and Apparence",
       "lang": "Language",
-      "lang_description": "Choose the language used to display",
-      "lang_button": "French",
+      "lang_description": "Choisissez le language à afficher",
+      "lang_button": "Français",
       "theme": "Theme",
       "theme_description": "Choose the theme"
     },
@@ -219,6 +219,11 @@
     "sender": "Expéditeur",
     "receiver": "Receveur",
     "received_payment": "Paiement recu",
-    "sent_payment": "Paiement envoyé"
+    "sent_payment": "Paiement envoyé",
+    "loading": {
+      "error": "Erreur durant le chargement des évènements:",
+      "corrupted_db": "Actuellement connecté à un noeud n'ayant pas tous les évènements.",
+      "data_safe": "Ne vous inquiétez pas, votre compte est sécurisé sur la chaine. Essayez de vous connecter à un autre noeud en amont."
+    }
   }
 }
