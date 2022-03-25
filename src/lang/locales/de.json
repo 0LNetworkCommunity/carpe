@@ -2,212 +2,212 @@
   "nav": {
     "wallet": "Wallet",
     "miner": "Miner",
-    "transactions": "Transaction"
+    "transactions": "Transaktion"
   },
   "layout": {
       "connection_error": {
-         "title": "Oops, We Can't Connect to 0L Network",
-         "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
+         "title": "Ups, wir können keine Verbindung zum 0L-Netzwerk herstellen",
+         "body": "<p> Dies liegt wahrscheinlich daran, dass der von dir verwendete Upstream-Peer (Server) nicht verfügbar ist.</p> <h3> Keine Sorge, dein Konto und deine Coins sind sicher.</h3> <p>Wenn Du Deine Peers ändern oder aktualisieren musst, kannst Du das hier tun:</p>"
       },
       "error_accordion": {
-          "title": "Error Report",
-          "category": "Error Category",
+          "title": "Fehlerbericht",
+          "category": "Fehler-Kategorie",
           "id": "ID"
       }
   },
   "wallet": {
     "wallet": "Wallet",
     "carpe": "CARPE",
-    "btn_new_account": "New Account",
-    "btn_restore_account": "Restore Account",
-    "newbie_message": "Looks like you don't have any accounts",
+    "btn_new_account": "Neues Konto",
+    "btn_restore_account": "Konto wiederherstellen",
+    "newbie_message": "Sieht aus, als hättest du keine Konten",
     "reminder_create": {
       "card_title": "Onboarding",
-      "message_headline": "You have generated keys for an account, but it does not yet exist on chain.",
-      "message_prefix": "Join our community on ",
-      "message_suffix": " and provide us your Onboard Key to get onboarded.",
+      "message_headline": "Du hast Keys für ein Konto erzeugt, aber es existiert noch nicht auf der Chain.",
+      "message_prefix": "Tritt unserer Gemeinschaft bei auf ",
+      "message_suffix": " und gib uns deinen Onboard Key, um an Bord zu kommen.",
       "onboard_key": "ONBOARD KEY"
     },
     "account_list": {
-      "nickname": "Nickname",
-      "address": "Address",
+      "nickname": "Spitzname",
+      "address": "Adresse",
       "authkey": "Authkey",
-      "balance": "Balance",
+      "balance": "Guthaben",
       "offline": "offline",
-      "loading": "loading",
-      "account_on_chain": "Account Not On Chain",
-      "message": " Your balance will go down for every transaction you send, including mining."
+      "loading": "wird geladen",
+      "account_on_chain": "Konto nicht auf der Chain",
+      "message": " Dein Guthaben verringert sich bei jeder Transaktion, die du sendest, einschließlich Mining."
     },
     "keygen": {
-      "title": "Create New Account",
-      "description": "After you generate an account and secret phrase, you'll need someone to send one 0L coin to that account for it to be created on chain.",
-      "btn_generate_keys": "Generate Keys",
-      "btn_generate_keys_2": "Generate Different Keys",
-      "btn_create_account": "Create This Account",
-      "account_address": "Account Address",
+      "title": "Neues Konto anlegen",
+      "description": "Nachdem du ein Konto und eine geheime Phrase erstellt hast, muss jemand einen 0L-Coin an dieses Konto senden, damit es auf der Chain erstellt wird.",
+      "btn_generate_keys": "Key erzeugen",
+      "btn_generate_keys_2": "Unterschiedliche Keys erzeugen",
+      "btn_create_account": "Dieses Konto anlegen",
+      "account_address": "Adresse des Kontos",
       "onboard_key": "Onboarding Key",
-      "onboard_key_description": "This is also known as an Auth Key. For now you'll need it to be able to create the account on chain.",
-      "securite_recovery_phrase": "SECRET RECOVERY PHRASE",
-      "securite_note": "This is your secret account password (mnemonic). If you lose it no one can help you! Write it down now.",
-      "account_tips": "Your account does not exist yet on chain. You'll need to give someone your Onboarding Key so that they can create your account."
+      "onboard_key_description": "Dieser wird auch als Auth Key bezeichnet. Du brauchst ihn, um das Konto auf der Chain erstellen zu können.",
+      "securite_recovery_phrase": "GEHEIME WIEDERHERSTELLUNGSPHRASE",
+      "securite_note": "Dies ist dein geheimes Kontopasswort (Mnemonic). Wenn du es verlierst, kann dir niemand helfen! Schreib es dir jetzt auf.",
+      "account_tips": "Dein Konto existiert noch nicht auf der Chain. Du musst jemandem deinen Onboarding Key geben, damit er dein Konto erzeugen kann."
     },
     "account_from_mnem_submit": {
-      "title":" Heads Up!",
-      "body": " <p>Are you sure you wrote down your mnemonic phrase?</p> <p>You won't be able to recover your account without it. No one can help you if lose it.</p><p>This is the last opportunity to write it down.</p>",
-      "btn_cancel": "Let me check again",
-      "btn_submit": "Submit Now",
-      "btn_submiting": "Submiting"
+      "title":" Aufgepasst!",
+      "body": " <p>Bist du sicher, dass du deine Mnemonic Phrase aufgeschrieben hast?</p> <p>Ohne sie kannst du dein Konto nicht wiederherstellen. Niemand kann dir helfen, wenn du sie verlierst.</p><p>Dies ist die letzte Chance, sie aufzuschreiben.</p>",
+      "btn_cancel": "Ich schaue nochmal nach",
+      "btn_submit": "Jetzt Abschicken",
+      "btn_submiting": "Abschicken"
     },
     "account_from_mnem_from": {
-      "title": "RESTORE ACCOUNT",
-      "description": "Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions",
-      "placeholder": "Recovery Mnemonic"
+      "title": "KONTO WIEDERHERSTELLEN",
+      "description": "Mit deinen Wiederherstellungswörtern (Mnemonik) kannst du Carpe als Wallet zur Überwachung und zum Senden von Transaktionen konfigurieren",
+      "placeholder": "Wiederherstellungs Mnemonik"
     },
     "account_switcher": {
-      "select_account": "Select Account",
-      "switch_account": "Switch Account",
-      "setting": "Go To Setting",
-      "developers": "Developers"
+      "select_account": "Konto auswählen",
+      "switch_account": "Konto wechseln",
+      "setting": "Gehe zu Einstellung",
+      "developers": "Entwickler"
     }
   },
   "about": {
-    "about": "About",
+    "about": "Über",
     "release": "Release",
     "version": "Version",
     "branch": "Branch",
     "commit": "Commit"
   },
   "settings": {
-    "title": "SETTINGS",
+    "title": "EINSTELLUNGEN",
     "langapp_settings": {
-      "title": "Language and Appearance",
-      "lang": "Language",
-      "lang_description": "Choose the language used to display",
-      "lang_button": "German",
+      "title": "Sprache und Erscheinungsbild",
+      "lang": "Sprache",
+      "lang_description": "Wähle die Anzeigesprache",
+      "lang_button": "Deutsch",
       "theme": "Theme",
-      "theme_description": "Choose the theme"
+      "theme_description": "Wähle das Theme"
     },
     "network_settings": {
-      "title": "NETWORK SETTINGS",
-      "list_of_peers": "LIST OF PEERS",
-      "description": "Choose a playlist of upstream nodes, so you can access the chain. Network connections will try the list in random order until a connection is made. Simply link to any playlist.json file here to update peers.",
-      "playlist": "Update Playlist of Network Servers",
-      "override_peers": "OVERRIDE PEERS",
-      "override_peers_description": "You can force using a different peer. You can only choose one peer with this setting. It will remove the playlist. This will now be a list of one element.",
-      "url_of_upstream_node": "URL of upstream node",
-      "btn_update": "UPDATE",
-      "upstream_title": "FETCH A NEW WAYPOINT FROM UPSTREAM",
-      "upstream_subtitle": "Most waypoint issues can easily be fixed by fetching an updated one from a connected upstream peer.",
-      "btn_fetch_new_waypoint": "Fetch New Waypoint",
-      "btn_cancel": "Cancel",
-      "btn_submit": "USE PLAYLIST"
+      "title": "NETZWERKEINSTELLUNGEN",
+      "list_of_peers": "LISTE DER PEERS",
+      "description": "Wählen Sie eine Playlist mit vorgelagerten Knoten, damit ein Zugriff auf die Kette möglich ist. Netzwerkverbindungen werden die Liste in zufälliger Reihenfolge ausprobieren, bis eine Verbindung hergestellt ist. Verweise hier einfach auf eine beliebige playlist.json-Datei, um die Peers zu aktualisieren.",
+      "playlist": "Playlist der Netzwerkserver aktualisieren",
+      "override_peers": "PEERS ÜBERSCHREIBEN",
+      "override_peers_description": "Du kannst die Verwendung eines anderen Peers erzwingen. Mit dieser Einstellung kannst du nur einen Peer auswählen. Dadurch wird die Playlist entfernt. Diese besteht nun aus einem einzigen Element.",
+      "url_of_upstream_node": "URL des vorgelagerten Knotens",
+      "btn_update": "AKTUALISIERUNG",
+      "upstream_title": "EINEN NEUEN WEGPUNKT VON OBERHALB ABRUFEN",
+      "upstream_subtitle": "Die meisten Probleme mit Wegpunkten lassen sich leicht beheben, indem man einen aktualisierten Wegpunkt von einem verbundenen Upstream-Peer abruft.",
+      "btn_fetch_new_waypoint": "Neuen Wegpunkt abrufen",
+      "btn_cancel": "Abbrechen",
+      "btn_submit": "PLAYLIST VERWENDEN"
     },
     "account_settings": {
-      "title": "ACCOUNT SETTINGS",
-      "btn_remove": "REMOVE ACCOUNT",
-      "comfirm": "Confirm remove accounts from this device? This is not reversable.",
-      "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
+      "title": "KONTOEINSTELLUNGEN",
+      "btn_remove": "KONTO LÖSCHEN",
+      "comfirm": "Das Löschen von Konten auf diesem Gerät bestätigen? Das kann nicht rückgängig gemacht werden.",
+      "description": "Dabei werden keine Konten von der Chain gelöscht. Die Konten werden nur von diesem Gerät entfernt. Wenn du deine Wiederherstellungscodes (Mnemonik) nicht irgendwo aufbewahrst, kann es sein, dass du dauerhaft aus diesem Konto ausgesperrt wirst. NIEMAND KANN DIR HELFEN, DIE MNEMONIK WIEDERZUBEKOMMEN. "
     }
   },
   "miner": {
     "title": "Miner",
     "miner_backlog": {
       "title": "Sync Tower Proofs",
-      "subtitle": "Manually resubmit local proofs",
-      "in_process": "Backlog in Progress",
-      "btn_submit": "Submit Local Backlog"
+      "subtitle": "Lokale Proofs manuell erneut einreichen",
+      "in_process": "Backlog in Arbeit",
+      "btn_submit": "Lokalen Backlog einreichen"
     },
     "miner_phases": {
-      "backlog_started": "Backlog Listener Started",
-      "backlog_in_process": "Backlog in Progress",
-      "backlog_complete": "Backlog Complete",
-      "mining_enabled": "Mining Enabled",
-      "proof_started": "Proof start request received",
-      "proof_complete": "Proof Complete"
+      "backlog_started": "Backlog Listener Gestartet",
+      "backlog_in_process": "Backlog in Arbeit",
+      "backlog_complete": "Backlog Fertig",
+      "mining_enabled": "Mining Aktiviert",
+      "proof_started": "Anforderung für Proof-Start erhalten",
+      "proof_complete": "Proof Fertig"
     },
     "miner_process": {
-      "status_complete": "Proof Complete",
-      "status_in_process": "Mining in Progress",
-      "notes": "The percentage is an estimate. <br> It is based on your previous proof's elapsed time.",
-      "notes2": "Over 100% only means this is taking longer than previous proof"
+      "status_complete": "Proof Fertig",
+      "status_in_process": "Mining Läuft",
+      "notes": "Der Prozentsatz ist eine Schätzung. <br> Es basiert auf der für den letzten Proof verwendeten Zeitspanne.",
+      "notes2": "Über 100% bedeutet nur, dass es länger dauert als der vorherige Proof."
     },
     "tower_state": {
-      "local_height": "Local Tower Height",
-      "on_chain_height": "On-chain Tower Height",
-      "mined_in_last_epoch": "Last Epoch Mined",
-      "sent_in_this_epoch": "roofs Sent this Epoch",
-      "empty": "No proofs found on device",
-      "proof_more": "You have submitted max proofs today (max 72)",
-      "proof_less": "Insufficient proofs to receive a reward today (min 8)",
-      "proof_ok": "Your account has submitted enough proofs today (min 8)"
+      "local_height": "Lokale Turmhöhe",
+      "on_chain_height": "On-chain Turmhöhe",
+      "mined_in_last_epoch": "Letzte Epoche gemined",
+      "sent_in_this_epoch": "In dieser Epoche übermittelte Proofs",
+      "empty": "Keine Proofs auf dem Gerät gefunden",
+      "proof_more": "Du hast heute ein Maximum an Proofs übermittelt (max. 72)",
+      "proof_less": "Nicht genügend Proofs, um heute eine Belohnung zu erhalten (mindestens 8)",
+      "proof_ok": "Dein Konto hat heute genügend Proofs übermittelt (mindestens 8)"
     },
     "cards": {
       "cant_start": {
-        "title": "Your account does not exist on chain yet ",
-        "body": "The miner can't start until the account can be found on chain. Maybe you've generated new keys locally, but no one has sent any coins to that address?"
+        "title": "Dein Konto existiert noch nicht in der Chain ",
+        "body": "Der Miner kann erst starten, wenn das Konto auf der Chain gefunden werden kann. Vielleicht hast du lokal neue Schlüssel generiert, aber niemand hat Coins an die Adresse geschickt?"
       },
       "disco_error": {
-        "title": "Discontinuity ",
-        "body": "Looks like there's a gap in the proofs you are submitting. Each proof needs to reference the previous one, and the proof was rejected because of this."
+        "title": "Unterbrechung ",
+        "body": "Sieht aus, als gäbe es eine Lücke in den von dir übermittelten Proofs. Jeder Proof muss auf den vorhergehenden verweisen, und der Proof wurde deshalb abgelehnt."
       },
       "epoch_status": {
-        "empty_title": "No proofs sent",
-        "empty_body": "There are no proofs saved to the chain. When you successfully submit your first proof, you will see some stats here.",
-        "in_process_title": "Keep it up",
-        "in_process_body": "Your account needs to submit at least 8 proofs per day (epoch) to receive a reward. You will receive the reward on the next day.",
-        "complete_title": "Success!",
-        "complete_body": "Your account has submitted enough proofs today (minimum 8 proofs per epoch). You should receive rewards at the start of next epoch.",
-        "exceed_title": "Whoa",
-        "exceed_body": "You have mined 72 proofs, the maximum number of proofs per epoch. The tower can keep making proofs but they will only be accepted in the next epoch."
+        "empty_title": "Keine Proofs übermittelt",
+        "empty_body": "Es sind keine Proofs auf der Chain gespeichert. Wenn du deinen ersten Proof erfolgreich übermittelt hast, wirst du hier einige Statistiken sehen.",
+        "in_process_title": "Weiter so",
+        "in_process_body": "Dein Konto muss mindestens 8 Proofs pro Tag (Epoche) übermitteln, um eine Belohnung zu erhalten. Du erhältst die Belohnung am nächsten Tag.",
+        "complete_title": "Geschafft!",
+        "complete_body": "Dein Konto hat heute genügend Proofs geliefert (mindestens 8 Proofs pro Epoche). Du solltest die Belohnungen zu Beginn der nächsten Epoche erhalten.",
+        "exceed_title": "Brrrr",
+        "exceed_body": "Du hast 72 Proofs erzeugt, das ist die maximale Anzahl von Proofs pro Epoche. Der Turm kann weiterhin Proofs machen, aber sie werden erst in der nächsten Epoche akzeptiert."
       },
       "first_proof": {
-        "title": "Let's mine your first proof",
-        "body": "<p> Hang tight! This will take at least 30mins, maybe up to 1hr</p> <p> You will see your balance go down while you mine proofs. If you reach the minimum per day, you will receive a reward, on the next day (epoch).</p> <p> Check your computer settings so that the computer doesn't sleep when the screen shuts off. You want the miner running while you're not here.</p>",
-        "body_disabled": "Turn the switch on to start mining!"
+        "title": "Machen wir uns an deinen ersten Proof",
+        "body": "<p> Abwarten! Das dauert mindestens 30 Minuten, vielleicht bis zu 1 Stunde.</p> <p> Während du Proofs schürfst, wird dein Kontostand sinken. Wenn du das Minimum pro Tag erreichst, erhältst du am nächsten Tag (Epoche) eine Belohnung.</p> <p> Prüfe deine Computereinstellungen, damit der Computer nicht in den Ruhezustand geht, wenn sich der Bildschirm ausschaltet. Du möchtest, dass der Miner läuft, wenn du nicht da bist.</p>",
+        "body_disabled": "Leg den Schalter um und fang an zu minen!"
       },
       "invalid_proof": {
-        "title": "Cannot Verify Proof",
-        "body": "Weird. This proof was rejected because it is not a valid \"delay proof\". This is usually because parameters are not set correctly."
+        "title": "Kann den Proof nicht bestätigen",
+        "body": "Seltsam. Dieser Proof wurde abgelehnt, weil er kein gültiger \"Delay Proof\" ist. Dies liegt in der Regel daran, dass die Parameter nicht korrekt eingestellt sind."
       },
       "oops": {
-        "title": "Oops",
-        "body": "Looks like there's an error with mining a delay proof"
+        "title": "Hoppla",
+        "body": "Sieht aus, als gäbe es einen Fehler beim Mining eines Delay Proofs"
       },
       "too_many_proofs": {
-        "title": "Too Many Proofs",
-        "body": "Looks like you've sent more proofs than expected during the last 24 hours. The chain expects a max {maxNum} proofs during each epoch. On the next epoch your proofs will begin to be submitted again."
+        "title": "Zu Viele Proofs",
+        "body": "Sieht aus, als hättest du in den letzten 24 Stunden mehr Proofs geschickt als erwartet. Die Chain erwartet maximal {maxNum} Proofs pro Epoche. In der nächsten Epoche werden deine Proofs wieder übermittelt."
       },
       "wrong_difficulty": {
-        "title": "Wrong Difficulty",
-        "body": "Looks like you're sending a proof with the wrong difficulty parameters to the chain. Check you are connected to the right network with the correct difficulty settings."
+        "title": "Falsche Difficulty",
+        "body": "Es sieht so aus, als würdest du einen Proof mit den falschen Difficulty-Parametern an die Chain senden. Stelle sicher, dass du mit dem richtigen Netzwerk und den richtigen Difficulty-Einstellungen verbunden bist."
       },
       "sync_proof": {
-        "title": "Syncing your proofs",
-        "body": "Proofs awaiting transaction: {delta} ",
-        "body_0": "Something is wrong, you have more proofs on-chain, than on this device. You may be missing proofs locally."
+        "title": "Synchronisierung Deiner Proofs",
+        "body": "Auf Transaktion wartende Proofs: {delta} ",
+        "body_0": "Irgendetwas stimmt nicht. Du hast mehr Proofs auf der Chain, als auf diesem Gerät. Möglicherweise fehlen dir lokale Proofs."
       }
     }
   },
   "txs": {
     "deno_tx": "Demo Tx",
     "onboard": {
-      "title": "Onboard an Account",
+      "title": "Konto Onboarden",
       "await": "",
-      "btn_onboard": "Onboard",
-      "btn_cancel": "Cancel",
-      "no_balance_title": "Low Balance",
-      "no_balance_body1": "Onboarding {onboard_key} was not successful.",
-      "no_balance_body2": "Looks like you have less than 2 coins in your account, this means you won't be able to onboard anyone."
+      "btn_onboard": "Onboarden",
+      "btn_cancel": "Abbrechen",
+      "no_balance_title": "Niedriger Kontostand",
+      "no_balance_body1": "Das Onboarding von {onboard_key} war nicht erfolgreich.",
+      "no_balance_body2": "Sieht so aus, als hättest du weniger als 2 Coins auf deinem Konto, das bedeutet, dass du niemanden onboarden kannst."
     },
     "set_wallet_type": {
-      "title": "Set your Account Type",
-      "subtitle": " Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
-      "btn_slow": "Set Slow Wallet",
-      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversable.",
-      "slow_confirm": "Set Slow",
-      "btn_community": "Set Community Wallet",
-      "btn_confirm_community": "Set Community",
-      "community_confirm": "Confirm Set Community Wallet? This is not reversable."
+      "title": "Kontotyp Auswählen",
+      "subtitle": " Es ist wichtig, dass du weißt, was du tust. Dies kann nicht mehr rückgängig gemacht werden. Slow und Community Wallets sind unveränderlich.",
+      "btn_slow": "Slow Wallet Wählen",
+      "btn_confirm_slow": "Slow Wallet bestätigen? Dies kann nicht rückgängig gemacht werden.",
+      "slow_confirm": "Slow Wählen",
+      "btn_community": "Community Wallet Wählen",
+      "btn_confirm_community": "Community Wählen",
+      "community_confirm": "Community Wallet bestätigen? Dies kann nicht rückgängig gemacht werden."
     }
   }
 }
