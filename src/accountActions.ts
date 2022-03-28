@@ -13,9 +13,9 @@ export const loadAccounts = async () => {
       all_accounts.set(result.accounts);
       
       if (get(signingAccount).account == "" && result.accounts.length > 0) {
-        let firstAccount = result.accounts[0];
-        signingAccount.set(firstAccount);
-        getAccountEvents(firstAccount);
+        // set initial signingAccount
+        let first = result.accounts[0];
+        setAccount(first.account);
       } else {
         /* TODO no accounts in the current network
         signingAccount.set(new_account("", "", ""));
@@ -81,6 +81,17 @@ export const setAccount = async (an_address: string) => {
   }
 
   let a = findOneAccount(an_address);
+
+  // optimistic switch
+  let previous = get(signingAccount);
+  signingAccount.set(a);
+ 
+  // reset user data
+  tower.set({});
+  mnem.set("");
+  
+  // initi account events for better UX
+  getAccountEvents(a);
   
   invoke("switch_profile", {
     account: a.account,
@@ -88,12 +99,6 @@ export const setAccount = async (an_address: string) => {
   .then((res) => {
     responses.set(res);
     notify_success("Account switched to " + a.nickname);
-    // reset user data
-    signingAccount.set(a);
-    tower.set({});
-    mnem.set("");
-    // initi account events for better UX
-    getAccountEvents(a);
   })
   .catch((e) => {
     raise_error(e, false, "setAccount");
