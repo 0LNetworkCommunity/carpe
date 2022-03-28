@@ -174,7 +174,7 @@ pub fn add_account(
 }
 
 /// Switch tx profiles, change 0L.toml to use selected account
-#[tauri::command]
+#[tauri::command(async)]
 pub fn switch_profile(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
   match find_account_data(account) {
     Ok(entry) => {

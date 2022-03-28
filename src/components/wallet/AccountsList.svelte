@@ -4,7 +4,6 @@
   import IconMining from "../icons/IconMining.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import { carpeTick } from "../../tick";
   import { _ } from "svelte-i18n";
 
   UIkit.use(Icons);
@@ -50,10 +49,7 @@
             class={isMining && a.account == my_account.account
               ? "uk-text-primary"
               : ""}
-            on:click={() => {
-              setAccount(a.account);
-              carpeTick();
-            }}
+            on:click={() => setAccount(a.account)}
           >
             <!-- <a href="#" on:click={() => { setAccount(acc.account); }}> {acc.nickname} </a > -->
             <td>

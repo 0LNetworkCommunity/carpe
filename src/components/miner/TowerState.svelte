@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import { onMount } from "svelte";
-import { _ } from "svelte-i18n";
   import { tower } from "../../miner";
 
   let towerState;

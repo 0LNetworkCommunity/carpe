@@ -6,8 +6,7 @@
   import { Link } from "svelte-navigator";
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
-import { carpeTick } from "../../tick";
-import { _ } from "svelte-i18n";
+  import { _ } from "svelte-i18n";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -48,7 +47,7 @@ import { _ } from "svelte-i18n";
                 <a
                   href={"#"}
                   class="{my_account.account == acc.account ? 'uk-text-primary' : ''}"
-                  on:click={() => { setAccount(acc.account); carpeTick();}}
+                  on:click={() => setAccount(acc.account)}
                 >
                   {acc.nickname}
                 </a>
