@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import ToggleMiner from "./ToggleMiner.svelte";
   import MinerProgress from "./MinerProgress.svelte";
   import TowerState from "./TowerState.svelte";
@@ -24,28 +24,31 @@
   let isSendInProgress = false;
   let hasProofs = false;
 
+  // unsubscribe functions
+  let unsubsTower;
+  let unsubsIsTowerNewbie;
+  let unsubsBacklogInProgress;
+  let unsubsSigningAccount;
+  let unsubsIsRefreshingAccounts;
+  let unsubsIsDevTest;
+
   onMount(async () => {
     getTowerChainView();
+    unsubsTower = tower.subscribe(t => hasProofs = t.last_local_proof ? true : false);
+    unsubsIsTowerNewbie = isTowerNewbie.subscribe((b) =>  newbie = b);
+    unsubsBacklogInProgress = backlogInProgress.subscribe((b) =>  isSendInProgress = b);
+    unsubsSigningAccount = signingAccount.subscribe((a) => (account = a));
+    unsubsIsRefreshingAccounts = isRefreshingAccounts.subscribe((a) => loading = a );
+    unsubsIsDevTest = isDevTest = get(nodeEnv) == "test";
+  });
 
-    tower.subscribe((t) => {
-      if (t.last_local_proof) {
-
-        hasProofs = true;
-      } else {
-        hasProofs = false;
-      }
-    })
-
-    isTowerNewbie.subscribe((b) =>  newbie = b);
-
-    backlogInProgress.subscribe((b) =>  isSendInProgress = b);
-
-    signingAccount.subscribe((a) => (account = a));
-
-    isRefreshingAccounts.subscribe((a) => loading = a );
-
-    isDevTest = get(nodeEnv) == "test";
-
+  onDestroy(async () => {
+    unsubsTower && unsubsTower();
+    unsubsIsTowerNewbie && unsubsIsTowerNewbie();
+    unsubsBacklogInProgress && unsubsBacklogInProgress();
+    unsubsSigningAccount && unsubsSigningAccount();
+    unsubsIsRefreshingAccounts && unsubsIsRefreshingAccounts();
+    unsubsIsDevTest && unsubsIsDevTest();
   });
 </script>
 
