@@ -23,6 +23,7 @@
   let isDevTest = false;
   let isSendInProgress = false;
   let hasProofs = false;
+  let minerTower;
 
   // unsubscribe functions
   let unsubsTower;
@@ -34,9 +35,12 @@
 
   onMount(async () => {
     getTowerChainView();
-    unsubsTower = tower.subscribe(t => hasProofs = t.last_local_proof ? true : false);
-    unsubsIsTowerNewbie = isTowerNewbie.subscribe((b) =>  newbie = b);
-    unsubsBacklogInProgress = backlogInProgress.subscribe((b) =>  isSendInProgress = b);
+    unsubsTower = tower.subscribe(t => {
+      minerTower = t;
+      hasProofs = minerTower.last_local_proof ? true : false;
+    });
+    unsubsIsTowerNewbie = isTowerNewbie.subscribe((b) => newbie = b);
+    unsubsBacklogInProgress = backlogInProgress.subscribe((b) => isSendInProgress = b);
     unsubsSigningAccount = signingAccount.subscribe((a) => (account = a));
     unsubsIsRefreshingAccounts = isRefreshingAccounts.subscribe((a) => loading = a );
     unsubsIsDevTest = isDevTest = get(nodeEnv) == "test";
@@ -74,41 +78,34 @@
   {/if}
     <div class="uk-grid uk-margin-small">
       {#if account && account.on_chain}
-
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />
-          
-          <MinerProgress />
-          <!-- <p>Lost time is never found again.</p> -->
+          <MinerProgress tower={minerTower} />
+          <!-- Lost time is never found again. -->
         </div>
 
         <div class="uk-width-1-1">
           {#if newbie && !hasProofs }
             <FirstProof />
           {:else}
-
-          <div class="uk-grid uk-grid-match">
-            <div class="uk-width-1-3">
-              {#if isSendInProgress}
-                <SyncProofs />
-              {:else}
-                <EpochStatus/>
-              {/if}
+            <div class="uk-grid uk-grid-match">
+              <div class="uk-width-1-3">
+                {#if isSendInProgress}
+                  <SyncProofs {minerTower} {loading} />
+                {:else}
+                  <EpochStatus {minerTower} isTowerNewbie={newbie}/>
+                {/if}
+              </div>
+              <div class="uk-width-2-3">
+                <TowerState {minerTower}/>
+              </div>
             </div>
-
-            <div class="uk-width-2-3">
-              <TowerState />
-            </div>
-          </div>
           {/if}
         </div>
-      {:else if account }
+      {:else if account}
         <CantStart />
       {/if}
     </div>
-    
     <CommonErrors />
-
-
-    <MinerDebug />
+    <MinerDebug {minerTower} />
 </main>

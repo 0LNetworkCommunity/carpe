@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { carpeErrorLog } from "../../../carpeError";
   import type { CarpeError } from "../../../carpeError";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
   import { _ } from "svelte-i18n";
 
-  let result_string;
+  let unsubs;
   let this_error: CarpeError;
 
   let test: CarpeError = {
@@ -17,14 +17,16 @@
 
   this_error = test;
   onMount(async () => {
-    carpeErrorLog.subscribe((e) => {
-      result_string = "";
+    unsubs = carpeErrorLog.subscribe((e) => {
       if (e) {
         this_error = e[0];
       }
     });
   });
-  
+
+  onDestroy(async () => {
+    unsubs && unsubs();
+  });  
 </script>
 
 <main>

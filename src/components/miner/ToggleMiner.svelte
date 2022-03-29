@@ -1,13 +1,19 @@
 <script>
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import { toggleMining } from "../../miner_toggle";
   import { minerLoopEnabled } from "../../miner";
 
-  let enabled; 
+  let enabled;
+  let unsubscribe; 
+
   onMount(async () => {
-    minerLoopEnabled.subscribe(e => enabled = e);
+    unsubscribe = minerLoopEnabled.subscribe(boo => enabled = boo);
   });
 
+  onDestroy(async () => {
+    unsubscribe && unsubscribe();
+  });
+  
 </script>
 
 <main>

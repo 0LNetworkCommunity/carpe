@@ -1,41 +1,42 @@
 <script lang="ts">
-  import { onDestroy, onMount } from "svelte";
-import { _ } from "svelte-i18n";
+  import { onMount, onDestroy, afterUpdate } from "svelte";
+  import { _ } from "svelte-i18n";
   import {
     minerProofComplete,
     minerLoopEnabled,
-    tower,
   } from "../../miner";
   import { setProofProgres } from "../../miner_invoke";
+
+  export let tower;
 
   let percent = 0;
   let looper;
   let proofDone = false;
-  let bar;
   let enable = false;
+
+  let unsubsProofComplete;
+  let unsubsLoopEnabled;
+
+  afterUpdate(() => {
+    // Progress bar only starts when Rust confirms it is starting the miner.
+    // Progress bar ends when:
+    // - Rust side sends event with a proof completed
+    // - Rust side send event with a failure
+    if (tower.progress && tower.progress.pct_complete) {
+      let bar = document.getElementById("mining-progressbar");
+      bar.value = percent = tower.progress.pct_complete;
+    }
+  });
   
   onMount(async () => {
-    bar = document.getElementById("mining-progressbar");
-
-
-    tower.subscribe((t) => {
-      // Progress bar only starts when Rust confirms it is starting the miner.
-      // Progress bar ends when:
-      // - Rust side sends event with a proof completed
-      // - Rust side send event with a failure
-      if (t.progress && t.progress.pct_complete) {
-        bar.value = percent = t.progress.pct_complete;
-      }
-    });
-
-    minerProofComplete.subscribe(b => {
+    unsubsProofComplete = minerProofComplete.subscribe(b => {
       proofDone = b;
       if (b) {
         percent = 1;
       }
     })
 
-    minerLoopEnabled.subscribe((b) => {
+    unsubsLoopEnabled = minerLoopEnabled.subscribe((b) => {
       enable = b;
       if (enable) {
         // create the bar if not yet started.
@@ -48,6 +49,8 @@ import { _ } from "svelte-i18n";
 
   onDestroy(() => {
     clearInterval(looper);
+    unsubsProofComplete && unsubsProofComplete();
+    unsubsLoopEnabled && unsubsLoopEnabled();
   });
 
   function formatPercent(decimal) {
@@ -63,7 +66,7 @@ import { _ } from "svelte-i18n";
       {#if proofDone }
         {$_("miner.miner_process.status_complete")}
       {:else}
-      {$_("miner.miner_process.status_in_process")} {formatPercent(percent)}
+        {$_("miner.miner_process.status_in_process")} {formatPercent(percent)}
       {/if}
       
     </span>
