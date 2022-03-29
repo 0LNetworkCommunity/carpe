@@ -33,14 +33,19 @@
   let unsubsIsRefreshingAccounts;
   let unsubsIsDevTest;
 
+  // unsubscribe functions
+  let unsubsTower;
+  let unsubsIsTowerNewbie;
+  let unsubsBacklogInProgress;
+  let unsubsSigningAccount;
+  let unsubsIsRefreshingAccounts;
+  let unsubsIsDevTest;
+
   onMount(async () => {
     getTowerChainView();
-    unsubsTower = tower.subscribe(t => {
-      minerTower = t;
-      hasProofs = minerTower.last_local_proof ? true : false;
-    });
-    unsubsIsTowerNewbie = isTowerNewbie.subscribe((b) => newbie = b);
-    unsubsBacklogInProgress = backlogInProgress.subscribe((b) => isSendInProgress = b);
+    unsubsTower = tower.subscribe(t => hasProofs = t.last_local_proof ? true : false);
+    unsubsIsTowerNewbie = isTowerNewbie.subscribe((b) =>  newbie = b);
+    unsubsBacklogInProgress = backlogInProgress.subscribe((b) =>  isSendInProgress = b);
     unsubsSigningAccount = signingAccount.subscribe((a) => (account = a));
     unsubsIsRefreshingAccounts = isRefreshingAccounts.subscribe((a) => loading = a );
     unsubsIsDevTest = isDevTest = get(nodeEnv) == "test";
