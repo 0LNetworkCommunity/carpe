@@ -1,7 +1,5 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { onMount } from "svelte";
-  import { tower } from "../../miner";
 
   export let minerTower;
   
@@ -61,7 +59,5 @@
     </table>
     
     <!-- <EpochStatus actual_proofs={minerTower.on_chain.actual_count_proofs_in_epoch} /> -->
-  {:else}
-    <TowerStateSkeleton />
   {/if}
 </main>
