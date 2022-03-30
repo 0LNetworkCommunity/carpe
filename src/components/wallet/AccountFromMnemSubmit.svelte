@@ -56,7 +56,6 @@
         connected.set(true); // provisionally set to true so we don't get flashed an error page.
         refreshWaypoint();
 
-        
         navigate("/");
       })
       .catch((error) => {
@@ -100,9 +99,9 @@
             on:click|preventDefault={handleAdd}
           >
             {#if isSubmitting}
-            {$_("wallet.account_from_mnem_submit.btn_submiting")}
+              {$_("wallet.account_from_mnem_submit.btn_submiting")}
             {:else}
-            {$_("wallet.account_from_mnem_submit.btn_submit")}
+              {$_("wallet.account_from_mnem_submit.btn_submit")}
             {/if}
           </button>
         </p>
@@ -116,9 +115,9 @@
       on:click|preventDefault={handleAdd}
     >
       {#if isSubmitting}
-      {$_("wallet.account_from_mnem_submit.btn_submiting")}...
+        {$_("wallet.account_from_mnem_submit.btn_submiting")}...
       {:else}
-      {$_("wallet.account_from_mnem_submit.btn_submit")}
+        {$_("wallet.account_from_mnem_submit.btn_submit")}
       {/if}
     </button>
   {/if}

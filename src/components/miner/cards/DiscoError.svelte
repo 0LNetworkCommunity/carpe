@@ -1,6 +1,6 @@
 
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
   import type { CarpeError } from "../../../carpeError";
@@ -8,11 +8,16 @@
   import { _ } from "svelte-i18n";
 
   let display: CarpeError = null;
+  let unsubs;
 
   onMount(async () => {
-    displayDiscontinuity.subscribe((ce: CarpeError) => {
+    unsubs = displayDiscontinuity.subscribe((ce: CarpeError) => {
       display = (ce.category? ce : null);
     });
+  });
+
+  onDestroy(async () => {
+    unsubs && unsubs();
   });
 </script>
 

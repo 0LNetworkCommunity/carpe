@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import { signingAccount } from "../../accounts";
+  import { setAccount } from "../../accountActions";
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
   let home_path = "";
@@ -54,7 +54,7 @@
     invoke("init_from_mnem", { mnem: alice_mnem })
       .then((res) => {
         responses.set(res);
-        signingAccount.set(res);
+        setAccount(res);
       })
       .catch((e) => {
         raise_error(e)

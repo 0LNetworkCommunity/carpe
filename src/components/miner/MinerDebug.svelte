@@ -1,23 +1,26 @@
 <script lang="ts">
   import {
-emitBacklog,
+    emitBacklog,
     killBacklogListener,
     startBacklogListener,
     submitProofZero,
     towerOnce,
   } from "../../miner_invoke";
   import { debugMode } from "../../debug";
-  import { onMount } from "svelte";
-  import { tower } from "../../miner";
+  import { onMount, onDestroy } from "svelte";
   import type { ClientTowerStatus } from "../../miner";
   import MinerPhases from "./MinerPhases.svelte";
 
-  let towerState: ClientTowerStatus;
+  export let minerTower: ClientTowerStatus;
   let debug: boolean;
+  let unsubsDebug;
 
   onMount(async () => {
-    debugMode.subscribe((d) => (debug = d));
-    tower.subscribe((r) => (towerState = r));
+    unsubsDebug = debugMode.subscribe(boo => debug = boo);
+  });
+
+  onDestroy(async () => {
+    unsubsDebug && unsubsDebug();
   });
 </script>
 
@@ -36,9 +39,7 @@ emitBacklog,
             class="uk-button uk-button-default uk-width-1-1"
             on:click={startBacklogListener}>Start Backlog Listener</button
           >
-        </div>
-
-        
+        </div>        
 
         <div class="uk-margin">
           <button
@@ -69,8 +70,8 @@ emitBacklog,
       </div>
     </div>
 
-    {#if towerState}
-      <p>Latest on-chain proof hash: {towerState.on_chain.previous_proof_hash}</p>
+    {#if minerTower}
+      <p>Latest on-chain proof hash: {minerTower.on_chain.previous_proof_hash}</p>
     {/if}
   </main>
 {/if}

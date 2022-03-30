@@ -6,16 +6,16 @@ import { minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
 import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents } from './accounts';
 
-export const loadAccounts = async () => {
-  console.log("loadAccounts");
-  
+export const loadAccounts = async () => { 
+  // fetch data from local DB
   return invoke('get_all_accounts')
     .then((result: object) => {
       all_accounts.set(result.accounts);
       
-      // set initial signingAccount
       if (get(signingAccount).account == "" && result.accounts.length > 0) {
-        signingAccount.set(result.accounts[0]);
+        // set initial signingAccount
+        let first = result.accounts[0];
+        setAccount(first.account);
       } else {
         /* TODO no accounts in the current network
         signingAccount.set(new_account("", "", ""));
@@ -28,8 +28,6 @@ export const loadAccounts = async () => {
 }
 
 export const refreshAccounts = async () => {
-  console.log("refreshAccounts");
-
   isRefreshingAccounts.set(true);
   return invoke('refresh_accounts')
     .then((result: object) => { // TODO make this the correct return type
@@ -55,8 +53,6 @@ export function tryRefreshSignerAccount(newData: AccountEntry) {
 
 
 export const isCarpeInit = async () => {
-  console.log("isCarpeInit");
-
   invoke("is_init", {})
     .then((res: boolean) => {
       responses.set(res.toString());
@@ -73,7 +69,7 @@ export function findOneAccount(account: string): AccountEntry {
   return found
 }
 
-export const setAccount = async (an_address: string) =>{
+export const setAccount = async (an_address: string) => { 
   if (get(signingAccount).account == an_address) {
     return
   }
@@ -85,20 +81,31 @@ export const setAccount = async (an_address: string) =>{
   }
 
   let a = findOneAccount(an_address);
-  
 
+  // optimistic switch
+  let previous = get(signingAccount);
+  signingAccount.set(a);
+ 
+  // reset user data
+  tower.set({});
+  mnem.set("");
+  
+  // initi account events for better UX
+  getAccountEvents(a);
+  
   invoke("switch_profile", {
     account: a.account,
   })
   .then((res) => {
     responses.set(res);
     notify_success("Account switched to " + a.nickname);
-    // reset user data
-    signingAccount.set(a);
-    tower.set({});
-    mnem.set("");
   })
-  .catch((e) => raise_error(e, false, "setAccount"));
+  .catch((e) => {
+    raise_error(e, false, "setAccount");
+    
+    // fallback optimistic change
+    signingAccount.set(previous);
+  });
 }
 
 export function addNewAccount(account: AccountEntry) {
@@ -123,6 +130,10 @@ export function checkAccountBalance(account: AccountEntry) {
 export function getAccountEvents(account: AccountEntry, errorCallback = null) {
   const address = account.account;
   
+  if (!account.on_chain) {
+    return errorCallback && errorCallback("account_not_on_chain");
+  }
+
   invoke('get_account_events', {account: address.toUpperCase()})
     .then((events: Array<T>) => {
       let all = get(accountEvents);     
@@ -133,7 +144,7 @@ export function getAccountEvents(account: AccountEntry, errorCallback = null) {
     })
     .catch(e => {
       if (errorCallback) {
-        errorCallback(e);
+        errorCallback(e.msg);
       } else {
         raise_error(e, false, "getAccountEvents");
       }      

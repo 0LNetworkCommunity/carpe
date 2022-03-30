@@ -1,18 +1,14 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { tower } from "../../../miner";
+  import { afterUpdate } from "svelte";
   import MinerBacklog from "../MinerBacklog.svelte";
   import CardError from "../../layout/CardError.svelte";
 
+  export let minerTower;
   let delta: number;
 
-  onMount(async () => {
-    delta = null;
-    tower.subscribe(t => {
-      delta = t.local_height - t.on_chain.verified_tower_height
-    });
-
-  })
+  afterUpdate(() => {
+    delta = minerTower.local_height - minerTower.on_chain.verified_tower_height;
+  });
 </script>
 
 <main>
