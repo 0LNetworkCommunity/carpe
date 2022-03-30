@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { Link } from "svelte-navigator";
   import {
     isRefreshingAccounts,
@@ -15,7 +15,7 @@
   import { minerLoopEnabled } from "../../miner";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import { connected, refreshWaypoint } from "../../networks";
+  import { connected } from "../../networks";
   import ConnectionError from "../layout/ConnectionError.svelte";
   UIkit.use(Icons);
 
@@ -25,23 +25,30 @@
   let isMining = false;
   let isRefreshing: boolean = true;
   let isConnected: boolean = true;
-  // let init = true; // assume true until not.
+  
+  let unsubsConnected;
+  let unsubsAll_accounts;
+  let unsubsSigningAccount;
+  let unsubsMinerLoopEnabled;
+  let unsubsIsRefreshingAccounts;
 
-  onMount(async () => {
-    // isInit.subscribe(i => init = i);
-
-    connected.subscribe((b) => (isConnected = b));
-
-    all_accounts.subscribe((all) => {
+  onMount(async () => { 
+    unsubsConnected = connected.subscribe(b => isConnected = b);
+    unsubsAll_accounts = all_accounts.subscribe(all => {
       account_list = all;
-      pendingAccounts = all.filter((x) => !x.on_chain);
+      pendingAccounts = all.filter(x => !x.on_chain);
     });
-    signingAccount.subscribe((a) => (my_account = a));
+    unsubsSigningAccount = signingAccount.subscribe(a => my_account = a);
+    unsubsMinerLoopEnabled = minerLoopEnabled.subscribe(boo => isMining = boo);
+    unsubsIsRefreshingAccounts = isRefreshingAccounts.subscribe(boo => isRefreshing = boo);   
+  });
 
-    minerLoopEnabled.subscribe((boo) => (isMining = boo));
-
-    isRefreshingAccounts.subscribe((boo) => (isRefreshing = boo));
-    
+  onDestroy(async () => {
+    unsubsConnected && unsubsConnected();
+    unsubsAll_accounts && unsubsAll_accounts();
+    unsubsSigningAccount && unsubsSigningAccount();
+    unsubsMinerLoopEnabled && unsubsMinerLoopEnabled();
+    unsubsIsRefreshingAccounts && unsubsIsRefreshingAccounts();
   });
 </script>
 
@@ -65,7 +72,7 @@
         <div class="uk-flex uk-flex-center">
           <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("wallet.wallet")}</h2>
         </div>
-
+        
         <AccountsList {my_account} {account_list} {isMining} {isConnected} />
 
         <ReminderCreate {pendingAccounts} {isConnected} />

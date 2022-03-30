@@ -1,8 +1,8 @@
 <script lang="ts">
   /* Account events table with pagination */
-  import { get_locale } from "../../accountActions";
-  import PageNumber from "./PageNumber.svelte";
   import { _ } from "svelte-i18n";
+  import PageNumber from "./PageNumber.svelte";
+  import { printCoins } from "../../coinHelpers";
 
   export let events;
   
@@ -38,16 +38,6 @@
     }    
   }
 
-  // TODO: move to tauri commands
-  function formatAmount(balance) {
-    const balanceScaled = balance / 1000000;
-
-    return balanceScaled.toLocaleString(get_locale(), {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
-
   function formatEventType(type) {
     const value = eventTypesDic[type];
     return value || type;
@@ -71,7 +61,7 @@
         <tr>
           <td class="uk-text-right">{event.transaction_version}</td>
           <td class="uk-text-center">{formatEventType(event.data.type)}</td>
-          <td class="uk-text-right">{formatAmount(event.data.amount.amount)}</td>
+          <td class="uk-text-right">{printCoins(event.data.amount.amount)}</td>
           <td class="uk-text-center">{event.data.sender}</td>
           <td class="uk-text-center">{event.data.receiver}</td>
         </tr>
