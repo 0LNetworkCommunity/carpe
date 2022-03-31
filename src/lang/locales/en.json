@@ -209,6 +209,16 @@
       "btn_community": "Set Community Wallet",
       "btn_confirm_community": "Set Community",
       "community_confirm": "Confirm Set Community Wallet? This is not reversable."
+    },
+    "transfer": {
+      "title": "Coin Transfer",
+      "sender": "Sender",
+      "receiver": "Receiver",
+      "amount": "Amount",
+      "receiver_placeholder": "Receiver address",
+      "amount_placeholder": "Amount to be transfered",
+      "btn_transfer": "Transfer",
+      "btn_cancel": "Cancel"
     }
   },
   "events": {

@@ -115,16 +115,26 @@ export function addNewAccount(account: AccountEntry) {
   all_accounts.set(list);
 }
 
-export function checkAccountBalance(account: AccountEntry) {
-  invoke('query_balance', {account: account.account})
+export function checkSigningAccountBalance() {
+  let selected = get(signingAccount);
+  invoke('query_balance', {account: selected.account})
     .then((balance: number) => {
-      let list = get(all_accounts);
-      account.on_chain = true;
-      account.balance = Number(balance);
-      list.push(account);    
+      // update signingAccount
+      selected.on_chain = true;
+      selected.balance = Number(balance);
+      signingAccount.set(selected);
+      
+      // update all accounts set
+      let list = get(all_accounts).map(each => {
+        if (each.account == selected.account) {
+          each.on_chain = true;
+          each.balance = Number(balance);
+        }
+        return each;
+      });
       all_accounts.set(list);
     })
-    .catch((e) => raise_error(e, false, "checkAccountBalance"));
+    .catch((e) => raise_error(e, false, "checkSigningAccountBalance"));
 }
 
 export function getAccountEvents(account: AccountEntry, errorCallback = null) {
