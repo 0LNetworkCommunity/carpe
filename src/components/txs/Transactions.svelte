@@ -5,7 +5,7 @@
   import OnboardDialog from "./OnboardDialog.svelte";
   import { printCoins } from "../../coinHelpers";
   import { checkSigningAccountBalance } from "../../accountActions";
-import TransferDialog from "./TransferDialog.svelte";
+  import TransferDialog from "./TransferDialog.svelte";
 
   let account;
   let unsubs;
@@ -24,7 +24,7 @@ import TransferDialog from "./TransferDialog.svelte";
 
 </script>
 
-<main class="uk-height-viewport">
+<main>
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("nav.transactions")}</h2>
   </div>

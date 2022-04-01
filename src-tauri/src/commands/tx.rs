@@ -75,16 +75,15 @@ pub fn coin_transfer(
   receiver: String, 
   amount: u64
 ) -> Result<String, CarpeError> {
-  /*
-    let tx_params = configs::get_tx_params()
-      .map_err(|_| CarpeError::misc("Could not load tx params"))?;
-    */
-
+  
+  let tx_params = configs::get_tx_params()
+    .map_err(|_| CarpeError::misc("Could not load tx params"))?;
+  
   let receiver_address: AccountAddress = receiver
     .parse()
     .map_err(|_| CarpeError::misc("Invalid receiver account address"))?;
 
-  match transfer_cmd::balance_transfer(receiver_address, amount, None) {
+  match transfer_cmd::balance_transfer(receiver_address, amount, tx_params, None) {
     Ok(r) => Ok(format!("Transfer success: {:?}", r)),
     Err(e) => Err(CarpeError::misc(&format!(
       "Could not transfer coins: {:?}",
