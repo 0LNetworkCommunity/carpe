@@ -15,7 +15,7 @@ export const loadAccounts = async () => {
       if (get(signingAccount).account == "" && result.accounts.length > 0) {
         // set initial signingAccount
         let first = result.accounts[0];
-        setAccount(first.account);
+        setAccount(first.account, false);
       } else {
         /* TODO no accounts in the current network
         signingAccount.set(new_account("", "", ""));
@@ -69,7 +69,7 @@ export function findOneAccount(account: string): AccountEntry {
   return found
 }
 
-export const setAccount = async (an_address: string) => { 
+export const setAccount = async (an_address: string, notifySucess = true) => { 
   if (get(signingAccount).account == an_address) {
     return
   }
@@ -98,7 +98,9 @@ export const setAccount = async (an_address: string) => {
   })
   .then((res) => {
     responses.set(res);
-    notify_success("Account switched to " + a.nickname);
+    if (notifySucess) {
+      notify_success("Account switched to " + a.nickname);
+    }
   })
   .catch((e) => {
     raise_error(e, false, "setAccount");
