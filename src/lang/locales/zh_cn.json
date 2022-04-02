@@ -97,7 +97,7 @@
       "url_of_upstream_node": "上游节点URL",
       "btn_update": "更新",
       "upstream_title": "获取新的WAYPOINT",
-      "upstream_subtitle": "大多数的WAYPOINT问题可以痛殴刷新新的Waypoint来解决",
+      "upstream_subtitle": "大多数的WAYPOINT问题可以通过刷新新的Waypoint来解决",
       "btn_fetch_new_waypoint": "获取新的Waypoint",
       "btn_cancel": "取消",
       "btn_submit": "使用节点列表"
