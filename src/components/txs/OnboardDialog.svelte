@@ -30,8 +30,7 @@
         waiting = false;
         onboard_key = null;
         onSuccess(account);
-        let dialog = document.getElementById("onboardDialog");
-        UIkit.modal(dialog).hide();
+        UIkit.modal("#onboardDialog").hide();
       })
       .catch((error) => {
         errorMessage = error.msg;
