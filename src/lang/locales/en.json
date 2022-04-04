@@ -193,6 +193,8 @@
     "deno_tx": "Demo Tx",
     "account": "Account",
     "balance": "Balance",
+    "btn_onboard": "Onboard Account",
+    "btn_transfer": "Transfer Coins",
     "onboard": {
       "title": "Onboard an Account",
       "await": "Awaiting Tx",
