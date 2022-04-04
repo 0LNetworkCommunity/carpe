@@ -93,7 +93,7 @@
       >
         <span uk-icon="chevron-left"></span>
       </a>
-      <div class="page-numbers-container uk-align-left">
+      <div class="page-numbers-container uk-align-left ">
         <!-- Case 0 -->
         {#if Object.keys(pages).length <= 7}
           {#each Object.keys(pages) as number}
@@ -161,6 +161,8 @@
     background-color: #F0F0F0;
   }
   .previous-page-btn {
+    display: flex;
+    justify-content: center;
     width: 20px; 
     height: 20px; 
     border-radius: 100%; 
@@ -172,6 +174,8 @@
   }
 
   .next-page-btn {
+    display: flex;
+    justify-content: center;
     width: 20px; 
     height: 20px; 
     border-radius: 100%; 
@@ -186,5 +190,6 @@
     height: 20px; 
     padding: 5px; 
     margin: 0px;
+    line-height: 20px !important;
   }
 </style>
