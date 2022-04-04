@@ -40,12 +40,12 @@
         notify_success($_("txs.transfer.success"));
         waitingTxs = false;
         amount = null;
+        amountFormatted = "";
         receiver = null;
         // callback
         onSuccess();
         // close modal
-        let dialog = document.getElementById("coinTransferDialog");
-        UIkit.modal(dialog).hide();
+        UIkit.modal('#coinTransferDialog').hide();
       })
       .catch((error) => {
         errorMessage = errorDic[error.msg] 
