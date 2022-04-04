@@ -191,6 +191,10 @@
   },
   "txs": {
     "deno_tx": "Demo Tx",
+    "account": "Conta",
+    "balance": "Saldo",
+    "btn_onboard": "Integrar Conta",
+    "btn_transfer": "Transferir Moedas",
     "onboard": {
       "title": "Integrar uma conta",
       "await": "Aguardando",
@@ -209,6 +213,28 @@
       "btn_community": "Definir Carteira de Comunidade",
       "btn_confirm_community": "Definir Comunidade",
       "community_confirm": "Confirmar Definir Carteira de Comunidade? Esta operação não é reversível."
+    },
+    "transfer": {
+      "title": "Transferência de Moedas",
+      "sender": "Pagador",
+      "balance": "Saldo",
+      "receiver": "Recebedor",
+      "amount": "Valor",
+      "amount_label": "Valor (frações não são permitidas ainda)",
+      "receiver_placeholder": "Endereço do Recebedor",
+      "amount_placeholder": "Valor a ser transferido",
+      "confirm_title": "Atenção!",
+      "please_confirm": "Por favor, confirme as informações da sua transferência:",
+      "await": "Aguarde",
+      "btn_next": "Próximo",
+      "btn_confirm": "Confirmar",
+      "btn_cancel": "Cancelar",
+      "btn_close": "Fechar",
+      "error_amount_greater_than_balance": "Valor não pode ser maior que o saldo da conta",
+      "error_receiver_equals_sender": "Endereço do recebedor deve ser diferente do endereço do emissor.",
+      "error_slow_wallet": "Transferência de moedas está desabilidato para slow wallets.",
+      "success": "Transferência executada com sucesso!",
+      "failed": "Transferência falhou. Código: {code}"
     }
   },
   "events": {

@@ -3,7 +3,7 @@ import { locale } from 'svelte-i18n';
 
 const scaleFactor = 1000000;
 export function printCoins(amount) {
-  const scaled = scaledCoins(amount);
+  const scaled = unscaledCoins(amount);
   const selectedLocale = get(locale);
 
   return scaled.toLocaleString(selectedLocale, {
@@ -12,15 +12,16 @@ export function printCoins(amount) {
   });
 }
 
-export function printScaledCoins(scaledAmount) {
+export function printUnscaledCoins(amount, min = 2, max = 6) {
   const selectedLocale = get(locale);
 
-  return scaledAmount.toLocaleString(selectedLocale, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 6,
+  return amount.toLocaleString(selectedLocale, {
+    minimumFractionDigits: min,
+    maximumFractionDigits: max,
   });
 }
 
-export  function scaledCoins(amount) {
+export function unscaledCoins(amount) {
   return amount / scaleFactor;
 }
+

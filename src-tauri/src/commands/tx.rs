@@ -86,8 +86,11 @@ pub fn coin_transfer(
   match transfer_cmd::balance_transfer(receiver_address, amount, tx_params, None) {
     Ok(r) => Ok(format!("Transfer success: {:?}", r)),
     Err(e) => Err(CarpeError::misc(&format!(
-      "Could not transfer coins: {:?}",
-      e
+      "{:}",
+      match e.abort_code {
+        Some(code) => code,
+        None => 0
+      }
     )))
   }
 }

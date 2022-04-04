@@ -33,12 +33,12 @@
   {#if account}
     <div class="uk-text-center">
       <div class="uk-section">
-        <p>ACCOUNT: <span class="uk-text-bold">{account.account}</span></p>
-        <p>BALANCE: <span class="uk-text-bold">{printCoins(account.balance)}</span></p>
+        <p><span class="uk-text-uppercase">{$_("txs.account")}: </span><span class="uk-text-bold">{account.account}</span></p>
+        <p><span class="uk-text-uppercase">{$_("txs.balance")}: </span><span class="uk-text-bold">{printCoins(account.balance)}</span></p>
       </div>
     
-      <button uk-toggle="target: #onboardDialog" class="uk-button uk-button-default uk-margin-right">Onboard Account</button>
-      <button uk-toggle="target: #coinTransferDialog" class="uk-button uk-button-primary">Transfer Coins</button>
+      <button uk-toggle="target: #onboardDialog" class="uk-button uk-button-default uk-margin-right">{$_("txs.btn_onboard")}</button>
+      <button uk-toggle="target: #coinTransferDialog" class="uk-button uk-button-primary">{$_("txs.btn_transfer")}</button>
     </div>
     <OnboardDialog {account} {onSuccess}/>
     <TransferDialog {account} {onSuccess}/>

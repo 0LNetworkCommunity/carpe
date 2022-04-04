@@ -5,7 +5,7 @@
   import IconMining from "../icons/IconMining.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import { printCoins, scaledCoins } from "../../coinHelpers";  
+  import { printCoins, unscaledCoins } from "../../coinHelpers";  
 
   UIkit.use(Icons);
 
@@ -58,7 +58,7 @@
               {:else if a.on_chain}
                 <div class="uk-inline">
                   
-                  {#if scaledCoins(a.balance) < 1}
+                  {#if unscaledCoins(a.balance) < 1}
                     <!-- TODO: make this icon align verical middle. -->
                     <span
                       class="uk-margin uk-text-warning"
