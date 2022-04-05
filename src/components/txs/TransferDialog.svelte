@@ -27,7 +27,7 @@
   $: isValidAmount = amount > 0 && amount < unscaledCoins(account.balance);
   $: checkMessage = amount > unscaledCoins(account.balance)
     ? $_("txs.transfer.error_amount_greater_than_balance")
-    : receiver == account.account
+    : receiver && receiver.toUpperCase() == account.account.toUpperCase()
       ? $_("txs.transfer.error_receiver_equals_sender")
       : "";
 
