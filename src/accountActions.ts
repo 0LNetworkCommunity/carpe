@@ -150,8 +150,12 @@ export function getAccountEvents(account: AccountEntry, errorCallback = null) {
     .then((events: Array<T>) => {
       let all = get(accountEvents);     
       all[address] = events
-        .filter(each => each.data.type == "receivedpayment" || each.data.type == "sentpayment")
-        .reverse();
+        .sort((a, b) => (a.transaction_version < b.transaction_version)
+          ? 1
+          : (b.transaction_version < a.transaction_version)
+            ? -1
+            : 0
+        );
       accountEvents.set(all);
     })
     .catch(e => {

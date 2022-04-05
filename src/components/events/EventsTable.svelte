@@ -50,7 +50,7 @@
     <thead>
       <tr>
         <th class="uk-text-right">{$_("events.version")}</th>
-        <th class="uk-text-center">{$_("events.type")}</th>
+        <th class="uk-text-center" style="width: 98px">{$_("events.type")}</th>
         <th class="uk-text-right">{$_("events.amount")}</th>
         <th class="uk-text-center">{$_("events.sender")}</th>
         <th class="uk-text-center">{$_("events.receiver")}</th>
