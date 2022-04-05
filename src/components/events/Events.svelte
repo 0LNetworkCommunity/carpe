@@ -39,7 +39,7 @@
   });
 </script>
   
-<main class="uk-height-viewport">
+<main>
   <div style="position:relative">
     <div class="uk-flex uk-flex-center">
       <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("events.account_events")}</h2>

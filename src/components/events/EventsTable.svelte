@@ -44,7 +44,7 @@
   }
 </script>
 
-<main class="uk-height-viewport">
+<main>
   <!-- Table -->
   <table class="uk-table uk-table-divider">
     <thead>
