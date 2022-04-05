@@ -1,8 +1,8 @@
 <script lang="ts">
   /* Account events table with pagination */
-  import { get_locale } from "../../accountActions";
-  import PageNumber from "./PageNumber.svelte";
   import { _ } from "svelte-i18n";
+  import PageNumber from "./PageNumber.svelte";
+  import { printCoins } from "../../coinHelpers";
 
   export let events;
   
@@ -38,29 +38,19 @@
     }    
   }
 
-  // TODO: move to tauri commands
-  function formatAmount(balance) {
-    const balanceScaled = balance / 1000000;
-
-    return balanceScaled.toLocaleString(get_locale(), {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
-
   function formatEventType(type) {
     const value = eventTypesDic[type];
     return value || type;
   }
 </script>
 
-<main class="uk-height-viewport">
+<main>
   <!-- Table -->
   <table class="uk-table uk-table-divider">
     <thead>
       <tr>
         <th class="uk-text-right">{$_("events.version")}</th>
-        <th class="uk-text-center">{$_("events.type")}</th>
+        <th class="uk-text-center" style="width: 98px">{$_("events.type")}</th>
         <th class="uk-text-right">{$_("events.amount")}</th>
         <th class="uk-text-center">{$_("events.sender")}</th>
         <th class="uk-text-center">{$_("events.receiver")}</th>
@@ -71,7 +61,7 @@
         <tr>
           <td class="uk-text-right">{event.transaction_version}</td>
           <td class="uk-text-center">{formatEventType(event.data.type)}</td>
-          <td class="uk-text-right">{formatAmount(event.data.amount.amount)}</td>
+          <td class="uk-text-right">{printCoins(event.data.amount.amount)}</td>
           <td class="uk-text-center">{event.data.sender}</td>
           <td class="uk-text-center">{event.data.receiver}</td>
         </tr>
@@ -103,7 +93,7 @@
       >
         <span uk-icon="chevron-left"></span>
       </a>
-      <div class="page-numbers-container uk-align-left">
+      <div class="page-numbers-container uk-align-left ">
         <!-- Case 0 -->
         {#if Object.keys(pages).length <= 7}
           {#each Object.keys(pages) as number}
@@ -171,6 +161,8 @@
     background-color: #F0F0F0;
   }
   .previous-page-btn {
+    display: flex;
+    justify-content: center;
     width: 20px; 
     height: 20px; 
     border-radius: 100%; 
@@ -182,6 +174,8 @@
   }
 
   .next-page-btn {
+    display: flex;
+    justify-content: center;
     width: 20px; 
     height: 20px; 
     border-radius: 100%; 
@@ -196,5 +190,6 @@
     height: 20px; 
     padding: 5px; 
     margin: 0px;
+    line-height: 20px !important;
   }
 </style>

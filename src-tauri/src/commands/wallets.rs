@@ -19,7 +19,7 @@ use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 
 use super::get_balance;
-use super::get_events;
+use super::get_payment_events;
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
   pub accounts: Vec<AccountEntry>,
@@ -115,10 +115,9 @@ pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
   Ok(all)
 }
 
-
 #[tauri::command(async)]
 pub fn get_account_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
-  let events = get_events(account)?;
+  let events = get_payment_events(account)?;
   Ok(events)
 }
 

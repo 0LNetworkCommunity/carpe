@@ -79,6 +79,7 @@ fn main() {
       demo_tx,
       create_user_account,
       wallet_type,
+      coin_transfer,
       //Tower
       miner_once,
       start_backlog_sender_listener,

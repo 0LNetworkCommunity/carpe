@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import { navigate } from "svelte-navigator";
-  import UIkit from "uikit";
   import { responses } from "../../debug";
   import {
     signingAccount,
@@ -11,17 +11,23 @@
   import { raise_error } from "../../carpeError";
   import { invoke } from "@tauri-apps/api/tauri";
   import { notify_success } from "../../carpeNotify";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { connected, refreshWaypoint } from "../../networks";
   import { addNewAccount, isCarpeInit, loadAccounts } from "../../accountActions";
-  import { _ } from "svelte-i18n";
+  import UIkit from "uikit";
 
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;
 
+  let unsubs;
+
   onMount(async () => {
-    mnem.subscribe((m) => (danger_temp_mnem = m));
+    unsubs = mnem.subscribe((m) => (danger_temp_mnem = m));
   });
+
+  onDestroy(async () => {
+    unsubs && unsubs();
+  })
 
   // const re = /[0-9A-Fa-f]{32}/g;
 

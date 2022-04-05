@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { _ } from "svelte-i18n";
+  import { onDestroy, onMount } from "svelte";
   import { invoke } from "@tauri-apps/api/tauri";
   import { signingAccount, mnem } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
-import { _ } from "svelte-i18n";
 
   interface NewKeygen {
     entry: AccountEntry;
@@ -17,12 +17,20 @@ import { _ } from "svelte-i18n";
   let address: string;
   let authkey: string;
 
+  let unsubsMnem;
+  let unsubsSigningAccount;
+
   onMount(async () => {
-    mnem.subscribe((m) => (display_mnem = m));
-    signingAccount.subscribe((a) => {
+    unsubsMnem = mnem.subscribe((m) => (display_mnem = m));
+    unsubsSigningAccount = signingAccount.subscribe((a) => {
       address = a.account;
       authkey = a.authkey;
     });
+  });
+
+  onDestroy(async () => {
+    unsubsMnem && unsubsMnem();
+    unsubsSigningAccount && unsubsSigningAccount();
   });
 
   let hide = true;
@@ -45,8 +53,6 @@ import { _ } from "svelte-i18n";
       {$_("wallet.keygen.title")}
     </h3>
   </div>
-
-
 
   {#if address && !hide}
 

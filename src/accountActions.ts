@@ -4,7 +4,7 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
-import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents } from './accounts';
+import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents, isAccountsLoaded } from './accounts';
 
 export const loadAccounts = async () => { 
   // fetch data from local DB
@@ -15,11 +15,14 @@ export const loadAccounts = async () => {
       if (get(signingAccount).account == "" && result.accounts.length > 0) {
         // set initial signingAccount
         let first = result.accounts[0];
-        setAccount(first.account);
+        setAccount(first.account, false);
       } else {
         /* TODO no accounts in the current network
         signingAccount.set(new_account("", "", ""));
         */
+      }
+      if (!get(isAccountsLoaded)) {
+        isAccountsLoaded.set(true);
       }
       // fetch data from the chain
       return refreshAccounts();
@@ -31,9 +34,7 @@ export const refreshAccounts = async () => {
   isRefreshingAccounts.set(true);
   return invoke('refresh_accounts')
     .then((result: object) => { // TODO make this the correct return type
-
       all_accounts.set(result.accounts);
-
       result.accounts.forEach(el => {
         tryRefreshSignerAccount(el);
       });
@@ -69,7 +70,7 @@ export function findOneAccount(account: string): AccountEntry {
   return found
 }
 
-export const setAccount = async (an_address: string) => { 
+export const setAccount = async (an_address: string, notifySucess = true) => { 
   if (get(signingAccount).account == an_address) {
     return
   }
@@ -98,7 +99,9 @@ export const setAccount = async (an_address: string) => {
   })
   .then((res) => {
     responses.set(res);
-    notify_success("Account switched to " + a.nickname);
+    if (notifySucess) {
+      notify_success("Account switched to " + a.nickname);
+    }
   })
   .catch((e) => {
     raise_error(e, false, "setAccount");
@@ -115,16 +118,26 @@ export function addNewAccount(account: AccountEntry) {
   all_accounts.set(list);
 }
 
-export function checkAccountBalance(account: AccountEntry) {
-  invoke('query_balance', {account: account.account})
+export function checkSigningAccountBalance() {
+  let selected = get(signingAccount);
+  invoke('query_balance', {account: selected.account})
     .then((balance: number) => {
-      let list = get(all_accounts);
-      account.on_chain = true;
-      account.balance = Number(balance);
-      list.push(account);    
+      // update signingAccount
+      selected.on_chain = true;
+      selected.balance = Number(balance);
+      signingAccount.set(selected);
+      
+      // update all accounts set
+      let list = get(all_accounts).map(each => {
+        if (each.account == selected.account) {
+          each.on_chain = true;
+          each.balance = Number(balance);
+        }
+        return each;
+      });
       all_accounts.set(list);
     })
-    .catch((e) => raise_error(e, false, "checkAccountBalance"));
+    .catch((e) => raise_error(e, false, "checkSigningAccountBalance"));
 }
 
 export function getAccountEvents(account: AccountEntry, errorCallback = null) {
@@ -138,8 +151,12 @@ export function getAccountEvents(account: AccountEntry, errorCallback = null) {
     .then((events: Array<T>) => {
       let all = get(accountEvents);     
       all[address] = events
-        .filter(each => each.data.type == "receivedpayment" || each.data.type == "sentpayment")
-        .reverse();
+        .sort((a, b) => (a.transaction_version < b.transaction_version)
+          ? 1
+          : (b.transaction_version < a.transaction_version)
+            ? -1
+            : 0
+        );
       accountEvents.set(all);
     })
     .catch(e => {
