@@ -6,6 +6,7 @@
     isRefreshingAccounts,
     all_accounts,
     signingAccount,
+    isAccountsLoaded,
   } from "../../accounts";
   import { routes } from "../../routes";
   import type { AccountEntry } from "../../accounts";
@@ -17,6 +18,7 @@
   import Icons from "uikit/dist/js/uikit-icons";
   import { connected } from "../../networks";
   import ConnectionError from "../layout/ConnectionError.svelte";
+  import AccountsListSkeleton from './AccountsListSkeleton.svelte';
   UIkit.use(Icons);
 
   let my_account: AccountEntry;
@@ -25,20 +27,23 @@
   let isMining = false;
   let isRefreshing: boolean = true;
   let isConnected: boolean = true;
+  let isLoaded: boolean = false;
   
   let unsubsConnected;
   let unsubsAll_accounts;
   let unsubsSigningAccount;
+  let unsubsIsAccountsLoaded;
   let unsubsMinerLoopEnabled;
   let unsubsIsRefreshingAccounts;
 
-  onMount(async () => { 
+  onMount(async () => {
     unsubsConnected = connected.subscribe(b => isConnected = b);
     unsubsAll_accounts = all_accounts.subscribe(all => {
       account_list = all;
       pendingAccounts = all.filter(x => !x.on_chain);
     });
     unsubsSigningAccount = signingAccount.subscribe(a => my_account = a);
+    unsubsIsAccountsLoaded = isAccountsLoaded.subscribe(boo => isLoaded = boo);
     unsubsMinerLoopEnabled = minerLoopEnabled.subscribe(boo => isMining = boo);
     unsubsIsRefreshingAccounts = isRefreshingAccounts.subscribe(boo => isRefreshing = boo);   
   });
@@ -47,6 +52,7 @@
     unsubsConnected && unsubsConnected();
     unsubsAll_accounts && unsubsAll_accounts();
     unsubsSigningAccount && unsubsSigningAccount();
+    unsubsIsAccountsLoaded && unsubsIsAccountsLoaded();
     unsubsMinerLoopEnabled && unsubsMinerLoopEnabled();
     unsubsIsRefreshingAccounts && unsubsIsRefreshingAccounts();
   });
@@ -60,10 +66,8 @@
       </div>
     {/if}
 
-    {#if account_list == null}
-      <div class="uk-align-center">
-        <span uk-spinner class="uk-margin-left uk-position-absolute" />
-      </div>
+    {#if !isLoaded}
+      <AccountsListSkeleton />
     {:else if account_list.length > 0}
 
       {#if !isConnected}

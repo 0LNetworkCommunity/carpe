@@ -4,7 +4,7 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
-import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents } from './accounts';
+import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents, isAccountsLoaded } from './accounts';
 
 export const loadAccounts = async () => { 
   // fetch data from local DB
@@ -21,6 +21,9 @@ export const loadAccounts = async () => {
         signingAccount.set(new_account("", "", ""));
         */
       }
+      if (!get(isAccountsLoaded)) {
+        isAccountsLoaded.set(true);
+      }
       // fetch data from the chain
       return refreshAccounts();
     })
@@ -31,9 +34,7 @@ export const refreshAccounts = async () => {
   isRefreshingAccounts.set(true);
   return invoke('refresh_accounts')
     .then((result: object) => { // TODO make this the correct return type
-
       all_accounts.set(result.accounts);
-
       result.accounts.forEach(el => {
         tryRefreshSignerAccount(el);
       });
