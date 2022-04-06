@@ -2,7 +2,8 @@
   "nav": {
     "wallet": "钱包",
     "miner": "矿工",
-    "transactions": "交易"
+    "transactions": "交易",
+    "events": "Events"
   },
   "layout": {
       "connection_error": {
@@ -190,6 +191,10 @@
   },
   "txs": {
     "deno_tx": "测试交易",
+    "account": "Account",
+    "balance": "Balance",
+    "btn_onboard": "Onboard Account",
+    "btn_transfer": "Transfer Coins",
     "onboard": {
       "title": "激活账号",
       "await": "处理中",
@@ -208,6 +213,43 @@
       "btn_community": "设为社区钱包",
       "btn_confirm_community": "设为社区钱包",
       "community_confirm": "确认要设为社区钱包吗？本操作不可逆。"
+    },
+    "transfer": {
+      "title": "Coin Transfer",
+      "sender": "Sender",
+      "balance": "Balance",
+      "receiver": "Receiver",
+      "amount": "Amount",
+      "amount_label": "Amount (fractions not allowed yet)",
+      "receiver_placeholder": "Receiver address",
+      "amount_placeholder": "Amount to be transfered",
+      "confirm_title": "Heads up!",
+      "please_confirm": "Please confirm your transfer information:",
+      "await": "Await txs",
+      "btn_next": "Next",
+      "btn_confirm": "Confirm",
+      "btn_cancel": "Cancel",
+      "btn_close": "Close",
+      "error_amount_greater_than_balance": "Amount cannot be greater than account balance",
+      "error_receiver_equals_sender": "Receiver address must be different from sender address",
+      "error_slow_wallet": "Coin transfer is disabled for slow wallets.",
+      "success": "Transfer executed with success",
+      "failed": "Transfer failed. Code: {code}"
+    }
+  },
+  "events": {
+    "account_events": "Account Events",
+    "version": "Version",
+    "type": "Type",
+    "amount": "Amount",
+    "sender": "Sender",
+    "receiver": "Receiver",
+    "received_payment": "Received Payment",
+    "sent_payment": "Sent Payment",
+    "loading": {
+      "error": "Error loading the account events:",
+      "corrupted_db": "Current connected node does not have all account events. Don't worry. Your wallet and coins are safe on the chain. Try connecting to another upstream node.", 
+      "account_off_chain": "Account selected not onboarded yet."
     }
   }
 }
