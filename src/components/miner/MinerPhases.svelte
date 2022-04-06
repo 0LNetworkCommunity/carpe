@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { _ } from "svelte-i18n";
   import {
     backlogListenerReady,
@@ -17,13 +17,29 @@
   let isBacklogInProgress;
   let isBacklogComplete;
 
+  let unsubsBacklogListenerReady;
+  let unsubsMinerLoopEnabled;
+  let unsubsMinerEventReceived;
+  let unsubsMinerProofComplete;
+  let unsubsBacklogInProgress;
+  let unsubsBacklogSubmitted;
+
   onMount(async () => {
-    backlogListenerReady.subscribe((b) => (listenerReady = b));
-    minerLoopEnabled.subscribe((b) => (loopEnabled = b));
-    minerEventReceived.subscribe((b) => (proofStarted = b));
-    minerProofComplete.subscribe((b) => (isProofComplete = b));
-    backlogInProgress.subscribe((b) => (isBacklogInProgress = b));
-    backlogSubmitted.subscribe((b) => (isBacklogComplete = b));
+    unsubsBacklogListenerReady = backlogListenerReady.subscribe((b) => (listenerReady = b));
+    unsubsMinerLoopEnabled = minerLoopEnabled.subscribe((b) => (loopEnabled = b));
+    unsubsMinerEventReceived = minerEventReceived.subscribe((b) => (proofStarted = b));
+    unsubsMinerProofComplete = minerProofComplete.subscribe((b) => (isProofComplete = b));
+    unsubsBacklogInProgress = backlogInProgress.subscribe((b) => (isBacklogInProgress = b));
+    unsubsBacklogSubmitted = backlogSubmitted.subscribe((b) => (isBacklogComplete = b));
+  });
+
+  onDestroy(async () => {
+    unsubsBacklogListenerReady && unsubsBacklogListenerReady();
+    unsubsMinerLoopEnabled && unsubsMinerLoopEnabled();
+    unsubsMinerEventReceived && unsubsMinerEventReceived();
+    unsubsMinerProofComplete && unsubsMinerProofComplete();
+    unsubsBacklogInProgress && unsubsBacklogInProgress();
+    unsubsBacklogSubmitted && unsubsBacklogSubmitted();
   });
 </script>
 

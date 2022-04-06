@@ -1,6 +1,10 @@
 <script  lang="ts">
+  import { _ } from "../../lang/i18n";
   import { Link } from "svelte-navigator";
   import { routes } from "../../routes";
+  import { init_preferences } from "../../preferences";
+  
+  init_preferences();
 
   import { getLocaleFromNavigator, setupI18n, _ } from "../../lang/i18n";
   setupI18n({ withLocale: getLocaleFromNavigator() });

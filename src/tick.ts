@@ -16,8 +16,6 @@ export const carpeTick = async () => {
   await refreshWaypoint()
 
   await loadAccounts()
-    // .finally(refreshAccounts)
-  // await refreshAccounts()
 
   await getTowerChainView()
     .finally(() => { // it's possible this is a newbie, and the tower view returns error

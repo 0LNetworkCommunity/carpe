@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { _ } from "svelte-i18n";
   import { navigate } from "svelte-navigator";
-  import UIkit from "uikit";
   import { responses } from "../../debug";
   import {
     signingAccount,
@@ -11,17 +11,23 @@
   import { raise_error } from "../../carpeError";
   import { invoke } from "@tauri-apps/api/tauri";
   import { notify_success } from "../../carpeNotify";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { connected, refreshWaypoint } from "../../networks";
-  import { addNewAccount, isCarpeInit, refreshAccounts } from "../../accountActions";
-import { _ } from "svelte-i18n";
+  import { addNewAccount, isCarpeInit, loadAccounts } from "../../accountActions";
+  import UIkit from "uikit";
 
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;
 
+  let unsubs;
+
   onMount(async () => {
-    mnem.subscribe((m) => (danger_temp_mnem = m));
+    unsubs = mnem.subscribe((m) => (danger_temp_mnem = m));
   });
+
+  onDestroy(async () => {
+    unsubs && unsubs();
+  })
 
   // const re = /[0-9A-Fa-f]{32}/g;
 
@@ -45,8 +51,8 @@ import { _ } from "svelte-i18n";
         isSubmitting = false;
         notify_success(`Account Added: ${res.nickname}`);
 
-        // get the account balance. Also so that the menu displays right a way.
-        refreshAccounts();
+        // load the account restored localy right away. Balance may takes few seconds to be fetched from the chain.
+        loadAccounts();
 
         // set as init so we don't get sent back to Newbie account creation.
         isInit.set(true);
@@ -56,7 +62,6 @@ import { _ } from "svelte-i18n";
         connected.set(true); // provisionally set to true so we don't get flashed an error page.
         refreshWaypoint();
 
-        
         navigate("/");
       })
       .catch((error) => {
@@ -100,9 +105,9 @@ import { _ } from "svelte-i18n";
             on:click|preventDefault={handleAdd}
           >
             {#if isSubmitting}
-            {$_("wallet.account_from_mnem_submit.btn_submiting")}
+              {$_("wallet.account_from_mnem_submit.btn_submiting")}
             {:else}
-            {$_("wallet.account_from_mnem_submit.btn_submit")}
+              {$_("wallet.account_from_mnem_submit.btn_submit")}
             {/if}
           </button>
         </p>
@@ -116,9 +121,9 @@ import { _ } from "svelte-i18n";
       on:click|preventDefault={handleAdd}
     >
       {#if isSubmitting}
-      {$_("wallet.account_from_mnem_submit.btn_submiting")}...
+        {$_("wallet.account_from_mnem_submit.btn_submiting")}...
       {:else}
-      {$_("wallet.account_from_mnem_submit.btn_submit")}
+        {$_("wallet.account_from_mnem_submit.btn_submit")}
       {/if}
     </button>
   {/if}

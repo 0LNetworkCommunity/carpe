@@ -1,20 +1,26 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { _ } from "svelte-i18n";
+  import { onMount, onDestroy } from "svelte";
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
   import type { CarpeError } from "../../../carpeError";
   import { displayTooManyProofs } from "../../../carpeErrorUI";
-import { _ } from "svelte-i18n";
+  
 
+  let unsubs;
   let display: CarpeError = null;
 
   let maxNum = 72; // TODO: this someday needs to be dynamic.
 
   onMount(async () => {
-    displayTooManyProofs.subscribe((ce: CarpeError) => {
+    unsubs = displayTooManyProofs.subscribe((ce: CarpeError) => {
       display = (ce.category? ce : null);
     });
   });
+
+  onDestroy(async () => {
+    unsubs && unsubs();
+  }); 
 </script>
 
 {#if display}

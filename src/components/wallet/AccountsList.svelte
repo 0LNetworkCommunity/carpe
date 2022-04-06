@@ -1,12 +1,11 @@
 <script lang="ts">
-  import { get_locale, setAccount } from "../../accountActions";
+  import { _ } from "svelte-i18n";
+  import { setAccount } from "../../accountActions";
   import type { AccountEntry } from "../../accounts";
   import IconMining from "../icons/IconMining.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
-  import { carpeTick } from "../../tick";
-  import { to_number } from "svelte/internal";
-import { _ } from "svelte-i18n";
+  import { printCoins, unscaledCoins } from "../../coinHelpers";  
 
   UIkit.use(Icons);
 
@@ -15,15 +14,6 @@ import { _ } from "svelte-i18n";
   export let isMining: boolean;
   export let isConnected: boolean;
 
-  // TODO: move to tauri commands
-  function formatBalance(balance) {
-    const balanceScaled = balance / 1000000;
-
-    return balanceScaled.toLocaleString(get_locale(), {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
 </script>
 
 <main>
@@ -37,7 +27,7 @@ import { _ } from "svelte-i18n";
           <th>{$_("wallet.account_list.nickname")}</th>
           <th>{$_("wallet.account_list.address")}</th>
           <th>{$_("wallet.account_list.authkey")}</th>
-          <th>{$_("wallet.account_list.balance")}</th>
+          <th class="uk-text-right">{$_("wallet.account_list.balance")}</th>
         </tr>
       </thead>
       <tbody>
@@ -47,10 +37,7 @@ import { _ } from "svelte-i18n";
             class={isMining && a.account == my_account.account
               ? "uk-text-primary"
               : ""}
-            on:click={() => {
-              setAccount(a.account);
-              carpeTick();
-            }}
+            on:click={() => setAccount(a.account)}
           >
             <!-- <a href="#" on:click={() => { setAccount(acc.account); }}> {acc.nickname} </a > -->
             <td>
@@ -65,31 +52,31 @@ import { _ } from "svelte-i18n";
             <td>{a.nickname}</td>
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
-            <td>
-              {#if a.on_chain == null}
-              {$_("wallet.account_list.offline")}...
+            <td class="uk-text-right">
+              {#if !a.on_chain}
+                {$_("wallet.account_list.account_on_chain")}
               {:else if a.on_chain}
                 <div class="uk-inline">
                   
-                  {#if Number(formatBalance(a.balance)) < 1}
+                  {#if unscaledCoins(a.balance) < 1}
                     <!-- TODO: make this icon align verical middle. -->
                     <span
                       class="uk-margin uk-text-warning"
-                      uk-icon="icon: minus-circle"
+                      uk-icon="icon: info"
                     />
                     <div uk-dropdown>
                       {$_("wallet.account_list.message")}
                     </div>
                   {/if}
 
-                  {formatBalance(a.balance)}
+                  {printCoins(a.balance)}
                 </div>
-              {:else if a.on_chain == undefined}
-              {$_("wallet.account_list.loading")}...
+              {:else if a.balance == null}
+                {$_("wallet.account_list.loading")}...
               {:else if !isConnected}
-              {$_("wallet.account_list.offline")}...
+                {$_("wallet.account_list.offline")}...
               {:else}
-              {$_("wallet.account_list.account_on_chain")}
+                {$_("wallet.account_list.account_on_chain")}
               {/if}
             </td>
           </tr>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import ToggleMiner from "./ToggleMiner.svelte";
   import MinerProgress from "./MinerProgress.svelte";
   import TowerState from "./TowerState.svelte";
@@ -23,29 +23,36 @@
   let isDevTest = false;
   let isSendInProgress = false;
   let hasProofs = false;
+  let minerTower;
+
+  // unsubscribe functions
+  let unsubsTower;
+  let unsubsIsTowerNewbie;
+  let unsubsBacklogInProgress;
+  let unsubsSigningAccount;
+  let unsubsIsRefreshingAccounts;
+  let unsubsIsDevTest;
 
   onMount(async () => {
     getTowerChainView();
+    unsubsTower = tower.subscribe(t => {
+      minerTower = t;
+      hasProofs = minerTower.last_local_proof ? true : false;
+    });
+    unsubsIsTowerNewbie = isTowerNewbie.subscribe((b) => newbie = b);
+    unsubsBacklogInProgress = backlogInProgress.subscribe((b) => isSendInProgress = b);
+    unsubsSigningAccount = signingAccount.subscribe((a) => (account = a));
+    unsubsIsRefreshingAccounts = isRefreshingAccounts.subscribe((a) => loading = a );
+    unsubsIsDevTest = isDevTest = get(nodeEnv) == "test";
+  });
 
-    tower.subscribe((t) => {
-      if (t.last_local_proof) {
-
-        hasProofs = true;
-      } else {
-        hasProofs = false;
-      }
-    })
-
-    isTowerNewbie.subscribe((b) =>  newbie = b);
-
-    backlogInProgress.subscribe((b) =>  isSendInProgress = b);
-
-    signingAccount.subscribe((a) => (account = a));
-
-    isRefreshingAccounts.subscribe((a) => loading = a );
-
-    isDevTest = get(nodeEnv) == "test";
-
+  onDestroy(async () => {
+    unsubsTower && unsubsTower();
+    unsubsIsTowerNewbie && unsubsIsTowerNewbie();
+    unsubsBacklogInProgress && unsubsBacklogInProgress();
+    unsubsSigningAccount && unsubsSigningAccount();
+    unsubsIsRefreshingAccounts && unsubsIsRefreshingAccounts();
+    unsubsIsDevTest && unsubsIsDevTest();
   });
 </script>
 
@@ -71,41 +78,34 @@
   {/if}
     <div class="uk-grid uk-margin-small">
       {#if account && account.on_chain}
-
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />
-          
-          <MinerProgress />
-          <!-- <p>Lost time is never found again.</p> -->
+          <MinerProgress tower={minerTower} />
+          <!-- Lost time is never found again. -->
         </div>
 
         <div class="uk-width-1-1">
           {#if newbie && !hasProofs }
             <FirstProof />
           {:else}
-
-          <div class="uk-grid uk-grid-match">
-            <div class="uk-width-1-3">
-              {#if isSendInProgress}
-                <SyncProofs />
-              {:else}
-                <EpochStatus/>
-              {/if}
+            <div class="uk-grid uk-grid-match">
+              <div class="uk-width-1-3">
+                {#if isSendInProgress}
+                  <SyncProofs {minerTower} {loading} />
+                {:else}
+                  <EpochStatus {minerTower} isTowerNewbie={newbie}/>
+                {/if}
+              </div>
+              <div class="uk-width-2-3">
+                <TowerState {minerTower}/>
+              </div>
             </div>
-
-            <div class="uk-width-2-3">
-              <TowerState />
-            </div>
-          </div>
           {/if}
         </div>
-      {:else if account }
+      {:else if account}
         <CantStart />
       {/if}
     </div>
-    
     <CommonErrors />
-
-
-    <MinerDebug />
+    <MinerDebug {minerTower} />
 </main>

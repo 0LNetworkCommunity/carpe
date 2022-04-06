@@ -1,20 +1,27 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { signingAccount, all_accounts } from "../../accounts";
   import { setAccount } from "../../accountActions";
   import type { AccountEntry } from "../../accounts";
   import { Link } from "svelte-navigator";
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
-import { carpeTick } from "../../tick";
-import { _ } from "svelte-i18n";
+  import { _ } from "svelte-i18n";
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
 
+  let unsubsSigningAccount;
+  let unsubsAll_accounts;
+
   onMount(async () => {
-    signingAccount.subscribe(value => my_account = value);
-    all_accounts.subscribe(all => account_list = all);
+    unsubsSigningAccount = signingAccount.subscribe(value => my_account = value);
+    unsubsAll_accounts = all_accounts.subscribe(all => account_list = all);
+  });
+
+  onDestroy(() => {
+    unsubsSigningAccount && unsubsSigningAccount();
+    unsubsAll_accounts && unsubsAll_accounts();
   });
 
 </script>
@@ -48,7 +55,7 @@ import { _ } from "svelte-i18n";
                 <a
                   href={"#"}
                   class="{my_account.account == acc.account ? 'uk-text-primary' : ''}"
-                  on:click={() => { setAccount(acc.account); carpeTick();}}
+                  on:click={() => setAccount(acc.account)}
                 >
                   {acc.nickname}
                 </a>

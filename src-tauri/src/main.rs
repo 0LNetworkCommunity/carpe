@@ -58,8 +58,9 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       // Accounts
       is_init,
-      get_all_accounts,
       refresh_accounts,
+      get_all_accounts,
+      get_account_events,
       add_account,
       keygen,
       init_from_mnem,
@@ -78,6 +79,7 @@ fn main() {
       demo_tx,
       create_user_account,
       wallet_type,
+      coin_transfer,
       //Tower
       miner_once,
       start_backlog_sender_listener,
@@ -104,6 +106,9 @@ fn main() {
       mock_build_tower,
       start_forever_task,
       debug_start_listener,
+      // Preferences
+      get_preferences,
+      set_preferences_locale
     ])
     .menu(menu)
     .run(tauri::generate_context!())

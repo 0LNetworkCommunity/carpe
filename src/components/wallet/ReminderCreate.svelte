@@ -1,7 +1,7 @@
 <script lang="ts">
-import { _ } from "svelte-i18n";
-
+  import { _ } from "svelte-i18n";
   import type { AccountEntry } from "../../accounts";
+  
   export let pendingAccounts: AccountEntry[];
   export let isConnected: boolean;
 

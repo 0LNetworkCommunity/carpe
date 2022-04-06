@@ -1,6 +1,5 @@
 <script lang="ts">
-import { _ } from "svelte-i18n";
-
+  import { _ } from "svelte-i18n";
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
   
   let danger_temp_mnem: string;
@@ -24,9 +23,4 @@ import { _ } from "svelte-i18n";
       <AccountFromMnemSubmit danger_temp_mnem={danger_temp_mnem} isNewAccount={false} />
     </fieldset>
   </form>
-
-  <div>
-
-  </div>
-
 </main>

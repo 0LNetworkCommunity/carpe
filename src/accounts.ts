@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+
 export interface AccountEntry {
   account: string,
   authkey: string,
@@ -23,3 +24,5 @@ export const mnem = writable("");
 export const isInit = writable(false);
 export const isRefreshingAccounts = writable(false);
 export const all_accounts = writable<AccountEntry[]>([]);
+export const isAccountsLoaded = writable(false);
+export const accountEvents = writable({}); // TODO define interface AccountEvent

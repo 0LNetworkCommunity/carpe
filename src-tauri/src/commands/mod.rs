@@ -7,6 +7,7 @@ mod networks;
 mod query;
 mod examples;
 mod app_version;
+mod preferences;
 
 pub use wallets::*;
 pub use swarm::*;
@@ -17,3 +18,4 @@ pub use networks::*;
 pub use query::*;
 pub use examples::*;
 pub use app_version::*;
+pub use preferences::*;

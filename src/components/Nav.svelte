@@ -4,9 +4,10 @@
   import { signingAccount, isInit } from "../accounts";
   import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
   import { routes } from "../routes";
-  import { setupI18n, _, getLocaleFromNavigator} from "../lang/i18n";
-
-  setupI18n({ withLocale: getLocaleFromNavigator() });
+  import { _ } from "../lang/i18n";
+  import { init_preferences } from "../preferences";
+  
+  init_preferences();
 
   const secondaryRoutes = [
     routes.settings,
@@ -42,6 +43,7 @@
           <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li>
           <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>
           <li><Link to={routes.transactions}>{$_("nav.transactions")}</Link></li>
+          <li><Link to={routes.events}>{$_("nav.events")}</Link></li>
       </ul>
     </div>
 
