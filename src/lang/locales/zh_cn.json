@@ -2,11 +2,12 @@
   "nav": {
     "wallet": "钱包",
     "miner": "矿工",
-    "transactions": "交易"
+    "transactions": "交易",
+    "events": "事件"
   },
   "layout": {
       "connection_error": {
-         "title": "Oops, 我们无法连上OL网络",
+         "title": "晕了, 居然无法连上OL网络",
          "body": "<p> 很有可能是你的上游节点已经停机了.</p> <h3> 别担心！你的账号和资产是安全的.</h3> <p>如果你需要更新你的节点，请点这里：</p>"
       },
       "error_accordion": {
@@ -190,6 +191,10 @@
   },
   "txs": {
     "deno_tx": "测试交易",
+    "account": "账号",
+    "balance": "余额",
+    "btn_onboard": "激活账户",
+    "btn_transfer": "发送代币",
     "onboard": {
       "title": "激活账号",
       "await": "处理中",
@@ -208,6 +213,43 @@
       "btn_community": "设为社区钱包",
       "btn_confirm_community": "设为社区钱包",
       "community_confirm": "确认要设为社区钱包吗？本操作不可逆。"
+    },
+    "transfer": {
+      "title": "代币转账",
+      "sender": "发送者",
+      "balance": "余额",
+      "receiver": "接收者",
+      "amount": "数量",
+      "amount_label": "数量 (不能使用小数)",
+      "receiver_placeholder": "请输入接收者地址",
+      "amount_placeholder": "请输入需要转账的数量",
+      "confirm_title": "小心！",
+      "please_confirm": "请确认您的转账信息:",
+      "await": "处理中",
+      "btn_next": "下一步",
+      "btn_confirm": "确认",
+      "btn_cancel": "取消",
+      "btn_close": "关闭",
+      "error_amount_greater_than_balance": "数量不能大于账户余额",
+      "error_receiver_equals_sender": "接收地址不能是发送地址",
+      "error_slow_wallet": "慢钱包的转账尚未启动",
+      "success": "转账成功！",
+      "failed": "转账失败。 错误码: {code}"
+    }
+  },
+  "events": {
+    "account_events": "账户事件",
+    "version": "版本",
+    "type": "类型",
+    "amount": "数量",
+    "sender": "发送者",
+    "receiver": "接收者",
+    "received_payment": "转入记录",
+    "sent_payment": "转出记录",
+    "loading": {
+      "error": "账户事件加载失败:",
+      "corrupted_db": "当前连接的节点没有您的账户信息. 别担心，你的资产是安全的，您可以尝试其他节点！",
+      "account_off_chain": "当前选中的账号未激活！"
     }
   }
 }
