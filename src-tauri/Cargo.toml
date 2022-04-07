@@ -6,7 +6,7 @@ edition = "2021"
 license = "MIT"
 name = "carpe"
 repository = "https://github.com/OLSF/carpe"
-version = "0.3.0"
+version = "0.4.0"
 
 [build-dependencies]
 tauri-build = { version = "1.0.0-beta.4" }
