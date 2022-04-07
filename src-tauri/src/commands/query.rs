@@ -104,3 +104,25 @@ fn try_again_get_events(account: AccountAddress, event_key: u64, current_node: &
     Ok(_) => get_events(account, event_key)
   }        
 }
+
+/*
+
+Make whole query - WIP
+
+
+pub fn query_make_whole_payees() -> Result<Option<u64>, CarpeError>{
+  let mut node = get_node_obj()?;
+
+  let address: AccountAddress = 0x1_u64.parse();
+  let query_type = QueryType::MoveValue{
+    address,
+    "MakeWhole",
+    "Payments",
+    "payees"
+  };
+
+  let payees = node.query(query_type)?;
+  payees.parse::<u64>().map_err(|_|{ CarpeError::misc(&format!("Could not get payees from make whole", account))})
+}
+
+*/
