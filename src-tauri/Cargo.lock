@@ -868,6 +868,7 @@ dependencies = [
  "diem-config",
  "diem-crypto",
  "diem-json-rpc-types",
+ "diem-transaction-builder",
  "diem-types",
  "diem-wallet",
  "dirs 4.0.0",

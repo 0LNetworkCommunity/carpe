@@ -9,5 +9,6 @@ export const routes = {
   settings: '/settings',
   about: '/about',
   developer: '/dev',
-  swarm: '/swarm'
+  swarm: '/swarm',
+  makeWhole: '/make-whole'
 }

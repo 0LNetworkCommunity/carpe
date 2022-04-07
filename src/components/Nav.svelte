@@ -44,6 +44,12 @@
           <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>
           <li><Link to={routes.transactions}>{$_("nav.transactions")}</Link></li>
           <li><Link to={routes.events}>{$_("nav.events")}</Link></li>
+          <li><Link to={routes.makeWhole}>
+            <button class="uk-button uk-button-primary"> 
+              <span uk-icon="icon: lock; ratio: 0.8"></span>
+              Claim Coins
+            </button>
+          </Link></li>
       </ul>
     </div>
 

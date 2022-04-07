@@ -7,6 +7,10 @@ use diem_types::{
 use txs::commands::{create_account_cmd::create_from_auth_and_coin, demo_cmd, transfer_cmd};
 use crate::{carpe_error::CarpeError, configs};
 
+use diem_transaction_builder::stdlib as transaction_builder;
+use diem_json_rpc_types::views::TransactionView;
+use txs::submit_tx::maybe_submit;
+
 
 #[tauri::command]
 pub fn demo_tx() -> Result<String, CarpeError> {
@@ -72,18 +76,14 @@ pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
 
 #[tauri::command(async)]
 pub fn coin_transfer(
-  receiver: String, 
+  receiver: AccountAddress, 
   amount: u64
 ) -> Result<String, CarpeError> {
   
   let tx_params = configs::get_tx_params()
     .map_err(|_| CarpeError::misc("Could not load tx params"))?;
   
-  let receiver_address: AccountAddress = receiver
-    .parse()
-    .map_err(|_| CarpeError::misc("Invalid receiver account address"))?;
-
-  match transfer_cmd::balance_transfer(receiver_address, amount, tx_params, None) {
+  match transfer_cmd::balance_transfer(receiver, amount, tx_params, None) {
     Ok(r) => Ok(format!("Transfer success: {:?}", r)),
     Err(e) => Err(CarpeError::misc(&format!(
       "{:}",
@@ -94,3 +94,29 @@ pub fn coin_transfer(
     )))
   }
 }
+
+/*
+
+WIP
+
+Need make_whole Move function on the libra repo to build the code below
+
+#[tauri::command(async)]
+pub fn make_whole(address: AccountAddress) -> Result<TransactionView, CarpeError> { 
+  let tx_params = configs::get_tx_params()
+    .map_err(|_| CarpeError::misc("Could not load tx params"))?;
+  
+  let script = transaction_builder::encode_make_whole_function(address);
+
+  match maybe_submit(script, &tx_params, None) {
+    Ok(transaction) => Ok(transaction),
+    Err(e) => Err(CarpeError::misc(&format!(
+      "{:}",
+      match e.abort_code {
+        Some(code) => code,
+        None => 0
+      }
+    )))
+  }
+}
+*/
