@@ -6,8 +6,6 @@
   
   init_preferences();
 
-  import { getLocaleFromNavigator, setupI18n, _ } from "../../lang/i18n";
-  setupI18n({ withLocale: getLocaleFromNavigator() });
 </script>
 
 <main style="position:absolute" class="uk-position-center uk-margin-large">

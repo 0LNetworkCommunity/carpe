@@ -7,7 +7,6 @@
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
-import { _ } from "svelte-i18n";
 
   interface NewKeygen {
     entry: AccountEntry;

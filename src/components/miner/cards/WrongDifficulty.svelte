@@ -5,7 +5,6 @@
   import CardError from "../../layout/CardError.svelte";
   import type { CarpeError } from "../../../carpeError";
   import { displayWrongDifficulty } from "../../../carpeErrorUI";
-import { _ } from "svelte-i18n";
 
   let unsubs;
   let display: CarpeError = null;

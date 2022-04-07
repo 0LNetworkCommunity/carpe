@@ -2,7 +2,8 @@
   "nav": {
     "wallet": "Wallet",
     "miner": "Miner",
-    "transactions": "Transaktion"
+    "transactions": "Transaktion",
+    "events": "Events"
   },
   "layout": {
       "connection_error": {
@@ -190,6 +191,10 @@
   },
   "txs": {
     "deno_tx": "Demo Tx",
+    "account": "Account",
+    "balance": "Balance",
+    "btn_onboard": "Onboard Account",
+    "btn_transfer": "Transfer Coins",
     "onboard": {
       "title": "Konto Onboarden",
       "await": "",
@@ -208,6 +213,43 @@
       "btn_community": "Community Wallet Wählen",
       "btn_confirm_community": "Community Wählen",
       "community_confirm": "Community Wallet bestätigen? Dies kann nicht rückgängig gemacht werden."
+    },
+    "transfer": {
+      "title": "Coin Transfer",
+      "sender": "Sender",
+      "balance": "Balance",
+      "receiver": "Receiver",
+      "amount": "Amount",
+      "amount_label": "Amount (fractions not allowed yet)",
+      "receiver_placeholder": "Receiver address",
+      "amount_placeholder": "Amount to be transfered",
+      "confirm_title": "Heads up!",
+      "please_confirm": "Please confirm your transfer information:",
+      "await": "Await txs",
+      "btn_next": "Next",
+      "btn_confirm": "Confirm",
+      "btn_cancel": "Cancel",
+      "btn_close": "Close",
+      "error_amount_greater_than_balance": "Amount cannot be greater than account balance",
+      "error_receiver_equals_sender": "Receiver address must be different from sender address",
+      "error_slow_wallet": "Coin transfer is disabled for slow wallets.",
+      "success": "Transfer executed with success",
+      "failed": "Transfer failed. Code: {code}"
+    }
+  },
+  "events": {
+    "account_events": "Account Events",
+    "version": "Version",
+    "type": "Type",
+    "amount": "Amount",
+    "sender": "Sender",
+    "receiver": "Receiver",
+    "received_payment": "Received Payment",
+    "sent_payment": "Sent Payment",
+    "loading": {
+      "error": "Error loading the account events:",
+      "corrupted_db": "Current connected node does not have all account events. Don't worry. Your wallet and coins are safe on the chain. Try connecting to another upstream node.", 
+      "account_off_chain": "Account selected not onboarded yet."
     }
   }
 }

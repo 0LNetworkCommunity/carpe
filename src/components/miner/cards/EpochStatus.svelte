@@ -1,7 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { onMount } from "svelte";
-import { _ } from "svelte-i18n";
   import { isTowerNewbie, tower } from "../../../miner";
 
   let actual_proofs: number;
