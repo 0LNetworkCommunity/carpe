@@ -46,7 +46,7 @@
           <li><Link to={routes.events}>{$_("nav.events")}</Link></li>
           <li><Link to={routes.makeWhole}>
             <button class="uk-button uk-button-primary"> 
-              <span uk-icon="icon: lock; ratio: 0.8"></span>
+              <span uk-icon="icon: warning; ratio: 0.8" style="margin-right: 5px;"></span>
               Claim Coins
             </button>
           </Link></li>
