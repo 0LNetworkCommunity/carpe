@@ -40,7 +40,7 @@ pub async fn get_recovery_mode() -> Result<u64, CarpeError>{
     key_name: "epoch_ends".to_owned(), 
 })?;
 
-  bal.parse::<u64>().map_err(|_|{ CarpeError::misc(&format!("Could not get balance from account: {}", account))})
+  bal.parse::<u64>().map_err(|_|{ CarpeError::misc(&format!("No recovery mode struct. This is the typical case."))})
 }
 
 pub fn get_payment_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
