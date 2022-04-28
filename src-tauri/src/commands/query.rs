@@ -27,8 +27,8 @@ pub fn get_onchain_tower_state(account: AccountAddress) -> Result<TowerStateReso
 }
 
 #[tauri::command(async)]
-pub async fn get_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError>{
-  let mut node = get_node_obj()?;
+pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError>{
+  let node = get_node_obj()?;
 
   let acc_state = node.get_account_state(account)?;
 
