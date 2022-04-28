@@ -34,13 +34,17 @@ fn get_makewhole(account: AccountAddress) -> Result<u64, CarpeError>{
 
   let acc = node.get_annotate_account_blob(account)?.0.unwrap();
 
+  dbg!(&acc);
+
   let mk = acc.0.iter()
-  .filter(|e|{
-    e.0 == &MakeWholeResource::struct_tag()
+  .for_each(|e|{
+    if (e.0 == &MakeWholeResource::struct_tag()) {
+      dbg!(e);
+    }
     // e.0 == 
   });
 
-  dbg!(mk);
+  // dbg!(mk);
   Ok(1)
   
 }
@@ -49,6 +53,8 @@ fn get_makewhole(account: AccountAddress) -> Result<u64, CarpeError>{
 fn test_makewhole() {
   get_makewhole("613b6d9599f72134a4fa20bba4c75c36".parse().unwrap());
 }
+
+
 pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError>{
   let mut node = get_node_obj()?;
   let bal = node.query(QueryType::Balance{ account })?;

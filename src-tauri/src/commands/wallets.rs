@@ -297,6 +297,6 @@ fn test_init_mnem() {
   let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
   danger_init_from_mnem(alice).unwrap();
   let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
-  let cfg = parse_toml(path.to_str().unwrap().to_owned());
+  let cfg = parse_toml(Some(path));
   dbg!(&cfg);
 }
