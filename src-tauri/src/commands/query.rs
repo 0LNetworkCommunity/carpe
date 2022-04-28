@@ -2,7 +2,9 @@
 use diem_json_rpc_types::views::TowerStateResourceView;
 use diem_types::{account_address::AccountAddress, event::EventKey};
 use diem_client::views::EventView;
+use ol::node::query;
 use ol::node::{query::QueryType, node::Node};
+use ol_types::makewhole_resource::MakeWholeResource;
 use crate::{carpe_error::CarpeError, configs::get_node_obj};
 use crate::configs_network::remove_node;
 
@@ -24,6 +26,29 @@ pub fn get_onchain_tower_state(account: AccountAddress) -> Result<TowerStateReso
   }
 }
 
+// #[tauri::command(async)]
+// pub async 
+
+fn get_makewhole(account: AccountAddress) -> Result<u64, CarpeError>{
+  let mut node = get_node_obj()?;
+
+  let acc = node.get_annotate_account_blob(account)?.0.unwrap();
+
+  let mk = acc.0.iter()
+  .filter(|e|{
+    e.0 == &MakeWholeResource::struct_tag()
+    // e.0 == 
+  });
+
+  dbg!(mk);
+  Ok(1)
+  
+}
+
+#[test]
+fn test_makewhole() {
+  get_makewhole("613b6d9599f72134a4fa20bba4c75c36".parse().unwrap());
+}
 pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError>{
   let mut node = get_node_obj()?;
   let bal = node.query(QueryType::Balance{ account })?;
@@ -104,3 +129,5 @@ fn try_again_get_events(account: AccountAddress, event_key: u64, current_node: &
     Ok(_) => get_events(account, event_key)
   }        
 }
+
+
