@@ -890,6 +890,7 @@ dependencies = [
  "diem-config",
  "diem-crypto",
  "diem-json-rpc-types",
+ "diem-sdk",
  "diem-types",
  "diem-wallet",
  "dirs 4.0.0",
@@ -2078,6 +2079,21 @@ version = "0.1.0"
 source = "git+https://github.com/0o-de-lally/libra.git?branch=makewhole-bindings#dbb750092482c8a54850c1086c7889f783465d12"
 dependencies = [
  "diem-workspace-hack",
+ "serde",
+]
+
+[[package]]
+name = "diem-sdk"
+version = "0.0.2"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=makewhole-bindings#dbb750092482c8a54850c1086c7889f783465d12"
+dependencies = [
+ "bcs",
+ "diem-client",
+ "diem-crypto",
+ "diem-transaction-builder",
+ "diem-types",
+ "move-core-types",
+ "rand_core 0.6.3",
  "serde",
 ]
 

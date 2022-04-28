@@ -1,10 +1,11 @@
 //! transaction scripts
 
+use diem_sdk::transaction_builder::stdlib;
 use diem_types::{
   transaction::authenticator::AuthenticationKey,
   account_address::AccountAddress
 };
-use txs::commands::{create_account_cmd::create_from_auth_and_coin, demo_cmd, transfer_cmd};
+use txs::{commands::{create_account_cmd::create_from_auth_and_coin, demo_cmd, transfer_cmd}, submit_tx::{submit_tx, self}};
 use crate::{carpe_error::CarpeError, configs};
 
 
@@ -15,7 +16,7 @@ pub fn demo_tx() -> Result<String, CarpeError> {
 
   let tx_params =
     configs::get_tx_params().map_err(|_| CarpeError::misc("could not load tx params"))?;
-  dbg!(&tx_params);
+  // dbg!(&tx_params);
   match demo_cmd::demo_tx(&tx_params, None) {
     Ok(r) => Ok(format!("Tx Success: {:?}", r)),
     Err(e) => Err(CarpeError::misc(&format!(
@@ -93,4 +94,14 @@ pub fn coin_transfer(
       }
     )))
   }
+}
+
+
+#[tauri::command(async)]
+pub async fn claim_make_whole() -> Result<(), CarpeError>{
+  let tx_payload = stdlib::encode_claim_make_whole_script_function();
+  let tx_params =
+    configs::get_tx_params().map_err(|_| CarpeError::misc("could not load tx params"))?;
+  submit_tx::maybe_submit(tx_payload, &tx_params, None);
+  Ok(())
 }

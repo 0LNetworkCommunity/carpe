@@ -26,6 +26,7 @@ tower = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-
 onboard = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
 diem-crypto = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
 diem-config = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+diem-sdk = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
 cli = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
 txs = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
 #ol-types = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
