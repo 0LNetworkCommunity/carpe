@@ -2,7 +2,6 @@
 
 use txs::submit_tx::TxError;
 
-
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub enum ErrorCat {
   Client,
@@ -25,41 +24,33 @@ pub struct CarpeError {
 }
 
 impl From<anyhow::Error> for CarpeError {
-    fn from(e: anyhow::Error) -> Self {
-        CarpeError::misc(&format!("misc error, message: {:?}", e.to_string()))
-    }
+  fn from(e: anyhow::Error) -> Self {
+    CarpeError::misc(&format!("misc error, message: {:?}", e.to_string()))
+  }
 }
 
 impl From<TxError> for CarpeError {
-    fn from(e: TxError) -> Self {
-      let uid = e.abort_code.unwrap_or(E_UNKNOWN);
-      let msg = format!("Transaction Error: Location {:?} AbortCode: {:?}", &e.location, &e.abort_code);
-      let trace = format!("TxView: {:?}",  &e.tx_view);
-      // check if the is a tower error
-      match tower::tower_errors::parse_error(e){
-        tower::tower_errors::TowerError::Unknown => {  // this isn't a tower error, so it must be another TX error
-          CarpeError::new(
-            ErrorCat::Tx,
-            uid,
-            msg,
-            trace, 
-          )
-        },
-        tower::tower_errors::TowerError::Other(_v) => {
-          // TODO: Use VMStatusView?
-          CarpeError::new(
-            ErrorCat::Tx,
-            uid,
-            msg,
-            trace, 
-          )
-        },
-
-        a => {
-          CarpeError::tower(&a.to_string(), a.value())
-        }
+  fn from(e: TxError) -> Self {
+    let uid = e.abort_code.unwrap_or(E_UNKNOWN);
+    let msg = format!(
+      "Transaction Error: Location {:?} AbortCode: {:?}",
+      &e.location, &e.abort_code
+    );
+    let trace = format!("TxView: {:?}", &e.tx_view);
+    // check if the is a tower error
+    match tower::tower_errors::parse_error(e) {
+      tower::tower_errors::TowerError::Unknown => {
+        // this isn't a tower error, so it must be another TX error
+        CarpeError::new(ErrorCat::Tx, uid, msg, trace)
       }
+      tower::tower_errors::TowerError::Other(_v) => {
+        // TODO: Use VMStatusView?
+        CarpeError::new(ErrorCat::Tx, uid, msg, trace)
+      }
+
+      a => CarpeError::tower(&a.to_string(), a.value()),
     }
+  }
 }
 
 pub const E_UNKNOWN: u64 = 100; // consistent with TowerError.rs
@@ -68,7 +59,6 @@ pub const E_APP_CONFIG: u64 = 103; // consistent with TowerError.rs
 
 // Client Errors
 pub const E_CLIENT_CX: u64 = 404; // consistent with TowerError.rs
-
 
 impl CarpeError {
   pub fn new(category: ErrorCat, uid: u64, msg: String, trace: String) -> Self {
@@ -97,8 +87,6 @@ impl CarpeError {
       trace: msg.to_owned(),
     }
   }
-
-
 
   pub fn tower(msg: &str, uid: u64) -> Self {
     CarpeError {

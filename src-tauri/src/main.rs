@@ -24,12 +24,10 @@ fn main() {
   pretty_env_logger::init();
 
   //////// FORCE TEST SETTINGS ON START ////////////////////
-  // uncomment below to explicitly set "test" env 
+  // uncomment below to explicitly set "test" env
   // Tauri builder does not take env variable from terminal
   // set_env("test".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
-
-
 
   let menu = Menu::new()
     .add_submenu(Submenu::new(

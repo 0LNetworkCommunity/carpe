@@ -1,12 +1,6 @@
 //! client
 
-
-
-
-
-
 use crate::configs::get_tx_params;
-
 
 #[tauri::command]
 pub fn show_tx_params() -> String {

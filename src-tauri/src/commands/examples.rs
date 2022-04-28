@@ -1,15 +1,9 @@
-
-
+use crate::carpe_error::CarpeError;
 use ol_types::block::VDFProof;
-use tauri::{Window};
-use crate::{carpe_error::CarpeError};
 use std::{thread, time};
-
-
+use tauri::Window;
 
 // use crate::{carpe_error::CarpeError, configs::{get_cfg, get_tx_params}};
-
-
 
 #[tauri::command]
 pub fn debug_error(debug_err: bool, _window: Window) -> Result<String, CarpeError> {
@@ -21,18 +15,14 @@ pub fn debug_error(debug_err: bool, _window: Window) -> Result<String, CarpeErro
   }
 }
 
-
 #[tauri::command]
 pub async fn receive_event(window: Window) -> Result<String, String> {
-
-        // window.emit("test-event", Payload{ message: threadpool_future}).unwrap();
-  window.listen("hello-rust", |event|{ 
+  // window.emit("test-event", Payload{ message: threadpool_future}).unwrap();
+  window.listen("hello-rust", |event| {
     dbg!("event received: {:?}", event);
   });
   Ok("waited".to_string())
 }
-
-
 
 #[derive(Clone, serde::Serialize)]
 struct Payload {
@@ -42,8 +32,14 @@ struct Payload {
 #[tauri::command]
 pub fn debug_emit_event(window: Window) -> Result<String, CarpeError> {
   dbg!(&window.label());
-  
-  window.emit("event-name", Payload { message: "Tauri is awesome!".into() })
+
+  window
+    .emit(
+      "event-name",
+      Payload {
+        message: "Tauri is awesome!".into(),
+      },
+    )
     .map_err(|_| CarpeError::misc("emit event error"))?;
 
   Ok("good".to_owned())
@@ -58,36 +54,39 @@ async fn delay() -> String {
 
 #[tauri::command]
 pub async fn delay_async(window: Window) {
-    loop {
-      let threadpool_future = delay().await; // TODO: need to offload this work onto another thread.
-      window.emit("test-event", Payload{ message: threadpool_future}).unwrap();
-    }
-    
-    // Ok(threadpool_future)
+  loop {
+    let threadpool_future = delay().await; // TODO: need to offload this work onto another thread.
+    window
+      .emit(
+        "test-event",
+        Payload {
+          message: threadpool_future,
+        },
+      )
+      .unwrap();
+  }
+
+  // Ok(threadpool_future)
 }
 
 #[tauri::command]
-pub async fn debug_start_listener(window: Window) -> Result<String, String>{
-    println!("started the emit-from-window listener");
-    let _h = window.listen("emit-from-window",  |e| {
-      println!("received event {:?}", e);
-    });
+pub async fn debug_start_listener(window: Window) -> Result<String, String> {
+  println!("started the emit-from-window listener");
+  let _h = window.listen("emit-from-window", |e| {
+    println!("received event {:?}", e);
+  });
 
-    Ok("started the listener".to_string())
+  Ok("started the listener".to_string())
 }
-
 
 #[tauri::command]
-pub async fn start_forever_task(window: Window) -> Result<String, String>{
+pub async fn start_forever_task(window: Window) -> Result<String, String> {
+  let _h = window.listen("do_delay", move |e| {
+    println!("received event {:?}", e);
+  });
 
-    let _h = window.listen("do_delay", move |e| {
-      println!("received event {:?}", e);
-    });
-
-    Ok("forever() task started".to_string())
+  Ok("forever() task started".to_string())
 }
-
-
 
 fn mock_one_proof(success: bool, window: &Window) -> Result<VDFProof, CarpeError> {
   println!("start mock proof");
@@ -98,12 +97,12 @@ fn mock_one_proof(success: bool, window: &Window) -> Result<VDFProof, CarpeError
 
   if success {
     let proof = VDFProof {
-        height: 1,
-        elapsed_secs: 100,
-        preimage: "a".as_bytes().to_vec(),
-        proof: "b".as_bytes().to_vec(),
-        difficulty: Some(2),
-        security: Some(3),
+      height: 1,
+      elapsed_secs: 100,
+      preimage: "a".as_bytes().to_vec(),
+      proof: "b".as_bytes().to_vec(),
+      difficulty: Some(2),
+      security: Some(3),
     };
     window.emit("tower-event", proof.clone()).unwrap();
     Ok(proof)
@@ -115,7 +114,7 @@ fn mock_one_proof(success: bool, window: &Window) -> Result<VDFProof, CarpeError
 }
 
 #[tauri::command]
-pub async fn mock_build_tower(success: bool, window: Window) -> Result<(), CarpeError>{
+pub async fn mock_build_tower(success: bool, window: Window) -> Result<(), CarpeError> {
   println!("starting mock tower builder");
   let window_clone = window.clone();
   let _h = window.listen("mock-tower-make-proof", move |e| {
@@ -127,7 +126,3 @@ pub async fn mock_build_tower(success: bool, window: Window) -> Result<(), Carpe
   });
   Ok(())
 }
-
-
-
-

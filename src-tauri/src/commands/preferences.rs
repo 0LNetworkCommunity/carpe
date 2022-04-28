@@ -1,14 +1,14 @@
-use std::{path::PathBuf};
-use std::fs::File;
 use crate::carpe_error::CarpeError;
 use anyhow::Error;
+use std::fs::File;
 use std::io::prelude::*;
+use std::path::PathBuf;
 
 const PREFERENCES_DB_FILE: &str = "preferences.json";
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Preferences {
-  pub locale: Option<String>
+  pub locale: Option<String>,
 }
 
 /*
@@ -36,15 +36,16 @@ fn read_preferences() -> Result<Preferences, Error> {
     true => {
       let file = File::open(db_path)?;
       Ok(serde_json::from_reader(file)?)
-    },
-    false => {
-      Ok(Preferences { locale: None })
-    }    
-  }   
+    }
+    false => Ok(Preferences { locale: None }),
+  }
 }
 
 fn preferences_db_path() -> PathBuf {
-  dirs::home_dir().unwrap().join(".0L").join(PREFERENCES_DB_FILE)
+  dirs::home_dir()
+    .unwrap()
+    .join(".0L")
+    .join(PREFERENCES_DB_FILE)
 }
 
 fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
@@ -53,8 +54,18 @@ fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
     .map_err(|e| CarpeError::config(&format!("json preferences db should serialize, {:?}", &e)))?;
 
   File::create(db_path)
-    .map_err(|e| CarpeError::config(&format!("carpe preferences_db_file should be created!, {:?}", &e)))?  
-    .write_all(&serialized)  
-    .map_err(|e| CarpeError::config(&format!("carpe preferences_db_file should be written!, {:?}", &e)))?;
+    .map_err(|e| {
+      CarpeError::config(&format!(
+        "carpe preferences_db_file should be created!, {:?}",
+        &e
+      ))
+    })?
+    .write_all(&serialized)
+    .map_err(|e| {
+      CarpeError::config(&format!(
+        "carpe preferences_db_file should be written!, {:?}",
+        &e
+      ))
+    })?;
   Ok(())
 }

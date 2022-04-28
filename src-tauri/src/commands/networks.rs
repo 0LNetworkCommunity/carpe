@@ -1,8 +1,5 @@
 //! networks to connect to
 
-use diem_types::waypoint::Waypoint;
-use url::Url;
-use ol_types::rpc_playlist;
 use crate::{
   carpe_error::CarpeError,
   configs_network::{
@@ -10,6 +7,9 @@ use crate::{
     NetworkProfile, Networks,
   },
 };
+use diem_types::waypoint::Waypoint;
+use ol_types::rpc_playlist;
+use url::Url;
 
 #[tauri::command]
 pub fn toggle_network(network: Networks) -> Result<NetworkProfile, CarpeError> {
