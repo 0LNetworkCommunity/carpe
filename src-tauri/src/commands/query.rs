@@ -30,9 +30,16 @@ pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError>{
   bal.parse::<u64>().map_err(|_|{ CarpeError::misc(&format!("Could not get balance from account: {}", account))})
 }
 
-pub fn get_recovery_mode() -> Result<u64, CarpeError>{
+#[tauri::command(async)]
+pub async fn get_recovery_mode() -> Result<u64, CarpeError>{
   let mut node = get_node_obj()?;
-  let bal = node.query(QueryType::Balance{ account })?;
+  let bal = node.query(QueryType::MoveValue{ 
+    account: AccountAddress::ZERO,
+    module_name: "RecoveryMode".to_owned(),
+    struct_name: "RecoveryMode".to_owned(),
+    key_name: "epoch_ends".to_owned(), 
+})?;
+
   bal.parse::<u64>().map_err(|_|{ CarpeError::misc(&format!("Could not get balance from account: {}", account))})
 }
 
