@@ -65,7 +65,7 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
           dbg!("!!!!!!!!!!!!!!!");
           dbg!("cannot get tower state");
           if let Some(proof) =  get_proof_zero().ok() {
-            match commit_proof_tx(&tx_params, proof, false) {
+            match commit_proof_tx(&tx_params, proof) {
               Ok(_) => {
                 println!("submitted proof zero");
                 window_clone.emit("backlog-success", BacklogSuccess { success: true } ).unwrap()
@@ -81,7 +81,7 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
       } else { 
         println!("\nprocessing backlog\n");
 
-        match process_backlog(&config, &tx_params, false) {
+        match process_backlog(&config, &tx_params) {
           Ok(_) => {
             println!("backlog success");
             window_clone.emit("backlog-success", BacklogSuccess { success: true } ).unwrap()
@@ -114,7 +114,7 @@ pub async fn submit_backlog(_window: Window) -> Result<(), CarpeError> {
   let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
 
-  process_backlog(&config, &tx_params, false)
+  process_backlog(&config, &tx_params)
   .map_err(|e| e.into())
 }
 
@@ -137,7 +137,7 @@ pub fn submit_proof_zero() -> Result<(), CarpeError> {
   let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::config("could not get configs from file"))?;
   let proof = get_proof_zero()?;
-  commit_proof_tx(&tx_params, proof, false)?;
+  commit_proof_tx(&tx_params, proof)?;
   Ok(())
 }
 
