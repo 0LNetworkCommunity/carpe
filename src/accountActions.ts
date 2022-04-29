@@ -4,7 +4,7 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
-import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents, isAccountsLoaded } from './accounts';
+import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents, isAccountsLoaded, makeWhole } from './accounts';
 
 export const loadAccounts = async () => { 
   // fetch data from local DB
@@ -24,6 +24,9 @@ export const loadAccounts = async () => {
       if (!get(isAccountsLoaded)) {
         isAccountsLoaded.set(true);
       }
+
+      updateMakeWhole(result.accounts);
+
       // fetch data from the chain
       return refreshAccounts();
     })
@@ -92,7 +95,7 @@ export const setAccount = async (an_address: string, notifySucess = true) => {
   mnem.set("");
   
   // initi account events for better UX
-  getAccountEvents(a);
+  getAccountEvents(a, () => { /* ignore errors */ });
   
   invoke("switch_profile", {
     account: a.account,
@@ -113,7 +116,7 @@ export const setAccount = async (an_address: string, notifySucess = true) => {
 
 export function addNewAccount(account: AccountEntry) {
   let list = get(all_accounts);
-  account.on_chain = false;
+  // account.on_chain = false;
   list.push(account);    
   all_accounts.set(list);
 }
@@ -168,22 +171,71 @@ export function getAccountEvents(account: AccountEntry, errorCallback = null) {
     });
 }
 
-export function get_locale(): string {
-  let lang = 'en-US';
-  if (window.navigator.language) {
-    lang = window.navigator.language;
-  };
-  return lang 
-}
-
+/*
 export let invoke_makewhole = async (account: String): Promise<number> => {
-  let demo_account = "613b6d9599f72134a4fa20bba4c75c36";
-  account = demo_account;
+ // let demo_account = "613b6d9599f72134a4fa20bba4c75c36";
+ // account = demo_account;
   
   console.log(">>> calling make whole");
   return await invoke("query_makewhole", { account })
-  .then((a) => {
-    console.log(a);
-    return a[0].coins.value
+    .then((a) => {
+      if (a.length > 0) {
+        console.log("MakeWhole " + account + ", coins: " + a[0].coins.value)
+        console.log(a)
+      }
+      console.log(a);
+      return a[0].coins.value
+    })
+}
+*/
+
+function updateMakeWhole(accounts: Array<AccountEntry>) {
+  let mk = get(makeWhole);
+  accounts.forEach(each => {
+    let account = each.account;
+    if (mk[account] == null) {
+      console.log(">>> query_makewhole called");
+      invoke("query_makewhole", { account })
+        .then((credits) => {
+          mk[account] = credits;
+          makeWhole.set(mk);
+        })
+    }
   })
+}
+
+/*
+  Function to claim coins credit from makewhole
+*/
+export function claimMakeWhole(account: string, callback = null) {
+  // account to claim must be the signingAccount
+  if (get(signingAccount).account != account) {
+    if (get(minerLoopEnabled)) {
+      return callback("To claim coins you need to turn miner off first.");
+    } else {
+      // set sigining account
+      setAccount(account, false);
+    }    
+  }
+  
+  let mk = get(makeWhole)
+  setTimeout(() => {
+    invoke('claim_make_whole', { account })
+      .then(() => {
+        // update account make_whole status
+        let accountCredits = mk[account];
+        mk[account] = accountCredits.map(each => { each.claimed = true; return each });
+        makeWhole.set(mk);
+        // update account balance
+        checkSigningAccountBalance();
+        callback(null);
+      })
+      .catch(e => {
+        if (callback) {
+          callback(e.msg);
+        } else {
+          raise_error(e, false, "claim_make_whole");
+        }      
+      });
+  }, 2000)
 }

@@ -30,7 +30,7 @@ pub struct AccountEntry {
   pub account: AccountAddress,
   pub authkey: AuthenticationKey,
   pub nickname: String,
-  pub on_chain: bool,
+  pub on_chain: Option<bool>,
   pub balance: Option<u64>,
 }
 
@@ -40,7 +40,7 @@ impl AccountEntry {
       account: address.clone(),
       authkey,
       nickname: get_short(address),
-      on_chain: false,
+      on_chain: None,
       balance: None,
     }
   }
@@ -135,7 +135,7 @@ fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError> {
     .into_iter()
     .map(|mut e| {
       e.balance = get_balance(e.account).ok();
-      e.on_chain = e.balance.is_some();
+      e.on_chain = Some(e.balance.is_some());
       e
     })
     .collect();
@@ -201,7 +201,7 @@ fn insert_account_db(
     account: address,
     authkey: authkey,
     nickname: nickname,
-    on_chain: false,
+    on_chain: None,
     balance: None,
   };
 

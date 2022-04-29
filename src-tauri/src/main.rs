@@ -79,7 +79,8 @@ fn main() {
       create_user_account,
       wallet_type,
       coin_transfer,
-      //Tower
+      claim_make_whole,
+      // Tower
       miner_once,
       start_backlog_sender_listener,
       get_local_height,

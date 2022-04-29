@@ -29,12 +29,12 @@ pub fn get_onchain_tower_state(
 #[tauri::command(async)]
 pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError> {
   let node = get_node_obj()?;
-
   let acc_state = node.get_account_state(account)?;
-
-  let mk = acc_state.get_resource::<MakeWholeResource>()?;
-
-  Ok(mk.unwrap().credits)
+  
+  match acc_state.get_resource::<MakeWholeResource>()? {
+    Some(mk) => Ok(mk.credits),
+    None => Ok(Vec::new())
+  }
 }
 
 // #[test]
