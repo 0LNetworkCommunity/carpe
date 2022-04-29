@@ -25,6 +25,7 @@
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
   import { init_preferences } from "./preferences";
+  import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
   
   init_preferences();
@@ -101,6 +102,7 @@
 </script>
 
 <main class="uk-background-muted uk-height-viewport">
+  <RecoveryMode/>
   <div class="uk-container">
     <Router>
       <Nav />

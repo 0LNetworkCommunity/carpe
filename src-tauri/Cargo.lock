@@ -903,6 +903,7 @@ dependencies = [
  "onboard",
  "pretty_env_logger",
  "reqwest 0.11.6",
+ "resource-viewer",
  "serde",
  "serde_json",
  "sysinfo",
