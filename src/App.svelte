@@ -25,7 +25,8 @@
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
   import { init_preferences } from "./preferences";
-import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
+  import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
+  import MakeWhole from "./components/make-whole/MakeWhole.svelte";
   
   init_preferences();
  
@@ -119,6 +120,7 @@ import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
         <Route path={routes.events} component={Events} primary={false} />
         <Route path={routes.settings} component={Settings} primary={false} />
         <Route path={routes.about} component={About} primary={false} />
+        <Route path={routes.makeWhole} component={MakeWhole} primary={false} />
 
         <!-- DEV -->
         <Route path={routes.developer} component={DevMode} primary={false} />

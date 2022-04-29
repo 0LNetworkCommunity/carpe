@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { invoke_makewhole, setAccount } from "../../accountActions";
+  import { setAccount } from "../../accountActions";
   import type { AccountEntry } from "../../accounts";
   import IconMining from "../icons/IconMining.svelte";
   import UIkit from "uikit";
@@ -10,16 +10,16 @@
   UIkit.use(Icons);
 
   export let my_account: AccountEntry;
-  export let account_list: AccountEntry[];
+  export let accountList: AccountEntry[];
   export let isMining: boolean;
   export let isConnected: boolean;
 
 </script>
 
 <main>
-  {#if account_list == null}
+  {#if accountList == null}
     <span uk-spinner />
-  {:else if account_list.length > 0}
+  {:else if accountList.length > 0}
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
@@ -31,7 +31,7 @@
         </tr>
       </thead>
       <tbody>
-        {#each account_list as a, i}
+        {#each accountList as a, i}
           <!-- svelte-ignore missing-declaration -->
           <tr
             class={isMining && a.account == my_account.account
@@ -39,7 +39,6 @@
               : ""}
             on:click={() => setAccount(a.account)}
           >
-            <!-- <a href="#" on:click={() => { setAccount(acc.account); }}> {acc.nickname} </a > -->
             <td>
               {#if a.account == my_account.account}
                 {#if isMining}
@@ -53,9 +52,7 @@
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
             <td class="uk-text-right">
-              {invoke_makewhole(a.account)}
-
-              {#if !a.on_chain}
+              {#if (a.on_chain != null) && (a.on_chain == false)}
                 {$_("wallet.account_list.account_on_chain")}
               {:else if a.on_chain}
                 <div class="uk-inline">

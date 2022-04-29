@@ -22,7 +22,7 @@
   UIkit.use(Icons);
 
   let my_account: AccountEntry;
-  let account_list: AccountEntry[] = null;
+  let accountList: AccountEntry[] = null;
   let pendingAccounts: AccountEntry[] = [];
   let isMining = false;
   let isRefreshing: boolean = true;
@@ -39,7 +39,7 @@
   onMount(async () => {
     unsubsConnected = connected.subscribe(b => isConnected = b);
     unsubsAll_accounts = all_accounts.subscribe(all => {
-      account_list = all;
+      accountList = all;
       pendingAccounts = all.filter(x => !x.on_chain);
     });
     unsubsSigningAccount = signingAccount.subscribe(a => my_account = a);
@@ -68,7 +68,7 @@
 
     {#if !isLoaded}
       <AccountsListSkeleton />
-    {:else if account_list.length > 0}
+    {:else if accountList.length > 0}
 
       {#if !isConnected}
         <ConnectionError />
@@ -77,7 +77,7 @@
           <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("wallet.wallet")}</h2>
         </div>
         
-        <AccountsList {my_account} {account_list} {isMining} {isConnected} />
+        <AccountsList {my_account} {accountList} {isMining} {isConnected} />
 
         <ReminderCreate {pendingAccounts} {isConnected} />
 
@@ -90,7 +90,7 @@
           </Link>
         </div>
       {/if}
-    {:else if account_list.length == 0 && !isRefreshing}
+    {:else if accountList.length == 0 && !isRefreshing}
       <Newbie />
     {/if}
   </div>
