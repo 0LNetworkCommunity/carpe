@@ -17,6 +17,7 @@ pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 pub fn get_onchain_tower_state(
   account: AccountAddress,
 ) -> Result<TowerStateResourceView, CarpeError> {
+  dbg!("get_onchain_tower_state");
   // println!("fetching onchain tower state");
   let node = get_node_obj()?;
 
@@ -43,6 +44,7 @@ pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResour
 // }
 
 pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
+  dbg!("get_balance");
   let mut node = get_node_obj()?;
   let bal = node.query(QueryType::Balance { account })?;
   bal
@@ -51,6 +53,8 @@ pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 }
 
 pub fn get_payment_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
+  dbg!("get_payment_events");
+
   // get payments received
   match get_events(account, 0) {
     Ok(mut received) => {

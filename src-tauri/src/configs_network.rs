@@ -84,8 +84,10 @@ pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
     .profile
     .upstream_nodes
     .clone()
-    .into_iter()
-    .find_map(|url| bootstrap_waypoint_from_rpc(url.to_owned()).ok());
+    .into_iter() 
+    .find_map(|url| {
+      bootstrap_waypoint_from_rpc(url.to_owned()).ok()
+    });
 
   if let Some(w) = wp {
     if cfg.chain_info.base_waypoint != wp {
