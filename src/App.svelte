@@ -25,6 +25,7 @@
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
   import { init_preferences } from "./preferences";
+import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
   
   init_preferences();
  
@@ -100,6 +101,7 @@
 </script>
 
 <main class="uk-background-muted uk-height-viewport">
+  <SearchingFullnodes />
   <div class="uk-container">
     <Router>
       <Nav />

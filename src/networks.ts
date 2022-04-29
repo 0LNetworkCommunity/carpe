@@ -19,6 +19,8 @@ export const network_profile = writable<NetworkProfile>({
 
 export const connected = writable<boolean>(true);
 
+export const scanning_fullnodes = writable<boolean>(true);
+
 // should match the Rust type Network Profile
 export interface NetworkProfile {
   chain_id: string, // Todo, use the Network Enum
@@ -49,6 +51,7 @@ export const refreshWaypoint = async () =>{
     .then((res: NetworkProfile) => {
       network_profile.set(res);
       connected.set(true);
+      scanning_fullnodes.set(false);
     })
     .catch((error) => {
       connected.set(false);
