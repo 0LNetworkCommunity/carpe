@@ -894,6 +894,7 @@ dependencies = [
  "diem-types",
  "diem-wallet",
  "dirs 4.0.0",
+ "futures",
  "glob",
  "hex",
  "keyring",

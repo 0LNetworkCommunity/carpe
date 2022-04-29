@@ -1,15 +1,16 @@
 //! network configs
 
 use std::fmt;
+use futures::{stream::FuturesUnordered, StreamExt};
 
 use crate::{
   carpe_error::CarpeError,
-  configs::{self},
+  configs::{self}, waypoint,
 };
 use anyhow::{bail, Error};
 use diem_types::waypoint::Waypoint;
 use ol::config::AppCfg;
-use ol_types::{config::bootstrap_waypoint_from_rpc, rpc_playlist};
+use ol_types::rpc_playlist;
 use url::Url;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -70,33 +71,49 @@ pub fn set_network_configs(network: Networks) -> Result<NetworkProfile, CarpeErr
     CarpeError::misc(&err_msg)
   })?;
 
-  set_waypoint_from_upstream()?;
+  tauri::async_runtime::block_on(set_waypoint_from_upstream())?;
 
   NetworkProfile::new()
 }
 
-pub fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
+pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
   let cfg = configs::get_cfg()?;
 
   // try getting waypoint from upstream nodes
   // no waypoint is necessary in advance.
-  let wp: Option<Waypoint> = cfg
+  let mut futures = FuturesUnordered::new();
+
+  cfg
     .profile
     .upstream_nodes
     .clone()
     .into_iter() 
-    .find_map(|url| {
-      bootstrap_waypoint_from_rpc(url.to_owned()).ok()
+    .for_each(|url| {
+      futures.push(waypoint::bootstrap_waypoint_from_rpc(url.to_owned()));
     });
 
-  if let Some(w) = wp {
-    if cfg.chain_info.base_waypoint != wp {
-      set_waypoint(w)?;
+  while !futures.is_empty() {
+    if let Some(wp) = futures.next().await {
+     match wp {
+        Ok(w) => {
+          set_waypoint(w)?;
+          return Ok(cfg);
+          // break
+        },
+        Err(_) => {},
     }
-    Ok(cfg)
-  } else {
-    bail!("no waypoint found while querying upstream nodes")
+    }
   }
+
+  bail!("no waypoint found while querying upstream nodes")
+  // if let Some(w) = wp {
+  //   if cfg.chain_info.base_waypoint != wp {
+  //     set_waypoint(w)?;
+  //   }
+  //   Ok(cfg)
+  // } else {
+  //   bail!("no waypoint found while querying upstream nodes")
+  // }
 }
 
 /// Set the base_waypoint used for client connections.
