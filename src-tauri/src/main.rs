@@ -24,12 +24,10 @@ fn main() {
   pretty_env_logger::init();
 
   //////// FORCE TEST SETTINGS ON START ////////////////////
-  // uncomment below to explicitly set "test" env 
+  // uncomment below to explicitly set "test" env
   // Tauri builder does not take env variable from terminal
   // set_env("test".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
-
-
 
   let menu = Menu::new()
     .add_submenu(Submenu::new(
@@ -75,12 +73,14 @@ fn main() {
       toggle_network,
       // Queries
       query_balance,
+      query_makewhole,
       // Transactions
       demo_tx,
       create_user_account,
       wallet_type,
       coin_transfer,
-      //Tower
+      claim_make_whole,
+      // Tower
       miner_once,
       start_backlog_sender_listener,
       get_local_height,

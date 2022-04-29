@@ -1,22 +1,21 @@
 //! account configurations
 
-use std::{fs, path::PathBuf};
-use glob::glob;
 use anyhow::Error;
+use glob::glob;
+use std::{fs, path::PathBuf};
 
-use diem_types::{transaction::authenticator::AuthenticationKey};
+use diem_types::transaction::authenticator::AuthenticationKey;
 
-use ol::{
-  config::AppCfg,
-};
 use diem_types::account_address::AccountAddress;
+use ol::config::AppCfg;
 
-use crate::{configs::{self, get_cfg}};
-
-
+use crate::configs::{self, get_cfg};
 
 /// For switching between profiles in the Account DB.
-pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) -> Result<AppCfg, Error> {
+pub fn set_account_profile(
+  account: AccountAddress,
+  authkey: AuthenticationKey,
+) -> Result<AppCfg, Error> {
   let mut cfg = match configs::is_initialized() {
     true => configs::get_cfg()?,
     false => AppCfg::default(),
@@ -27,7 +26,7 @@ pub fn set_account_profile(account: AccountAddress, authkey: AuthenticationKey) 
   cfg.profile.account = account;
   cfg.profile.auth_key = authkey;
 
-  cfg.workspace.block_dir = vdf_dir_name.clone(); 
+  cfg.workspace.block_dir = vdf_dir_name.clone();
   let vdf_path = cfg.workspace.node_home.join(&cfg.workspace.block_dir);
 
   if !cfg.workspace.node_home.exists() {
@@ -48,9 +47,7 @@ pub fn get_local_proofs_this_profile() -> Result<Vec<PathBuf>, Error> {
   let cfg = get_cfg()?;
   let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
   let str_path = block_dir.to_str().unwrap();
-  let p = glob(str_path)?
-  .filter_map(Result::ok) 
-  .collect();
+  let p = glob(str_path)?.filter_map(Result::ok).collect();
   dbg!(&p);
   Ok(p)
 }

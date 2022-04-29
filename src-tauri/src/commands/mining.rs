@@ -1,46 +1,49 @@
 use crate::{
   carpe_error::CarpeError,
+  commands::get_onchain_tower_state,
   configs::{get_cfg, get_tx_params},
-  configs_profile::get_local_proofs_this_profile, commands::get_onchain_tower_state,
+  configs_profile::get_local_proofs_this_profile,
 };
 use anyhow::Error;
 use ol_types::block::VDFProof;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use std::{env, path::PathBuf};
 use tauri::Manager;
 use tauri::Window;
 use tower::{
   backlog::process_backlog,
   commit_proof::commit_proof_tx,
-  proof::{mine_once, parse_block_height, get_latest_proof}, tower_errors::TowerError,
+  proof::{get_latest_proof, mine_once, parse_block_height},
+  tower_errors::TowerError,
 };
 
 /// creates one proof and submits
 #[tauri::command(async)]
 pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
   println!("\nMining one proof\n");
-  
-  window.emit("proof-start", {})
-  .map_err(|_| { CarpeError::misc("could not emit window event") })?;
+
+  window
+    .emit("proof-start", {})
+    .map_err(|_| CarpeError::misc("could not emit window event"))?;
 
   let config = get_cfg()?;
-  let vdf = mine_once(&config)
-    .map_err(|e| {
-      CarpeError::tower(&format!("could not mine one proof, message: {:?}", &e), TowerError::ProverError.value())
-    })?;
+  let vdf = mine_once(&config).map_err(|e| {
+    CarpeError::tower(
+      &format!("could not mine one proof, message: {:?}", &e),
+      TowerError::ProverError.value(),
+    )
+  })?;
 
   // TODO: Unsure why this is not triggering
   // window.emit("send-backlog", {})
   //   .map_err(|_| { CarpeError::misc("could not emit window event") })?;
 
   Ok(vdf)
-
 }
 #[derive(Clone, serde::Serialize)]
 struct BacklogSuccess {
   success: bool,
 }
-
 
 // When the user turns on the toggle, they will be prompted for OS password.
 // the backlog listener prevents the user from having to re-enter the password everytime
@@ -58,44 +61,44 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
   // This is tauri's event listener for the tower proof.
   // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("send-backlog", move |_e| {
-      println!("\nRECEIVED BACKLOG EVENT\n");
-       window_clone.emit("ack-backlog-request", {} ).unwrap();
+    println!("\nRECEIVED BACKLOG EVENT\n");
+    window_clone.emit("ack-backlog-request", {}).unwrap();
 
-      if get_onchain_tower_state(tx_params.owner_address).is_err() {
-          dbg!("!!!!!!!!!!!!!!!");
-          dbg!("cannot get tower state");
-          if let Some(proof) =  get_proof_zero().ok() {
-            match commit_proof_tx(&tx_params, proof) {
-              Ok(_) => {
-                println!("submitted proof zero");
-                window_clone.emit("backlog-success", BacklogSuccess { success: true } ).unwrap()
-
-              },
-              Err(e) => {
-                window_clone
-                .emit("backlog-error", CarpeError::from(e))
-                .unwrap();
-              },
-            }
-          }
-      } else { 
-        println!("\nprocessing backlog\n");
-
-        match process_backlog(&config, &tx_params) {
+    if get_onchain_tower_state(tx_params.owner_address).is_err() {
+      dbg!("!!!!!!!!!!!!!!!");
+      dbg!("cannot get tower state");
+      if let Some(proof) = get_proof_zero().ok() {
+        match commit_proof_tx(&tx_params, proof) {
           Ok(_) => {
-            println!("backlog success");
-            window_clone.emit("backlog-success", BacklogSuccess { success: true } ).unwrap()
-          },
+            println!("submitted proof zero");
+            window_clone
+              .emit("backlog-success", BacklogSuccess { success: true })
+              .unwrap()
+          }
           Err(e) => {
-            
             window_clone
               .emit("backlog-error", CarpeError::from(e))
               .unwrap();
           }
         }
       }
+    } else {
+      println!("\nprocessing backlog\n");
 
-
+      match process_backlog(&config, &tx_params) {
+        Ok(_) => {
+          println!("backlog success");
+          window_clone
+            .emit("backlog-success", BacklogSuccess { success: true })
+            .unwrap()
+        }
+        Err(e) => {
+          window_clone
+            .emit("backlog-error", CarpeError::from(e))
+            .unwrap();
+        }
+      }
+    }
   });
 
   let window_clone = window.clone();
@@ -107,15 +110,13 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
   Ok(())
 }
 
-
 #[tauri::command(async)]
 pub async fn submit_backlog(_window: Window) -> Result<(), CarpeError> {
   let config = get_cfg()?;
   let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
 
-  process_backlog(&config, &tx_params)
-  .map_err(|e| e.into())
+  process_backlog(&config, &tx_params).map_err(|e| e.into())
 }
 
 fn get_proof_zero() -> Result<VDFProof, Error> {
@@ -134,21 +135,13 @@ fn get_proof_zero() -> Result<VDFProof, Error> {
 
 #[tauri::command(async)]
 pub fn submit_proof_zero() -> Result<(), CarpeError> {
-  let tx_params = get_tx_params()
-    .map_err(|_e| CarpeError::config("could not get configs from file"))?;
+  let tx_params =
+    get_tx_params().map_err(|_e| CarpeError::config("could not get configs from file"))?;
   let proof = get_proof_zero()?;
-  commit_proof_tx(&tx_params, proof)?;
-  Ok(())
-}
-
-
-#[tauri::command(async)]
-pub fn get_local_height() -> Result<u64, CarpeError> {
-  let cfg = get_cfg()?;
-  let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
-  match parse_block_height(&block_dir).0 {
-      Some(h) => Ok(h),
-      None => Err(CarpeError::tower("could not get block height", TowerError::NoLocalBlocks.value())),
+    Some(h) => Ok(h),
+      "could not get block height",
+      TowerError::NoLocalBlocks.value(),
+    )),
   }
 }
 
@@ -157,15 +150,13 @@ pub fn get_local_height() -> Result<u64, CarpeError> {
 pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
   let cfg = get_cfg()?;
 
-  Ok(get_latest_proof(&cfg)
-  .map_err(|e| {
-      CarpeError::misc(&format!(
+  Ok(get_latest_proof(&cfg).map_err(|e| {
+    CarpeError::misc(&format!(
       "could not get a local proof, message: {:?}",
       e.to_string()
     ))
   })?)
 }
-
 
 #[tauri::command(async)]
 pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
@@ -190,10 +181,10 @@ pub struct EpochRules {
 #[tauri::command(async)]
 pub fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
   Ok(EpochRules {
-      lower: tower::EPOCH_MINING_THRES_LOWER,
-      upper: tower::EPOCH_MINING_THRES_UPPER,
-      difficulty: 0, // TODO: get from chain
-      security: 0, // TODO: get from chain
+    lower: tower::EPOCH_MINING_THRES_LOWER,
+    upper: tower::EPOCH_MINING_THRES_UPPER,
+    difficulty: 0, // TODO: get from chain
+    security: 0,   // TODO: get from chain
   })
 }
 
@@ -212,7 +203,6 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
 
 #[tauri::command(async)]
 pub fn get_env() -> Result<String, CarpeError> {
-  let v = env::var("NODE_ENV")
-    .unwrap_or("prod".to_owned());
+  let v = env::var("NODE_ENV").unwrap_or("prod".to_owned());
   Ok(v)
 }

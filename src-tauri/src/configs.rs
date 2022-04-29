@@ -1,13 +1,13 @@
 //! 0L configs file
 
-use std::{path::PathBuf};
+use std::path::PathBuf;
 
-use anyhow::{Error};
+use anyhow::Error;
 use cli::diem_client::DiemClient;
 use dirs;
 use ol::{
   config::AppCfg,
-  node::{node::Node, client::find_a_remote_jsonrpc},
+  node::{client::find_a_remote_jsonrpc, node::Node},
 };
 
 use ol_types::config::{self, TxType};
@@ -32,34 +32,24 @@ pub fn get_cfg() -> Result<AppCfg, Error> {
 
 pub fn default_accounts_db_path() -> PathBuf {
   let db_file = match get_cfg() {
-    Ok(cfg) => {
-      match cfg.chain_info.chain_id.as_str() {
-        "Rex" => ACCOUNTS_DB_FILE_REX,
-        _ => ACCOUNTS_DB_FILE
-      }
+    Ok(cfg) => match cfg.chain_info.chain_id.as_str() {
+      "Rex" => ACCOUNTS_DB_FILE_REX,
+      _ => ACCOUNTS_DB_FILE,
     },
-    Err(_) => ACCOUNTS_DB_FILE
+    Err(_) => ACCOUNTS_DB_FILE,
   };
   dirs::home_dir().unwrap().join(".0L").join(db_file)
 }
 
 /// get transaction parameters from config file
-pub fn get_tx_params() -> Result<TxParams, anyhow::Error> { // TODO: Should the Error type be a CarpeError?
+pub fn get_tx_params() -> Result<TxParams, anyhow::Error> {
+  // TODO: Should the Error type be a CarpeError?
   let config = get_cfg()?;
 
   // Requires user input to get OS keyring
   let keypair = key_manager::get_keypair(&config.profile.account.to_string())?;
-  TxParams::get_tx_params_from_keypair(
-    config.clone(),
-    TxType::Miner,
-    keypair,
-    None,
-    false,
-    false,
-  )
+  TxParams::get_tx_params_from_keypair(config.clone(), TxType::Miner, keypair, None, false, false)
 }
-
-
 
 pub fn get_node_obj() -> Result<Node, CarpeError> {
   let cfg = get_cfg()?;
@@ -71,11 +61,14 @@ pub fn get_node_obj() -> Result<Node, CarpeError> {
 pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
   find_a_remote_jsonrpc(
     cfg,
-    cfg.clone().chain_info.base_waypoint.ok_or(CarpeError::misc("could not load base_waypoint"))?
+    cfg
+      .clone()
+      .chain_info
+      .base_waypoint
+      .ok_or(CarpeError::misc("could not load base_waypoint"))?,
   )
-  .map_err(|_| CarpeError::misc("could not load tx params") )
+  .map_err(|_| CarpeError::misc("could not load tx params"))
 }
-
 
 /// For devs, get the source path, needed to initialize swarm
 pub fn dev_get_source_path() -> Result<Option<PathBuf>, Error> {
@@ -88,9 +81,6 @@ pub fn dev_get_swarm_temp() -> Result<PathBuf, Error> {
   Ok(get_cfg()?.workspace.node_home.join("swarm_temp"))
 }
 
-
 pub fn is_initialized() -> bool {
   default_config_path().exists()
 }
-
-
