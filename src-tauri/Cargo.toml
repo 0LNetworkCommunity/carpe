@@ -34,6 +34,9 @@ ol-types = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewho
 
 ol-keys = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
 diem-json-rpc-types = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+
+resource-viewer = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+
 sysinfo = "0.16.4"
 ctrlc = { version = "3.1.6", default-features = false }
 dirs = "4.0.0"

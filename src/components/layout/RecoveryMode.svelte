@@ -7,22 +7,31 @@ import { invoke } from "@tauri-apps/api/tauri";
   let is_recovery = false;
   let epoch_recovery_ends = null;
   invoke("get_recovery_mode", {})
-  .then(ends => {
+  .then((ends: number) => {
+    console.log(">>> get_recovery_mode");
+    console.log(ends);
     if (ends > 0) { 
       is_recovery = true,
-      epoch_recovery_ends = ends
+      epoch_recovery_ends = ends;
     }
-  });
+  })
+  .catch(e => { console.log(e)});
   
 </script>
 
 <main>
   {#if is_recovery}
   <CardAlert>
-    <span slot="title">{$_("miner.cards.cant_start.title")} </span>
-    Recovery Ends: {epoch_recovery_ends}
+    <span slot="title">{$_("layout.recovery_mode.title")} </span>
+    
     <div slot="body">
-      <p> {$_("miner.cards.cant_start.body")} </p>
+      {@html $_("layout.recovery_mode.body",  { 
+        values: { 
+          epoch_recovery_ends,
+          epoch_recovery_ends_after: epoch_recovery_ends + 1
+          }
+        }
+      )}
     </div>
   </CardAlert>
   {/if}
