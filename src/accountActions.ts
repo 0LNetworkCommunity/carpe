@@ -95,7 +95,7 @@ export const setAccount = async (an_address: string, notifySucess = true) => {
   mnem.set("");
   
   // initi account events for better UX
-  getAccountEvents(a);
+  getAccountEvents(a, () => { /* ignore errors */ });
   
   invoke("switch_profile", {
     account: a.account,
@@ -194,6 +194,7 @@ function updateMakeWhole(accounts: Array<AccountEntry>) {
   accounts.forEach(each => {
     let account = each.account;
     if (mk[account] == null) {
+      console.log(">>> query_makewhole called");
       invoke("query_makewhole", { account })
         .then((credits) => {
           mk[account] = credits;
@@ -201,4 +202,40 @@ function updateMakeWhole(accounts: Array<AccountEntry>) {
         })
     }
   })
+}
+
+/*
+  Function to claim coins credit from makewhole
+*/
+export function claimMakeWhole(account: string, callback = null) {
+  // account to claim must be the signingAccount
+  if (get(signingAccount).account != account) {
+    if (get(minerLoopEnabled)) {
+      return callback("To claim coins you need to turn miner off first.");
+    } else {
+      // set sigining account
+      setAccount(account, false);
+    }    
+  }
+  
+  let mk = get(makeWhole)
+  setTimeout(() => {
+    invoke('claim_make_whole', { account })
+      .then(() => {
+        // update account make_whole status
+        let accountCredits = mk[account];
+        mk[account] = accountCredits.map(each => { each.claimed = true; return each });
+        makeWhole.set(mk);
+        // update account balance
+        checkSigningAccountBalance();
+        callback(null);
+      })
+      .catch(e => {
+        if (callback) {
+          callback(e.msg);
+        } else {
+          raise_error(e, false, "claim_make_whole");
+        }      
+      });
+  }, 2000)
 }

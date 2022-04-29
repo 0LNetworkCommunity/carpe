@@ -3,12 +3,14 @@
   import UIkit from 'uikit';
   import { printCoins } from '../../coinHelpers';
   import { makeWhole } from "../../accounts";
-  import { onMount } from 'svelte';
+  import { onDestroy, onMount } from 'svelte';
+  import { claimMakeWhole } from '../../accountActions';
     
   let credits;
+  let unsubs;
 
   onMount(async () => {
-    makeWhole.subscribe(mk => {
+    unsubs = makeWhole.subscribe(mk => {
       credits = []
       for (const address in mk) {
         let accountCredits = mk[address];
@@ -19,21 +21,33 @@
             claimed: credit.claimed
           })
         })
-      }  
+      }
     })
+  })
+
+  onDestroy(async () => {
+    unsubs && unsubs();
   })
 
   let isProcessing = false;
   let selected = null;
+  let errorMsg = ""
 
   const claimCoins = (credit) => {
+    selected = credit
     isProcessing = true;
-    selected = credit;
-    setTimeout(() => {
+
+    let callback = (error: string) => {
       isProcessing = false;
-      // open modal
+      if (error) {
+        errorMsg = error;
+        UIkit.modal('#claimError').show();
+        return;
+      }     
       UIkit.modal('#claimedWithSuccess').show();
-    }, 1000);
+    }
+    callback.bind({isProcessing});
+    claimMakeWhole(selected.account, callback);
   }
 
 </script>
@@ -44,8 +58,24 @@
       <div class="uk-section">
         <h2 class="uk-modal-title"><span class="success-icon" uk-icon="icon: check; ratio: 2"></span></h2> 
         <p class="uk-text-small">Transation confirmed!</p>
-        <p>You have claimed <span class="uk-text-bold">{selected ? printCoins(selected.amount) : ""} coins</span> for account <br>{selected ? selected.address : ""}.</p>
+        <p>You have claimed <span class="uk-text-bold">{selected && printCoins(selected.coins.value)} coins</span> for account <br><span class="uk-text-bold">{selected ? selected.account : ""}</span>.</p>
         <p>You can check your balance now.</p>
+      </div>
+
+      <p class="uk-text-center">
+        <button 
+          class="uk-button uk-button-large uk-button-primary uk-margin-right uk-modal-close" 
+          type="button"
+        >OK</button>
+      </p>
+    </div>
+  </div>
+
+  <div id="claimError" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body uk-text-center">
+      <div class="uk-section">
+        <h2 class="uk-modal-title">Claim Error</h2> 
+        <p>You must turn off miner to claim this account coins.</p>
       </div>
 
       <p class="uk-text-center">
@@ -81,13 +111,14 @@
             <tr>
               <td class="uk-text-left">{credit.account}</td>
               <td class="uk-text-right">{printCoins(credit.coins.value)}</td>
-              <td class="uk-text-center">
+              <td class="uk-text-center" style="width: 200px;">
                 {#if credit.claimed}
-                  <span uk-icon="icon: check; ratio: 1; color: green"></span>
+                  <span class="uk-text-success" uk-icon="icon: check; ratio: 1; color: green"></span>
                 {:else}
                   <button 
                     on:click={() => claimCoins(credit)}
                     disabled={isProcessing}
+                    style="width: 180px;"
                     class="uk-button uk-button-primary"
                   >{isProcessing ? "Await..." : "Claim Now"}</button>
                 {/if}
@@ -103,7 +134,7 @@
 </main>
 
 <style>
-.success-icon{
+.success-icon {
   color: #4eb02e;
   font-weight: 900;
   border-radius: 100%;
