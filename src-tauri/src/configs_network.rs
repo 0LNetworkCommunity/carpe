@@ -1,18 +1,20 @@
 //! network configs
 
-use std::fmt;
 use futures::{stream::FuturesUnordered, StreamExt};
+use std::fmt;
 
 use crate::{
   carpe_error::CarpeError,
-  configs::{self}, waypoint,
+  configs::{self},
+  waypoint,
 };
 use anyhow::{bail, Error};
 use diem_types::waypoint::Waypoint;
 use ol::config::AppCfg;
 use ol_types::rpc_playlist;
+use rand::seq::SliceRandom;
+use rand::thread_rng;
 use url::Url;
-
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NetworkProfile {
   pub chain_id: String, // Todo, use the Network Enum
@@ -83,37 +85,28 @@ pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
   // no waypoint is necessary in advance.
   let mut futures = FuturesUnordered::new();
 
-  cfg
-    .profile
-    .upstream_nodes
-    .clone()
-    .into_iter() 
-    .for_each(|url| {
-      futures.push(waypoint::bootstrap_waypoint_from_rpc(url.to_owned()));
-    });
+  let mut list = cfg.profile.upstream_nodes.to_owned();
+  list.shuffle(&mut thread_rng());
+
+  // randomize to balance load on carpe nodes
+  list.into_iter().for_each(|url| {
+    futures.push(waypoint::bootstrap_waypoint_from_rpc(url.to_owned()));
+  });
 
   while !futures.is_empty() {
     if let Some(wp) = futures.next().await {
-     match wp {
+      match wp {
         Ok(w) => {
           set_waypoint(w)?;
           return Ok(cfg);
           // break
-        },
-        Err(_) => {},
-    }
+        }
+        Err(_) => {}
+      }
     }
   }
 
   bail!("no waypoint found while querying upstream nodes")
-  // if let Some(w) = wp {
-  //   if cfg.chain_info.base_waypoint != wp {
-  //     set_waypoint(w)?;
-  //   }
-  //   Ok(cfg)
-  // } else {
-  //   bail!("no waypoint found while querying upstream nodes")
-  // }
 }
 
 /// Set the base_waypoint used for client connections.
