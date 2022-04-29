@@ -7,7 +7,7 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import { routes } from "../../routes";
   import { notify_success } from "../../carpeNotify";
-import { _ } from "svelte-i18n";
+  import { _ } from "svelte-i18n";
 
   // default playlist which is provided in Carpe.
   let playlist_json_url = "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist.json";

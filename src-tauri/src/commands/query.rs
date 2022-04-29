@@ -6,6 +6,10 @@ use ol::node::{query::QueryType, node::Node};
 use crate::{carpe_error::CarpeError, configs::get_node_obj};
 use crate::configs_network::remove_node;
 
+use diem_transaction_builder::stdlib as transaction_builder;
+use diem_json_rpc_types::views::TransactionView;
+use txs::submit_tx::maybe_submit;
+
 #[tauri::command(async)]
 pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError>{
   get_balance(account)
@@ -48,6 +52,7 @@ pub fn get_payment_events(account: AccountAddress) -> Result<Vec<EventView>, Car
 }
 
 pub fn get_events(account: AccountAddress, event_key: u64) -> Result<Vec<EventView>, CarpeError> {
+  query_make_whole_payees(account);
   let node = get_node_obj()?;
   
   let limit = 1000;
@@ -109,20 +114,46 @@ fn try_again_get_events(account: AccountAddress, event_key: u64, current_node: &
 
 Make whole query - WIP
 
+*/
 
-pub fn query_make_whole_payees() -> Result<Option<u64>, CarpeError>{
+pub fn query_make_whole_payees(account: AccountAddress) -> Result<String, CarpeError>{
   let mut node = get_node_obj()?;
 
-  let address: AccountAddress = 0x1_u64.parse();
-  let query_type = QueryType::MoveValue{
-    address,
-    "MakeWhole",
-    "Payments",
-    "payees"
+  let query_type = QueryType::MoveValue {
+    account: account,
+    module_name: "MakeWhole".to_string(),
+    struct_name: "Balance".to_string(),
+    key_name: "credits".to_string()
   };
 
   let payees = node.query(query_type)?;
-  payees.parse::<u64>().map_err(|_|{ CarpeError::misc(&format!("Could not get payees from make whole", account))})
+  println!("XXX: {:?}", payees);
+  Ok("Fim".to_string())
+  // payees.parse::Option<u64>().map_err(|_|{ CarpeError::misc(&format!("Could not get payees from make whole"))})
+}
+
+/*
+
+pub fn query_make_whole_payees() -> Result<TransactionView, CarpeError>{
+  let tx_params = configs::get_tx_params()
+    .map_err(|_| CarpeError::misc("Could not load tx params"))?;
+  
+  let address = AccountAddress::from_hex_literal("1fc759bceb1584bcd9c397e6e26fbbe2").expect("Parsing valid hex literal should always succeed");
+  let script = transaction_builder::encode_query_make_whole_payment_function(address);
+
+  match maybe_submit(script, &tx_params, None) {
+    Ok(transaction) => {
+      println!(">>> result: {:?}", transaction);
+      Ok(transaction)
+    },
+    Err(e) => Err(CarpeError::misc(&format!(
+      "{:}",
+      match e.abort_code {
+        Some(code) => code,
+        None => 0
+      }
+    )))
+  }
 }
 
 */
