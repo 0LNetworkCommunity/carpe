@@ -26,6 +26,7 @@
   import { carpeTick } from "./tick";
   import { init_preferences } from "./preferences";
   import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
+  import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
   
   init_preferences();
@@ -103,6 +104,8 @@
 
 <main class="uk-background-muted uk-height-viewport">
   <SearchingFullnodes />
+  <RecoveryMode/>
+  
   <div class="uk-container">
     <Router>
       <Nav />

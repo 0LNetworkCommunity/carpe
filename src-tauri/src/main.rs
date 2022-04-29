@@ -75,6 +75,7 @@ fn main() {
       // Queries
       query_balance,
       query_makewhole,
+      get_recovery_mode,
       // Transactions
       demo_tx,
       create_user_account,
