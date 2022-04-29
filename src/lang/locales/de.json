@@ -3,7 +3,7 @@
     "wallet": "Wallet",
     "miner": "Miner",
     "transactions": "Transaktion",
-    "events": "Events"
+    "events": "Ereignisse"
   },
   "layout": {
       "connection_error": {
@@ -215,41 +215,41 @@
       "community_confirm": "Community Wallet bestätigen? Dies kann nicht rückgängig gemacht werden."
     },
     "transfer": {
-      "title": "Coin Transfer",
+      "title": "Überweisung von Coins",
       "sender": "Sender",
-      "balance": "Balance",
+      "balance": "Betrag",
       "receiver": "Receiver",
-      "amount": "Amount",
-      "amount_label": "Amount (fractions not allowed yet)",
-      "receiver_placeholder": "Receiver address",
-      "amount_placeholder": "Amount to be transfered",
-      "confirm_title": "Heads up!",
-      "please_confirm": "Please confirm your transfer information:",
-      "await": "Await txs",
-      "btn_next": "Next",
-      "btn_confirm": "Confirm",
-      "btn_cancel": "Cancel",
-      "btn_close": "Close",
-      "error_amount_greater_than_balance": "Amount cannot be greater than account balance",
-      "error_receiver_equals_sender": "Receiver address must be different from sender address",
-      "error_slow_wallet": "Coin transfer is disabled for slow wallets.",
-      "success": "Transfer executed with success",
-      "failed": "Transfer failed. Code: {code}"
+      "amount": "Empfänger",
+      "amount_label": "Empfänger (Dezimalstellen noch nicht unterstützt)",
+      "receiver_placeholder": "Empfänger Adresse",
+      "amount_placeholder": "Überweisungsbetrag",
+      "confirm_title": "Achtung!",
+      "please_confirm": "Bitte die Überweisungsdaten bestätigen:",
+      "await": "Auf Txs warten",
+      "btn_next": "Weiter",
+      "btn_confirm": "Bestätigen",
+      "btn_cancel": "Abbrechen",
+      "btn_close": "Schließen",
+      "error_amount_greater_than_balance": "Der Betrag kann nicht größer als der Kontostand sein",
+      "error_receiver_equals_sender": "Die Empfängeradresse muss sich von der Absenderadresse unterscheiden",
+      "error_slow_wallet": "Die Überweisung von Coins ist für Slow Wallets deaktiviert.",
+      "success": "Überweisung erfolgreich durchgeführt",
+      "failed": "Überweisung fehlgeschlagen. Code: {code}"
     }
   },
   "events": {
-    "account_events": "Account Events",
+    "account_events": "Kontoereignisse",
     "version": "Version",
-    "type": "Type",
-    "amount": "Amount",
+    "type": "Typ",
+    "amount": "Betrag",
     "sender": "Sender",
-    "receiver": "Receiver",
-    "received_payment": "Received Payment",
-    "sent_payment": "Sent Payment",
+    "receiver": "Empfänger",
+    "received_payment": "Empfangene Zahlung",
+    "sent_payment": "Gesendete Zahlung",
     "loading": {
-      "error": "Error loading the account events:",
-      "corrupted_db": "Current connected node does not have all account events. Don't worry. Your wallet and coins are safe on the chain. Try connecting to another upstream node.", 
-      "account_off_chain": "Account selected not onboarded yet."
+      "error": "Fehler beim Laden der Kontoereignisse:",
+      "corrupted_db": "Der aktuell verbundene Knoten verfügt nicht über alle Kontoereignisse. Keine Sorge. Deine Wallet und Coins sind in Sicherheit auf der Chain. Probiere, dich mit einem anderen Upstream-Knoten zu verbinden.", 
+      "account_off_chain": "Das ausgewählte Konto wurde noch nicht geonboarded."
     }
   }
 }

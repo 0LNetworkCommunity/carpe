@@ -18,20 +18,22 @@ tauri = { version = "1.0.0-beta.8", features = ["api-all", "updater"] }
 serde = { version = "1.0", features = [ "serde_derive" ] }
 serde_json = "1.0"
 url = { version = "^2.1", features = [ "serde" ] }
-ol = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-diem-wallet = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-diem-types = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-diem-client = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-tower = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-onboard = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-diem-crypto = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-diem-config = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-cli = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-txs = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-ol-types = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-ol-keys = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-diem-json-rpc-types = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
-diem-transaction-builder = { git = "https://github.com/OLSF/libra.git", branch = "carpe-build"}
+ol = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+diem-wallet = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+diem-types = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+diem-client = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+tower = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+onboard = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+diem-crypto = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+diem-config = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+diem-sdk = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+cli = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+txs = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+#ol-types = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+ol-types = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+
+ol-keys = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
+diem-json-rpc-types = { git = "https://github.com/0o-de-lally/libra.git", branch = "makewhole-bindings"}
 sysinfo = "0.16.4"
 ctrlc = { version = "3.1.6", default-features = false }
 dirs = "4.0.0"

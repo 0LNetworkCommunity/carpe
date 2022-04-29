@@ -38,6 +38,7 @@
 
   onMount(async () => {
 
+
     isCarpeInit();
 
     getEnv();

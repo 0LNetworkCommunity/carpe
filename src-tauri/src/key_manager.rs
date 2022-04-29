@@ -1,10 +1,10 @@
 //! key management tools, leveraging OS keyrings.
 
 extern crate keyring;
-use anyhow::{bail, anyhow};
+use anyhow::{anyhow, bail};
 use diem_crypto::{
   ed25519::{Ed25519PrivateKey, Ed25519PublicKey},
-  test_utils::KeyPair
+  test_utils::KeyPair,
 };
 use keyring::KeyringError;
 use std::convert::TryInto;
@@ -45,14 +45,14 @@ pub fn get_keypair(
 ) -> Result<KeyPair<Ed25519PrivateKey, Ed25519PublicKey>, anyhow::Error> {
   match get_private_key(&ol_address) {
     Ok(k) => {
-      let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = match k.try_into(){
-          Ok(p) => p,
-          Err(e) => bail!(e),
+      let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = match k.try_into() {
+        Ok(p) => p,
+        Err(e) => bail!(e),
       };
-    Ok(p)
-    },
+      Ok(p)
+    }
     Err(e) => bail!(e),
-}
+  }
   // let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = k.try_into().unwrap(); // TODO: just return here.
   // Ok(p)
 }

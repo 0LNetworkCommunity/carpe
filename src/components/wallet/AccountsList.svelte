@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { setAccount } from "../../accountActions";
+  import { invoke_makewhole, setAccount } from "../../accountActions";
   import type { AccountEntry } from "../../accounts";
   import IconMining from "../icons/IconMining.svelte";
   import UIkit from "uikit";
@@ -53,6 +53,8 @@
             <td>{a.account}</td>
             <td>{a.authkey.slice(0, 5)}...</td>
             <td class="uk-text-right">
+              {invoke_makewhole(a.account)}
+
               {#if !a.on_chain}
                 {$_("wallet.account_list.account_on_chain")}
               {:else if a.on_chain}
