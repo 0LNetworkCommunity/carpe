@@ -49,7 +49,6 @@
     callback.bind({isProcessing});
     claimMakeWhole(selected.account, callback);
   }
-//on:click={() => { selected = credit; UIkit.modal('#claimedWithSuccess').show()}}
 </script>
 
 <main>
@@ -111,9 +110,7 @@
               <td class="uk-text-right">{printCoins(credit.coins.value)}</td>
               <td class="uk-text-center" style="width: 200px;">
                 {#if credit.claimed}
-                  <span 
-                    on:click={() => { errorMsg = "faiou"; UIkit.modal('#claimError').show(); }}
-                    class="uk-text-success" uk-icon="icon: check; ratio: 1; color: green"></span>
+                  <span class="uk-text-success" uk-icon="icon: check; ratio: 1; color: green"></span>
                 {:else}
                   <button 
                     on:click={() => claimCoins(credit)}
