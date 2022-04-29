@@ -6,6 +6,7 @@
   import { routes } from "../routes";
   import { _ } from "../lang/i18n";
   import { init_preferences } from "../preferences";
+  import MakeWholeLink from "./make-whole/MakeWholeLink.svelte";
   
   init_preferences();
 
@@ -40,10 +41,11 @@
     {/if}
     <div class="uk-navbar-center">
       <ul class="uk-navbar-nav { init && myAccountIsOnChain ? "" : "uk-invisible"}">
-          <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li>
-          <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>
-          <li><Link to={routes.transactions}>{$_("nav.transactions")}</Link></li>
-          <li><Link to={routes.events}>{$_("nav.events")}</Link></li>
+        <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li>
+        <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>
+        <li><Link to={routes.transactions}>{$_("nav.transactions")}</Link></li>
+        <li><Link to={routes.events}>{$_("nav.events")}</Link></li>
+        <li><MakeWholeLink /></li>
       </ul>
     </div>
 
