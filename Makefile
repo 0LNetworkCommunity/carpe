@@ -1,5 +1,5 @@
 dev: stop
-	RUST_LOG=trace yarn tauri dev 
+	yarn tauri dev 
 
 stop:
 	killall node | true

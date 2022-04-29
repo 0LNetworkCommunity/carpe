@@ -190,6 +190,7 @@ pub struct EpochRules {
 
 #[tauri::command(async)]
 pub fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
+  dbg!("get_epoch_rules");
   Ok(EpochRules {
     lower: tower::EPOCH_MINING_THRES_LOWER,
     upper: tower::EPOCH_MINING_THRES_UPPER,

@@ -11,6 +11,7 @@ pub mod configs;
 pub mod configs_network;
 pub mod configs_profile;
 pub mod key_manager;
+mod waypoint;
 
 // use std::env;
 
