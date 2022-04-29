@@ -251,5 +251,32 @@
       "corrupted_db": "当前连接的节点没有您的账户信息. 别担心，你的资产是安全的，您可以尝试其他节点！",
       "account_off_chain": "当前选中的账号未激活！"
     }
+  },
+  "make_whole": {
+    "link_title": "Claim Coins",
+    "card": {
+      "title": "Claim Your Missing Coins",
+      "body": "<p>Oops. Occasionally blockchains make math mistakes. 0L tries to fix them as quickly as possible.</p><p>Miner Identity Subsidy Incident: From Epoch 0 to epoch 52, the payouts to miners was lower than expected. Below you can credit your missing coins from that period.</p><p>Click <a href=\"\">here</a> to learn more.</p>"     
+    },
+    "table": {
+      "account": "Account",
+      "amount": "Amount",
+      "claim": "Claim"
+    },
+    "claim_btn": {
+      "await" : "Await...",
+      "claim": "Claim Now"
+    },
+    "modal_success": {
+      "title": "Transation confirmed!",
+      "amount_for_account": "<p>You have claimed <span class=\"uk-text-bold\">{coins} coins</span> for account <br><span class=\"uk-text-bold\">{account}</span>.</p>",
+      "check_balance": "You can check your balance now.",
+      "ok_btn": "OK"
+    },
+    "modal_error": {
+      "title": "Claim Error",
+      "body": "You must turn off miner to claim this account coins.",
+      "ok_btn": "OK"
+    }
   }
 }
