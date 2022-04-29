@@ -138,7 +138,17 @@ pub fn submit_proof_zero() -> Result<(), CarpeError> {
   let tx_params =
     get_tx_params().map_err(|_e| CarpeError::config("could not get configs from file"))?;
   let proof = get_proof_zero()?;
+  commit_proof_tx(&tx_params, proof)?;
+  Ok(())
+}
+
+#[tauri::command(async)]
+pub fn get_local_height() -> Result<u64, CarpeError> {
+  let cfg = get_cfg()?;
+  let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
+  match parse_block_height(&block_dir).0 {
     Some(h) => Ok(h),
+    None => Err(CarpeError::tower(
       "could not get block height",
       TowerError::NoLocalBlocks.value(),
     )),
