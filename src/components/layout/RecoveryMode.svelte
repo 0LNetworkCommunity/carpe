@@ -25,7 +25,7 @@ import { invoke } from "@tauri-apps/api/tauri";
     <span slot="title">{$_("layout.recovery_mode.title")} </span>
     
     <div slot="body">
-      {@html $_("layout.recovery_mode.body",  { 
+      {$_("layout.recovery_mode.body",  { 
         values: { 
           epoch_recovery_ends,
           epoch_recovery_ends_after: epoch_recovery_ends + 1
