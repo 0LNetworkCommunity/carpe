@@ -9,10 +9,7 @@ use crate::{
 use anyhow::{bail, Error};
 use diem_types::waypoint::Waypoint;
 use ol::config::AppCfg;
-use ol_types::{
-  config::bootstrap_waypoint_from_rpc,
-  rpc_playlist
-};
+use ol_types::{config::bootstrap_waypoint_from_rpc, rpc_playlist};
 use url::Url;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -55,8 +52,14 @@ pub fn set_network_configs(network: Networks) -> Result<NetworkProfile, CarpeErr
   let playlist = match &network {
     Networks::Mainnet => rpc_playlist::get_known_fullnodes(None)?,
 
-    Networks::Rex => rpc_playlist::get_known_fullnodes(Some("https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist_testnet.json".parse().unwrap()))?,
-    Networks::Custom { playlist_url } => rpc_playlist::get_known_fullnodes(Some(playlist_url.to_owned()))?,
+    Networks::Rex => rpc_playlist::get_known_fullnodes(Some(
+      "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist_testnet.json"
+        .parse()
+        .unwrap(),
+    ))?,
+    Networks::Custom { playlist_url } => {
+      rpc_playlist::get_known_fullnodes(Some(playlist_url.to_owned()))?
+    }
   };
 
   playlist.update_config_file(None)?; // None uses default path of 0L.toml
@@ -102,7 +105,6 @@ pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
   Ok(cfg)
 }
 
-
 /// Get all the 0L configs. For tx sending and upstream nodes
 /// Note: The default_node key in 0L is not used by Carpe. Carpe randomly tests
 /// all the endpoints in upstream_peers on every TX.
@@ -129,7 +131,6 @@ pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
   Ok(cfg)
 }
 
-
 /// Removes current node from upstream nodes
 /// To be used when DB is corrupted for instance.
 pub fn remove_node(host: String) -> Result<(), Error> {
@@ -141,16 +142,15 @@ pub fn remove_node(host: String) -> Result<(), Error> {
         _ => {
           cfg.profile.upstream_nodes = nodes
             .into_iter()
-            .filter(|each| { !each.to_string().contains(&host) })
+            .filter(|each| !each.to_string().contains(&host))
             .collect();
           cfg.save_file()
         }
       }
-    },
-    Err(_) => Ok(())
+    }
+    Err(_) => Ok(()),
   }
 }
-
 
 // // TODO:
 // /// fetch upstream peers.

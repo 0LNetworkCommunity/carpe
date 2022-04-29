@@ -175,3 +175,15 @@ export function get_locale(): string {
   };
   return lang 
 }
+
+export let invoke_makewhole = async (account: String): Promise<number> => {
+  let demo_account = "613b6d9599f72134a4fa20bba4c75c36";
+  account = demo_account;
+  
+  console.log(">>> calling make whole");
+  return await invoke("query_makewhole", { account })
+  .then((a) => {
+    console.log(a);
+    return a[0].coins.value
+  })
+}
