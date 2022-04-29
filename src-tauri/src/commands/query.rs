@@ -8,10 +8,6 @@ use crate::{carpe_error::CarpeError, configs::get_node_obj};
 use ol::node::{node::Node, query::QueryType};
 use ol_types::makewhole_resource::{CreditResource, MakeWholeResource};
 
-use diem_transaction_builder::stdlib as transaction_builder;
-use diem_json_rpc_types::views::TransactionView;
-use txs::submit_tx::maybe_submit;
-
 #[tauri::command(async)]
 pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
   get_balance(account)
@@ -33,12 +29,12 @@ pub fn get_onchain_tower_state(
 #[tauri::command(async)]
 pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError> {
   let node = get_node_obj()?;
-
   let acc_state = node.get_account_state(account)?;
-
-  let mk = acc_state.get_resource::<MakeWholeResource>()?;
-
-  Ok(mk.unwrap().credits)
+  
+  match acc_state.get_resource::<MakeWholeResource>()? {
+    Some(mk) => Ok(mk.credits),
+    None => Ok(Vec::new())
+  }
 }
 
 // #[test]
@@ -72,7 +68,6 @@ pub fn get_payment_events(account: AccountAddress) -> Result<Vec<EventView>, Car
 }
 
 pub fn get_events(account: AccountAddress, event_key: u64) -> Result<Vec<EventView>, CarpeError> {
-  query_make_whole_payees(account);
   let node = get_node_obj()?;
 
   let limit = 1000;

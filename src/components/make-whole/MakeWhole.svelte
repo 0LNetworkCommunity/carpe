@@ -2,19 +2,33 @@
   import { _ } from 'svelte-i18n';
   import UIkit from 'uikit';
   import { printCoins } from '../../coinHelpers';
+  import { makeWhole } from "../../accounts";
+  import { onMount } from 'svelte';
+    
+  let credits;
+
+  onMount(async () => {
+    makeWhole.subscribe(mk => {
+      credits = []
+      for (const address in mk) {
+        let accountCredits = mk[address];
+        accountCredits.forEach(credit => {
+          credits.push({
+            account: address,
+            coins: credit.coins,
+            claimed: credit.claimed
+          })
+        })
+      }  
+    })
+  })
 
   let isProcessing = false;
   let selected = null;
 
-  let claims = [
-    { address: "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", amount: "1500000000", status: "claimed" },
-    { address: "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB", amount: "2300000000", status: "available" },
-    { address: "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC", amount: "700000000", status: "available" }
-  ]
-
-  const claimCoins = (claim) => {
+  const claimCoins = (credit) => {
     isProcessing = true;
-    selected = claim;
+    selected = credit;
     setTimeout(() => {
       isProcessing = false;
       // open modal
@@ -47,41 +61,44 @@
     <div class="uk-card uk-card-default uk-card-body">
       <h3 class="uk-card-title">Claim Your Missing Coins</h3>
       <p>Oops. Occasionally blockchains make math mistakes. 0L tries to fix them as quickly as possible.</p>
-      <p>Miner Identity Subsidy Incident: From Epoch 0 to epoch 52, the payouts to miners was lower than expected. Below you can claim your missing coins from that period.</p>
+      <p>Miner Identity Subsidy Incident: From Epoch 0 to epoch 52, the payouts to miners was lower than expected. Below you can credit your missing coins from that period.</p>
       <p>Click <a href="">here</a> to learn more.</p>
     </div>
     <div>
       
     </div>
-  
-    <table class="uk-table uk-table-divider">
-      <thead>
-        <tr>
-          <th class="uk-text-left">Account</th>
-          <th class="uk-text-right">Amount</th>
-          <th class="uk-text-center">Claim</th>
-        </tr>
-      </thead>
-      <tbody>
-        {#each claims as claim}
+    {#if credits}
+      <table class="uk-table uk-table-divider">
+        <thead>
           <tr>
-            <td class="uk-text-left">{claim.address}</td>
-            <td class="uk-text-right">{printCoins(claim.amount)}</td>
-            <td class="uk-text-center">
-              {#if claim.status == "claimed"}
-                <span uk-icon="icon: check; ratio: 1; color: green"></span>
-              {:else if claim.status == "available"}
-                <button 
-                  on:click={() => claimCoins(claim)}
-                  disabled={isProcessing}
-                  class="uk-button uk-button-primary"
-                >{isProcessing ? "Await..." : "Claim Now"}</button>
-              {/if}
-            </td>
+            <th class="uk-text-left">Account</th>
+            <th class="uk-text-right">Amount</th>
+            <th class="uk-text-center">Claim</th>
           </tr>
-        {/each}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {#each credits as credit}
+            <tr>
+              <td class="uk-text-left">{credit.account}</td>
+              <td class="uk-text-right">{printCoins(credit.coins.value)}</td>
+              <td class="uk-text-center">
+                {#if credit.claimed}
+                  <span uk-icon="icon: check; ratio: 1; color: green"></span>
+                {:else}
+                  <button 
+                    on:click={() => claimCoins(credit)}
+                    disabled={isProcessing}
+                    class="uk-button uk-button-primary"
+                  >{isProcessing ? "Await..." : "Claim Now"}</button>
+                {/if}
+              </td>
+            </tr>
+          {/each}
+        </tbody>
+      </table>
+    {:else}
+      loading...
+    {/if}
   </div>
 </main>
 
