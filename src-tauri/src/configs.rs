@@ -67,7 +67,7 @@ pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
       .base_waypoint
       .ok_or(CarpeError::misc("could not load base_waypoint"))?,
   )
-  .map_err(|_| CarpeError::misc("could not load tx params"))
+  .map_err(|_| CarpeError::misc("could not make a client"))
 }
 
 /// For devs, get the source path, needed to initialize swarm
