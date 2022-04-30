@@ -1,12 +1,13 @@
 //! query the chain
+use crate::configs_network::remove_node;
+use crate::{carpe_error::CarpeError, configs::get_node_obj};
 use diem_client::views::EventView;
 use diem_json_rpc_types::views::TowerStateResourceView;
 use diem_types::{account_address::AccountAddress, event::EventKey};
-
-use crate::configs_network::remove_node;
-use crate::{carpe_error::CarpeError, configs::get_node_obj};
+use ol::node::query;
 use ol::node::{node::Node, query::QueryType};
 use ol_types::makewhole_resource::{CreditResource, MakeWholeResource};
+use resource_viewer::AnnotatedMoveValue;
 
 #[tauri::command(async)]
 pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
@@ -17,6 +18,7 @@ pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 pub fn get_onchain_tower_state(
   account: AccountAddress,
 ) -> Result<TowerStateResourceView, CarpeError> {
+  dbg!("get_onchain_tower_state");
   // println!("fetching onchain tower state");
   let node = get_node_obj()?;
 
@@ -30,10 +32,10 @@ pub fn get_onchain_tower_state(
 pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError> {
   let node = get_node_obj()?;
   let acc_state = node.get_account_state(account)?;
-  
+
   match acc_state.get_resource::<MakeWholeResource>()? {
     Some(mk) => Ok(mk.credits),
-    None => Ok(Vec::new())
+    None => Ok(Vec::new()),
   }
 }
 
@@ -43,6 +45,7 @@ pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResour
 // }
 
 pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
+  dbg!("get_balance");
   let mut node = get_node_obj()?;
   let bal = node.query(QueryType::Balance { account })?;
   bal
@@ -50,7 +53,33 @@ pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
     .map_err(|_| CarpeError::misc(&format!("Could not get balance from account: {}", account)))
 }
 
+#[tauri::command(async)]
+pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
+  let mut node = get_node_obj()?;
+  if let Some(state) = node.get_annotate_account_blob(AccountAddress::ZERO)?.0 {
+    let recovery = query::find_value_from_state(
+      &state,
+      "RecoveryMode".to_owned(),
+      "RecoveryMode".to_owned(),
+      "epoch_ends".to_owned(),
+    );
+    match recovery {
+      Some(AnnotatedMoveValue::U64(v)) => return Ok(v.to_owned()),
+      _ => {}
+    };
+    return Err(CarpeError::misc(&format!(
+      "No recovery mode struct. This is the typical case. Result: {:?}",
+      &recovery
+    )));
+  }
+
+  return Err(CarpeError::misc(&format!("Cannot get root account state")));
+}
+
+
 pub fn get_payment_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
+  dbg!("get_payment_events");
+
   // get payments received
   match get_events(account, 0) {
     Ok(mut received) => {

@@ -219,23 +219,21 @@ export function claimMakeWhole(account: string, callback = null) {
   }
   
   let mk = get(makeWhole)
-  setTimeout(() => {
-    invoke('claim_make_whole', { account })
-      .then(() => {
-        // update account make_whole status
-        let accountCredits = mk[account];
-        mk[account] = accountCredits.map(each => { each.claimed = true; return each });
-        makeWhole.set(mk);
-        // update account balance
-        checkSigningAccountBalance();
-        callback(null);
-      })
-      .catch(e => {
-        if (callback) {
-          callback(e.msg);
-        } else {
-          raise_error(e, false, "claim_make_whole");
-        }      
-      });
-  }, 2000)
+  invoke('claim_make_whole', { account })
+    .then(() => {
+      // update account make_whole status
+      let accountCredits = mk[account];
+      mk[account] = accountCredits.map(each => { each.claimed = true; return each });
+      makeWhole.set(mk);
+      // update account balance
+      checkSigningAccountBalance();
+      callback(null);
+    })
+    .catch(e => {
+      if (callback) {
+        callback(e.msg);
+      } else {
+        raise_error(e, false, "claim_make_whole");
+      }      
+    });
 }

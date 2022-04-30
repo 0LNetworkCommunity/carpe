@@ -11,6 +11,7 @@ pub mod configs;
 pub mod configs_network;
 pub mod configs_profile;
 pub mod key_manager;
+mod waypoint;
 
 // use std::env;
 
@@ -74,6 +75,7 @@ fn main() {
       // Queries
       query_balance,
       query_makewhole,
+      get_recovery_mode,
       // Transactions
       demo_tx,
       create_user_account,
