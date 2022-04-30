@@ -1,11 +1,12 @@
 //! network configs
 
 use futures::{stream::FuturesUnordered, StreamExt};
-use reqwest::{ClientBuilder};
+use reqwest::ClientBuilder;
 use std::{fmt, time::Duration};
 // use num_traits::pow::Pow;
 use crate::{
   carpe_error::CarpeError,
+  commands::read_preferences,
   configs::{self},
   waypoint,
 };
@@ -79,35 +80,53 @@ pub fn set_network_configs(network: Networks) -> Result<NetworkProfile, CarpeErr
   NetworkProfile::new()
 }
 
+// pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
+//   let cfg = configs::get_cfg()?;
+
+//   // try getting waypoint from upstream nodes
+//   // no waypoint is necessary in advance.
+//   let mut futures = FuturesUnordered::new();
+
+//   let mut list = cfg.profile.upstream_nodes.to_owned();
+//   list.shuffle(&mut thread_rng());
+
+//   // randomize to balance load on carpe nodes
+//   list.into_iter().for_each(|url| {
+//     futures.push(waypoint::bootstrap_waypoint_from_rpc(url.to_owned()));
+//   });
+
+//   while !futures.is_empty() {
+//     if let Some(wp) = futures.next().await {
+//       match wp {
+//         Ok(w) => {
+//           set_waypoint(w)?;
+//           return Ok(cfg);
+//           // break
+//         }
+//         Err(_) => {}
+//       }
+//     }
+//   }
+
+//   bail!("no waypoint found while querying upstream nodes")
+// }
+
 pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
-  let cfg = configs::get_cfg()?;
-
-  // try getting waypoint from upstream nodes
-  // no waypoint is necessary in advance.
-  let mut futures = FuturesUnordered::new();
-
-  let mut list = cfg.profile.upstream_nodes.to_owned();
-  list.shuffle(&mut thread_rng());
-
-  // randomize to balance load on carpe nodes
-  list.into_iter().for_each(|url| {
-    futures.push(waypoint::bootstrap_waypoint_from_rpc(url.to_owned()));
-  });
-
-  while !futures.is_empty() {
-    if let Some(wp) = futures.next().await {
-      match wp {
-        Ok(w) => {
-          set_waypoint(w)?;
-          return Ok(cfg);
-          // break
-        }
-        Err(_) => {}
+  let prefs = read_preferences()?;
+  if let Some(upstream) = prefs.network {
+    let mut urls = upstream.the_good_ones().await?;
+    urls.shuffle(&mut thread_rng());
+    if let Some(u) = urls.first() {
+      match waypoint::bootstrap_waypoint_from_rpc(u.to_owned()).await {
+        Ok(w) => set_waypoint(w),
+        Err(e) => Err(e),
       }
+    } else {
+      bail!("cannot find a synced upstream URL")
     }
+  } else {
+    bail!("could fetch network stats from preferences.json")
   }
-
-  bail!("no waypoint found while querying upstream nodes")
 }
 
 /// Set the base_waypoint used for client connections.
@@ -173,27 +192,29 @@ pub struct UpstreamStats {
 
 impl UpstreamStats {
   pub fn new(urls: Vec<Url>) -> Self {
-    let nodes = urls.into_iter().map(|u| {
-      FullnodeProfile {
+    let nodes = urls
+      .into_iter()
+      .map(|u| FullnodeProfile {
         url: u,
         version: 0,
         is_api: false,
         is_sync: false,
-      }
-    })
-    .collect();
-    UpstreamStats {
-      nodes
-    }
+      })
+      .collect();
+    UpstreamStats { nodes }
   }
 
   pub async fn refresh(self) -> anyhow::Result<Self> {
-    self.check_which_are_alive().await?
-      .check_which_are_synced().await
+    self
+      .check_which_are_alive()
+      .await?
+      .check_which_are_synced()
+      .await
   }
 
   pub async fn the_good_ones(&self) -> anyhow::Result<Vec<Url>> {
-    let list_urls: Vec<Url> = self.nodes
+    let list_urls: Vec<Url> = self
+      .nodes
       .iter()
       .filter_map(|e| {
         if e.is_sync && e.is_api {
@@ -225,7 +246,7 @@ impl UpstreamStats {
     });
 
     // dbg!(&list);
-    
+
     let sync_list = futures
       .filter_map(|e| async move { e.ok() })
       .collect::<Vec<FullnodeProfile>>()
@@ -234,25 +255,26 @@ impl UpstreamStats {
     // find the RMS of the versions. Reject anything below rms
     let _i = sync_list.len();
     // let mut sum_square: u64 = 0;
-    let sum_squares: u64 = sync_list.iter()
-    .map(|e|  {
-      u64::pow(e.version, 2)
-    })
-    .collect::<Vec<u64>>()
-    .iter()
-    .sum();
+    let sum_squares: u64 = sync_list
+      .iter()
+      .map(|e| u64::pow(e.version, 2))
+      .collect::<Vec<u64>>()
+      .iter()
+      .sum();
 
     let cast = sum_squares as f64;
     let rms = cast.sqrt();
 
-    let checked: Vec<FullnodeProfile> = sync_list.into_iter()
-    .map(|mut p| {
-      if p.version as f64 >= rms { // there may be only one in list
-        p.is_sync = true
-      }
-      p
-    })
-    .collect();
+    let checked: Vec<FullnodeProfile> = sync_list
+      .into_iter()
+      .map(|mut p| {
+        if p.version as f64 >= rms {
+          // there may be only one in list
+          p.is_sync = true
+        }
+        p
+      })
+      .collect();
 
     self.nodes = checked;
     Ok(self)
@@ -346,7 +368,7 @@ fn test_pick_upstream() {
   };
 
   let upstream = UpstreamStats {
-    nodes: vec![node_good, node_bad]
+    nodes: vec![node_good, node_bad],
   };
 
   tauri::async_runtime::block_on(UpstreamStats::check_which_are_alive(upstream));

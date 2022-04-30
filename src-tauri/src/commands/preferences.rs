@@ -33,7 +33,7 @@ pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
   update_preferences(&preferences)
 }
 
-fn read_preferences() -> Result<Preferences, Error> {
+pub fn read_preferences() -> Result<Preferences, Error> {
   let db_path = preferences_db_path();
   match db_path.exists() {
     true => {
