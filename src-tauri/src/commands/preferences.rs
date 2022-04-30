@@ -1,4 +1,5 @@
 use crate::carpe_error::CarpeError;
+use crate::configs;
 use crate::configs_network::UpstreamStats;
 use anyhow::Error;
 use std::fs::File;
@@ -73,9 +74,13 @@ fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
 }
 
 
-// #[tauri::command(async)]
-// pub fn set_preferences_network() -> Result<(), CarpeError> {
-//   let mut preferences = read_preferences()?;
-//   preferences.locale = Some(locale);
-//   update_preferences(&preferences)
-// }
+#[tauri::command(async)]
+pub async fn refresh_upstream_peer_stats() -> Result<(), CarpeError> {
+  let cfg = configs::get_cfg()?;
+  let stats = UpstreamStats::new(cfg.profile.upstream_nodes);
+
+  let mut preferences = read_preferences()?;
+  preferences.network = Some(stats.refresh().await?);
+
+  update_preferences(&preferences)
+}
