@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Link } from "svelte-navigator";
-  import { routes } from "../../routes";
+
   import { onMount, onDestroy } from "svelte";
   import { accountEvents, signingAccount } from "../../accounts";
   import { getAccountEvents } from "../../accountActions";
   import EventsTable from "./EventsTable.svelte";
   import EventsTableDummy from "./EventsTableDummy.svelte";
   import { _ } from "svelte-i18n";
+  import EventsError from "./EventsError.svelte";
 
   let events = null;
   let myAccount = null;
@@ -45,13 +45,7 @@
       <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("events.account_events")}</h2>
     </div>
     {#if loadingError}
-      <p class="uk-text-center uk-text-warning">{$_("events.loading.error")}</p>
-      <p class="uk-text-center uk-text-warning">{loadingError}</p>
-      {#if !myAccount.on_chain}
-        <div style="position:absolute; top:0px; left:0px">
-          <Link to={routes.home}><span class="uk-text-muted" uk-icon="icon: arrow-left; ratio: 2;" /></Link>
-        </div>
-      {/if}
+      <EventsError {loadingError} />
     {:else if events == null} 
       <span uk-spinner style="position:absolute; top:0px; left:0px"/>
       <EventsTableDummy />

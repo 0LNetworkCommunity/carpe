@@ -71,7 +71,7 @@
     "account_switcher": {
       "select_account": "Select Account",
       "switch_account": "Switch Account",
-      "setting": "Go To Setting",
+      "setting": "Settings",
       "developers": "Developers"
     }
   },
@@ -251,9 +251,9 @@
     "received_payment": "Received Payment",
     "sent_payment": "Sent Payment",
     "loading": {
-      "error": "Error loading the account events:",
-      "corrupted_db": "Current connected node does not have all account events. Don't worry. Your wallet and coins are safe on the chain. Try connecting to another upstream node.", 
-      "account_off_chain": "Account selected not onboarded yet."
+      "error": "Events Temporarily Unavailable",
+      "corrupted_db": "The server you are connected to does not have all your event history available.", 
+      "account_off_chain": "Account selected not onboarded yet, and has no events."
     }
   },
   "make_whole": {
