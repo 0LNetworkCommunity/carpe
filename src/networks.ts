@@ -58,3 +58,19 @@ export const refreshWaypoint = async () =>{
       raise_error(error, true, "refreshWaypoint"); // we have a purpose-built error component for this
     })
 }
+
+export const refreshUpstreamPeerStats = async () => {
+  console.log(">>> calling refresh_upstream_peer_stats");
+  return invoke("refresh_upstream_peer_stats", {})
+    .then(() => {
+      console.log("update peers finished");
+
+      // network_profile.set(res);
+      connected.set(true);
+      scanning_fullnodes.set(false);
+    })
+    .catch((error) => {
+      connected.set(false);
+      raise_error(error, true, "refreshWaypoint"); // we have a purpose-built error component for this
+    })
+}
