@@ -1,4 +1,5 @@
 use crate::carpe_error::CarpeError;
+use crate::configs_network::UpstreamStats;
 use anyhow::Error;
 use std::fs::File;
 use std::io::prelude::*;
@@ -9,6 +10,7 @@ const PREFERENCES_DB_FILE: &str = "preferences.json";
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Preferences {
   pub locale: Option<String>,
+  pub network: Option<UpstreamStats>
 }
 
 /*
@@ -37,7 +39,7 @@ fn read_preferences() -> Result<Preferences, Error> {
       let file = File::open(db_path)?;
       Ok(serde_json::from_reader(file)?)
     }
-    false => Ok(Preferences { locale: None }),
+    false => Ok(Preferences { locale: None, network: None}),
   }
 }
 
@@ -69,3 +71,11 @@ fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
     })?;
   Ok(())
 }
+
+
+// #[tauri::command(async)]
+// pub fn set_preferences_network() -> Result<(), CarpeError> {
+//   let mut preferences = read_preferences()?;
+//   preferences.locale = Some(locale);
+//   update_preferences(&preferences)
+// }
