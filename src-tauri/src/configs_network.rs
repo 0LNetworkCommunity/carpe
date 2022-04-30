@@ -1,8 +1,9 @@
 //! network configs
 
 use futures::{stream::FuturesUnordered, StreamExt};
-use std::fmt;
-
+use reqwest::{Client, ClientBuilder};
+use std::{fmt, time::Duration};
+// use num_traits::pow::Pow;
 use crate::{
   carpe_error::CarpeError,
   configs::{self},
@@ -164,24 +165,148 @@ pub fn remove_node(host: String) -> Result<(), Error> {
   }
 }
 
-// // TODO:
-// /// fetch upstream peers.
-// pub fn refresh_upstream_peers() -> Result<(), Error> {
-//   let mut cfg = configs::get_cfg()?;
-//   let client = match client::pick_client(None, &mut cfg) {
-//     Ok(c) => c,
-//     Err(e) => {
-//       println!(
-//         "ERROR: Could not create a client to connect to network, exiting. Message: {:?}",
-//         e
-//       );
-//       bail!("cannot connect to a client");
-//       // exit(1);
-//     }
-//   };
+pub struct UpstreamStats {
+  nodes: Vec<FullnodeProfile>,
+}
 
-//   let mut node = Node::new(client, &cfg, false);
+#[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
+pub struct FullnodeProfile {
+  url: Url,
+  version: u64,
+  is_api: bool,
+  is_sync: bool,
+}
+/// from the list of seed_peers find the best peer to connect to.
+/// First does a light port check on all peers, and eliminated unresponsive
+/// Then from a random list fetches the first 3 nodes to respond with a waypoint.
+/// picks the node with the highest waypoint.
+/// moves that node othe top of the seed peers vector.
+/// sets it in preferences as the default peer.
+impl FullnodeProfile {
+  async fn check_sync(mut self) -> anyhow::Result<FullnodeProfile> {
+    let wp = waypoint::bootstrap_waypoint_from_rpc(self.url.clone()).await?;
 
-//   let path = configs::default_config_path();
-//   node.refresh_peers_update_toml(path)
-// }
+    self.version = wp.version();
+    Ok(self)
+  }
+
+  /// get the waypoint from a fullnode
+  pub async fn check_rpc_header(mut self) -> anyhow::Result<FullnodeProfile> {
+    self.is_api = false;
+
+    let client = ClientBuilder::new()
+      .timeout(Duration::from_secs(1))
+      .build()?;
+
+    // handle all errors as a is_api = false
+    match client.head(self.url.to_owned()).send().await {
+      Ok(resp) => match resp.text().await {
+        Ok(_) => {
+          self.is_api = true;
+          return Ok(self.to_owned());
+        }
+        Err(_) => {}
+      },
+      Err(_) => {}
+    };
+    Ok(self)
+  }
+
+  pub async fn check_which_are_synced(
+    mut upstream: Vec<FullnodeProfile>,
+  ) -> Result<Vec<FullnodeProfile>, Error> {
+    let cfg = configs::get_cfg()?;
+
+    // try getting waypoint from upstream nodes
+    // no waypoint is necessary in advance.
+    let futures = FuturesUnordered::new();
+
+    // let mut list = cfg.profile.upstream_nodes.to_owned();
+    upstream.shuffle(&mut thread_rng());
+
+    // randomize to balance load on carpe nodes
+    upstream.into_iter().for_each(|p| {
+      if p.is_api {
+        futures.push(p.check_sync());
+      }
+    });
+
+    // dbg!(&list);
+    
+    let sync_list = futures
+      .filter_map(|e| async move { e.ok() })
+      .collect::<Vec<FullnodeProfile>>()
+      .await;
+
+    // find the RMS of the versions. Reject anything below rms
+    let i = sync_list.len();
+    // let mut sum_square: u64 = 0;
+    let sum_squares: u64 = sync_list.iter()
+    .map(|e|  {
+      u64::pow(e.version, 2)
+    })
+    .collect::<Vec<u64>>()
+    .iter()
+    .sum();
+
+    let cast = sum_squares as f64;
+    let rms = cast.sqrt();
+
+    let checked: Vec<FullnodeProfile> = sync_list.into_iter()
+    .map(|mut p| {
+      if p.version as f64 >= rms { // there may be only one in list
+        p.is_sync = true
+      }
+      p
+    })
+    .collect();
+
+    Ok(checked)
+  }
+
+  pub async fn check_which_are_alive(
+    mut upstream: Vec<FullnodeProfile>,
+  ) -> Result<Vec<FullnodeProfile>, Error> {
+    let cfg = configs::get_cfg()?;
+
+    // try getting waypoint from upstream nodes
+    // no waypoint is necessary in advance.
+    let futures = FuturesUnordered::new();
+
+    // let mut list = cfg.profile.upstream_nodes.to_owned();
+    upstream.shuffle(&mut thread_rng());
+
+    // randomize to balance load on carpe nodes
+    upstream.into_iter().for_each(|p| {
+      futures.push(p.check_rpc_header());
+    });
+
+    // dbg!(&list);
+
+    let checked = futures
+      .filter_map(|e| async move { e.ok() })
+      .collect::<Vec<_>>()
+      .await;
+
+    Ok(checked)
+  }
+}
+
+#[test]
+fn test_pick_upstream() {
+  let node_good = FullnodeProfile {
+    url: "http://165.232.136.149:8080/".parse().unwrap(),
+    version: 0,
+    is_api: false,
+    is_sync: false,
+  };
+
+  let node_bad = FullnodeProfile {
+    url: "http://165.232.136.14:8080/".parse().unwrap(),
+    version: 0,
+    is_api: false,
+    is_sync: false,
+  };
+
+  tauri::async_runtime::block_on(FullnodeProfile::check_which_are_alive(vec![node_good, node_bad]));
+}
