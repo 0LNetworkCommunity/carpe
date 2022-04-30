@@ -5,15 +5,18 @@
   import Wallet from "./wallet/Wallet.svelte";
   import Settings from "./settings/Settings.svelte";
   import DevMode from "./dev/DevMode.svelte";
+  import News from "./news/News.svelte";
   UIkit.use(Icons);
 </script>
 
 <main>
-  
   <div class="uk-container uk-container-expand uk-margin-top">
     <b uk-navbar-toggle-icon uk-toggle="target: #offcanvas-nav-primary" />
 
     <ul id="component-nav" class="uk-switcher">
+      <li id="miner-panel">
+        <News />
+      </li>
       <li id="miner-panel">
         <Wallet />
       </li>
