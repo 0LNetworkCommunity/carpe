@@ -1,7 +1,7 @@
 //! network configs
 
 use futures::{stream::FuturesUnordered, StreamExt};
-use reqwest::{Client, ClientBuilder};
+use reqwest::{ClientBuilder};
 use std::{fmt, time::Duration};
 // use num_traits::pow::Pow;
 use crate::{
@@ -208,7 +208,7 @@ impl UpstreamStats {
   }
 
   pub async fn check_which_are_synced(mut self) -> anyhow::Result<Self> {
-    let cfg = configs::get_cfg()?;
+    let _cfg = configs::get_cfg()?;
 
     // try getting waypoint from upstream nodes
     // no waypoint is necessary in advance.
@@ -232,7 +232,7 @@ impl UpstreamStats {
       .await;
 
     // find the RMS of the versions. Reject anything below rms
-    let i = sync_list.len();
+    let _i = sync_list.len();
     // let mut sum_square: u64 = 0;
     let sum_squares: u64 = sync_list.iter()
     .map(|e|  {
@@ -259,7 +259,7 @@ impl UpstreamStats {
   }
 
   pub async fn check_which_are_alive(mut self) -> anyhow::Result<Self> {
-    let cfg = configs::get_cfg()?;
+    let _cfg = configs::get_cfg()?;
     let mut upstream = self.nodes;
 
     // try getting waypoint from upstream nodes
