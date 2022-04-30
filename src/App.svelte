@@ -44,14 +44,16 @@ import { refreshUpstreamPeerStats } from "./networks";
 
     isCarpeInit();
 
-    // iterates through the list of peers in 0L.toml, and updates the statistics in preferences.json. So we don't need to test fullnodes on every transaction.
-    refreshUpstreamPeerStats();
-
     getEnv();
 
     getVersion();
 
-    carpeTick();
+    // iterates through the list of peers in 0L.toml, and updates the statistics in preferences.json. So we don't need to test fullnodes on every transaction.
+    refreshUpstreamPeerStats()
+    .then(() => {
+      carpeTick();
+    });
+
     healthTick = setInterval(carpeTick, 30000); // do a healthcheck, this is async
 
     debugMode.subscribe(b => debug = b);

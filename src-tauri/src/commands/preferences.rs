@@ -75,12 +75,16 @@ fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
 
 
 #[tauri::command(async)]
-pub async fn refresh_upstream_peer_stats() -> Result<(), CarpeError> {
+pub async fn refresh_upstream_peer_stats() -> Result<bool, CarpeError> {
   let cfg = configs::get_cfg()?;
   let stats = UpstreamStats::new(cfg.profile.upstream_nodes);
 
   let mut preferences = read_preferences()?;
   preferences.network = Some(stats.refresh().await?);
+  update_preferences(&preferences)?;
 
-  update_preferences(&preferences)
+  match preferences.network {
+    Some(stats) => Ok(stats.the_good_ones()?.len() > 0),
+    None => Err(CarpeError::client("no good upstream to use")),
+}
 }

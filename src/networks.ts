@@ -51,7 +51,7 @@ export const refreshWaypoint = async () =>{
     .then((res: NetworkProfile) => {
       network_profile.set(res);
       connected.set(true);
-      scanning_fullnodes.set(false);
+      // scanning_fullnodes.set(false);
     })
     .catch((error) => {
       connected.set(false);
@@ -62,11 +62,11 @@ export const refreshWaypoint = async () =>{
 export const refreshUpstreamPeerStats = async () => {
   console.log(">>> calling refresh_upstream_peer_stats");
   return invoke("refresh_upstream_peer_stats", {})
-    .then(() => {
+    .then((res: boolean) => {
       console.log("update peers finished");
 
       // network_profile.set(res);
-      connected.set(true);
+      connected.set(res);
       scanning_fullnodes.set(false);
     })
     .catch((error) => {

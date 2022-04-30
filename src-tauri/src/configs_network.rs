@@ -114,7 +114,7 @@ pub fn set_network_configs(network: Networks) -> Result<NetworkProfile, CarpeErr
 pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
   let prefs = read_preferences()?;
   if let Some(upstream) = prefs.network {
-    let mut urls = upstream.the_good_ones().await?;
+    let mut urls = upstream.the_good_ones()?;
     urls.shuffle(&mut thread_rng());
     if let Some(u) = urls.first() {
       match waypoint::bootstrap_waypoint_from_rpc(u.to_owned()).await {
@@ -205,14 +205,11 @@ impl UpstreamStats {
   }
 
   pub async fn refresh(self) -> anyhow::Result<Self> {
-    self
-      .check_which_are_alive()
-      .await?
-      .check_which_are_synced()
+    self.check_which_are_synced()
       .await
   }
 
-  pub async fn the_good_ones(&self) -> anyhow::Result<Vec<Url>> {
+  pub fn the_good_ones(&self) -> anyhow::Result<Vec<Url>> {
     let list_urls: Vec<Url> = self
       .nodes
       .iter()
@@ -240,9 +237,7 @@ impl UpstreamStats {
 
     // randomize to balance load on carpe nodes
     upstream.into_iter().for_each(|p| {
-      if p.is_api {
-        futures.push(p.check_sync());
-      }
+      futures.push(p.check_sync());
     });
 
     // dbg!(&list);
@@ -253,8 +248,7 @@ impl UpstreamStats {
       .await;
 
     // find the RMS of the versions. Reject anything below rms
-    let _i = sync_list.len();
-    // let mut sum_square: u64 = 0;
+
     let sum_squares: u64 = sync_list
       .iter()
       .map(|e| u64::pow(e.version, 2))
@@ -322,9 +316,17 @@ pub struct FullnodeProfile {
 /// sets it in preferences as the default peer.
 impl FullnodeProfile {
   async fn check_sync(mut self) -> anyhow::Result<FullnodeProfile> {
-    let wp = waypoint::bootstrap_waypoint_from_rpc(self.url.clone()).await?;
+     match waypoint::bootstrap_waypoint_from_rpc(self.url.clone()).await {
+        Ok(wp) => {
+          self.version = wp.version();
+          self.is_api = true;
+        },
+        Err(_) => {
+          // not interested in the result just need to mark is as a failing api endpoint.
+          self.is_api = false;
+        },
+    };
 
-    self.version = wp.version();
     Ok(self)
   }
 
