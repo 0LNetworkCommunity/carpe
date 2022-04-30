@@ -33,8 +33,15 @@
   {#if account}
     <div class="uk-text-center">
       <div class="uk-section">
-        <p><span class="uk-text-uppercase">{$_("txs.account")}: </span><span class="uk-text-bold">{account.account}</span></p>
-        <p><span class="uk-text-uppercase">{$_("txs.balance")}: </span><span class="uk-text-bold">{printCoins(account.balance)}</span></p>
+        <h4 class="uk-text-muted">
+          <span class="uk-text-uppercase"> {$_("txs.account")}: </span>
+          <span class="uk-text-bold uk-text-uppercase">{account.account}</span>
+
+        </h4>
+        <h4 class="uk-text-muted">
+          <span class="uk-text-uppercase">{$_("txs.balance")}: </span>
+          <span class="uk-text-bold">{printCoins(account.balance)}</span>
+        </h4>
       </div>
     
       <button uk-toggle="target: #onboardDialog" class="uk-button uk-button-default uk-margin-right">{$_("txs.btn_onboard")}</button>
