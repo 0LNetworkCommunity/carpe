@@ -225,6 +225,10 @@ impl UpstreamStats {
     Ok(list_urls)
   }
 
+  pub fn the_best_one(&self) -> anyhow::Result<Url> {
+     Ok(self.the_good_ones()?.first());
+  }
+
   pub async fn check_which_are_synced(mut self) -> anyhow::Result<Self> {
     let _cfg = configs::get_cfg()?;
 
