@@ -6,6 +6,7 @@ export interface AccountEntry {
   nickname: string,
   on_chain: any, // null or bool
   balance: any, // null or number
+  unlocked_balance: any, // null or number
 }
 
 export const new_account = function (account: string, authkey: string, nickname: string): AccountEntry {
@@ -16,6 +17,7 @@ export const new_account = function (account: string, authkey: string, nickname:
     nickname: nickname,
     on_chain: null,
     balance: null,
+    unlocked_balance: null,
   }
 };
 

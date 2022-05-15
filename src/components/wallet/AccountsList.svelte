@@ -69,7 +69,7 @@
                     </div>
                   {/if}
 
-                  {showingUnlockedBalance ? printCoins(a.balance): 'unlocked placeholder'}
+                  {showingUnlockedBalance ? printCoins(a.balance): printCoins(a.unlocked_balance)}
                 </div>
               {:else if a.balance == null}
                 {$_("wallet.account_list.loading")}...

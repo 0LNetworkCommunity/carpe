@@ -53,6 +53,15 @@ pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
     .map_err(|_| CarpeError::misc(&format!("Could not get balance from account: {}", account)))
 }
 
+pub fn get_unlocked_balance(account: AccountAddress) -> Result<u64, CarpeError> {
+  dbg!("get_unlocked_balance");
+  let mut node = get_node_obj()?;
+  let bal = node.query(QueryType::UnlockedBalance { account })?;
+  bal
+    .parse::<u64>()
+    .map_err(|_| CarpeError::misc(&format!("Could not get unlocked balance from account: {}", account)))
+}
+
 #[tauri::command(async)]
 pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
   let mut node = get_node_obj()?;

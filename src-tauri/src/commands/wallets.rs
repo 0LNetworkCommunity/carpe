@@ -18,7 +18,7 @@ use ol_keys::wallet;
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 
-use super::get_balance;
+use super::{get_unlocked_balance, get_balance};
 use super::get_payment_events;
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
@@ -32,6 +32,7 @@ pub struct AccountEntry {
   pub nickname: String,
   pub on_chain: Option<bool>,
   pub balance: Option<u64>,
+  pub unlocked_balance: Option<u64>,
 }
 
 impl AccountEntry {
@@ -42,6 +43,7 @@ impl AccountEntry {
       nickname: get_short(address),
       on_chain: None,
       balance: None,
+      unlocked_balance: None,
     }
   }
 }
@@ -135,6 +137,8 @@ fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError> {
     .into_iter()
     .map(|mut e| {
       e.balance = get_balance(e.account).ok();
+      e.unlocked_balance = get_unlocked_balance(e.account).ok();
+      if e.unlocked_balance.is_none() { e.unlocked_balance = e.balance};
       e.on_chain = Some(e.balance.is_some());
       e
     })
@@ -203,6 +207,7 @@ fn insert_account_db(
     nickname: nickname,
     on_chain: None,
     balance: None,
+    unlocked_balance: None,
   };
 
   if !all.accounts.contains(&new_account) {

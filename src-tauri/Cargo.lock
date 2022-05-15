@@ -5150,7 +5150,7 @@ dependencies = [
  "move-binary-format",
  "move-core-types",
  "move-vm-types",
- "nix 0.22.2",
+ "nix 0.18.0",
  "num-format",
  "ol-keys",
  "ol-types",
