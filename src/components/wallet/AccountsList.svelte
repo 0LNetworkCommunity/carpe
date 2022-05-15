@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { setAccount } from "../../accountActions";
+  import { setAccount, toggleLockedBalance } from "../../accountActions";
   import type { AccountEntry } from "../../accounts";
   import IconMining from "../icons/IconMining.svelte";
   import UIkit from "uikit";
@@ -11,6 +11,7 @@
 
   export let my_account: AccountEntry;
   export let accountList: AccountEntry[];
+  export let showingUnlockedBalance: boolean;
   export let isMining: boolean;
   export let isConnected: boolean;
 
@@ -27,7 +28,7 @@
           <th>{$_("wallet.account_list.nickname")}</th>
           <th>{$_("wallet.account_list.address")}</th>
           <th>{$_("wallet.account_list.authkey")}</th>
-          <th class="uk-text-right">{$_("wallet.account_list.balance")}</th>
+          <th class="uk-text-right">{$_("wallet.account_list.balance")} <button on:click|preventDefault={toggleLockedBalance} uk-icon={showingUnlockedBalance ? "lock" : "unlock"} title={showingUnlockedBalance ? "Show unlocked balance" : "Show total balance"}></button></th>
         </tr>
       </thead>
       <tbody>
@@ -68,7 +69,7 @@
                     </div>
                   {/if}
 
-                  {printCoins(a.balance)}
+                  {showingUnlockedBalance ? printCoins(a.balance): 'unlocked placeholder'}
                 </div>
               {:else if a.balance == null}
                 {$_("wallet.account_list.loading")}...

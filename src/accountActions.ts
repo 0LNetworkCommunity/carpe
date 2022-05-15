@@ -4,7 +4,7 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import { minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
-import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents, isAccountsLoaded, makeWhole } from './accounts';
+import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents, isAccountsLoaded, makeWhole, showUnlockedBalance } from './accounts';
 
 export const loadAccounts = async () => { 
   // fetch data from local DB
@@ -55,6 +55,13 @@ export function tryRefreshSignerAccount(newData: AccountEntry) {
   }
 }
 
+export function toggleLockedBalance(){
+  if(get(showUnlockedBalance)){
+    showUnlockedBalance.set(false);
+  }else{
+    showUnlockedBalance.set(true);
+  }
+}
 
 export const isCarpeInit = async () => {
   invoke("is_init", {})

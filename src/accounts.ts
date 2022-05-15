@@ -26,4 +26,5 @@ export const isRefreshingAccounts = writable(false);
 export const all_accounts = writable<AccountEntry[]>([]);
 export const isAccountsLoaded = writable(false);
 export const accountEvents = writable({}); // TODO define interface AccountEvent
+export const showUnlockedBalance = writable(false);
 export const makeWhole = writable({});

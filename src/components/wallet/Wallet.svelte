@@ -10,6 +10,7 @@
   } from "../../accounts";
   import { routes } from "../../routes";
   import type { AccountEntry } from "../../accounts";
+  import { showUnlockedBalance } from "../../accounts";
   import Newbie from "./Newbie.svelte";
   import AccountsList from "./AccountsList.svelte";
   import ReminderCreate from "./ReminderCreate.svelte";
@@ -24,6 +25,7 @@
   let my_account: AccountEntry;
   let accountList: AccountEntry[] = null;
   let pendingAccounts: AccountEntry[] = [];
+  let showingUnlockedBalance = false;
   let isMining = false;
   let isRefreshing: boolean = true;
   let isConnected: boolean = true;
@@ -32,6 +34,7 @@
   let unsubsConnected;
   let unsubsAll_accounts;
   let unsubsSigningAccount;
+  let unsubsShowUnlockedBalance;
   let unsubsIsAccountsLoaded;
   let unsubsMinerLoopEnabled;
   let unsubsIsRefreshingAccounts;
@@ -43,6 +46,7 @@
       pendingAccounts = all.filter(x => !x.on_chain);
     });
     unsubsSigningAccount = signingAccount.subscribe(a => my_account = a);
+    unsubsShowUnlockedBalance = showUnlockedBalance.subscribe(boo => showingUnlockedBalance = boo);
     unsubsIsAccountsLoaded = isAccountsLoaded.subscribe(boo => isLoaded = boo);
     unsubsMinerLoopEnabled = minerLoopEnabled.subscribe(boo => isMining = boo);
     unsubsIsRefreshingAccounts = isRefreshingAccounts.subscribe(boo => isRefreshing = boo);   
@@ -52,6 +56,7 @@
     unsubsConnected && unsubsConnected();
     unsubsAll_accounts && unsubsAll_accounts();
     unsubsSigningAccount && unsubsSigningAccount();
+    unsubsShowUnlockedBalance && unsubsShowUnlockedBalance();
     unsubsIsAccountsLoaded && unsubsIsAccountsLoaded();
     unsubsMinerLoopEnabled && unsubsMinerLoopEnabled();
     unsubsIsRefreshingAccounts && unsubsIsRefreshingAccounts();
@@ -77,7 +82,7 @@
           <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("wallet.wallet")}</h2>
         </div>
         
-        <AccountsList {my_account} {accountList} {isMining} {isConnected} />
+        <AccountsList {my_account} {accountList} {showingUnlockedBalance} {isMining} {isConnected} />
 
         <ReminderCreate {pendingAccounts} {isConnected} />
 
