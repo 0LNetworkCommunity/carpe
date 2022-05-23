@@ -226,7 +226,10 @@ impl UpstreamStats {
   }
 
   pub fn the_best_one(&self) -> anyhow::Result<Url> {
-     Ok(self.the_good_ones()?.first());
+    match self.the_good_ones()?.first() {
+      Some(url) => Ok(url.clone()),
+      None => bail!("Expected an URL for the best one")
+    }
   }
 
   pub async fn check_which_are_synced(mut self) -> anyhow::Result<Self> {
