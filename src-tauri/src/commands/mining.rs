@@ -57,7 +57,7 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
   // TODO: this is gross. Prevent cloning when using in closures
   let window_clone = window.clone();
   let config = get_cfg()?;
-  let tx_params = get_tx_params().expect("could not load tx params");
+  let tx_params = get_tx_params()?;
   // This is tauri's event listener for the tower proof.
   // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("send-backlog", move |_e| {

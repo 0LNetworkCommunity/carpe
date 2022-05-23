@@ -46,10 +46,3 @@ pub async fn refresh_waypoint() -> Result<NetworkProfile, CarpeError> {
   set_waypoint_from_upstream().await?;
   NetworkProfile::new()
 }
-
-// #[tauri::command]
-// pub fn refresh_waypoint() -> Result<NetworkProfile, CarpeError> {
-//   dbg!("refresh_waypoint");
-//   set_waypoint_from_upstream()?;
-//   NetworkProfile::new()
-// }

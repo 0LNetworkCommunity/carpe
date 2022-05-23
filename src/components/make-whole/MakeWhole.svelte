@@ -88,7 +88,7 @@
 
   <div class="uk-container">
     <div class="uk-card uk-card-default uk-card-body">
-      <h3 class="uk-card-title">{$_("make_whole.card.title")}</h3>
+      <h3 class="uk-card-title uk-text-muted uk-text-uppercase">{$_("make_whole.card.title")}</h3>
       {@html $_("make_whole.card.body")}
     </div>
     <div>
