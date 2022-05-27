@@ -44,7 +44,8 @@
         <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li>
         <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>
         <li><Link to={routes.transactions}>{$_("nav.transactions")}</Link></li>
-        <li><Link to={routes.events}>{$_("nav.events")}</Link></li>
+        <!-- Remove Events tab till we get a fullnode set able to respond to these queries -->
+        <!-- <li><Link to={routes.events}>{$_("nav.events")}</Link></li> -->
         <!-- Postpone MakeWhole release -->
         <!--<li><MakeWholeLink /></li>-->
       </ul>
