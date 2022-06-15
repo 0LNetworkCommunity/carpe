@@ -55,7 +55,7 @@
     </div>
 
     {#if secondaryRoutes.includes($location.pathname)}
-      <Link to={routes.home}><span class="uk-text-muted" uk-icon="icon: arrow-left; ratio: 2" /></Link>
+      <Link to={routes.home} class="carpe-arrows"><span class="uk-text-muted" uk-icon="icon:arrow-left; ratio: 2" /></Link>
     {/if}
 
     <div class="uk-navbar-right">

@@ -86,12 +86,12 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
   --carpe-blue: #1890ff;
   --dark-gray:#666;
   --gray: lightgray;
+  --night-header: #111;
+  --night-body: #444;
+  --night-highlight: #111;
 }
 
 /* Setting background of main app. Must go through and actually remove the muted class in some instances */
-main.uk-background-muted {
-  background-color:white;
-}
 main .uk-background-muted {
   background-color:white!important;
 }
@@ -174,6 +174,7 @@ main .carpe-titles {
   font-size:2.5rem;
   font-weight: 700;
 }
+
 .uk-card.uk-card-primary {
   background-color:white!important;
   border:1px solid lightgray;
@@ -181,18 +182,23 @@ main .carpe-titles {
   margin:30px;
   color:black!important;
 }
+
 .uk-card.uk-card-primary h3, .uk-card.uk-card-primary h4 {
   color:var(--carpe-blue)!important;
 }
+
 .uk-card-primary.uk-card-hover, .uk-card-primary.uk-card-hover:hover {
   box-shadow: none!important;
 }
+
 .uk-card.uk-card-primary p {
   color:var(--dark-gray)!important;
 }
+
 .uk-card.uk-card-primary a {
   color:var(--carpe-blue)!important;
 }
+
 .uk-card.uk-card-primary span.uk-text-uppercase, .carpe-address-hightlight {
   color:var(--carpe-blue);
   border:1px solid lightgray;
@@ -203,7 +209,7 @@ main .carpe-titles {
 
 main .uk-button-secondary {
   color: white;
-  background-color: var(--carpe-color);
+  background-color: var(--carpe-blue);
   border-radius: 2em;
   border: 2px solid rgba(255, 62, 0, 0);
   outline: none;
@@ -213,8 +219,8 @@ main .uk-button-secondary {
 }
 main .uk-button-secondary:hover {
   background-color: var(--carpe-color);
-
 }
+
 main .uk-button-default {
   color: black;
   background-color: white;
@@ -235,13 +241,21 @@ main .uk-button-default {
   border-radius: 20px;
   margin:30px 30px 0 30px;
 }
-
+.carpe-tabs button {
+  padding:5px 30px 5px 30px;
+}
 /* Miner details */
 .carpe-color, .uk-card.uk-card-primary.carpe-color, .uk-card.uk-card-primary h3.carpe-color, .uk-card.uk-card-primary h4.carpe-color {
   color:var(--carpe-color)!important;
 }
 
 /* Spin loader of menu icon */
+.account-switcher-link-padding {
+  padding:5px 0 5px 0;
+}
+.pointer {
+  cursor:pointer;
+}
 .loading-rotation {
   display: inline-block;
   animation: rotation 2s infinite linear;
@@ -263,4 +277,45 @@ main .uk-button-default {
   border-radius: 20px;
   margin:30px;
   color:black!important;
+}
+
+/* About page */
+.carpe-arrows {
+  display:flex;
+  align-items:center;
+}
+
+/* Night mode */
+html.night {
+  background-color:var(--night-body);
+}
+
+body {
+  background-color:white;
+}
+
+body.night {
+  background-color:#1d1d1d;
+}
+
+body.night .carpe-nav-container {
+  background-color:var(--night-header);
+}
+
+body.night .carpe-nav-container .uk-navbar-container:not(.uk-navbar-transparent) {
+  background:var(--night-header);
+}
+
+body.night main .uk-background-muted {
+  background:var(--night-body)!important;
+}
+
+body.night .uk-container {
+  background:var(--night-body);
+}
+body.night .carpe-wallet-list-container {
+  background-color:var(--night-highlight);
+}
+body.night .uk-card.uk-card-primary, body.night .carpe-card {
+  background-color:var(--night-highlight)!important;
 }

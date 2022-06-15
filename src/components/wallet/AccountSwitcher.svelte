@@ -7,6 +7,7 @@
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
   import { _ } from "svelte-i18n";
+  function q(incoming) { return document.querySelector(incoming); };
 
   let my_account: AccountEntry;
   let account_list: AccountEntry[];
@@ -23,6 +24,20 @@
     unsubsSigningAccount && unsubsSigningAccount();
     unsubsAll_accounts && unsubsAll_accounts();
   });
+
+  
+  function trigger_global_night_mode() {
+    let this_body = q("body");
+    if (this_body.classList.contains("night")) {
+      this_body.classList.remove("night");
+      q("html").classList.remove("night");
+      q("#night-mode-switcher").innerHTML = "Night Mode";
+    } else {
+      q("body").classList.add("night");
+      q("html").classList.add("night");
+      q("#night-mode-switcher").innerHTML = "Day Mode";
+    }
+  };
 
 </script>
 
@@ -77,7 +92,11 @@
         <li class="uk-text-muted">
           <AboutLink />
         </li>
+        <li on:click={trigger_global_night_mode} class="account-switcher-link-padding uk-text-muted">
+          <span id="night-mode-switcher" class="pointer">Night Mode</span>
+        </li>
       </ul>
     </div>
   </div>
 </main>
+
