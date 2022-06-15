@@ -106,9 +106,10 @@ import { refreshUpstreamPeerStats } from "./networks";
     unlistenBacklogError();
     clearInterval(healthTick);
   })
+  
 </script>
 
-<main class="uk-background-muted uk-height-viewport">
+<main class="uk-background-muted">
   <SearchingFullnodes />
   <RecoveryMode/>
   
@@ -145,3 +146,4 @@ import { refreshUpstreamPeerStats } from "./networks";
     </Router>
   </div>  
 </main>
+

@@ -37,6 +37,7 @@
   let unsubsIsRefreshingAccounts;
 
   onMount(async () => {
+    
     unsubsConnected = connected.subscribe(b => isConnected = b);
     unsubsAll_accounts = all_accounts.subscribe(all => {
       accountList = all;
@@ -60,12 +61,22 @@
 
 <main>
   <div>
-    {#if isRefreshing}
+    <!--{#if isRefreshing}
       <div style="position:relative">
         <span uk-spinner style="position:absolute; top:0px; left:0px"/>
       </div>
+    {/if}-->
+    {#if isRefreshing}
+      <div style="position:relative;display:none;">
+        {window.add_spin_loading_to_logo()}
+        <!--<span style="position:absolute; left:0px; top:0px;" uk-spinner />-->
+      </div>
+    {:else}
+      <div style="position:relative;display:none;">
+        {window.remove_spin_loading_to_logo()}
+      </div>
     {/if}
-
+    
     {#if !isLoaded}
       <AccountsListSkeleton />
     {:else if accountList.length > 0}
@@ -74,14 +85,14 @@
         <ConnectionError />
       {:else}
         <div class="uk-flex uk-flex-center">
-          <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("wallet.wallet")}</h2>
+          <h2 class="carpe-titles">{$_("wallet.wallet")}</h2>
         </div>
         
         <AccountsList {my_account} {accountList} {isMining} {isConnected} />
 
         <ReminderCreate {pendingAccounts} {isConnected} />
 
-        <div uk-grid class="uk-flex uk-flex-center">
+        <div uk-grid class="carpe-tabs uk-flex uk-flex-center">
           <Link to={routes.keygen}>
             <button class="uk-button uk-button-secondary">{$_("wallet.btn_new_account")}</button>
           </Link>
@@ -90,8 +101,8 @@
           </Link>
         </div>
       {/if}
-    {:else if accountList.length == 0 && !isRefreshing}
-      <Newbie />
-    {/if}
+      {:else if accountList.length == 0 && !isRefreshing}
+        <Newbie />
+      {/if}
   </div>
 </main>

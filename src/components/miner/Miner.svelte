@@ -33,7 +33,7 @@
   let unsubsIsRefreshingAccounts;
   let unsubsIsDevTest;
 
-  onMount(async () => {
+  onMount(async () => {    
     getTowerChainView();
     unsubsTower = tower.subscribe(t => {
       minerTower = t;
@@ -57,21 +57,26 @@
 </script>
 
  
-<main class="uk-height-viewport">
+<main>
   {#if loading}
-    <div style="position:relative">
-      <span style="position:absolute; left:0px; top:0px;" uk-spinner />
+    <div style="position:relative;display:none;">
+      {window.add_spin_loading_to_logo()}
+      <!--<span style="position:absolute; left:0px; top:0px;" uk-spinner />-->
+    </div>
+  {:else}
+    <div style="position:relative;display:none;">
+      {window.remove_spin_loading_to_logo()}
     </div>
   {/if}
   <div class="uk-flex uk-flex-center">
-    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
+    <h2 class="carpe-titles uk-text-light">
       {$_("miner.title")}
     </h2>
   </div>
 
   {#if isDevTest}
     <div class="uk-flex uk-flex-center">
-      <p class="uk-text-light uk-text-muted uk-text-uppercase">
+      <p class="uk-text-light uk-text-muted">
         DEV MODE, RUNNING IN TEST DIFFICULTY
       </p>
     </div>

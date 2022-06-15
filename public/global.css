@@ -1,6 +1,6 @@
 /* Just for example */
 html {
-  background-color: #f1f2f3;
+  background-color: white;
 }
 
 /* -----------------------------
@@ -78,3 +78,189 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
   background-color: rgba(255,255,255,0.22);
 }
 
+
+/* Rework to override the uikit */
+
+:root {
+  --carpe-color: #ff5958;
+  --carpe-blue: #1890ff;
+  --dark-gray:#666;
+  --gray: lightgray;
+}
+
+/* Setting background of main app. Must go through and actually remove the muted class in some instances */
+main.uk-background-muted {
+  background-color:white;
+}
+main .uk-background-muted {
+  background-color:white!important;
+}
+
+/* Specific for the navbar header class 'carpe-nav-container' */
+.carpe-nav-container .uk-navbar-container:not(.uk-navbar-transparent) {
+  background:white;
+  border-bottom:1px solid lightgray;
+}
+.carpe-nav-container ul {
+  margin-bottom:0;
+}
+
+.carpe-nav-container .uk-navbar-left span {
+  color:var(--carpe-color);
+  font-weight: 700;
+}
+
+.carpe-nav-container button.uk-button {
+  color: white;
+  background-color: var(--carpe-color);
+  border-radius: 2em;
+  border: 2px solid rgba(255, 62, 0, 0);
+  outline: none;
+  cursor: pointer;
+  margin-left:20px;
+  margin-right:15px;
+}
+
+.carpe-nav-container .uk-navbar-item {
+  min-height: 70px;
+}
+
+.carpe-nav-container .uk-tab > * > a {
+  text-transform: none;
+  color: #bfbebe;
+  font-size:16px;
+  padding:15px 10px 15px 10px;
+  font-weight: 500;
+}
+
+.carpe-nav-container .uk-tab > .uk-active > a, .uk-tab > * > a:hover {
+  border-color: var(--carpe-color);
+  border-width: 2px;
+  color:var(--carpe-color);
+}
+
+.carpe-nav-container .uk-tab::before {
+  border-bottom:none;
+}
+
+/* Overriding existing uikit */
+@media (min-width: 960px) {
+  main .uk-container {
+    padding-left:0;
+    padding-right:0;
+  }
+}
+
+/* Nav Dropdown modification */
+.carpe-nav-container .uk-dropdown {
+  background: white;
+  box-shadow: none;
+  padding:30px;
+  border:1px solid lightgray;
+  border-radius: 20px;
+}
+
+.carpe-nav-container .uk-dropdown li {
+  font-size:16px;
+}
+
+.carpe-nav-container .uk-text-primary {
+  color:var(--carpe-color)!important;
+}
+
+/* Wallet main page */
+main .carpe-titles {
+  color:var(--carpe-color);
+  font-size:2.5rem;
+  font-weight: 700;
+}
+.uk-card.uk-card-primary {
+  background-color:white!important;
+  border:1px solid lightgray;
+  border-radius: 20px;
+  margin:30px;
+  color:black!important;
+}
+.uk-card.uk-card-primary h3, .uk-card.uk-card-primary h4 {
+  color:var(--carpe-blue)!important;
+}
+.uk-card-primary.uk-card-hover, .uk-card-primary.uk-card-hover:hover {
+  box-shadow: none!important;
+}
+.uk-card.uk-card-primary p {
+  color:var(--dark-gray)!important;
+}
+.uk-card.uk-card-primary a {
+  color:var(--carpe-blue)!important;
+}
+.uk-card.uk-card-primary span.uk-text-uppercase, .carpe-address-hightlight {
+  color:var(--carpe-blue);
+  border:1px solid lightgray;
+  border-radius:5px;
+  padding:10px;
+  font-weight: bold;
+}
+
+main .uk-button-secondary {
+  color: white;
+  background-color: var(--carpe-color);
+  border-radius: 2em;
+  border: 2px solid rgba(255, 62, 0, 0);
+  outline: none;
+  cursor: pointer;
+  margin-left:20px;
+  text-transform: capitalize;
+}
+main .uk-button-secondary:hover {
+  background-color: var(--carpe-color);
+
+}
+main .uk-button-default {
+  color: black;
+  background-color: white;
+  border-radius: 2em;
+  border: 2px solid rgba(255, 62, 0, 0);
+  outline: none;
+  cursor: pointer;
+  margin-left:20px;
+  text-transform: capitalize;
+  border:1px solid lightgray;
+}
+
+.carpe-wallet-list-container {
+  padding:0 50px 0 50px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid lightgray;
+  border-radius: 20px;
+  margin:30px 30px 0 30px;
+}
+
+/* Miner details */
+.carpe-color, .uk-card.uk-card-primary.carpe-color, .uk-card.uk-card-primary h3.carpe-color, .uk-card.uk-card-primary h4.carpe-color {
+  color:var(--carpe-color)!important;
+}
+
+/* Spin loader of menu icon */
+.loading-rotation {
+  display: inline-block;
+  animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+  50% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Transaction page */
+.carpe-card {
+  background-color:white!important;
+  border:1px solid lightgray;
+  border-radius: 20px;
+  margin:30px;
+  color:black!important;
+}

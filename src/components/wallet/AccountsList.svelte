@@ -16,7 +16,7 @@
 
 </script>
 
-<main>
+<main class="carpe-wallet-list-container">
   {#if accountList == null}
     <span uk-spinner />
   {:else if accountList.length > 0}

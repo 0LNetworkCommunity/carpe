@@ -19,7 +19,7 @@
         uk-icon="icon: warning; ratio: 1"
       />
     {/if}
-    <span class="uk-text-uppercase"> {title} </span>
+    <span> {title} </span>
   </dt>
   <dd>{description}</dd>
 </div>

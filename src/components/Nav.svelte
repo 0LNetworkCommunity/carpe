@@ -6,6 +6,8 @@
   import { routes } from "../routes";
   import { _ } from "../lang/i18n";
   import { init_preferences } from "../preferences";
+  function q(incoming){ return document.querySelector(incoming); };
+
   // import MakeWholeLink from "./make-whole/MakeWholeLink.svelte";
   
   init_preferences();
@@ -17,12 +19,18 @@
     routes.keygen,
     routes.accountFromMnem,
   ]
+  
+  // Global function to add loading spinner to logo. This is called in the following functions:
+  // Wallet.svelte
+  window.add_spin_loading_to_logo = add_spin_loading_to_logo;
+  window.remove_spin_loading_to_logo = remove_spin_loading_to_logo;
 
   const location = useLocation();
 
   let myAccountIsOnChain = false;  // assume initialized until not
   let init = false;  // assume initialized until not
   onMount(async () => {
+
     isInit.subscribe(i => init = i);
 
     signingAccount.subscribe(myAccount => {
@@ -31,16 +39,27 @@
       };
     });
   });
-
+  
+  function add_spin_loading_to_logo(){
+    q(".carpe-nav-container img").classList.add("loading-rotation");
+  };
+  function remove_spin_loading_to_logo(){
+    q(".carpe-nav-container img").classList.remove("loading-rotation");
+  };
 </script>
 
-<main class="uk-margin-top">
+<main class="carpe-nav-container">
   <nav class="uk-navbar-container" uk-navbar>
+    <div class="uk-navbar-left">
+      <div class="cursor uk-navbar-item uk-logo"><img data-typeid="bridge" src="/ol_logo.png" style="width:30px" alt="0L Logo"/><span class="uk-visible@s">0L Carpe Wallet</span></div>
+    </div>
+
     {#if secondaryRoutes.includes($location.pathname)}
       <Link to={routes.home}><span class="uk-text-muted" uk-icon="icon: arrow-left; ratio: 2" /></Link>
     {/if}
-    <div class="uk-navbar-center">
-      <ul class="uk-navbar-nav { init && myAccountIsOnChain ? "" : "uk-invisible"}">
+
+    <div class="uk-navbar-right">
+      <ul class="uk-visible@m" uk-tab="active:0;"> <!--{ init && myAccountIsOnChain ? "" : "uk-invisible"}-->
         <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li>
         <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>
         <li><Link to={routes.transactions}>{$_("nav.transactions")}</Link></li>
@@ -49,16 +68,14 @@
         <!-- Postpone MakeWhole release -->
         <!--<li><MakeWholeLink /></li>-->
       </ul>
-    </div>
-
-    {#if init }
-    <div class="uk-navbar-right">
+      {#if init }
       <ul class="uk-navbar-nav">
         <li>
           <AccountSwitcher/>
         </li>
       </ul>
+      {/if }
     </div>
-    {/if }
+
   </nav>
 </main>
