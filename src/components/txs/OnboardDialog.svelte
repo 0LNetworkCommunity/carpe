@@ -41,7 +41,7 @@
 
 <main>
   <div id="onboardDialog" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body">
+    <div class="uk-modal-dialog uk-modal-body" style="transition: none;">
       <h2 class="uk-modal-title">{$_("txs.onboard.title")}</h2>
     
       <form id="account-form">

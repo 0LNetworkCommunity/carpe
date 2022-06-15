@@ -10,12 +10,33 @@
 
 <main>
   <div class="uk-flex uk-flex-center">
-    <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("settings.title")}</h2>
+    <h2 class="carpe-titles uk-text-light">
+      {$_("settings.title")}
+    </h2>
   </div>
-
-  <LangAppearanceSettings />
-  <UpdateNetwork />
-  <AccountSettings />
-  <MinerBacklog />
-  <SetWalletType />
+  <div class="uk-text-center carpe-card">
+    <div class="uk-section carpe-settings-section">
+      <LangAppearanceSettings />
+    </div>
+  </div>
+  <div class="uk-text-center carpe-card">
+    <div class="uk-section carpe-settings-section">
+      <UpdateNetwork />
+    </div>
+  </div>
+  <div class="uk-text-center carpe-card">
+    <div class="uk-section carpe-settings-section">
+      <AccountSettings />
+    </div>
+  </div>
+  <div class="uk-text-center carpe-card">
+    <div class="uk-section carpe-settings-section">
+      <MinerBacklog />
+    </div>
+  </div>
+  <div class="uk-text-center carpe-card">
+    <div class="uk-section carpe-settings-section">
+      <SetWalletType />
+    </div>
+  </div>
 </main>

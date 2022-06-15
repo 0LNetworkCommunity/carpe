@@ -83,8 +83,9 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
 
 :root {
   --carpe-color: #ff5958;
-  --carpe-blue: #1890ff;
-  --carpe-light-blue:#53acff;
+  --carpe-color-light: #ff8383;
+  --carpe-blue:#53acff;/* #1890ff;*/
+  --carpe-dark-blue:#1890ff;
   --dark-gray:#666;
   --gray: lightgray;
   --light-gray: rgb(234, 234, 234);
@@ -113,7 +114,7 @@ main .uk-background-muted {
   font-weight: 700;
 }
 
-.carpe-nav-container button.uk-button {
+.carpe-nav-container button.uk-button, body.night .carpe-nav-container button.uk-button {
   color: white;
   background-color: var(--carpe-color);
   border-radius: 2em;
@@ -123,7 +124,9 @@ main .uk-background-muted {
   margin-left:20px;
   margin-right:15px;
 }
-
+body.night .carpe-nav-container button.uk-button:hover {
+  background-color: var(--carpe-color-light);
+}
 .carpe-nav-container .uk-navbar-item {
   min-height: 70px;
 }
@@ -162,7 +165,9 @@ main .uk-background-muted {
   border:1px solid var(--gray);
   border-radius: 20px;
 }
-
+body.night .uk-dropdown {
+  background: var(--night-header);
+}
 .carpe-nav-container .uk-dropdown li {
   font-size:16px;
 }
@@ -172,6 +177,9 @@ main .uk-background-muted {
 }
 
 /* Wallet main page */
+.uk-table td {
+  color:var(--carpe-blue);
+}
 main .carpe-titles {
   color:var(--carpe-color);
   font-size:2.5rem;
@@ -186,7 +194,7 @@ main .carpe-titles {
   color:black!important;
 }
 
-.uk-card.uk-card-primary h3, .uk-card.uk-card-primary h4 {
+.uk-card.uk-card-primary h3, .uk-card.uk-card-primary h4, .carpe-sub-titles {
   color:var(--carpe-blue)!important;
 }
 
@@ -202,8 +210,8 @@ main .carpe-titles {
   color:var(--carpe-blue)!important;
 }
 
-.uk-card.uk-card-primary span.uk-text-uppercase, .carpe-address-hightlight {
-  color:var(--carpe-blue);
+.uk-card.uk-card-primary span.uk-text-uppercase, .carpe-card .uk-section span.carpe-address-hightlight, body.night .carpe-card .uk-section span.carpe-address-hightlight {
+  color:var(--carpe-blue)!important;
   border-radius:5px;
   padding:10px;
   font-weight: bold;
@@ -220,7 +228,7 @@ main .uk-button-secondary {
   text-transform: capitalize;
 }
 main .uk-button-secondary:hover {
-  background-color: var(--carpe-light-blue);
+  background-color: var(--carpe-dark-blue);
 }
 
 main .uk-button-default {
@@ -234,7 +242,13 @@ main .uk-button-default {
   text-transform: capitalize;
   border:1px solid var(--gray);
 }
-
+body.night main .uk-button-default {
+  color: white;
+  background-color: var(--night-body);
+}
+body.night main .uk-button-default:hover {
+  background-color: var(--night-header);
+}
 .carpe-wallet-list-container {
   padding:0 50px 0 50px;
   align-items: center;
@@ -273,6 +287,9 @@ main .uk-button-default {
 }
 
 /* Transaction page */
+.uk-modal {
+  transition: none!important;
+}
 .carpe-card {
   background-color:var(--day-body)!important;
   border:1px solid var(--gray);
@@ -284,6 +301,13 @@ main .uk-button-default {
 #coinTransferDialog .uk-modal-title {
   color:var(--carpe-blue);
 }
+#coinTransferDialog .uk-modal-dialog, #onboardDialog .uk-modal-dialog {
+  border-radius: 20px;
+  border:1px solid var(--light-gray);
+}
+body.night #coinTransferDialog .uk-modal-dialog, body.night #onboardDialog .uk-modal-dialog {
+  background-color:var(--night-header);
+}
 
 #coinTransferDialog .uk-input {
   border-radius: 10px;
@@ -291,6 +315,9 @@ main .uk-button-default {
 
 #coinTransferDialog .uk-button.uk-button-default.uk-modal-close.uk-margin-right {
   border-radius: 20px;
+}
+body.night #coinTransferDialog .uk-button.uk-button-default, body.night #onboardDialog .uk-button.uk-button-default {
+  color:var(--day-body);
 }
 
 #coinTransferDialog .uk-button.uk-button-primary {
@@ -317,6 +344,8 @@ main .uk-button-default {
 .carpe-arrows {
   display:flex;
   align-items:center;
+  position: relative;
+  top: 3px;
 }
 
 /* Night mode */
@@ -381,4 +410,60 @@ body.night .uk-card.uk-card-primary, body.night .carpe-card {
   cursor: pointer;
   margin-left:20px;
   margin-right:15px;
+}
+
+/* Notifications */
+.uk-notification-message {
+  background-color:var(--day-body);
+  border: 1px solid var(--night-body);
+  border-radius: 20px;
+  transition:none!important;
+}
+body.night .uk-notification-message {
+  background-color:var(--night-body);
+  border: 1px solid var(--day-body);
+}
+.uk-notification-close {
+  display:block!important;
+  color:var(--night-body)!important;
+}
+body.night .uk-notification-close {
+  color:var(--day-body)!important;
+}
+
+/* Settings Page */
+.uk-section.carpe-settings-section {
+  padding-left:50px;
+  padding-right:50px;
+}
+.carpe-card .uk-section p,  .carpe-card .uk-section span {
+  color:var(--dark-gray)!important;
+}
+
+body.night .carpe-card .uk-section p, body.night .carpe-card .uk-section span  {
+  color:var(--day-body)!important;
+}
+
+/* Developers Page */
+
+.uk-section.developers-section {
+  padding:30px;
+}
+
+.uk-section.developers-section label {
+  color:var(--dark-gray)!important;
+}
+
+body.night .uk-section.developers-section label {
+  color:var(--day-body)!important;
+}
+.debug-card {
+  position: fixed; bottom: 0px; left: 0px; right: 0px; height: 280px; overflow-y: auto; z-index: 10; border-style: ridge;
+  background-color: var(--day-body);
+}
+body.night .debug-card, body.night .debug-card-container {
+  background-color:var(--night-header);
+}
+.debug-card-container {
+  margin: 0px !important; min-height: 100%;
 }

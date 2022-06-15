@@ -56,7 +56,7 @@
       {/if}
     </button>
 
-    <div uk-dropdown>
+    <div uk-dropdown="delay-hide: 0; delay-show: 0; duration: 0;">
       <ul class="uk-nav uk-dropdown-nav">
         {#if account_list && account_list.length > 0}
           <li class="uk-text-muted">

@@ -5,7 +5,7 @@
 </script>
 
 <main class="uk-margin">
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.langapp_settings.title")}</h4>
+    <h3 class="carpe-sub-titles"> {$_("settings.langapp_settings.title")}</h3>
   
   <form id="account-form">
     <fieldset class="uk-fieldset">

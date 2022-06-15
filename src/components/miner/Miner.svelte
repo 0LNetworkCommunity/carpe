@@ -59,12 +59,12 @@
  
 <main>
   {#if loading}
-    <div style="position:relative;display:none;">
+    <div style="display:none;">
       {window.add_spin_loading_to_logo()}
       <!--<span style="position:absolute; left:0px; top:0px;" uk-spinner />-->
     </div>
   {:else}
-    <div style="position:relative;display:none;">
+    <div style="display:none;">
       {window.remove_spin_loading_to_logo()}
     </div>
   {/if}

@@ -82,7 +82,7 @@
 
 <main>
   <div id="coinTransferDialog" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body">
+    <div class="uk-modal-dialog uk-modal-body" style="transition: none;">
       {#if waitingConfirmation}
         <h2 class="uk-modal-title carpe-titles">{$_("txs.transfer.confirm_title")}</h2>
         <p>{$_("txs.transfer.please_confirm")}</p>

@@ -19,10 +19,8 @@
   });
 </script>
 
-<main style="position: fixed; bottom: 0px; left: 0px; right: 0px; height: 280px; overflow-y: auto; z-index: 10; border-style: ridge" >
-    <div style="margin: 0px !important; min-height: 100%"
-      class="uk-margin-top uk-margin-bottom uk-card uk-card-default uk-card-body uk-width-1-1"
-    >
+<main class="debug-card" style="" >
+    <div class="uk-margin-top uk-margin-bottom uk-card uk-card-default uk-card-body uk-width-1-1 debug-card-container">
       <div class="uk-row">
           <h5 class="uk-card-title uk-text-light uk-text-muted uk-text-uppercase">
             LOGS

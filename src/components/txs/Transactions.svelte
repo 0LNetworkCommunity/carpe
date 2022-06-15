@@ -31,6 +31,9 @@
 
   <!-- Account info -->
   {#if account}
+    <div style="display:none;">
+      {window.remove_spin_loading_to_logo()}
+    </div>
     <div class="uk-text-center carpe-card">
       <div class="uk-section">
         <h4 class="uk-text-muted">
@@ -44,6 +47,7 @@
         </h4>
       </div>
     </div>
+    
     <div uk-grid class="carpe-tabs uk-flex uk-flex-center">
       <button uk-toggle="target: #onboardDialog" class="uk-margin-bottom uk-button uk-button-default uk-margin-right uk-">{$_("txs.btn_onboard")}</button>
       <button uk-toggle="target: #coinTransferDialog" class="uk-margin-bottom uk-button uk-button-secondary">{$_("txs.btn_transfer")}</button>
@@ -51,6 +55,8 @@
     <OnboardDialog {account} {onSuccess}/>
     <TransferDialog {account} {onSuccess}/>
   {:else}
-    Loading...
+  <div style="display:none;">
+    {window.add_spin_loading_to_logo()}
+  </div>
   {/if}
 </main>
