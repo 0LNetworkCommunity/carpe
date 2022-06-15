@@ -49,64 +49,56 @@
 
 <main>
   <div class="uk-flex uk-flex-center">
-    <h3 class="uk-text-light uk-text-muted uk-text-uppercase">
+    <h3 class="carpe-titles">
       {$_("wallet.keygen.title")}
     </h3>
   </div>
 
   {#if address && !hide}
 
-    <div class="uk-margin uk-card uk-card-default uk-card-body uk-text-muted">
-      <h5 class="uk-text-muted uk-text-uppercase">{$_("wallet.keygen.account_address")}</h5>
-      <p class="uk-text-emphasis uk-text-uppercase">{address}</p>
-      <h5 class="uk-text-muted uk-text-uppercase">{$_("wallet.keygen.onboard_key")}</h5>
-      <p class="uk-text-emphasis uk-text-uppercase">{authkey}</p>
+    <div class="carpe-card uk-card uk-card-primary uk-card-hover uk-card-body uk-light">
+      <h3 class="uk-card-title">{$_("wallet.keygen.account_address")}</h3>
+      <p>{address}</p>
+      <h3 class="uk-card-title">{$_("wallet.keygen.onboard_key")}</h3>
+      <p>{authkey}</p>
       <p>{$_("wallet.keygen.onboard_key_description")}</p>
 
-      <h5 class="uk-text-muted uk-text-uppercase uk-text-danger">
+      <h3 class="uk-text-danger">
         {$_("wallet.keygen.securite_recovery_phrase")}
-      </h5>
+      </h3>
       <p class="uk-text-danger">
         {$_("wallet.keygen.securite_note")}
       </p>
       <div class="uk-margin">
-        <textarea class="uk-textarea" rows="3" readonly>{display_mnem}</textarea>
+        <textarea class="uk-textarea" rows="2" readonly>{display_mnem}</textarea>
       </div>
-    </div>
-
-    <div>
       <p>
         {$_("wallet.keygen.account_tips")}
       </p>
     </div>
 
-    <div>
+
+    <div uk-grid class="carpe-tabs uk-flex uk-flex-center">
       <AccountFromMnemSubmit danger_temp_mnem={""} />
 
-      <button
-        class="uk-button uk-button-default uk-align-right"
-        on:click={keygen}
-      >
+      <button class="uk-button uk-button-default" on:click={keygen}>
       {$_("wallet.keygen.btn_generate_keys_2")}
       </button>
     </div>
 
   {:else}
 
-    <div class="uk-flex uk-flex-center">
-      <h3 class="uk-text-light uk-text-muted uk-text-center">
+    <div class="carpe-card uk-card uk-card-primary uk-card-hover uk-card-body uk-light">
+      <h4 class="uk-card-title">{$_("wallet.keygen.btn_generate_keys")}</h4>
+      <p>
         {$_("wallet.keygen.description")}
-      </h3>
+      </p>
     </div>
 
-    <div class="uk-position-center">
-      <button
-        class="uk-button uk-button-secondary uk-align-right"
-        on:click={keygen}
-      >
+    <div class="carpe-tabs uk-flex uk-flex-center uk-grid">
+      <button class="uk-button uk-button-secondary uk-align-right" on:click={keygen}>
       {$_("wallet.keygen.btn_generate_keys")}
       </button>
-
     </div>
   {/if}
 </main>

@@ -84,22 +84,25 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
 :root {
   --carpe-color: #ff5958;
   --carpe-blue: #1890ff;
+  --carpe-light-blue:#53acff;
   --dark-gray:#666;
   --gray: lightgray;
+  --light-gray: rgb(234, 234, 234);
   --night-header: #111;
   --night-body: #444;
   --night-highlight: #111;
+  --day-body:white;
 }
 
 /* Setting background of main app. Must go through and actually remove the muted class in some instances */
 main .uk-background-muted {
-  background-color:white!important;
+  background-color:var(--day-body)!important;
 }
 
 /* Specific for the navbar header class 'carpe-nav-container' */
 .carpe-nav-container .uk-navbar-container:not(.uk-navbar-transparent) {
-  background:white;
-  border-bottom:1px solid lightgray;
+  background:var(--day-body);
+  border-bottom:1px solid var(--gray);
 }
 .carpe-nav-container ul {
   margin-bottom:0;
@@ -153,10 +156,10 @@ main .uk-background-muted {
 
 /* Nav Dropdown modification */
 .carpe-nav-container .uk-dropdown {
-  background: white;
+  background: var(--day-body);
   box-shadow: none;
   padding:30px;
-  border:1px solid lightgray;
+  border:1px solid var(--gray);
   border-radius: 20px;
 }
 
@@ -176,8 +179,8 @@ main .carpe-titles {
 }
 
 .uk-card.uk-card-primary {
-  background-color:white!important;
-  border:1px solid lightgray;
+  background-color:var(--day-body)!important;
+  border:1px solid var(--gray);
   border-radius: 20px;
   margin:30px;
   color:black!important;
@@ -201,7 +204,6 @@ main .carpe-titles {
 
 .uk-card.uk-card-primary span.uk-text-uppercase, .carpe-address-hightlight {
   color:var(--carpe-blue);
-  border:1px solid lightgray;
   border-radius:5px;
   padding:10px;
   font-weight: bold;
@@ -218,26 +220,26 @@ main .uk-button-secondary {
   text-transform: capitalize;
 }
 main .uk-button-secondary:hover {
-  background-color: var(--carpe-color);
+  background-color: var(--carpe-light-blue);
 }
 
 main .uk-button-default {
   color: black;
-  background-color: white;
+  background-color: var(--day-body);
   border-radius: 2em;
   border: 2px solid rgba(255, 62, 0, 0);
   outline: none;
   cursor: pointer;
   margin-left:20px;
   text-transform: capitalize;
-  border:1px solid lightgray;
+  border:1px solid var(--gray);
 }
 
 .carpe-wallet-list-container {
   padding:0 50px 0 50px;
   align-items: center;
   justify-content: center;
-  border: 1px solid lightgray;
+  border: 1px solid var(--gray);
   border-radius: 20px;
   margin:30px 30px 0 30px;
 }
@@ -272,11 +274,43 @@ main .uk-button-default {
 
 /* Transaction page */
 .carpe-card {
-  background-color:white!important;
-  border:1px solid lightgray;
+  background-color:var(--day-body)!important;
+  border:1px solid var(--gray);
   border-radius: 20px;
   margin:30px;
   color:black!important;
+}
+
+#coinTransferDialog .uk-modal-title {
+  color:var(--carpe-blue);
+}
+
+#coinTransferDialog .uk-input {
+  border-radius: 10px;
+}
+
+#coinTransferDialog .uk-button.uk-button-default.uk-modal-close.uk-margin-right {
+  border-radius: 20px;
+}
+
+#coinTransferDialog .uk-button.uk-button-primary {
+  border-radius: 20px;
+}
+/* Onboarding dialog */
+#account-form .uk-button.uk-button-default.uk-modal-close.uk-margin-right {
+  border-radius: 20px;
+}
+
+#account-form .uk-button.uk-button-primary {
+  border-radius: 20px;
+}
+
+#onboardDialog .uk-modal-title {
+  color: var(--carpe-blue);
+}
+
+#onboardDialog .uk-input {
+  border-radius: 10px;
 }
 
 /* About page */
@@ -291,7 +325,7 @@ html.night {
 }
 
 body {
-  background-color:white;
+  background-color:var(--day-body);
 }
 
 body.night {
@@ -309,7 +343,9 @@ body.night .carpe-nav-container .uk-navbar-container:not(.uk-navbar-transparent)
 body.night main .uk-background-muted {
   background:var(--night-body)!important;
 }
-
+body .uk-container {
+  background:var(--day-body);
+}
 body.night .uk-container {
   background:var(--night-body);
 }
@@ -318,4 +354,31 @@ body.night .carpe-wallet-list-container {
 }
 body.night .uk-card.uk-card-primary, body.night .carpe-card {
   background-color:var(--night-highlight)!important;
+}
+
+/* Keygen page */
+.uk-card-primary>:not([class*=uk-card-media]) .uk-textarea {
+  color: var(--carpe-blue)!important;
+  background-color:var(--light-gray)!important;
+  border-radius: 20px;
+  padding:20px;
+  font-weight: 700;
+  word-spacing: 7px;
+}
+
+/* Restore account */
+#account-form .uk-card-primary.uk-card-body .uk-textarea, .uk-card-primary>:not([class*=uk-card-media]) .uk-input {
+  color:var(--carpe-blue)!important;
+  border:1px solid #e5e5e5!important;
+  border-radius: 20px;
+}
+.uk-card-primary.uk-card-body .uk-button-primary, .uk-card-primary>:not([class*=uk-card-media]) .uk-button-primary {
+  color: white!important;
+  background-color: var(--carpe-blue)!important;
+  border-radius: 2em;
+  border: 2px solid rgba(255, 62, 0, 0);
+  outline: none;
+  cursor: pointer;
+  margin-left:20px;
+  margin-right:15px;
 }

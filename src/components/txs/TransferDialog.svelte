@@ -84,18 +84,18 @@
   <div id="coinTransferDialog" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
       {#if waitingConfirmation}
-        <h2 class="uk-modal-title uk-text-muted">{$_("txs.transfer.confirm_title")}</h2>
+        <h2 class="uk-modal-title carpe-titles">{$_("txs.transfer.confirm_title")}</h2>
         <p>{$_("txs.transfer.please_confirm")}</p>
-        <p class="uk-text-uppercase">{$_("txs.transfer.sender")}: <span class="uk-text-bold">{account.account}</span></p>
-        <p class="uk-text-uppercase">{$_("txs.transfer.receiver")}: <span class="uk-text-bold">{receiver}</span></p>
-        <p class="uk-text-uppercase">{$_("txs.transfer.amount")}: <span class="uk-text-bold">{printUnscaledCoins(amount)}</span></p>
+        <p>{$_("txs.transfer.sender")}: <span class="uk-text-bold">{account.account}</span></p>
+        <p>{$_("txs.transfer.receiver")}: <span class="uk-text-bold">{receiver}</span></p>
+        <p>{$_("txs.transfer.amount")}: <span class="uk-text-bold">{printUnscaledCoins(amount)}</span></p>
     
         <p class="uk-text-right">
             <button on:click={cancelClick} class="uk-button uk-button-default uk-margin-right" type="button">{$_("txs.transfer.btn_cancel")}</button>
             <button on:click={confirmClick} class="uk-button uk-button-primary" type="button">{$_("txs.transfer.btn_confirm")}</button>
         </p>
       {:else}
-        <h2 class="uk-modal-title uk-text-muted uk-text-uppercase">{$_("txs.transfer.title")}</h2> 
+        <h2 class="uk-modal-title">{$_("txs.transfer.title")}</h2> 
         <form id="account-form">
           <fieldset class="uk-fieldset uk-grid-small" uk-grid>
             <div class="uk-width-3-4@s">

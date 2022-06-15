@@ -39,11 +39,12 @@
 
         </h4>
         <h4 class="uk-text-muted">
-          <span class="uk-text-uppercase">{$_("txs.balance")}: </span>
+          <span>{$_("txs.balance")}: </span>
           <span class="carpe-address-hightlight">{printCoins(account.balance)}</span>
         </h4>
       </div>
-    
+    </div>
+    <div uk-grid class="carpe-tabs uk-flex uk-flex-center">
       <button uk-toggle="target: #onboardDialog" class="uk-margin-bottom uk-button uk-button-default uk-margin-right uk-">{$_("txs.btn_onboard")}</button>
       <button uk-toggle="target: #coinTransferDialog" class="uk-margin-bottom uk-button uk-button-secondary">{$_("txs.btn_transfer")}</button>
     </div>

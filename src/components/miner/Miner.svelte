@@ -81,7 +81,7 @@
       </p>
     </div>
   {/if}
-    <div class="uk-grid uk-margin-small">
+    <div class="uk-grid">
       {#if account && account.on_chain}
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />

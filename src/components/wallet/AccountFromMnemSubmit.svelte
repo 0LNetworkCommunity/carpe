@@ -86,7 +86,7 @@
 
     <div id="submit-confirmation-modal" uk-modal>
       <div class="uk-modal-dialog uk-modal-body">
-        <h2 class="uk-modal-title uk-text-uppercase uk-text-alert">
+        <h2 class="carpe-titles">
           {$_("wallet.account_from_mnem_submit.title")}
         </h2>
         <p>{@html $_("wallet.account_from_mnem_submit.body")}</p>
