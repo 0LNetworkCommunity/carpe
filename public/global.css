@@ -80,7 +80,9 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
 
 
 /* Rework to override the uikit */
-
+.hide {
+  display:none!important;
+}
 :root {
   --carpe-color: #ff5958;
   --carpe-color-light: #ff8383;
@@ -255,7 +257,7 @@ body.night main .uk-button-default:hover {
   justify-content: center;
   border: 1px solid var(--gray);
   border-radius: 20px;
-  margin:30px 30px 0 30px;
+  margin:30px;
 }
 .carpe-tabs button {
   padding:5px 30px 5px 30px;
@@ -263,6 +265,20 @@ body.night main .uk-button-default:hover {
 /* Miner details */
 .carpe-color, .uk-card.uk-card-primary.carpe-color, .uk-card.uk-card-primary h3.carpe-color, .uk-card.uk-card-primary h4.carpe-color {
   color:var(--carpe-color)!important;
+}
+.carpe-card.miner-progress {
+  padding:30px 50px 30px 50px;
+}
+
+.uk-grid.carpe-card {
+  padding:50px;
+}
+.uk-card.uk-card-default.uk-card-body {
+  box-shadow: none;
+  background-color: var(--day-body);
+}
+body.night .uk-card.uk-card-default.uk-card-body {
+  background-color: var(--night-header);
 }
 
 /* Spin loader of menu icon */

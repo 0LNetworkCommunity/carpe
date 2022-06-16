@@ -83,30 +83,35 @@
   {/if}
     <div class="uk-grid">
       {#if account && account.on_chain}
-        <div class="uk-width-1-1 uk-align-center">
-          <ToggleMiner />
-          <MinerProgress tower={minerTower} />
-          <!-- Lost time is never found again. -->
-        </div>
+          <div class="uk-width-1-1">
+            <div class="uk-text-center carpe-card miner-progress">
+              <ToggleMiner />
+              <MinerProgress tower={minerTower} />
+              <!-- Lost time is never found again. -->
+            </div>
+          </div>
 
         <div class="uk-width-1-1">
-          {#if newbie && !hasProofs }
-            <FirstProof />
-          {:else}
-            <div class="uk-grid uk-grid-match">
-              <div class="uk-width-1-3">
-                {#if isSendInProgress}
-                  <SyncProofs {minerTower} {loading} />
-                {:else}
-                  <EpochStatus {minerTower} isTowerNewbie={newbie}/>
-                {/if}
+          <div class="uk-text-center carpe-card miner-progress">
+            {#if newbie && !hasProofs }
+              <FirstProof />
+            {:else}
+              <div class="uk-grid uk-grid-match">
+                <div class="uk-width-1-3">
+                  {#if isSendInProgress}
+                    <SyncProofs {minerTower} {loading} />
+                  {:else}
+                    <EpochStatus {minerTower} isTowerNewbie={newbie}/>
+                  {/if}
+                </div>
+                <div class="uk-width-2-3">
+                  <TowerState {minerTower}/>
+                </div>
               </div>
-              <div class="uk-width-2-3">
-                <TowerState {minerTower}/>
-              </div>
-            </div>
-          {/if}
+            {/if}
+          </div>
         </div>
+
       {:else if account}
         <CantStart />
       {/if}

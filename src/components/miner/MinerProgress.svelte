@@ -59,7 +59,7 @@
 </script>
 
 <main>
-  <div class="{enable ? '' : 'uk-invisible'} uk-margin-top">
+  <div class="uk-margin-top"> <!-- {enable ? '' : 'uk-invisible'} -->
 
     <div class="uk-inline">
     <span class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
