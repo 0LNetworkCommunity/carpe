@@ -57,8 +57,14 @@ If using Mac Apple M1 and run into linking clang errors, please use:
 ```
 cargo clean
 cargo build --target=x86_64-apple-darwin
-cargo build
 ```
+
+Then after building the frontend with the previous above, use the following in the src-tauri directory to run dev:
+
+```
+yarn tauri dev --target=x86_64-apple-darwin
+```
+
 
 
 ## Useful links
