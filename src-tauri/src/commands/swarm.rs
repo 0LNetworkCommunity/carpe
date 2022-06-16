@@ -6,7 +6,7 @@ use std::process::Command;
 use sysinfo::{ProcessExt, SystemExt};
 
 use ol::commands::init_cmd::initialize_host_swarm;
-use tower::commit_proof;
+use tower::{commit_proof, next_proof};
 use tower::proof::mine_once;
 use txs::{submit_tx, tx_params::TxParams};
 
@@ -113,14 +113,22 @@ fn get_swarm_cfg(config_dir: &str, is_swarm: bool) -> AppCfg {
 #[tauri::command]
 /// mine for swarm
 pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
+  let swarm_path = PathBuf::from(&swarm_dir);
   let tx_params =
-    TxParams::get_tx_params_from_swarm(PathBuf::from(&swarm_dir), swarm_persona, false);
+    TxParams::get_tx_params_from_swarm(swarm_path.clone(), swarm_persona, false);
 
-  let appcfg = get_swarm_cfg(&swarm_dir, true);
+  let mut appcfg = get_swarm_cfg(&swarm_dir, true);
 
-  // TODO(Ping): mine_and_submit(config, tx_params, is_operator)
 
-  match mine_once(&appcfg) {
+  let next = match next_proof::get_next_proof_from_chain(&mut appcfg, Some(swarm_path)) {
+    Ok(n) => n,
+    // failover to local mode, if no onchain data can be found.
+    // TODO: this is important for migrating to the new protocol.
+    // in future versions we should remove this since we may be producing bad proofs, and users should explicitly choose to use local mode.
+    Err(_) => next_proof::get_next_proof_params_from_local(&mut appcfg).unwrap(),
+  };
+
+  match mine_once(&appcfg, next) {
     Ok(b) => match commit_proof::commit_proof_tx(&tx_params.unwrap(), b) {
       Ok(tx_view) => match submit_tx::eval_tx_status(tx_view) {
         Ok(r) => format!("Success: Proof committed to chain \n {:?}", r),

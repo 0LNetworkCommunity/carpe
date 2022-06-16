@@ -13,8 +13,8 @@ use tauri::Window;
 use tower::{
   backlog::process_backlog,
   commit_proof::commit_proof_tx,
-  proof::{get_latest_proof, mine_once, parse_block_height},
-  tower_errors::TowerError,
+  proof::{get_latest_proof, mine_once},
+  tower_errors::TowerError, next_proof,
 };
 
 /// creates one proof and submits
@@ -26,8 +26,17 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
     .emit("proof-start", {})
     .map_err(|_| CarpeError::misc("could not emit window event"))?;
 
-  let config = get_cfg()?;
-  let vdf = mine_once(&config).map_err(|e| {
+  let mut config = get_cfg()?;
+
+  let next = match next_proof::get_next_proof_from_chain(&mut config, None) {
+    Ok(n) => n,
+    // failover to local mode, if no onchain data can be found.
+    // TODO: this is important for migrating to the new protocol.
+    // in future versions we should remove this since we may be producing bad proofs, and users should explicitly choose to use local mode.
+    Err(_) => next_proof::get_next_proof_params_from_local(&mut config)?,
+  };
+
+  let vdf = mine_once(&config, next).map_err(|e| {
     CarpeError::tower(
       &format!("could not mine one proof, message: {:?}", &e),
       TowerError::ProverError.value(),
@@ -145,10 +154,10 @@ pub fn submit_proof_zero() -> Result<(), CarpeError> {
 #[tauri::command(async)]
 pub fn get_local_height() -> Result<u64, CarpeError> {
   let cfg = get_cfg()?;
-  let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
-  match parse_block_height(&block_dir).0 {
-    Some(h) => Ok(h),
-    None => Err(CarpeError::tower(
+  // let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
+  match get_latest_proof(&cfg) {
+    Ok(proof) => Ok(proof.height),
+    Err(_) => Err(CarpeError::tower(
       "could not get block height",
       TowerError::NoLocalBlocks.value(),
     )),
