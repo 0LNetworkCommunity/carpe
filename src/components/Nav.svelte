@@ -48,7 +48,7 @@
   };
 </script>
 
-<main class="carpe-nav-container">
+<main class="carpe-nav-container" uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky">
   <nav class="uk-navbar-container" uk-navbar>
     <div class="uk-navbar-left">
       <div class="cursor uk-navbar-item uk-logo"><img data-typeid="bridge" src="/ol_logo.png" style="width:30px" alt="0L Logo"/><span class="uk-visible@s">0L Carpe Wallet</span></div>
@@ -63,6 +63,7 @@
         <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li>
         <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>
         <li><Link to={routes.transactions}>{$_("nav.transactions")}</Link></li>
+        <li><Link to={routes.bridge}>{$_("nav.bridge")}</Link></li>
         <!-- Remove Events tab till we get a fullnode set able to respond to these queries -->
         <!-- <li><Link to={routes.events}>{$_("nav.events")}</Link></li> -->
         <!-- Postpone MakeWhole release -->

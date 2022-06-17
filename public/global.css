@@ -483,3 +483,69 @@ body.night .debug-card, body.night .debug-card-container {
 .debug-card-container {
   margin: 0px !important; min-height: 100%;
 }
+
+
+/* Bridge Page */
+.carpe-bridge p {
+  max-width:600px;
+}
+
+/* Bridge Tabs */
+body.night .bridge-tabs-container {
+  background-color:var(--night-header);
+}
+.bridge-tabs-container {
+  display: flex;
+  border-radius: 99px;
+  width:400px;
+  align-items: center;
+  justify-content: space-between;
+  background-color:#f5f0f0;
+  padding:3px;
+}
+.bridge-tabs-container div {
+  padding:10px 30px 10px 30px;
+  border-radius: 99px;
+  color:tomato;
+  font-weight: 700;
+}
+.bridge-tabs-container div.tab-selected {
+  background-color:white;
+}
+.inner-tab {
+  cursor:pointer;
+}
+.inner-tab:hover {
+  background-color:white;
+}
+
+/* Bridge token form */
+body.night .bridge-form {
+  background-color:var(--night-header);
+}
+
+.asset-estimations{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:0 30px 0 10px;
+}
+
+.inner-chevron {
+  width:20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body.night .token-select-container {
+  background-color: var(--night-header);
+}
+
+body.night .connect-title, body.night .token-type {
+  color:var(--day-body);
+}
+
+body.night .chain-token-container:hover {
+  background-color:#517a87;
+}

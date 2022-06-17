@@ -19,11 +19,11 @@ import { _ } from "svelte-i18n";
 </script>
 
 <main class="uk-margin" >
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+  <h3 class="carpe-sub-titles">
     {$_("settings.account_settings.title")}
-  </h4>
+  </h3>
 
-  <div class="uk-margin" uk-grid>
+  <div class="uk-margin uk-flex uk-flex-center uk-flex-column">
     <div>
 
     <div class="uk-inline">
@@ -37,7 +37,7 @@ import { _ } from "svelte-i18n";
     </div>
 
     </div>
-    <div>
+    <div class="uk-margin">
       <span>
         {$_("settings.account_settings.description")}
       </span>

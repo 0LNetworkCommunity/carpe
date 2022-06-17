@@ -28,7 +28,7 @@ import { _ } from "svelte-i18n";
 </script>
 
 <main class="uk-margin">
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("txs.set_wallet_type.title")} </h4>
+  <h3 class="carpe-sub-titles"> {$_("txs.set_wallet_type.title")} </h3>
   
   <p> {$_("txs.set_wallet_type.subtitle")}</p>
   <div>

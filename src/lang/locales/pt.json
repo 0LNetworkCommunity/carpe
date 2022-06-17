@@ -3,6 +3,7 @@
     "wallet": "Carteira",
     "miner": "Minerador",
     "transactions": "Transações",
+    "bridge": "Ponte",
     "events": "Eventos"
   },
   "layout": {
@@ -278,5 +279,11 @@
       "body": "You must turn off miner to claim this account coins.",
       "ok_btn": "OK"
     }
+  },
+  "bridge": {
+    "title": "Token Bridge",
+    "description": "Welcome to the 0L Token Bridge! It's possible to swap between various other blockchain tokens to 0L using this bridge.",
+    "nfts": "Nfts coming soon!",
+    "redeems": "Redeems coming soon!"
   }
 }

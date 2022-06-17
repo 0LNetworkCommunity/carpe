@@ -13,6 +13,7 @@
   import Swarm from "./components/dev/Swarm.svelte";
   import Keygen from "./components/wallet/Keygen.svelte";
   import Transactions from "./components/txs/Transactions.svelte";
+  import BridgeContainer from "./components/bridge/BridgeContainer.svelte";
   import Events from "./components/events/Events.svelte";
   import About from "./components/about/About.svelte";
   import { backlogInProgress, backlogSubmitted, minerEventReceived } from "./miner";
@@ -127,6 +128,9 @@ import { refreshUpstreamPeerStats } from "./networks";
         <Route path={routes.keygen} component={Keygen} primary={false} />
         <Route path={routes.miner} component={Miner} primary={false} />
         <Route path={routes.transactions} component={Transactions} primary={false} />
+        
+        <Route path={routes.bridge} component={BridgeContainer} primary={false} />
+
         <Route path={routes.events} component={Events} primary={false} />
         <Route path={routes.settings} component={Settings} primary={false} />
         <Route path={routes.about} component={About} primary={false} />

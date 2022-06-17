@@ -38,7 +38,7 @@ import { _ } from "svelte-i18n";
 </script>
 
 <main class="uk-margin">
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.network_settings.title")} {current_chain_id}</h4>
+  <h3 class="carpe-sub-titles"> {$_("settings.network_settings.title")} {current_chain_id}</h3>
 
   <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.network_settings.list_of_peers")} </h5>
   <p>{$_("settings.network_settings.description")}</p>
@@ -61,7 +61,7 @@ import { _ } from "svelte-i18n";
 
       <span
           on:click={updateNetwork}
-          class="uk-button uk-button-primary uk-align-right"
+          class="uk-button uk-button-default uk-align-right"
           id="add-btn">{$_("settings.network_settings.btn_update")}</span
         >
 

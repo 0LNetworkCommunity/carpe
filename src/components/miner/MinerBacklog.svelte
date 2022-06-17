@@ -17,10 +17,10 @@
 </script>
 
 <main class="uk-margin">
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+  <h3 class="carpe-sub-titles">
     {$_("miner.miner_backlog.title")}
-  </h4>
-  <div class="uk-margin uk-grid">
+  </h3>
+  <div class="uk-margin uk-flex uk-flex-center uk-flex-column">
     <div>
       <p>
         {$_("miner.miner_backlog.subtitle")}
