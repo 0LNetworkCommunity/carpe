@@ -14,7 +14,7 @@ use tower::{
   backlog::process_backlog,
   commit_proof::commit_proof_tx,
   proof::{get_latest_proof, mine_once},
-  tower_errors::TowerError, next_proof,
+  tower_errors::TowerError, next_proof::{self, NextProof},
 };
 
 /// creates one proof and submits
@@ -33,7 +33,16 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
     // failover to local mode, if no onchain data can be found.
     // TODO: this is important for migrating to the new protocol.
     // in future versions we should remove this since we may be producing bad proofs, and users should explicitly choose to use local mode.
-    Err(_) => next_proof::get_next_proof_params_from_local(&mut config)?,
+    Err(_) => {
+      // this may be a genesis proof
+      match next_proof::get_next_proof_params_from_local(&mut config) {
+        Ok(n) => n,
+        Err(e) => {
+          dbg!(&e);
+          NextProof::genesis_proof(config.profile.account.to_vec())
+        },
+      }
+    },
   };
 
   let vdf = mine_once(&config, next).map_err(|e| {
