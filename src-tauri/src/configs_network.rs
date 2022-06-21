@@ -72,19 +72,6 @@ pub fn set_network_configs(
     }
   };
 
-  // let playlist = match &network {
-  //   Networks::Mainnet => rpc_playlist::get_known_fullnodes(None)?,
-
-  //   Networks::Rex => rpc_playlist::get_known_fullnodes(Some(
-  //     "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist_testnet.json"
-  //       .parse()
-  //       .unwrap(),
-  //   ))?,
-  //   // Networks::Custom { playlist_url } => {
-  //   //   rpc_playlist::get_known_fullnodes(Some(playlist_url.to_owned()))?
-  //   // }
-  // };
-
   playlist.update_config_file(None)?; // None uses default path of 0L.toml
 
   // TODO: I don't think chain ID needs to change.
@@ -93,7 +80,7 @@ pub fn set_network_configs(
     CarpeError::misc(&err_msg)
   })?;
 
-  tauri::async_runtime::block_on(set_waypoint_from_upstream())?;
+  tauri::async_runtime::block_on(set_waypoint_from_upstream()).ok();
 
   NetworkProfile::new()
 }
@@ -143,7 +130,7 @@ pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
       bail!("cannot find a synced upstream URL")
     }
   } else {
-    bail!("could fetch network stats from preferences.json")
+    bail!("could not fetch network stats from preferences.json")
   }
 }
 

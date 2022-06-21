@@ -78,7 +78,7 @@ pub fn is_init() -> Result<bool, CarpeError> {
 /// default way accounts get initialized in Carpe
 #[tauri::command]
 pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-  danger_init_from_mnem(mnem).map_err(|_| CarpeError::config("could not initialize from mnemonic"))
+  danger_init_from_mnem(mnem)
 }
 
 pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {

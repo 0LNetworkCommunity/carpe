@@ -65,10 +65,12 @@
         <span uk-spinner style="position:absolute; top:0px; left:0px"/>
       </div>
     {/if}
-
-    {#if !isLoaded}
-      <AccountsListSkeleton />
-    {:else if accountList.length > 0}
+    
+    {#if !isLoaded && !isRefreshing && accountList && accountList.length == 0}
+      <Newbie />
+    {/if}
+    
+    {#if isLoaded && accountList && accountList.length > 0}
 
       {#if !isConnected}
         <ConnectionError />
@@ -90,8 +92,7 @@
           </Link>
         </div>
       {/if}
-    {:else if accountList.length == 0 && !isRefreshing}
-      <Newbie />
-    {/if}
+      {/if}
+
   </div>
 </main>
