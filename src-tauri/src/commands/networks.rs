@@ -4,16 +4,16 @@ use crate::{
   carpe_error::CarpeError,
   configs_network::{
     override_upstream_node, set_network_configs, set_waypoint, set_waypoint_from_upstream,
-    NetworkProfile, Networks,
+    NetworkProfile,
   },
 };
-use diem_types::waypoint::Waypoint;
+use diem_types::{waypoint::Waypoint, chain_id::NamedChain};
 use ol_types::rpc_playlist;
 use url::Url;
 
 #[tauri::command]
-pub fn toggle_network(network: Networks) -> Result<NetworkProfile, CarpeError> {
-  set_network_configs(network)
+pub fn toggle_network(network: NamedChain, custom_playlist: Option<Url>) -> Result<NetworkProfile, CarpeError> {
+  set_network_configs(network, custom_playlist)
 }
 
 #[tauri::command(async)]

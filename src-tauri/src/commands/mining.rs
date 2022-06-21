@@ -5,6 +5,7 @@ use crate::{
   configs_profile::get_local_proofs_this_profile,
 };
 use anyhow::Error;
+use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use serde::{Deserialize, Serialize};
 use std::{env, path::PathBuf};
@@ -13,9 +14,11 @@ use tauri::Window;
 use tower::{
   backlog::process_backlog,
   commit_proof::commit_proof_tx,
+  next_proof::{self, NextProof},
   proof::{get_latest_proof, mine_once},
-  tower_errors::TowerError, next_proof::{self, NextProof},
+  tower_errors::TowerError,
 };
+use txs::tx_params::TxParams;
 
 /// creates one proof and submits
 #[tauri::command(async)]
@@ -40,10 +43,12 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
         Err(e) => {
           dbg!(&e);
           NextProof::genesis_proof(config.profile.account.to_vec())
-        },
+        }
       }
-    },
+    }
   };
+
+  println!("next proof params: {:?}", next.diff);
 
   let vdf = mine_once(&config, next).map_err(|e| {
     CarpeError::tower(
@@ -59,7 +64,7 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
   Ok(vdf)
 }
 #[derive(Clone, serde::Serialize)]
-struct BacklogSuccess {
+pub struct BacklogSuccess {
   success: bool,
 }
 
@@ -82,41 +87,57 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
     println!("\nRECEIVED BACKLOG EVENT\n");
     window_clone.emit("ack-backlog-request", {}).unwrap();
 
-    if get_onchain_tower_state(tx_params.owner_address).is_err() {
-      dbg!("!!!!!!!!!!!!!!!");
-      dbg!("cannot get tower state");
-      if let Some(proof) = get_proof_zero().ok() {
-        match commit_proof_tx(&tx_params, proof) {
-          Ok(_) => {
-            println!("submitted proof zero");
-            window_clone
-              .emit("backlog-success", BacklogSuccess { success: true })
-              .unwrap()
-          }
-          Err(e) => {
-            window_clone
-              .emit("backlog-error", CarpeError::from(e))
-              .unwrap();
-          }
-        }
+    match maybe_send_backlog(&config, &tx_params) {
+      Ok(_) => {
+        println!("backlog success");
+        window_clone
+          .emit("backlog-success", BacklogSuccess { success: true })
+          .unwrap()
       }
-    } else {
-      println!("\nprocessing backlog\n");
+      Err(e) => {
+        println!("backlog error, msg: {:?}", &e);
 
-      match process_backlog(&config, &tx_params) {
-        Ok(_) => {
-          println!("backlog success");
-          window_clone
-            .emit("backlog-success", BacklogSuccess { success: true })
-            .unwrap()
-        }
-        Err(e) => {
-          window_clone
-            .emit("backlog-error", CarpeError::from(e))
-            .unwrap();
-        }
+        window_clone
+          .emit("backlog-error", CarpeError::from(e))
+          .unwrap();
       }
     }
+    // if get_onchain_tower_state(tx_params.owner_address).is_err() {
+    //   println!("cannot get tower state, maybe TowerState not initialized");
+    //   if let Some(proof) = get_proof_zero().ok() {
+    //     match commit_proof_tx(&tx_params, proof) {
+    //       Ok(_) => {
+    //         println!("submitted proof zero");
+    //         window_clone
+    //           .emit("backlog-success", BacklogSuccess { success: true })
+    //           .unwrap()
+    //       }
+    //       Err(e) => {
+    //         window_clone
+    //           .emit("backlog-error", CarpeError::from(e))
+    //           .unwrap();
+    //       }
+    //     }
+    //   } else {
+    //     println!("No genesis proof found in vdf_proofs dir");
+    //   }
+    // } else {
+    //   println!("\nprocessing backlog\n");
+
+    //   match process_backlog(&config, &tx_params) {
+    //     Ok(_) => {
+    //       println!("backlog success");
+    //       window_clone
+    //         .emit("backlog-success", BacklogSuccess { success: true })
+    //         .unwrap()
+    //     }
+    //     Err(e) => {
+    //       window_clone
+    //         .emit("backlog-error", CarpeError::from(e))
+    //         .unwrap();
+    //     }
+    //   }
+    // }
   });
 
   let window_clone = window.clone();
@@ -129,12 +150,52 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
 }
 
 #[tauri::command(async)]
-pub async fn submit_backlog(_window: Window) -> Result<(), CarpeError> {
+pub async fn submit_backlog(_window: Window) -> Result<BacklogSuccess, CarpeError> {
   let config = get_cfg()?;
   let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
 
-  process_backlog(&config, &tx_params).map_err(|e| e.into())
+  maybe_send_backlog(&config, &tx_params).map_err(|e| e.into())
+}
+
+pub fn maybe_send_backlog(
+  config: &AppCfg,
+  tx_params: &TxParams,
+) -> Result<BacklogSuccess, CarpeError> {
+  // check if this is a genesis block
+  if get_onchain_tower_state(tx_params.owner_address.to_owned()).is_err() {
+    println!("cannot get tower state, maybe TowerState not initialized");
+    maybe_send_genesis_proof(tx_params)
+  } else {
+    println!("\nprocessing backlog\n");
+
+    match process_backlog(config, tx_params) {
+      Ok(_) => Ok(BacklogSuccess { success: true }),
+      Err(e) => Err(CarpeError::from(e)),
+    }
+  }
+}
+
+pub fn maybe_send_genesis_proof(tx_params: &TxParams) -> Result<BacklogSuccess, CarpeError> {
+  // check if the tower state has been initialized.
+  // otherwise this is a genesis proof.
+
+  // check if any proof_0.json has been mined
+  if let Some(proof) = get_proof_zero().ok() {
+    match commit_proof_tx(tx_params, proof) {
+      Ok(_) => {
+        println!("submitted proof zero");
+        Ok(BacklogSuccess { success: true })
+      }
+      Err(e) => {
+        dbg!(&e);
+        Err(CarpeError::from(e))
+      },
+    }
+  } else {
+    println!("No genesis proof found in vdf_proofs dir");
+    Ok(BacklogSuccess { success: false })
+  }
 }
 
 fn get_proof_zero() -> Result<VDFProof, Error> {
@@ -146,7 +207,7 @@ fn get_proof_zero() -> Result<VDFProof, Error> {
     .join("proof_0.json");
   let string = std::fs::read_to_string(path)?;
   let proof: VDFProof = serde_json::from_str(&string)?;
-  dbg!(&proof);
+  // dbg!(&proof);
   // .parse();
   Ok(proof)
 }

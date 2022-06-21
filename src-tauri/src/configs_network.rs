@@ -11,7 +11,7 @@ use crate::{
   waypoint,
 };
 use anyhow::{bail, Error};
-use diem_types::waypoint::Waypoint;
+use diem_types::{waypoint::Waypoint, chain_id::NamedChain};
 use ol::config::AppCfg;
 use ol_types::rpc_playlist;
 use rand::seq::SliceRandom;
@@ -19,7 +19,7 @@ use rand::thread_rng;
 use url::Url;
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NetworkProfile {
-  pub chain_id: String, // Todo, use the Network Enum
+  pub chain_id: NamedChain, // Todo, use the Network Enum
   pub urls: Vec<Url>,
   pub waypoint: Waypoint,
   pub profile: String, // tbd, to use default node, or to use upstream, or a custom url.
@@ -40,7 +40,8 @@ impl NetworkProfile {
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub enum Networks {
   Mainnet,
-  Rex,
+  Tesnet, // REX
+
   Custom { playlist_url: Url },
 }
 
@@ -52,25 +53,42 @@ impl fmt::Display for Networks {
   }
 }
 
-pub fn set_network_configs(network: Networks) -> Result<NetworkProfile, CarpeError> {
+pub fn set_network_configs(
+  network: NamedChain,
+  custom_playlist: Option<Url>,
+) -> Result<NetworkProfile, CarpeError> {
   dbg!("toggle network");
-  let playlist = match &network {
-    Networks::Mainnet => rpc_playlist::get_known_fullnodes(None)?,
-
-    Networks::Rex => rpc_playlist::get_known_fullnodes(Some(
-      "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist_testnet.json"
-        .parse()
-        .unwrap(),
-    ))?,
-    Networks::Custom { playlist_url } => {
-      rpc_playlist::get_known_fullnodes(Some(playlist_url.to_owned()))?
+  let playlist = if let Some(u) = custom_playlist {
+    rpc_playlist::get_known_fullnodes(Some(u))?
+  } else {
+    match network {
+      NamedChain::TESTNET => rpc_playlist::get_known_fullnodes(Some(
+        "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist_testnet.json"
+          .parse()
+          .unwrap(),
+      ))?,
+      NamedChain::DEVNET => todo!(),
+      _ => rpc_playlist::get_known_fullnodes(None)?, // assume mainnet
     }
   };
+
+  // let playlist = match &network {
+  //   Networks::Mainnet => rpc_playlist::get_known_fullnodes(None)?,
+
+  //   Networks::Rex => rpc_playlist::get_known_fullnodes(Some(
+  //     "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist_testnet.json"
+  //       .parse()
+  //       .unwrap(),
+  //   ))?,
+  //   // Networks::Custom { playlist_url } => {
+  //   //   rpc_playlist::get_known_fullnodes(Some(playlist_url.to_owned()))?
+  //   // }
+  // };
 
   playlist.update_config_file(None)?; // None uses default path of 0L.toml
 
   // TODO: I don't think chain ID needs to change.
-  set_chain_id(network.to_string()).map_err(|e| {
+  set_chain_id(network).map_err(|e| {
     let err_msg = format!("could not set chain id, message: {}", &e.to_string());
     CarpeError::misc(&err_msg)
   })?;
@@ -148,7 +166,7 @@ pub fn override_upstream_node(url: Url) -> Result<AppCfg, Error> {
 }
 
 // the 0L configs. For tx sending and upstream nodes
-pub fn set_chain_id(chain_id: String) -> Result<AppCfg, Error> {
+pub fn set_chain_id(chain_id: NamedChain) -> Result<AppCfg, Error> {
   let mut cfg = configs::get_cfg()?;
   cfg.chain_info.chain_id = chain_id;
   cfg.save_file()?;
@@ -205,8 +223,7 @@ impl UpstreamStats {
   }
 
   pub async fn refresh(self) -> anyhow::Result<Self> {
-    self.check_which_are_synced()
-      .await
+    self.check_which_are_synced().await
   }
 
   pub fn the_good_ones(&self) -> anyhow::Result<Vec<Url>> {
@@ -228,7 +245,7 @@ impl UpstreamStats {
   pub fn the_best_one(&self) -> anyhow::Result<Url> {
     match self.the_good_ones()?.first() {
       Some(url) => Ok(url.clone()),
-      None => bail!("Expected an URL for the best one")
+      None => bail!("Expected an URL for the best one"),
     }
   }
 
@@ -323,15 +340,15 @@ pub struct FullnodeProfile {
 /// sets it in preferences as the default peer.
 impl FullnodeProfile {
   async fn check_sync(mut self) -> anyhow::Result<FullnodeProfile> {
-     match waypoint::bootstrap_waypoint_from_rpc(self.url.clone()).await {
-        Ok(wp) => {
-          self.version = wp.version();
-          self.is_api = true;
-        },
-        Err(_) => {
-          // not interested in the result just need to mark is as a failing api endpoint.
-          self.is_api = false;
-        },
+    match waypoint::bootstrap_waypoint_from_rpc(self.url.clone()).await {
+      Ok(wp) => {
+        self.version = wp.version();
+        self.is_api = true;
+      }
+      Err(_) => {
+        // not interested in the result just need to mark is as a failing api endpoint.
+        self.is_api = false;
+      }
     };
 
     Ok(self)

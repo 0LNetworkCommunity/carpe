@@ -102,7 +102,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 
   // this may be the first account and may not yet be initialized.
   if !init {
-    configs_network::set_network_configs(configs_network::Networks::Mainnet)?;
+    configs_network::set_network_configs(diem_types::chain_id::NamedChain::MAINNET, None)?;
   }
 
   Ok(AccountEntry::new(address, authkey))
