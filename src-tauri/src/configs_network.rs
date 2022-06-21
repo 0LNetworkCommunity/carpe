@@ -68,7 +68,7 @@ pub fn set_network_configs(
           .parse()
           .unwrap(),
       ))?,
-      NamedChain::DEVNET => get_swarm_playlist()?,
+      NamedChain::TESTING => get_swarm_playlist()?,
       _ => rpc_playlist::get_known_fullnodes(None)?, // assume mainnet
     }
   };

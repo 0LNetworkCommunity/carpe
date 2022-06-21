@@ -8,7 +8,7 @@ import { loadAccounts } from "./accountActions";
 export enum Networks {
   MAINNET = 1,
   TESTNET = 2,
-  DEVNET = 3,
+  TESTING = 4,
 }
 
 export const network_profile = writable<NetworkProfile>({

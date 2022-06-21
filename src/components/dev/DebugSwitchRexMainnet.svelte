@@ -66,8 +66,8 @@
         class="uk-radio"
         type="radio"
         name="networkCb"
-        checked={current_chain_id == Networks.DEVNET}
-        on:click={() => setNetwork(Networks.DEVNET)}
+        checked={current_chain_id == Networks.TESTING}
+        on:click={() => setNetwork(Networks.TESTING)}
       /> Swarm (devnet)
     </label>
   </div>
