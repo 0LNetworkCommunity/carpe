@@ -7,13 +7,13 @@ use std::{fmt, time::Duration};
 use crate::{
   carpe_error::CarpeError,
   commands::read_preferences,
-  configs::{self},
+  configs::{self, get_cfg},
   waypoint,
 };
 use anyhow::{bail, Error};
 use diem_types::{waypoint::Waypoint, chain_id::NamedChain};
 use ol::config::AppCfg;
-use ol_types::rpc_playlist;
+use ol_types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 use url::Url;
@@ -58,6 +58,7 @@ pub fn set_network_configs(
   custom_playlist: Option<Url>,
 ) -> Result<NetworkProfile, CarpeError> {
   dbg!("toggle network");
+  dbg!(&network);
   let playlist = if let Some(u) = custom_playlist {
     rpc_playlist::get_known_fullnodes(Some(u))?
   } else {
@@ -67,7 +68,7 @@ pub fn set_network_configs(
           .parse()
           .unwrap(),
       ))?,
-      NamedChain::DEVNET => todo!(),
+      NamedChain::DEVNET => get_swarm_playlist()?,
       _ => rpc_playlist::get_known_fullnodes(None)?, // assume mainnet
     }
   };
@@ -85,6 +86,26 @@ pub fn set_network_configs(
   NetworkProfile::new()
 }
 
+
+fn get_swarm_url() -> anyhow::Result<Url>{
+  let app_cfg = get_cfg()?;
+  let (url, _) = ol_types::config::get_swarm_rpc_url(app_cfg.workspace.node_home.join("swarm_temp/"));
+  Ok(url)
+}
+
+fn get_swarm_playlist() -> anyhow::Result<FullnodePlaylist> {
+
+  let h = HostInfo {
+      note: "swarm".to_string(),
+      url: get_swarm_url()?,
+  };
+  
+  let f = FullnodePlaylist {
+    nodes: vec![h],
+  };
+
+  Ok(f)
+}
 // pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
 //   let cfg = configs::get_cfg()?;
 

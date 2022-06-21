@@ -6,9 +6,9 @@ import { loadAccounts } from "./accountActions";
 
   // This matches a subset of NamedChain enum in Rust.
 export enum Networks {
-  MAINNET,
-  TESTNET,
-  DEVNET,
+  MAINNET = 1,
+  TESTNET = 2,
+  DEVNET = 3,
 }
 
 export const network_profile = writable<NetworkProfile>({
@@ -31,7 +31,7 @@ export interface NetworkProfile {
 }
 
 export function setNetwork(network: Networks) {
-  invoke("toggle_network", { network: network })
+  invoke("toggle_network", { network: Networks[network] })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         // update accounts from current network

@@ -12,8 +12,9 @@ use ol_types::rpc_playlist;
 use url::Url;
 
 #[tauri::command]
-pub fn toggle_network(network: NamedChain, custom_playlist: Option<Url>) -> Result<NetworkProfile, CarpeError> {
-  set_network_configs(network, custom_playlist)
+pub fn toggle_network(network: String, custom_playlist: Option<Url>) -> Result<NetworkProfile, CarpeError> {
+  let name = NamedChain::str_to_named(&network)?;
+  set_network_configs(name, custom_playlist)
 }
 
 #[tauri::command(async)]
