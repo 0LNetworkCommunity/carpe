@@ -43,7 +43,7 @@ pub fn force_waypoint(wp: Waypoint) -> Result<NetworkProfile, CarpeError> {
 
 #[tauri::command(async)]
 pub async fn refresh_waypoint() -> Result<NetworkProfile, CarpeError> {
-  dbg!("refresh_waypoint");
+  // dbg!("refresh_waypoint");
   set_waypoint_from_upstream().await?;
   NetworkProfile::new()
 }

@@ -1,7 +1,7 @@
 use crate::{
   carpe_error::CarpeError,
   commands::get_onchain_tower_state,
-  configs::{get_cfg, get_tx_params},
+  configs::{get_cfg, get_tx_params, get_diem_client},
   configs_profile::get_local_proofs_this_profile,
 };
 use anyhow::Error;
@@ -30,19 +30,26 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
     .map_err(|_| CarpeError::misc("could not emit window event"))?;
 
   let mut config = get_cfg()?;
-
-  let next = match next_proof::get_next_proof_from_chain(&mut config, None) {
-    Ok(n) => n,
+  let client = get_diem_client(&config)?;
+  let next = match next_proof::get_next_proof_from_chain(&mut config, client, None) {
+    Ok(n) => {
+      println!("SUCCESS: fetched next proof params from chain");
+      n
+    },
     // failover to local mode, if no onchain data can be found.
     // TODO: this is important for migrating to the new protocol.
     // in future versions we should remove this since we may be producing bad proofs, and users should explicitly choose to use local mode.
-    Err(_) => {
+    Err(e) => {
+      dbg!(&e);
       // this may be a genesis proof
       match next_proof::get_next_proof_params_from_local(&mut config) {
-        Ok(n) => n,
-        Err(e) => {
-          dbg!(&e);
-          NextProof::genesis_proof(config.profile.account.to_vec())
+        Ok(n) => {
+          println!("WARN: using next proof params from local");
+          n
+        },
+        Err(_) => {
+          println!("WARN: no local proofs found, assuming genesis proof");
+          NextProof::genesis_proof(&config)
         }
       }
     }
@@ -269,7 +276,7 @@ pub struct EpochRules {
 
 #[tauri::command(async)]
 pub fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
-  dbg!("get_epoch_rules");
+  // dbg!("get_epoch_rules");
   Ok(EpochRules {
     lower: tower::EPOCH_MINING_THRES_LOWER,
     upper: tower::EPOCH_MINING_THRES_UPPER,
