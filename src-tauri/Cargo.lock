@@ -15,7 +15,7 @@ dependencies = [
 [[package]]
 name = "abigen"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -84,7 +84,7 @@ dependencies = [
 [[package]]
 name = "accumulator"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "diem-crypto",
@@ -145,7 +145,7 @@ dependencies = [
  "cipher",
  "ctr",
  "ghash",
- "subtle 2.4.1",
+ "subtle",
 ]
 
 [[package]]
@@ -275,30 +275,9 @@ dependencies = [
  "parking",
  "polling",
  "slab",
- "socket2 0.4.2",
+ "socket2",
  "waker-fn",
  "winapi 0.3.9",
-]
-
-[[package]]
-name = "async-stream"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "171374e7e3b2504e0e5236e3b59260560f9fe94bfe9ac39ba5e4e929c5590625"
-dependencies = [
- "async-stream-impl",
- "futures-core",
-]
-
-[[package]]
-name = "async-stream-impl"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "648ed8c8d2ce5409ccd57453d9d1b214b342a0d69376a6feda1fd6cae3299308"
-dependencies = [
- "proc-macro2 1.0.32",
- "quote 1.0.10",
- "syn 1.0.81",
 ]
 
 [[package]]
@@ -390,7 +369,7 @@ dependencies = [
 [[package]]
 name = "backup-cli"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -415,25 +394,19 @@ dependencies = [
  "itertools 0.10.1",
  "num_cpus",
  "once_cell",
- "pin-project 1.0.8",
+ "pin-project",
  "rand 0.8.4",
  "regex",
- "reqwest 0.11.6",
+ "reqwest",
  "serde",
  "serde_json",
  "storage-interface",
  "structopt",
  "tokio 1.13.0",
  "tokio-stream",
- "tokio-util 0.6.9",
+ "tokio-util",
  "toml",
 ]
-
-[[package]]
-name = "base64"
-version = "0.12.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3441f0f7b02788e948e47f457ca01f1d7e6d92c693bc132c22b087d3141c03ff"
 
 [[package]]
 name = "base64"
@@ -523,22 +496,12 @@ dependencies = [
 
 [[package]]
 name = "bitvec"
-version = "0.17.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41262f11d771fd4a61aa3ce019fca363b4b6c282fca9da2a31186d3965a47a5c"
-dependencies = [
- "either",
- "radium 0.3.0",
-]
-
-[[package]]
-name = "bitvec"
 version = "0.19.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8942c8d352ae1838c9dda0b0ca2ab657696ef2232a20147cf1b30ae1a9cb4321"
 dependencies = [
  "funty",
- "radium 0.5.3",
+ "radium",
  "tap",
  "wyz",
 ]
@@ -624,7 +587,7 @@ checksum = "8d696c370c750c948ada61c69a0ee2cbbb9c50b1019ddb86d9317157a99c2cae"
 [[package]]
 name = "boogie-backend"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -652,7 +615,7 @@ dependencies = [
 [[package]]
 name = "borrow-graph"
 version = "0.0.1"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
  "mirai-annotations",
@@ -697,12 +660,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8f1e260c3a9040a7c19a12468758f4c16f31a81a1fe087482be9570ec864bb6c"
 
 [[package]]
-name = "byte-slice-cast"
-version = "0.3.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b0a5e3906bcbf133e33c1d4d95afc664ad37fbdb9f6568d8043e7ea8c27d93d3"
-
-[[package]]
 name = "byte-tools"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -711,7 +668,7 @@ checksum = "e3b5ca7a04898ad4bcd41c90c5285445ff5b791899bb1b0abdd2a2aa791211d7"
 [[package]]
 name = "bytecode"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "borrow-graph",
  "bytecode-verifier",
@@ -736,7 +693,7 @@ dependencies = [
 [[package]]
 name = "bytecode-interpreter"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bytecode",
@@ -748,14 +705,14 @@ dependencies = [
  "move-vm-runtime",
  "num 0.4.0",
  "serde",
- "sha2 0.9.8",
+ "sha2",
  "structopt",
 ]
 
 [[package]]
 name = "bytecode-source-map"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -771,7 +728,7 @@ dependencies = [
 [[package]]
 name = "bytecode-verifier"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "borrow-graph",
@@ -904,7 +861,7 @@ dependencies = [
  "onboard",
  "pretty_env_logger",
  "rand 0.8.4",
- "reqwest 0.11.6",
+ "reqwest",
  "resource-viewer",
  "serde",
  "serde_json",
@@ -916,12 +873,6 @@ dependencies = [
  "txs",
  "url",
 ]
-
-[[package]]
-name = "cassowary"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "df8670b8c7b9dae1793364eafadf7239c40d669904660c5960d74cfd80b46a53"
 
 [[package]]
 name = "cc"
@@ -1058,7 +1009,7 @@ dependencies = [
 [[package]]
 name = "classgroup"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "libc",
  "num-traits",
@@ -1067,13 +1018,12 @@ dependencies = [
 [[package]]
 name = "cli"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
  "chrono",
  "compiler",
- "crash-handler",
  "diem-client",
  "diem-config",
  "diem-crypto",
@@ -1094,36 +1044,15 @@ dependencies = [
  "ol-keys",
  "ol-types",
  "once_cell",
- "reqwest 0.11.6",
+ "reqwest",
  "resource-viewer",
  "rpassword",
  "rust_decimal",
- "rustyline 8.2.0",
  "serde",
  "serde_json",
  "structopt",
  "tokio 1.13.0",
  "walkdir",
-]
-
-[[package]]
-name = "clipboard-win"
-version = "4.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f3e1238132dc01f081e1cbb9dace14e5ef4c3a51ee244bd982275fb514605db"
-dependencies = [
- "error-code",
- "str-buf",
- "winapi 0.3.9",
-]
-
-[[package]]
-name = "clokwerk"
-version = "0.3.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a99373edf782eec8fde0d52bd2f60e4ae5eaca31f1d2cf5aec68243849a37a9"
-dependencies = [
- "chrono",
 ]
 
 [[package]]
@@ -1235,7 +1164,7 @@ dependencies = [
 [[package]]
 name = "compiler"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1263,7 +1192,7 @@ dependencies = [
 [[package]]
 name = "consensus-types"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1312,7 +1241,7 @@ dependencies = [
  "getrandom 0.2.3",
  "lazy_static",
  "proc-macro-hack",
- "tiny-keccak 2.0.2",
+ "tiny-keccak",
 ]
 
 [[package]]
@@ -1431,18 +1360,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dcb25d077389e53838a8158c8e99174c5a9d902dee4904320db714f3c653ffba"
 
 [[package]]
-name = "crash-handler"
-version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
-dependencies = [
- "backtrace",
- "diem-logger",
- "diem-workspace-hack",
- "serde",
- "toml",
-]
-
-[[package]]
 name = "crc32fast"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1496,45 +1413,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "crossterm"
-version = "0.19.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7c36c10130df424b2f3552fcc2ddcd9b28a27b1e54b358b45874f88d1ca6888c"
-dependencies = [
- "bitflags",
- "crossterm_winapi",
- "lazy_static",
- "libc",
- "mio 0.7.14",
- "parking_lot",
- "signal-hook",
- "winapi 0.3.9",
-]
-
-[[package]]
-name = "crossterm_winapi"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0da8964ace4d3e4a044fd027919b2237000b24315a37c916f61809f1ff2140b9"
-dependencies = [
- "winapi 0.3.9",
-]
-
-[[package]]
 name = "crunchy"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a81dae078cea95a014a339291cec439d2f232ebe854a9d672b796c6afafa9b7"
-
-[[package]]
-name = "crypto-mac"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4434400df11d95d556bac068ddfedd482915eb18fe8bea89bc80b6e4b1c179e5"
-dependencies = [
- "generic-array 0.12.4",
- "subtle 1.0.0",
-]
 
 [[package]]
 name = "crypto-mac"
@@ -1543,7 +1425,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bff07008ec701e8028e2ceb8f83f0e4274ee62bd2dbdc4fefff2e9a91824081a"
 dependencies = [
  "generic-array 0.14.4",
- "subtle 2.4.1",
+ "subtle",
 ]
 
 [[package]]
@@ -1602,7 +1484,7 @@ dependencies = [
  "digest 0.9.0",
  "fiat-crypto",
  "rand_core 0.6.3",
- "subtle 2.4.1",
+ "subtle",
  "zeroize",
 ]
 
@@ -1725,7 +1607,7 @@ dependencies = [
 [[package]]
 name = "diem-client"
 version = "0.0.2"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1736,7 +1618,7 @@ dependencies = [
  "ipnet",
  "log",
  "move-core-types",
- "reqwest 0.11.6",
+ "reqwest",
  "serde",
  "serde_json",
  "tokio 1.13.0",
@@ -1745,8 +1627,8 @@ dependencies = [
 
 [[package]]
 name = "diem-config"
-version = "5.1.3"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+version = "0.1.0"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "bcs",
  "diem-crypto",
@@ -1771,7 +1653,7 @@ dependencies = [
 [[package]]
 name = "diem-crypto"
 version = "0.0.2"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -1792,17 +1674,17 @@ dependencies = [
  "serde",
  "serde-name",
  "serde_bytes",
- "sha2 0.9.8",
+ "sha2",
  "static_assertions",
  "thiserror",
- "tiny-keccak 2.0.2",
+ "tiny-keccak",
  "x25519-dalek-fiat",
 ]
 
 [[package]]
 name = "diem-crypto-derive"
 version = "0.0.2"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "proc-macro2 1.0.32",
  "quote 1.0.10",
@@ -1812,7 +1694,7 @@ dependencies = [
 [[package]]
 name = "diem-framework"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "abigen",
  "anyhow",
@@ -1831,8 +1713,7 @@ dependencies = [
  "move-prover",
  "move-stdlib",
  "once_cell",
- "rayon",
- "sha2 0.9.8",
+ "sha2",
  "transaction-builder-generator",
  "walkdir",
 ]
@@ -1840,7 +1721,7 @@ dependencies = [
 [[package]]
 name = "diem-framework-releases"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1857,10 +1738,9 @@ dependencies = [
 [[package]]
 name = "diem-genesis-tool"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
- "base64 0.13.0",
  "bcs",
  "consensus-types",
  "diem-config",
@@ -1879,12 +1759,10 @@ dependencies = [
  "diemdb",
  "dirs 2.0.2",
  "executor",
- "generate-key",
  "hex",
  "ol-keys",
  "ol-types",
  "rand 0.8.4",
- "rustyline 6.3.0",
  "serde",
  "serde_json",
  "serde_yaml",
@@ -1898,7 +1776,7 @@ dependencies = [
 [[package]]
 name = "diem-github-client"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
  "proxy",
@@ -1911,12 +1789,12 @@ dependencies = [
 [[package]]
 name = "diem-global-constants"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 
 [[package]]
 name = "diem-infallible"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
 ]
@@ -1924,7 +1802,7 @@ dependencies = [
 [[package]]
 name = "diem-jellyfish-merkle"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1947,7 +1825,7 @@ dependencies = [
 [[package]]
 name = "diem-json-rpc-client"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-client",
  "diem-crypto",
@@ -1961,7 +1839,7 @@ dependencies = [
 [[package]]
 name = "diem-json-rpc-types"
 version = "0.0.2"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1978,7 +1856,7 @@ dependencies = [
 [[package]]
 name = "diem-log-derive"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
  "proc-macro2 1.0.32",
@@ -1989,7 +1867,7 @@ dependencies = [
 [[package]]
 name = "diem-logger"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "backtrace",
  "chrono",
@@ -2006,8 +1884,8 @@ dependencies = [
 
 [[package]]
 name = "diem-management"
-version = "5.1.3"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+version = "0.1.0"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2020,31 +1898,26 @@ dependencies = [
  "diem-time-service",
  "diem-transaction-builder",
  "diem-types",
- "diem-wallet",
  "diem-workspace-hack",
- "dirs 2.0.2",
  "hex",
- "ol-keys",
- "rustyline 6.3.0",
  "serde",
  "serde_json",
  "serde_yaml",
  "structopt",
  "thiserror",
- "toml",
 ]
 
 [[package]]
 name = "diem-metrics"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "diem-logger",
  "diem-metrics-core",
  "diem-workspace-hack",
  "futures",
- "hyper 0.14.14",
+ "hyper",
  "once_cell",
  "prometheus",
  "serde_json",
@@ -2054,7 +1927,7 @@ dependencies = [
 [[package]]
 name = "diem-metrics-core"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
  "prometheus",
@@ -2063,9 +1936,9 @@ dependencies = [
 [[package]]
 name = "diem-network-address-encryption"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "bcs",
  "diem-global-constants",
  "diem-infallible",
@@ -2080,7 +1953,7 @@ dependencies = [
 [[package]]
 name = "diem-nibble"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
  "serde",
@@ -2089,7 +1962,7 @@ dependencies = [
 [[package]]
 name = "diem-sdk"
 version = "0.0.2"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "bcs",
  "diem-client",
@@ -2104,7 +1977,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-net"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-logger",
  "diem-secure-push-metrics",
@@ -2117,7 +1990,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-push-metrics"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-logger",
  "diem-metrics-core",
@@ -2128,9 +2001,9 @@ dependencies = [
 [[package]]
 name = "diem-secure-storage"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "bcs",
  "chrono",
  "diem-crypto",
@@ -2151,7 +2024,7 @@ dependencies = [
 [[package]]
 name = "diem-state-view"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "diem-crypto",
@@ -2162,7 +2035,7 @@ dependencies = [
 [[package]]
 name = "diem-temppath"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
  "hex",
@@ -2172,7 +2045,7 @@ dependencies = [
 [[package]]
 name = "diem-time-service"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-infallible",
  "diem-workspace-hack",
@@ -2183,7 +2056,7 @@ dependencies = [
 [[package]]
 name = "diem-transaction-builder"
 version = "0.0.2"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2196,7 +2069,7 @@ dependencies = [
 [[package]]
 name = "diem-types"
 version = "0.0.2"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -2214,17 +2087,17 @@ dependencies = [
  "serde",
  "serde_bytes",
  "serde_json",
- "sha2 0.9.8",
+ "sha2",
  "thiserror",
- "tiny-keccak 2.0.2",
+ "tiny-keccak",
 ]
 
 [[package]]
 name = "diem-vault-client"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "chrono",
  "diem-crypto",
  "diem-workspace-hack",
@@ -2239,7 +2112,7 @@ dependencies = [
 [[package]]
 name = "diem-vm"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2265,7 +2138,7 @@ dependencies = [
 [[package]]
 name = "diem-wallet"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -2276,19 +2149,19 @@ dependencies = [
  "diem-workspace-hack",
  "ed25519-dalek-fiat",
  "hex",
- "hmac 0.10.1",
+ "hmac",
  "mirai-annotations",
  "pbkdf2",
  "rand 0.8.4",
  "serde",
- "sha2 0.9.8",
+ "sha2",
  "thiserror",
 ]
 
 [[package]]
 name = "diem-workspace-hack"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "Inflector",
  "anyhow",
@@ -2312,7 +2185,7 @@ dependencies = [
  "futures-util",
  "getrandom 0.2.3",
  "hashbrown 0.9.1",
- "hyper 0.14.14",
+ "hyper",
  "indexmap",
  "itertools 0.10.1",
  "itoa",
@@ -2331,17 +2204,17 @@ dependencies = [
  "rand_core 0.5.1",
  "regex",
  "regex-syntax",
- "reqwest 0.11.6",
+ "reqwest",
  "rusty-fork",
  "serde",
  "serde_json",
  "standback",
- "subtle 2.4.1",
+ "subtle",
  "syn 0.15.44",
  "syn 1.0.81",
- "tiny-keccak 2.0.2",
+ "tiny-keccak",
  "tokio 1.13.0",
- "tokio-util 0.6.9",
+ "tokio-util",
  "toml",
  "tracing",
  "warp",
@@ -2351,7 +2224,7 @@ dependencies = [
 [[package]]
 name = "diemdb"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "accumulator",
  "anyhow",
@@ -2476,7 +2349,7 @@ dependencies = [
 [[package]]
 name = "disassembler"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -2505,7 +2378,7 @@ checksum = "fea41bba32d969b513997752735605054bc0dfa92b4c56bf1189f2e174be7a10"
 [[package]]
 name = "docgen"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bytecode",
@@ -2557,7 +2430,7 @@ dependencies = [
  "rand 0.8.4",
  "serde",
  "serde_bytes",
- "sha2 0.9.8",
+ "sha2",
  "zeroize",
 ]
 
@@ -2587,12 +2460,6 @@ checksum = "a74ea89a0a1b98f6332de42c95baff457ada66d1cb4030f9ff151b2041a1c746"
 dependencies = [
  "cfg-if 1.0.0",
 ]
-
-[[package]]
-name = "endian-type"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c34f04666d835ff5d62e058c3995147c06f42fe86ff053337632bca83e42702d"
 
 [[package]]
 name = "enum_dispatch"
@@ -2652,7 +2519,7 @@ dependencies = [
 [[package]]
 name = "errmapgen"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2664,140 +2531,9 @@ dependencies = [
 ]
 
 [[package]]
-name = "error-code"
-version = "2.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "64f18991e7bf11e7ffee451b5318b5c1a73c52d0d0ada6e5a3017c8c1ced6a21"
-dependencies = [
- "libc",
- "str-buf",
-]
-
-[[package]]
-name = "ethabi-next"
-version = "12.0.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "523719389cb738dda51fb8d22c96960e192da6263cdf1e08e7dc8c59de4cb032"
-dependencies = [
- "ethereum-types",
- "rustc-hex",
- "serde",
- "serde_json",
- "tiny-keccak 1.5.0",
- "uint",
-]
-
-[[package]]
-name = "ethbloom"
-version = "0.9.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "71a6567e6fd35589fea0c63b94b4cf2e55573e413901bdbe60ab15cf0e25e5df"
-dependencies = [
- "crunchy",
- "fixed-hash",
- "impl-rlp",
- "impl-serde",
- "tiny-keccak 2.0.2",
-]
-
-[[package]]
-name = "ethereum-types"
-version = "0.9.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "473aecff686bd8e7b9db0165cbbb53562376b39bf35b427f0c60446a9e1634b0"
-dependencies = [
- "ethbloom",
- "fixed-hash",
- "impl-rlp",
- "impl-serde",
- "primitive-types",
- "uint",
-]
-
-[[package]]
-name = "ethers"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e71399d9ead388c856d87dea797be41312d9d1a22ce96f0eef342e977c8b07e1"
-dependencies = [
- "ethers-contract",
- "ethers-core",
- "ethers-providers",
- "ethers-signers",
-]
-
-[[package]]
-name = "ethers-contract"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bece759cb4b8a329a170357ef92c39b0a9cf297b6acdb7d4e09e59db0791a8c7"
-dependencies = [
- "ethers-core",
- "ethers-providers",
- "ethers-signers",
- "futures",
- "once_cell",
- "rustc-hex",
- "serde",
- "thiserror",
-]
-
-[[package]]
-name = "ethers-core"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8f4754816d91e7a3b427bf5bf70b181e6172bd1eb38eac1608b03941c1f211c1"
-dependencies = [
- "arrayvec 0.5.2",
- "ethabi-next",
- "ethereum-types",
- "glob",
- "libsecp256k1",
- "rand 0.7.3",
- "rlp",
- "rustc-hex",
- "serde",
- "serde_json",
- "thiserror",
- "tiny-keccak 2.0.2",
-]
-
-[[package]]
-name = "ethers-providers"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ba3d87ad5f8125f6227cdc59500d947a0e1f7846d1a137fb9bf8c2c428f23c6a"
-dependencies = [
- "async-trait",
- "ethers-core",
- "futures-core",
- "futures-util",
- "pin-project 0.4.29",
- "reqwest 0.10.10",
- "serde",
- "serde_json",
- "thiserror",
- "tokio 0.2.25",
- "url",
-]
-
-[[package]]
-name = "ethers-signers"
-version = "0.1.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4bc7a6e9704e7b7335710c75b108e02920300e7902408ab9eb3a99d58bc41ec9"
-dependencies = [
- "ethers-core",
- "ethers-providers",
- "futures-util",
- "serde",
- "thiserror",
-]
-
-[[package]]
 name = "executor"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2825,7 +2561,7 @@ dependencies = [
 [[package]]
 name = "executor-types"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2866,16 +2602,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "fd-lock"
-version = "2.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0010f02effd88c702318c5dde0463206be67495d0b4d906ba7c0a8f166cc7f06"
-dependencies = [
- "libc",
- "winapi 0.3.9",
-]
-
-[[package]]
 name = "fiat-crypto"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2901,18 +2627,6 @@ dependencies = [
  "libc",
  "redox_syscall 0.2.10",
  "winapi 0.3.9",
-]
-
-[[package]]
-name = "fixed-hash"
-version = "0.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "11498d382790b7a8f2fd211780bec78619bba81cdad3a283997c0c41f836759c"
-dependencies = [
- "byteorder",
- "rand 0.7.3",
- "rustc-hex",
- "static_assertions",
 ]
 
 [[package]]
@@ -2969,22 +2683,6 @@ name = "fs_extra"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2022715d62ab30faffd124d40b76f4134a550a87792276512b18d63272333394"
-
-[[package]]
-name = "fuchsia-zircon"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e9763c69ebaae630ba35f74888db465e49e259ba1bc0eda7d06f4a067615d82"
-dependencies = [
- "bitflags",
- "fuchsia-zircon-sys",
-]
-
-[[package]]
-name = "fuchsia-zircon-sys"
-version = "0.3.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3dcaa9ae7725d12cdb85b3ad99a434db70b468c09ded17e012d86b5c1010f7a7"
 
 [[package]]
 name = "funty"
@@ -3187,7 +2885,7 @@ dependencies = [
 [[package]]
 name = "generate-key"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "bcs",
  "diem-crypto",
@@ -3537,26 +3235,6 @@ dependencies = [
 
 [[package]]
 name = "h2"
-version = "0.2.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5e4728fd124914ad25e99e3d15a9361a879f6620f63cb56bbb08f95abb97a535"
-dependencies = [
- "bytes 0.5.6",
- "fnv",
- "futures-core",
- "futures-sink",
- "futures-util",
- "http",
- "indexmap",
- "slab",
- "tokio 0.2.25",
- "tokio-util 0.3.1",
- "tracing",
- "tracing-futures",
-]
-
-[[package]]
-name = "h2"
 version = "0.3.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7fd819562fcebdac5afc5c113c3ec36f902840b70fd4fc458799c8ce4607ae55"
@@ -3570,22 +3248,8 @@ dependencies = [
  "indexmap",
  "slab",
  "tokio 1.13.0",
- "tokio-util 0.6.9",
+ "tokio-util",
  "tracing",
-]
-
-[[package]]
-name = "handlebars"
-version = "3.5.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4498fc115fa7d34de968184e473529abb40eeb6be8bc5f7faba3d08c316cb3e3"
-dependencies = [
- "log",
- "pest",
- "pest_derive",
- "quick-error 2.0.1",
- "serde",
- "serde_json",
 ]
 
 [[package]]
@@ -3609,12 +3273,12 @@ version = "0.3.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a4c4eb0471fcb85846d8b0690695ef354f9afb11cb03cac2e1d7c9253351afb0"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "bitflags",
  "bytes 1.1.0",
  "headers-core",
  "http",
- "httpdate 1.0.1",
+ "httpdate",
  "mime",
  "sha-1 0.9.8",
 ]
@@ -3662,17 +3326,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "51ab2f639c231793c5f6114bdb9bbe50a7dbbfcd7c7c6bd8475dec2d991e964f"
 dependencies = [
  "digest 0.9.0",
- "hmac 0.10.1",
-]
-
-[[package]]
-name = "hmac"
-version = "0.7.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5dcb5e64cda4c23119ab41ba960d1e170a774c8e4b9d9e6a9bc18aabf5e59695"
-dependencies = [
- "crypto-mac 0.7.0",
- "digest 0.8.1",
+ "hmac",
 ]
 
 [[package]]
@@ -3681,19 +3335,8 @@ version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c1441c6b1e930e2817404b5046f1f989899143a12bf92de603b69f4e0aee1e15"
 dependencies = [
- "crypto-mac 0.10.1",
+ "crypto-mac",
  "digest 0.9.0",
-]
-
-[[package]]
-name = "hmac-drbg"
-version = "0.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c6e570451493f10f6581b48cdd530413b63ea9e780f544bfd3bdcaa0d89d1a7b"
-dependencies = [
- "digest 0.8.1",
- "generic-array 0.12.4",
- "hmac 0.7.1",
 ]
 
 [[package]]
@@ -3734,16 +3377,6 @@ dependencies = [
 
 [[package]]
 name = "http-body"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13d5ff830006f7646652e057693569bfe0d51760c0085a071769d142a205111b"
-dependencies = [
- "bytes 0.5.6",
- "http",
-]
-
-[[package]]
-name = "http-body"
 version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1ff4f84919677303da5f147645dbea6b1881f368d03ac84e1dc09031ebd7b2c6"
@@ -3764,12 +3397,6 @@ name = "httparse"
 version = "1.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "acd94fdbe1d4ff688b67b04eee2e17bd50995534a61539e45adfefb45e5e5503"
-
-[[package]]
-name = "httpdate"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "494b4d60369511e7dea41cf646832512a94e542f68bb9c49e54518e0f468eb47"
 
 [[package]]
 name = "httpdate"
@@ -3794,30 +3421,6 @@ dependencies = [
 
 [[package]]
 name = "hyper"
-version = "0.13.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8a6f157065790a3ed2f88679250419b5cdd96e714a0d65f7797fd337186e96bb"
-dependencies = [
- "bytes 0.5.6",
- "futures-channel",
- "futures-core",
- "futures-util",
- "h2 0.2.7",
- "http",
- "http-body 0.3.1",
- "httparse",
- "httpdate 0.3.2",
- "itoa",
- "pin-project 1.0.8",
- "socket2 0.3.19",
- "tokio 0.2.25",
- "tower-service",
- "tracing",
- "want",
-]
-
-[[package]]
-name = "hyper"
 version = "0.14.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2b91bb1f221b6ea1f1e4371216b70f40748774c2fb5971b450c07773fb92d26b"
@@ -3826,34 +3429,18 @@ dependencies = [
  "futures-channel",
  "futures-core",
  "futures-util",
- "h2 0.3.7",
+ "h2",
  "http",
- "http-body 0.4.4",
+ "http-body",
  "httparse",
- "httpdate 1.0.1",
+ "httpdate",
  "itoa",
  "pin-project-lite 0.2.7",
- "socket2 0.4.2",
+ "socket2",
  "tokio 1.13.0",
  "tower-service",
  "tracing",
  "want",
-]
-
-[[package]]
-name = "hyper-rustls"
-version = "0.21.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "37743cc83e8ee85eacfce90f2f4102030d9ff0a95244098d781e9bee4a90abb6"
-dependencies = [
- "bytes 0.5.6",
- "futures-util",
- "hyper 0.13.10",
- "log",
- "rustls 0.18.1",
- "tokio 0.2.25",
- "tokio-rustls 0.14.1",
- "webpki",
 ]
 
 [[package]]
@@ -3863,7 +3450,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d6183ddfa99b85da61a140bea0efc93fdf56ceaa041b37d553518030827f9905"
 dependencies = [
  "bytes 1.1.0",
- "hyper 0.14.14",
+ "hyper",
  "native-tls",
  "tokio 1.13.0",
  "tokio-native-tls",
@@ -3926,33 +3513,6 @@ dependencies = [
  "sized-chunks",
  "typenum",
  "version_check",
-]
-
-[[package]]
-name = "impl-codec"
-version = "0.4.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1be51a921b067b0eaca2fad532d9400041561aa922221cc65f95a85641c6bf53"
-dependencies = [
- "parity-scale-codec",
-]
-
-[[package]]
-name = "impl-rlp"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8f7a72f11830b52333f36e3b09a288333888bf54380fd0ac0790a3c31ab0f3c5"
-dependencies = [
- "rlp",
-]
-
-[[package]]
-name = "impl-serde"
-version = "0.3.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4551f042f3438e64dbd6226b20527fc84a6e1fe65688b58746a2f53623f25f5c"
-dependencies = [
- "serde",
 ]
 
 [[package]]
@@ -4039,15 +3599,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "iovec"
-version = "0.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b2b3ea6ff95e175473f8ffe6a7eb7c00d054240321b84c57051175fe3c1e075e"
-dependencies = [
- "libc",
-]
-
-[[package]]
 name = "ipnet"
 version = "2.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4056,7 +3607,7 @@ checksum = "68f2d64f2edebec4ce84ad108148e67e1064789bee435edc5b60ad398714a3a9"
 [[package]]
 name = "ir-to-bytecode"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -4075,7 +3626,7 @@ dependencies = [
 [[package]]
 name = "ir-to-bytecode-syntax"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "codespan",
@@ -4159,16 +3710,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67c21572b4949434e4fc1e1978b99c5f77064153c59d998bf13ecd96fb5ecba7"
 
 [[package]]
-name = "kernel32-sys"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7507624b29483431c0ba2d82aece8ca6cdba9382bff4ddd0f7490560c056098d"
-dependencies = [
- "winapi 0.2.8",
- "winapi-build",
-]
-
-[[package]]
 name = "keyring"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -4242,22 +3783,6 @@ dependencies = [
  "cc",
  "glob",
  "libc",
-]
-
-[[package]]
-name = "libsecp256k1"
-version = "0.3.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1fc1e2c808481a63dc6da2074752fdd4336a3c8fcc68b83db6f1fd5224ae7962"
-dependencies = [
- "arrayref",
- "crunchy",
- "digest 0.8.1",
- "hmac-drbg",
- "rand 0.7.3",
- "sha2 0.8.2",
- "subtle 2.4.1",
- "typenum",
 ]
 
 [[package]]
@@ -4450,46 +3975,15 @@ dependencies = [
 
 [[package]]
 name = "mio"
-version = "0.6.23"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4afd66f5b91bf2a3bc13fad0e21caedac168ca4c707504e75585648ae80e4cc4"
-dependencies = [
- "cfg-if 0.1.10",
- "fuchsia-zircon",
- "fuchsia-zircon-sys",
- "iovec",
- "kernel32-sys",
- "libc",
- "log",
- "miow 0.2.2",
- "net2",
- "slab",
- "winapi 0.2.8",
-]
-
-[[package]]
-name = "mio"
 version = "0.7.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8067b404fe97c70829f082dec8bcf4f71225d7eaea1d8645349cb76fa06205cc"
 dependencies = [
  "libc",
  "log",
- "miow 0.3.7",
+ "miow",
  "ntapi",
  "winapi 0.3.9",
-]
-
-[[package]]
-name = "miow"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ebd808424166322d4a38da87083bfddd3ac4c131334ed55856112eb06d46944d"
-dependencies = [
- "kernel32-sys",
- "net2",
- "winapi 0.2.8",
- "ws2_32-sys",
 ]
 
 [[package]]
@@ -4510,7 +4004,7 @@ checksum = "c9be0862c1b3f26a88803c4a49de6889c10e608b3ee9344e6ef5b45fb37ad3d1"
 [[package]]
 name = "move-binary-format"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "diem-workspace-hack",
@@ -4524,7 +4018,7 @@ dependencies = [
 [[package]]
 name = "move-core-types"
 version = "0.0.2"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4541,7 +4035,7 @@ dependencies = [
 [[package]]
 name = "move-coverage"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4562,7 +4056,7 @@ dependencies = [
 [[package]]
 name = "move-ir-types"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "codespan",
@@ -4576,7 +4070,7 @@ dependencies = [
 [[package]]
 name = "move-lang"
 version = "0.0.1"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -4603,7 +4097,7 @@ dependencies = [
 [[package]]
 name = "move-model"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bytecode-source-map",
@@ -4628,7 +4122,7 @@ dependencies = [
 [[package]]
 name = "move-prover"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "abigen",
  "anyhow",
@@ -4665,7 +4159,7 @@ dependencies = [
 [[package]]
 name = "move-stdlib"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
  "docgen",
@@ -4677,14 +4171,12 @@ dependencies = [
 [[package]]
 name = "move-vm-natives"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-crypto",
  "diem-global-constants",
- "diem-metrics",
  "diem-types",
  "diem-workspace-hack",
- "ethers",
  "hex",
  "mirai-annotations",
  "move-binary-format",
@@ -4692,16 +4184,15 @@ dependencies = [
  "move-vm-types",
  "once_cell",
  "rust_decimal",
- "sha2 0.9.8",
+ "sha2",
  "smallvec 1.7.0",
- "tiny-keccak 2.0.2",
  "vdf",
 ]
 
 [[package]]
 name = "move-vm-runtime"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "bytecode-verifier",
  "diem-crypto",
@@ -4720,7 +4211,7 @@ dependencies = [
 [[package]]
 name = "move-vm-types"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "bcs",
  "diem-workspace-hack",
@@ -4729,7 +4220,7 @@ dependencies = [
  "move-core-types",
  "once_cell",
  "serde",
- "sha2 0.9.8",
+ "sha2",
  "smallvec 1.7.0",
 ]
 
@@ -4776,7 +4267,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b1bb540dc6ef51cfe1916ec038ce7a620daf3a111e2502d745197cd53d6bca15"
 dependencies = [
  "libc",
- "socket2 0.4.2",
+ "socket2",
 ]
 
 [[package]]
@@ -4826,30 +4317,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c44922cb3dbb1c70b5e5f443d63b64363a898564d739ba5198e3a9138442868d"
 
 [[package]]
-name = "net2"
-version = "0.2.37"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "391630d12b68002ae1e25e8f974306474966550ad82dac6886fb8910c19568ae"
-dependencies = [
- "cfg-if 0.1.10",
- "libc",
- "winapi 0.3.9",
-]
-
-[[package]]
 name = "new_debug_unreachable"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e4a24736216ec316047a1fc4252e27dabb04218aa4a3f37c6e7ddbf1f9782b54"
-
-[[package]]
-name = "nibble_vec"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "77a5d83df9f36fe23f0c3648c6bbb8b0298bb5f1939c8f2704431371f4b84d43"
-dependencies = [
- "smallvec 1.7.0",
-]
 
 [[package]]
 name = "nix"
@@ -4901,7 +4372,7 @@ version = "6.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e7413f999671bd4745a7b624bd370a569fb6bc574b23c83a3c5ed2e453f3d5e2"
 dependencies = [
- "bitvec 0.19.5",
+ "bitvec",
  "funty",
  "memchr",
  "version_check",
@@ -5076,7 +4547,7 @@ dependencies = [
 [[package]]
 name = "num-variants"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
  "proc-macro2 1.0.32",
@@ -5153,26 +4624,20 @@ checksum = "a9a7ab5d64814df0fe4a4b5ead45ed6c5f181ee3ff04ba344313a6c80446c5d4"
 
 [[package]]
 name = "ol"
-version = "5.1.3"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+version = "0.1.0"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "abscissa_core",
  "abscissa_tokio",
  "ajson",
  "anyhow",
- "async-stream",
  "backup-cli",
  "bcs",
  "bitflags",
  "byteorder",
- "cassowary",
  "chrono",
  "cli",
- "clokwerk",
- "crossterm",
- "dialoguer",
  "diem-config",
- "diem-crypto",
  "diem-genesis-tool",
  "diem-global-constants",
  "diem-json-rpc-client",
@@ -5186,13 +4651,12 @@ dependencies = [
  "futures",
  "glob",
  "gumdrop",
- "handlebars",
  "hex",
  "machine-ip",
  "move-binary-format",
  "move-core-types",
  "move-vm-types",
- "nix 0.22.2",
+ "nix 0.20.2",
  "num-format",
  "ol-keys",
  "ol-types",
@@ -5200,14 +4664,11 @@ dependencies = [
  "port_scanner",
  "rand 0.8.4",
  "regex",
- "reqwest 0.11.6",
+ "reqwest",
  "resource-viewer",
- "rocksdb 0.15.0",
- "rustyline 6.3.0",
+ "rocksdb",
  "serde",
  "serde_json",
- "serde_yaml",
- "sm",
  "storage-interface",
  "sysinfo",
  "thiserror",
@@ -5224,7 +4685,7 @@ dependencies = [
 [[package]]
 name = "ol-keys"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "diem-types",
@@ -5236,7 +4697,7 @@ dependencies = [
 [[package]]
 name = "ol-types"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "ajson",
  "anyhow",
@@ -5255,38 +4716,34 @@ dependencies = [
  "num-format",
  "ol-keys",
  "once_cell",
- "rand 0.8.4",
- "reqwest 0.11.6",
- "rustyline 6.3.0",
+ "reqwest",
  "serde",
  "serde_json",
- "sha2 0.9.8",
+ "sha2",
  "toml",
  "url",
 ]
 
 [[package]]
 name = "onboard"
-version = "5.1.3"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+version = "0.1.0"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "abscissa_core",
  "anyhow",
  "bcs",
  "dialoguer",
- "diem-crypto",
  "diem-genesis-tool",
  "diem-global-constants",
  "diem-types",
  "diem-wallet",
  "dirs 2.0.2",
  "gumdrop",
- "hex",
  "ol",
  "ol-keys",
  "ol-types",
- "reqwest 0.11.6",
- "rustyline 6.3.0",
+ "reqwest",
+ "rustyline",
  "serde",
  "serde_json",
  "thiserror",
@@ -5437,18 +4894,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "parity-scale-codec"
-version = "1.3.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a4b26b16c7687c3075982af47719e481815df30bc544f7a6690763a25ca16e9d"
-dependencies = [
- "arrayvec 0.5.2",
- "bitvec 0.17.4",
- "byte-slice-cast",
- "serde",
-]
-
-[[package]]
 name = "parking"
 version = "2.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5511,10 +4956,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bf916dd32dd26297907890d99dc2740e33f6bd9073965af4ccff2967962f5508"
 dependencies = [
  "base64ct",
- "crypto-mac 0.10.1",
- "hmac 0.10.1",
+ "crypto-mac",
+ "hmac",
  "password-hash",
- "sha2 0.9.8",
+ "sha2",
 ]
 
 [[package]]
@@ -5693,31 +5138,11 @@ dependencies = [
 
 [[package]]
 name = "pin-project"
-version = "0.4.29"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9615c18d31137579e9ff063499264ddc1278e7b1982757ebc111028c4d1dc909"
-dependencies = [
- "pin-project-internal 0.4.29",
-]
-
-[[package]]
-name = "pin-project"
 version = "1.0.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "576bc800220cc65dac09e99e97b08b358cfab6e17078de8dc5fee223bd2d0c08"
 dependencies = [
- "pin-project-internal 1.0.8",
-]
-
-[[package]]
-name = "pin-project-internal"
-version = "0.4.29"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "044964427019eed9d49d9d5bbce6047ef18f37100ea400912a9fa4a3523ab12a"
-dependencies = [
- "proc-macro2 1.0.32",
- "quote 1.0.10",
- "syn 1.0.81",
+ "pin-project-internal",
 ]
 
 [[package]]
@@ -5870,19 +5295,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "primitive-types"
-version = "0.7.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7dd39dcacf71411ba488570da7bbc89b717225e46478b30ba99b92db6b149809"
-dependencies = [
- "fixed-hash",
- "impl-codec",
- "impl-rlp",
- "impl-serde",
- "uint",
-]
-
-[[package]]
 name = "proc-macro-crate"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6026,7 +5438,7 @@ dependencies = [
 [[package]]
 name = "proxy"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
  "ipnet",
@@ -6073,25 +5485,9 @@ dependencies = [
 
 [[package]]
 name = "radium"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "def50a86306165861203e7f84ecffbbdfdea79f0e51039b33de1e952358c47ac"
-
-[[package]]
-name = "radium"
 version = "0.5.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "941ba9d78d8e2f7ce474c015eea4d9c6d25b6a3327f9832ee29a4de27f91bbb8"
-
-[[package]]
-name = "radix_trie"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c069c179fcdc6a2fe24d8d18305cf085fdbd4f922c041943e203685d6a1c58fd"
-dependencies = [
- "endian-type",
- "nibble_vec",
-]
 
 [[package]]
 name = "rand"
@@ -6330,55 +5726,18 @@ dependencies = [
 
 [[package]]
 name = "reqwest"
-version = "0.10.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0718f81a8e14c4dbb3b34cf23dc6aaf9ab8a0dfec160c534b3dbca1aaa21f47c"
-dependencies = [
- "base64 0.13.0",
- "bytes 0.5.6",
- "encoding_rs",
- "futures-core",
- "futures-util",
- "http",
- "http-body 0.3.1",
- "hyper 0.13.10",
- "hyper-rustls",
- "ipnet",
- "js-sys",
- "lazy_static",
- "log",
- "mime",
- "mime_guess",
- "percent-encoding",
- "pin-project-lite 0.2.7",
- "rustls 0.18.1",
- "serde",
- "serde_json",
- "serde_urlencoded 0.7.0",
- "tokio 0.2.25",
- "tokio-rustls 0.14.1",
- "url",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
- "webpki-roots",
- "winreg",
-]
-
-[[package]]
-name = "reqwest"
 version = "0.11.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "66d2927ca2f685faf0fc620ac4834690d29e7abb153add10f5812eef20b5e280"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "bytes 1.1.0",
  "encoding_rs",
  "futures-core",
  "futures-util",
  "http",
- "http-body 0.4.4",
- "hyper 0.14.14",
+ "http-body",
+ "hyper",
  "hyper-tls",
  "ipnet",
  "js-sys",
@@ -6403,7 +5762,7 @@ dependencies = [
 [[package]]
 name = "resource-viewer"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -6460,29 +5819,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "rlp"
-version = "0.4.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1190dcc8c3a512f1eef5d09bb8c84c7f39e1054e174d1795482e18f5272f2e73"
-dependencies = [
- "rustc-hex",
-]
-
-[[package]]
 name = "rocksdb"
 version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "23d83c02c429044d58474eaf5ae31e062d0de894e21125b47437ec0edc1397e6"
-dependencies = [
- "libc",
- "librocksdb-sys",
-]
-
-[[package]]
-name = "rocksdb"
-version = "0.17.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a62eca5cacf2c8261128631bed9f045598d40bfbe4b29f5163f0f802f8f44a7"
 dependencies = [
  "libc",
  "librocksdb-sys",
@@ -6504,7 +5844,7 @@ version = "0.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4b18820d944b33caa75a71378964ac46f58517c92b6ae5f762636247c09e78fb"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "blake2b_simd",
  "constant_time_eq",
  "crossbeam-utils",
@@ -6534,12 +5874,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "08d43f7aa6b08d49f382cde6a7982047c3426db949b1424bc4b7ec9ae12c6ce2"
 
 [[package]]
-name = "rustc-hex"
-version = "2.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3e75f6a532d0fd9f7f13144f392b6ad56a32696bfcd9c78f797f16bbb6f072d6"
-
-[[package]]
 name = "rustc_version"
 version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6550,24 +5884,11 @@ dependencies = [
 
 [[package]]
 name = "rustls"
-version = "0.18.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5d1126dcf58e93cee7d098dbda643b5f92ed724f1f6a63007c1116eed6700c81"
-dependencies = [
- "base64 0.12.3",
- "log",
- "ring",
- "sct",
- "webpki",
-]
-
-[[package]]
-name = "rustls"
 version = "0.19.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "35edb675feee39aec9c99fa5ff985081995a06d594114ae14cbe797ad7b7a6d7"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "log",
  "ring",
  "sct",
@@ -6612,30 +5933,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rustyline"
-version = "8.2.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fbd4eaf7a7738f76c98e4f0395253ae853be3eb018f7b0bb57fe1b6c17e31874"
-dependencies = [
- "bitflags",
- "cfg-if 1.0.0",
- "clipboard-win",
- "dirs-next 2.0.0",
- "fd-lock",
- "libc",
- "log",
- "memchr",
- "nix 0.20.2",
- "radix_trie",
- "scopeguard",
- "smallvec 1.7.0",
- "unicode-segmentation",
- "unicode-width",
- "utf8parse",
- "winapi 0.3.9",
-]
-
-[[package]]
 name = "ryu"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6669,7 +5966,7 @@ dependencies = [
 [[package]]
 name = "schemadb"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "diem-config",
@@ -6677,7 +5974,7 @@ dependencies = [
  "diem-metrics",
  "diem-workspace-hack",
  "once_cell",
- "rocksdb 0.17.0",
+ "rocksdb",
 ]
 
 [[package]]
@@ -6695,7 +5992,7 @@ checksum = "d29ab0c6d3fc0ee92fe66e2d99f700eab17a8d57d1c1d3b748380fb20baa78cd"
 [[package]]
 name = "scratchpad"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "arc-swap",
  "diem-crypto",
@@ -6739,7 +6036,7 @@ dependencies = [
  "lazy_static",
  "num 0.3.1",
  "rand 0.7.3",
- "sha2 0.9.8",
+ "sha2",
 ]
 
 [[package]]
@@ -7016,18 +6313,6 @@ dependencies = [
 
 [[package]]
 name = "sha2"
-version = "0.8.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a256f46ea78a0c0d9ff00077504903ac881a1dafdc20da66545699e7776b3e69"
-dependencies = [
- "block-buffer 0.7.3",
- "digest 0.8.1",
- "fake-simd",
- "opaque-debug 0.2.3",
-]
-
-[[package]]
-name = "sha2"
 version = "0.9.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b69f9a4c9740d74c5baa3fd2e547f9525fa8088a8a958e0ca2409a514e33f5fa"
@@ -7080,7 +6365,7 @@ checksum = "43b2853a4d09f215c24cc5489c992ce46052d359b5109343cbafbf26bc62f8a3"
 [[package]]
 name = "short-hex-str"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "diem-workspace-hack",
  "mirai-annotations",
@@ -7096,7 +6381,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7e31d442c16f047a671b5a71e2161d6e68814012b7f5379d269ebd915fac2729"
 dependencies = [
  "libc",
- "mio 0.7.14",
  "signal-hook-registry",
 ]
 
@@ -7158,26 +6442,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "sm"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d8e4a3f3651a411045a4324773afcf10d11919a90c006b94a4178da1d18e5769"
-dependencies = [
- "sm_macro",
-]
-
-[[package]]
-name = "sm_macro"
-version = "0.9.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ba245bc9067435452e4d8b9af04509929a9e99ce7273c82c2b8551e7f09ee861"
-dependencies = [
- "proc-macro2 0.4.30",
- "quote 0.6.13",
- "syn 0.15.44",
-]
-
-[[package]]
 name = "smallvec"
 version = "0.6.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7197,17 +6461,6 @@ name = "smawk"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f67ad224767faa3c7d8b6d91985b78e70a1324408abcb1cfcc2be4c06bc06043"
-
-[[package]]
-name = "socket2"
-version = "0.3.19"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "122e570113d28d773067fab24266b66753f6ea915758651696b6e35e49f88d6e"
-dependencies = [
- "cfg-if 1.0.0",
- "libc",
- "winapi 0.3.9",
-]
 
 [[package]]
 name = "socket2"
@@ -7273,7 +6526,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "storage-interface"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -7289,12 +6542,6 @@ dependencies = [
  "serde",
  "thiserror",
 ]
-
-[[package]]
-name = "str-buf"
-version = "1.0.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d44a3643b4ff9caf57abcee9c2c621d6c03d9135e0d8b589bd9afb5992cb176a"
 
 [[package]]
 name = "string_cache"
@@ -7396,12 +6643,6 @@ dependencies = [
  "quote 1.0.10",
  "syn 1.0.81",
 ]
-
-[[package]]
-name = "subtle"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2d67a5a62ba6e01cb2192ff309324cb4875d0c451d55fe2319433abe7a05a8ee"
 
 [[package]]
 name = "subtle"
@@ -7555,7 +6796,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "79a0579dcc6fb883fe90dd3c66d76b8b8f4a1786e1e915e314b2017a500ede09"
 dependencies = [
  "attohttpc",
- "base64 0.13.0",
+ "base64",
  "bincode",
  "cfg_aliases",
  "dirs-next 2.0.0",
@@ -7828,15 +7069,6 @@ dependencies = [
 
 [[package]]
 name = "tiny-keccak"
-version = "1.5.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1d8a021c69bb74a44ccedb824a046447e2c84a01df9e5c20779750acb38e11b2"
-dependencies = [
- "crunchy",
-]
-
-[[package]]
-name = "tiny-keccak"
 version = "2.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2c9d3793400a45f954c52e73d068316d76b6f4e36977e3fcebb13a2721e80237"
@@ -7866,14 +7098,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6703a273949a90131b290be1fe7b039d0fc884aa1935860dfcbe056f28cd8092"
 dependencies = [
  "bytes 0.5.6",
- "fnv",
- "futures-core",
- "iovec",
- "lazy_static",
- "memchr",
- "mio 0.6.23",
  "pin-project-lite 0.1.12",
- "slab",
 ]
 
 [[package]]
@@ -7886,7 +7111,7 @@ dependencies = [
  "bytes 1.1.0",
  "libc",
  "memchr",
- "mio 0.7.14",
+ "mio",
  "num_cpus",
  "once_cell",
  "parking_lot",
@@ -7919,23 +7144,11 @@ dependencies = [
 
 [[package]]
 name = "tokio-rustls"
-version = "0.14.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e12831b255bcfa39dc0436b01e19fea231a37db570686c06ee72c423479f889a"
-dependencies = [
- "futures-core",
- "rustls 0.18.1",
- "tokio 0.2.25",
- "webpki",
-]
-
-[[package]]
-name = "tokio-rustls"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bc6844de72e57df1980054b38be3a9f4702aba4858be64dd700181a8a6d0e1b6"
 dependencies = [
- "rustls 0.19.1",
+ "rustls",
  "tokio 1.13.0",
  "webpki",
 ]
@@ -7959,23 +7172,9 @@ checksum = "e1a5f475f1b9d077ea1017ecbc60890fda8e54942d680ca0b1d2b47cfa2d861b"
 dependencies = [
  "futures-util",
  "log",
- "pin-project 1.0.8",
+ "pin-project",
  "tokio 1.13.0",
  "tungstenite",
-]
-
-[[package]]
-name = "tokio-util"
-version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "be8242891f2b6cbef26a2d7e8605133c2c554cd35b3e4948ea892d6d68436499"
-dependencies = [
- "bytes 0.5.6",
- "futures-core",
- "futures-sink",
- "log",
- "pin-project-lite 0.1.12",
- "tokio 0.2.25",
 ]
 
 [[package]]
@@ -8004,8 +7203,8 @@ dependencies = [
 
 [[package]]
 name = "tower"
-version = "5.1.3"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+version = "0.1.0"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -8036,9 +7235,9 @@ dependencies = [
  "ol-keys",
  "ol-types",
  "regex",
- "reqwest 0.11.6",
+ "reqwest",
  "rpassword",
- "rustyline 6.3.0",
+ "rustyline",
  "serde",
  "serde_json",
  "storage-interface",
@@ -8088,16 +7287,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1f4ed65637b8390770814083d20756f87bfa2c21bf2f110babdc5438351746e4"
 dependencies = [
  "lazy_static",
-]
-
-[[package]]
-name = "tracing-futures"
-version = "0.2.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "97d095ae15e245a057c8e8451bab9b3ee1e1f68e9ba2b4fbc18d0ac5237835f2"
-dependencies = [
- "pin-project 1.0.8",
- "tracing",
 ]
 
 [[package]]
@@ -8163,7 +7352,7 @@ dependencies = [
 [[package]]
 name = "transaction-builder-generator"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8191,7 +7380,7 @@ version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8ada8297e8d70872fa9a551d93250a9f407beb9f37ef86494eb20012a2ff7c24"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "byteorder",
  "bytes 1.1.0",
  "http",
@@ -8215,8 +7404,8 @@ dependencies = [
 
 [[package]]
 name = "txs"
-version = "5.1.3"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+version = "0.1.0"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -8247,10 +7436,10 @@ dependencies = [
  "ol-keys",
  "ol-types",
  "regex",
- "reqwest 0.11.6",
+ "reqwest",
  "resource-viewer",
  "rpassword",
- "rustyline 6.3.0",
+ "rustyline",
  "serde",
  "serde_json",
  "storage-interface",
@@ -8278,18 +7467,6 @@ name = "ucd-trie"
 version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "56dee185309b50d1f11bfedef0fe6d036842e3fb77413abef29f8f8d1c5d4c1c"
-
-[[package]]
-name = "uint"
-version = "0.8.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9db035e67dfaf7edd9aebfe8676afcd63eed53c8a4044fed514c8cccf1835177"
-dependencies = [
- "byteorder",
- "crunchy",
- "rustc-hex",
- "static_assertions",
-]
 
 [[package]]
 name = "uncased"
@@ -8405,7 +7582,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9f214e8f697e925001e66ec2c6e37a4ef93f0f78c2eed7814394e10c62025b05"
 dependencies = [
  "generic-array 0.14.4",
- "subtle 2.4.1",
+ "subtle",
 ]
 
 [[package]]
@@ -8420,7 +7597,7 @@ version = "1.5.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2b8b063c2d59218ae09f22b53c42eaad0d53516457905f5235ca4bc9e99daa71"
 dependencies = [
- "base64 0.13.0",
+ "base64",
  "chunked_transfer",
  "log",
  "native-tls",
@@ -8474,12 +7651,11 @@ checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 [[package]]
 name = "vdf"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "bit-vec 0.5.1",
  "classgroup",
  "num-traits",
- "sha2 0.8.2",
  "sha3",
 ]
 
@@ -8510,7 +7686,7 @@ checksum = "5fecdca9a5291cc2b8dcf7dc02453fee791a280f3743cb0905f8822ae463b3fe"
 [[package]]
 name = "vm-genesis"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra.git?branch=dynamic-vdf#14015e684b75add612a3d959718696a3a5dadf5f"
+source = "git+https://github.com/0o-de-lally/libra.git?branch=carpe-build#38b4cdf3e8718c78d8382ef92a2ac4260c436c32"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8582,22 +7758,22 @@ dependencies = [
  "futures",
  "headers",
  "http",
- "hyper 0.14.14",
+ "hyper",
  "log",
  "mime",
  "mime_guess",
  "multipart",
  "percent-encoding",
- "pin-project 1.0.8",
+ "pin-project",
  "scoped-tls",
  "serde",
  "serde_json",
  "serde_urlencoded 0.7.0",
  "tokio 1.13.0",
- "tokio-rustls 0.22.0",
+ "tokio-rustls",
  "tokio-stream",
  "tokio-tungstenite",
- "tokio-util 0.6.9",
+ "tokio-util",
  "tower-service",
  "tracing",
 ]
@@ -8621,8 +7797,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "632f73e236b219150ea279196e54e610f5dbafa5d61786303d4da54f84e47fce"
 dependencies = [
  "cfg-if 1.0.0",
- "serde",
- "serde_json",
  "wasm-bindgen-macro",
 ]
 
@@ -8749,15 +7923,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "webpki-roots"
-version = "0.20.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0f20dea7535251981a9670857150d571846545088359b28e4951d350bdaf179f"
-dependencies = [
- "webpki",
-]
-
-[[package]]
 name = "webview2"
 version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8816,12 +7981,6 @@ dependencies = [
  "winapi-i686-pc-windows-gnu",
  "winapi-x86_64-pc-windows-gnu",
 ]
-
-[[package]]
-name = "winapi-build"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2d315eee3b34aca4797b2da6b13ed88266e6d612562a0c46390af8299fc699bc"
 
 [[package]]
 name = "winapi-i686-pc-windows-gnu"
@@ -8947,16 +8106,6 @@ dependencies = [
  "webview2",
  "webview2-sys",
  "winapi 0.3.9",
-]
-
-[[package]]
-name = "ws2_32-sys"
-version = "0.2.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d59cefebd0c892fa2dd6de581e937301d8552cb44489cdff035c6187cb63fa5e"
-dependencies = [
- "winapi 0.2.8",
- "winapi-build",
 ]
 
 [[package]]
