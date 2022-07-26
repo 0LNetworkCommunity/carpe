@@ -55,7 +55,7 @@ pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 
 #[tauri::command(async)]
 pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
-  let mut node = get_node_obj()?;
+  let node = get_node_obj()?;
   if let Some(state) = node.get_annotate_account_blob(AccountAddress::ZERO)?.0 {
     let recovery = query::find_value_from_state(
       &state,

@@ -232,7 +232,7 @@ pub fn submit_proof_zero() -> Result<(), CarpeError> {
 pub fn get_local_height() -> Result<u64, CarpeError> {
   let cfg = get_cfg()?;
   // let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
-  match get_latest_proof(&cfg) {
+  match get_latest_proof(&cfg, true) {
     Ok(proof) => Ok(proof.height),
     Err(_) => Err(CarpeError::tower(
       "could not get block height",
@@ -246,7 +246,7 @@ pub fn get_local_height() -> Result<u64, CarpeError> {
 pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
   let cfg = get_cfg()?;
 
-  Ok(get_latest_proof(&cfg).map_err(|e| {
+  Ok(get_latest_proof(&cfg, true).map_err(|e| {
     CarpeError::misc(&format!(
       "could not get a local proof, message: {:?}",
       e.to_string()
