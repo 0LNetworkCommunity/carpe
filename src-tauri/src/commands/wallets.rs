@@ -78,7 +78,7 @@ pub fn is_init() -> Result<bool, CarpeError> {
 /// default way accounts get initialized in Carpe
 #[tauri::command]
 pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-  danger_init_from_mnem(mnem).map_err(|_| CarpeError::config("could not initialize from mnemonic"))
+  danger_init_from_mnem(mnem)
 }
 
 pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
@@ -102,7 +102,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 
   // this may be the first account and may not yet be initialized.
   if !init {
-    configs_network::set_network_configs(configs_network::Networks::Mainnet)?;
+    configs_network::set_network_configs(diem_types::chain_id::NamedChain::MAINNET, None)?;
   }
 
   Ok(AccountEntry::new(address, authkey))

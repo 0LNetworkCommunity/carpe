@@ -4,14 +4,15 @@ import { raise_error } from "./carpeError";
 import { loadAccounts } from "./accountActions";
 
 
-  // Note: the string initialized should match the enum in Rust, networks.rs, to easily de/serialize
+  // This matches a subset of NamedChain enum in Rust.
 export enum Networks {
-  Mainnet = "Mainnet",
-  Rex = "Rex"
+  MAINNET = 1,
+  TESTNET = 2,
+  TESTING = 4,
 }
 
 export const network_profile = writable<NetworkProfile>({
-  chain_id: "string", // Todo, use the Network Enum
+  chain_id: Networks.MAINNET, // Todo, use the Network Enum
   urls: ["string"],
   waypoint: "string",
   profile: "string",
@@ -23,14 +24,14 @@ export const scanning_fullnodes = writable<boolean>(true);
 
 // should match the Rust type Network Profile
 export interface NetworkProfile {
-  chain_id: string, // Todo, use the Network Enum
+  chain_id: Networks, // Todo, use the Network Enum
   urls: [string],
   waypoint: string,
   profile: string,
 }
 
 export function setNetwork(network: Networks) {
-  invoke("toggle_network", { network: network })
+  invoke("toggle_network", { network: Networks[network] })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         // update accounts from current network

@@ -3,7 +3,7 @@
 use std::time::Duration;
 
 use diem_types::waypoint::Waypoint;
-use reqwest::{Client, Url, ClientBuilder};
+use reqwest::{Url, ClientBuilder};
 use serde::{Serialize, Deserialize};
 use anyhow::{Result, bail};
 use serde_json::json;
