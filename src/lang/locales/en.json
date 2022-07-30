@@ -272,7 +272,7 @@
       "claim": "Claim Now"
     },
     "modal_success": {
-      "title": "Transation confirmed!",
+      "title": "Transaction confirmed!",
       "amount_for_account": "<p>You have claimed <span class=\"uk-text-bold\">{coins} coins</span> for account <br><span class=\"uk-text-bold\">{account}</span>.</p>",
       "check_balance": "You can check your balance now.",
       "ok_btn": "OK"
