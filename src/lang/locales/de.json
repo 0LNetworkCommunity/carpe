@@ -2,7 +2,7 @@
   "nav": {
     "wallet": "Wallet",
     "miner": "Miner",
-    "transactions": "Transaktion",
+    "transactions": "Transaktionen",
     "events": "Ereignisse"
   },
   "layout": {
@@ -14,6 +14,10 @@
           "title": "Fehlerbericht",
           "category": "Fehler-Kategorie",
           "id": "ID"
+      },
+      "recovery_mode": { 
+        "title": "Wiederherstellungsmodus",
+        "body": "Das Netz ist wieder in Betrieb! Aber wir befinden uns im Wiederherstellungsmodus, und es werden noch keine Belohnungen für Proofs gezahlt. Warte, bis der Wiederherstellungsmodus beendet ist, um Proofs für Belohnungen zu senden. Die Wiederherstellung endet, wenn die Epoche {epoch_recovery_ends} auf {epoch_recovery_ends_after} wechselt."
       }
   },
   "wallet": {
@@ -253,29 +257,29 @@
     }
   },
   "make_whole": {
-    "link_title": "Claim Coins",
+    "link_title": "Coins einfordern",
     "card": {
-      "title": "Claim Your Missing Coins",
-      "body": "<p>Oops. Occasionally blockchains make math mistakes. 0L tries to fix them as quickly as possible.</p><p>Miner Identity Subsidy Incident: From Epoch 0 to epoch 52, the payouts to miners was lower than expected. Below you can credit your missing coins from that period.</p>"
+      "title": "Deine Fehlenden Coins Einfordern",
+      "body": "<p>Hoppla. Gelegentlich machen Blockchains mathematische Fehler. 0L versucht, diese so schnell wie möglich zu beheben.</p><p>Vorfall bei Miner-Identitäts-Subventionierung: Von Epoche 0 bis Epoche 52 waren die Auszahlungen an Miner geringer als erwartet. Nachfolgend kannst du deine fehlenden Coins aus diesem Zeitraum gutschreiben lassen.</p>"
     },
     "table": {
-      "account": "Account",
-      "amount": "Amount",
-      "claim": "Claim"
+      "account": "Konto",
+      "amount": "Betrag",
+      "claim": "Forderung"
     },
     "claim_btn": {
-      "await" : "Await...",
-      "claim": "Claim Now"
+      "await" : "Warten...",
+      "claim": "Jetzt Einfordern"
     },
     "modal_success": {
       "title": "Transation confirmed!",
-      "amount_for_account": "<p>You have claimed <span class=\"uk-text-bold\">{coins} coins</span> for account <br><span class=\"uk-text-bold\">{account}</span>.</p>",
-      "check_balance": "You can check your balance now.",
+      "amount_for_account": "<p>Du hast <span class=\"uk-text-bold\">{coins} Coins</span> für Konto <br><span class=\"uk-text-bold\">{account}</span> beansprucht.</p>",
+      "check_balance": "Du kannst dein Guthaben jetzt überprüfen.",
       "ok_btn": "OK"
     },
     "modal_error": {
-      "title": "Claim Error",
-      "body": "You must turn off miner to claim this account coins.",
+      "title": "Fehler bei Anforderung",
+      "body": "Du musst den Miner abstellen, um die Coins für dieses Konto zu beanspruchen.",
       "ok_btn": "OK"
     }
   }
