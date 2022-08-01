@@ -6,7 +6,7 @@
   import { routes } from "../routes";
   import { _ } from "../lang/i18n";
   import { init_preferences } from "../preferences";
-  import MakeWholeLink from "./make-whole/MakeWholeLink.svelte";
+  // import MakeWholeLink from "./make-whole/MakeWholeLink.svelte";
   
   init_preferences();
 
@@ -44,8 +44,10 @@
         <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li>
         <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>
         <li><Link to={routes.transactions}>{$_("nav.transactions")}</Link></li>
-        <li><Link to={routes.events}>{$_("nav.events")}</Link></li>
-        <li><MakeWholeLink /></li>
+        <!-- Remove Events tab till we get a fullnode set able to respond to these queries -->
+        <!-- <li><Link to={routes.events}>{$_("nav.events")}</Link></li> -->
+        <!-- Postpone MakeWhole release -->
+        <!--<li><MakeWholeLink /></li>-->
       </ul>
     </div>
 

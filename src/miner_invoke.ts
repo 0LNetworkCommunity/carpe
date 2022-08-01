@@ -7,7 +7,7 @@ import { clearDisplayErrors } from "./carpeErrorUI";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
 import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof, TowerStateView, isTowerNewbie } from "./miner";
-import { network_profile } from "./networks";
+import { Networks, network_profile } from "./networks";
 
 const current_window = getCurrent();
 
@@ -18,7 +18,7 @@ export const towerOnce = async () => {
   minerProofComplete.set(false);
 
   // defaults for newbies
-  let previous_duration = get(network_profile).chain_id == "Mainnet"
+  let previous_duration = get(network_profile).chain_id == Networks.MAINNET
     ? 60 * 60 * 1000 // Prod difficulty, assume 60 minutes for newbies
     : 5 * 1000;      // Test difficulty
 

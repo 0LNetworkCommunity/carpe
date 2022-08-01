@@ -4,6 +4,7 @@ use std::path::PathBuf;
 
 use anyhow::Error;
 use cli::diem_client::DiemClient;
+use diem_types::chain_id::NamedChain;
 use dirs;
 use ol::{
   config::AppCfg,
@@ -18,7 +19,8 @@ use crate::{carpe_error::CarpeError, key_manager};
 static APP_CONFIG_FILE: &str = "0L.toml";
 
 static ACCOUNTS_DB_FILE: &str = "accounts.json";
-static ACCOUNTS_DB_FILE_REX: &str = "accounts-rex.json";
+static ACCOUNTS_DB_FILE_REX_TESTNET: &str = "accounts-rex-testnet.json";
+static ACCOUNTS_DB_FILE_SWARM_DEVNET: &str = "accounts-swarm-devnet.json";
 
 // get the config path for files
 pub fn default_config_path() -> PathBuf {
@@ -32,8 +34,9 @@ pub fn get_cfg() -> Result<AppCfg, Error> {
 
 pub fn default_accounts_db_path() -> PathBuf {
   let db_file = match get_cfg() {
-    Ok(cfg) => match cfg.chain_info.chain_id.as_str() {
-      "Rex" => ACCOUNTS_DB_FILE_REX,
+    Ok(cfg) => match cfg.chain_info.chain_id {
+      NamedChain::TESTNET => ACCOUNTS_DB_FILE_REX_TESTNET,
+      NamedChain::DEVNET => ACCOUNTS_DB_FILE_SWARM_DEVNET,
       _ => ACCOUNTS_DB_FILE,
     },
     Err(_) => ACCOUNTS_DB_FILE,
@@ -48,6 +51,7 @@ pub fn get_tx_params() -> Result<TxParams, anyhow::Error> {
 
   // Requires user input to get OS keyring
   let keypair = key_manager::get_keypair(&config.profile.account.to_string())?;
+
   TxParams::get_tx_params_from_keypair(config.clone(), TxType::Miner, keypair, None, false, false)
 }
 
@@ -65,9 +69,9 @@ pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
       .clone()
       .chain_info
       .base_waypoint
-      .ok_or(CarpeError::misc("could not load base_waypoint"))?,
+      .ok_or(CarpeError::config("could not load base_waypoint"))?,
   )
-  .map_err(|_| CarpeError::misc("could not load tx params"))
+  .map_err(|_| CarpeError::client("could not make a client"))
 }
 
 /// For devs, get the source path, needed to initialize swarm

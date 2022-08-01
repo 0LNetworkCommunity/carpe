@@ -1,5 +1,7 @@
 # Releasing
 
+Before creating a new TAG, please confirm that Cargo.toml file is pointing to the right libra branch.
+
 ## Create a Candidate Release
 1. Update app version on files (i.e.: “0.3.0”):
   - src-tauri/Cargo.toml

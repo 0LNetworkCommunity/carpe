@@ -27,7 +27,7 @@ fn main() {
   //////// FORCE TEST SETTINGS ON START ////////////////////
   // uncomment below to explicitly set "test" env
   // Tauri builder does not take env variable from terminal
-  // set_env("test".to_owned()).unwrap();
+  set_env("test".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
 
   let menu = Menu::new()
@@ -66,6 +66,7 @@ fn main() {
       remove_accounts,
       switch_profile,
       // Networks
+      refresh_upstream_peer_stats,
       force_upstream,
       force_waypoint,
       override_playlist,

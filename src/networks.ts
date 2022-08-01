@@ -4,14 +4,15 @@ import { raise_error } from "./carpeError";
 import { loadAccounts } from "./accountActions";
 
 
-  // Note: the string initialized should match the enum in Rust, networks.rs, to easily de/serialize
+  // This matches a subset of NamedChain enum in Rust.
 export enum Networks {
-  Mainnet = "Mainnet",
-  Rex = "Rex"
+  MAINNET = 1,
+  TESTNET = 2,
+  TESTING = 4,
 }
 
 export const network_profile = writable<NetworkProfile>({
-  chain_id: "string", // Todo, use the Network Enum
+  chain_id: Networks.MAINNET, // Todo, use the Network Enum
   urls: ["string"],
   waypoint: "string",
   profile: "string",
@@ -23,14 +24,14 @@ export const scanning_fullnodes = writable<boolean>(true);
 
 // should match the Rust type Network Profile
 export interface NetworkProfile {
-  chain_id: string, // Todo, use the Network Enum
+  chain_id: Networks, // Todo, use the Network Enum
   urls: [string],
   waypoint: string,
   profile: string,
 }
 
 export function setNetwork(network: Networks) {
-  invoke("toggle_network", { network: network })
+  invoke("toggle_network", { network: Networks[network] })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         // update accounts from current network
@@ -51,6 +52,22 @@ export const refreshWaypoint = async () =>{
     .then((res: NetworkProfile) => {
       network_profile.set(res);
       connected.set(true);
+      // scanning_fullnodes.set(false);
+    })
+    .catch((error) => {
+      connected.set(false);
+      raise_error(error, true, "refreshWaypoint"); // we have a purpose-built error component for this
+    })
+}
+
+export const refreshUpstreamPeerStats = async () => {
+  console.log(">>> calling refresh_upstream_peer_stats");
+  return invoke("refresh_upstream_peer_stats", {})
+    .then((res: boolean) => {
+      console.log("update peers finished");
+
+      // network_profile.set(res);
+      connected.set(res);
       scanning_fullnodes.set(false);
     })
     .catch((error) => {

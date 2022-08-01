@@ -38,7 +38,7 @@ impl From<TxError> for CarpeError {
     );
     let trace = format!("TxView: {:?}", &e.tx_view);
     // check if the is a tower error
-    match tower::tower_errors::parse_error(e) {
+    match tower::tower_errors::parse_error(&e) {
       tower::tower_errors::TowerError::Unknown => {
         // this isn't a tower error, so it must be another TX error
         CarpeError::new(ErrorCat::Tx, uid, msg, trace)

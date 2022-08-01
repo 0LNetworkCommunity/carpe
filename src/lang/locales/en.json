@@ -71,7 +71,7 @@
     "account_switcher": {
       "select_account": "Select Account",
       "switch_account": "Switch Account",
-      "setting": "Go To Setting",
+      "setting": "Settings",
       "developers": "Developers"
     }
   },
@@ -251,16 +251,16 @@
     "received_payment": "Received Payment",
     "sent_payment": "Sent Payment",
     "loading": {
-      "error": "Error loading the account events:",
-      "corrupted_db": "Current connected node does not have all account events. Don't worry. Your wallet and coins are safe on the chain. Try connecting to another upstream node.", 
-      "account_off_chain": "Account selected not onboarded yet."
+      "error": "Events Temporarily Unavailable",
+      "corrupted_db": "The server you are connected to does not have all your event history available.", 
+      "account_off_chain": "Account selected not onboarded yet, and has no events."
     }
   },
   "make_whole": {
     "link_title": "Claim Coins",
     "card": {
       "title": "Claim Your Missing Coins",
-      "body": "<p>Oops. Occasionally blockchains make math mistakes. 0L tries to fix them as quickly as possible.</p><p>Miner Identity Subsidy Incident: From Epoch 0 to epoch 52, the payouts to miners was lower than expected. Below you can credit your missing coins from that period.</p><p>Click <a href=\"\">here</a> to learn more.</p>"     
+      "body": "<p>Oops. Occasionally blockchains make math mistakes. 0L tries to fix them as quickly as possible.</p><p>Miner Identity Subsidy Incident: From Epoch 0 to epoch 52, the payouts to miners was lower than expected. Below you can credit your missing coins from that period.</p>"
     },
     "table": {
       "account": "Account",
@@ -272,7 +272,7 @@
       "claim": "Claim Now"
     },
     "modal_success": {
-      "title": "Transation confirmed!",
+      "title": "Transaction confirmed!",
       "amount_for_account": "<p>You have claimed <span class=\"uk-text-bold\">{coins} coins</span> for account <br><span class=\"uk-text-bold\">{account}</span>.</p>",
       "check_balance": "You can check your balance now.",
       "ok_btn": "OK"
