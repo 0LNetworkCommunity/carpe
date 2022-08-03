@@ -6,7 +6,7 @@ use std::time::Duration;
 // use num_traits::pow::Pow;
 use crate::{
   carpe_error::CarpeError,
-  commands::{read_preferences, AppVersion},
+  commands::read_preferences,
   configs::{self, get_cfg},
   waypoint,
 };
