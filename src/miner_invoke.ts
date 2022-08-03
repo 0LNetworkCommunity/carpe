@@ -17,10 +17,14 @@ export const towerOnce = async () => {
   minerEventReceived.set(false);
   minerProofComplete.set(false);
 
+  console.log(">>>>", get(network_profile).chain_id);
+  console.log(">>>>", Networks.MAINNET);
+
   // defaults for newbies
-  let previous_duration = get(network_profile).chain_id == Networks.MAINNET
-    ? 60 * 60 * 1000 // Prod difficulty, assume 60 minutes for newbies
-    : 5 * 1000;      // Test difficulty
+  let previous_duration = get(network_profile).chain_id == Networks.TESTING
+    ? 5 * 1000  // Test difficulty 
+    
+    : 60 * 60 * 1000; // Default to Prod difficulty, assume 60 minutes for newbies 
 
   let t = get(tower);
   if (t.last_local_proof && t.last_local_proof.elapsed_secs != null) {
