@@ -17,9 +17,6 @@ export const towerOnce = async () => {
   minerEventReceived.set(false);
   minerProofComplete.set(false);
 
-  console.log(">>>>", get(network_profile).chain_id);
-  console.log(">>>>", Networks.MAINNET);
-
   // defaults for newbies
   let previous_duration = get(network_profile).chain_id == Networks.TESTING
     ? 5 * 1000  // Test difficulty 
