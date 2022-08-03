@@ -28,7 +28,7 @@
   import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
   import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
-import { refreshUpstreamPeerStats } from "./networks";
+  import { refreshUpstreamPeerStats } from "./networks";
   
   init_preferences();
  
