@@ -47,7 +47,7 @@ pub fn read_preferences() -> Result<Preferences, Error> {
 fn preferences_db_path() -> PathBuf {
   dirs::home_dir()
     .unwrap()
-    .join(".0L")
+    .join(configs::HOME_DIR)
     .join(PREFERENCES_DB_FILE)
 }
 

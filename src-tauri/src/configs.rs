@@ -16,6 +16,7 @@ use txs::tx_params::TxParams;
 
 use crate::{carpe_error::CarpeError, key_manager};
 
+static HOME_DIR: &str = ".0L";
 static APP_CONFIG_FILE: &str = "0L.toml";
 
 static ACCOUNTS_DB_FILE: &str = "accounts.json";
@@ -24,7 +25,7 @@ static ACCOUNTS_DB_FILE_SWARM_DEVNET: &str = "accounts-swarm-devnet.json";
 
 // get the config path for files
 pub fn default_config_path() -> PathBuf {
-  dirs::home_dir().unwrap().join(".0L").join(APP_CONFIG_FILE)
+  dirs::home_dir().unwrap().join(HOME_DIR).join(APP_CONFIG_FILE)
 }
 
 /// Get all the 0L configs. For tx sending and upstream nodes
@@ -41,7 +42,7 @@ pub fn default_accounts_db_path() -> PathBuf {
     },
     Err(_) => ACCOUNTS_DB_FILE,
   };
-  dirs::home_dir().unwrap().join(".0L").join(db_file)
+  dirs::home_dir().unwrap().join(HOME_DIR).join(db_file)
 }
 
 /// get transaction parameters from config file
