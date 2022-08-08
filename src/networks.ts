@@ -6,9 +6,9 @@ import { loadAccounts } from "./accountActions";
 
   // This matches a subset of NamedChain enum in Rust.
 export enum Networks {
-  MAINNET = 1,
-  TESTNET = 2,
-  TESTING = 4,
+  MAINNET = "MAINNET",
+  TESTNET = "TESTNET",
+  TESTING = "TESTING",
 }
 
 export const network_profile = writable<NetworkProfile>({
@@ -72,6 +72,6 @@ export const refreshUpstreamPeerStats = async () => {
     })
     .catch((error) => {
       connected.set(false);
-      raise_error(error, true, "refreshWaypoint"); // we have a purpose-built error component for this
+      raise_error(error, true, "refreshUpstreamPeerStats"); // we have a purpose-built error component for this
     })
 }

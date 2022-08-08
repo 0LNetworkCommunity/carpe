@@ -2,7 +2,7 @@
 
 use futures::{stream::FuturesUnordered, StreamExt};
 use reqwest::ClientBuilder;
-use std::{fmt, time::Duration};
+use std::time::Duration;
 // use num_traits::pow::Pow;
 use crate::{
   carpe_error::CarpeError,
@@ -37,21 +37,21 @@ impl NetworkProfile {
   }
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
-pub enum Networks {
-  Mainnet,
-  Tesnet, // REX
+// #[derive(serde::Deserialize, serde::Serialize, Debug)]
+// pub enum Networks {
+//   Mainnet,
+//   Tesnet, // REX
 
-  Custom { playlist_url: Url },
-}
+//   Custom { playlist_url: Url },
+// }
 
-impl fmt::Display for Networks {
-  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-    write!(f, "{:?}", self)
-    // or, alternatively:
-    // fmt::Debug::fmt(self, f)
-  }
-}
+// impl fmt::Display for Networks {
+//   fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+//     write!(f, "{:?}", self)
+//     // or, alternatively:
+//     // fmt::Debug::fmt(self, f)
+//   }
+// }
 
 pub fn set_network_configs(
   network: NamedChain,
@@ -258,7 +258,8 @@ impl UpstreamStats {
   }
 
   pub async fn check_which_are_synced(mut self) -> anyhow::Result<Self> {
-    let _cfg = configs::get_cfg()?;
+    // let _cfg = configs::get_cfg()?;
+    dbg!("check_which_are_synced");
 
     // try getting waypoint from upstream nodes
     // no waypoint is necessary in advance.
@@ -288,8 +289,8 @@ impl UpstreamStats {
       .iter()
       .sum();
 
-    let cast = sum_squares as f64;
-    let rms = cast.sqrt();
+    let avg = sum_squares as f64 / sync_list.len() as f64;
+    let rms = avg.sqrt();
 
     let checked: Vec<FullnodeProfile> = sync_list
       .into_iter()
@@ -348,6 +349,7 @@ pub struct FullnodeProfile {
 /// sets it in preferences as the default peer.
 impl FullnodeProfile {
   async fn check_sync(mut self) -> anyhow::Result<FullnodeProfile> {
+    // dbg!("check_sync", &self.url);
     match waypoint::bootstrap_waypoint_from_rpc(self.url.clone()).await {
       Ok(wp) => {
         self.version = wp.version();

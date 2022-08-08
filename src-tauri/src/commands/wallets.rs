@@ -205,7 +205,15 @@ fn insert_account_db(
     balance: None,
   };
 
-  if !all.accounts.contains(&new_account) {
+  let acc_list: Vec<AccountAddress> = all
+    .accounts
+    .iter()
+    .map(|a| {
+    a.account
+  })
+  .collect();
+
+  if !acc_list.contains(&new_account.account) {
     all.accounts.push(new_account);
 
     // write to db file
