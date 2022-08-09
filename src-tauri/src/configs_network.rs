@@ -73,7 +73,7 @@ pub fn set_network_configs(
     }
   };
 
-  playlist.update_config_file(None)?; // None uses default path of 0L.toml
+  playlist.update_config_file(Some(configs::default_config_path()))?; // None uses default path of 0L.toml
 
   // TODO: I don't think chain ID needs to change.
   set_chain_id(network).map_err(|e| {

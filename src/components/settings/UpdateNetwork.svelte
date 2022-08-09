@@ -21,7 +21,7 @@ import { _ } from "svelte-i18n";
     });
   });
 
-  function updateNetwork() {
+  function forceUpstream() {
     // check input data
     // submit
     invoke("force_upstream", { url: upstream_url })
@@ -31,7 +31,7 @@ import { _ } from "svelte-i18n";
 
       })
       .catch((error) => {
-        raise_error(error as CarpeError, false, "updateNetwork");
+        raise_error(error as CarpeError, false, "forceUpstream");
       });
   }
 
@@ -60,7 +60,7 @@ import { _ } from "svelte-i18n";
       </div>
 
       <span
-          on:click={updateNetwork}
+          on:click={forceUpstream}
           class="uk-button uk-button-primary uk-align-right"
           id="add-btn">{$_("settings.network_settings.btn_update")}</span
         >

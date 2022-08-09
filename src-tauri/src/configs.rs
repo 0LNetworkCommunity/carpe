@@ -16,7 +16,7 @@ use txs::tx_params::TxParams;
 
 use crate::{carpe_error::CarpeError, key_manager};
 
-static HOME_DIR: &str = ".0L";
+pub static HOME_DIR: &str = ".0L";
 static APP_CONFIG_FILE: &str = "0L.toml";
 
 static ACCOUNTS_DB_FILE: &str = "accounts.json";
@@ -30,7 +30,7 @@ pub fn default_config_path() -> PathBuf {
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn get_cfg() -> Result<AppCfg, Error> {
-  config::parse_toml(None) // gets default toml path.
+  config::parse_toml(Some(default_config_path())) // gets default toml path.
 }
 
 pub fn default_accounts_db_path() -> PathBuf {
