@@ -10,7 +10,8 @@
   export let onSuccess = () => {};
 
   const errorDic = {
-    "120127": $_("txs.transfer.error_slow_wallet")
+    "120127": $_("txs.transfer.error_slow_wallet"),
+    "1004": $_("txs.transfer.error_account_does_not_exist"),
   }
 
   let receiver;

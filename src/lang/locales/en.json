@@ -237,6 +237,7 @@
       "error_amount_greater_than_balance": "Amount cannot be greater than account balance",
       "error_receiver_equals_sender": "Receiver address must be different from sender address",
       "error_slow_wallet": "Coin transfer is disabled for slow wallets.",
+      "error_account_does_not_exist": "Recipient account does not exist.",
       "success": "Transfer executed with success",
       "failed": "Transfer failed. Code: {code}"
     }
