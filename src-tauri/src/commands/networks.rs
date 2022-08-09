@@ -5,7 +5,7 @@ use crate::{
   configs_network::{
     override_upstream_node, set_network_configs, set_waypoint, set_waypoint_from_upstream,
     NetworkProfile,
-  },
+  }, configs,
 };
 use diem_types::{waypoint::Waypoint, chain_id::NamedChain};
 use ol_types::rpc_playlist;
@@ -25,7 +25,7 @@ pub fn get_networks() -> Result<NetworkProfile, CarpeError> {
 #[tauri::command]
 pub fn override_playlist(url: Url) -> Result<NetworkProfile, CarpeError> {
   let fpl = rpc_playlist::FullnodePlaylist::http_fetch_playlist(url)?;
-  fpl.update_config_file(None)?;
+  fpl.update_config_file(Some(configs::default_config_path()))?;
   NetworkProfile::new()
 }
 
