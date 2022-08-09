@@ -6,7 +6,7 @@ Currently Windows and Mac are supported:
 
 - [Download Windows 10+](https://github.com/OLSF/carpe/releases/download/v0.3.0/carpe_0.3.0_x64.msi) and read the [Windows instructions](docs/start-carpe-windows.md)
 
-- [Download MacOs 10.15+](https://github.com/OLSF/carpe/releases/download/v0.3.0/carpe-macos-10.15.dmg) and read the [Mac instructions](docs/start-carpe-mac.md)
+- [Download MacOs 10.11+](https://github.com/OLSF/carpe/releases/download/v0.3.0/carpe-macos-10.15.dmg) and read the [Mac instructions](docs/start-carpe-mac.md)
 
 
 On Windows, currently, Microsoft Edge WebView2 must be installed manually first.
@@ -20,6 +20,9 @@ Like any account-based blockchain, any new account address you create in the Car
 
 [Join us on Discord and get onboarded](https://discord.gg/AzCp63pggW)
 
+## Canary Testers
+
+If you want to help test upcoming versions, you should install the [Canary Release of Carpe](docs/canary-releases.md).
 
 ## Development
 
