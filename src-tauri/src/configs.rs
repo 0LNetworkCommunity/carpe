@@ -4,6 +4,7 @@ use std::path::PathBuf;
 
 use anyhow::Error;
 use cli::diem_client::DiemClient;
+use diem_types::chain_id::NamedChain;
 use dirs;
 use ol::{
   config::AppCfg,
@@ -15,30 +16,33 @@ use txs::tx_params::TxParams;
 
 use crate::{carpe_error::CarpeError, key_manager};
 
+pub static HOME_DIR: &str = ".0L";
 static APP_CONFIG_FILE: &str = "0L.toml";
 
 static ACCOUNTS_DB_FILE: &str = "accounts.json";
-static ACCOUNTS_DB_FILE_REX: &str = "accounts-rex.json";
+static ACCOUNTS_DB_FILE_REX_TESTNET: &str = "accounts-rex-testnet.json";
+static ACCOUNTS_DB_FILE_SWARM_DEVNET: &str = "accounts-swarm-devnet.json";
 
 // get the config path for files
 pub fn default_config_path() -> PathBuf {
-  dirs::home_dir().unwrap().join(".0L").join(APP_CONFIG_FILE)
+  dirs::home_dir().unwrap().join(HOME_DIR).join(APP_CONFIG_FILE)
 }
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn get_cfg() -> Result<AppCfg, Error> {
-  config::parse_toml(None) // gets default toml path.
+  config::parse_toml(Some(default_config_path())) // gets default toml path.
 }
 
 pub fn default_accounts_db_path() -> PathBuf {
   let db_file = match get_cfg() {
-    Ok(cfg) => match cfg.chain_info.chain_id.as_str() {
-      "Rex" => ACCOUNTS_DB_FILE_REX,
+    Ok(cfg) => match cfg.chain_info.chain_id {
+      NamedChain::TESTNET => ACCOUNTS_DB_FILE_REX_TESTNET,
+      NamedChain::DEVNET => ACCOUNTS_DB_FILE_SWARM_DEVNET,
       _ => ACCOUNTS_DB_FILE,
     },
     Err(_) => ACCOUNTS_DB_FILE,
   };
-  dirs::home_dir().unwrap().join(".0L").join(db_file)
+  dirs::home_dir().unwrap().join(HOME_DIR).join(db_file)
 }
 
 /// get transaction parameters from config file
@@ -48,6 +52,7 @@ pub fn get_tx_params() -> Result<TxParams, anyhow::Error> {
 
   // Requires user input to get OS keyring
   let keypair = key_manager::get_keypair(&config.profile.account.to_string())?;
+
   TxParams::get_tx_params_from_keypair(config.clone(), TxType::Miner, keypair, None, false, false)
 }
 
@@ -65,9 +70,9 @@ pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
       .clone()
       .chain_info
       .base_waypoint
-      .ok_or(CarpeError::misc("could not load base_waypoint"))?,
+      .ok_or(CarpeError::config("could not load base_waypoint"))?,
   )
-  .map_err(|_| CarpeError::misc("could not load tx params"))
+  .map_err(|_| CarpeError::client("could not make a client"))
 }
 
 /// For devs, get the source path, needed to initialize swarm

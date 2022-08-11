@@ -13,7 +13,7 @@
 
   import type { NetworkProfile} from "../../networks";
 
-  let current_chain_id = "";
+  let current_chain_id;
   let waypoint = "";
 
   function updateWaypoint() {
@@ -48,8 +48,8 @@
         class="uk-radio"
         type="radio"
         name="networkCb"
-        checked={current_chain_id == "Mainnet"}
-        on:click={() => setNetwork(Networks.Mainnet)}
+        checked={current_chain_id == Networks.MAINNET}
+        on:click={() => setNetwork(Networks.MAINNET)}
       /> Mainnet
     </label>
     <label
@@ -57,9 +57,18 @@
         class="uk-radio"
         type="radio"
         name="networkCb"
-        checked={current_chain_id == "Rex"}
-        on:click={() => setNetwork(Networks.Rex)}
+        checked={current_chain_id == Networks.TESTNET}
+        on:click={() => setNetwork(Networks.TESTNET)}
       /> Rex (testnet)
+    </label>
+    <label
+      ><input
+        class="uk-radio"
+        type="radio"
+        name="networkCb"
+        checked={current_chain_id == Networks.TESTING}
+        on:click={() => setNetwork(Networks.TESTING)}
+      /> Swarm (devnet)
     </label>
   </div>
 

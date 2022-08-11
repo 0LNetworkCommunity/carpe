@@ -1,7 +1,9 @@
 // TODO: This is duplicated in libra/ol/config.rs which is Blocking, and not async
 
+use std::time::Duration;
+
 use diem_types::waypoint::Waypoint;
-use reqwest::{Client, Url};
+use reqwest::{Url, ClientBuilder};
 use serde::{Serialize, Deserialize};
 use anyhow::{Result, bail};
 use serde_json::json;
@@ -16,7 +18,12 @@ pub async fn bootstrap_waypoint_from_rpc(url: Url) -> Result<Waypoint> {
     let method = "get_waypoint_view";
     let params = json!([]);
     let request = json!({"jsonrpc": "2.0", "method": method, "params": params, "id": 1});
-    let client = Client::new();
+
+    let client = ClientBuilder::new()
+      .timeout(Duration::from_secs(1))
+      .build()?;
+
+    // let client = Client::new();
     let resp = client.post(url.as_str()).json(&request).send().await?;
 
     // let json: WaypointRpc = serde_json::from_value(resp.json().unwrap()).unwrap();

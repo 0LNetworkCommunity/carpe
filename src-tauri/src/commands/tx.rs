@@ -14,7 +14,7 @@ pub fn demo_tx() -> Result<String, CarpeError> {
   // .map_err(|_|{ CarpeError::misc("can't parse account") })?;
 
   let tx_params =
-    configs::get_tx_params().map_err(|_| CarpeError::misc("could not load tx params"))?;
+    configs::get_tx_params()?;
   // dbg!(&tx_params);
   match demo_cmd::demo_tx(&tx_params, None) {
     Ok(r) => Ok(format!("Tx Success: {:?}", r)),
@@ -28,7 +28,7 @@ pub fn demo_tx() -> Result<String, CarpeError> {
 #[tauri::command(async)]
 pub fn create_user_account(authkey: String) -> Result<String, CarpeError> {
   let tx_params =
-    configs::get_tx_params().map_err(|_| CarpeError::misc("could not load tx params"))?;
+    configs::get_tx_params()?;
 
   if let Some(key) = authkey.parse::<AuthenticationKey>().ok() {
     match create_from_auth_and_coin(key, 1, tx_params, None) {
@@ -62,7 +62,7 @@ pub enum WalletTypes {
 #[tauri::command(async)]
 pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
   let tx_params =
-    configs::get_tx_params().map_err(|_| CarpeError::misc("could not load tx params"))?;
+    configs::get_tx_params()?;
 
   match txs::commands::wallet_cmd::set_wallet_type(type_int, tx_params, None) {
     Ok(r) => Ok(format!("Tx Success: {:?}", r)),
@@ -75,8 +75,10 @@ pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
 
 #[tauri::command(async)]
 pub fn coin_transfer(receiver: String, amount: u64) -> Result<String, CarpeError> {
+
   let tx_params =
-    configs::get_tx_params().map_err(|_| CarpeError::misc("Could not load tx params"))?;
+    configs::get_tx_params()?;
+
 
   let receiver_address: AccountAddress = receiver
     .parse()
@@ -98,7 +100,7 @@ pub fn coin_transfer(receiver: String, amount: u64) -> Result<String, CarpeError
 pub async fn claim_make_whole() -> Result<(), CarpeError> {
   let tx_payload = stdlib::encode_claim_make_whole_script_function();
   let tx_params =
-    configs::get_tx_params().map_err(|_| CarpeError::misc("could not load tx params"))?;
+    configs::get_tx_params()?;
   submit_tx::maybe_submit(tx_payload, &tx_params, None)?;
   Ok(())
 }

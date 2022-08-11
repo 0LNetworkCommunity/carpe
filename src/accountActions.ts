@@ -157,6 +157,8 @@ export function getAccountEvents(account: AccountEntry, errorCallback = null) {
     return errorCallback && errorCallback("account_not_on_chain");
   }
 
+  return
+  /*
   invoke('get_account_events', {account: address.toUpperCase()})
     .then((events: Array<T>) => {
       let all = get(accountEvents);     
@@ -176,6 +178,7 @@ export function getAccountEvents(account: AccountEntry, errorCallback = null) {
         raise_error(e, false, "getAccountEvents");
       }      
     });
+    */
 }
 
 /*

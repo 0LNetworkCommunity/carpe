@@ -66,6 +66,7 @@ fn main() {
       remove_accounts,
       switch_profile,
       // Networks
+      refresh_upstream_peer_stats,
       force_upstream,
       force_waypoint,
       override_playlist,

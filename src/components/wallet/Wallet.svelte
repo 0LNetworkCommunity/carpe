@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { _ } from 'svelte-i18n';
+  import { _ } from "svelte-i18n";
   import { onDestroy, onMount } from "svelte";
   import { Link } from "svelte-navigator";
   import {
@@ -19,7 +19,7 @@
   import Icons from "uikit/dist/js/uikit-icons";
   import { connected } from "../../networks";
   import ConnectionError from "../layout/ConnectionError.svelte";
-  import AccountsListSkeleton from './AccountsListSkeleton.svelte';
+  import AccountsListSkeleton from "./AccountsListSkeleton.svelte";
   UIkit.use(Icons);
 
   let my_account: AccountEntry;
@@ -30,7 +30,7 @@
   let isRefreshing: boolean = true;
   let isConnected: boolean = true;
   let isLoaded: boolean = false;
-  
+
   let unsubsConnected;
   let unsubsAll_accounts;
   let unsubsSigningAccount;
@@ -40,10 +40,10 @@
   let unsubsIsRefreshingAccounts;
 
   onMount(async () => {
-    unsubsConnected = connected.subscribe(b => isConnected = b);
-    unsubsAll_accounts = all_accounts.subscribe(all => {
+    unsubsConnected = connected.subscribe((b) => (isConnected = b));
+    unsubsAll_accounts = all_accounts.subscribe((all) => {
       accountList = all;
-      pendingAccounts = all.filter(x => !x.on_chain);
+      pendingAccounts = all.filter((x) => !x.on_chain);
     });
     unsubsSigningAccount = signingAccount.subscribe(a => my_account = a);
     unsubsShowUnlockedBalance = showUnlockedBalance.subscribe(boo => showingUnlockedBalance = boo);
@@ -67,19 +67,26 @@
   <div>
     {#if isRefreshing}
       <div style="position:relative">
-        <span uk-spinner style="position:absolute; top:0px; left:0px"/>
+        <span uk-spinner style="position:absolute; top:0px; left:0px" />
       </div>
     {/if}
 
-    {#if !isLoaded}
-      <AccountsListSkeleton />
-    {:else if accountList.length > 0}
+    {#if !isLoaded && !isRefreshing && !accountList }
+      <Newbie />
+    {/if}
 
+    {#if !isLoaded && accountList && accountList.length == 0}
+      <Newbie />
+    {/if}
+
+    {#if isLoaded && accountList && accountList.length > 0}
       {#if !isConnected}
         <ConnectionError />
       {:else}
         <div class="uk-flex uk-flex-center">
-          <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_("wallet.wallet")}</h2>
+          <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
+            {$_("wallet.wallet")}
+          </h2>
         </div>
         
         <AccountsList {my_account} {accountList} {showingUnlockedBalance} {isMining} {isConnected} />
@@ -88,15 +95,17 @@
 
         <div uk-grid class="uk-flex uk-flex-center">
           <Link to={routes.keygen}>
-            <button class="uk-button uk-button-secondary">{$_("wallet.btn_new_account")}</button>
+            <button class="uk-button uk-button-secondary"
+              >{$_("wallet.btn_new_account")}</button
+            >
           </Link>
           <Link to={routes.accountFromMnem}>
-            <button class="uk-button uk-button-default">{$_("wallet.btn_restore_account")} </button>
+            <button class="uk-button uk-button-default"
+              >{$_("wallet.btn_restore_account")}
+            </button>
           </Link>
         </div>
       {/if}
-    {:else if accountList.length == 0 && !isRefreshing}
-      <Newbie />
     {/if}
   </div>
 </main>

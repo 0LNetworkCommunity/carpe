@@ -1,6 +1,7 @@
+import { get } from "svelte/store";
 import { loadAccounts } from "./accountActions";
 import { getEpochRules, getLocalHeight, getTowerChainView, maybeEmitBacklog, maybeStartMiner } from "./miner_invoke";
-import { refreshWaypoint } from "./networks";
+import { refreshWaypoint, scanning_fullnodes } from "./networks";
 
 let has_run = false;
 
@@ -16,14 +17,16 @@ export const carpeTick = async () => {
     await getLocalHeight()
     // fetch a waypoint to see if we can connect to any fullnode.
     // If successful this will set the `network.connected` bool to true. And wallet will display a view.
-    refreshWaypoint()
-      .then(loadAccounts)
-      .then(getTowerChainView)
-      .then(maybeEmitBacklog)
-      .then(maybeStartMiner)
-      .finally(() =>{
-        has_run = false;
-       });
+    if (!get(scanning_fullnodes)) { // don't try to connect while we are booting up the app and looking for fullnodes
+      refreshWaypoint()
+        .then(loadAccounts)
+        .then(getTowerChainView)
+        .then(maybeEmitBacklog)
+        .then(maybeStartMiner)
+        .finally(() => {
+          has_run = false;
+        });
+    }
 
   } else {
     console.log("deduplicate tick");
