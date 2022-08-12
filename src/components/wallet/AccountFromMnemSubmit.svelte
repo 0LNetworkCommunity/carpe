@@ -2,19 +2,16 @@
   import { _ } from "svelte-i18n";
   import { navigate } from "svelte-navigator";
   import { responses } from "../../debug";
-  import {
-    signingAccount,
-    mnem,
-    isInit,
-  } from "../../accounts";
+  import { signingAccount, mnem, isInit } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import { raise_error } from "../../carpeError";
   import { invoke } from "@tauri-apps/api/tauri";
   import { notify_success } from "../../carpeNotify";
   import { onDestroy, onMount } from "svelte";
-  import { connected, refreshWaypoint } from "../../networks";
-  import { addNewAccount, isCarpeInit, loadAccounts } from "../../accountActions";
+  import { connected, scanning_fullnodes } from "../../networks";
+  import { addNewAccount, loadAccounts } from "../../accountActions";
   import UIkit from "uikit";
+  import { carpeTick } from "../../tick";
 
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;
@@ -27,7 +24,7 @@
 
   onDestroy(async () => {
     unsubs && unsubs();
-  })
+  });
 
   // const re = /[0-9A-Fa-f]{32}/g;
 
@@ -56,13 +53,17 @@
 
         // set as init so we don't get sent back to Newbie account creation.
         isInit.set(true);
-        isCarpeInit();
-
-        // refresh waypoint check connection status of `connected`.
         connected.set(true); // provisionally set to true so we don't get flashed an error page.
-        refreshWaypoint();
+        scanning_fullnodes.set(false);
+        carpeTick()
+          .then(() => {
+            navigate("/");
+          })
+          .catch((e) => {
+            raise_error(e, true, "carpeTick");
+          });
 
-        navigate("/");
+        // navigate("/");
       })
       .catch((error) => {
         if (isNewAccount) {
@@ -74,56 +75,56 @@
   }
 </script>
 
-  {#if isNewAccount}
-    <button
-      class="uk-button uk-button-secondary uk-margin-small-right"
-      disabled={isSubmitting}
-      type="button"
-      on:click|preventDefault={openConfirmationModal}
-      >
-      {$_("wallet.keygen.btn_create_account")}
-    </button>
+{#if isNewAccount}
+  <button
+    class="uk-button uk-button-secondary uk-margin-small-right"
+    disabled={isSubmitting}
+    type="button"
+    on:click|preventDefault={openConfirmationModal}
+  >
+    {$_("wallet.keygen.btn_create_account")}
+  </button>
 
-    <div id="submit-confirmation-modal" uk-modal>
-      <div class="uk-modal-dialog uk-modal-body">
-        <h2 class="uk-modal-title uk-text-uppercase uk-text-alert">
-          {$_("wallet.account_from_mnem_submit.title")}
-        </h2>
-        <p>{@html $_("wallet.account_from_mnem_submit.body")}</p>
-        <p class="uk-text-right">
-          <button
-            class="uk-button uk-button-default uk-modal-close"
-            type="button"
-            disabled={isSubmitting}
-          >
+  <div id="submit-confirmation-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      <h2 class="uk-modal-title uk-text-uppercase uk-text-alert">
+        {$_("wallet.account_from_mnem_submit.title")}
+      </h2>
+      <p>{@html $_("wallet.account_from_mnem_submit.body")}</p>
+      <p class="uk-text-right">
+        <button
+          class="uk-button uk-button-default uk-modal-close"
+          type="button"
+          disabled={isSubmitting}
+        >
           {$_("wallet.account_from_mnem_submit.btn_cancel")}
-          </button>
-          <button
-            class="uk-button uk-button-primary"
-            type="button"
-            disabled={isSubmitting}
-            on:click|preventDefault={handleAdd}
-          >
-            {#if isSubmitting}
-              {$_("wallet.account_from_mnem_submit.btn_submiting")}
-            {:else}
-              {$_("wallet.account_from_mnem_submit.btn_submit")}
-            {/if}
-          </button>
-        </p>
-      </div>
+        </button>
+        <button
+          class="uk-button uk-button-primary"
+          type="button"
+          disabled={isSubmitting}
+          on:click|preventDefault={handleAdd}
+        >
+          {#if isSubmitting}
+            {$_("wallet.account_from_mnem_submit.btn_submiting")}
+          {:else}
+            {$_("wallet.account_from_mnem_submit.btn_submit")}
+          {/if}
+        </button>
+      </p>
     </div>
-  {:else}
-    <button
-      class="uk-button uk-button-primary"
-      type="button"
-      disabled={isSubmitting}
-      on:click|preventDefault={handleAdd}
-    >
-      {#if isSubmitting}
-        {$_("wallet.account_from_mnem_submit.btn_submiting")}...
-      {:else}
-        {$_("wallet.account_from_mnem_submit.btn_submit")}
-      {/if}
-    </button>
-  {/if}
+  </div>
+{:else}
+  <button
+    class="uk-button uk-button-primary"
+    type="button"
+    disabled={isSubmitting}
+    on:click|preventDefault={handleAdd}
+  >
+    {#if isSubmitting}
+      {$_("wallet.account_from_mnem_submit.btn_submiting")}...
+    {:else}
+      {$_("wallet.account_from_mnem_submit.btn_submit")}
+    {/if}
+  </button>
+{/if}

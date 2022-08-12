@@ -9,6 +9,7 @@
   import type { AccountEntry } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
   import { backlogInProgress, isTowerNewbie, tower } from "../../miner";
+  import type {ClientTowerStatus } from "../../miner";
   import { nodeEnv } from "../../debug";
   import { get } from "svelte/store";
   import SyncProofs from "./cards/SyncProofs.svelte";
@@ -23,7 +24,7 @@
   let isDevTest = false;
   let isSendInProgress = false;
   let hasProofs = false;
-  let minerTower;
+  let minerTower: ClientTowerStatus;
 
   // unsubscribe functions
   let unsubsTower;
@@ -77,7 +78,10 @@
     </div>
   {/if}
     <div class="uk-grid uk-margin-small">
-      {#if account && account.on_chain}
+      {#if (account && account.on_chain) || 
+           // so we don't get a flash of the error card on an intermittent local network connection if we are in fact mining
+           (minerTower && minerTower.progress.pct_complete)
+      } 
         <div class="uk-width-1-1 uk-align-center">
           <ToggleMiner />
           <MinerProgress tower={minerTower} />
