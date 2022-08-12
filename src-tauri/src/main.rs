@@ -4,6 +4,10 @@
 )]
 
 extern crate url;
+use std::fs::{File, self};
+use crate::commands::*;
+use tauri::{Menu, MenuItem, Submenu};
+use simplelog::*;
 
 pub mod carpe_error;
 pub mod commands;
@@ -13,22 +17,23 @@ pub mod configs_profile;
 pub mod key_manager;
 mod waypoint;
 
-// use std::env;
-
-use crate::commands::*;
-use pretty_env_logger;
-use tauri::{Menu, MenuItem, Submenu};
-
 fn main() {
-  //  println!("{}", version::version());
-  // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
-  pretty_env_logger::init();
-
   //////// FORCE TEST SETTINGS ON START ////////////////////
   // uncomment below to explicitly set "test" env
   // Tauri builder does not take env variable from terminal
   // set_env("test".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
+
+  // logging to file
+  CombinedLogger::init(
+        vec![
+            TermLogger::new(LevelFilter::Info, simplelog::Config::default(), TerminalMode::Mixed, ColorChoice::Auto),
+            WriteLogger::new(LevelFilter::Warn, simplelog::Config::default(), File::create(configs::default_config_path().parent().unwrap().join("carpe.log")).unwrap()),
+        ]
+    ).unwrap();
+
+  // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
+
 
   let menu = Menu::new()
     .add_submenu(Submenu::new(
