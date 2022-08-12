@@ -85,6 +85,6 @@ pub async fn refresh_upstream_peer_stats() -> Result<bool, CarpeError> {
 
   match preferences.network {
     Some(stats) => Ok(stats.the_good_ones()?.len() > 0),
-    None => Err(CarpeError::client("no good upstream to use")),
+    None => Err(CarpeError::client_unknown_err("no good upstream to use")),
 }
 }

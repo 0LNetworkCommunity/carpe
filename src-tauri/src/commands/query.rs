@@ -24,7 +24,7 @@ pub fn get_onchain_tower_state(
 
   match node.client.get_miner_state(&account) {
     Ok(Some(t)) => Ok(t),
-    _ => Err(CarpeError::client("Could not get tower state from chain")),
+    _ => Err(CarpeError::client_unknown_err("Could not get tower state from chain")),
   }
 }
 
