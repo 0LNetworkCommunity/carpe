@@ -1,14 +1,14 @@
 use crate::{
   carpe_error::CarpeError,
   commands::get_onchain_tower_state,
-  configs::{get_cfg, get_tx_params, get_diem_client},
+  configs::{get_cfg, get_diem_client, get_tx_params},
   configs_profile::get_local_proofs_this_profile,
 };
 use anyhow::Error;
+use log::{error, warn};
 use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use serde::{Deserialize, Serialize};
-use log::{error, warn};
 use std::{env, path::PathBuf};
 use tauri::Manager;
 use tauri::Window;
@@ -36,7 +36,7 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
     Ok(n) => {
       println!("SUCCESS: fetched next proof params from chain");
       n
-    },
+    }
     // failover to local mode, if no onchain data can be found.
     // TODO: this is important for migrating to the new protocol.
     // in future versions we should remove this since we may be producing bad proofs, and users should explicitly choose to use local mode.
@@ -47,7 +47,7 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
         Ok(n) => {
           warn!("WARN: using next proof params from local");
           n
-        },
+        }
         Err(_) => {
           warn!("WARN: no local proofs found, assuming genesis proof");
           NextProof::genesis_proof(&config)
@@ -162,7 +162,7 @@ pub fn maybe_send_genesis_proof(tx_params: &TxParams) -> Result<BacklogSuccess, 
       Err(e) => {
         dbg!(&e);
         Err(CarpeError::from(e))
-      },
+      }
     }
   } else {
     error!("No genesis proof found in vdf_proofs dir");
@@ -229,6 +229,22 @@ pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
       ))
     })
 }
+
+#[tauri::command(async)]
+pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {
+  let config = get_cfg()?;
+  
+  let (_, path) = tower::proof::get_highest_block(&config.get_block_dir())
+    // TODO: Why is the CarpeError From anyhow not working?
+    .map_err(|e| {
+      CarpeError::misc(&format!(
+        "could not get local files, message: {:?}",
+        e.to_string()
+      ))
+    })?;
+  Ok(path)
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// the parameter e.g. upper and lower thresholds
 // TODO: This is deprecated.
@@ -241,7 +257,6 @@ pub struct EpochRules {
 
 #[tauri::command(async)]
 pub fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
-
   Ok(EpochRules {
     lower: tower::EPOCH_MINING_THRES_LOWER,
     upper: tower::EPOCH_MINING_THRES_UPPER,

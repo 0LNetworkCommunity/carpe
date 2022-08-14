@@ -141,6 +141,8 @@ fn main() {
       mock_build_tower,
       start_forever_task,
       debug_start_listener,
+      debug_highest_proof_path,
+      debug_preferences_path,
       // Preferences
       get_preferences,
       set_preferences_locale

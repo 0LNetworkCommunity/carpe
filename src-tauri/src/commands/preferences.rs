@@ -33,6 +33,11 @@ pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
   update_preferences(&preferences)
 }
 
+#[tauri::command(async)]
+pub fn debug_preferences_path() -> Result<PathBuf, CarpeError> {
+  Ok(preferences_db_path().parent().unwrap().to_path_buf())
+}
+
 pub fn read_preferences() -> Result<Preferences, Error> {
   let db_path = preferences_db_path();
   match db_path.exists() {
