@@ -4,10 +4,13 @@
 )]
 
 extern crate url;
-use std::fs::{File, self};
 use crate::commands::*;
+use log::{error, info, warn};
+use simplelog::{
+  ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
+};
+use std::fs::{self, File};
 use tauri::{Menu, MenuItem, Submenu};
-use simplelog::*;
 
 pub mod carpe_error;
 pub mod commands;
@@ -24,16 +27,39 @@ fn main() {
   // set_env("test".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
 
+  match fs::create_dir_all(configs::default_config_path().parent().unwrap()) {
+    Ok(_) => (),
+    Err(e) => {
+      error!("could not create config dir. Message: {}", e);
+      std::process::exit(1);
+    }
+  }
   // logging to file
-  CombinedLogger::init(
-        vec![
-            TermLogger::new(LevelFilter::Info, simplelog::Config::default(), TerminalMode::Mixed, ColorChoice::Auto),
-            WriteLogger::new(LevelFilter::Warn, simplelog::Config::default(), File::create(configs::default_config_path().parent().unwrap().join("carpe.log")).unwrap()),
-        ]
-    ).unwrap();
+  CombinedLogger::init(vec![
+    TermLogger::new(
+      LevelFilter::Debug,
+      Config::default(),
+      TerminalMode::Mixed,
+      ColorChoice::Auto,
+    ),
+    WriteLogger::new(
+      LevelFilter::Warn,
+      simplelog::Config::default(),
+      File::create(
+        configs::default_config_path()
+          .parent()
+          .unwrap()
+          .join("carpe.log"),
+      )
+      .unwrap(),
+    ),
+  ])
+  .unwrap();
+
+  warn!("Carpe started"); // TODO: debugging only. `log` create features are being inherited from libra repo.
+  info!("Carpe started");
 
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
-
 
   let menu = Menu::new()
     .add_submenu(Submenu::new(
