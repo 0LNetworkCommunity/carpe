@@ -1,10 +1,11 @@
 use crate::{
   carpe_error::CarpeError,
   commands::get_onchain_tower_state,
-  configs::{get_cfg, get_tx_params, get_diem_client},
+  configs::{get_cfg, get_diem_client, get_tx_params},
   configs_profile::get_local_proofs_this_profile,
 };
 use anyhow::Error;
+use log::{error, warn};
 use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use serde::{Deserialize, Serialize};
@@ -35,7 +36,7 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
     Ok(n) => {
       println!("SUCCESS: fetched next proof params from chain");
       n
-    },
+    }
     // failover to local mode, if no onchain data can be found.
     // TODO: this is important for migrating to the new protocol.
     // in future versions we should remove this since we may be producing bad proofs, and users should explicitly choose to use local mode.
@@ -44,11 +45,11 @@ pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
       // this may be a genesis proof
       match next_proof::get_next_proof_params_from_local(&mut config) {
         Ok(n) => {
-          println!("WARN: using next proof params from local");
+          warn!("WARN: using next proof params from local");
           n
-        },
+        }
         Err(_) => {
-          println!("WARN: no local proofs found, assuming genesis proof");
+          warn!("WARN: no local proofs found, assuming genesis proof");
           NextProof::genesis_proof(&config)
         }
       }
@@ -102,54 +103,18 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
           .unwrap()
       }
       Err(e) => {
-        println!("backlog error, msg: {:?}", &e);
+        error!("backlog error, msg: {:?}", &e);
 
         window_clone
           .emit("backlog-error", CarpeError::from(e))
           .unwrap();
       }
     }
-    // if get_onchain_tower_state(tx_params.owner_address).is_err() {
-    //   println!("cannot get tower state, maybe TowerState not initialized");
-    //   if let Some(proof) = get_proof_zero().ok() {
-    //     match commit_proof_tx(&tx_params, proof) {
-    //       Ok(_) => {
-    //         println!("submitted proof zero");
-    //         window_clone
-    //           .emit("backlog-success", BacklogSuccess { success: true })
-    //           .unwrap()
-    //       }
-    //       Err(e) => {
-    //         window_clone
-    //           .emit("backlog-error", CarpeError::from(e))
-    //           .unwrap();
-    //       }
-    //     }
-    //   } else {
-    //     println!("No genesis proof found in vdf_proofs dir");
-    //   }
-    // } else {
-    //   println!("\nprocessing backlog\n");
-
-    //   match process_backlog(&config, &tx_params) {
-    //     Ok(_) => {
-    //       println!("backlog success");
-    //       window_clone
-    //         .emit("backlog-success", BacklogSuccess { success: true })
-    //         .unwrap()
-    //     }
-    //     Err(e) => {
-    //       window_clone
-    //         .emit("backlog-error", CarpeError::from(e))
-    //         .unwrap();
-    //     }
-    //   }
-    // }
   });
 
   let window_clone = window.clone();
   window.once("kill-backlog-listener", move |_| {
-    println!("received kill listener event");
+    warn!("received kill listener event");
     window_clone.unlisten(h);
   });
 
@@ -171,7 +136,7 @@ pub fn maybe_send_backlog(
 ) -> Result<BacklogSuccess, CarpeError> {
   // check if this is a genesis block
   if get_onchain_tower_state(tx_params.owner_address.to_owned()).is_err() {
-    println!("cannot get tower state, maybe TowerState not initialized");
+    warn!("cannot get tower state, maybe TowerState not initialized");
     maybe_send_genesis_proof(tx_params)
   } else {
     println!("\nprocessing backlog\n");
@@ -197,10 +162,10 @@ pub fn maybe_send_genesis_proof(tx_params: &TxParams) -> Result<BacklogSuccess, 
       Err(e) => {
         dbg!(&e);
         Err(CarpeError::from(e))
-      },
+      }
     }
   } else {
-    println!("No genesis proof found in vdf_proofs dir");
+    error!("No genesis proof found in vdf_proofs dir");
     Ok(BacklogSuccess { success: false })
   }
 }
@@ -214,8 +179,7 @@ fn get_proof_zero() -> Result<VDFProof, Error> {
     .join("proof_0.json");
   let string = std::fs::read_to_string(path)?;
   let proof: VDFProof = serde_json::from_str(&string)?;
-  // dbg!(&proof);
-  // .parse();
+
   Ok(proof)
 }
 
@@ -231,7 +195,7 @@ pub fn submit_proof_zero() -> Result<(), CarpeError> {
 #[tauri::command(async)]
 pub fn get_local_height() -> Result<u64, CarpeError> {
   let cfg = get_cfg()?;
-  // let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
+
   match get_latest_proof(&cfg, true) {
     Ok(proof) => Ok(proof.height),
     Err(_) => Err(CarpeError::tower(
@@ -265,8 +229,25 @@ pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
       ))
     })
 }
+
+#[tauri::command(async)]
+pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {
+  let config = get_cfg()?;
+  
+  let (_, path) = tower::proof::get_highest_block(&config.get_block_dir())
+    // TODO: Why is the CarpeError From anyhow not working?
+    .map_err(|e| {
+      CarpeError::misc(&format!(
+        "could not get local files, message: {:?}",
+        e.to_string()
+      ))
+    })?;
+  Ok(path)
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// the parameter e.g. upper and lower thresholds
+// TODO: This is deprecated.
 pub struct EpochRules {
   pub lower: u64,
   pub upper: u64,
@@ -276,7 +257,6 @@ pub struct EpochRules {
 
 #[tauri::command(async)]
 pub fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
-  // dbg!("get_epoch_rules");
   Ok(EpochRules {
     lower: tower::EPOCH_MINING_THRES_LOWER,
     upper: tower::EPOCH_MINING_THRES_UPPER,

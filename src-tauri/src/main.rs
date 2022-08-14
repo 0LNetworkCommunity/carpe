@@ -4,6 +4,13 @@
 )]
 
 extern crate url;
+use crate::commands::*;
+use log::{error, info, warn};
+use simplelog::{
+  ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
+};
+use std::fs::{self, File};
+use tauri::{Menu, MenuItem, Submenu};
 
 pub mod carpe_error;
 pub mod commands;
@@ -13,22 +20,46 @@ pub mod configs_profile;
 pub mod key_manager;
 mod waypoint;
 
-// use std::env;
-
-use crate::commands::*;
-use pretty_env_logger;
-use tauri::{Menu, MenuItem, Submenu};
-
 fn main() {
-  //  println!("{}", version::version());
-  // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
-  pretty_env_logger::init();
-
   //////// FORCE TEST SETTINGS ON START ////////////////////
   // uncomment below to explicitly set "test" env
   // Tauri builder does not take env variable from terminal
   // set_env("test".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
+
+  match fs::create_dir_all(configs::default_config_path().parent().unwrap()) {
+    Ok(_) => (),
+    Err(e) => {
+      error!("could not create config dir. Message: {}", e);
+      std::process::exit(1);
+    }
+  }
+  // logging to file
+  CombinedLogger::init(vec![
+    TermLogger::new(
+      LevelFilter::Debug,
+      Config::default(),
+      TerminalMode::Mixed,
+      ColorChoice::Auto,
+    ),
+    WriteLogger::new(
+      LevelFilter::Warn,
+      simplelog::Config::default(),
+      File::create(
+        configs::default_config_path()
+          .parent()
+          .unwrap()
+          .join("carpe.log"),
+      )
+      .unwrap(),
+    ),
+  ])
+  .unwrap();
+
+  warn!("Carpe started"); // TODO: debugging only. `log` create features are being inherited from libra repo.
+  info!("Carpe started");
+
+  // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
 
   let menu = Menu::new()
     .add_submenu(Submenu::new(
@@ -96,6 +127,7 @@ fn main() {
       // Version
       get_app_version,
       // Debug
+      log_this,
       init_swarm,
       swarm_miner,
       swarm_files,
@@ -109,6 +141,8 @@ fn main() {
       mock_build_tower,
       start_forever_task,
       debug_start_listener,
+      debug_highest_proof_path,
+      debug_preferences_path,
       // Preferences
       get_preferences,
       set_preferences_locale

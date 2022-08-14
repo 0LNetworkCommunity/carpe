@@ -33,8 +33,8 @@ impl From<TxError> for CarpeError {
   fn from(e: TxError) -> Self {
     let uid = e.abort_code.unwrap_or(E_UNKNOWN);
     let msg = format!(
-      "Transaction Error: Location {:?} AbortCode: {:?}",
-      &e.location, &e.abort_code
+      "Transaction Error: Location {:?}, AbortCode: {:?}, Message: {:?}",
+      &e.location, &e.abort_code, &e.err
     );
     let trace = format!("TxView: {:?}", &e.tx_view);
     // check if the is a tower error
@@ -48,17 +48,22 @@ impl From<TxError> for CarpeError {
         CarpeError::new(ErrorCat::Tx, uid, msg, trace)
       }
 
-      a => CarpeError::tower(&a.to_string(), a.value()),
+      any_tower_err => CarpeError::tower(&any_tower_err.to_string(), any_tower_err.value()),
     }
   }
 }
 
-pub const E_UNKNOWN: u64 = 100; // consistent with TowerError.rs
+pub const E_UNKNOWN: u64 = 100;
 
 pub const E_APP_CONFIG: u64 = 103; // consistent with TowerError.rs
 
 // Client Errors
-pub const E_CLIENT_CX: u64 = 404; // consistent with TowerError.rs
+pub const E_CLIENT_UNKNOWN: u64 = 200;
+pub const E_CLIENT_CX: u64 = 404;
+
+// Transaction Errors
+pub const E_TX_UNKNOWN: u64 = 300;
+
 
 impl CarpeError {
   pub fn new(category: ErrorCat, uid: u64, msg: String, trace: String) -> Self {
@@ -79,10 +84,10 @@ impl CarpeError {
     }
   }
 
-  pub fn tx(msg: &str) -> Self {
+  pub fn tx_unknown(msg: &str) -> Self {
     CarpeError {
       category: ErrorCat::Tx,
-      uid: E_UNKNOWN,
+      uid: E_TX_UNKNOWN,
       msg: msg.to_owned(),
       trace: msg.to_owned(),
     }
@@ -106,10 +111,10 @@ impl CarpeError {
     }
   }
 
-  pub fn client(msg: &str) -> Self {
+  pub fn client_unknown_err(msg: &str) -> Self {
     CarpeError {
       category: ErrorCat::Client,
-      uid: E_UNKNOWN,
+      uid: E_CLIENT_UNKNOWN,
       msg: msg.to_owned(),
       trace: msg.to_owned(),
     }

@@ -1,4 +1,5 @@
 use anyhow::{anyhow, Error};
+use log::error;
 use ol::config::AppCfg;
 use ol_types::config::{self, TxType};
 use std::path::PathBuf;
@@ -37,7 +38,7 @@ pub fn init_swarm() -> Result<String, CarpeError> {
         "ERROR: could not initialize alice configs, message: {:?}",
         e.to_string()
       );
-      println!("{}", &msg);
+      error!("{}", &msg);
       Err(anyhow!(msg).into())
     }
   }
@@ -195,7 +196,7 @@ pub async fn easy_swarm() -> Result<String, CarpeError> {
         "ERROR: could not start swarm, message: {:?}",
         &e.to_string()
       );
-      println!("{}", &msg);
+      error!("{}", &msg);
       Err(anyhow!(msg).into())
     }
   }

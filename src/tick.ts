@@ -3,12 +3,12 @@ import { loadAccounts } from "./accountActions";
 import { getEpochRules, getLocalHeight, getTowerChainView, maybeEmitBacklog, maybeStartMiner } from "./miner_invoke";
 import { refreshWaypoint, scanning_fullnodes } from "./networks";
 
-let has_run = false;
+let tick_in_progress = false;
 
 export const carpeTick = async () => {
-  if (!has_run) {
+  if (!tick_in_progress) {
     console.log("carpeTick");
-    has_run = true;
+    tick_in_progress = true;
 
     // this should be instant
     await getEpochRules()
@@ -21,10 +21,10 @@ export const carpeTick = async () => {
       refreshWaypoint()
         .then(loadAccounts)
         .then(getTowerChainView)
-        .then(maybeEmitBacklog)
-        .then(maybeStartMiner)
         .finally(() => {
-          has_run = false;
+          maybeEmitBacklog(); // do this no matter what
+          maybeStartMiner();
+          tick_in_progress = false;
         });
     }
 

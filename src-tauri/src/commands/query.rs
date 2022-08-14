@@ -19,12 +19,11 @@ pub fn get_onchain_tower_state(
   account: AccountAddress,
 ) -> Result<TowerStateResourceView, CarpeError> {
   dbg!("get_onchain_tower_state");
-  // println!("fetching onchain tower state");
   let node = get_node_obj()?;
 
   match node.client.get_miner_state(&account) {
     Ok(Some(t)) => Ok(t),
-    _ => Err(CarpeError::client("Could not get tower state from chain")),
+    _ => Err(CarpeError::client_unknown_err("Could not get tower state from chain")),
   }
 }
 

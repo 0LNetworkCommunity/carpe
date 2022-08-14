@@ -11,13 +11,13 @@
     invoke("debug_error", {
       debugErr: false,
     })
-    .then((res) => responses.set(res))
+    .then((res) => responses.set(res as string))
     .catch((e) => raise_error(e, false, "makeError"));
   };
 
   const triggerEventFromRustToJs = async () => {
     invoke("debug_emit_event", {})
-    .then((res) => responses.set(res))
+    .then((res) => responses.set(res as string))
     .catch((e) => raise_error(e, false, "triggerEventFromRustToJs"));
   };
 
@@ -30,7 +30,7 @@
   const debugStartListener = async () => {
     invoke("debug_start_listener", {})
       .then((res) => {
-        responses.set(res);
+        responses.set(res as string);
       })
       .catch((e) => console.error(e));
   };
@@ -45,7 +45,7 @@
       // pathStr: home,
     })
       .then((res) => {
-        responses.set(res);
+        responses.set(res as string);
       })
       .catch((e) => console.error(e));
   };
@@ -54,7 +54,7 @@
   const testAsync = async () => {
     invoke("delay_async", {})
       .then((res) => {
-        responses.set(res);
+        responses.set(res as string);
       })
       .catch((e) => console.error(e));
   };
@@ -63,7 +63,7 @@
     const startForever = async () => {
     invoke("start_forever_task", {})
       .then((res) => {
-        responses.set(res);
+        responses.set(res as string);
       })
       .catch((e) => console.error(e));
   };
@@ -77,7 +77,7 @@
     console.log("start tower listener")
     invoke("mock_build_tower", {success: true})
       .then((res) => {
-        responses.set(res);
+        responses.set(res as string);
       })
       .catch((e) => console.error(e));
   };
@@ -90,7 +90,7 @@
   const mockTowerOnceFail = async () => {
     invoke("mock_build_tower", {success: false})
       .then((res) => {
-        responses.set(res);
+        responses.set(res as string);
       })
       .catch((e) => console.error(e));
   };
