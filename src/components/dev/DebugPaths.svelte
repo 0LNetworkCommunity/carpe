@@ -18,7 +18,7 @@
 </script>
 
 <main>
-  <div class="uk-padding">
+  <div class="uk-margin-bottom">
     <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
       Local Files
     </h4>
