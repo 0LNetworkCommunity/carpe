@@ -1,6 +1,7 @@
 import { get, writable } from 'svelte/store';
 import { displayInsufficientBalance, displayDiscontinuity, displayInvalidProof, displayTooManyProofs, displayWrongDifficulty } from './carpeErrorUI';
 import { notify_error } from './carpeNotify';
+import { Level, logger } from './logger';
 export interface CarpeError {
   category: number;
   uid: number;
@@ -40,6 +41,7 @@ export function raise_error(err: CarpeError, quiet: boolean = false, caller: str
   if (!quiet && !hasCustomErrorDisplay) {
     notify_error(display);
   }
+  logger(Level.Error, err.msg);
 }
 
 

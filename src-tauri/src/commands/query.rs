@@ -19,7 +19,6 @@ pub fn get_onchain_tower_state(
   account: AccountAddress,
 ) -> Result<TowerStateResourceView, CarpeError> {
   dbg!("get_onchain_tower_state");
-  // println!("fetching onchain tower state");
   let node = get_node_obj()?;
 
   match node.client.get_miner_state(&account) {

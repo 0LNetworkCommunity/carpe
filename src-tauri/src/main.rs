@@ -127,6 +127,7 @@ fn main() {
       // Version
       get_app_version,
       // Debug
+      log_this,
       init_swarm,
       swarm_miner,
       swarm_files,

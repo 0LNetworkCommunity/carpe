@@ -8,6 +8,7 @@ mod query;
 mod swarm;
 mod tx;
 mod wallets;
+mod web_logs;
 
 pub use app_version::*;
 pub use client::*;
@@ -19,3 +20,4 @@ pub use query::*;
 pub use swarm::*;
 pub use tx::*;
 pub use wallets::*;
+pub use web_logs::*;

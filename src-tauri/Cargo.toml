@@ -54,3 +54,4 @@ simplelog = { version = "^0.11.0", features = ["paris"] }
 [features]
 custom-protocol = [ "tauri/custom-protocol" ]
 default = [ "custom-protocol" ]
+

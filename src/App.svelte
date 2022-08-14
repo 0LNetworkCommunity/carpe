@@ -29,6 +29,7 @@
   import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
   import { refreshUpstreamPeerStats } from "./networks";
+import { Level, logger } from "./logger";
   
   init_preferences();
  
@@ -41,7 +42,8 @@
 
   onMount(async () => {
 
-
+    logger(Level.Warn, "Webview is starting");
+    
     isCarpeInit();
 
     getEnv();
