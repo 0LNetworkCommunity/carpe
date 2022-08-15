@@ -21,10 +21,11 @@
       <span class="uk-text-bold">{$_("about.version")}: </span>v{release.version}
     </p>
     <p class="uk-text-muted">
-      <span class="uk-text-bold">{$_("about.branch")}: </span>{release.head}
-    </p>
-    <p class="uk-text-muted">
       <span class="uk-text-bold">{$_("about.commit")}: </span>{release.hash}
     </p>
+    <p class="uk-text-muted">
+      <span class="uk-text-bold">{$_("about.branch")}: </span>{release.head}
+    </p>
+
   </div>
 </main>
