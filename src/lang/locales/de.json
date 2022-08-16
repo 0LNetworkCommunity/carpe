@@ -38,6 +38,7 @@
       "address": "Adresse",
       "authkey": "Authkey",
       "balance": "Guthaben",
+      "wallet_type": "Wallet Type",
       "offline": "offline",
       "loading": "wird geladen",
       "account_on_chain": "Konto nicht auf der Chain",

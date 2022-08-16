@@ -34,6 +34,7 @@
       "address": "Address",
       "authkey": "Authkey",
       "balance": "Balance",
+      "wallet_type": "Wallet Type",
       "offline": "offline",
       "loading": "loading",
       "account_on_chain": "Account Not On Chain",

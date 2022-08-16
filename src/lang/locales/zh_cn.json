@@ -34,6 +34,7 @@
       "address": "地址",
       "authkey": "激活码",
       "balance": "余额",
+      "wallet_type": "Wallet Type",
       "offline": "断线",
       "loading": "加载中",
       "account_on_chain": "未激活",

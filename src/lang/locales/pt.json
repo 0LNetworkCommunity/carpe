@@ -34,6 +34,7 @@
       "address": "Conta",
       "authkey": "Chave de autenticação",
       "balance": "Saldo",
+      "wallet_type": "Wallet Type",
       "offline": "offline",
       "loading": "carregando",
       "account_on_chain": "Conta não criada na rede",

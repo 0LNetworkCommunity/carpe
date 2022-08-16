@@ -32,7 +32,7 @@ pub struct AccountEntry {
   pub nickname: String,
   pub on_chain: Option<bool>,
   pub balance: Option<u64>,
-  pub wallet_type: WalletType,
+  pub wallet_type: Option<WalletType>,
 }
 
 impl AccountEntry {
@@ -43,7 +43,7 @@ impl AccountEntry {
       nickname: get_short(address),
       on_chain: None,
       balance: None,
-      wallet_type: WalletType::None,
+      wallet_type: Some(WalletType::None),
     }
   }
 }
@@ -136,9 +136,9 @@ fn map_get_balance_and_wallet_type(mut all_accounts: Accounts) -> Result<Account
     .map(|mut e| {
       e.balance = get_balance(e.account).ok();
       if let Ok(wallet_type) = get_wallet_type(e.account) {
-        e.wallet_type = wallet_type;
+        e.wallet_type = Some(wallet_type);
       }
-      e.on_chain = e.balance.is_some();
+      e.on_chain = Some(e.balance.is_some());
       e
     })
     .collect();
@@ -206,7 +206,7 @@ fn insert_account_db(
     nickname: nickname,
     on_chain: None,
     balance: None,
-    wallet_type: WalletType::None,
+    wallet_type: Some(WalletType::None),
   };
 
   let acc_list: Vec<AccountAddress> = all

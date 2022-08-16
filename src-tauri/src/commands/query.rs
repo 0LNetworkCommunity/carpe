@@ -6,7 +6,10 @@ use diem_json_rpc_types::views::TowerStateResourceView;
 use diem_types::{account_address::AccountAddress, event::EventKey};
 use ol::commands::query_cmd;
 use ol::node::query;
-use ol::node::{node::Node, query::{QueryType, WalletType};
+use ol::node::{
+  node::Node,
+  query::{QueryType, WalletType}
+};
 use ol_types::makewhole_resource::{CreditResource, MakeWholeResource};
 use resource_viewer::AnnotatedMoveValue;
 

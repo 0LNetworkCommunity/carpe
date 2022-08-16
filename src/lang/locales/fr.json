@@ -34,6 +34,7 @@
       "address": "Adresse",
       "authkey": "Authkey",
       "balance": "Solde",
+      "wallet_type": "Wallet Type",
       "offline": "hors-ligne",
       "loading": "chargement",
       "account_on_chain": "Compte pas sur Chaine",

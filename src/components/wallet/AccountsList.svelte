@@ -28,7 +28,7 @@
           <th>{$_("wallet.account_list.address")}</th>
           <th>{$_("wallet.account_list.authkey")}</th>
           <th class="uk-text-right">{$_("wallet.account_list.balance")}</th>
-		  <th>{$_("wallet.account_list.wallet_type")}</th>
+          <th>{$_("wallet.account_list.wallet_type")}</th>
         </tr>
       </thead>
       <tbody>
