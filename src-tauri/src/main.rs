@@ -10,7 +10,7 @@ use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
 };
 use std::fs::{self, File};
-use tauri::{Menu, MenuItem, Submenu};
+use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
 
 pub mod carpe_error;
 pub mod commands;
@@ -44,7 +44,7 @@ fn main() {
     ),
     WriteLogger::new(
       LevelFilter::Warn,
-      simplelog::Config::default(),
+      Config::default(),
       File::create(
         configs::default_config_path()
           .parent()
@@ -60,12 +60,12 @@ fn main() {
   info!("Carpe started");
 
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
-
+  let metadata = AboutMetadata::new();
   let menu = Menu::new()
     .add_submenu(Submenu::new(
       "Carpe",
       Menu::new()
-        .add_native_item(MenuItem::About("Carpe".to_string()))
+        .add_native_item(MenuItem::About("Carpe".to_string(), metadata))
         .add_native_item(MenuItem::Quit),
     ))
     .add_submenu(Submenu::new("Edit", {

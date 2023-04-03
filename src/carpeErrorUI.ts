@@ -4,20 +4,22 @@ import type { CarpeError } from "./carpeError";
 
 // one of the Errors mapped in carpeError.ts
 // display these errors
-// the state get switeched to false whenever a new backlog submission happens.
+// the state get switched to false whenever a new backlog submission happens.
 // todo: each error needs have its own rules for clearing
 
-export const displayInsufficientBalance = writable<CarpeError>({});
-export const displayWrongDifficulty = writable<CarpeError>({});
-export const displayTooManyProofs = writable<CarpeError>({});
-export const displayDiscontinuity = writable<CarpeError>({});
-export const displayInvalidProof = writable<CarpeError>({});
+export const EmptyError = {} as CarpeError;
+
+export const displayInsufficientBalance = writable<CarpeError>(EmptyError);
+export const displayWrongDifficulty = writable<CarpeError>(EmptyError);
+export const displayTooManyProofs = writable<CarpeError>(EmptyError);
+export const displayDiscontinuity = writable<CarpeError>(EmptyError);
+export const displayInvalidProof = writable<CarpeError>(EmptyError);
 
 export const clearDisplayErrors = () => {
-  displayWrongDifficulty.set({});
-  displayTooManyProofs.set({});
-  displayDiscontinuity.set({});
-  displayInvalidProof.set({});
-  displayInsufficientBalance.set({});
+  displayWrongDifficulty.set(EmptyError);
+  displayTooManyProofs.set(EmptyError);
+  displayDiscontinuity.set(EmptyError);
+  displayInvalidProof.set(EmptyError);
+  displayInsufficientBalance.set(EmptyError);
 }
 
