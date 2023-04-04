@@ -35,7 +35,7 @@ export interface ProofProgress {
   complete: boolean, // TODO: this is duplicated with minerProofComplete in miner.ts
   error: boolean,
   time_elapsed: number,
-  pct_complete: number, 
+  pct_complete: number,
 }
 export interface EpochRules {
   lower: number,
@@ -43,7 +43,7 @@ export interface EpochRules {
   difficulty: number,
   security: number,
 }
-export const tower = writable<ClientTowerStatus>({});
+export const tower = writable<ClientTowerStatus>(<ClientTowerStatus>{});
 
 // is set to true if when the app starts and Rust emits the backlog-listener-ready event.
 export const backlogListenerReady = writable(false);

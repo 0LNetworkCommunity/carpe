@@ -2,7 +2,7 @@ import { get } from 'svelte/store';
 import { invoke } from '@tauri-apps/api/tauri';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
-import { minerLoopEnabled, tower} from "./miner";
+import {ClientTowerStatus, minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
 import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents, isAccountsLoaded, makeWhole } from './accounts';
 
@@ -91,7 +91,7 @@ export const setAccount = async (an_address: string, notifySucess = true) => {
   signingAccount.set(a);
  
   // reset user data
-  tower.set({});
+  tower.set(<ClientTowerStatus>{});
   mnem.set("");
   
   // initi account events for better UX
@@ -101,7 +101,9 @@ export const setAccount = async (an_address: string, notifySucess = true) => {
     account: a.account,
   })
   .then((res) => {
-    responses.set(res);
+      if (typeof res === "string") {
+          responses.set(res);
+      }
     if (notifySucess) {
       notify_success("Account switched to " + a.nickname);
     }

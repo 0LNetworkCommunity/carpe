@@ -33,7 +33,7 @@ export interface StateMachine {
   advance_miner(success: boolean):void,
   save():void,
 }
-export const machine = writable<StateMachine>({});
+export const machine = writable<StateMachine>(<StateMachine>{});
 
 class M implements StateMachine {
   miner: MinerActivity;

@@ -85,7 +85,7 @@ export const maybeStartMiner = async () => {
     proofComplete
   ) {
     return towerOnce();
-  };
+  }
 }
 
 // Only the backlog service needs a listener
@@ -164,7 +164,7 @@ export const getTowerChainView = async () => {
   .catch((e) => {
     //need to reset, otherwise may be looking at wrong account
     let t = get(tower);
-    t.on_chain = {};
+    t.on_chain = <TowerStateView>{};
     tower.set(t);
     
     if (t.on_chain && !t.on_chain.verified_tower_height) {

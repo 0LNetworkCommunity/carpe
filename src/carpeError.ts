@@ -6,7 +6,7 @@ export interface CarpeError {
   category: number;
   uid: number;
   msg: string;
-};
+}
 
 export enum ErrMap {
   NoClientCx = 404,
@@ -18,6 +18,7 @@ export enum ErrMap {
   InvalidProof = 130110,
 }
 // let list_errors: CarpeError;
+// @ts-ignore
 export const carpeErrorLog = writable <[CarpeError]>([]);
 
 export function raise_error(err: CarpeError, quiet: boolean = false, caller: string) {
@@ -46,6 +47,7 @@ export function raise_error(err: CarpeError, quiet: boolean = false, caller: str
 
 
 export function clearErrors() {
+  // @ts-ignore
   carpeErrorLog.set([]);
 }
 
