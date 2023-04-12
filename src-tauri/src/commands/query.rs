@@ -3,11 +3,11 @@ use crate::configs_network::remove_node;
 use crate::{carpe_error::CarpeError, configs::get_node_obj};
 use diem_client::views::EventView;
 use diem_json_rpc_types::views::TowerStateResourceView;
+use diem_resource_viewer::AnnotatedMoveValue;
 use diem_types::{account_address::AccountAddress, event::EventKey};
 use ol::node::query;
 use ol::node::{node::Node, query::QueryType};
 use ol_types::makewhole_resource::{CreditResource, MakeWholeResource};
-use resource_viewer::AnnotatedMoveValue;
 
 #[tauri::command(async)]
 pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
@@ -21,8 +21,8 @@ pub fn get_onchain_tower_state(
   dbg!("get_onchain_tower_state");
   let node = get_node_obj()?;
 
-  match node.client.get_miner_state(&account) {
-    Ok(Some(t)) => Ok(t),
+  match node.client.get_miner_state(account) {
+    Ok(t) => t.into_inner().ok_or_else(|| CarpeError::client_unknown_err("Could not get tower state from chain")),
     _ => Err(CarpeError::client_unknown_err("Could not get tower state from chain")),
   }
 }
@@ -54,7 +54,8 @@ pub fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 
 #[tauri::command(async)]
 pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
-  let node = get_node_obj()?;
+  let mut node = get_node_obj()?;
+
   if let Some(state) = node.get_annotate_account_blob(AccountAddress::ZERO)?.0 {
     let recovery = query::find_value_from_state(
       &state,
@@ -112,10 +113,11 @@ pub fn get_events(account: AccountAddress, event_key: u64) -> Result<Vec<EventVi
     );
 
     match result {
-      Ok(mut events) => {
-        events_count = events.len() as u64;
+      Ok(events) => {
+        let mut event_views =  events.into_inner();
+        events_count = event_views.len() as u64;
         start = start + events_count;
-        ret.append(&mut events);
+        ret.append(&mut event_views);
       }
       Err(e) => {
         error = Some(e);
@@ -148,7 +150,7 @@ fn try_again_get_events(
   event_key: u64,
   current_node: &Node,
 ) -> Result<Vec<EventView>, CarpeError> {
-  match remove_node(current_node.client.url().unwrap().to_string()) {
+  match remove_node(current_node.client.url().to_string()) {
     Err(e) => {
       if e.to_string().contains("Cannot remove last node") {
         Err(CarpeError::misc("corrupted_db"))

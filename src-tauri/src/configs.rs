@@ -3,7 +3,7 @@
 use std::path::PathBuf;
 
 use anyhow::Error;
-use cli::diem_client::DiemClient;
+use diem_client::BlockingClient as DiemClient;
 use diem_types::chain_id::NamedChain;
 use dirs;
 use ol::{
@@ -30,7 +30,7 @@ pub fn default_config_path() -> PathBuf {
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 pub fn get_cfg() -> Result<AppCfg, Error> {
-  config::parse_toml(Some(default_config_path())) // gets default toml path.
+  config::parse_toml(default_config_path()) // gets default toml path.
 }
 
 pub fn default_accounts_db_path() -> PathBuf {
@@ -66,11 +66,6 @@ pub fn get_node_obj() -> Result<Node, CarpeError> {
 pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
   find_a_remote_jsonrpc(
     cfg,
-    cfg
-      .clone()
-      .chain_info
-      .base_waypoint
-      .ok_or(CarpeError::config("could not load base_waypoint"))?,
   )
   .map_err(|_| CarpeError::client_unknown_err("could not make a client"))
 }

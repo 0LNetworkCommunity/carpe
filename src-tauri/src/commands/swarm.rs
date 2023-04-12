@@ -109,7 +109,7 @@ fn get_swarm_cfg(config_dir: &str, is_swarm: bool) -> AppCfg {
     toml.push("0/")
   };
   toml.push("0L.toml");
-  config::parse_toml(Some(toml)).unwrap()
+  config::parse_toml(toml).unwrap()
 }
 
 #[tauri::command]

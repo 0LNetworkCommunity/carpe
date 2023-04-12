@@ -10,7 +10,6 @@ use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use serde::{Deserialize, Serialize};
 use std::{env, path::PathBuf};
-use tauri::Manager;
 use tauri::Window;
 use tower::{
   backlog::process_backlog,
