@@ -17,7 +17,7 @@
         "https://raw.githubusercontent.com/OLSF/carpe/main/autoupdater/autoupdater_payload.json"
       ],
       "dialog": true,
-      "pubkey": "YOUR_UPDATER_SIGNATURE_PUBKEY_HERE"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ4MEIzMzc4MzlGMzgwNUUKUldSZWdQTTVlRE1MMkszSGczY1B2OGlOaW5IWXBLdXpZWldKbVl2VGw1RDg0dFNPTHFpYk1WNGkK"
     },
     "bundle": {
       "active": true,

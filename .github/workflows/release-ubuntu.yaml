@@ -4,6 +4,12 @@ on:
   push:
     tags:
       - '*'
+    branches:
+      - '*'
+
+env:
+  TAURI_PRIVATE_KEY: example_key
+
 jobs:
   publish:
     name: Build Binary for ${{ matrix.os }}
@@ -29,7 +35,7 @@ jobs:
       - name: yarn info
         run: yarn install
       - name: Build
-        run: RUST_BACKTRACE=1 yarn run tauri build
+        run: RUST_BACKTRACE=1 yarn tauri build --verbose
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v1-release
         with:

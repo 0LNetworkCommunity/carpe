@@ -11,7 +11,6 @@ export const loadAccounts = async () => {
   return invoke('get_all_accounts')
     .then((result: object) => {
       all_accounts.set(result.accounts);
-      
       if (get(signingAccount).account == "" && result.accounts.length > 0) {
         // set initial signingAccount
         let first = result.accounts[0];
