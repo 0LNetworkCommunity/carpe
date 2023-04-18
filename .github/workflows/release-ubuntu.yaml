@@ -4,8 +4,8 @@ on:
   push:
     tags:
       - '*'
-    branches:
-      - '*'
+#    branches:
+#      - '*'
 
 env:
   TAURI_PRIVATE_KEY: example_key

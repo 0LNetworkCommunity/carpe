@@ -67,7 +67,7 @@ dependencies = [
 [[package]]
 name = "accumulator"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "diem-crypto",
@@ -410,7 +410,7 @@ dependencies = [
 [[package]]
 name = "backup-cli"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -679,7 +679,7 @@ dependencies = [
 [[package]]
 name = "bounded-executor"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
  "futures",
@@ -782,7 +782,7 @@ dependencies = [
 [[package]]
 name = "bytecode-interpreter-crypto"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "curve25519-dalek-fiat",
@@ -1022,7 +1022,7 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 [[package]]
 name = "channel"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "diem-infallible",
@@ -1122,7 +1122,7 @@ dependencies = [
 [[package]]
 name = "classgroup"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "libc",
  "num-traits 0.2.15",
@@ -1255,7 +1255,7 @@ dependencies = [
 [[package]]
 name = "consensus-types"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1829,7 +1829,7 @@ dependencies = [
 [[package]]
 name = "diem-bitvec"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
  "serde 1.0.160",
@@ -1839,7 +1839,7 @@ dependencies = [
 [[package]]
 name = "diem-client"
 version = "0.0.3"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1863,7 +1863,7 @@ dependencies = [
 [[package]]
 name = "diem-config"
 version = "5.2.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "bcs",
  "diem-crypto",
@@ -1888,7 +1888,7 @@ dependencies = [
 [[package]]
 name = "diem-crypto"
 version = "0.0.3"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -1920,7 +1920,7 @@ dependencies = [
 [[package]]
 name = "diem-crypto-derive"
 version = "0.0.3"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
  "proc-macro2 1.0.56",
@@ -1931,7 +1931,7 @@ dependencies = [
 [[package]]
 name = "diem-framework"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1968,7 +1968,7 @@ dependencies = [
 [[package]]
 name = "diem-framework-releases"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -1986,7 +1986,7 @@ dependencies = [
 [[package]]
 name = "diem-genesis-tool"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "base64 0.13.1",
@@ -2027,7 +2027,7 @@ dependencies = [
 [[package]]
 name = "diem-github-client"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
  "proxy",
@@ -2040,12 +2040,12 @@ dependencies = [
 [[package]]
 name = "diem-global-constants"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 
 [[package]]
 name = "diem-id-generator"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
 ]
@@ -2053,7 +2053,7 @@ dependencies = [
 [[package]]
 name = "diem-infallible"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
 ]
@@ -2061,7 +2061,7 @@ dependencies = [
 [[package]]
 name = "diem-jellyfish-merkle"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2085,7 +2085,7 @@ dependencies = [
 [[package]]
 name = "diem-json-rpc"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2122,7 +2122,7 @@ dependencies = [
 [[package]]
 name = "diem-json-rpc-types"
 version = "0.0.3"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2143,7 +2143,7 @@ dependencies = [
 [[package]]
 name = "diem-log-derive"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
  "proc-macro2 1.0.56",
@@ -2154,7 +2154,7 @@ dependencies = [
 [[package]]
 name = "diem-logger"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "backtrace",
  "chrono",
@@ -2174,7 +2174,7 @@ dependencies = [
 [[package]]
 name = "diem-management"
 version = "5.2.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2204,7 +2204,7 @@ dependencies = [
 [[package]]
 name = "diem-mempool"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -2242,7 +2242,7 @@ dependencies = [
 [[package]]
 name = "diem-metrics"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "diem-logger",
@@ -2259,7 +2259,7 @@ dependencies = [
 [[package]]
 name = "diem-metrics-core"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
  "prometheus",
@@ -2268,7 +2268,7 @@ dependencies = [
 [[package]]
 name = "diem-network-address-encryption"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "base64 0.13.1",
  "bcs",
@@ -2285,7 +2285,7 @@ dependencies = [
 [[package]]
 name = "diem-parallel-executor"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "arc-swap",
@@ -2302,7 +2302,7 @@ dependencies = [
 [[package]]
 name = "diem-rate-limiter"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-infallible",
  "diem-logger",
@@ -2317,7 +2317,7 @@ dependencies = [
 [[package]]
 name = "diem-resource-viewer"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "diem-types",
@@ -2330,7 +2330,7 @@ dependencies = [
 [[package]]
 name = "diem-sdk"
 version = "0.0.3"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "bcs",
  "diem-client",
@@ -2346,7 +2346,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-net"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-logger",
  "diem-secure-push-metrics",
@@ -2359,7 +2359,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-push-metrics"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-logger",
  "diem-metrics-core",
@@ -2370,7 +2370,7 @@ dependencies = [
 [[package]]
 name = "diem-secure-storage"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "base64 0.13.1",
  "bcs",
@@ -2393,7 +2393,7 @@ dependencies = [
 [[package]]
 name = "diem-state-view"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "diem-crypto",
@@ -2404,7 +2404,7 @@ dependencies = [
 [[package]]
 name = "diem-temppath"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
  "hex",
@@ -2414,7 +2414,7 @@ dependencies = [
 [[package]]
 name = "diem-time-service"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-infallible",
  "diem-workspace-hack",
@@ -2428,7 +2428,7 @@ dependencies = [
 [[package]]
 name = "diem-transaction-builder"
 version = "0.0.3"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2442,7 +2442,7 @@ dependencies = [
 [[package]]
 name = "diem-types"
 version = "0.0.3"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "aes-gcm",
  "anyhow",
@@ -2470,7 +2470,7 @@ dependencies = [
 [[package]]
 name = "diem-vault-client"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "base64 0.13.1",
  "chrono",
@@ -2487,7 +2487,7 @@ dependencies = [
 [[package]]
 name = "diem-vm"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -2520,7 +2520,7 @@ dependencies = [
 [[package]]
 name = "diem-wallet"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -2541,7 +2541,7 @@ dependencies = [
 [[package]]
 name = "diem-workspace-hack"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "Inflector",
  "anyhow",
@@ -2595,7 +2595,7 @@ dependencies = [
 [[package]]
 name = "diemdb"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "accumulator",
  "anyhow",
@@ -3004,7 +3004,7 @@ checksum = "0206175f82b8d6bf6652ff7d71a1e27fd2e4efde587fd368662814d6ec1d9ce0"
 [[package]]
 name = "event-notifications"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "async-trait",
  "channel",
@@ -3023,7 +3023,7 @@ dependencies = [
 [[package]]
 name = "executor"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -3052,7 +3052,7 @@ dependencies = [
 [[package]]
 name = "executor-benchmark"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "bcs",
  "chrono",
@@ -3087,7 +3087,7 @@ dependencies = [
 [[package]]
 name = "executor-types"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -3232,7 +3232,7 @@ dependencies = [
 [[package]]
 name = "framework-releases"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -3495,7 +3495,7 @@ dependencies = [
 [[package]]
 name = "generate-key"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "bcs",
  "diem-crypto",
@@ -3831,9 +3831,9 @@ dependencies = [
 
 [[package]]
 name = "h2"
-version = "0.3.17"
+version = "0.3.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "66b91535aa35fea1523ad1b86cb6b53c28e0ae566ba4a460f4457e936cad7c6f"
+checksum = "17f8a914c2987b688368b5138aa05321db91f4090cf26118185672ad588bce21"
 dependencies = [
  "bytes 1.4.0",
  "fnv",
@@ -4141,7 +4141,7 @@ dependencies = [
  "futures-channel",
  "futures-core",
  "futures-util",
- "h2 0.3.17",
+ "h2 0.3.18",
  "http",
  "http-body 0.4.5",
  "httparse",
@@ -4617,9 +4617,9 @@ checksum = "3304a64d199bb964be99741b7a14d26972741915b3649639149b2479bb46f4b5"
 
 [[package]]
 name = "libdbus-sys"
-version = "0.2.4"
+version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9f8d7ae751e1cb825c840ae5e682f59b098cdfd213c350ac268b61449a5f58a0"
+checksum = "06085512b750d640299b79be4bad3d2fa90a9c00b1fd9e1b46364f66f0485c72"
 dependencies = [
  "pkg-config",
 ]
@@ -4718,9 +4718,9 @@ checksum = "0717cef1bc8b636c6e1c1bbdefc09e6322da8a9321966e8928ef80d20f7f770f"
 
 [[package]]
 name = "linux-raw-sys"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d59d8c75012853d2e872fb56bc8a2e53718e2cafe1a4c823143141c6d90c322f"
+checksum = "3f508063cc7bb32987c71511216bd5a32be15bccb6a80b52df8b9d7f01fc3aa2"
 
 [[package]]
 name = "lock_api"
@@ -4883,7 +4883,7 @@ dependencies = [
 [[package]]
 name = "mempool-notifications"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "async-trait",
  "diem-types",
@@ -5025,7 +5025,7 @@ checksum = "c9be0862c1b3f26a88803c4a49de6889c10e608b3ee9344e6ef5b45fb37ad3d1"
 [[package]]
 name = "move-abigen"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "bcs",
@@ -5042,7 +5042,7 @@ dependencies = [
 [[package]]
 name = "move-binary-format"
 version = "0.0.3"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "mirai-annotations",
@@ -5057,7 +5057,7 @@ dependencies = [
 [[package]]
 name = "move-borrow-graph"
 version = "0.0.1"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "mirai-annotations",
  "workspace-hack",
@@ -5066,7 +5066,7 @@ dependencies = [
 [[package]]
 name = "move-bytecode-source-map"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "bcs",
@@ -5083,7 +5083,7 @@ dependencies = [
 [[package]]
 name = "move-bytecode-utils"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "move-binary-format",
@@ -5095,7 +5095,7 @@ dependencies = [
 [[package]]
 name = "move-bytecode-verifier"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "mirai-annotations",
@@ -5109,7 +5109,7 @@ dependencies = [
 [[package]]
 name = "move-command-line-common"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "difference",
@@ -5123,7 +5123,7 @@ dependencies = [
 [[package]]
 name = "move-compiler"
 version = "0.0.1"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "bcs",
@@ -5151,7 +5151,7 @@ dependencies = [
 [[package]]
 name = "move-core-types"
 version = "0.0.3"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "bcs",
@@ -5168,7 +5168,7 @@ dependencies = [
 [[package]]
 name = "move-coverage"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "bcs",
@@ -5190,7 +5190,7 @@ dependencies = [
 [[package]]
 name = "move-disassembler"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "colored",
@@ -5209,7 +5209,7 @@ dependencies = [
 [[package]]
 name = "move-docgen"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "codespan",
@@ -5229,7 +5229,7 @@ dependencies = [
 [[package]]
 name = "move-errmapgen"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "bcs",
@@ -5244,7 +5244,7 @@ dependencies = [
 [[package]]
 name = "move-ir-to-bytecode"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "codespan-reporting",
@@ -5264,7 +5264,7 @@ dependencies = [
 [[package]]
 name = "move-ir-to-bytecode-syntax"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "hex",
@@ -5278,7 +5278,7 @@ dependencies = [
 [[package]]
 name = "move-ir-types"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "hex",
@@ -5293,7 +5293,7 @@ dependencies = [
 [[package]]
 name = "move-model"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "codespan",
@@ -5320,7 +5320,7 @@ dependencies = [
 [[package]]
 name = "move-package"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "bcs",
@@ -5352,7 +5352,7 @@ dependencies = [
 [[package]]
 name = "move-prover"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -5391,7 +5391,7 @@ dependencies = [
 [[package]]
 name = "move-prover-boogie-backend"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -5420,7 +5420,7 @@ dependencies = [
 [[package]]
 name = "move-read-write-set-types"
 version = "0.0.3"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "move-binary-format",
@@ -5432,7 +5432,7 @@ dependencies = [
 [[package]]
 name = "move-resource-viewer"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "bcs",
@@ -5448,7 +5448,7 @@ dependencies = [
 [[package]]
 name = "move-stackless-bytecode"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "codespan",
  "codespan-reporting",
@@ -5475,7 +5475,7 @@ dependencies = [
 [[package]]
 name = "move-stackless-bytecode-interpreter"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "bytecode-interpreter-crypto",
@@ -5495,7 +5495,7 @@ dependencies = [
 [[package]]
 name = "move-stdlib"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "diem-metrics",
  "ethers",
@@ -5524,7 +5524,7 @@ dependencies = [
 [[package]]
 name = "move-symbol-pool"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "once_cell",
  "serde 1.0.160",
@@ -5534,7 +5534,7 @@ dependencies = [
 [[package]]
 name = "move-vm-runtime"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "fail",
  "mirai-annotations",
@@ -5552,7 +5552,7 @@ dependencies = [
 [[package]]
 name = "move-vm-types"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "bcs",
  "mirai-annotations",
@@ -5582,7 +5582,7 @@ dependencies = [
 [[package]]
 name = "mvhashmap"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "arc-swap",
  "crossbeam",
@@ -5663,7 +5663,7 @@ dependencies = [
 [[package]]
 name = "netcore"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "bytes 1.4.0",
  "diem-types",
@@ -5680,7 +5680,7 @@ dependencies = [
 [[package]]
 name = "network"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -5922,7 +5922,7 @@ dependencies = [
 [[package]]
 name = "num-variants"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
  "proc-macro2 1.0.56",
@@ -6021,7 +6021,7 @@ checksum = "a9a7ab5d64814df0fe4a4b5ead45ed6c5f181ee3ff04ba344313a6c80446c5d4"
 [[package]]
 name = "ol"
 version = "5.2.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "abscissa_core",
  "abscissa_tokio",
@@ -6092,7 +6092,7 @@ dependencies = [
 [[package]]
 name = "ol-keys"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "diem-types",
@@ -6104,7 +6104,7 @@ dependencies = [
 [[package]]
 name = "ol-types"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "ajson",
  "anyhow",
@@ -6141,7 +6141,7 @@ dependencies = [
 [[package]]
 name = "onboard"
 version = "5.2.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "abscissa_core",
  "anyhow",
@@ -6977,7 +6977,7 @@ dependencies = [
 [[package]]
 name = "proxy"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
  "ipnet",
@@ -7111,7 +7111,7 @@ dependencies = [
  "libc",
  "rand_chacha 0.3.1",
  "rand_core 0.6.4",
- "rand_hc 0.3.1",
+ "rand_hc 0.3.2",
 ]
 
 [[package]]
@@ -7163,9 +7163,9 @@ dependencies = [
 
 [[package]]
 name = "rand_hc"
-version = "0.3.1"
+version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d51e9f596de227fda2ea6c84607f5558e196eeaf43c986b724ba4fb8fdf497e7"
+checksum = "7b363d4f6370f88d62bf586c80405657bde0f0e1b8945d47d2ad59b906cb4f54"
 dependencies = [
  "rand_core 0.6.4",
 ]
@@ -7228,7 +7228,7 @@ dependencies = [
 [[package]]
 name = "read-write-set"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "move-binary-format",
@@ -7245,7 +7245,7 @@ dependencies = [
 [[package]]
 name = "read-write-set-dynamic"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "anyhow",
  "move-binary-format",
@@ -7397,7 +7397,7 @@ dependencies = [
  "encoding_rs",
  "futures-core",
  "futures-util",
- "h2 0.3.17",
+ "h2 0.3.18",
  "http",
  "http-body 0.4.5",
  "hyper 0.14.26",
@@ -7554,9 +7554,9 @@ dependencies = [
 
 [[package]]
 name = "rustc-demangle"
-version = "0.1.22"
+version = "0.1.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d4a36c42d1873f9a77c53bde094f9664d9891bc604a45b4798fd2c389ed12e5b"
+checksum = "d626bb9dae77e28219937af045c257c28bfd3f69333c512553507f5f9798cb76"
 
 [[package]]
 name = "rustc-hash"
@@ -7581,9 +7581,9 @@ dependencies = [
 
 [[package]]
 name = "rustix"
-version = "0.37.11"
+version = "0.37.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85597d61f83914ddeba6a47b3b8ffe7365107221c2e557ed94426489fefb5f77"
+checksum = "722529a737f5a942fdbac3a46cee213053196737c5eaa3386d52e85b786f2659"
 dependencies = [
  "bitflags",
  "errno",
@@ -7697,7 +7697,7 @@ dependencies = [
 [[package]]
 name = "schemadb"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "diem-config",
@@ -7729,7 +7729,7 @@ checksum = "1792db035ce95be60c3f8853017b3999209281c24e2ba5bc8e59bf97a0c590c1"
 [[package]]
 name = "scratchpad"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "arc-swap",
  "diem-crypto",
@@ -8184,7 +8184,7 @@ checksum = "43b2853a4d09f215c24cc5489c992ce46052d359b5109343cbafbf26bc62f8a3"
 [[package]]
 name = "short-hex-str"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "diem-workspace-hack",
  "mirai-annotations",
@@ -8417,7 +8417,7 @@ checksum = "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f"
 [[package]]
 name = "storage-client"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -8434,7 +8434,7 @@ dependencies = [
 [[package]]
 name = "storage-interface"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -9309,7 +9309,7 @@ dependencies = [
 [[package]]
 name = "tower"
 version = "5.2.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -9455,7 +9455,7 @@ dependencies = [
 [[package]]
 name = "transaction-builder-generator"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -9508,7 +9508,7 @@ dependencies = [
 [[package]]
 name = "txs"
 version = "5.2.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "abscissa_core",
  "ajson",
@@ -9800,7 +9800,7 @@ checksum = "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426"
 [[package]]
 name = "vdf"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "bit-vec 0.5.1",
  "classgroup",
@@ -9836,7 +9836,7 @@ checksum = "49874b5167b65d7193b8aba1567f5c7d93d001cafc34600cee003eda787e483f"
 [[package]]
 name = "vm-genesis"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "bcs",
@@ -9868,7 +9868,7 @@ dependencies = [
 [[package]]
 name = "vm-validator"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#732f50027ba2e86d7e6606498b0d6647e7da780e"
+source = "git+https://github.com/Dat-H-Tran/libra.git?branch=v6#2cfe4d9853ffe77477ebdc09a1ca0a57cd4c7f03"
 dependencies = [
  "anyhow",
  "diem-state-view",
@@ -10546,7 +10546,7 @@ dependencies = [
 [[package]]
 name = "workspace-hack"
 version = "0.1.0"
-source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#397f3f6d4ba6ecdca97154dd4a3b9f95fb3d6a7d"
+source = "git+https://github.com/Dat-H-Tran/move-0L.git?branch=v6#f7db04ba15b1d6560bb93e666e1b80bd5a1e537d"
 dependencies = [
  "arrayvec 0.5.2",
  "block-buffer 0.9.0",
