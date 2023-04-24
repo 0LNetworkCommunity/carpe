@@ -30,6 +30,8 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.68.2
         with:
           components: rustfmt
+      - name: update cargo index
+        run: cargo install empty-library
       - name: setup node
         uses: actions/setup-node@v3
         with:
