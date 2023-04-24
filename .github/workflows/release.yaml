@@ -1,4 +1,4 @@
-name: Build Binaries for Mac
+name: Build Binaries for Mac latest, Ubuntu 20-04, and Windows latest
 
 on:
   push:
