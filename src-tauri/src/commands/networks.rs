@@ -1,5 +1,6 @@
 //! networks to connect to
 
+use std::str::FromStr;
 use crate::{
   carpe_error::CarpeError,
   configs_network::{
@@ -7,13 +8,13 @@ use crate::{
     NetworkProfile,
   }, configs,
 };
-use diem_types::{waypoint::Waypoint, chain_id::NamedChain};
+use zapatos_types::{waypoint::Waypoint, chain_id::NamedChain};
 use ol_types::rpc_playlist;
 use url::Url;
 
 #[tauri::command]
 pub fn toggle_network(network: String, custom_playlist: Option<Url>) -> Result<NetworkProfile, CarpeError> {
-  let name = NamedChain::str_to_named(&network)?;
+  let name = NamedChain::from_str(&network)?;
   set_network_configs(name, custom_playlist)
 }
 

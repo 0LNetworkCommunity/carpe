@@ -11,12 +11,13 @@ use crate::{
   waypoint,
 };
 use anyhow::{bail, Error};
-use diem_types::{waypoint::Waypoint, chain_id::NamedChain};
+use zapatos_types::{waypoint::Waypoint, chain_id::NamedChain};
 use ol::config::AppCfg;
 use ol_types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 use url::Url;
+
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NetworkProfile {
   pub chain_id: NamedChain, // Todo, use the Network Enum

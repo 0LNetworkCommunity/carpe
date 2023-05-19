@@ -4,9 +4,9 @@ use anyhow::Error;
 use glob::glob;
 use std::{fs, path::PathBuf};
 
-use diem_types::transaction::authenticator::AuthenticationKey;
+use zapatos_types::transaction::authenticator::AuthenticationKey;
 
-use diem_types::account_address::AccountAddress;
+use zapatos_types::account_address::AccountAddress;
 use ol::config::AppCfg;
 
 use crate::configs::{self, get_cfg};

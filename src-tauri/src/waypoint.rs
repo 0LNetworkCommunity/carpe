@@ -2,7 +2,7 @@
 
 use std::time::Duration;
 
-use diem_types::waypoint::Waypoint;
+use zapatos_types::waypoint::Waypoint;
 use reqwest::{Url, ClientBuilder};
 use serde::{Serialize, Deserialize};
 use anyhow::{Result, bail};

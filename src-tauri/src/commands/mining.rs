@@ -1,7 +1,7 @@
 use crate::{
   carpe_error::CarpeError,
   commands::get_onchain_tower_state,
-  configs::{get_cfg, get_diem_client, get_tx_params},
+  configs::{get_cfg, get_client, get_tx_params},
   configs_profile::get_local_proofs_this_profile,
 };
 use anyhow::Error;
@@ -10,27 +10,25 @@ use ol::config::AppCfg;
 use ol_types::block::VDFProof;
 use serde::{Deserialize, Serialize};
 use std::{env, path::PathBuf};
-use tauri::Window;
-use tower::{
-  backlog::process_backlog,
-  commit_proof::commit_proof_tx,
-  next_proof::{self, NextProof},
-  proof::{get_latest_proof, mine_once},
-  tower_errors::TowerError,
-};
-use txs::tx_params::TxParams;
+use tauri::{Runtime, Window};
+// use tower::{
+//   backlog::process_backlog,
+//   commit_proof::commit_proof_tx,
+//   next_proof::{self, NextProof},
+//   proof::{get_latest_proof, mine_once},
+//   tower_errors::TowerError,
+// };
 
 /// creates one proof and submits
 #[tauri::command(async)]
-pub fn miner_once(window: Window) -> Result<VDFProof, CarpeError> {
+pub fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, CarpeError> {
   println!("\nMining one proof\n");
 
   window
     .emit("proof-start", {})
     .map_err(|_| CarpeError::misc("could not emit window event"))?;
-
-  let mut config = get_cfg()?;
-  let client = get_diem_client(&config)?;
+  
+  let client = get_client();
   let next = match next_proof::get_next_proof_from_chain(&mut config, client, None) {
     Ok(n) => {
       println!("SUCCESS: fetched next proof params from chain");
@@ -81,7 +79,7 @@ pub struct BacklogSuccess {
 // The backlog listener then should be started at the time the user toggles the mining.
 
 #[tauri::command(async)]
-pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeError> {
+pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Result<(), CarpeError> {
   println!("\nSTARTING BACKLOG LISTENER\n");
   // prepare listener to receive events
   // TODO: this is gross. Prevent cloning when using in closures
@@ -121,7 +119,7 @@ pub async fn start_backlog_sender_listener(window: Window) -> Result<(), CarpeEr
 }
 
 #[tauri::command(async)]
-pub async fn submit_backlog(_window: Window) -> Result<BacklogSuccess, CarpeError> {
+pub async fn submit_backlog<R: Runtime>(_window: Window<R>) -> Result<BacklogSuccess, CarpeError> {
   let config = get_cfg()?;
   let tx_params = get_tx_params()
     .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
