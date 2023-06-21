@@ -12,14 +12,14 @@ use simplelog::{
 use std::fs::{self, File};
 use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
 
-pub mod types;
-pub mod carpe_error;
-pub mod commands;
-pub mod configs;
-// pub mod configs_network;
+pub(crate) mod types;
+pub(crate) mod carpe_error;
+pub(crate) mod commands;
+pub(crate) mod configs;
+pub(crate) mod configs_network;
 // pub mod configs_profile;
 // pub mod key_manager;
-// mod waypoint;
+pub(crate) mod waypoint;
 
 fn main() {
   //////// FORCE TEST SETTINGS ON START ////////////////////

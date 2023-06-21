@@ -7,7 +7,6 @@ use rand::{seq::SliceRandom, thread_rng};
 use serde::Deserialize;
 use url::Url;
 
-
 #[derive(Deserialize)]
 /// A list of host information for upstream fullnodes serving RPC servers
 pub struct FullnodePlaylist {

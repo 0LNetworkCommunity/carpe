@@ -28,9 +28,9 @@ libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
 
 # zapatos = { package = "aptos", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
 # zapatos-crypto = { package = "aptos-crypto", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
-zapatos-types = { package = "aptos-types", git = "https://github.com/0LNetworkCommunity/zapatos.git", rev = "14db26a3f6" }
+zapatos-types = { package = "aptos-types", git = "https://github.com/0LNetworkCommunity/zapatos.git", rev = "996a2dd65b" }
 # zapatos-rest-client = { package = "aptos-rest-client", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
-# zapatos-sdk = { package = "aptos-sdk", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
+zapatos-sdk = { package = "aptos-sdk", git = "https://github.com/0LNetworkCommunity/zapatos.git", rev = "996a2dd65b" }
 
 #tower = { git = "https://github.com/Dat-H-Tran/libra.git", rev = "d9a4e4675ffce72ffbf32fa303381b3d2944fe8b"}
 #onboard = { git = "https://github.com/Dat-H-Tran/libra.git", rev = "d9a4e4675ffce72ffbf32fa303381b3d2944fe8b"}
@@ -47,6 +47,7 @@ zapatos-types = { package = "aptos-types", git = "https://github.com/0LNetworkCo
 #
 #diem-resource-viewer = { git = "https://github.com/Dat-H-Tran/libra.git", rev = "d9a4e4675ffce72ffbf32fa303381b3d2944fe8b"}
 
+ajson = "*"
 sysinfo = "0.16.4"
 # ctrlc = { version = "3.1.6", default-features = false }
 dirs = "4.0.0"

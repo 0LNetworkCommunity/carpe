@@ -5,18 +5,20 @@ use reqwest::ClientBuilder;
 use std::time::Duration;
 
 use crate::{
+
   carpe_error::CarpeError,
+  configs::{ get_cfg, default_config_path},
   commands::preferences::read_preferences,
-  app_cfg::{self, get_cfg},
+  // app_cfg,
   waypoint,
   types::{
-    rpc_playlist::{self, FullnodePlaylist, HostInfo}
-    app_cfg,
+    rpc_playlist::{self, FullnodePlaylist, HostInfo},
+    app_cfg::{self, AppCfg},
   }
 };
 use anyhow::{bail, Error};
 use zapatos_types::{waypoint::Waypoint, chain_id::NamedChain};
-use ol_types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
+// use crate::types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 use url::Url;
@@ -31,7 +33,7 @@ pub struct NetworkProfile {
 
 impl NetworkProfile {
   pub fn new() -> Result<Self, CarpeError> {
-    let cfg = app_cfg::get_cfg()?;
+    let cfg = get_cfg()?;
     Ok(NetworkProfile {
       chain_id: cfg.chain_info.chain_id,
       urls: cfg.profile.upstream_nodes,
@@ -72,12 +74,12 @@ pub fn set_network_configs(
           .parse()
           .unwrap(),
       ))?,
-      NamedChain::TESTING => get_swarm_playlist()?,
+      // NamedChain::TESTING => get_swarm_playlist()?,
       _ => rpc_playlist::get_known_fullnodes(None)?, // assume mainnet
     }
   };
 
-  playlist.update_config_file(Some(app_cfg::default_config_path()))?; // None uses default path of 0L.toml
+  playlist.update_config_file(Some(default_config_path()))?; // None uses default path of 0L.toml
 
   // TODO: I don't think chain ID needs to change.
   set_chain_id(network).map_err(|e| {
@@ -91,27 +93,27 @@ pub fn set_network_configs(
 }
 
 
-fn get_swarm_url() -> anyhow::Result<Url>{
-  let app_cfg = get_cfg()?;
-  let (url, _) = ol_types::config::get_swarm_rpc_url(app_cfg.workspace.node_home.join("swarm_temp/"));
-  Ok(url)
-}
+// fn get_swarm_url() -> anyhow::Result<Url>{
+//   let app_cfg = get_cfg()?;
+//   let (url, _) = ol_types::config::get_swarm_rpc_url(app_cfg.workspace.node_home.join("swarm_temp/"));
+//   Ok(url)
+// }
 
-fn get_swarm_playlist() -> anyhow::Result<FullnodePlaylist> {
+// fn get_swarm_playlist() -> anyhow::Result<FullnodePlaylist> {
 
-  let h = HostInfo {
-      note: "swarm".to_string(),
-      url: get_swarm_url()?,
-  };
+//   let h = HostInfo {
+//       note: "swarm".to_string(),
+//       url: get_swarm_url()?,
+//   };
   
-  let f = FullnodePlaylist {
-    nodes: vec![h],
-  };
+//   let f = FullnodePlaylist {
+//     nodes: vec![h],
+//   };
 
-  Ok(f)
-}
+//   Ok(f)
+// }
 // pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
-//   let cfg = app_cfg::get_cfg()?;
+//   let cfg = get_cfg()?;
 
 //   // try getting waypoint from upstream nodes
 //   // no waypoint is necessary in advance.
@@ -161,7 +163,7 @@ pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
 
 /// Set the base_waypoint used for client connections.
 pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
-  let mut cfg = app_cfg::get_cfg()?;
+  let mut cfg = get_cfg()?;
   cfg.chain_info.base_waypoint = Some(wp);
   cfg.save_file()?;
   Ok(cfg)
@@ -171,7 +173,7 @@ pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
 /// Note: The default_node key in 0L is not used by Carpe. Carpe randomly tests
 /// all the endpoints in upstream_peers on every TX.
 pub fn override_upstream_node(url: Url) -> Result<AppCfg, Error> {
-  let mut cfg = app_cfg::get_cfg()?;
+  let mut cfg = get_cfg()?;
   cfg.profile.upstream_nodes = vec![url];
   cfg.save_file()?;
   Ok(cfg)
@@ -179,7 +181,7 @@ pub fn override_upstream_node(url: Url) -> Result<AppCfg, Error> {
 
 // the 0L configs. For tx sending and upstream nodes
 pub fn set_chain_id(chain_id: NamedChain) -> Result<AppCfg, Error> {
-  let mut cfg = app_cfg::get_cfg()?;
+  let mut cfg = get_cfg()?;
   cfg.chain_info.chain_id = chain_id;
   cfg.save_file()?;
   Ok(cfg)
@@ -187,7 +189,7 @@ pub fn set_chain_id(chain_id: NamedChain) -> Result<AppCfg, Error> {
 
 /// Set the list of upstream nodes
 pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
-  let mut cfg = app_cfg::get_cfg()?;
+  let mut cfg = get_cfg()?;
   cfg.profile.upstream_nodes = vec_url;
   cfg.save_file()?;
   Ok(cfg)
@@ -196,7 +198,7 @@ pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
 /// Removes current node from upstream nodes
 /// To be used when DB is corrupted for instance.
 pub fn remove_node(host: String) -> Result<(), Error> {
-  match app_cfg::get_cfg() {
+  match get_cfg() {
     Ok(mut cfg) => {
       let nodes = cfg.profile.upstream_nodes;
       match nodes.len() {
@@ -262,7 +264,7 @@ impl UpstreamStats {
   }
 
   pub async fn check_which_are_synced(mut self) -> anyhow::Result<Self> {
-    // let _cfg = app_cfg::get_cfg()?;
+    // let _cfg = get_cfg()?;
     dbg!("check_which_are_synced");
 
     // try getting waypoint from upstream nodes
@@ -312,7 +314,7 @@ impl UpstreamStats {
   }
 
   pub async fn check_which_are_alive(mut self) -> anyhow::Result<Self> {
-    let _cfg = app_cfg::get_cfg()?;
+    let _cfg = get_cfg()?;
     let mut upstream = self.nodes;
 
     // try getting waypoint from upstream nodes
