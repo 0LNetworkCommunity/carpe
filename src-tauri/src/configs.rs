@@ -1,7 +1,7 @@
 //! 0L configs file
 
 use std::path::PathBuf;
-
+use crate::types::app_cfg::AppCfg;
 // use anyhow::{Error, Result};
 use dirs;
 // use libra_types::type_extensions::client_ext::ClientExt;
@@ -48,9 +48,10 @@ pub fn default_config_path() -> PathBuf {
 // //     TxParams::get_tx_params_from_keypair(config.clone(), TxType::Miner, keypair, None, false, false)
 // // }
 
-// pub fn get_cfg() -> Result<AppCfg, Error> {
-//     return;  // gets default toml path.
-// }
+pub fn get_cfg() -> anyhow::Result<AppCfg> {
+    todo!();
+    // return;  // gets default toml path.
+}
 
 // pub fn get_client() -> anyhow::Result<Client> {
 //     return Client::default();

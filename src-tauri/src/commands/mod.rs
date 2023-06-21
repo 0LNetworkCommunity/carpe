@@ -3,7 +3,7 @@ mod client;
 // mod examples;
 // mod mining;
 // mod networks;
-// mod preferences;
+pub mod preferences;
 // mod query;
 // mod swarm;
 // mod tx;

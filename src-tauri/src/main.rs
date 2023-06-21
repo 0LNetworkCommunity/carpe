@@ -12,8 +12,9 @@ use simplelog::{
 use std::fs::{self, File};
 use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
 
-// pub mod carpe_error;
-// pub mod commands;
+pub mod types;
+pub mod carpe_error;
+pub mod commands;
 pub mod configs;
 // pub mod configs_network;
 // pub mod configs_profile;
@@ -144,7 +145,7 @@ fn main() {
       // debug_highest_proof_path,
       // debug_preferences_path,
       // // Preferences
-      // get_preferences,
+      commands::preferences::get_preferences,
       // set_preferences_locale
     ])
     .menu(menu)

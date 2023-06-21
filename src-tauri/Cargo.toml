@@ -13,23 +13,24 @@ tauri-build = { version = "1.2.1", features = [] }
 built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
-built = "0.5.1"
+# built = "0.5.1"
 tauri = { version = "1.2.4", features = ["api-all", "updater"] }
 serde = { version = "1.0", features = ["serde_derive"] }
 serde_json = "1.0"
 url = { version = "^2.1", features = ["serde"] }
 
-
-libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
 libra-config = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
-libra-types = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
+libra-genesis-tools = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
+# libra-types = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
 libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
+libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
 
-zapatos = { package = "aptos", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
-zapatos-crypto = { package = "aptos-crypto", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
-zapatos-types = { package = "aptos-types", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
-zapatos-rest-client = { package = "aptos-rest-client", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
-zapatos-sdk = { package = "aptos-sdk", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
+
+# zapatos = { package = "aptos", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
+# zapatos-crypto = { package = "aptos-crypto", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
+zapatos-types = { package = "aptos-types", git = "https://github.com/0LNetworkCommunity/zapatos.git", rev = "14db26a3f6" }
+# zapatos-rest-client = { package = "aptos-rest-client", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
+# zapatos-sdk = { package = "aptos-sdk", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
 
 #tower = { git = "https://github.com/Dat-H-Tran/libra.git", rev = "d9a4e4675ffce72ffbf32fa303381b3d2944fe8b"}
 #onboard = { git = "https://github.com/Dat-H-Tran/libra.git", rev = "d9a4e4675ffce72ffbf32fa303381b3d2944fe8b"}
@@ -47,20 +48,21 @@ zapatos-sdk = { package = "aptos-sdk", git = "https://github.com/0LNetworkCommun
 #diem-resource-viewer = { git = "https://github.com/Dat-H-Tran/libra.git", rev = "d9a4e4675ffce72ffbf32fa303381b3d2944fe8b"}
 
 sysinfo = "0.16.4"
-ctrlc = { version = "3.1.6", default-features = false }
+# ctrlc = { version = "3.1.6", default-features = false }
 dirs = "4.0.0"
 keyring = "0.10.1"
 anyhow = "1.0.38"
 hex = "0.4.3"
-tokio = { version = "1.3.0", features = ["full"] }
+# tokio = { version = "1.3.0", features = ["full"] }
 reqwest = "0.11.6"
 glob = "0.3.0"
 futures = "0.3.17"
 rand = "^0.8"
 log = { version = "0.4", features = ["max_level_debug", "release_max_level_debug"] }
 simplelog = { version = "^0.11.0", features = ["paris"] }
-tracing = "0.1.26"
-tracing-core = "=0.1.30"
+# tracing = "0.1.26"
+# tracing-core = "=0.1.30"
+toml = "*"
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]

@@ -1,12 +1,15 @@
 //! Carpe error type for client
 
-use std::fmt::Display;
+// use std::fmt::Display;
 
-use zapatos_sdk::bcs;
-use zapatos_sdk::move_types::account_address::AccountAddressParseError;
-use reqwest::StatusCode;
-use libra_txs::rest_client::error::AptosErrorResponse;
-use libra_txs::rest_client::error::RestError;
+// use zapatos_sdk::{
+//   // bcs,
+//   rest_client::error::RestError,
+//   move_types::account_address::AccountAddressParseError,
+// };
+
+// use reqwest::StatusCode;
+
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub enum ErrorCat {
