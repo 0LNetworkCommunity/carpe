@@ -3,8 +3,8 @@
   windows_subsystem = "windows"
 )]
 
-extern crate url;
-use crate::commands::*;
+// use url;
+// use crate::commands::*;
 use log::{error, info, warn};
 use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
@@ -12,13 +12,13 @@ use simplelog::{
 use std::fs::{self, File};
 use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
 
-pub mod carpe_error;
-pub mod commands;
-pub mod configs;
-pub mod configs_network;
-pub mod configs_profile;
-pub mod key_manager;
-mod waypoint;
+// pub mod carpe_error;
+// pub mod commands;
+// pub mod configs;
+// pub mod configs_network;
+// pub mod configs_profile;
+// pub mod key_manager;
+// mod waypoint;
 
 fn main() {
   //////// FORCE TEST SETTINGS ON START ////////////////////
@@ -86,66 +86,66 @@ fn main() {
 
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
-      // Accounts
-      is_init,
-      refresh_accounts,
-      get_all_accounts,
-      //get_account_events,
-      add_account,
-      keygen,
-      init_from_mnem,
-      remove_accounts,
-      switch_profile,
-      // Networks
-      refresh_upstream_peer_stats,
-      force_upstream,
-      force_waypoint,
-      override_playlist,
-      get_networks,
-      refresh_waypoint,
-      toggle_network,
-      // Queries
-      query_balance,
-      //query_makewhole,
-      //get_recovery_mode,
-      // Transactions
-      demo_tx,
-      create_user_account,
-      wallet_type,
-      coin_transfer,
-      //claim_make_whole,
-      // Tower
-      miner_once,
-      start_backlog_sender_listener,
-      get_local_height,
-      get_epoch_rules,
-      submit_backlog,
-      get_last_local_proof,
-      get_env,
-      set_env,
-      submit_proof_zero,
-      // Version
-      get_app_version,
-      // Debug
-      log_this,
-      init_swarm,
-      swarm_miner,
-      swarm_files,
-      swarm_process,
-      easy_swarm,
-      debug_error,
-      debug_emit_event,
-      delay_async,
-      //get_onchain_tower_state,
-      receive_event,
-      mock_build_tower,
-      start_forever_task,
-      debug_start_listener,
-      debug_highest_proof_path,
-      debug_preferences_path,
-      // Preferences
-      get_preferences,
-      set_preferences_locale
+      // // Accounts
+      // is_init,
+      // refresh_accounts,
+      // get_all_accounts,
+      // //get_account_events,
+      // add_account,
+      // keygen,
+      // init_from_mnem,
+      // remove_accounts,
+      // switch_profile,
+      // // Networks
+      // refresh_upstream_peer_stats,
+      // force_upstream,
+      // force_waypoint,
+      // override_playlist,
+      // get_networks,
+      // refresh_waypoint,
+      // toggle_network,
+      // // Queries
+      // query_balance,
+      // //query_makewhole,
+      // //get_recovery_mode,
+      // // Transactions
+      // demo_tx,
+      // create_user_account,
+      // wallet_type,
+      // coin_transfer,
+      // //claim_make_whole,
+      // // Tower
+      // miner_once,
+      // start_backlog_sender_listener,
+      // get_local_height,
+      // get_epoch_rules,
+      // submit_backlog,
+      // get_last_local_proof,
+      // get_env,
+      // set_env,
+      // submit_proof_zero,
+      // // Version
+      // get_app_version,
+      // // Debug
+      // log_this,
+      // init_swarm,
+      // swarm_miner,
+      // swarm_files,
+      // swarm_process,
+      // easy_swarm,
+      // debug_error,
+      // debug_emit_event,
+      // delay_async,
+      // //get_onchain_tower_state,
+      // receive_event,
+      // mock_build_tower,
+      // start_forever_task,
+      // debug_start_listener,
+      // debug_highest_proof_path,
+      // debug_preferences_path,
+      // // Preferences
+      // get_preferences,
+      // set_preferences_locale
     ])
     .menu(menu)
     .run(tauri::generate_context!())
