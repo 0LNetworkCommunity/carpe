@@ -3,16 +3,19 @@
 use futures::{stream::FuturesUnordered, StreamExt};
 use reqwest::ClientBuilder;
 use std::time::Duration;
-// use num_traits::pow::Pow;
+
 use crate::{
   carpe_error::CarpeError,
-  commands::read_preferences,
-  configs::{self, get_cfg},
+  commands::preferences::read_preferences,
+  app_cfg::{self, get_cfg},
   waypoint,
+  types::{
+    rpc_playlist::{self, FullnodePlaylist, HostInfo}
+    app_cfg,
+  }
 };
 use anyhow::{bail, Error};
 use zapatos_types::{waypoint::Waypoint, chain_id::NamedChain};
-use ol::config::AppCfg;
 use ol_types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
@@ -28,7 +31,7 @@ pub struct NetworkProfile {
 
 impl NetworkProfile {
   pub fn new() -> Result<Self, CarpeError> {
-    let cfg = configs::get_cfg()?;
+    let cfg = app_cfg::get_cfg()?;
     Ok(NetworkProfile {
       chain_id: cfg.chain_info.chain_id,
       urls: cfg.profile.upstream_nodes,
@@ -74,7 +77,7 @@ pub fn set_network_configs(
     }
   };
 
-  playlist.update_config_file(Some(configs::default_config_path()))?; // None uses default path of 0L.toml
+  playlist.update_config_file(Some(app_cfg::default_config_path()))?; // None uses default path of 0L.toml
 
   // TODO: I don't think chain ID needs to change.
   set_chain_id(network).map_err(|e| {
@@ -108,7 +111,7 @@ fn get_swarm_playlist() -> anyhow::Result<FullnodePlaylist> {
   Ok(f)
 }
 // pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
-//   let cfg = configs::get_cfg()?;
+//   let cfg = app_cfg::get_cfg()?;
 
 //   // try getting waypoint from upstream nodes
 //   // no waypoint is necessary in advance.
@@ -158,7 +161,7 @@ pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
 
 /// Set the base_waypoint used for client connections.
 pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
-  let mut cfg = configs::get_cfg()?;
+  let mut cfg = app_cfg::get_cfg()?;
   cfg.chain_info.base_waypoint = Some(wp);
   cfg.save_file()?;
   Ok(cfg)
@@ -168,7 +171,7 @@ pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
 /// Note: The default_node key in 0L is not used by Carpe. Carpe randomly tests
 /// all the endpoints in upstream_peers on every TX.
 pub fn override_upstream_node(url: Url) -> Result<AppCfg, Error> {
-  let mut cfg = configs::get_cfg()?;
+  let mut cfg = app_cfg::get_cfg()?;
   cfg.profile.upstream_nodes = vec![url];
   cfg.save_file()?;
   Ok(cfg)
@@ -176,7 +179,7 @@ pub fn override_upstream_node(url: Url) -> Result<AppCfg, Error> {
 
 // the 0L configs. For tx sending and upstream nodes
 pub fn set_chain_id(chain_id: NamedChain) -> Result<AppCfg, Error> {
-  let mut cfg = configs::get_cfg()?;
+  let mut cfg = app_cfg::get_cfg()?;
   cfg.chain_info.chain_id = chain_id;
   cfg.save_file()?;
   Ok(cfg)
@@ -184,7 +187,7 @@ pub fn set_chain_id(chain_id: NamedChain) -> Result<AppCfg, Error> {
 
 /// Set the list of upstream nodes
 pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
-  let mut cfg = configs::get_cfg()?;
+  let mut cfg = app_cfg::get_cfg()?;
   cfg.profile.upstream_nodes = vec_url;
   cfg.save_file()?;
   Ok(cfg)
@@ -193,7 +196,7 @@ pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
 /// Removes current node from upstream nodes
 /// To be used when DB is corrupted for instance.
 pub fn remove_node(host: String) -> Result<(), Error> {
-  match configs::get_cfg() {
+  match app_cfg::get_cfg() {
     Ok(mut cfg) => {
       let nodes = cfg.profile.upstream_nodes;
       match nodes.len() {
@@ -259,7 +262,7 @@ impl UpstreamStats {
   }
 
   pub async fn check_which_are_synced(mut self) -> anyhow::Result<Self> {
-    // let _cfg = configs::get_cfg()?;
+    // let _cfg = app_cfg::get_cfg()?;
     dbg!("check_which_are_synced");
 
     // try getting waypoint from upstream nodes
@@ -309,7 +312,7 @@ impl UpstreamStats {
   }
 
   pub async fn check_which_are_alive(mut self) -> anyhow::Result<Self> {
-    let _cfg = configs::get_cfg()?;
+    let _cfg = app_cfg::get_cfg()?;
     let mut upstream = self.nodes;
 
     // try getting waypoint from upstream nodes
