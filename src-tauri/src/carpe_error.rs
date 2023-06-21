@@ -2,11 +2,11 @@
 
 use std::fmt::Display;
 
-use aptos_sdk::bcs;
-use aptos_sdk::move_types::account_address::AccountAddressParseError;
+use zapatos_sdk::bcs;
+use zapatos_sdk::move_types::account_address::AccountAddressParseError;
 use reqwest::StatusCode;
-use txs::rest_client::error::AptosErrorResponse;
-use txs::rest_client::error::RestError;
+use libra_txs::rest_client::error::AptosErrorResponse;
+use libra_txs::rest_client::error::RestError;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub enum ErrorCat {

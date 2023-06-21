@@ -9,7 +9,7 @@ use sysinfo::{ProcessExt, SystemExt};
 // use ol::commands::init_cmd::initialize_host_swarm;
 // use tower::{commit_proof, next_proof};
 // use tower::proof::mine_once;
-// use txs::{submit_tx, tx_params::TxParams};
+// use libra_txs::{submit_tx, tx_params::TxParams};
 
 use crate::configs::get_client;
 use crate::{
@@ -161,7 +161,7 @@ pub fn swarm_demo_tx() -> Result<String, CarpeError> {
   )
   .unwrap();
 
-  txs::commands::demo_cmd::demo_tx(&tx_params, None).unwrap();
+  libra_txs::commands::demo_cmd::demo_tx(&tx_params, None).unwrap();
 
   Ok("Demo tx submitted".to_string())
 }

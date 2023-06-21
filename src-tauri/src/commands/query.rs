@@ -1,7 +1,7 @@
 //! query the chain
 use libra_config::extension::client_ext::ClientExt;
-use txs::coin_client::CoinClient;
-use txs::rest_client::Client;
+use libra_txs::coin_client::CoinClient;
+use libra_txs::rest_client::Client;
 use zapatos_types::{account_address::AccountAddress, event::EventKey};
 
 use crate::{carpe_error::CarpeError, configs::get_client};

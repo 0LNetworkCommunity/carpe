@@ -1,15 +1,15 @@
 //! transaction scripts
 
 use anyhow::Context;
-use aptos_sdk::coin_client::TransferOptions;
+use zapatos_sdk::coin_client::TransferOptions;
 use crate::{carpe_error::CarpeError, configs};
-use aptos_sdk::transaction_builder::aptos_stdlib as stdlib;
+use zapatos_sdk::transaction_builder::aptos_stdlib as stdlib;
 use libra_config::extension::client_ext::{ClientExt, DEFAULT_TIMEOUT_SECS};
 use zapatos_types::{account_address::AccountAddress, transaction::authenticator::AuthenticationKey};
-use txs::coin_client::CoinClient;
-use txs::constant::{DEFAULT_GAS_UNIT_PRICE, DEFAULT_MAX_GAS_AMOUNT};
-use txs::extension::ed25519_private_key_ext::Ed25519PrivateKeyExt;
-use txs::rest_client::Client;
+use libra_txs::coin_client::CoinClient;
+use libra_txs::constant::{DEFAULT_GAS_UNIT_PRICE, DEFAULT_MAX_GAS_AMOUNT};
+use libra_txs::extension::ed25519_private_key_ext::Ed25519PrivateKeyExt;
+use libra_txs::rest_client::Client;
 use zapatos_crypto::ed25519::Ed25519PrivateKey;
 use zapatos_crypto::ValidCryptoMaterialStringExt;
 
@@ -69,7 +69,7 @@ pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
   let tx_params =
     configs::get_tx_params()?;
 
-  match txs::commands::wallet_cmd::set_wallet_type(type_int, tx_params, None) {
+  match libra_txs::commands::wallet_cmd::set_wallet_type(type_int, tx_params, None) {
     Ok(r) => Ok(format!("Tx Success: {:?}", r)),
     Err(e) => Err(CarpeError::misc(&format!(
       "could not set wallet type: {:?}",

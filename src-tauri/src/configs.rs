@@ -6,7 +6,7 @@ use anyhow::{Error, Result};
 use dirs;
 use libra_config::extension::client_ext::ClientExt;
 //use ol_types::config::{self, TxType};
-//use txs::tx_params::TxParams;
+//use libra_txs::tx_params::TxParams;
 use zapatos_rest_client::Client;
 use zapatos_types::chain_id::NamedChain;
 
