@@ -22,6 +22,7 @@ url = { version = "^2.1", features = ["serde"] }
 
 libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
 libra-config = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
+libra-types = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
 libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
 
 zapatos = { package = "aptos", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }

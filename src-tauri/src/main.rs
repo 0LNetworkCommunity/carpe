@@ -14,7 +14,7 @@ use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
 
 // pub mod carpe_error;
 // pub mod commands;
-// pub mod configs;
+pub mod configs;
 // pub mod configs_network;
 // pub mod configs_profile;
 // pub mod key_manager;
