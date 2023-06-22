@@ -107,7 +107,7 @@ fn main() {
       // toggle_network,
       // // Queries
       // query_balance,
-      // //query_makewhole,
+      commands::query::query_makewhole,
       commands::query::get_recovery_mode,
       // // Transactions
       // demo_tx,
@@ -137,7 +137,7 @@ fn main() {
       // debug_error,
       // debug_emit_event,
       // delay_async,
-      // //get_onchain_tower_state,
+      commands::query::get_onchain_tower_state,
       // receive_event,
       // mock_build_tower,
       // start_forever_task,

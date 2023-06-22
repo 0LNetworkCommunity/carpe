@@ -3,7 +3,11 @@
 use libra_types::{
   type_extensions::client_ext::ClientExt,
   exports::{AccountAddress, EventKey, Client},
-  legacy_types::{tower_state::TowerStateResource},
+  legacy_types::{
+    tower_state::TowerStateResource,
+    makewhole_resource::CreditResource,
+    makewhole_resource::MakeWholeResource,
+  },
 };
 use libra_query::account_queries::get_account_balance_libra;
 use anyhow::{anyhow, bail};
@@ -35,16 +39,22 @@ pub async fn get_onchain_tower_state(
 
 }
 //
-// #[tauri::command(async)]
-// pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError> {
-//   let client = get_client();
-//   let acc_state = client.get_account_state(account)?;
-//
-//   match acc_state.get_resource::<MakeWholeResource>()? {
-//     Some(mk) => Ok(mk.credits),
-//     None => Ok(Vec::new()),
-//   }
-// }
+#[tauri::command(async)]
+pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError> {
+    let client = get_client()?;
+  let access_path = "0x1::make_whole::MakeWhole";
+  let res = client.get_account_resource_bcs::<MakeWholeResource>(account, access_path).await?;
+  let credits = res.into_inner().credits;
+  Ok(credits)
+
+  // let client = get_client();
+  // let acc_state = client.get_account_state(account)?;
+
+  // match acc_state.get_resource::<MakeWholeResource>()? {
+  //   Some(mk) => Ok(mk.credits),
+  //   None => Ok(Vec::new()),
+  // }
+}
 
 // #[test]
 // fn test_makewhole() {
