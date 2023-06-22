@@ -5,6 +5,7 @@
   import DebugSwitchRexMainnet from "./DebugSwitchRexMainnet.svelte";
   import DebugSwitcher from "./DebugSwitcher.svelte";
   import DebugPaths from "./DebugPaths.svelte";
+  import DebugNetworkInfo from "./DebugNetworkInfo.svelte";
 
 </script>
 
@@ -17,5 +18,6 @@
     <DebugSwitchRexMainnet />
     <DebugSwitchProdTest />
     <DebugActions />
+    <DebugNetworkInfo />
   </div>
 </main>

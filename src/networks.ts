@@ -14,7 +14,7 @@ export enum Networks {
 export const network_profile = writable<NetworkProfile>({
   chain_id: Networks.MAINNET, // Todo, use the Network Enum
   urls: ["string"],
-  waypoint: "string",
+  // waypoint: "string",
   profile: "string",
 });
 
@@ -26,7 +26,7 @@ export const scanning_fullnodes = writable<boolean>(true);
 export interface NetworkProfile {
   chain_id: Networks, // Todo, use the Network Enum
   urls: [string],
-  waypoint: string,
+  // waypoint: string,
   profile: string,
 }
 
@@ -46,18 +46,28 @@ export function getNetwork() {
     .catch((error) => raise_error(error, false, "getNetwork"));
 }
 
-export const refreshWaypoint = async () =>{
-  console.log("refreshWaypoint");
-  return invoke("refresh_waypoint", {})
-    .then((res: NetworkProfile) => {
-      network_profile.set(res);
-      connected.set(true);
-      // scanning_fullnodes.set(false);
-    })
-    .catch((error) => {
-      connected.set(false);
-      raise_error(error, true, "refreshWaypoint"); // we have a purpose-built error component for this
-    })
+// export const refreshWaypoint = async () =>{
+//   console.log("refreshWaypoint");
+//   get_metadata();
+
+//   return invoke("refresh_waypoint", {})
+//     .then((res: NetworkProfile) => {
+//       network_profile.set(res);
+//       connected.set(true);
+//       // scanning_fullnodes.set(false);
+//     })
+//     .catch((error) => {
+//       connected.set(false);
+//       raise_error(error, true, "refreshWaypoint"); // we have a purpose-built error component for this
+//     })
+// }
+
+export const get_metadata = async () => {
+  return invoke("get_metadata", {})
+  .then((res) => {
+    console.log(res);
+    return res
+  })
 }
 
 export const refreshUpstreamPeerStats = async () => {

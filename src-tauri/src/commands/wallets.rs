@@ -302,10 +302,10 @@ fn get_short(acc: AccountAddress) -> String {
 #[test]
 // danger_init_from_mnem
 fn test_init_mnem() {
-    use ol_types::config::parse_toml;
+    use crate::types::app_cfg::parse_toml;
     let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
     danger_init_from_mnem(alice).unwrap();
     let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
-    let cfg = parse_toml(Some(path));
+    let cfg = parse_toml(path);
     dbg!(&cfg);
 }

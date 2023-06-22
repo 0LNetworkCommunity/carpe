@@ -11,6 +11,7 @@ use libra_types::{
 };
 use libra_query::account_queries::get_account_balance_libra;
 use anyhow::{anyhow, bail};
+use serde_json::json;
 use crate::{carpe_error::CarpeError, configs::get_client};
 use crate::configs_network::remove_node;
 
@@ -21,6 +22,27 @@ use crate::configs_network::remove_node;
 // use ol::node::query;
 // use ol::node::{node::Node, query::QueryType};
 // use ol_types::makewhole_resource::{CreditResource, MakeWholeResource};
+
+
+#[tauri::command(async)]
+pub async fn query_metadata() -> Result<String, CarpeError> {
+    let client = get_client()?;
+    let m = client.get_index().await?;
+    Ok(json!(m.into_inner()).to_string())
+    // Ok(m.version)
+}
+
+#[tokio::test]
+pub async fn query_test() {
+    // need to start a node in test mode first.
+    let client = get_client().unwrap();
+    let m = client.get_index().await.unwrap();
+    println!("query_test: {:?}", m);
+
+    let m = client.get_block_by_height(1407, false).await.unwrap();
+    println!("query_test: {:?}", m);
+}
+
 
 #[tauri::command(async)]
 pub async fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {

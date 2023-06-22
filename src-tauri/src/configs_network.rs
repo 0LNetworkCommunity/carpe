@@ -10,14 +10,14 @@ use crate::{
   configs::{ get_cfg, default_config_path},
   commands::preferences::read_preferences,
   // app_cfg,
-  waypoint,
+  // waypoint,
   types::{
     rpc_playlist::{self, FullnodePlaylist, HostInfo},
     app_cfg::{self, AppCfg},
   }
 };
 use anyhow::{bail, Error};
-use libra_types::exports::{Waypoint, NamedChain};
+use libra_types::exports::{Waypoint, NamedChain, Client};
 // use crate::types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
@@ -27,7 +27,7 @@ use url::Url;
 pub struct NetworkProfile {
   pub chain_id: NamedChain, // Todo, use the Network Enum
   pub urls: Vec<Url>,
-  pub waypoint: Waypoint,
+  // pub waypoint: Waypoint,
   pub profile: String, // tbd, to use default node, or to use upstream, or a custom url.
 }
 
@@ -37,7 +37,7 @@ impl NetworkProfile {
     Ok(NetworkProfile {
       chain_id: cfg.chain_info.chain_id,
       urls: cfg.profile.upstream_nodes,
-      waypoint: cfg.chain_info.base_waypoint.unwrap_or_default(),
+      // waypoint: cfg.chain_info.base_waypoint.unwrap_or_default(),
       profile: "default".to_string(),
     })
   }
@@ -87,7 +87,7 @@ pub fn set_network_configs(
     CarpeError::misc(&err_msg)
   })?;
 
-  tauri::async_runtime::block_on(set_waypoint_from_upstream()).ok();
+  // tauri::async_runtime::block_on(set_waypoint_from_upstream()).ok();
 
   NetworkProfile::new()
 }
@@ -143,31 +143,31 @@ pub fn set_network_configs(
 //   bail!("no waypoint found while querying upstream nodes")
 // }
 
-pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
-  let prefs = read_preferences()?;
-  if let Some(upstream) = prefs.network {
-    let mut urls = upstream.the_good_ones()?;
-    urls.shuffle(&mut thread_rng());
-    if let Some(u) = urls.first() {
-      match waypoint::bootstrap_waypoint_from_rpc(u.to_owned()).await {
-        Ok(w) => set_waypoint(w),
-        Err(e) => Err(e),
-      }
-    } else {
-      bail!("cannot find a synced upstream URL")
-    }
-  } else {
-    bail!("could not fetch network stats from preferences.json")
-  }
-}
+// pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
+//   let prefs = read_preferences()?;
+//   if let Some(upstream) = prefs.network {
+//     let mut urls = upstream.the_good_ones()?;
+//     urls.shuffle(&mut thread_rng());
+//     if let Some(u) = urls.first() {
+//       match waypoint::bootstrap_waypoint_from_rpc(u.to_owned()).await {
+//         Ok(w) => set_waypoint(w),
+//         Err(e) => Err(e),
+//       }
+//     } else {
+//       bail!("cannot find a synced upstream URL")
+//     }
+//   } else {
+//     bail!("could not fetch network stats from preferences.json")
+//   }
+// }
 
-/// Set the base_waypoint used for client connections.
-pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
-  let mut cfg = get_cfg()?;
-  cfg.chain_info.base_waypoint = Some(wp);
-  cfg.save_file()?;
-  Ok(cfg)
-}
+// /// Set the base_waypoint used for client connections.
+// pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
+//   let mut cfg = get_cfg()?;
+//   cfg.chain_info.base_waypoint = Some(wp);
+//   cfg.save_file()?;
+//   Ok(cfg)
+// }
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 /// Note: The default_node key in 0L is not used by Carpe. Carpe randomly tests
@@ -326,7 +326,7 @@ impl UpstreamStats {
 
     // randomize to balance load on carpe nodes
     upstream.into_iter().for_each(|p| {
-      futures.push(p.check_rpc_header());
+      futures.push(p.check_sync());
     });
 
     // dbg!(&list);
@@ -356,9 +356,12 @@ pub struct FullnodeProfile {
 impl FullnodeProfile {
   async fn check_sync(mut self) -> anyhow::Result<FullnodeProfile> {
     // dbg!("check_sync", &self.url);
-    match waypoint::bootstrap_waypoint_from_rpc(self.url.clone()).await {
-      Ok(wp) => {
-        self.version = wp.version();
+    let client = Client::new(self.url.clone());
+
+    match client.get_index().await {
+      Ok(res) => {
+        
+        self.version = res.into_inner().ledger_version.into();
         self.is_api = true;
       }
       Err(_) => {
@@ -369,29 +372,30 @@ impl FullnodeProfile {
 
     Ok(self)
   }
-
-  /// get the waypoint from a fullnode
-  pub async fn check_rpc_header(mut self) -> anyhow::Result<FullnodeProfile> {
-    self.is_api = false;
-
-    let client = ClientBuilder::new()
-      .timeout(Duration::from_secs(1))
-      .build()?;
-
-    // handle all errors as a is_api = false
-    match client.head(self.url.to_owned()).send().await {
-      Ok(resp) => match resp.text().await {
-        Ok(_) => {
-          self.is_api = true;
-          return Ok(self.to_owned());
-        }
-        Err(_) => {}
-      },
-      Err(_) => {}
-    };
-    Ok(self)
-  }
 }
+
+//   /// get the waypoint from a fullnode
+//   pub async fn check_rpc_header(mut self) -> anyhow::Result<FullnodeProfile> {
+//     self.is_api = false;
+
+//     let client = ClientBuilder::new()
+//       .timeout(Duration::from_secs(1))
+//       .build()?;
+
+//     // handle all errors as a is_api = false
+//     match client.head(self.url.to_owned()).send().await {
+//       Ok(resp) => match resp.text().await {
+//         Ok(_) => {
+//           self.is_api = true;
+//           return Ok(self.to_owned());
+//         }
+//         Err(_) => {}
+//       },
+//       Err(_) => {}
+//     };
+//     Ok(self)
+//   }
+// }
 
 #[test]
 fn test_pick_upstream() {

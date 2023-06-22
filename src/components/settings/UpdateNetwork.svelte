@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import type { CarpeError } from "../../carpeError";
   import { raise_error } from "../../carpeError";
-  import { network_profile, getNetwork, refreshWaypoint } from "../../networks";
+  import { network_profile, getNetwork } from "../../networks";
   import type { NetworkProfile} from "../../networks";
   import { invoke } from "@tauri-apps/api/tauri";
   import { notify_success } from "../../carpeNotify";
@@ -67,7 +67,7 @@ import { _ } from "svelte-i18n";
 
       <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">{$_("settings.network_settings.upstream_title")}</h5>
       <p>{$_("settings.network_settings.upstream_subtitle")}</p>
-      <button class="uk-button uk-button-default" on:click={refreshWaypoint}>{$_("settings.network_settings.btn_fetch_new_waypoint")}</button>
+      <!-- <button class="uk-button uk-button-default" on:click={refreshWaypoint}>{$_("settings.network_settings.btn_fetch_new_waypoint")}</button> -->
 
     </fieldset>
   </form>

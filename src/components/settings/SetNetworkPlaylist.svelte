@@ -2,7 +2,7 @@
   import { Link } from "svelte-navigator";
   import type { CarpeError } from "../../carpeError";
   import { raise_error } from "../../carpeError";
-  import { network_profile, refreshWaypoint } from "../../networks";
+  import { network_profile } from "../../networks";
   import type { NetworkProfile} from "../../networks";
   import { invoke } from "@tauri-apps/api/tauri";
   import { routes } from "../../routes";

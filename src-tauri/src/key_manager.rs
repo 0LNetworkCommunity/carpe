@@ -57,54 +57,54 @@ pub fn get_keypair(
     // Ok(p)
 }
 
-#[test]
-fn encode_keys() {
-    let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
-    use ol_keys::scheme::KeyScheme;
-    let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
-    let private = scheme.child_0_owner.get_private_key();
-    let bytes: &[u8] = &(private.to_bytes());
+// #[test]
+// fn encode_keys() {
+//     let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
+//     use ol_keys::scheme::KeyScheme;
+//     let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
+//     let private = scheme.child_0_owner.get_private_key();
+//     let bytes: &[u8] = &(private.to_bytes());
 
-    let encoded = hex::encode(bytes);
+//     let encoded = hex::encode(bytes);
 
-    let new_bytes = hex::decode(encoded).unwrap();
-    let back: Ed25519PrivateKey = new_bytes.as_slice().try_into().unwrap();
+//     let new_bytes = hex::decode(encoded).unwrap();
+//     let back: Ed25519PrivateKey = new_bytes.as_slice().try_into().unwrap();
 
-    assert_eq!(&back, &private);
-}
+//     assert_eq!(&back, &private);
+// }
 
-#[test]
-#[ignore] // TODO: this needs to be hand tested since it requires OS password input.
-fn test_set() -> Result<(), Box<dyn Error>> {
-    use ol_keys::scheme::KeyScheme;
-    let ol_address = "0x0";
+// #[test]
+// #[ignore] // TODO: this needs to be hand tested since it requires OS password input.
+// fn test_set() -> Result<(), Box<dyn Error>> {
+//     use ol_keys::scheme::KeyScheme;
+//     let ol_address = "0x0";
 
-    let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
+//     let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
 
-    let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
-    let private = scheme.child_0_owner.get_private_key();
+//     let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
+//     let private = scheme.child_0_owner.get_private_key();
 
-    // let password = "topS3cr3tP4$$w0rd";
-    set_private_key(ol_address, private).unwrap();
+//     // let password = "topS3cr3tP4$$w0rd";
+//     set_private_key(ol_address, private).unwrap();
 
-    Ok(())
-}
+//     Ok(())
+// }
 
-#[test]
-#[ignore] // TODO: this needs to be hand tested since it requires OS password input.
-fn test_get() -> Result<(), Box<dyn Error>> {
-    use ol_keys::scheme::KeyScheme;
-    let ol_address = "0x123";
+// #[test]
+// #[ignore] // TODO: this needs to be hand tested since it requires OS password input.
+// fn test_get() -> Result<(), Box<dyn Error>> {
+//     use ol_keys::scheme::KeyScheme;
+//     let ol_address = "0x123";
 
-    let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
+//     let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
 
-    let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
-    let private = scheme.child_0_owner.get_private_key();
+//     let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
+//     let private = scheme.child_0_owner.get_private_key();
 
-    set_private_key(ol_address, private.clone()).unwrap();
+//     set_private_key(ol_address, private.clone()).unwrap();
 
-    let read = get_private_key(ol_address).unwrap();
-    assert_eq!(&read, &private);
+//     let read = get_private_key(ol_address).unwrap();
+//     assert_eq!(&read, &private);
 
-    Ok(())
-}
+//     Ok(())
+// }

@@ -19,7 +19,7 @@ pub(crate) mod configs;
 pub(crate) mod configs_network;
 pub(crate) mod configs_profile;
 pub(crate) mod key_manager;
-pub(crate) mod waypoint;
+// pub(crate) mod waypoint;
 
 fn main() {
   //////// FORCE TEST SETTINGS ON START ////////////////////
@@ -103,10 +103,11 @@ fn main() {
       // force_waypoint,
       // override_playlist,
       commands::networks::get_networks,
-      commands::networks::refresh_waypoint,
+      // commands::networks::refresh_waypoint,
       // toggle_network,
       // // Queries
       // query_balance,
+      commands::query::query_metadata,
       commands::query::query_makewhole,
       commands::query::get_recovery_mode,
       // // Transactions

@@ -5,7 +5,7 @@ use libra_types::{
   legacy_types::mode_ol::MODE_0L,
    exports::{
     AccountAddress, NamedChain,
-    AuthenticationKey, Waypoint,
+    AuthenticationKey,
  }
 };
 use dirs;
@@ -22,7 +22,7 @@ use std::{
 
 // use crate::dialogue::{what_home, what_ip, what_statement, what_vfn_ip};
 
-const BASE_WAYPOINT: &str = "";
+// const BASE_WAYPOINT: &str = "";
 
 const NODE_HOME: &str = ".0L";
 const CONFIG_FILE: &str = "0L.toml";
@@ -150,7 +150,7 @@ impl AppCfg {
         upstream_peer: &Option<Url>,
         config_path: &Option<PathBuf>,
         base_epoch: &Option<u64>,
-        base_waypoint: &Option<Waypoint>,
+        // base_waypoint: &Option<Waypoint>,
         source_path: &Option<PathBuf>,
         statement: Option<String>,
         ip: Option<Ipv4Addr>,
@@ -203,15 +203,15 @@ impl AppCfg {
         //     );
         // }
 
-        // override from args
-        if base_epoch.is_some() && base_waypoint.is_some() {
-            default_config.chain_info.base_epoch = *base_epoch;
-            default_config.chain_info.base_waypoint = *base_waypoint;
-        } else {
-            default_config.chain_info.base_epoch = None;
-            default_config.chain_info.base_waypoint = None;
-            println!("WARN: No --epoch or --waypoint or upstream --url passed. This should only be done at genesis. If that's not correct either pass --epoch and --waypoint as CLI args, or provide a URL to fetch this data from --upstream-peer or --template-url");
-        }
+        // // override from args
+        // if base_epoch.is_some()  {
+        //     default_config.chain_info.base_epoch = *base_epoch;
+        //     // default_config.chain_info.base_waypoint = *base_waypoint;
+        // } else {
+        //     default_config.chain_info.base_epoch = None;
+        //     // default_config.chain_info.base_waypoint = None;
+        //     println!("WARN: No --epoch or --waypoint or upstream --url passed. This should only be done at genesis. If that's not correct either pass --epoch and --waypoint as CLI args, or provide a URL to fetch this data from --upstream-peer or --template-url");
+        // }
 
         // skip questionnaire if CI
         if MODE_0L.clone() == NamedChain::TESTING {
@@ -363,11 +363,11 @@ pub struct ChainInfo {
     /// Chain that this work is being committed to
     pub chain_id: NamedChain,
 
-    /// Epoch from which the node started syncing
-    pub base_epoch: Option<u64>,
+    // /// Epoch from which the node started syncing
+    // pub base_epoch: Option<u64>,
 
-    /// Waypoint from which the node started syncing
-    pub base_waypoint: Option<Waypoint>,
+    // /// Waypoint from which the node started syncing
+    // pub base_waypoint: Option<Waypoint>,
 }
 
 // TODO: These defaults serving as test fixtures.
@@ -375,9 +375,9 @@ impl Default for ChainInfo {
     fn default() -> Self {
         Self {
             chain_id: NamedChain::MAINNET,
-            base_epoch: Some(0),
+            // base_epoch: Some(0),
             // Mock Waypoint. Miner complains without.
-            base_waypoint: Waypoint::from_str(BASE_WAYPOINT).ok(),
+            // base_waypoint: Waypoint::from_str(BASE_WAYPOINT).ok(),
         }
     }
 }
@@ -557,47 +557,47 @@ fn default_cheap_txs_cost() -> Option<TxCost> {
 #[derive(Serialize, Deserialize, Debug)]
 struct EpochJSON {
     epoch: u64,
-    waypoint: Waypoint,
+    // waypoint: Waypoint,
 }
-/// fetch initial waypoint information from a clean state.
-pub fn bootstrap_waypoint_from_upstream(url: &mut Url) -> Result<(u64, Waypoint), Error> {
-    url.set_port(Some(3030)).unwrap();
-    let epoch_url = url.join("epoch.json").unwrap();
-    let g_res = reqwest::blocking::get(&epoch_url.to_string())?;
-    if g_res.status().is_success() {
-        let txt = g_res.text()?;
-        let epoch: EpochJSON = serde_json::from_str(&txt)?;
-        return Ok((epoch.epoch, epoch.waypoint));
-    }
-    bail!(
-        "fetching remote JSON-rpc failed with status: {:?}, response: {:?}",
-        g_res.status(),
-        g_res.text()
-    );
-}
+// /// fetch initial waypoint information from a clean state.
+// pub fn bootstrap_waypoint_from_upstream(url: &mut Url) -> Result<(u64, Waypoint), Error> {
+//     url.set_port(Some(3030)).unwrap();
+//     let epoch_url = url.join("epoch.json").unwrap();
+//     let g_res = reqwest::blocking::get(&epoch_url.to_string())?;
+//     if g_res.status().is_success() {
+//         let txt = g_res.text()?;
+//         let epoch: EpochJSON = serde_json::from_str(&txt)?;
+//         return Ok((epoch.epoch, epoch.waypoint));
+//     }
+//     bail!(
+//         "fetching remote JSON-rpc failed with status: {:?}, response: {:?}",
+//         g_res.status(),
+//         g_res.text()
+//     );
+// }
 
-#[derive(Serialize, Deserialize, Debug)]
-struct WaypointRpc {
-    result: Option<serde_json::Value>,
-}
-/// get the waypoint from a fullnode
-pub fn bootstrap_waypoint_from_rpc(url: Url) -> Result<Waypoint, Error> {
-    let method = "get_waypoint_view";
-    let params = json!([]);
-    let request = json!({"jsonrpc": "2.0", "method": method, "params": params, "id": 1});
-    let client = Client::new();
-    let resp = client.post(url.as_str()).json(&request).send()?;
+// #[derive(Serialize, Deserialize, Debug)]
+// struct WaypointRpc {
+//     result: Option<serde_json::Value>,
+// }
+// /// get the waypoint from a fullnode
+// pub fn bootstrap_waypoint_from_rpc(url: Url) -> Result<Waypoint, Error> {
+//     let method = "get_waypoint_view";
+//     let params = json!([]);
+//     let request = json!({"jsonrpc": "2.0", "method": method, "params": params, "id": 1});
+//     let client = Client::new();
+//     let resp = client.post(url.as_str()).json(&request).send()?;
 
-    // let json: WaypointRpc = serde_json::from_value(resp.json().unwrap()).unwrap();
-    let parsed: serde_json::Value = resp.json()?;
-    match &parsed["result"] {
-        serde_json::Value::Object(r) => {
-            if let serde_json::Value::String(waypoint) = &r["waypoint"] {
-                let w: Waypoint = waypoint.parse()?;
-                return Ok(w);
-            }
-        }
-        _ => {}
-    }
-    bail!("could not get waypoint from json-rpc, url: {:?} ", url)
-}
+//     // let json: WaypointRpc = serde_json::from_value(resp.json().unwrap()).unwrap();
+//     let parsed: serde_json::Value = resp.json()?;
+//     match &parsed["result"] {
+//         serde_json::Value::Object(r) => {
+//             if let serde_json::Value::String(waypoint) = &r["waypoint"] {
+//                 let w: Waypoint = waypoint.parse()?;
+//                 return Ok(w);
+//             }
+//         }
+//         _ => {}
+//     }
+//     bail!("could not get waypoint from json-rpc, url: {:?} ", url)
+// }

@@ -4,7 +4,7 @@ use std::str::FromStr;
 use crate::{
   carpe_error::CarpeError,
   configs_network::{
-    override_upstream_node, set_network_configs, set_waypoint, set_waypoint_from_upstream,
+    override_upstream_node, set_network_configs,
     NetworkProfile,
   }, 
   configs,
@@ -37,15 +37,15 @@ pub fn force_upstream(url: Url) -> Result<NetworkProfile, CarpeError> {
   NetworkProfile::new()
 }
 
-#[tauri::command]
-pub fn force_waypoint(wp: Waypoint) -> Result<NetworkProfile, CarpeError> {
-  set_waypoint(wp).map_err(|e| CarpeError::misc(&e.to_string()))?;
-  NetworkProfile::new()
-}
+// #[tauri::command]
+// pub fn force_waypoint(wp: Waypoint) -> Result<NetworkProfile, CarpeError> {
+//   set_waypoint(wp).map_err(|e| CarpeError::misc(&e.to_string()))?;
+//   NetworkProfile::new()
+// }
 
-#[tauri::command(async)]
-pub async fn refresh_waypoint() -> Result<NetworkProfile, CarpeError> {
-  // dbg!("refresh_waypoint");
-  set_waypoint_from_upstream().await?;
-  NetworkProfile::new()
-}
+// #[tauri::command(async)]
+// pub async fn refresh_waypoint() -> Result<NetworkProfile, CarpeError> {
+//   // dbg!("refresh_waypoint");
+//   set_waypoint_from_upstream().await?;
+//   NetworkProfile::new()
+// }

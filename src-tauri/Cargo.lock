@@ -3439,6 +3439,7 @@ dependencies = [
  "sysinfo 0.16.5",
  "tauri",
  "tauri-build",
+ "tokio",
  "toml 0.7.4",
  "url",
 ]
