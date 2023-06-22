@@ -2,6 +2,28 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { writable } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { loadAccounts } from "./accountActions";
+import { json } from "svelte-i18n";
+
+
+export interface NetworkProfile {
+  chain_id: Networks, // Todo, use the Network Enum
+  urls: [string],
+  // waypoint: string,
+  profile: string,
+}
+
+// matches the index of node api
+export interface ChainMetadata {
+  chain_id: number,
+  epoch: number,
+  ledger_version: number,
+  oldest_ledger_version: number,
+  ledger_timestamp: number,
+  node_role: string,
+  oldest_block_height: number,
+  block_height: number,
+  git_hash: string
+}
 
 
   // This matches a subset of NamedChain enum in Rust.
@@ -14,21 +36,12 @@ export enum Networks {
 export const network_profile = writable<NetworkProfile>({
   chain_id: Networks.MAINNET, // Todo, use the Network Enum
   urls: ["string"],
-  // waypoint: "string",
   profile: "string",
 });
-
 export const connected = writable<boolean>(true);
-
 export const scanning_fullnodes = writable<boolean>(true);
-
+export const network_metadata = writable<ChainMetadata>();
 // should match the Rust type Network Profile
-export interface NetworkProfile {
-  chain_id: Networks, // Todo, use the Network Enum
-  urls: [string],
-  // waypoint: string,
-  profile: string,
-}
 
 export function setNetwork(network: Networks) {
   invoke("toggle_network", { network: Networks[network] })
@@ -62,11 +75,13 @@ export function getNetwork() {
 //     })
 // }
 
-export const get_metadata = async () => {
-  return invoke("get_metadata", {})
-  .then((res) => {
-    console.log(res);
-    return res
+
+
+export const get_metadata = async (): Promise<ChainMetadata>  => {
+  return invoke("get_metadata", {}).then((res: string ) => {
+    let m: ChainMetadata = JSON.parse(res);
+    network_metadata.set(m);
+    return m
   })
 }
 

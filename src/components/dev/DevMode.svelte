@@ -11,6 +11,7 @@
 
 <main class="uk-height-viewport">
   <div class="uk-margin uk-container uk-dark" style="margin-bottom: 280px">
+    <DebugNetworkInfo />
     <DebugCard />
     <DebugPaths />
     <DebugSwitcher />
@@ -18,6 +19,5 @@
     <DebugSwitchRexMainnet />
     <DebugSwitchProdTest />
     <DebugActions />
-    <DebugNetworkInfo />
   </div>
 </main>
