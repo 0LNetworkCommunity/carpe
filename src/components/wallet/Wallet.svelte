@@ -71,7 +71,7 @@
         <span uk-spinner style="position:absolute; top:0px; left:0px" />
       </div>
     {/if}
-
+    
     {#if !isLoaded && !isRefreshing && !accountList }
       <Newbie />
     {/if}
@@ -81,14 +81,16 @@
     {/if}
 
     {#if isLoaded && accountList && accountList.length > 0}
+      <div class="uk-flex uk-flex-center">
+        <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
+          {$_("wallet.wallet")}
+        </h2>
+      </div>
       {#if !isConnected}
+        <AccountsList {my_account} {accountList} {isMining} {isConnected} />
+
         <ConnectionError />
       {:else}
-        <div class="uk-flex uk-flex-center">
-          <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
-            {$_("wallet.wallet")}
-          </h2>
-        </div>
 
         <AccountsList {my_account} {accountList} {isMining} {isConnected} />
 

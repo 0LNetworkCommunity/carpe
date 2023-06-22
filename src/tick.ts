@@ -10,18 +10,13 @@ export const carpeTick = async () => {
     console.log("carpeTick");
     tick_in_progress = true;
 
-    // this should be instant
-    await getEpochRules()
-
-    // also should be instant
-    await getLocalHeight()
     // fetch a waypoint to see if we can connect to any fullnode.
     // If successful this will set the `network.connected` bool to true. And wallet will display a view.
     if (!get(scanning_fullnodes)) { // don't try to connect while we are booting up the app and looking for fullnodes
       refreshWaypoint()
         .then(loadAccounts)
         .then(getTowerChainView)
-        .finally(() => {
+        .then(() => {
           maybeEmitBacklog(); // do this no matter what
           maybeStartMiner();
           tick_in_progress = false;

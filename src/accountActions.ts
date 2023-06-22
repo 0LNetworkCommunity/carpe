@@ -4,22 +4,21 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import {ClientTowerStatus, minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
-import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents, isAccountsLoaded, makeWhole } from './accounts';
+import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountsLoaded, makeWhole } from './accounts';
 
 export const loadAccounts = async () => { 
+  console.log(">>>> call loadAccounts");
   // fetch data from local DB
   return invoke('get_all_accounts')
-    .then((result: object) => {
+    .then((result: { accounts: [AccountEntry] }) => {
       all_accounts.set(result.accounts);
+      // if we have never set the signing account
       if (get(signingAccount).account == "" && result.accounts.length > 0) {
         // set initial signingAccount
         let first = result.accounts[0];
         setAccount(first.account, false);
-      } else {
-        /* TODO no accounts in the current network
-        signingAccount.set(new_account("", "", ""));
-        */
       }
+
       if (!get(isAccountsLoaded)) {
         isAccountsLoaded.set(true);
       }
@@ -35,7 +34,7 @@ export const loadAccounts = async () => {
 export const refreshAccounts = async () => {
   isRefreshingAccounts.set(true);
   return invoke('refresh_accounts')
-    .then((result: object) => { // TODO make this the correct return type
+    .then((result: { accounts: [AccountEntry] }) => { // TODO make this the correct return type
       all_accounts.set(result.accounts);
       result.accounts.forEach(el => {
         tryRefreshSignerAccount(el);

@@ -70,6 +70,14 @@ export const towerOnce = async () => {
 };
 
 export const maybeStartMiner = async () => {
+  // this should be instant
+  await getEpochRules()
+    .catch(e => { console.log("error getting epoch rules", e); });
+
+  // also should be instant
+  await getLocalHeight()
+    .catch(e => { console.log("error getting local height", e); });
+    
   // maybe try to start a new proof
   console.log("maybeStartMiner");
 

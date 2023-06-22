@@ -21,7 +21,7 @@
   import { getEnv, responses, debugMode } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
-  import { isCarpeInit} from "./accountActions";
+  import { isCarpeInit, loadAccounts} from "./accountActions";
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
   import { init_preferences } from "./preferences";
@@ -29,7 +29,7 @@
   import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
   import { refreshUpstreamPeerStats } from "./networks";
-import { Level, logger } from "./logger";
+  import { Level, logger } from "./logger";
   
   init_preferences();
  

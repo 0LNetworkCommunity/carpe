@@ -2,7 +2,7 @@ pub(crate) mod app_version;
 pub(crate) mod client;
 // mod examples;
 pub(crate) mod mining;
-// mod networks;
+pub(crate) mod networks;
 pub(crate) mod preferences;
 pub(crate) mod query;
 // mod swarm;

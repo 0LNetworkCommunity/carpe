@@ -6,10 +6,11 @@ use crate::{
   configs_network::{
     override_upstream_node, set_network_configs, set_waypoint, set_waypoint_from_upstream,
     NetworkProfile,
-  }, configs,
+  }, 
+  configs,
+  types::rpc_playlist,
 };
-use zapatos_types::{waypoint::Waypoint, chain_id::NamedChain};
-use ol_types::rpc_playlist;
+use libra_types::exports::{Waypoint,NamedChain};
 use url::Url;
 
 #[tauri::command]
