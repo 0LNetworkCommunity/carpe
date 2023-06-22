@@ -8,8 +8,8 @@ use std::error::Error;
 
 use anyhow::{anyhow, bail};
 use keyring::KeyringError;
-use zapatos_crypto::{ed25519::{Ed25519PrivateKey, Ed25519PublicKey},
-                     test_utils::KeyPair,
+use libra_types::exports::{
+  Ed25519PrivateKey, Ed25519PublicKey, KeyPair,
 };
 
 const KEYRING_APP_NAME: &str = "carpe";

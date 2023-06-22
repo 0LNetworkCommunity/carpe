@@ -2,12 +2,13 @@
 
 // use std::fmt::Display;
 
-use zapatos_sdk::{
-  // bcs,
-  rest_client::error::RestError,
-  move_types::account_address::AccountAddressParseError,
-};
+// use zapatos_sdk::{
+//   // bcs,
+//   rest_client::error::RestError,
+//   move_types::account_address::AccountAddressParseError,
+// };
 
+use libra_types::exports::{RestError, AccountAddressParseError};
 // use reqwest::StatusCode;
 
 

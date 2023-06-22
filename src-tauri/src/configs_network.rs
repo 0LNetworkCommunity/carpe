@@ -17,7 +17,7 @@ use crate::{
   }
 };
 use anyhow::{bail, Error};
-use zapatos_types::{waypoint::Waypoint, chain_id::NamedChain};
+use libra_types::exports::{Waypoint, NamedChain};
 // use crate::types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
 use rand::seq::SliceRandom;
 use rand::thread_rng;

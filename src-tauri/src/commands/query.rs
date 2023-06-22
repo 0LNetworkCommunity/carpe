@@ -1,8 +1,6 @@
 //! query the chain
 use libra_config::extension::client_ext::ClientExt;
-use libra_txs::coin_client::CoinClient;
-use libra_txs::rest_client::Client;
-use zapatos_types::{account_address::AccountAddress, event::EventKey};
+use libra_types::{AccountAddress, EventKey, Client};
 
 use crate::{carpe_error::CarpeError, configs::get_client};
 use crate::configs_network::remove_node;
@@ -50,10 +48,12 @@ pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 // }
 
 pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
-    dbg!("get_balance");
-    let client = get_client()?;
-    let coin_client = CoinClient::new(&client);
-    coin_client.get_account_balance(&account).await.map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))
+    todo!()
+
+    // dbg!("get_balance");
+    // let client = get_client()?;
+    // let coin_client = CoinClient::new(&client);
+    // coin_client.get_account_balance(&account).await.map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))
 }
 
 // #[tauri::command(async)]

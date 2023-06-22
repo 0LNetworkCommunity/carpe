@@ -17,8 +17,8 @@ pub(crate) mod carpe_error;
 pub(crate) mod commands;
 pub(crate) mod configs;
 pub(crate) mod configs_network;
-// pub mod configs_profile;
-// pub mod key_manager;
+pub(crate) mod configs_profile;
+pub(crate) mod key_manager;
 pub(crate) mod waypoint;
 
 fn main() {
@@ -88,7 +88,7 @@ fn main() {
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
       // // Accounts
-      // is_init,
+      commands::wallets::is_init,
       // refresh_accounts,
       // get_all_accounts,
       // //get_account_events,
@@ -128,7 +128,7 @@ fn main() {
       // // Version
       // get_app_version,
       // // Debug
-      // log_this,
+      commands::web_logs::log_this,
       // init_swarm,
       // swarm_miner,
       // swarm_files,

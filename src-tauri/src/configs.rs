@@ -8,33 +8,33 @@ use dirs;
 //use ol_types::config::{self, TxType};
 //use libra_txs::tx_params::TxParams;
 // use zapatos_rest_client::Client;
-// use zapatos_types::chain_id::NamedChain;
+use libra_types::exports::NamedChain;
 
 // use crate::{carpe_error::CarpeError, key_manager};
 
 pub static HOME_DIR: &str = ".0L";
 static APP_CONFIG_FILE: &str = "0L.toml";
 
-// static ACCOUNTS_DB_FILE: &str = "accounts.json";
-// static ACCOUNTS_DB_FILE_REX_TESTNET: &str = "accounts-rex-testnet.json";
-// static ACCOUNTS_DB_FILE_SWARM_DEVNET: &str = "accounts-swarm-devnet.json";
+static ACCOUNTS_DB_FILE: &str = "accounts.json";
+static ACCOUNTS_DB_FILE_REX_TESTNET: &str = "accounts-rex-testnet.json";
+static ACCOUNTS_DB_FILE_SWARM_DEVNET: &str = "accounts-swarm-devnet.json";
 
 // get the config path for files
 pub fn default_config_path() -> PathBuf {
     dirs::home_dir().unwrap().join(HOME_DIR).join(APP_CONFIG_FILE)
 }
 
-// pub fn default_accounts_db_path() -> PathBuf {
-//     let db_file = match get_cfg() {
-//         Ok(cfg) => match cfg.chain_info.chain_id {
-//             NamedChain::TESTNET => ACCOUNTS_DB_FILE_REX_TESTNET,
-//             NamedChain::DEVNET => ACCOUNTS_DB_FILE_SWARM_DEVNET,
-//             _ => ACCOUNTS_DB_FILE,
-//         },
-//         Err(_) => ACCOUNTS_DB_FILE,
-//     };
-//     dirs::home_dir().unwrap().join(HOME_DIR).join(db_file)
-// }
+pub fn default_accounts_db_path() -> PathBuf {
+    let db_file = match get_cfg() {
+        Ok(cfg) => match cfg.chain_info.chain_id {
+            NamedChain::TESTNET => ACCOUNTS_DB_FILE_REX_TESTNET,
+            NamedChain::DEVNET => ACCOUNTS_DB_FILE_SWARM_DEVNET,
+            _ => ACCOUNTS_DB_FILE,
+        },
+        Err(_) => ACCOUNTS_DB_FILE,
+    };
+    dirs::home_dir().unwrap().join(HOME_DIR).join(db_file)
+}
 
 // /// get transaction parameters from config file
 // /// As we might not need TxParams in V7 this is no commented out
@@ -68,6 +68,6 @@ pub fn get_cfg() -> anyhow::Result<AppCfg> {
 //     Ok(get_cfg()?.workspace.node_home.join("swarm_temp"))
 // }
 
-// pub fn is_initialized() -> bool {
-//     default_config_path().exists()
-// }
+pub fn is_initialized() -> bool {
+    default_config_path().exists()
+}

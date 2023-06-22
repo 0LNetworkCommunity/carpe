@@ -4,21 +4,15 @@ use std::str::FromStr;
 
 use anyhow::{bail, Error};
 use libra_wallet::legacy::LegacyKeys;
-use zapatos_types::account_address::AccountAddress;
-use zapatos_types::transaction::authenticator::AuthenticationKey;
+use libra_types::exports::{AccountAddress, AuthenticationKey};
+
 
 use crate::{configs, configs_network, configs_profile, key_manager};
-/**
- * OK - get all accounts
- * OK - add account
- * - remove account
- * - update account
- *
- **/
-use crate::carpe_error::CarpeError;
-use crate::configs::default_accounts_db_path;
 
-use super::get_balance;
+use crate::carpe_error::CarpeError;
+// use crate::configs::default_accounts_db_path;
+
+use crate::commands::query::get_balance;
 //use super::get_payment_events;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -104,7 +98,7 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 
     // this may be the first account and may not yet be initialized.
     if !init {
-        configs_network::set_network_configs(zapatos_types::chain_id::NamedChain::MAINNET, None)?;
+        configs_network::set_network_configs(NamedChain::MAINNET, None)?;
     }
 
     Ok(AccountEntry::new(conv_address, conv_authkey))
@@ -135,7 +129,7 @@ async fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeEr
     all_accounts.accounts = all_accounts
         .accounts
         .into_iter()
-        .map(async |mut e| {
+        .map( |mut e| async {
             e.balance = get_balance(e.account).await.ok();
             e.on_chain = Some(e.balance.is_some());
             e
@@ -194,7 +188,7 @@ fn insert_account_db(
     address: AccountAddress,
     authkey: AuthenticationKey,
 ) -> Result<Accounts, Error> {
-    let app_dir = default_accounts_db_path();
+    let app_dir = configs::default_accounts_db_path();
     // get all accounts
     let mut all = read_accounts()?;
 
@@ -235,7 +229,7 @@ fn insert_account_db(
 }
 
 fn update_accounts_db(accounts: &Accounts) -> Result<(), CarpeError> {
-    let app_dir = default_accounts_db_path();
+    let app_dir = configs::default_accounts_db_path();
     let serialized = serde_json::to_vec(accounts)
         .map_err(|e| CarpeError::config(&format!("json account db should serialize, {:?}", &e)))?;
 
@@ -251,7 +245,7 @@ fn update_accounts_db(accounts: &Accounts) -> Result<(), CarpeError> {
 pub fn remove_accounts() -> Result<String, CarpeError> {
     // Note: this only removes the account tracking, doesn't delete account on chain.
 
-    let db_path = default_accounts_db_path();
+    let db_path = configs::default_accounts_db_path();
     dbg!(&db_path);
     if db_path.exists() {
         match fs::remove_file(&db_path) {
@@ -274,7 +268,7 @@ pub fn remove_accounts() -> Result<String, CarpeError> {
 }
 
 fn read_accounts() -> Result<Accounts, Error> {
-    let db_path = default_accounts_db_path();
+    let db_path = configs::default_accounts_db_path();
     if db_path.exists() {
         let file = File::open(db_path)?;
         Ok(serde_json::from_reader(file)?)

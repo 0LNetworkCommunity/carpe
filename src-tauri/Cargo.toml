@@ -19,18 +19,19 @@ serde = { version = "1.0", features = ["serde_derive"] }
 serde_json = "1.0"
 url = { version = "^2.1", features = ["serde"] }
 
-libra-config = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
-libra-genesis-tools = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
-# libra-types = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
-libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
-libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-v7.git" }
+libra-config = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
+libra-genesis-tools = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat"}
+libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
+libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
+libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
+libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
 
 
 # zapatos = { package = "aptos", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
 # zapatos-crypto = { package = "aptos-crypto", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
-zapatos-types = { package = "aptos-types", git = "https://github.com/0LNetworkCommunity/zapatos.git", rev = "996a2dd65b" }
+# zapatos-types = { package = "aptos-types", git = "https://github.com/0LNetworkCommunity/zapatos.git", rev = "996a2dd65b" }
 # zapatos-rest-client = { package = "aptos-rest-client", git = "https://github.com/0LNetworkCommunity/zapatos.git", branch = "v7" }
-zapatos-sdk = { package = "aptos-sdk", git = "https://github.com/0LNetworkCommunity/zapatos.git", rev = "996a2dd65b" }
+# zapatos-sdk = { package = "aptos-sdk", git = "https://github.com/0LNetworkCommunity/zapatos.git", rev = "996a2dd65b" }
 
 #tower = { git = "https://github.com/Dat-H-Tran/libra.git", rev = "d9a4e4675ffce72ffbf32fa303381b3d2944fe8b"}
 #onboard = { git = "https://github.com/Dat-H-Tran/libra.git", rev = "d9a4e4675ffce72ffbf32fa303381b3d2944fe8b"}

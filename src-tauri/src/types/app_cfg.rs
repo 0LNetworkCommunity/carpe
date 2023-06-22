@@ -4,9 +4,9 @@ use anyhow::{bail, Error};
 // use diem_config::config::NodeConfig;
 // use diem_global_constants::{CONFIG_FILE, NODE_HOME};
 use libra_genesis_tools::helpers::MODE_0L;
-use zapatos_types::{
-    account_address::AccountAddress, chain_id::{NamedChain},
-    transaction::authenticator::AuthenticationKey, waypoint::Waypoint,
+use libra_types::exports::{
+    AccountAddress, NamedChain,
+    AuthenticationKey, Waypoint,
 };
 use dirs;
 use reqwest::{blocking::Client, Url};
