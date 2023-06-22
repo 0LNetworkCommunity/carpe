@@ -1,6 +1,10 @@
 //! query the chain
-use libra_config::extension::client_ext::ClientExt;
-use libra_types::{AccountAddress, EventKey, Client};
+// use libra_config::type_extensions::client_ext::ClientExt;
+use libra_types::{
+  type_extensions::client_ext::ClientExt,
+  exports::{AccountAddress, EventKey, Client}
+};
+use libra_query::account_queries::get_account_balance_libra;
 
 use crate::{carpe_error::CarpeError, configs::get_client};
 use crate::configs_network::remove_node;
@@ -14,8 +18,8 @@ use crate::configs_network::remove_node;
 // use ol_types::makewhole_resource::{CreditResource, MakeWholeResource};
 
 #[tauri::command(async)]
-pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
-    get_balance(account)
+pub async fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
+    get_balance(account).await
 }
 
 // #[tauri::command(async)]
@@ -48,12 +52,18 @@ pub fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 // }
 
 pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
-    todo!()
+    // todo
+    // Ok(0)
+    // let client = Client::default();
 
     // dbg!("get_balance");
-    // let client = get_client()?;
+    let client = get_client()?;
     // let coin_client = CoinClient::new(&client);
-    // coin_client.get_account_balance(&account).await.map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))
+    let slow_balance = get_account_balance_libra(&client, account).await
+      .map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))?;
+    
+    Ok(slow_balance.total)
+    // 
 }
 
 // #[tauri::command(async)]

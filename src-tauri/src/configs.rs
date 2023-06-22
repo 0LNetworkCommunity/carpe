@@ -8,8 +8,10 @@ use dirs;
 //use ol_types::config::{self, TxType};
 //use libra_txs::tx_params::TxParams;
 // use zapatos_rest_client::Client;
-use libra_types::exports::NamedChain;
-
+use libra_types::{
+  type_extensions::client_ext::ClientExt,
+  exports::{Client, NamedChain}
+};
 // use crate::{carpe_error::CarpeError, key_manager};
 
 pub static HOME_DIR: &str = ".0L";
@@ -53,9 +55,9 @@ pub fn get_cfg() -> anyhow::Result<AppCfg> {
     // return;  // gets default toml path.
 }
 
-// pub fn get_client() -> anyhow::Result<Client> {
-//     return Client::default();
-// }
+pub fn get_client() -> anyhow::Result<Client> {
+    return Client::default();
+}
 
 // /// For devs, get the source path, needed to initialize swarm
 // pub fn dev_get_source_path() -> Result<Option<PathBuf>, Error> {

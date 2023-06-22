@@ -4,7 +4,7 @@ use std::str::FromStr;
 
 use anyhow::{bail, Error};
 use libra_wallet::legacy::LegacyKeys;
-use libra_types::exports::{AccountAddress, AuthenticationKey};
+use libra_types::exports::{AccountAddress, AuthenticationKey, NamedChain};
 
 
 use crate::{configs, configs_network, configs_profile, key_manager};
@@ -125,8 +125,10 @@ pub async fn refresh_accounts() -> Result<Accounts, CarpeError> {
     Ok(updated)
 }
 
-async fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError> {
-    all_accounts.accounts = all_accounts
+async fn map_get_balance(mut my_accounts: Accounts) -> Result<Accounts, CarpeError> {
+
+    let acc = futures::future::join_all(
+      my_accounts
         .accounts
         .into_iter()
         .map( |mut e| async {
@@ -134,8 +136,9 @@ async fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeEr
             e.on_chain = Some(e.balance.is_some());
             e
         })
-        .collect();
-    Ok(all_accounts)
+    );
+    my_accounts.accounts = acc.await;
+    Ok(my_accounts)
 }
 
 fn find_account_data(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
