@@ -1,15 +1,22 @@
 use crate::{
   carpe_error::CarpeError,
-  commands::get_onchain_tower_state,
-  configs::{get_cfg, get_client, get_tx_params},
+  // commands::get_onchain_tower_state,
+  // configs::{get_cfg, get_client, get_tx_params},
+  configs::{get_cfg, get_client},
   configs_profile::get_local_proofs_this_profile,
-  types::AppCfg,
+  // types::AppCfg,
 };
+
 use std::{env, path::PathBuf};
+
+use libra_types::{
+  legacy_types::block::VDFProof,
+  type_extensions::client_ext::ClientExt,
+};
+
 
 use anyhow::Error;
 use log::{error, warn};
-use libra_types::block::VDFProof;
 use serde::{Deserialize, Serialize};
 use tauri::{Runtime, Window};
 // use tower::{
@@ -203,18 +210,21 @@ use tauri::{Runtime, Window};
 //   }
 // }
 
-// #[tauri::command(async)]
-// /// helper to get the latest local proof
-// pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
-//   let cfg = get_cfg()?;
+#[tauri::command(async)]
+/// helper to get the latest local proof
+pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
+  let cfg = get_cfg()?;
 
-//   Ok(get_latest_proof(&cfg, true).map_err(|e| {
-//     CarpeError::misc(&format!(
-//       "could not get a local proof, message: {:?}",
-//       e.to_string()
-//     ))
-//   })?)
-// }
+  todo!()
+  // VDFProof::default
+
+  // Ok(get_latest_proof(&cfg, true).map_err(|e| {
+  //   CarpeError::misc(&format!(
+  //     "could not get a local proof, message: {:?}",
+  //     e.to_string()
+  //   ))
+  // })?)
+}
 
 // #[tauri::command(async)]
 // pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
@@ -246,20 +256,30 @@ use tauri::{Runtime, Window};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// the parameter e.g. upper and lower thresholds
 // TODO: This is deprecated.
-pub struct EpochRules {
-  pub lower: u64,
-  pub upper: u64,
+pub struct EpochRules { // TODO: rename to VDFDifficulty as in tower_state
   pub difficulty: u64,
   pub security: u64,
 }
 
 #[tauri::command(async)]
-pub fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
+pub async fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
+  let client = get_client()?;
+
+  let res = client.view_ext("0x1::tower_state::get_difficulty", None, None).await?;
+
+  if res.len() != 2 {
+    return Err(CarpeError::rpc_fail("could not get the current tower difficulty from chain"))
+  }
+
+  let difficulty: u64 = serde_json::from_value(res.clone().into_iter().nth(0).unwrap()).map_err(|_| CarpeError::rpc_fail("could not parse tower_state::get_difficulty"))?;
+
+  let security: u64 = serde_json::from_value(res.into_iter().nth(1).unwrap())
+  .map_err(|_| CarpeError::rpc_fail("could not parse tower_state::get_difficulty"))?;
+
+
   Ok(EpochRules {
-    lower: tower::EPOCH_MINING_THRES_LOWER,
-    upper: tower::EPOCH_MINING_THRES_UPPER,
-    difficulty: 0, // TODO: get from chain
-    security: 0,   // TODO: get from chain
+    difficulty,
+    security,
   })
 }
 

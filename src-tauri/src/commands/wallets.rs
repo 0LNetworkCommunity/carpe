@@ -55,11 +55,11 @@ pub fn keygen() -> Result<NewKeygen, CarpeError> {
     let mnemonic_string = legacy_key.mnemonic;
 
     let keys = libra_wallet::legacy::get_keys_from_mnem(mnemonic_string.clone())?;
-    let conv_authkey = AuthenticationKey::from_str(&keys.child_0_owner.auth_key.to_string())?;
-    let conv_address = AccountAddress::from_hex_literal(&keys.child_0_owner.account.to_string())?;
+    // let conv_authkey = AuthenticationKey::from_str(&keys.child_0_owner.auth_key.to_string())?;
+    // let conv_address = AccountAddress::from_hex_literal(&keys.child_0_owner.account.to_string())?;
 
     let res = NewKeygen {
-        entry: AccountEntry::new(conv_address, conv_authkey),
+        entry: AccountEntry::new(keys.child_0_owner.account, keys.child_0_owner.auth_key),
         mnem: mnemonic_string,
     };
 
@@ -85,23 +85,23 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 
     let wallet = libra_wallet::legacy::get_keys_from_mnem(mnem.clone())?;
 
-    let conv_authkey = AuthenticationKey::from_str(&wallet.child_0_owner.auth_key.to_string())?;
-    let conv_address = AccountAddress::from_hex_literal(&wallet.child_0_owner.account.to_string())?;
+    let authkey = wallet.child_0_owner.auth_key;
+    let address = wallet.child_0_owner.account;
     // first try to insert into DB.
     // it will error if the account already exists.
-    insert_account_db(get_short(conv_address.clone()), conv_address.clone(), conv_authkey.clone())?;
+    insert_account_db(get_short(address), address, authkey)?;
 
-    key_manager::set_private_key(&wallet.child_0_owner.account.to_string(), wallet.child_0_owner.pri_key)
+    key_manager::set_private_key(&address.to_string(), wallet.child_0_owner.pri_key)
         .map_err(|e| CarpeError::config(&e.to_string()))?;
 
-    configs_profile::set_account_profile(conv_address.clone(), conv_authkey.clone())?;
+    configs_profile::set_account_profile(address.clone(), authkey.clone())?;
 
     // this may be the first account and may not yet be initialized.
     if !init {
         configs_network::set_network_configs(NamedChain::MAINNET, None)?;
     }
 
-    Ok(AccountEntry::new(conv_address, conv_authkey))
+    Ok(AccountEntry::new(address, authkey))
 }
 
 /// read all accounts from ACCOUNTS_DB_FILE

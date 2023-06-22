@@ -62,6 +62,12 @@ pub struct AppCfg {
     pub tx_configs: TxConfigs,
 }
 
+pub fn default_file_path() -> PathBuf {
+    let mut path = dirs::home_dir().unwrap();
+    path.push(NODE_HOME);
+    path.push(CONFIG_FILE);
+    path
+}
 /// Get a AppCfg object from toml file
 pub fn parse_toml(path: PathBuf) -> Result<AppCfg, Error> {
     // let mut config_toml = path.to_str().unwrap().to_owned()).expect("could not parse app config from file");
@@ -137,87 +143,88 @@ impl AppCfg {
     //     home
     // }
 
-    // /// Get where node key_store.json stored.
-    // pub fn init_app_configs(
-    //     authkey: AuthenticationKey,
-    //     account: AccountAddress,
-    //     upstream_peer: &Option<Url>,
-    //     config_path: &Option<PathBuf>,
-    //     base_epoch: &Option<u64>,
-    //     base_waypoint: &Option<Waypoint>,
-    //     source_path: &Option<PathBuf>,
-    //     statement: Option<String>,
-    //     ip: Option<Ipv4Addr>,
-    //     network_id: &Option<NamedChain>,
-    // ) -> Result<AppCfg, Error> {
-    //     // TODO: Check if configs exist and warn on overwrite.
-    //     let mut default_config = AppCfg::default();
-    //     default_config.profile.auth_key = authkey;
-    //     default_config.profile.account = account;
+    /// Get where node key_store.json stored.
+    pub fn init_app_configs(
+        authkey: AuthenticationKey,
+        account: AccountAddress,
+        upstream_peer: &Option<Url>,
+        config_path: &Option<PathBuf>,
+        base_epoch: &Option<u64>,
+        base_waypoint: &Option<Waypoint>,
+        source_path: &Option<PathBuf>,
+        statement: Option<String>,
+        ip: Option<Ipv4Addr>,
+        network_id: &Option<NamedChain>,
+    ) -> Result<AppCfg, Error> {
+        // TODO: Check if configs exist and warn on overwrite.
+        let mut default_config = AppCfg::default();
+        default_config.profile.auth_key = authkey;
+        default_config.profile.account = account;
 
-    //     // Get statement which goes into genesis block
-    //     default_config.profile.statement = match statement {
-    //         Some(s) => s,
-    //         None => {},
-    //     };
+        // // Get statement which goes into genesis block
+        // default_config.profile.statement = match statement {
+        //     Some(s) => s,
+        //     None => "".to_string,
+        // };
 
-    //     default_config.profile.ip = match ip {
-    //         Some(i) => i,
-    //         None => {},
-    //     };
+        // default_config.profile.ip = match ip {
+        //     Some(i) => i,
+        //     None => {},
+        // };
 
-    //     default_config.profile.vfn_ip = match ip {
-    //         Some(i) => Some(i),
-    //         None => {},
-    //     };
+        // default_config.profile.vfn_ip = match ip {
+        //     Some(i) => Some(i),
+        //     None => {},
+        // };
 
-    //     // default_config.workspace.node_home =
-    //         // config_path.clone().unwrap_or_else(|| what_home(None, None));
+        default_config.workspace.node_home =
+            config_path.clone().unwrap_or_else(|| default_file_path());
 
-    //     if let Some(u) = upstream_peer {
-    //         default_config.profile.upstream_nodes = vec![u.to_owned()]
-    //     };
-    //     // Add link to previous tower
-    //     // if !*IS_TEST {
-    //     //     default_config.profile.tower_link = add_tower(&default_config);
-    //     // }
+        // if let Some(u) = upstream_peer {
+        //     default_config.profile.upstream_nodes = vec![u.to_owned()]
+        // };
+        // Add link to previous tower
+        // if !*IS_TEST {
+        //     default_config.profile.tower_link = add_tower(&default_config);
+        // }
 
-    //     if let Some(id) = network_id {
-    //         default_config.chain_info.chain_id = id.to_owned();
-    //     };
+        if let Some(id) = network_id {
+            default_config.chain_info.chain_id = id.to_owned();
+        };
 
-    //     if source_path.is_some() {
-    //         // let source_path = what_source();
-    //         default_config.workspace.source_path = source_path.clone();
-    //         default_config.workspace.stdlib_bin_path = Some(
-    //             source_path
-    //                 .as_ref()
-    //                 .unwrap()
-    //                 .join("language/diem-framework/staged/stdlib.mv"),
-    //         );
-    //     }
+        // if source_path.is_some() {
+        //     // let source_path = what_source();
+        //     default_config.workspace.source_path = source_path.clone();
+        //     default_config.workspace.stdlib_bin_path = Some(
+        //         source_path
+        //             .as_ref()
+        //             .unwrap()
+        //             .join("language/diem-framework/staged/stdlib.mv"),
+        //     );
+        // }
 
-    //     // override from args
-    //     if base_epoch.is_some() && base_waypoint.is_some() {
-    //         default_config.chain_info.base_epoch = *base_epoch;
-    //         default_config.chain_info.base_waypoint = *base_waypoint;
-    //     } else {
-    //         default_config.chain_info.base_epoch = None;
-    //         default_config.chain_info.base_waypoint = None;
-    //         println!("WARN: No --epoch or --waypoint or upstream --url passed. This should only be done at genesis. If that's not correct either pass --epoch and --waypoint as CLI args, or provide a URL to fetch this data from --upstream-peer or --template-url");
-    //     }
+        // override from args
+        if base_epoch.is_some() && base_waypoint.is_some() {
+            default_config.chain_info.base_epoch = *base_epoch;
+            default_config.chain_info.base_waypoint = *base_waypoint;
+        } else {
+            default_config.chain_info.base_epoch = None;
+            default_config.chain_info.base_waypoint = None;
+            println!("WARN: No --epoch or --waypoint or upstream --url passed. This should only be done at genesis. If that's not correct either pass --epoch and --waypoint as CLI args, or provide a URL to fetch this data from --upstream-peer or --template-url");
+        }
 
-    //     // skip questionnaire if CI
-    //     if MODE_0L.is_test() {
-    //         default_config.save_file()?;
+        // skip questionnaire if CI
+        if MODE_0L.clone() == NamedChain::TESTING {
+            default_config.save_file()?;
 
-    //         return Ok(default_config);
-    //     }
-    //     fs::create_dir_all(&default_config.workspace.node_home).unwrap();
-    //     default_config.save_file()?;
+            return Ok(default_config);
+        }
 
-    //     Ok(default_config)
-    // }
+        fs::create_dir_all(&default_config.workspace.node_home).unwrap();
+        default_config.save_file()?;
+
+        Ok(default_config)
+    }
 
     // /// Save swarm default configs to swarm path
     // /// swarm_path points to the swarm_temp directory
