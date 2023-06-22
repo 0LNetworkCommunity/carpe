@@ -12,8 +12,8 @@ export interface NetworkProfile {
   profile: string,
 }
 
-// matches the index of node api
-export interface ChainMetadata {
+// chain metadata matches the index of node api
+export interface IndexResponse {
   chain_id: number,
   epoch: number,
   ledger_version: number,
@@ -40,7 +40,7 @@ export const network_profile = writable<NetworkProfile>({
 });
 export const connected = writable<boolean>(true);
 export const scanning_fullnodes = writable<boolean>(true);
-export const network_metadata = writable<ChainMetadata>();
+export const network_metadata = writable<IndexResponse>();
 // should match the Rust type Network Profile
 
 export function setNetwork(network: Networks) {
@@ -77,9 +77,9 @@ export function getNetwork() {
 
 
 
-export const get_metadata = async (): Promise<ChainMetadata>  => {
+export const get_metadata = async (): Promise<IndexResponse>  => {
   return invoke("get_metadata", {}).then((res: string ) => {
-    let m: ChainMetadata = JSON.parse(res);
+    let m: IndexResponse = JSON.parse(res);
     network_metadata.set(m);
     return m
   })

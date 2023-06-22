@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { ChainMetadata, get_metadata, network_metadata } from "../../networks";
+  import { IndexResponse, get_metadata, network_metadata } from "../../networks";
 
-  let metadata: ChainMetadata;
+  let metadata: IndexResponse;
 
   get_metadata();
 
