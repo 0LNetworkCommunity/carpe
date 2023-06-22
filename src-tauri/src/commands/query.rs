@@ -5,7 +5,7 @@ use libra_types::{
   exports::{AccountAddress, EventKey, Client}
 };
 use libra_query::account_queries::get_account_balance_libra;
-
+use anyhow::{anyhow, bail};
 use crate::{carpe_error::CarpeError, configs::get_client};
 use crate::configs_network::remove_node;
 
@@ -66,29 +66,45 @@ pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
     // 
 }
 
-// #[tauri::command(async)]
-// pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
-//   let mut client = get_client();
-//
-//   if let Some(state) = client.get_annotate_account_blob(AccountAddress::ZERO)?.0 {
-//     let recovery = query::find_value_from_state(
-//       &state,
-//       "RecoveryMode".to_owned(),
-//       "RecoveryMode".to_owned(),
-//       "epoch_ends".to_owned(),
-//     );
-//     match recovery {
-//       Some(AnnotatedMoveValue::U64(v)) => return Ok(v.to_owned()),
-//       _ => {}
-//     };
-//     return Err(CarpeError::misc(&format!(
-//       "No recovery mode struct. This is the typical case. Result: {:?}",
-//       &recovery
-//     )));
-//   }
-//
-//   return Err(CarpeError::misc(&format!("Cannot get root account state")));
-// }
+#[tauri::command(async)]
+pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
+  let mut client = get_client()?;
+
+  // TODO: write a Move view for this
+
+  let res = client.view_ext("0x1::recovery_mode::RecoveryMode::get_end_epoch", None, None).await?;
+
+  if let Some(r) = res.into_iter().next() {
+    let value: u64 = serde_json::from_value(r)
+      .map_err(|_| anyhow!("cannot parse recovery mode view"))?;
+    return Ok(value);
+  }
+  Err(CarpeError::rpc_fail("cannot get recovery mode view"))
+  // let resp = client
+  //           .get_account_resource(AccountAddress::ONE, "0x1::recovery_mode::RecoveryMode")
+  //           .await?;
+  
+  
+
+  // if let Some(state) = client.get_annotate_account_blob(AccountAddress::ZERO)?.0 {
+  //   let recovery = query::find_value_from_state(
+  //     &state,
+  //     "RecoveryMode".to_owned(),
+  //     "RecoveryMode".to_owned(),
+  //     "epoch_ends".to_owned(),
+  //   );
+  //   match recovery {
+  //     Some(AnnotatedMoveValue::U64(v)) => return Ok(v.to_owned()),
+  //     _ => {}
+  //   };
+  //   return Err(CarpeError::misc(&format!(
+  //     "No recovery mode struct. This is the typical case. Result: {:?}",
+  //     &recovery
+  //   )));
+  // }
+
+  // return Err(CarpeError::misc(&format!("Cannot get root account state")));
+}
 //
 //
 // pub fn get_payment_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {

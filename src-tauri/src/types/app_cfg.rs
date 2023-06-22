@@ -1,12 +1,12 @@
 //! Configs for all 0L apps.
 
 use anyhow::{bail, Error};
-// use diem_config::config::NodeConfig;
-// use diem_global_constants::{CONFIG_FILE, NODE_HOME};
-use libra_genesis_tools::helpers::MODE_0L;
-use libra_types::exports::{
+use libra_types::{
+  legacy_types::mode_ol::MODE_0L,
+   exports::{
     AccountAddress, NamedChain,
     AuthenticationKey, Waypoint,
+ }
 };
 use dirs;
 use reqwest::{blocking::Client, Url};

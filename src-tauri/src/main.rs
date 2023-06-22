@@ -98,7 +98,7 @@ fn main() {
       // remove_accounts,
       // switch_profile,
       // // Networks
-      // refresh_upstream_peer_stats,
+      commands::preferences::refresh_upstream_peer_stats,
       // force_upstream,
       // force_waypoint,
       // override_playlist,
@@ -108,7 +108,7 @@ fn main() {
       // // Queries
       // query_balance,
       // //query_makewhole,
-      // //get_recovery_mode,
+      commands::query::get_recovery_mode,
       // // Transactions
       // demo_tx,
       // create_user_account,
@@ -122,11 +122,11 @@ fn main() {
       // get_epoch_rules,
       // submit_backlog,
       // get_last_local_proof,
-      // get_env,
+      commands::preferences::get_env,
       // set_env,
       // submit_proof_zero,
       // // Version
-      // get_app_version,
+      commands::app_version::get_app_version,
       // // Debug
       commands::web_logs::log_this,
       // init_swarm,
