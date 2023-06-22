@@ -99,17 +99,17 @@ fn main() {
       commands::wallets::switch_profile,
       // Networks
       commands::preferences::refresh_upstream_peer_stats,
-      // force_upstream,
+      commands::networks::force_upstream,
       // force_waypoint,
-      // override_playlist,
+      commands::networks::override_playlist,
       commands::networks::get_networks,
       // commands::networks::refresh_waypoint,
       // toggle_network,
       // // Queries
-      // query_balance,
-      commands::query::query_metadata,
+      commands::query::query_balance,
       commands::query::query_makewhole,
       commands::query::get_recovery_mode,
+      commands::query::get_metadata,
       // // Transactions
       // demo_tx,
       // create_user_account,

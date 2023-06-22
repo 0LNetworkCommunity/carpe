@@ -70,7 +70,7 @@ pub fn set_network_configs(
   } else {
     match network {
       NamedChain::TESTNET => rpc_playlist::get_known_fullnodes(Some(
-        "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist_testnet.json"
+        "https://raw.githubusercontent.com/0o-de-lally/seed-peers/main/fullnode_seed_playlist.json"
           .parse()
           .unwrap(),
       ))?,

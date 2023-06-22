@@ -28,7 +28,7 @@
   import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
   import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
-  import { refreshUpstreamPeerStats } from "./networks";
+  import { get_metadata, refreshUpstreamPeerStats } from "./networks";
   import { Level, logger } from "./logger";
     import { isRefreshingAccounts } from "./accounts";
   
@@ -51,6 +51,8 @@
     getEnv();
 
     getVersion();
+
+    get_metadata();
 
     // iterates through the list of peers in 0L.toml, and updates the statistics in preferences.json. So we don't need to test fullnodes on every transaction.
     refreshUpstreamPeerStats()

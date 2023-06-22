@@ -7,7 +7,7 @@ import { notify_success, notify_error } from './carpeNotify';
 import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountsLoaded, makeWhole } from './accounts';
 
 export const loadAccounts = async () => { 
-  console.log(">>>> call loadAccounts");
+  console.log(">>> call loadAccounts");
   // fetch data from local DB
   return invoke('get_all_accounts')
     .then((result: { accounts: [AccountEntry] }) => {

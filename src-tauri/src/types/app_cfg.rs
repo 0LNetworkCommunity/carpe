@@ -407,6 +407,9 @@ pub struct Profile {
     /// Other nodes to connect for fallback connections
     pub upstream_nodes: Vec<Url>,
 
+    /// fullnode playlist URL to override default
+    pub override_playlist: Option<Url>,
+
     /// Link to another delay tower.
     pub tower_link: Option<String>,
 }
@@ -423,6 +426,7 @@ impl Default for Profile {
             ip: "0.0.0.0".parse().unwrap(),
             vfn_ip: "0.0.0.0".parse().ok(),
             // default_node: Some("http://localhost:8080".parse().expect("parse url")),
+            override_playlist: None,
             upstream_nodes: vec!["http://localhost:8080".parse().expect("parse url")],
             tower_link: None,
         }
