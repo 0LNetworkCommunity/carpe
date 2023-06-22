@@ -30,6 +30,7 @@
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
   import { refreshUpstreamPeerStats } from "./networks";
   import { Level, logger } from "./logger";
+    import { isRefreshingAccounts } from "./accounts";
   
   init_preferences();
  
@@ -41,6 +42,7 @@
   let debug = false;
 
   onMount(async () => {
+    isRefreshingAccounts.set(true);
 
     logger(Level.Warn, "Webview is starting");
     

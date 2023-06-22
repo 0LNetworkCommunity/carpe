@@ -18,7 +18,7 @@
   import Icons from "uikit/dist/js/uikit-icons";
   import { connected } from "../../networks";
   import ConnectionError from "../layout/ConnectionError.svelte";
-  import AccountsListSkeleton from "./AccountsListSkeleton.svelte";
+  
   UIkit.use(Icons);
 
   let my_account: AccountEntry;
@@ -68,17 +68,19 @@
   <div>
     {#if isRefreshing}
       <div style="position:relative">
-        <span uk-spinner style="position:absolute; top:0px; left:0px" />
+        <span uk-spinner style="position:absolute; top:50%; left:50%" />
       </div>
+    {:else}
+      {#if !isLoaded && !isRefreshing && !accountList }
+        <Newbie />
+      {/if}
     {/if}
     
-    {#if !isLoaded && !isRefreshing && !accountList }
-      <Newbie />
-    {/if}
 
-    {#if !isLoaded && accountList && accountList.length == 0}
+
+    <!-- {#if !isLoaded && accountList && accountList.length == 0}
       <Newbie />
-    {/if}
+    {/if} -->
 
     {#if isLoaded && accountList && accountList.length > 0}
       <div class="uk-flex uk-flex-center">
