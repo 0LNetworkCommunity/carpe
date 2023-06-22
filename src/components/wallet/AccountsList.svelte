@@ -6,6 +6,8 @@
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
   import { printCoins, unscaledCoins } from "../../coinHelpers";  
+    import { Link } from "svelte-navigator";
+    import { routes } from "../../routes";
 
   UIkit.use(Icons);
 
@@ -17,9 +19,7 @@
 </script>
 
 <main>
-  {#if accountList == null}
-    <span uk-spinner />
-  {:else if accountList.length > 0}
+  {#if accountList.length > 0}
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
@@ -83,4 +83,16 @@
       </tbody>
     </table>
   {/if}
+    <div uk-grid class="uk-margin uk-flex uk-flex-center">
+      <Link to={routes.keygen}>
+        <button class="uk-button uk-button-secondary"
+          >{$_("wallet.btn_new_account")}</button
+        >
+      </Link>
+      <Link to={routes.accountFromMnem}>
+        <button class="uk-button uk-button-default"
+          >{$_("wallet.btn_restore_account")}
+        </button>
+      </Link>
+    </div>
 </main>

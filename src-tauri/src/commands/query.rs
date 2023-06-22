@@ -2,7 +2,8 @@
 // use libra_config::type_extensions::client_ext::ClientExt;
 use libra_types::{
   type_extensions::client_ext::ClientExt,
-  exports::{AccountAddress, EventKey, Client}
+  exports::{AccountAddress, EventKey, Client},
+  legacy_types::{tower_state::TowerStateResource},
 };
 use libra_query::account_queries::get_account_balance_libra;
 use anyhow::{anyhow, bail};
@@ -22,18 +23,17 @@ pub async fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
     get_balance(account).await
 }
 
-// #[tauri::command(async)]
-// pub fn get_onchain_tower_state(
-//   account: AccountAddress,
-// ) -> Result<TowerStateResourceView, CarpeError> {
-//   dbg!("get_onchain_tower_state");
-//   let client = get_client();
-//
-//   match client.get_miner_state(account) {
-//     Ok(t) => t.into_inner().ok_or_else(|| CarpeError::client_unknown_err("Could not get tower state from chain")),
-//     _ => Err(CarpeError::client_unknown_err("Could not get tower state from chain")),
-//   }
-// }
+#[tauri::command(async)]
+pub async fn get_onchain_tower_state(
+  account: AccountAddress,
+) -> Result<TowerStateResource, CarpeError> {
+
+  let client = get_client()?;
+  let tower_access_path = "0x1::tower_state::TowerProofHistory";
+  let res = client.get_account_resource_bcs::<TowerStateResource>(account, tower_access_path).await?;
+  Ok(res.into_inner())
+
+}
 //
 // #[tauri::command(async)]
 // pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError> {

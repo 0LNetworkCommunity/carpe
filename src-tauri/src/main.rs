@@ -96,14 +96,14 @@ fn main() {
       commands::wallets::keygen,
       commands::wallets::init_from_mnem,
       // remove_accounts,
-      // switch_profile,
-      // // Networks
+      commands::wallets::switch_profile,
+      // Networks
       commands::preferences::refresh_upstream_peer_stats,
       // force_upstream,
       // force_waypoint,
       // override_playlist,
-      // get_networks,
-      // refresh_waypoint,
+      commands::networks::get_networks,
+      commands::networks::refresh_waypoint,
       // toggle_network,
       // // Queries
       // query_balance,

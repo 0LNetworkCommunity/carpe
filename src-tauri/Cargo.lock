@@ -6687,7 +6687,7 @@ checksum = "f7012b1bbb0719e1097c47611d3898568c546d597c2e74d66f6087edd5233ff4"
 [[package]]
 name = "libra-cached-packages"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#e98399a01f80df9ceb713cc0ef8703f88eda195f"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#ca4399a5ed8fadc45a9e30dee47d6c66728b4073"
 dependencies = [
  "aptos-types",
  "bcs 0.1.3",
@@ -6699,7 +6699,7 @@ dependencies = [
 [[package]]
 name = "libra-config"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#e98399a01f80df9ceb713cc0ef8703f88eda195f"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#ca4399a5ed8fadc45a9e30dee47d6c66728b4073"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6715,7 +6715,7 @@ dependencies = [
 [[package]]
 name = "libra-framework"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#e98399a01f80df9ceb713cc0ef8703f88eda195f"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#ca4399a5ed8fadc45a9e30dee47d6c66728b4073"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6736,7 +6736,7 @@ dependencies = [
 [[package]]
 name = "libra-genesis-tools"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#e98399a01f80df9ceb713cc0ef8703f88eda195f"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#ca4399a5ed8fadc45a9e30dee47d6c66728b4073"
 dependencies = [
  "anyhow",
  "aptos-config",
@@ -6773,7 +6773,7 @@ dependencies = [
 [[package]]
 name = "libra-query"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#e98399a01f80df9ceb713cc0ef8703f88eda195f"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#ca4399a5ed8fadc45a9e30dee47d6c66728b4073"
 dependencies = [
  "anyhow",
  "aptos-sdk",
@@ -6786,7 +6786,7 @@ dependencies = [
 [[package]]
 name = "libra-txs"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#e98399a01f80df9ceb713cc0ef8703f88eda195f"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#ca4399a5ed8fadc45a9e30dee47d6c66728b4073"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6804,7 +6804,7 @@ dependencies = [
 [[package]]
 name = "libra-types"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#e98399a01f80df9ceb713cc0ef8703f88eda195f"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#ca4399a5ed8fadc45a9e30dee47d6c66728b4073"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6814,8 +6814,10 @@ dependencies = [
  "aptos-sdk",
  "aptos-types",
  "async-trait",
+ "bcs 0.1.3",
  "dirs 5.0.1",
  "hex",
+ "move-core-types 0.0.4",
  "once_cell",
  "serde 1.0.164",
  "serde_json",
@@ -6827,7 +6829,7 @@ dependencies = [
 [[package]]
 name = "libra-wallet"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#e98399a01f80df9ceb713cc0ef8703f88eda195f"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#ca4399a5ed8fadc45a9e30dee47d6c66728b4073"
 dependencies = [
  "anyhow",
  "aptos-config",
