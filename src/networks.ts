@@ -127,7 +127,6 @@ export const refreshUpstreamPeerStats = async () => {
 
 export const incrementBackoff = () => {
   scanning_fullnodes_retries.set(get(scanning_fullnodes_retries) + 1);
-  let backoff = get(scanning_fullnodes_backoff);
   let new_time = new Date();
   new_time.setSeconds(new_time.getSeconds() + 2 * get(scanning_fullnodes_retries));
   scanning_fullnodes_backoff.set(new_time.getSeconds());
