@@ -5,13 +5,14 @@ use crate::commands::query::get_balance;
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 
-
 use anyhow::{anyhow, bail, Error};
 use libra_wallet::legacy::{
   get_account_from_private,
   LegacyKeys,
 };
 use libra_types::exports::{AccountAddress, AuthenticationKey, NamedChain, Ed25519PrivateKey, ValidCryptoMaterialStringExt};
+
+use super::query::get_seq_num;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
@@ -102,12 +103,23 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 
 
 #[tauri::command]
+// TODO: duplicated with init from mnem above
 pub fn init_from_private_key(pri_key_string: String) -> Result<AccountEntry, CarpeError> {
 
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
   .map_err(|_| anyhow!("cannot parse encoded private key"))?;
   let acc_struct = get_account_from_private(&pri);
-  Ok(AccountEntry::new(acc_struct.account, acc_struct.auth_key))
+  let address = acc_struct.account;
+  let authkey = acc_struct.auth_key;
+  insert_account_db(get_short(address), address, authkey)?;
+
+    key_manager::set_private_key(&address.to_string(), acc_struct.pri_key)
+        .map_err(|e| CarpeError::config(&e.to_string()))?;
+
+    configs_profile::set_account_profile(address.clone(), authkey.clone())?;
+
+
+  Ok(AccountEntry::new(address, authkey))
 
 }
 
@@ -134,7 +146,7 @@ async fn map_get_balance(mut my_accounts: Accounts) -> Result<Accounts, CarpeErr
         .into_iter()
         .map( |mut e| async {
             e.balance = get_balance(e.account).await.ok();
-            e.on_chain = Some(e.balance.is_some());
+            e.on_chain = Some(get_seq_num(e.account).await.is_ok());
             e
         })
     );
@@ -285,16 +297,6 @@ pub fn danger_get_keys(mnemonic: String) -> Result<LegacyKeys, anyhow::Error> {
     let keys = libra_wallet::legacy::get_keys_from_mnem(mnemonic)?;
     Ok(keys)
 }
-
-//TODO:
-// fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>) {
-//   let block = match block_zero {
-//     Some(b) => VDFProof::parse_block_file(b.to_owned()),
-//     None => write_genesis(&app_cfg),
-//   };
-
-//   UserConfigs::new(block).create_manifest(path);
-// }
 
 fn get_short(acc: AccountAddress) -> String {
     acc.to_string()[..3].to_owned()

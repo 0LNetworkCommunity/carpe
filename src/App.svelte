@@ -42,7 +42,7 @@
   let debug = false;
 
   onMount(async () => {
-    isRefreshingAccounts.set(true);
+    // isRefreshingAccounts.set(true);
 
     logger(Level.Warn, "Webview is starting");
     
@@ -58,6 +58,9 @@
     refreshUpstreamPeerStats()
     .then(() => {
       carpeTick();
+    })
+    .catch((e) => {
+      raise_error(e, true, "refreshUpstreamPeerStats");
     });
 
     healthTick = setInterval(carpeTick, 30000); // do a healthcheck, this is async

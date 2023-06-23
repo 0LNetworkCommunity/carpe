@@ -1,5 +1,4 @@
 //! query the chain
-// use libra_config::type_extensions::client_ext::ClientExt;
 use libra_types::{
   type_extensions::client_ext::ClientExt,
   exports::{AccountAddress},
@@ -13,16 +12,6 @@ use libra_query::account_queries::get_account_balance_libra;
 use anyhow::{anyhow};
 use serde_json::json;
 use crate::{carpe_error::CarpeError, configs::get_client};
-
-
-//use diem_client::views::EventView;
-//use diem_json_rpc_types::views::TowerStateResourceView;
-//use diem_resource_viewer::AnnotatedMoveValue;
-
-// use ol::node::query;
-// use ol::node::{node::Node, query::QueryType};
-// use ol_types::makewhole_resource::{CreditResource, MakeWholeResource};
-
 
 #[tauri::command(async)]
 pub async fn get_metadata() -> Result<String, CarpeError> { // Todo return the IndexResponse
@@ -93,8 +82,24 @@ pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
     // let coin_client = CoinClient::new(&client);
     let slow_balance = get_account_balance_libra(&client, account).await
       .map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))?;
-    
+    dbg!(&slow_balance);
     Ok(slow_balance.total)
+    // 
+}
+
+pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
+    // todo
+    // Ok(0)
+    // let client = Client::default();
+
+    // dbg!("get_balance");
+    let client = get_client()?;
+    // let coin_client = CoinClient::new(&client);
+    let res = client.get_account(account).await
+      .map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))?;
+    
+    dbg!(&res);
+    Ok(res.into_inner().sequence_number)
     // 
 }
 

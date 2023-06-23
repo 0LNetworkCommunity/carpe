@@ -9,7 +9,7 @@ import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signing
 export const loadAccounts = async () => { 
   console.log(">>> call loadAccounts");
   // fetch data from local DB
-  return invoke('get_all_accounts')
+  return invoke('refresh_accounts')
     .then((result: { accounts: [AccountEntry] }) => {
       all_accounts.set(result.accounts);
       // if we have never set the signing account
@@ -35,11 +35,12 @@ export const refreshAccounts = async () => {
   isRefreshingAccounts.set(true);
   return invoke('refresh_accounts')
     .then((result: { accounts: [AccountEntry] }) => { // TODO make this the correct return type
+      isRefreshingAccounts.set(false);
       all_accounts.set(result.accounts);
       result.accounts.forEach(el => {
         tryRefreshSignerAccount(el);
       });
-      isRefreshingAccounts.set(false);
+      
     })
     .catch(_ => {
       isRefreshingAccounts.set(false);

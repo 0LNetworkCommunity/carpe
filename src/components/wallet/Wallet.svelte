@@ -1,14 +1,12 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { onDestroy, onMount } from "svelte";
-  import { Link } from "svelte-navigator";
   import {
     isRefreshingAccounts,
     all_accounts,
     signingAccount,
     isAccountsLoaded,
   } from "../../accounts";
-  import { routes } from "../../routes";
   import type { AccountEntry } from "../../accounts";
   import Newbie from "./Newbie.svelte";
   import AccountsList from "./AccountsList.svelte";
@@ -25,7 +23,7 @@
   let accountList: AccountEntry[] = null;
   let pendingAccounts: AccountEntry[] = [];
   let isMining = false;
-  let isRefreshing: boolean = true;
+  let isRefreshing: boolean = false;
   let isConnected: boolean = true;
   let isLoaded: boolean = false;
 
@@ -68,10 +66,10 @@
   <div>
     {#if isRefreshing}
       <div style="position:relative">
-        <span uk-spinner style="position:absolute; top:50%; left:50%" />
+        <span uk-spinner style="position:absolute; top:0; left:0" />
       </div>
     {:else}
-      {#if !isLoaded && !isRefreshing && !accountList }
+      {#if !isLoaded && accountList && accountList.length == 0}
         <Newbie />
       {/if}
     {/if}

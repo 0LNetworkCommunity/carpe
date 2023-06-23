@@ -91,7 +91,7 @@ fn main() {
     .invoke_handler(tauri::generate_handler![
       // // Accounts
       commands::wallets::is_init,
-      // refresh_accounts,
+      commands::wallets::refresh_accounts,
       commands::wallets::get_all_accounts,
       // //get_account_events,
       // add_account,
@@ -99,6 +99,7 @@ fn main() {
       commands::wallets::init_from_mnem,
       // remove_accounts,
       commands::wallets::switch_profile,
+      commands::wallets::init_from_private_key,
       // Networks
       commands::preferences::refresh_upstream_peer_stats,
       commands::networks::force_upstream,
