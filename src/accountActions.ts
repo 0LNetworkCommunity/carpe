@@ -55,7 +55,7 @@ export enum InitType {
   PriKey,
 }
 
-export const handleAdd = async (init_type: InitType, secret: string): Promise<AccountEntry> =>{
+export const handleAdd = async (init_type: InitType, secret: string): Promise<AccountEntry> => {
   // isSubmitting = true;
 
   let method_name = "";
@@ -71,39 +71,20 @@ export const handleAdd = async (init_type: InitType, secret: string): Promise<Ac
   // submit
   return invoke(method_name, arg_obj)
     .then((res: AccountEntry) => {
-
-      addNewAccount(res); // why if we have carpe tick?
-
-      // load the account restored localy right away. Balance may takes few seconds to be fetched from the chain.
-      loadAccounts(); // why if we have carpe tick?
-
       // set as init so we don't get sent back to Newbie account creation.
       isInit.set(true);
-      connected.set(true); // provisionally set to true so we don't get flashed an error page.
-      scanning_fullnodes.set(false); // why if we have carpe tick?
-
-      // upadate dev info
       responses.set(JSON.stringify(res));
       signingAccount.set(res);
-      notify_success(`Account Added: ${res.nickname}`);
 
-      // refresh before going to next page
-      carpeTick()
-        .then(() => {
-          navigate("/");
-        })
-        .catch((e) => {
-          raise_error(e, true, "carpeTick");
-        });
+      // only navigate away once we have refreshed the accounts including balances
+      refreshAccounts()
+      .then(() => {
+        notify_success(`Account Added: ${res.nickname}`);
+        navigate("/");
+      });
       return res
     })
     .catch((error) => {
-      // if (isNewAccount) {
-      //   UIkit.modal("#submit-confirmation-modal").hide();
-      // }
-      // UIkit.modal("#submit-confirmation-modal").hide();
-
-      // isSubmitting = false;
       raise_error(error, false, "handleAdd");
     })
 }

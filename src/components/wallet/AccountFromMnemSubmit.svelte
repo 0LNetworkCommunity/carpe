@@ -1,23 +1,16 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { navigate } from "svelte-navigator";
-  import { responses } from "../../debug";
-  import { signingAccount, mnem, isInit } from "../../accounts";
-  import type { AccountEntry } from "../../accounts";
-  import { raise_error } from "../../carpeError";
-  import { invoke } from "@tauri-apps/api/tauri";
-  import { notify_success } from "../../carpeNotify";
+  import { mnem } from "../../accounts";
   import { onDestroy, onMount } from "svelte";
-  import { connected, scanning_fullnodes } from "../../networks";
-  import { InitType, addNewAccount, handleAdd, loadAccounts } from "../../accountActions";
+  import { InitType, handleAdd, } from "../../accountActions";
   import UIkit from "uikit";
-  import { carpeTick } from "../../tick";
 
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;
 
   let unsubs;
 
+  // TODO: this implementation needs to be removed
   onMount(async () => {
     unsubs = mnem.subscribe((m) => (danger_temp_mnem = m));
   });
@@ -26,20 +19,18 @@
     unsubs && unsubs();
   });
 
-  // const re = /[0-9A-Fa-f]{32}/g;
-
   function openConfirmationModal() {
     UIkit.modal("#submit-confirmation-modal").show();
   }
 
   let isSubmitting = false;
-  function initAccount() {
+  function initAccount(mnem_string: string) {
     isSubmitting = true;
-    handleAdd(InitType.Mnem, danger_temp_mnem.trim())
+    handleAdd(InitType.Mnem, mnem_string.trim())
     .then(() => {
         if (isNewAccount) {
+          // NOTE: this is for the keygen option, which shares this component
           UIkit.modal("#submit-confirmation-modal").$destroy(true); // known bug https://github.com/uikit/uikit/issues/1370
-          // addNewAccount(res);
         }
     })
     .catch(() => {
@@ -48,43 +39,6 @@
         }
         isSubmitting = false;
     });
-
-    // // submit
-    // invoke("init_from_mnem", { mnem: danger_temp_mnem.trim() })
-    //   .then((res: AccountEntry) => {
-    //     if (isNewAccount) {
-    //       UIkit.modal("#submit-confirmation-modal").$destroy(true); // known bug https://github.com/uikit/uikit/issues/1370
-    //       addNewAccount(res);
-    //     }
-    //     responses.set(JSON.stringify(res));
-    //     signingAccount.set(res);
-    //     isSubmitting = false;
-    //     notify_success(`Account Added: ${res.nickname}`);
-
-    //     // load the account restored localy right away. Balance may takes few seconds to be fetched from the chain.
-    //     loadAccounts();
-
-    //     // set as init so we don't get sent back to Newbie account creation.
-    //     isInit.set(true);
-    //     connected.set(true); // provisionally set to true so we don't get flashed an error page.
-    //     scanning_fullnodes.set(false);
-    //     carpeTick()
-    //       .then(() => {
-    //         navigate("/");
-    //       })
-    //       .catch((e) => {
-    //         raise_error(e, true, "carpeTick");
-    //       });
-
-    //     // navigate("/");
-    //   })
-    //   .catch((error) => {
-    //     if (isNewAccount) {
-    //       UIkit.modal("#submit-confirmation-modal").hide();
-    //     }
-    //     isSubmitting = false;
-    //     raise_error(error, false, "handleAdd");
-    //   });
   }
 </script>
 
@@ -116,7 +70,7 @@
           class="uk-button uk-button-primary"
           type="button"
           disabled={isSubmitting}
-          on:click|preventDefault={initAccount}
+          on:click|preventDefault={initAccoun(danger_temp_mnem)}
         >
           {#if isSubmitting}
             {$_("wallet.account_from_mnem_submit.btn_submiting")}
@@ -132,7 +86,7 @@
     class="uk-button uk-button-primary"
     type="button"
     disabled={isSubmitting}
-    on:click|preventDefault={initAccount}
+    on:click|preventDefault={initAccount(danger_temp_mnem)}
   >
     {#if isSubmitting}
       {$_("wallet.account_from_mnem_submit.btn_submiting")}...
