@@ -2,7 +2,6 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { writable } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { loadAccounts } from "./accountActions";
-import { json } from "svelte-i18n";
 
 
 export interface NetworkProfile {
@@ -77,12 +76,19 @@ export function getNetwork() {
 
 
 
-export const get_metadata = async (): Promise<IndexResponse>  => {
-  return invoke("get_metadata", {}).then((res: string ) => {
-    let m: IndexResponse = JSON.parse(res);
-    network_metadata.set(m);
-    return m
-  })
+export const getMetadata = async (): Promise<IndexResponse>  => {
+  return invoke("get_metadata", {})
+    .then((res: string ) => {
+      let m: IndexResponse = JSON.parse(res);
+      network_metadata.set(m);
+      connected.set(true);
+      m
+    })
+    .catch((e) => {
+      network_metadata.set(null);
+      connected.set(true);
+      raise_error(e, true, "getMetadata");
+    })
 }
 
 export const refreshUpstreamPeerStats = async () => {

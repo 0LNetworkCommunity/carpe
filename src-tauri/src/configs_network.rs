@@ -11,7 +11,7 @@ use crate::{
   // app_cfg,
   // waypoint,
   types::{
-    rpc_playlist::{self},
+    rpc_playlist::{self, FullnodePlaylist, HostInfo},
     app_cfg::{AppCfg},
   }
 };
@@ -31,7 +31,7 @@ pub struct NetworkProfile {
 }
 
 impl NetworkProfile {
-  pub fn new() -> Result<Self, CarpeError> {
+  pub fn read_from_cfg() -> Result<Self, CarpeError> {
     let cfg = get_cfg()?;
     Ok(NetworkProfile {
       chain_id: cfg.chain_info.chain_id,
@@ -67,13 +67,26 @@ pub fn set_network_configs(
   let playlist = if let Some(u) = custom_playlist {
     rpc_playlist::get_known_fullnodes(Some(u))?
   } else {
+    // TODO: set the default playlists
     match network {
+      NamedChain::MAINNET => rpc_playlist::get_known_fullnodes(Some(
+        "https://raw.githubusercontent.com/0o-de-lally/seed-peers/main/fullnode_seed_playlist.json"
+          .parse()
+          .unwrap(),
+      ))?,
       NamedChain::TESTNET => rpc_playlist::get_known_fullnodes(Some(
         "https://raw.githubusercontent.com/0o-de-lally/seed-peers/main/fullnode_seed_playlist.json"
           .parse()
           .unwrap(),
       ))?,
-      // NamedChain::TESTING => get_swarm_playlist()?,
+      NamedChain::TESTING => {
+        FullnodePlaylist {
+          nodes: vec![HostInfo {
+            note: "local".to_string(),
+            url: Url::parse("http://localhost:8080").unwrap(),
+          }],
+        }
+      },
       _ => rpc_playlist::get_known_fullnodes(None)?, // assume mainnet
     }
   };
@@ -88,7 +101,7 @@ pub fn set_network_configs(
 
   // tauri::async_runtime::block_on(set_waypoint_from_upstream()).ok();
 
-  NetworkProfile::new()
+  NetworkProfile::read_from_cfg()
 }
 
 

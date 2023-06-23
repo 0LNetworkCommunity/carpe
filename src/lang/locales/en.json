@@ -113,7 +113,7 @@
     },
     "account_settings": {
       "title": "ACCOUNT SETTINGS",
-      "btn_remove": "REMOVE ACCOUNT",
+      "btn_remove": "REMOVE ACCOUNTS",
       "comfirm": "Confirm remove accounts from this device? This is not reversable.",
       "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
     }

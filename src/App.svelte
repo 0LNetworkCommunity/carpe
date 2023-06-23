@@ -28,7 +28,7 @@
   import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
   import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
-  import { get_metadata, refreshUpstreamPeerStats } from "./networks";
+  import { getMetadata, refreshUpstreamPeerStats } from "./networks";
   import { Level, logger } from "./logger";
     import { isRefreshingAccounts } from "./accounts";
   
@@ -42,8 +42,6 @@
   let debug = false;
 
   onMount(async () => {
-    // isRefreshingAccounts.set(true);
-
     logger(Level.Warn, "Webview is starting");
     
     isCarpeInit();
@@ -52,7 +50,7 @@
 
     getVersion();
 
-    get_metadata();
+    getMetadata();
 
     // iterates through the list of peers in 0L.toml, and updates the statistics in preferences.json. So we don't need to test fullnodes on every transaction.
     refreshUpstreamPeerStats()

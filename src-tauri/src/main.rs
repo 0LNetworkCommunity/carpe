@@ -97,9 +97,10 @@ fn main() {
       // add_account,
       commands::wallets::keygen,
       commands::wallets::init_from_mnem,
-      // remove_accounts,
-      commands::wallets::switch_profile,
       commands::wallets::init_from_private_key,
+
+      commands::wallets::remove_accounts,
+      commands::wallets::switch_profile,
       // Networks
       commands::preferences::refresh_upstream_peer_stats,
       commands::networks::force_upstream,

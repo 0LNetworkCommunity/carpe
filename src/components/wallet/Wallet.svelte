@@ -69,16 +69,20 @@
         <span uk-spinner style="position:absolute; top:0; left:0" />
       </div>
     {:else}
+      <!-- TODO: let's move this logic to Newbie -->
+      <!-- if we have initialized the app, but deleted all accounts -->
+      {#if isLoaded && accountList && accountList.length == 0 }
+        <Newbie />
+      {/if}
+      <!-- acount list may return error -->
+      {#if !isLoaded && !accountList }
+        <Newbie />
+      {/if}
+      <!-- may return an empty array -->
       {#if !isLoaded && accountList && accountList.length == 0}
         <Newbie />
       {/if}
     {/if}
-    
-
-
-    <!-- {#if !isLoaded && accountList && accountList.length == 0}
-      <Newbie />
-    {/if} -->
 
     {#if isLoaded && accountList && accountList.length > 0}
       <div class="uk-flex uk-flex-center">
@@ -86,14 +90,13 @@
           {$_("wallet.wallet")}
         </h2>
       </div>
+      <AccountsList {my_account} {accountList} {isMining} {isConnected} />
+
       {#if !isConnected}
-        <AccountsList {my_account} {accountList} {isMining} {isConnected} />
+        <!-- <AccountsList {my_account} {accountList} {isMining} {isConnected} /> -->
 
         <ConnectionError />
       {:else}
-
-        <AccountsList {my_account} {accountList} {isMining} {isConnected} />
-
         <ReminderCreate {pendingAccounts} {isConnected} />
       {/if}
     {/if}

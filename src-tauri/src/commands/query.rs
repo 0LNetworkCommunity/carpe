@@ -98,7 +98,8 @@ pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
     let res = client.get_account(account).await
       .map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))?;
     
-    dbg!(&res);
+    // dbg!(&res);
+    
     Ok(res.into_inner().sequence_number)
     // 
 }

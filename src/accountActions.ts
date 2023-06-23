@@ -5,6 +5,9 @@ import { responses } from './debug';
 import {ClientTowerStatus, minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
 import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountsLoaded, makeWhole } from './accounts';
+import { navigate } from 'svelte-navigator';
+import { carpeTick } from './tick';
+import { connected, scanning_fullnodes } from './networks';
 
 export const loadAccounts = async () => { 
   console.log(">>> call loadAccounts");
@@ -47,6 +50,64 @@ export const refreshAccounts = async () => {
     })
 }
 
+export enum InitType {
+  Mnem,
+  PriKey,
+}
+
+export const handleAdd = async (init_type: InitType, secret: string): Promise<AccountEntry> =>{
+  // isSubmitting = true;
+
+  let method_name = "";
+  let arg_obj = {};
+  if (init_type == InitType.Mnem) {
+    method_name = "init_from_mnem"
+    arg_obj = { mnem: secret.trim() };
+
+  } else if (init_type == InitType.PriKey) {
+    method_name = "init_from_private_key";
+    arg_obj = { priKeyString: secret.trim() };
+  };
+  // submit
+  return invoke(method_name, arg_obj)
+    .then((res: AccountEntry) => {
+
+      addNewAccount(res); // why if we have carpe tick?
+
+      // load the account restored localy right away. Balance may takes few seconds to be fetched from the chain.
+      loadAccounts(); // why if we have carpe tick?
+
+      // set as init so we don't get sent back to Newbie account creation.
+      isInit.set(true);
+      connected.set(true); // provisionally set to true so we don't get flashed an error page.
+      scanning_fullnodes.set(false); // why if we have carpe tick?
+
+      // upadate dev info
+      responses.set(JSON.stringify(res));
+      signingAccount.set(res);
+      notify_success(`Account Added: ${res.nickname}`);
+
+      // refresh before going to next page
+      carpeTick()
+        .then(() => {
+          navigate("/");
+        })
+        .catch((e) => {
+          raise_error(e, true, "carpeTick");
+        });
+      return res
+    })
+    .catch((error) => {
+      // if (isNewAccount) {
+      //   UIkit.modal("#submit-confirmation-modal").hide();
+      // }
+      // UIkit.modal("#submit-confirmation-modal").hide();
+
+      // isSubmitting = false;
+      raise_error(error, false, "handleAdd");
+    })
+}
+
 export function tryRefreshSignerAccount(newData: AccountEntry) {
   let a = get(signingAccount).account;
   if (newData.account == a) {
@@ -56,14 +117,22 @@ export function tryRefreshSignerAccount(newData: AccountEntry) {
 
 
 export const isCarpeInit = async () => {
+  // on app load we want to avoid the Newbie view until we know it's not a new user
+  isRefreshingAccounts.set(true); 
+
   invoke("is_init", {})
     .then((res: boolean) => {
       responses.set(res.toString());
       isInit.set(res);
       // for testnet
+      isRefreshingAccounts.set(false);
+
       res
     })
-    .catch((e) => raise_error(e, false, "isCarpeInit"));
+    .catch((e) => {
+      isRefreshingAccounts.set(false);
+      raise_error(e, false, "isCarpeInit")
+    });
 }
 
 export function findOneAccount(account: string): AccountEntry {

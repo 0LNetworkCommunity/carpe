@@ -110,8 +110,8 @@ pub fn get_env() -> Result<String, CarpeError> {
 #[tauri::command(async)]
 pub fn set_env(env: String) -> Result<String, CarpeError> {
   match env.as_ref() {
-    "test" => env::set_var("MODE_0L", "test"),
-    "prod" => env::set_var("MODE_0L", "prod"),
+    "test" => env::set_var("MODE_0L", "testing"),
+    "prod" => env::set_var("MODE_0L", "mainnet"),
     _ => {}
   }
 

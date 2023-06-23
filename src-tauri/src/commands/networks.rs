@@ -21,20 +21,20 @@ pub fn toggle_network(network: String, custom_playlist: Option<Url>) -> Result<N
 
 #[tauri::command(async)]
 pub fn get_networks() -> Result<NetworkProfile, CarpeError> {
-  NetworkProfile::new()
+  NetworkProfile::read_from_cfg()
 }
 
 #[tauri::command]
 pub fn override_playlist(url: Url) -> Result<NetworkProfile, CarpeError> {
   let fpl = rpc_playlist::FullnodePlaylist::http_fetch_playlist(url)?;
   fpl.update_config_file(Some(configs::default_config_path()))?;
-  NetworkProfile::new()
+  NetworkProfile::read_from_cfg()
 }
 
 #[tauri::command]
 pub fn force_upstream(url: Url) -> Result<NetworkProfile, CarpeError> {
   override_upstream_node(url).map_err(|e| CarpeError::misc(&e.to_string()))?;
-  NetworkProfile::new()
+  NetworkProfile::read_from_cfg()
 }
 
 // #[tauri::command]

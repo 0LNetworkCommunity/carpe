@@ -6,11 +6,12 @@ use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 
 use anyhow::{anyhow, bail, Error};
+use libra_types::legacy_types::mode_ol::MODE_0L;
 use libra_wallet::legacy::{
   get_account_from_private,
   LegacyKeys,
 };
-use libra_types::exports::{AccountAddress, AuthenticationKey, NamedChain, Ed25519PrivateKey, ValidCryptoMaterialStringExt};
+use libra_types::exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt};
 
 use super::query::get_seq_num;
 
@@ -70,35 +71,26 @@ pub fn is_init() -> Result<bool, CarpeError> {
 }
 
 /// default way accounts get initialized in Carpe
-#[tauri::command]
+#[tauri::command] // don't want this to be async. We want it to block before moving back to the wallets page (and then needing a refresh), it's a smoother UI.
 pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-    danger_init_from_mnem(mnem)
-}
-
-pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-    dbg!("init from mnem");
-    let init = configs::is_initialized();
-    // TODO: refactor upstream wallet::get_account so that it returns a result
-
     let wallet = libra_wallet::legacy::get_keys_from_mnem(mnem.clone())?;
+    init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?)
 
-    let authkey = wallet.child_0_owner.auth_key;
-    let address = wallet.child_0_owner.account;
-    // first try to insert into DB.
-    // it will error if the account already exists.
-    insert_account_db(get_short(address), address, authkey)?;
 
-    key_manager::set_private_key(&address.to_string(), wallet.child_0_owner.pri_key)
-        .map_err(|e| CarpeError::config(&e.to_string()))?;
+    // let authkey = wallet.child_0_owner.auth_key;
+    // let address = wallet.child_0_owner.account;
+    // // first try to insert into DB.
+    // // it will error if the account already exists.
+    // insert_account_db(get_short(address), address, authkey)?;
 
-    configs_profile::set_account_profile(address.clone(), authkey.clone())?;
+    // key_manager::set_private_key(&address.to_string(), wallet.child_0_owner.pri_key)
+    //     .map_err(|e| CarpeError::config(&e.to_string()))?;
 
-    // this may be the first account and may not yet be initialized.
-    if !init {
-        configs_network::set_network_configs(NamedChain::MAINNET, None)?;
-    }
+    // configs_profile::set_account_profile(address.clone(), authkey.clone())?;
 
-    Ok(AccountEntry::new(address, authkey))
+
+
+    // Ok(AccountEntry::new(address, authkey))
 }
 
 
@@ -118,6 +110,11 @@ pub fn init_from_private_key(pri_key_string: String) -> Result<AccountEntry, Car
 
     configs_profile::set_account_profile(address.clone(), authkey.clone())?;
 
+    // this may be the first account and may not yet be initialized.
+    if !configs::is_initialized() {
+        // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
+        configs_network::set_network_configs(MODE_0L.clone(), None)?;
+    }
 
   Ok(AccountEntry::new(address, authkey))
 

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { IndexResponse, get_metadata, network_metadata } from "../../networks";
+  import { IndexResponse, getMetadata, network_metadata } from "../../networks";
 
   let metadata: IndexResponse;
 
-  get_metadata();
+  getMetadata();
 
   network_metadata.subscribe((n) => {
     metadata = n;
@@ -16,7 +16,7 @@
     <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
       Chain Metadata
     </h4>
-    <button class="uk-button uk-button-default" on:click={get_metadata}>Update</button>
+    <button class="uk-button uk-button-default" on:click={getMetadata}>Update</button>
 
     <div>
         <div>chain_id: {metadata.chain_id} </div>

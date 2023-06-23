@@ -9,7 +9,7 @@
   import { notify_success } from "../../carpeNotify";
   import { onDestroy, onMount } from "svelte";
   import { connected, scanning_fullnodes } from "../../networks";
-  import { addNewAccount, loadAccounts } from "../../accountActions";
+  import { InitType, addNewAccount, handleAdd, loadAccounts } from "../../accountActions";
   import UIkit from "uikit";
   import { carpeTick } from "../../tick";
 
@@ -33,45 +33,58 @@
   }
 
   let isSubmitting = false;
-  function handleAdd() {
+  function initAccount() {
     isSubmitting = true;
-
-    // submit
-    invoke("init_from_mnem", { mnem: danger_temp_mnem.trim() })
-      .then((res: AccountEntry) => {
+    handleAdd(InitType.Mnem, danger_temp_mnem.trim())
+    .then(() => {
         if (isNewAccount) {
           UIkit.modal("#submit-confirmation-modal").$destroy(true); // known bug https://github.com/uikit/uikit/issues/1370
-          addNewAccount(res);
+          // addNewAccount(res);
         }
-        responses.set(JSON.stringify(res));
-        signingAccount.set(res);
-        isSubmitting = false;
-        notify_success(`Account Added: ${res.nickname}`);
-
-        // load the account restored localy right away. Balance may takes few seconds to be fetched from the chain.
-        loadAccounts();
-
-        // set as init so we don't get sent back to Newbie account creation.
-        isInit.set(true);
-        connected.set(true); // provisionally set to true so we don't get flashed an error page.
-        scanning_fullnodes.set(false);
-        carpeTick()
-          .then(() => {
-            navigate("/");
-          })
-          .catch((e) => {
-            raise_error(e, true, "carpeTick");
-          });
-
-        // navigate("/");
-      })
-      .catch((error) => {
+    })
+    .catch(() => {
         if (isNewAccount) {
           UIkit.modal("#submit-confirmation-modal").hide();
         }
         isSubmitting = false;
-        raise_error(error, false, "handleAdd");
-      });
+    });
+
+    // // submit
+    // invoke("init_from_mnem", { mnem: danger_temp_mnem.trim() })
+    //   .then((res: AccountEntry) => {
+    //     if (isNewAccount) {
+    //       UIkit.modal("#submit-confirmation-modal").$destroy(true); // known bug https://github.com/uikit/uikit/issues/1370
+    //       addNewAccount(res);
+    //     }
+    //     responses.set(JSON.stringify(res));
+    //     signingAccount.set(res);
+    //     isSubmitting = false;
+    //     notify_success(`Account Added: ${res.nickname}`);
+
+    //     // load the account restored localy right away. Balance may takes few seconds to be fetched from the chain.
+    //     loadAccounts();
+
+    //     // set as init so we don't get sent back to Newbie account creation.
+    //     isInit.set(true);
+    //     connected.set(true); // provisionally set to true so we don't get flashed an error page.
+    //     scanning_fullnodes.set(false);
+    //     carpeTick()
+    //       .then(() => {
+    //         navigate("/");
+    //       })
+    //       .catch((e) => {
+    //         raise_error(e, true, "carpeTick");
+    //       });
+
+    //     // navigate("/");
+    //   })
+    //   .catch((error) => {
+    //     if (isNewAccount) {
+    //       UIkit.modal("#submit-confirmation-modal").hide();
+    //     }
+    //     isSubmitting = false;
+    //     raise_error(error, false, "handleAdd");
+    //   });
   }
 </script>
 
@@ -103,7 +116,7 @@
           class="uk-button uk-button-primary"
           type="button"
           disabled={isSubmitting}
-          on:click|preventDefault={handleAdd}
+          on:click|preventDefault={initAccount}
         >
           {#if isSubmitting}
             {$_("wallet.account_from_mnem_submit.btn_submiting")}
@@ -119,7 +132,7 @@
     class="uk-button uk-button-primary"
     type="button"
     disabled={isSubmitting}
-    on:click|preventDefault={handleAdd}
+    on:click|preventDefault={initAccount}
   >
     {#if isSubmitting}
       {$_("wallet.account_from_mnem_submit.btn_submiting")}...
