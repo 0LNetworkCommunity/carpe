@@ -91,7 +91,9 @@ export const getMetadata = async (): Promise<IndexResponse>  => {
     })
     .catch((e) => {
       network_metadata.set(null);
-      connected.set(true);
+      connected.set(false);
+      refreshUpstreamPeerStats(); // update the metadata and if we are connected
+
       
       raise_error(e, true, "getMetadata");
     })

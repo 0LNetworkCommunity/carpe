@@ -13,8 +13,8 @@ export const carpeTick = async () => {
     
     // This will check for a network connection
     // If successful this will set the `network.connected` bool to true. And wallet will display a view.
-    await getMetadata(); 
-
+    // will also refresh peer stats looking for good peers.
+    await getMetadata();
 
     if (!get(scanning_fullnodes) && get(isInit)) { // don't try to connect while we are booting up the app and looking for fullnodes
       refreshAccounts()

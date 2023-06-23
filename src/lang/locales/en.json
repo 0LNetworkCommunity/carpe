@@ -18,7 +18,8 @@
       "recovery_mode": { 
         "title": "Recovery Mode",
         "body": "The network is up! But we are in Recovery Mode, and no rewards are being paid for proofs yet. Wait until Recovery Mode is finished to send proofs for rewards. Recovery ends when epoch {epoch_recovery_ends} changes to {epoch_recovery_ends_after}"
-      }
+      },
+      "attempting_to_connect": "Attempting to connect to the blockchain"
   },
   "wallet": {
     "wallet": "Wallet",
