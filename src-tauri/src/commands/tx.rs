@@ -1,68 +1,91 @@
 //! transaction scripts
+use crate::carpe_error::CarpeError;
+use crate::key_manager::get_private_key;
 
-use anyhow::Context;
-// use zapatos_sdk::coin_client::TransferOptions;
-use crate::{carpe_error::CarpeError, configs};
-// use zapatos_sdk::transaction_builder::aptos_stdlib as stdlib;
-use libra_config::extension::client_ext::{ClientExt, DEFAULT_TIMEOUT_SECS};
-// use zapatos_types::{account_address::AccountAddress, transaction::authenticator::AuthenticationKey};
-// use libra_txs::coin_client::CoinClient;
-use libra_txs::constant::{DEFAULT_GAS_UNIT_PRICE, DEFAULT_MAX_GAS_AMOUNT};
-use libra_txs::extension::ed25519_private_key_ext::Ed25519PrivateKeyExt;
-use libra_txs::rest_client::Client;
-use zapatos_crypto::ed25519::Ed25519PrivateKey;
-use zapatos_crypto::ValidCryptoMaterialStringExt;
+use anyhow;
+use url::Url;
 
-#[tauri::command]
-pub fn demo_tx() -> Result<String, CarpeError> {
-  // let addr: AccountAddress = account.parse()
-  // .map_err(|_|{ CarpeError::misc("can't parse account") })?;
+use libra_txs::submit_transaction::Sender;
+use libra_types::exports::{AccountAddress, ChainId};
+use libra_types::exports::AccountKey;
 
-  let tx_params =
-    configs::get_tx_params()?;
-  // dbg!(&tx_params);
-  match demo_cmd::demo_tx(&tx_params, None) {
-    Ok(r) => Ok(format!("Tx Success: {:?}", r)),
-    Err(e) => Err(CarpeError::misc(&format!(
-      "could not do demo tx, message: {:?}",
-      e
-    ))),
-  }
+// use anyhow::Context;
+// // use zapatos_sdk::coin_client::TransferOptions;
+// use crate::{carpe_error::CarpeError, configs};
+// // use zapatos_sdk::transaction_builder::aptos_stdlib as stdlib;
+// use libra_config::extension::client_ext::{ClientExt, DEFAULT_TIMEOUT_SECS};
+// // use zapatos_types::{account_address::AccountAddress, transaction::authenticator::AuthenticationKey};
+// // use libra_txs::coin_client::CoinClient;
+// use libra_txs::constant::{DEFAULT_GAS_UNIT_PRICE, DEFAULT_MAX_GAS_AMOUNT};
+// use libra_txs::extension::ed25519_private_key_ext::Ed25519PrivateKeyExt;
+// use libra_txs::rest_client::Client;
+// use zapatos_crypto::ed25519::Ed25519PrivateKey;
+// use zapatos_crypto::ValidCryptoMaterialStringExt;
+
+fn make_account_key(address: &AccountAddress) -> anyhow::Result<AccountKey> {
+  let pk = get_private_key(address)?;
+  Ok(AccountKey::from_private_key(pk))
 }
 
 #[tauri::command(async)]
-pub fn create_user_account(authkey: String) -> Result<String, CarpeError> {
-  let tx_params =
-    configs::get_tx_params()?;
-
-  if let Some(key) = authkey.parse::<AuthenticationKey>().ok() {
-    match create_from_auth_and_coin(key, 1, tx_params, None) {
-      Ok(r) => Ok(format!("Tx Success: {:?}", r)),
-      Err(e) => {
-        dbg!(&e);
-        let new_msg = format!(
-          "could not make account creation tx, message: Location {:?}, Code: {:?}",
-          &e.location, &e.abort_code
-        );
-
-        let mut ce: CarpeError = e.into();
-
-        dbg!(&ce);
-        ce.msg = new_msg;
-
-        Err(ce)
-      }
-    }
-  } else {
-    Err(CarpeError::misc("could not parse authentication key"))
-  }
+pub async fn coin_transfer(sender: AccountAddress, receiver: AccountAddress, amount: u64) -> Result<(), CarpeError> {
+  let ak = make_account_key(&sender)?;
+  let chain_id = ChainId::testnet();
+  let url = Url::parse("http://localhost:8080").ok();
+  let mut sender = Sender::new(ak, chain_id, url).await?;
+  Ok(sender.transfer(receiver, amount).await?)
 }
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
-pub enum WalletTypes {
-  Slow = 0,
-  Community = 1,
-}
+// #[tauri::command]
+// pub fn demo_tx() -> Result<String, CarpeError> {
+//   // let addr: AccountAddress = account.parse()
+//   // .map_err(|_|{ CarpeError::misc("can't parse account") })?;
+
+//   let tx_params =
+//     configs::get_tx_params()?;
+//   // dbg!(&tx_params);
+//   match demo_cmd::demo_tx(&tx_params, None) {
+//     Ok(r) => Ok(format!("Tx Success: {:?}", r)),
+//     Err(e) => Err(CarpeError::misc(&format!(
+//       "could not do demo tx, message: {:?}",
+//       e
+//     ))),
+//   }
+// }
+
+// #[tauri::command(async)]
+// pub fn create_user_account(authkey: String) -> Result<String, CarpeError> {
+//   let tx_params =
+//     configs::get_tx_params()?;
+
+//   if let Some(key) = authkey.parse::<AuthenticationKey>().ok() {
+//     match create_from_auth_and_coin(key, 1, tx_params, None) {
+//       Ok(r) => Ok(format!("Tx Success: {:?}", r)),
+//       Err(e) => {
+//         dbg!(&e);
+//         let new_msg = format!(
+//           "could not make account creation tx, message: Location {:?}, Code: {:?}",
+//           &e.location, &e.abort_code
+//         );
+
+//         let mut ce: CarpeError = e.into();
+
+//         dbg!(&ce);
+//         ce.msg = new_msg;
+
+//         Err(ce)
+//       }
+//     }
+//   } else {
+//     Err(CarpeError::misc("could not parse authentication key"))
+//   }
+// }
+
+// #[derive(serde::Deserialize, serde::Serialize, Debug)]
+// pub enum WalletTypes {
+//   Slow = 0,
+//   Community = 1,
+// }
 
 // #[tauri::command(async)]
 // pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
@@ -78,27 +101,26 @@ pub enum WalletTypes {
 //   }
 // }
 
-// #[tauri::command(async)]
-// pub async fn coin_transfer(receiver: String, amount: u64) -> Result<String, CarpeError> {
 
-//   // let tx_params =
-//   //   configs::get_tx_params()?;
-//   //
-//   //
-//   // let receiver_address: AccountAddress = receiver
-//   //   .parse()
-//   //   .map_err(|_| CarpeError::misc("Invalid receiver account address"))?;
-//   //
-//   // match transfer_cmd::balance_transfer(receiver_address, amount, tx_params, None) {
-//   //   Ok(r) => Ok(format!("Transfer success: {:?}", r)),
-//   //   Err(e) => Err(CarpeError::misc(&format!(
-//   //     "{:}",
-//   //     match e.abort_code {
-//   //       Some(code) => code,
-//   //       None => 0,
-//   //     }
-//   //   ))),
-//   // }
+
+  // let tx_params =
+  //   configs::get_tx_params()?;
+  //
+  //
+  // let receiver_address: AccountAddress = receiver
+  //   .parse()
+  //   .map_err(|_| CarpeError::misc("Invalid receiver account address"))?;
+  //
+  // match transfer_cmd::balance_transfer(receiver_address, amount, tx_params, None) {
+  //   Ok(r) => Ok(format!("Transfer success: {:?}", r)),
+  //   Err(e) => Err(CarpeError::misc(&format!(
+  //     "{:}",
+  //     match e.abort_code {
+  //       Some(code) => code,
+  //       None => 0,
+  //     }
+  //   ))),
+  // }
 
 
 //   let client = Client::default()?;

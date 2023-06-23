@@ -4,7 +4,7 @@ extern crate keyring;
 
 use std::convert::TryInto;
 
-
+use libra_types::exports::AccountAddress;
 use anyhow::{anyhow, bail};
 use keyring::KeyringError;
 use libra_types::exports::{
@@ -24,7 +24,8 @@ pub fn set_private_key(ol_address: &str, key: Ed25519PrivateKey) -> Result<(), K
 }
 
 /// retrieve a private key from OS keyring
-pub fn get_private_key(ol_address: &str) -> Result<Ed25519PrivateKey, anyhow::Error> {
+pub fn get_private_key(address: &AccountAddress) -> Result<Ed25519PrivateKey, anyhow::Error> {
+    let ol_address = address.to_string();
     let kr = keyring::Keyring::new(KEYRING_APP_NAME, &ol_address);
     match kr.get_password() {
         Ok(s) => {
@@ -40,9 +41,9 @@ pub fn get_private_key(ol_address: &str) -> Result<Ed25519PrivateKey, anyhow::Er
 
 // retrieve a keypair from OS keyring
 pub fn get_keypair(
-    ol_address: &str,
+    address: &AccountAddress,
 ) -> Result<KeyPair<Ed25519PrivateKey, Ed25519PublicKey>, anyhow::Error> {
-    match get_private_key(&ol_address) {
+    match get_private_key(&address) {
         Ok(k) => {
             let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = match k.try_into() {
                 Ok(p) => p,

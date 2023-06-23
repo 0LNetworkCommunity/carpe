@@ -6,7 +6,7 @@ pub(crate) mod networks;
 pub(crate) mod preferences;
 pub(crate) mod query;
 // mod swarm;
-// mod tx;
+pub(crate) mod tx;
 pub(crate) mod wallets;
 pub(crate) mod web_logs;
 
