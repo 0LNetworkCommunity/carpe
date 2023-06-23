@@ -1,19 +1,17 @@
+use crate::{configs, configs_network, configs_profile, key_manager};
+use crate::carpe_error::CarpeError;
+use crate::commands::query::get_balance;
+
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 use std::str::FromStr;
 
-use anyhow::{bail, Error};
-use libra_wallet::legacy::LegacyKeys;
-use libra_types::exports::{AccountAddress, AuthenticationKey, NamedChain};
-
-
-use crate::{configs, configs_network, configs_profile, key_manager};
-
-use crate::carpe_error::CarpeError;
-// use crate::configs::default_accounts_db_path;
-
-use crate::commands::query::get_balance;
-//use super::get_payment_events;
+use anyhow::{anyhow, bail, Error};
+use libra_wallet::legacy::{
+  get_account_from_private,
+  LegacyKeys,
+};
+use libra_types::exports::{AccountAddress, AuthenticationKey, NamedChain, Ed25519PrivateKey, ValidCryptoMaterialStringExt};
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
@@ -55,8 +53,6 @@ pub fn keygen() -> Result<NewKeygen, CarpeError> {
     let mnemonic_string = legacy_key.mnemonic;
 
     let keys = libra_wallet::legacy::get_keys_from_mnem(mnemonic_string.clone())?;
-    // let conv_authkey = AuthenticationKey::from_str(&keys.child_0_owner.auth_key.to_string())?;
-    // let conv_address = AccountAddress::from_hex_literal(&keys.child_0_owner.account.to_string())?;
 
     let res = NewKeygen {
         entry: AccountEntry::new(keys.child_0_owner.account, keys.child_0_owner.auth_key),
@@ -104,18 +100,21 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
     Ok(AccountEntry::new(address, authkey))
 }
 
+pub fn init_from_private_key(pri_key_string: String) -> Result<AccountEntry, CarpeError> {
+
+  let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
+  .map_err(|_| anyhow!("cannot parse encoded private key"))?;
+  let acc_struct = get_account_from_private(&pri);
+  Ok(AccountEntry::new(acc_struct.account, acc_struct.auth_key))
+
+}
+
 /// read all accounts from ACCOUNTS_DB_FILE
 #[tauri::command(async)]
 pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
     let all = read_accounts()?;
     Ok(all)
 }
-
-// #[tauri::command(async)]
-// pub fn get_account_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
-//     let events = get_payment_events(account)?;
-//     Ok(events)
-// }
 
 #[tauri::command(async)]
 pub async fn refresh_accounts() -> Result<Accounts, CarpeError> {
