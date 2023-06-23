@@ -70,6 +70,8 @@ export const towerOnce = async () => {
 };
 
 export const maybeStartMiner = async () => {
+  console.log(">>> maybeEmitBacklog");
+
   // this should be instant
   await getEpochRules()
     .catch(e => { console.log("error getting epoch rules", e); });
@@ -138,6 +140,7 @@ export const hasProofsPending = ():boolean => {
   return false
 }
 export const maybeEmitBacklog = async () => {
+  console.log(">>> maybeEmitBacklog");
   // only emit a backlog event, if there are any proofs pending 
   // and there is no backlog already in progress
   // and finally check that the listener has started.
@@ -152,7 +155,7 @@ export const maybeEmitBacklog = async () => {
 
 
 export const getTowerChainView = async () => {
-  console.log("getTowerChainView");
+  console.log(">>> getTowerChainView");
   isRefreshingAccounts.set(true); 
   return invoke("get_onchain_tower_state", {
     account: get(signingAccount).account

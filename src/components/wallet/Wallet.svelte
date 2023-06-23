@@ -5,7 +5,7 @@
     isRefreshingAccounts,
     all_accounts,
     signingAccount,
-    isAccountsLoaded,
+    isAccountRefreshed,
   } from "../../accounts";
   import type { AccountEntry } from "../../accounts";
   import Newbie from "./Newbie.svelte";
@@ -41,7 +41,7 @@
       pendingAccounts = all.filter((x) => !x.on_chain);
     });
     unsubsSigningAccount = signingAccount.subscribe((a) => (my_account = a));
-    unsubsIsAccountsLoaded = isAccountsLoaded.subscribe(
+    unsubsIsAccountsLoaded = isAccountRefreshed.subscribe(
       (boo) => (isLoaded = boo)
     );
     unsubsMinerLoopEnabled = minerLoopEnabled.subscribe(

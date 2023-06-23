@@ -4,7 +4,7 @@
   import { routes } from "../../routes";
   import { init_preferences } from "../../preferences";
   
-  init_preferences();
+  // init_preferences();
 
 </script>
 

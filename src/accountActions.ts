@@ -4,35 +4,33 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import {ClientTowerStatus, minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
-import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountsLoaded, makeWhole } from './accounts';
+import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountRefreshed, makeWhole } from './accounts';
 import { navigate } from 'svelte-navigator';
-import { carpeTick } from './tick';
-import { connected, scanning_fullnodes } from './networks';
 
-export const loadAccounts = async () => { 
-  console.log(">>> call loadAccounts");
-  // fetch data from local DB
-  return invoke('refresh_accounts')
-    .then((result: { accounts: [AccountEntry] }) => {
-      all_accounts.set(result.accounts);
-      // if we have never set the signing account
-      if (get(signingAccount).account == "" && result.accounts.length > 0) {
-        // set initial signingAccount
-        let first = result.accounts[0];
-        setAccount(first.account, false);
-      }
+// export const loadAccounts = async () => { 
+//   console.log(">>> call loadAccounts");
+//   // fetch data from local DB
+//   return invoke('refresh_accounts')
+//     .then((result: { accounts: [AccountEntry] }) => {
+//       all_accounts.set(result.accounts);
+//       // if we have never set the signing account
+//       if (get(signingAccount).account == "" && result.accounts.length > 0) {
+//         // set initial signingAccount
+//         let first = result.accounts[0];
+//         setAccount(first.account, false);
+//       }
 
-      if (!get(isAccountsLoaded)) {
-        isAccountsLoaded.set(true);
-      }
+//       if (!get(isAccountRefreshed)) {
+//         isAccountRefreshed.set(true);
+//       }
 
-      updateMakeWhole(result.accounts);
+//       updateMakeWhole(result.accounts);
 
-      // fetch data from the chain
-      return refreshAccounts();
-    })
-    .catch((error) => raise_error(error, false, "loadAccounts"))
-}
+//       // fetch data from the chain
+//       // return refreshAccounts();
+//     })
+//     .catch((error) => raise_error(error, false, "loadAccounts"))
+// }
 
 export const refreshAccounts = async () => {
   isRefreshingAccounts.set(true);
@@ -40,9 +38,20 @@ export const refreshAccounts = async () => {
     .then((result: { accounts: [AccountEntry] }) => { // TODO make this the correct return type
       isRefreshingAccounts.set(false);
       all_accounts.set(result.accounts);
-      result.accounts.forEach(el => {
-        tryRefreshSignerAccount(el);
-      });
+
+      if (get(signingAccount).account == "" && result.accounts.length > 0) {
+        // set initial signingAccount
+        let first = result.accounts[0];
+        setAccount(first.account, false);
+      }
+
+      if (!get(isAccountRefreshed)) {
+        isAccountRefreshed.set(true);
+      }
+
+      // result.accounts.forEach(el => {
+      //   tryRefreshSignerAccount(el);
+      // });
       
     })
     .catch(_ => {
@@ -243,17 +252,18 @@ export let invoke_makewhole = async (account: String): Promise<number> => {
 }
 */
 
-function updateMakeWhole(accounts: Array<AccountEntry>) {
+export const updateMakeWhole = () => {
   let mk = get(makeWhole);
-  accounts.forEach(each => {
+  get(all_accounts).forEach(each => {
     let account = each.account;
     if (mk[account] == null) {
-      console.log(">>> query_makewhole called");
+      console.log(">>> query_makewhole");
       invoke("query_makewhole", { account })
         .then((credits) => {
           mk[account] = credits;
           makeWhole.set(mk);
         })
+        .catch(e => raise_error(e, true, "updateMakeWhole"));
     }
   })
 }

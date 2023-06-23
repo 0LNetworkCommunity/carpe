@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { writable } from "svelte/store";
 import { raise_error } from "./carpeError";
-import { loadAccounts } from "./accountActions";
+import { loadAccounts, refreshAccounts } from "./accountActions";
 
 
 export interface NetworkProfile {
@@ -47,7 +47,7 @@ export function setNetwork(network: Networks) {
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         // update accounts from current network
-        loadAccounts(); // TODO notify as an event dependency
+        refreshAccounts();
       })
     .catch((error) => raise_error(error, false, "setNetwork"));
 }
@@ -77,6 +77,7 @@ export function getNetwork() {
 
 
 export const getMetadata = async (): Promise<IndexResponse>  => {
+  console.log(">>> get_metadata");
   return invoke("get_metadata", {})
     .then((res: string ) => {
       let m: IndexResponse = JSON.parse(res);

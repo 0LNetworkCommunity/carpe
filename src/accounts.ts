@@ -24,6 +24,6 @@ export const mnem = writable("");
 export const isInit = writable(false);
 export const isRefreshingAccounts = writable(false);
 export const all_accounts = writable<AccountEntry[]>([]);
-export const isAccountsLoaded = writable(false);
+export const isAccountRefreshed = writable(false);
 export const accountEvents = writable({}); // TODO define interface AccountEvent
 export const makeWhole = writable({});

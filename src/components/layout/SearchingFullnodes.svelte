@@ -1,12 +1,12 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { scanning_fullnodes } from "../../networks";
-  import { isAccountsLoaded } from "../../accounts";
+  import { isAccountRefreshed } from "../../accounts";
 
   let scanning = true;
   let isLoaded = false;
   
-  isAccountsLoaded.subscribe(boo => isLoaded = boo);
+  isAccountRefreshed.subscribe(boo => isLoaded = boo);
   scanning_fullnodes.subscribe(b => scanning = b);
 
 </script>
