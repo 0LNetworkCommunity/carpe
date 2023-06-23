@@ -70,7 +70,7 @@
           class="uk-button uk-button-primary"
           type="button"
           disabled={isSubmitting}
-          on:click|preventDefault={initAccoun(danger_temp_mnem)}
+          on:click|preventDefault={initAccount(danger_temp_mnem)}
         >
           {#if isSubmitting}
             {$_("wallet.account_from_mnem_submit.btn_submiting")}

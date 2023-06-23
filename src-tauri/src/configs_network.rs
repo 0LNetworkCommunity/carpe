@@ -429,5 +429,5 @@ fn test_pick_upstream() {
     nodes: vec![node_good, node_bad],
   };
 
-  tauri::async_runtime::block_on(UpstreamStats::check_which_are_alive(upstream));
+  tauri::async_runtime::block_on(UpstreamStats::check_which_are_alive(upstream)).unwrap();
 }

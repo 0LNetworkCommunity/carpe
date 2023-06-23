@@ -60,9 +60,11 @@
     {$_("settings.network_settings.synced_peers")}
   </h5>
 
-  {#each peers as url}
-    <p>{url}</p>
-  {/each}
+  {#if peers }
+    {#each peers as url}
+      <p>{url}</p>
+    {/each}
+  {/if}
 
   <button
     class="uk-button uk-button-primary uk-align-right"

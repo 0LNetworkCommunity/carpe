@@ -91,7 +91,8 @@ pub async fn init_from_private_key(pri_key_string: String) -> Result<AccountEntr
   // IMPORTANT
   // let's check if this account has had a rotated authkey,
   // so the address we derive may not be the expected one.
-  let address = get_originating_address(authkey).await?;
+  let address = get_originating_address(authkey).await
+  .unwrap_or_else(|_| acc_struct.account); // the account may not have been created on chain. If we can't get the address, we'll just use the one we derived from the private key
 
   insert_account_db(get_short(address), address, authkey)?;
 
@@ -341,13 +342,19 @@ fn get_short(acc: AccountAddress) -> String {
     acc.to_string()[..3].to_owned()
 }
 
-#[test]
-// danger_init_from_mnem
-fn test_init_mnem() {
+#[tokio::test]
+async fn test_init_mnem() {
     use crate::types::app_cfg::parse_toml;
     let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
-    danger_init_from_mnem(alice).unwrap();
+    init_from_mnem(alice).await.unwrap();
     let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
     let cfg = parse_toml(path);
     dbg!(&cfg);
+}
+
+#[tokio::test]
+async fn test_fetch_originating() {
+  let a = AuthenticationKey::from_encoded_string("53113e2c0edc2bd6b9cccd4c6ab84064847e3ab53d3a46c4139c6d0834f18634").unwrap();
+  let r = get_originating_address(a).await.unwrap();
+  dbg!(&r);
 }
