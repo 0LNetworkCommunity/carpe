@@ -1,3 +1,4 @@
+use crate::configs::get_client;
 use crate::{configs, configs_network, configs_profile, key_manager};
 use crate::carpe_error::CarpeError;
 use crate::commands::query::get_balance;
@@ -71,10 +72,10 @@ pub fn is_init() -> Result<bool, CarpeError> {
 }
 
 /// default way accounts get initialized in Carpe
-#[tauri::command] // don't want this to be async. We want it to block before moving back to the wallets page (and then needing a refresh), it's a smoother UI.
-pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
+#[tauri::command(async)] // don't want this to be async. We want it to block before moving back to the wallets page (and then needing a refresh), it's a smoother UI.
+pub async fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
     let wallet = libra_wallet::legacy::get_keys_from_mnem(mnem.clone())?;
-    init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?)
+    init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?).await
 
 
     // let authkey = wallet.child_0_owner.auth_key;
@@ -94,27 +95,32 @@ pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 }
 
 
-#[tauri::command]
-// TODO: duplicated with init from mnem above
-pub fn init_from_private_key(pri_key_string: String) -> Result<AccountEntry, CarpeError> {
+#[tauri::command(async)]
+
+pub async fn init_from_private_key(pri_key_string: String) -> Result<AccountEntry, CarpeError> {
 
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
   .map_err(|_| anyhow!("cannot parse encoded private key"))?;
   let acc_struct = get_account_from_private(&pri);
-  let address = acc_struct.account;
   let authkey = acc_struct.auth_key;
+
+  // IMPORTANT
+  // let's check if this account has had a rotated authkey,
+  // so the address we derive may not be the expected one.
+  let address = get_originating_address(authkey).await?;
+
   insert_account_db(get_short(address), address, authkey)?;
 
-    key_manager::set_private_key(&address.to_string(), acc_struct.pri_key)
-        .map_err(|e| CarpeError::config(&e.to_string()))?;
+  key_manager::set_private_key(&address.to_string(), acc_struct.pri_key)
+      .map_err(|e| CarpeError::config(&e.to_string()))?;
 
-    configs_profile::set_account_profile(address.clone(), authkey.clone())?;
+  configs_profile::set_account_profile(address.clone(), authkey.clone())?;
 
-    // this may be the first account and may not yet be initialized.
-    if !configs::is_initialized() {
-        // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
-        configs_network::set_network_configs(MODE_0L.clone(), None)?;
-    }
+  // this may be the first account and may not yet be initialized.
+  if !configs::is_initialized() {
+      // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
+      configs_network::set_network_configs(MODE_0L.clone(), None)?;
+  }
 
   Ok(AccountEntry::new(address, authkey))
 
@@ -123,36 +129,86 @@ pub fn init_from_private_key(pri_key_string: String) -> Result<AccountEntry, Car
 /// read all accounts from ACCOUNTS_DB_FILE
 #[tauri::command(async)]
 pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
-    let all = read_accounts()?;
+    let all = Accounts::read_from_file()?;
     Ok(all)
 }
 
 #[tauri::command(async)]
 pub async fn refresh_accounts() -> Result<Accounts, CarpeError> {
-    let all = read_accounts()?;
-    let updated = map_get_balance(all).await?;
-    update_accounts_db(&updated)?;
-    Ok(updated)
+    let mut all = Accounts::read_from_file()?;
+    // while we are here check if the accounts are on chain
+    // under a different address than implied by authkey
+    all.map_get_originating_address().await?;
+    all.map_get_balance().await?;
+    all.update_accounts_db()?;
+    Ok(all)
 }
 
-async fn map_get_balance(mut my_accounts: Accounts) -> Result<Accounts, CarpeError> {
+impl Accounts {
+  pub fn read_from_file() -> anyhow::Result<Self> {
+    let db_path = configs::default_accounts_db_path();
+    if db_path.exists() {
+        let file = File::open(db_path)?;
+        Ok(serde_json::from_reader(file)?)
+    } else {
+        Ok(Accounts { accounts: vec![] })
+    }
+  }
+  // maybe we have a wrong address identifier because a rotation happened
+  // (in band or out of band);
+  async fn map_get_originating_address(&mut self) -> Result<(), CarpeError> {
+      futures::future::join_all(
+        self
+          .accounts
+          .iter_mut()
+          .map( | e| async {
+              match get_originating_address(e.authkey).await {
+                  Ok(addr) => {
+                      e.account = addr;
+                      e.nickname = get_short(addr);
+                  },
+                  _ => {} // ignore
+              }
+          })
+      ).await;
+      Ok(())
+  }
 
-    let acc = futures::future::join_all(
-      my_accounts
-        .accounts
-        .into_iter()
-        .map( |mut e| async {
-            e.balance = get_balance(e.account).await.ok();
-            e.on_chain = Some(get_seq_num(e.account).await.is_ok());
-            e
-        })
-    );
-    my_accounts.accounts = acc.await;
-    Ok(my_accounts)
+  async fn map_get_balance(&mut self) -> anyhow::Result<(), CarpeError>{
+      futures::future::join_all(
+        self
+          .accounts
+          .iter_mut()
+          .map( | e| async {
+              e.balance = get_balance(e.account).await.ok();
+              e.on_chain = Some(get_seq_num(e.account).await.is_ok());
+          })
+      ).await;
+      Ok(())
+  }
+
+  fn update_accounts_db(&self) -> Result<(), CarpeError> {
+      let app_dir = configs::default_accounts_db_path();
+      let serialized = serde_json::to_vec(self)
+          .map_err(|e| CarpeError::config(&format!("json account db should serialize, {:?}", &e)))?;
+
+      File::create(app_dir)
+          .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be created!, {:?}", &e)))?
+          .write_all(&serialized)
+          .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be written!, {:?}", &e)))?;
+      Ok(())
+  }
+
+}
+
+
+pub async fn get_originating_address(auth_key: AuthenticationKey) -> Result<AccountAddress, CarpeError> {
+    let client = get_client()?;
+    Ok(libra_query::account_queries::lookup_originating_address(&client, auth_key).await?)
 }
 
 fn find_account_data(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
-    let all = read_accounts()?;
+    let all = Accounts::read_from_file()?;
     match all.accounts.into_iter().find(|a| a.account == account) {
         Some(entry) => Ok(entry),
         None => Err(CarpeError::misc("could not find an account")),
@@ -160,22 +216,30 @@ fn find_account_data(account: AccountAddress) -> Result<AccountEntry, CarpeError
 }
 
 /// Add an account (for tracking only).
-#[tauri::command]
-pub fn add_account(
+#[tauri::command(async)]
+pub async fn add_account(
     nickname: String,
-    authkey: String,
-    address: String,
+    authkey: AuthenticationKey,
+    mut address: AccountAddress,
 ) -> Result<Accounts, CarpeError> {
-    // Todo: Does tauri parse the types automatically?
-    let parsed_address: AccountAddress = address
-        .parse()
-        .map_err(|_| CarpeError::misc("cannot parse account address"))?;
 
-    let parsed_auth: AuthenticationKey = authkey
-        .parse()
-        .map_err(|_| CarpeError::misc("cannot parse authkey"))?;
+    // maybe the address has been rotated previously
+    // or its a legacy (founder) account
+    match get_originating_address(authkey.clone()).await {
+      Ok(a) => address = a,
+      Err(_) => {} // ignore the error, maybe couldn't connect we'll just use the address as is
+    }
 
-    insert_account_db(nickname, parsed_address, parsed_auth).map_err(|e| {
+    // // Todo: Does tauri parse the types automatically?
+    // let parsed_address: AccountAddress = address
+    //     .parse()
+    //     .map_err(|_| CarpeError::misc("cannot parse account address"))?;
+
+    // let parsed_auth: AuthenticationKey = authkey
+    //     .parse()
+    //     .map_err(|_| CarpeError::misc("cannot parse authkey"))?;
+
+    insert_account_db(nickname, address, authkey).map_err(|e| {
         CarpeError::misc(&format!(
             "could not add account, message {:?}",
             e.to_string()
@@ -203,7 +267,7 @@ fn insert_account_db(
 ) -> Result<Accounts, Error> {
     let app_dir = configs::default_accounts_db_path();
     // get all accounts
-    let mut all = read_accounts()?;
+    let mut all = Accounts::read_from_file()?;
 
     // push new account
     let new_account = AccountEntry {
@@ -241,17 +305,6 @@ fn insert_account_db(
     }
 }
 
-fn update_accounts_db(accounts: &Accounts) -> Result<(), CarpeError> {
-    let app_dir = configs::default_accounts_db_path();
-    let serialized = serde_json::to_vec(accounts)
-        .map_err(|e| CarpeError::config(&format!("json account db should serialize, {:?}", &e)))?;
-
-    File::create(app_dir)
-        .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be created!, {:?}", &e)))?
-        .write_all(&serialized)
-        .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be written!, {:?}", &e)))?;
-    Ok(())
-}
 
 // remove all accounts which are being tracked.
 #[tauri::command]
@@ -280,15 +333,15 @@ pub fn remove_accounts() -> Result<String, CarpeError> {
     ));
 }
 
-fn read_accounts() -> Result<Accounts, Error> {
-    let db_path = configs::default_accounts_db_path();
-    if db_path.exists() {
-        let file = File::open(db_path)?;
-        Ok(serde_json::from_reader(file)?)
-    } else {
-        Ok(Accounts { accounts: vec![] })
-    }
-}
+// fn read_accounts() -> Result<Accounts, Error> {
+//     let db_path = configs::default_accounts_db_path();
+//     if db_path.exists() {
+//         let file = File::open(db_path)?;
+//         Ok(serde_json::from_reader(file)?)
+//     } else {
+//         Ok(Accounts { accounts: vec![] })
+//     }
+// }
 
 pub fn danger_get_keys(mnemonic: String) -> Result<LegacyKeys, anyhow::Error> {
     let keys = libra_wallet::legacy::get_keys_from_mnem(mnemonic)?;
@@ -296,6 +349,11 @@ pub fn danger_get_keys(mnemonic: String) -> Result<LegacyKeys, anyhow::Error> {
 }
 
 fn get_short(acc: AccountAddress) -> String {
+    // let's check if this is a legacy/founder key, it will have 16 zeros at the start, and that's not a useful nickname
+    if acc.to_string()[..32] == "00000000000000000000000000000000".to_string() {
+        return acc.to_string()[33..36].to_owned()
+    }
+
     acc.to_string()[..3].to_owned()
 }
 
