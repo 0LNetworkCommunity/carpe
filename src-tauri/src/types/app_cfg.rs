@@ -1,6 +1,6 @@
 //! Configs for all 0L apps.
 
-use anyhow::{bail, Error};
+use anyhow::{Error};
 use libra_types::{
   legacy_types::mode_ol::MODE_0L,
    exports::{
@@ -9,9 +9,9 @@ use libra_types::{
  }
 };
 use dirs;
-use reqwest::{blocking::Client, Url};
+use reqwest::{Url};
 use serde::{Deserialize, Serialize};
-use serde_json::{self, json};
+
 use std::{
     fs::{self, File},
     io::{Read, Write},
@@ -147,13 +147,13 @@ impl AppCfg {
     pub fn init_app_configs(
         authkey: AuthenticationKey,
         account: AccountAddress,
-        upstream_peer: &Option<Url>,
+        _upstream_peer: &Option<Url>,
         config_path: &Option<PathBuf>,
-        base_epoch: &Option<u64>,
+        _base_epoch: &Option<u64>,
         // base_waypoint: &Option<Waypoint>,
-        source_path: &Option<PathBuf>,
-        statement: Option<String>,
-        ip: Option<Ipv4Addr>,
+        _source_path: &Option<PathBuf>,
+        _statement: Option<String>,
+        _ip: Option<Ipv4Addr>,
         network_id: &Option<NamedChain>,
     ) -> Result<AppCfg, Error> {
         // TODO: Check if configs exist and warn on overwrite.

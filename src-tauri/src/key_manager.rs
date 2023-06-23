@@ -3,8 +3,7 @@
 extern crate keyring;
 
 use std::convert::TryInto;
-#[cfg(test)]
-use std::error::Error;
+
 
 use anyhow::{anyhow, bail};
 use keyring::KeyringError;

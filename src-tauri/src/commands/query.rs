@@ -2,7 +2,7 @@
 // use libra_config::type_extensions::client_ext::ClientExt;
 use libra_types::{
   type_extensions::client_ext::ClientExt,
-  exports::{AccountAddress, EventKey, Client},
+  exports::{AccountAddress},
   legacy_types::{
     tower_state::TowerStateResource,
     makewhole_resource::CreditResource,
@@ -10,10 +10,10 @@ use libra_types::{
   },
 };
 use libra_query::account_queries::get_account_balance_libra;
-use anyhow::{anyhow, bail};
+use anyhow::{anyhow};
 use serde_json::json;
 use crate::{carpe_error::CarpeError, configs::get_client};
-use crate::configs_network::remove_node;
+
 
 //use diem_client::views::EventView;
 //use diem_json_rpc_types::views::TowerStateResourceView;
@@ -100,7 +100,7 @@ pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 
 #[tauri::command(async)]
 pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
-  let mut client = get_client()?;
+  let client = get_client()?;
 
   // TODO: write a Move view for this
 

@@ -3,11 +3,10 @@ use crate::{
   // commands::get_onchain_tower_state,
   // configs::{get_cfg, get_client, get_tx_params},
   configs::{get_cfg, get_client},
-  configs_profile::get_local_proofs_this_profile,
   // types::AppCfg,
 };
 
-use std::{env, path::PathBuf};
+
 
 use libra_types::{
   legacy_types::block::VDFProof,
@@ -15,10 +14,10 @@ use libra_types::{
 };
 
 
-use anyhow::Error;
-use log::{error, warn};
+
+
 use serde::{Deserialize, Serialize};
-use tauri::{Runtime, Window};
+
 // use tower::{
 //   backlog::process_backlog,
 //   commit_proof::commit_proof_tx,
@@ -213,7 +212,7 @@ use tauri::{Runtime, Window};
 #[tauri::command(async)]
 /// helper to get the latest local proof
 pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
-  let cfg = get_cfg()?;
+  let _cfg = get_cfg()?;
 
   todo!()
   // VDFProof::default

@@ -1,23 +1,22 @@
 //! network configs
 
 use futures::{stream::FuturesUnordered, StreamExt};
-use reqwest::ClientBuilder;
-use std::time::Duration;
+
+
 
 use crate::{
 
   carpe_error::CarpeError,
   configs::{ get_cfg, default_config_path},
-  commands::preferences::read_preferences,
   // app_cfg,
   // waypoint,
   types::{
-    rpc_playlist::{self, FullnodePlaylist, HostInfo},
-    app_cfg::{self, AppCfg},
+    rpc_playlist::{self},
+    app_cfg::{AppCfg},
   }
 };
 use anyhow::{bail, Error};
-use libra_types::exports::{Waypoint, NamedChain, Client};
+use libra_types::exports::{NamedChain, Client};
 // use crate::types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
 use rand::seq::SliceRandom;
 use rand::thread_rng;

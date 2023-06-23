@@ -10,7 +10,7 @@ use crate::{
   configs,
   types::rpc_playlist,
 };
-use libra_types::exports::{Waypoint,NamedChain};
+use libra_types::exports::{NamedChain};
 use url::Url;
 
 #[tauri::command]

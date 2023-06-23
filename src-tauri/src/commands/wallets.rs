@@ -4,7 +4,7 @@ use crate::commands::query::get_balance;
 
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
-use std::str::FromStr;
+
 
 use anyhow::{anyhow, bail, Error};
 use libra_wallet::legacy::{

@@ -68,6 +68,10 @@
       "description": "Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions",
       "placeholder": "Recovery Mnemonic"
     },
+    "account_from_private": {
+      "description": "Recover the account using the private key.",
+      "placeholder": "Private Key"
+    },
     "account_switcher": {
       "select_account": "Select Account",
       "switch_account": "Switch Account",
