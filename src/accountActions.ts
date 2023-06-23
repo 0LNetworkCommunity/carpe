@@ -116,8 +116,6 @@ export const isCarpeInit = async () => {
       isInit.set(res);
       // for testnet
       isRefreshingAccounts.set(false);
-
-      res
     })
     .catch((e) => {
       isRefreshingAccounts.set(false);

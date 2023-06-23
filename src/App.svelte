@@ -45,34 +45,17 @@
 
   onMount(async () => {
     logger(Level.Warn, "Webview is starting");
-    
-    isCarpeInit();
 
-    getEnv();
-
-    getVersion();
-
-
-    // refreshAccounts()
+    getEnv(); // load env vars
+    getVersion(); // git commit and version
 
     // try to connect to a chain eagerly.
     // if not we will be scanning for peers below
-    getMetadata()
-    .then(refreshAccounts)
-    .then(updateMakeWhole)
-    .finally(refreshUpstreamPeerStats)
-    .finally(carpeTick)
-    
-
-    // // iterates through the list of peers in 0L.toml, and updates the statistics in preferences.json. So we don't need to test fullnodes on every transaction.
-    // refreshUpstreamPeerStats()
-    // .then(() => {
-    //   carpeTick();
-    // })
-    // .catch((e) => {
-    //   raise_error(e, true, "refreshUpstreamPeerStats");
-    // });
-
+    isCarpeInit()
+    .then(getMetadata) // try to connect to a chain eagerly.
+    .then(refreshAccounts) // should only try to refresh accounts if we are connected to a chain
+    .then(updateMakeWhole) // check for make whole only once on startup
+    .finally(refreshUpstreamPeerStats) // if not we will be scanning for peers
     healthTick = setInterval(carpeTick, 30000); // do a healthcheck, this is async
 
     debugMode.subscribe(b => debug = b);
