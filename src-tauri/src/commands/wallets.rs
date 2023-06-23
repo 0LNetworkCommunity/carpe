@@ -100,6 +100,8 @@ pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
     Ok(AccountEntry::new(address, authkey))
 }
 
+
+#[tauri::command]
 pub fn init_from_private_key(pri_key_string: String) -> Result<AccountEntry, CarpeError> {
 
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)

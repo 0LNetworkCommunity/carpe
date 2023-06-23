@@ -3,6 +3,8 @@
   windows_subsystem = "windows"
 )]
 
+#![allow(dead_code)]
+
 // use url;
 // use crate::commands::*;
 use log::{error, info, warn};
