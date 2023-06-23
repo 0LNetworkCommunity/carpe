@@ -2,16 +2,21 @@
   import { onMount } from "svelte";
   import type { CarpeError } from "../../carpeError";
   import { raise_error } from "../../carpeError";
-  import { network_profile, getNetwork } from "../../networks";
-  import type { NetworkProfile} from "../../networks";
+  import {
+    network_profile,
+    getNetwork,
+    synced_fullnodes,
+  } from "../../networks";
+  import type { NetworkProfile } from "../../networks";
+  import { refreshUpstreamPeerStats } from "../../networks";
   import { invoke } from "@tauri-apps/api/tauri";
   import { notify_success } from "../../carpeNotify";
   import SetNetworkPlaylist from "./SetNetworkPlaylist.svelte";
-import { _ } from "svelte-i18n";
-  
+  import { _ } from "svelte-i18n";
+
   let upstream_url = "";
   let current_chain_id = "";
-  
+
   onMount(async () => {
     getNetwork();
 
@@ -21,30 +26,60 @@ import { _ } from "svelte-i18n";
     });
   });
 
-  function forceUpstream() {
-    // check input data
-    // submit
+  let peers: [string];
+  synced_fullnodes.subscribe((n) => {
+    peers = n;
+  });
+
+  const check_sync = () => {
+    refreshUpstreamPeerStats().then(() => {
+      notify_success("Refreshed Fullnode Statistics");
+    });
+  };
+
+  const forceUpstream = () => {
     invoke("force_upstream", { url: upstream_url })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");
-
       })
       .catch((error) => {
         raise_error(error as CarpeError, false, "forceUpstream");
       });
-  }
+  };
 
 </script>
 
 <main class="uk-margin">
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.network_settings.title")} {current_chain_id}</h4>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+    {$_("settings.network_settings.title")}
+    {current_chain_id}
+  </h4>
 
-  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> {$_("settings.network_settings.list_of_peers")} </h5>
+  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+    {$_("settings.network_settings.synced_peers")}
+  </h5>
+
+  {#each peers as url}
+    <p>{url}</p>
+  {/each}
+
+  <button
+    class="uk-button uk-button-primary uk-align-right"
+    on:click={check_sync}
+  >
+    {$_("settings.network_settings.refresh_peers_button")}
+  </button>
+
+  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+    {$_("settings.network_settings.list_of_peers")}
+  </h5>
   <p>{$_("settings.network_settings.description")}</p>
   <SetNetworkPlaylist />
-  
-  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">{$_("settings.network_settings.override_peers")}</h5>
+
+  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+    {$_("settings.network_settings.override_peers")}
+  </h5>
   <p>{$_("settings.network_settings.override_peers_description")}</p>
 
   <form id="account-form">
@@ -60,15 +95,16 @@ import { _ } from "svelte-i18n";
       </div>
 
       <span
-          on:click={forceUpstream}
-          class="uk-button uk-button-primary uk-align-right"
-          id="add-btn">{$_("settings.network_settings.btn_update")}</span
-        >
+        on:click={forceUpstream}
+        class="uk-button uk-button-primary uk-align-right"
+        id="add-btn">{$_("settings.network_settings.btn_update")}</span
+      >
 
-      <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">{$_("settings.network_settings.upstream_title")}</h5>
+      <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+        {$_("settings.network_settings.upstream_title")}
+      </h5>
       <p>{$_("settings.network_settings.upstream_subtitle")}</p>
       <!-- <button class="uk-button uk-button-default" on:click={refreshWaypoint}>{$_("settings.network_settings.btn_fetch_new_waypoint")}</button> -->
-
     </fieldset>
   </form>
 </main>

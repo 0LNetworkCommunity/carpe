@@ -98,7 +98,9 @@
     },
     "network_settings": {
       "title": "NETWORK SETTINGS",
-      "list_of_peers": "LIST OF PEERS",
+      "list_of_peers": "PEERS PLAYLIST",
+      "synced_peers": "Synced Peers",
+      "refresh_peers_button": "Check Fullnodes Sync",
       "description": "Choose a playlist of upstream nodes, so you can access the chain. Network connections will try the list in random order until a connection is made. Simply link to any playlist.json file here to update peers.",
       "playlist": "Update Playlist of Network Servers",
       "override_peers": "OVERRIDE PEERS",

@@ -76,22 +76,6 @@ pub fn is_init() -> Result<bool, CarpeError> {
 pub async fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
     let wallet = libra_wallet::legacy::get_keys_from_mnem(mnem.clone())?;
     init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?).await
-
-
-    // let authkey = wallet.child_0_owner.auth_key;
-    // let address = wallet.child_0_owner.account;
-    // // first try to insert into DB.
-    // // it will error if the account already exists.
-    // insert_account_db(get_short(address), address, authkey)?;
-
-    // key_manager::set_private_key(&address.to_string(), wallet.child_0_owner.pri_key)
-    //     .map_err(|e| CarpeError::config(&e.to_string()))?;
-
-    // configs_profile::set_account_profile(address.clone(), authkey.clone())?;
-
-
-
-    // Ok(AccountEntry::new(address, authkey))
 }
 
 

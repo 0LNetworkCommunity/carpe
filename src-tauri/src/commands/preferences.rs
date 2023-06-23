@@ -3,6 +3,7 @@ use crate::configs;
 use crate::configs_network::UpstreamStats;
 use anyhow::Error;
 use libra_types::legacy_types::mode_ol::MODE_0L;
+use url::Url;
 use std::{
   fs::File,
   io::prelude::*,
@@ -85,7 +86,7 @@ fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
 
 
 #[tauri::command(async)]
-pub async fn refresh_upstream_peer_stats() -> Result<bool, CarpeError> {
+pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
   let cfg = configs::get_cfg()?;
   let stats = UpstreamStats::new(cfg.profile.upstream_nodes);
 
@@ -94,9 +95,9 @@ pub async fn refresh_upstream_peer_stats() -> Result<bool, CarpeError> {
   update_preferences(&preferences)?;
 
   match preferences.network {
-    Some(stats) => Ok(stats.the_good_ones()?.len() > 0),
-    None => Err(CarpeError::client_unknown_err("no good upstream to use")),
-}
+      Some(stats) => Ok(stats.the_good_ones()?),
+      None => Err(CarpeError::client_unknown_err("no good upstream to use")),
+  }
 }
 
 

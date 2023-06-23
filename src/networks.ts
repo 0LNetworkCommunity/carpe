@@ -2,6 +2,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { writable } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { loadAccounts, refreshAccounts } from "./accountActions";
+import { notify_success } from "./carpeNotify";
 
 
 export interface NetworkProfile {
@@ -38,7 +39,8 @@ export const network_profile = writable<NetworkProfile>({
   profile: "string",
 });
 export const connected = writable<boolean>(true);
-export const scanning_fullnodes = writable<boolean>(true);
+export const scanning_fullnodes = writable<boolean>();
+export const synced_fullnodes = writable<[string]>();
 export const network_metadata = writable<IndexResponse>();
 // should match the Rust type Network Profile
 
@@ -83,27 +85,30 @@ export const getMetadata = async (): Promise<IndexResponse>  => {
       let m: IndexResponse = JSON.parse(res);
       network_metadata.set(m);
       connected.set(true);
+      // lets stop scanning for fullnodes if we got a good connection.
+      scanning_fullnodes.set(false);
       m
     })
     .catch((e) => {
       network_metadata.set(null);
       connected.set(true);
+      
       raise_error(e, true, "getMetadata");
     })
 }
 
 export const refreshUpstreamPeerStats = async () => {
+  scanning_fullnodes.set(true);
   console.log(">>> calling refresh_upstream_peer_stats");
   return invoke("refresh_upstream_peer_stats", {})
-    .then((res: boolean) => {
+    .then((res: [string]) => { // Urls
       console.log("update peers finished");
-
-      // network_profile.set(res);
-      connected.set(res);
+      synced_fullnodes.set(res);
+      getMetadata(); // check the metadata and if we are connected
       scanning_fullnodes.set(false);
     })
     .catch((error) => {
-      connected.set(false);
+      getMetadata(); // update the metadata and if we are connected
       raise_error(error, true, "refreshUpstreamPeerStats"); // we have a purpose-built error component for this
     })
 }

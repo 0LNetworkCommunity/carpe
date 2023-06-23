@@ -10,12 +10,12 @@
   import { _ } from "svelte-i18n";
 
   // default playlist which is provided in Carpe.
-  let playlist_json_url = "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist.json";
+  let playlist_json_url = "https://raw.githubusercontent.com/0LNetworkCommunity/seed-peers/main/fullnode_seed_playlist.json";
 
-  function updateNetwork() {
+  const updateNetwork = (url: string) => {
     // check input data
     // submit
-    invoke("override_playlist", { url: playlist_json_url })
+    invoke("override_playlist", { url })
       .then((res: NetworkProfile) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");
@@ -43,7 +43,7 @@
 
       <div>
         <span
-          on:click={updateNetwork}
+          on:click={updateNetwork(playlist_json_url)}
           class="uk-button uk-button-primary uk-align-right"
           id="add-btn">{$_("settings.network_settings.btn_submit")}</span
         >
