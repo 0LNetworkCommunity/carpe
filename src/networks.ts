@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/tauri";
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { loadAccounts, refreshAccounts } from "./accountActions";
 import { notify_success } from "./carpeNotify";
@@ -40,9 +40,13 @@ export const network_profile = writable<NetworkProfile>({
 });
 export const connected = writable<boolean>(true);
 export const scanning_fullnodes = writable<boolean>();
+export const scanning_fullnodes_backoff = writable<number>(new Date().getSeconds());
+export const scanning_fullnodes_retries= writable<number>(0);
+
 export const synced_fullnodes = writable<[string]>();
 export const network_metadata = writable<IndexResponse>();
 // should match the Rust type Network Profile
+
 
 export function setNetwork(network: Networks) {
   invoke("toggle_network", { network: Networks[network] })
@@ -87,19 +91,25 @@ export const getMetadata = async (): Promise<IndexResponse>  => {
       connected.set(true);
       // lets stop scanning for fullnodes if we got a good connection.
       scanning_fullnodes.set(false);
+      scanning_fullnodes_backoff.set(Date.now());
       m
     })
     .catch((e) => {
       network_metadata.set(null);
       connected.set(false);
-      refreshUpstreamPeerStats(); // update the metadata and if we are connected
 
-      
+      incrementBackoff();
+
+      refreshUpstreamPeerStats(); // update the metadata and if we are connected
       raise_error(e, true, "getMetadata");
     })
 }
 
 export const refreshUpstreamPeerStats = async () => {
+  if (new Date().getSeconds() < get(scanning_fullnodes_backoff)) {
+    return;
+  }
+
   scanning_fullnodes.set(true);
   console.log(">>> calling refresh_upstream_peer_stats");
   return invoke("refresh_upstream_peer_stats", {})
@@ -113,4 +123,12 @@ export const refreshUpstreamPeerStats = async () => {
       getMetadata(); // update the metadata and if we are connected
       raise_error(error, true, "refreshUpstreamPeerStats"); // we have a purpose-built error component for this
     })
+}
+
+export const incrementBackoff = () => {
+  scanning_fullnodes_retries.set(get(scanning_fullnodes_retries) + 1);
+  let backoff = get(scanning_fullnodes_backoff);
+  let new_time = new Date();
+  new_time.setSeconds(new_time.getSeconds() + 2 * get(scanning_fullnodes_retries));
+  scanning_fullnodes_backoff.set(new_time.getSeconds());
 }
