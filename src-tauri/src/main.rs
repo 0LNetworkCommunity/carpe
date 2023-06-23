@@ -118,7 +118,7 @@ fn main() {
       // demo_tx,
       // create_user_account,
       // wallet_type,
-      // coin_transfer,
+      commands::tx::coin_transfer,
       // //claim_make_whole,
       // // Tower
       // miner_once,

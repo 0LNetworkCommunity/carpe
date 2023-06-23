@@ -118,6 +118,7 @@ export const refreshUpstreamPeerStats = async () => {
       synced_fullnodes.set(res);
       getMetadata(); // check the metadata and if we are connected
       scanning_fullnodes.set(false);
+      scanning_fullnodes_retries.set(0);
     })
     .catch((error) => {
       getMetadata(); // update the metadata and if we are connected
