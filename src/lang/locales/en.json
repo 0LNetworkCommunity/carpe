@@ -2,7 +2,7 @@
   "nav": {
     "wallet": "Wallet",
     "miner": "Miner",
-    "transactions": "Transaction",
+    "transactions": "Transfer",
     "events": "Events"
   },
   "layout": {

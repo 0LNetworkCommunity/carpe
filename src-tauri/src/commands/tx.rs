@@ -1,26 +1,13 @@
 //! transaction scripts
 use crate::carpe_error::CarpeError;
+use crate::commands::query::get_metadata;
+use crate::configs::get_client;
 use crate::key_manager::get_private_key;
 
 use anyhow;
-use url::Url;
 
 use libra_txs::submit_transaction::Sender;
-use libra_types::exports::{AccountAddress, ChainId};
-use libra_types::exports::AccountKey;
-
-// use anyhow::Context;
-// // use zapatos_sdk::coin_client::TransferOptions;
-// use crate::{carpe_error::CarpeError, configs};
-// // use zapatos_sdk::transaction_builder::aptos_stdlib as stdlib;
-// use libra_config::extension::client_ext::{ClientExt, DEFAULT_TIMEOUT_SECS};
-// // use zapatos_types::{account_address::AccountAddress, transaction::authenticator::AuthenticationKey};
-// // use libra_txs::coin_client::CoinClient;
-// use libra_txs::constant::{DEFAULT_GAS_UNIT_PRICE, DEFAULT_MAX_GAS_AMOUNT};
-// use libra_txs::extension::ed25519_private_key_ext::Ed25519PrivateKeyExt;
-// use libra_txs::rest_client::Client;
-// use zapatos_crypto::ed25519::Ed25519PrivateKey;
-// use zapatos_crypto::ValidCryptoMaterialStringExt;
+use libra_types::exports::{AccountAddress, AccountKey, ChainId, IndexResponse};
 
 fn make_account_key(address: &AccountAddress) -> anyhow::Result<AccountKey> {
   let pk = get_private_key(address)?;
@@ -28,11 +15,15 @@ fn make_account_key(address: &AccountAddress) -> anyhow::Result<AccountKey> {
 }
 
 #[tauri::command(async)]
-pub async fn coin_transfer(sender: AccountAddress, receiver: AccountAddress, amount: u64) -> Result<(), CarpeError> {
+pub async fn coin_transfer(
+  sender: AccountAddress,
+  receiver: AccountAddress,
+  amount: u64,
+) -> Result<(), CarpeError> {
   let ak = make_account_key(&sender)?;
-  let chain_id = ChainId::testnet();
-  let url = Url::parse("http://localhost:8080").ok();
-  let mut sender = Sender::new(ak, chain_id, url).await?;
+  let m: IndexResponse = get_metadata().await?; // get the actual chain we are connected to
+  let client_opt = get_client().ok();
+  let mut sender = Sender::new(ak, ChainId::new(m.chain_id), client_opt).await?;
   Ok(sender.transfer(receiver, amount).await?)
 }
 
@@ -101,27 +92,24 @@ pub async fn coin_transfer(sender: AccountAddress, receiver: AccountAddress, amo
 //   }
 // }
 
-
-
-  // let tx_params =
-  //   configs::get_tx_params()?;
-  //
-  //
-  // let receiver_address: AccountAddress = receiver
-  //   .parse()
-  //   .map_err(|_| CarpeError::misc("Invalid receiver account address"))?;
-  //
-  // match transfer_cmd::balance_transfer(receiver_address, amount, tx_params, None) {
-  //   Ok(r) => Ok(format!("Transfer success: {:?}", r)),
-  //   Err(e) => Err(CarpeError::misc(&format!(
-  //     "{:}",
-  //     match e.abort_code {
-  //       Some(code) => code,
-  //       None => 0,
-  //     }
-  //   ))),
-  // }
-
+// let tx_params =
+//   configs::get_tx_params()?;
+//
+//
+// let receiver_address: AccountAddress = receiver
+//   .parse()
+//   .map_err(|_| CarpeError::misc("Invalid receiver account address"))?;
+//
+// match transfer_cmd::balance_transfer(receiver_address, amount, tx_params, None) {
+//   Ok(r) => Ok(format!("Transfer success: {:?}", r)),
+//   Err(e) => Err(CarpeError::misc(&format!(
+//     "{:}",
+//     match e.abort_code {
+//       Some(code) => code,
+//       None => 0,
+//     }
+//   ))),
+// }
 
 //   let client = Client::default()?;
 //   let coint_client = CoinClient::new(&client);

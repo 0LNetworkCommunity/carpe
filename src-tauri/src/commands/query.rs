@@ -1,7 +1,7 @@
 //! query the chain
 use libra_types::{
   type_extensions::client_ext::ClientExt,
-  exports::{AccountAddress},
+  exports::{AccountAddress, IndexResponse},
   legacy_types::{
     tower_state::TowerStateResource,
     makewhole_resource::CreditResource,
@@ -10,15 +10,14 @@ use libra_types::{
 };
 use libra_query::account_queries::get_account_balance_libra;
 use anyhow::{anyhow};
-use serde_json::json;
 use crate::{carpe_error::CarpeError, configs::get_client};
 
 #[tauri::command(async)]
-pub async fn get_metadata() -> Result<String, CarpeError> { // Todo return the IndexResponse
+pub async fn get_metadata() -> Result<IndexResponse, CarpeError> { // Todo return the IndexResponse
     let client = get_client()?;
     let m = client.get_index().await?;
-    let j = json!(m.into_inner()).to_string();
-    Ok(j)
+    // let j = json!(m.into_inner()).to_string();
+    Ok(m.into_inner())
 }
 
 #[tokio::test]

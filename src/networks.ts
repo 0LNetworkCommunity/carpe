@@ -91,8 +91,8 @@ export const getMetadata = async (): Promise<IndexResponse>  => {
       connected.set(true);
       // lets stop scanning for fullnodes if we got a good connection.
       scanning_fullnodes.set(false);
-      scanning_fullnodes_backoff.set(Date.now());
-      m
+      scanning_fullnodes_backoff.set(new Date().getSeconds());
+      return m;
     })
     .catch((e) => {
       network_metadata.set(null);
@@ -102,7 +102,7 @@ export const getMetadata = async (): Promise<IndexResponse>  => {
 
       refreshUpstreamPeerStats(); // update the metadata and if we are connected
       raise_error(e, true, "getMetadata");
-    })
+    });
 }
 
 export const refreshUpstreamPeerStats = async () => {
