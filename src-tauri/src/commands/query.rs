@@ -15,8 +15,9 @@ use crate::{carpe_error::CarpeError, configs::get_client};
 #[tauri::command(async)]
 pub async fn get_metadata() -> Result<IndexResponse, CarpeError> { // Todo return the IndexResponse
     let client = get_client().await?;
-    let m = client.get_index().await?;
-    // let j = json!(m.into_inner()).to_string();
+    let m = client.get_index().await
+    .map_err(|e| CarpeError::client_unknown_err(&e.to_string()))?;
+    dbg!(&m);
     Ok(m.into_inner())
 }
 

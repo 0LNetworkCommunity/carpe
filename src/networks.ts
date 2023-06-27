@@ -85,14 +85,13 @@ export function getNetwork() {
 export const getMetadata = async (): Promise<IndexResponse>  => {
   console.log(">>> get_metadata");
   return invoke("get_metadata", {})
-    .then((res: string ) => {
-      let m: IndexResponse = JSON.parse(res);
-      network_metadata.set(m);
+    .then((res: IndexResponse ) => {
+      network_metadata.set(res);
       connected.set(true);
       // lets stop scanning for fullnodes if we got a good connection.
       scanning_fullnodes.set(false);
       scanning_fullnodes_backoff.set(new Date().getSeconds());
-      return m;
+      return res;
     })
     .catch((e) => {
       network_metadata.set(null);
