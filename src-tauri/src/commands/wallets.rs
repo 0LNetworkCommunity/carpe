@@ -2,7 +2,6 @@ use crate::{
   carpe_error::CarpeError,
   commands::query,
   configs::{self, get_client}, 
-  configs_network,
   configs_profile,
   key_manager,
 };
@@ -12,7 +11,6 @@ use std::io::prelude::*;
 
 use anyhow::{anyhow, bail, Error};
 use libra_types::{
-  legacy_types::mode_ol::MODE_0L,
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
 };
 use libra_wallet::account_keys::{
@@ -87,12 +85,6 @@ pub async fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 
 pub async fn init_from_private_key(pri_key_string: String) -> Result<AccountEntry, CarpeError> {
 
-  // this may be the first account and may not yet be initialized.
-  if !configs::is_initialized() {
-      // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
-      configs_network::set_network_configs(MODE_0L.clone(), None)?;
-  }
-
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
   .map_err(|_| anyhow!("cannot parse encoded private key"))?;
   let acc_struct = account_keys::get_account_from_private(&pri);
@@ -109,9 +101,7 @@ pub async fn init_from_private_key(pri_key_string: String) -> Result<AccountEntr
   key_manager::set_private_key(&address.to_string(), acc_struct.pri_key)
       .map_err(|e| CarpeError::config(&e.to_string()))?;
 
-  configs_profile::set_account_profile(address.clone(), authkey.clone())?;
-
-
+  configs_profile::set_account_profile(address.clone(), authkey.clone()).await?;
 
   Ok(AccountEntry::new(address, authkey))
 
@@ -240,10 +230,11 @@ pub async fn add_account(
 
 /// Switch tx profiles, change 0L.toml to use selected account
 #[tauri::command(async)]
-pub fn switch_profile(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
+pub async fn switch_profile(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
     match find_account_data(account) {
         Ok(entry) => {
             configs_profile::set_account_profile(account, entry.authkey.clone())
+                .await
                 .map_err(|_| CarpeError::misc("could not switch profile"))?;
             Ok(AccountEntry::new(account, entry.authkey))
         }

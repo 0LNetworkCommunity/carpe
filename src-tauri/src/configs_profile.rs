@@ -1,24 +1,27 @@
 //! account configurations
 
-use anyhow::Error;
 use glob::glob;
 use std::{fs, path::PathBuf};
 
 // use zapatos_types::transaction::authenticator::AuthenticationKey;
 use libra_types::{
-  legacy_types::app_cfg::AppCfg,
+  legacy_types::{
+    mode_ol::MODE_0L,
+    app_cfg::AppCfg,
+  },
   exports::{AccountAddress, AuthenticationKey}
 };
 
 // use zapatos_types::account_address::AccountAddress;
-use crate::configs::{self, get_cfg};
+use crate::{configs::{self, get_cfg}, configs_network, carpe_error::CarpeError};
 
 /// For switching between profiles in the Account DB.
-pub fn set_account_profile(
+pub async fn set_account_profile(
   account: AccountAddress,
   authkey: AuthenticationKey,
-) -> Result<AppCfg, Error> {
-  let mut cfg = match configs::is_initialized() {
+) -> anyhow::Result<AppCfg> {
+  let is_newbie = configs::is_initialized();
+  let mut cfg = match is_newbie {
     true => configs::get_cfg()?,
     false => AppCfg::default(),
   };
@@ -39,11 +42,20 @@ pub fn set_account_profile(
   }
 
   cfg.save_file()?;
+
+  // this may be the first account and may not yet be initialized.
+  if is_newbie {
+      // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
+      let _ = configs_network::set_network_configs(MODE_0L.clone(), None)
+      .await
+      .map_err(|_| CarpeError::config("cannot set network configs"));
+  }
+
   Ok(cfg)
 }
 
 /// helper to get local proofs
-pub fn get_local_proofs_this_profile() -> Result<Vec<PathBuf>, Error> {
+pub fn get_local_proofs_this_profile() -> anyhow::Result<Vec<PathBuf>> {
   println!("fetching local proofs");
   // Default is to fetch last 10 proofs.
   let cfg = get_cfg()?;

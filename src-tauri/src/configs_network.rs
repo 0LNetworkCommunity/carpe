@@ -2,8 +2,6 @@
 
 use futures::{stream::FuturesUnordered, StreamExt};
 
-
-
 use crate::{
 
   carpe_error::CarpeError,
@@ -60,27 +58,22 @@ impl NetworkProfile {
 //   }
 // }
 
-pub fn set_network_configs(
+pub async fn set_network_configs(
   network: NamedChain,
   custom_playlist: Option<Url>,
-) -> Result<NetworkProfile, CarpeError> {
+) -> anyhow::Result<NetworkProfile, CarpeError> {
   dbg!("toggle network");
   dbg!(&network);
   let playlist = if let Some(u) = custom_playlist {
-    rpc_playlist::get_known_fullnodes(Some(u))?
+    rpc_playlist::get_known_fullnodes(Some(u)).await?
   } else {
     // TODO: set the default playlists
     match network {
-      NamedChain::MAINNET => rpc_playlist::get_known_fullnodes(Some(
-        "https://raw.githubusercontent.com/0o-de-lally/seed-peers/main/fullnode_seed_playlist.json"
-          .parse()
-          .unwrap(),
-      ))?,
       NamedChain::TESTNET => rpc_playlist::get_known_fullnodes(Some(
         "https://raw.githubusercontent.com/0o-de-lally/seed-peers/main/fullnode_seed_playlist.json"
           .parse()
-          .unwrap(),
-      ))?,
+          .map_err(|_| CarpeError::client_unknown_err("could not parse seed peers url"))?,
+      )).await?,
       NamedChain::TESTING => {
         FullnodePlaylist {
           nodes: vec![HostInfo {
@@ -89,9 +82,17 @@ pub fn set_network_configs(
           }],
         }
       },
-      _ => rpc_playlist::get_known_fullnodes(None)?, // assume mainnet
+      _ => { // MAINNET and everything else
+          rpc_playlist::get_known_fullnodes(Some(
+          "https://raw.githubusercontent.com/0o-de-lally/seed-peers/main/fullnode_seed_playlist.json"
+            .parse()
+            .map_err(|_| CarpeError::client_unknown_err("could not parse seed peers url"))?,
+        )).await?
+      }, // assume mainnet
     }
   };
+
+  dbg!("playlist");
 
   playlist.update_config_file(Some(default_config_path()))?; // None uses default path of 0L.toml
 
@@ -101,8 +102,8 @@ pub fn set_network_configs(
     CarpeError::misc(&err_msg)
   })?;
 
-  // tauri::async_runtime::block_on(set_waypoint_from_upstream()).ok();
 
+  dbg!("set_chain id");
   NetworkProfile::read_from_cfg()
 }
 

@@ -2,7 +2,7 @@
 
 use libra_types::legacy_types::app_cfg::AppCfg;
 use std::path::PathBuf;
-use anyhow::Error;
+use anyhow::Context;
 use rand::{seq::SliceRandom, thread_rng};
 use serde::Deserialize;
 use url::Url;
@@ -24,21 +24,22 @@ pub struct HostInfo {
 }
 
 /// try to fetch current fullnodes from a URL, or default to a seed peer list
-pub fn get_known_fullnodes(seed_url: Option<Url>) -> Result<FullnodePlaylist, Error> {
+pub async fn get_known_fullnodes(seed_url: Option<Url>) -> anyhow::Result<FullnodePlaylist> {
     let url = seed_url.unwrap_or(
         "https://raw.githubusercontent.com/0o-de-lally/seed-peers/main/fullnode_seed_playlist.json"
             .parse()
-            .unwrap(),
+            .context("cannot parse playlist url")?,
     );
 
-    FullnodePlaylist::http_fetch_playlist(url)
+    FullnodePlaylist::http_fetch_playlist(url).await
 }
 
 impl FullnodePlaylist {
     /// use a URL to load a fullnode playlist
-    pub fn http_fetch_playlist(url: Url) -> Result<FullnodePlaylist, Error> {
-        let res = reqwest::blocking::get(url)?;
-        let play: FullnodePlaylist = serde_json::from_str(&res.text()?)?; //res.text()?.parse()?;
+    pub async fn http_fetch_playlist(url: Url) -> anyhow::Result<FullnodePlaylist> {
+        let res = reqwest::get(url).await?;
+        let out = res.text().await?;
+        let play: FullnodePlaylist = serde_json::from_str(&out)?; //res.text()?.parse()?;
         Ok(play)
     }
 
@@ -51,7 +52,7 @@ impl FullnodePlaylist {
     }
 
     /// update the app configs 0L.toml file
-    pub fn update_config_file(&self, path: Option<PathBuf>) -> Result<(), Error> {
+    pub fn update_config_file(&self, path: Option<PathBuf>) -> anyhow::Result<()> {
         let mut new_cfg = AppCfg::parse_toml(path.unwrap())?;
         let mut peers = self.get_urls();
         let mut rng = thread_rng();
