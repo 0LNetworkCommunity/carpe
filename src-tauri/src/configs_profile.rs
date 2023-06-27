@@ -5,10 +5,12 @@ use glob::glob;
 use std::{fs, path::PathBuf};
 
 // use zapatos_types::transaction::authenticator::AuthenticationKey;
-use libra_types::exports::{AccountAddress, AuthenticationKey};
+use libra_types::{
+  legacy_types::app_cfg::AppCfg,
+  exports::{AccountAddress, AuthenticationKey}
+};
 
 // use zapatos_types::account_address::AccountAddress;
-use crate::types::app_cfg::AppCfg;
 use crate::configs::{self, get_cfg};
 
 /// For switching between profiles in the Account DB.

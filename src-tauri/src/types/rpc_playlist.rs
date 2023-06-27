@@ -1,6 +1,6 @@
 //! seed peers for connecting to various networks.
 
-use super::app_cfg;
+use libra_types::legacy_types::app_cfg::AppCfg;
 use std::path::PathBuf;
 use anyhow::Error;
 use rand::{seq::SliceRandom, thread_rng};
@@ -52,13 +52,14 @@ impl FullnodePlaylist {
 
     /// update the app configs 0L.toml file
     pub fn update_config_file(&self, path: Option<PathBuf>) -> Result<(), Error> {
-        let mut new_cfg = app_cfg::parse_toml(path.unwrap())?;
+        let mut new_cfg = AppCfg::parse_toml(path.unwrap())?;
         let mut peers = self.get_urls();
         let mut rng = thread_rng();
         peers.shuffle(&mut rng);
 
         new_cfg.profile.upstream_nodes = peers;
 
-        new_cfg.save_file()
+        new_cfg.save_file()?;
+        Ok(())
     }
 }

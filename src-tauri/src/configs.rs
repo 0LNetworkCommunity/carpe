@@ -1,16 +1,15 @@
 //! 0L configs file
-use crate::types::app_cfg::{AppCfg, self};
 
 use std::path::PathBuf;
 
-use dirs;
 use libra_types::{
+  legacy_types::app_cfg::{self, AppCfg},
   type_extensions::client_ext::ClientExt,
-  exports::{Client, NamedChain}
+  exports::{Client, NamedChain}, global_config_dir
 };
 
-pub static HOME_DIR: &str = ".0L";
-static APP_CONFIG_FILE: &str = "0L.toml";
+// pub static HOME_DIR: &str = ".0L";
+// static APP_CONFIG_FILE: &str = "0L.toml";
 
 static ACCOUNTS_DB_FILE: &str = "accounts.json";
 static ACCOUNTS_DB_FILE_REX_TESTNET: &str = "accounts-rex-testnet.json";
@@ -18,7 +17,7 @@ static ACCOUNTS_DB_FILE_SWARM_DEVNET: &str = "accounts-swarm-devnet.json";
 
 // get the config path for files
 pub fn default_config_path() -> PathBuf {
-    dirs::home_dir().unwrap().join(HOME_DIR).join(APP_CONFIG_FILE)
+    app_cfg::default_file_path()
 }
 
 pub fn default_accounts_db_path() -> PathBuf {
@@ -30,7 +29,7 @@ pub fn default_accounts_db_path() -> PathBuf {
         },
         Err(_) => ACCOUNTS_DB_FILE,
     };
-    dirs::home_dir().unwrap().join(HOME_DIR).join(db_file)
+    global_config_dir().join(db_file)
 }
 
 /// get transaction parameters from config file
@@ -47,7 +46,7 @@ pub fn default_accounts_db_path() -> PathBuf {
 // }
 
 pub fn get_cfg() -> anyhow::Result<AppCfg> {
-    app_cfg::parse_toml(app_cfg::default_file_path())
+    AppCfg::parse_toml(app_cfg::default_file_path())
     // return;  // gets default toml path.
 }
 

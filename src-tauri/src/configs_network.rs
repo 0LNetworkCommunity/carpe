@@ -12,11 +12,13 @@ use crate::{
   // waypoint,
   types::{
     rpc_playlist::{self, FullnodePlaylist, HostInfo},
-    app_cfg::{AppCfg},
   }
 };
 use anyhow::{bail, Error};
-use libra_types::exports::{NamedChain, Client};
+use libra_types::{
+  legacy_types::app_cfg::{AppCfg},
+  exports::{NamedChain, Client},
+};
 // use crate::types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
@@ -220,7 +222,8 @@ pub fn remove_node(host: String) -> Result<(), Error> {
             .into_iter()
             .filter(|each| !each.to_string().contains(&host))
             .collect();
-          cfg.save_file()
+          cfg.save_file()?;
+          Ok(())
         }
       }
     }

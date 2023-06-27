@@ -2,7 +2,10 @@ use crate::carpe_error::CarpeError;
 use crate::configs;
 use crate::configs_network::UpstreamStats;
 use anyhow::Error;
-use libra_types::legacy_types::mode_ol::MODE_0L;
+use libra_types::{
+  global_config_dir,
+  legacy_types::mode_ol::MODE_0L,
+};
 use url::Url;
 use std::{
   fs::File,
@@ -56,10 +59,7 @@ pub fn read_preferences() -> Result<Preferences, Error> {
 }
 
 fn preferences_db_path() -> PathBuf {
-  dirs::home_dir()
-    .unwrap()
-    .join(configs::HOME_DIR)
-    .join(PREFERENCES_DB_FILE)
+  global_config_dir().join(PREFERENCES_DB_FILE)
 }
 
 fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
