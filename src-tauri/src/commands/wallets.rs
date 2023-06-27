@@ -7,8 +7,6 @@ use crate::{
   key_manager,
 };
 
-// use super::query::get_seq_num;
-
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 
@@ -89,6 +87,12 @@ pub async fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
 
 pub async fn init_from_private_key(pri_key_string: String) -> Result<AccountEntry, CarpeError> {
 
+  // this may be the first account and may not yet be initialized.
+  if !configs::is_initialized() {
+      // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
+      configs_network::set_network_configs(MODE_0L.clone(), None)?;
+  }
+
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
   .map_err(|_| anyhow!("cannot parse encoded private key"))?;
   let acc_struct = account_keys::get_account_from_private(&pri);
@@ -107,11 +111,7 @@ pub async fn init_from_private_key(pri_key_string: String) -> Result<AccountEntr
 
   configs_profile::set_account_profile(address.clone(), authkey.clone())?;
 
-  // this may be the first account and may not yet be initialized.
-  if !configs::is_initialized() {
-      // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
-      configs_network::set_network_configs(MODE_0L.clone(), None)?;
-  }
+
 
   Ok(AccountEntry::new(address, authkey))
 
@@ -194,7 +194,7 @@ impl Accounts {
 
 
 pub async fn get_originating_address(auth_key: AuthenticationKey) -> Result<AccountAddress, CarpeError> {
-    let client = get_client()?;
+    let client = get_client().await?;
     Ok(libra_query::account_queries::lookup_originating_address(&client, auth_key).await?)
 }
 

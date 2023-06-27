@@ -1,18 +1,13 @@
 //! 0L configs file
+use crate::types::app_cfg::{AppCfg, self};
 
 use std::path::PathBuf;
-use crate::types::app_cfg::{AppCfg, self};
-// use anyhow::{Error, Result};
+
 use dirs;
-// use libra_types::type_extensions::client_ext::ClientExt;
-//use ol_types::config::{self, TxType};
-//use libra_txs::tx_params::TxParams;
-// use zapatos_rest_client::Client;
 use libra_types::{
   type_extensions::client_ext::ClientExt,
   exports::{Client, NamedChain}
 };
-// use crate::{carpe_error::CarpeError, key_manager};
 
 pub static HOME_DIR: &str = ".0L";
 static APP_CONFIG_FILE: &str = "0L.toml";
@@ -56,8 +51,8 @@ pub fn get_cfg() -> anyhow::Result<AppCfg> {
     // return;  // gets default toml path.
 }
 
-pub fn get_client() -> anyhow::Result<Client> {
-    return Client::default();
+pub async fn get_client() -> anyhow::Result<Client> {
+    Ok(Client::default().await?)
 }
 
 // /// For devs, get the source path, needed to initialize swarm

@@ -262,7 +262,7 @@ pub struct EpochRules { // TODO: rename to VDFDifficulty as in tower_state
 
 #[tauri::command(async)]
 pub async fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
-  let client = get_client()?;
+  let client = get_client().await?;
 
   let res = client.view_ext("0x1::tower_state::get_difficulty", None, None).await?;
 

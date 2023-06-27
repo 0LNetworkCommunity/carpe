@@ -14,7 +14,7 @@ use crate::{carpe_error::CarpeError, configs::get_client};
 
 #[tauri::command(async)]
 pub async fn get_metadata() -> Result<IndexResponse, CarpeError> { // Todo return the IndexResponse
-    let client = get_client()?;
+    let client = get_client().await?;
     let m = client.get_index().await?;
     // let j = json!(m.into_inner()).to_string();
     Ok(m.into_inner())
@@ -42,7 +42,7 @@ pub async fn get_onchain_tower_state(
   account: AccountAddress,
 ) -> Result<TowerProofHistoryView, CarpeError> {
 
-  let client = get_client()?;
+  let client = get_client().await?;
   let tower_access_path = "0x1::tower_state::TowerProofHistory";
   let res = client.get_account_resource_bcs::<TowerProofHistoryView>(account, tower_access_path).await?;
   Ok(res.into_inner())
@@ -51,7 +51,7 @@ pub async fn get_onchain_tower_state(
 //
 #[tauri::command(async)]
 pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError> {
-    let client = get_client()?;
+    let client = get_client().await?;
   let access_path = "0x1::make_whole::MakeWhole";
   let res = client.get_account_resource_bcs::<MakeWholeResource>(account, access_path).await?;
   let credits = res.into_inner().credits;
@@ -77,7 +77,7 @@ pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
     // let client = Client::default();
 
     // dbg!("get_balance");
-    let client = get_client()?;
+    let client = get_client().await?;
     // let coin_client = CoinClient::new(&client);
     let slow_balance = get_account_balance_libra(&client, account).await
       .map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))?;
@@ -92,7 +92,7 @@ pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
     // let client = Client::default();
 
     // dbg!("get_balance");
-    let client = get_client()?;
+    let client = get_client().await?;
     // let coin_client = CoinClient::new(&client);
     let res = client.get_account(account).await
       .map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))?;
@@ -105,7 +105,7 @@ pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
 
 #[tauri::command(async)]
 pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
-  let client = get_client()?;
+  let client = get_client().await?;
 
   // TODO: write a Move view for this
 
