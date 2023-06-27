@@ -146,7 +146,7 @@ impl Accounts {
         self
           .accounts
           .iter_mut()
-          .map( | e| async {
+          .map(|e| async {
               match get_originating_address(e.authkey).await {
                   Ok(addr) => {
                       e.account = addr;

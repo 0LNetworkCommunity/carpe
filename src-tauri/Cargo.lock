@@ -6688,7 +6688,7 @@ checksum = "f7012b1bbb0719e1097c47611d3898568c546d597c2e74d66f6087edd5233ff4"
 [[package]]
 name = "libra-cached-packages"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#613591c41bf074951c48e04b8ced5637166dae55"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#9350dd2ad055650af81a91fc04fa48aa4613a10a"
 dependencies = [
  "aptos-types",
  "bcs 0.1.3",
@@ -6700,7 +6700,7 @@ dependencies = [
 [[package]]
 name = "libra-config"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#613591c41bf074951c48e04b8ced5637166dae55"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#9350dd2ad055650af81a91fc04fa48aa4613a10a"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6709,6 +6709,7 @@ dependencies = [
  "aptos-types",
  "clap 3.2.25",
  "libra-types",
+ "libra-wallet",
  "tokio",
  "url",
 ]
@@ -6716,7 +6717,7 @@ dependencies = [
 [[package]]
 name = "libra-framework"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#613591c41bf074951c48e04b8ced5637166dae55"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#9350dd2ad055650af81a91fc04fa48aa4613a10a"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6737,7 +6738,7 @@ dependencies = [
 [[package]]
 name = "libra-genesis-tools"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#613591c41bf074951c48e04b8ced5637166dae55"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#9350dd2ad055650af81a91fc04fa48aa4613a10a"
 dependencies = [
  "anyhow",
  "aptos-config",
@@ -6755,7 +6756,6 @@ dependencies = [
  "clap 3.2.25",
  "console 0.15.7",
  "dialoguer 0.10.4",
- "diem-types",
  "dirs 5.0.1",
  "hex",
  "indicatif",
@@ -6764,7 +6764,6 @@ dependencies = [
  "libra-wallet",
  "move-core-types 0.0.4",
  "ol-types",
- "once_cell",
  "reqwest",
  "serde 1.0.164",
  "serde_json",
@@ -6774,7 +6773,7 @@ dependencies = [
 [[package]]
 name = "libra-query"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#613591c41bf074951c48e04b8ced5637166dae55"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#9350dd2ad055650af81a91fc04fa48aa4613a10a"
 dependencies = [
  "anyhow",
  "aptos-sdk",
@@ -6787,7 +6786,7 @@ dependencies = [
 [[package]]
 name = "libra-txs"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#613591c41bf074951c48e04b8ced5637166dae55"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#9350dd2ad055650af81a91fc04fa48aa4613a10a"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6805,7 +6804,7 @@ dependencies = [
 [[package]]
 name = "libra-types"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#613591c41bf074951c48e04b8ced5637166dae55"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#9350dd2ad055650af81a91fc04fa48aa4613a10a"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6817,6 +6816,7 @@ dependencies = [
  "async-trait",
  "bcs 0.1.3",
  "dirs 5.0.1",
+ "glob",
  "hex",
  "move-core-types 0.0.4",
  "once_cell",
@@ -6824,13 +6824,14 @@ dependencies = [
  "serde_json",
  "serde_yaml 0.9.21",
  "tokio",
+ "toml 0.5.11",
  "url",
 ]
 
 [[package]]
 name = "libra-wallet"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=carpe-compat#613591c41bf074951c48e04b8ced5637166dae55"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#9350dd2ad055650af81a91fc04fa48aa4613a10a"
 dependencies = [
  "anyhow",
  "aptos-config",
@@ -6838,16 +6839,22 @@ dependencies = [
  "aptos-genesis",
  "aptos-types",
  "blst",
+ "byteorder",
  "clap 3.2.25",
  "dialoguer 0.10.4",
- "diem-wallet",
  "dirs 5.0.1",
  "hex",
+ "hmac 0.10.1",
  "indoc 2.0.1",
- "ol-keys",
+ "libra-types",
+ "mirai-annotations",
+ "pbkdf2 0.7.5",
+ "rand 0.7.3",
+ "rpassword",
  "serde 1.0.164",
  "serde_json",
  "serde_yaml 0.9.21",
+ "sha2 0.9.9",
  "tokio",
 ]
 

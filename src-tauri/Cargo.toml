@@ -14,12 +14,12 @@ built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
 
-libra-config = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
-libra-genesis-tools = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat"}
-libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
-libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
-libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
-libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
+libra-config = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
+libra-genesis-tools = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs"}
+libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
+libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
+libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
+libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
 
 ajson = "*"
 anyhow = "1.0.38"
