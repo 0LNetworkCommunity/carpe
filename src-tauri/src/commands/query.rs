@@ -3,7 +3,7 @@ use libra_types::{
   type_extensions::client_ext::ClientExt,
   exports::{AccountAddress, IndexResponse},
   legacy_types::{
-    tower_state::TowerStateResource,
+    tower::TowerProofHistoryView,
     makewhole_resource::CreditResource,
     makewhole_resource::MakeWholeResource,
   },
@@ -40,11 +40,11 @@ pub async fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 #[tauri::command(async)]
 pub async fn get_onchain_tower_state(
   account: AccountAddress,
-) -> Result<TowerStateResource, CarpeError> {
+) -> Result<TowerProofHistoryView, CarpeError> {
 
   let client = get_client()?;
   let tower_access_path = "0x1::tower_state::TowerProofHistory";
-  let res = client.get_account_resource_bcs::<TowerStateResource>(account, tower_access_path).await?;
+  let res = client.get_account_resource_bcs::<TowerProofHistoryView>(account, tower_access_path).await?;
   Ok(res.into_inner())
 
 }

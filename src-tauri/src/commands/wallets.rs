@@ -1,20 +1,26 @@
-use crate::configs::get_client;
-use crate::{configs, configs_network, configs_profile, key_manager};
-use crate::carpe_error::CarpeError;
-use crate::commands::query::get_balance;
+use crate::{
+  carpe_error::CarpeError,
+  commands::query,
+  configs::{self, get_client}, 
+  configs_network,
+  configs_profile,
+  key_manager,
+};
+
+// use super::query::get_seq_num;
 
 use std::fs::{self, create_dir_all, File};
 use std::io::prelude::*;
 
 use anyhow::{anyhow, bail, Error};
-use libra_types::legacy_types::mode_ol::MODE_0L;
-use libra_wallet::legacy::{
-  get_account_from_private,
-  LegacyKeys,
+use libra_types::{
+  legacy_types::mode_ol::MODE_0L,
+  exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
 };
-use libra_types::exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt};
-
-use super::query::get_seq_num;
+use libra_wallet::account_keys::{
+  self,
+  KeyChain,
+};
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
@@ -52,10 +58,10 @@ pub struct NewKeygen {
 #[tauri::command]
 pub fn keygen() -> Result<NewKeygen, CarpeError> {
     dbg!("keygen");
-    let legacy_key = libra_wallet::legacy::legacy_keygen()?;
+    let legacy_key = account_keys::legacy_keygen()?;
     let mnemonic_string = legacy_key.mnemonic;
 
-    let keys = libra_wallet::legacy::get_keys_from_mnem(mnemonic_string.clone())?;
+    let keys = account_keys::get_keys_from_mnem(mnemonic_string.clone())?;
 
     let res = NewKeygen {
         entry: AccountEntry::new(keys.child_0_owner.account, keys.child_0_owner.auth_key),
@@ -74,7 +80,7 @@ pub fn is_init() -> Result<bool, CarpeError> {
 /// default way accounts get initialized in Carpe
 #[tauri::command(async)] // don't want this to be async. We want it to block before moving back to the wallets page (and then needing a refresh), it's a smoother UI.
 pub async fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-    let wallet = libra_wallet::legacy::get_keys_from_mnem(mnem.clone())?;
+    let wallet = account_keys::get_keys_from_mnem(mnem.clone())?;
     init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?).await
 }
 
@@ -85,7 +91,7 @@ pub async fn init_from_private_key(pri_key_string: String) -> Result<AccountEntr
 
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
   .map_err(|_| anyhow!("cannot parse encoded private key"))?;
-  let acc_struct = get_account_from_private(&pri);
+  let acc_struct = account_keys::get_account_from_private(&pri);
   let authkey = acc_struct.auth_key;
 
   // IMPORTANT
@@ -165,8 +171,8 @@ impl Accounts {
           .accounts
           .iter_mut()
           .map( | e| async {
-              e.balance = get_balance(e.account).await.ok();
-              e.on_chain = Some(get_seq_num(e.account).await.is_ok());
+              e.balance = query::get_balance(e.account).await.ok();
+              e.on_chain = Some(query::get_seq_num(e.account).await.is_ok());
           })
       ).await;
       Ok(())
@@ -328,8 +334,8 @@ pub fn remove_accounts() -> Result<String, CarpeError> {
 //     }
 // }
 
-pub fn danger_get_keys(mnemonic: String) -> Result<LegacyKeys, anyhow::Error> {
-    let keys = libra_wallet::legacy::get_keys_from_mnem(mnemonic)?;
+pub fn danger_get_keys(mnemonic: String) -> Result<KeyChain, anyhow::Error> {
+    let keys = account_keys::get_keys_from_mnem(mnemonic)?;
     Ok(keys)
 }
 
