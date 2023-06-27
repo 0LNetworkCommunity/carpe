@@ -4,47 +4,97 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import {ClientTowerStatus, minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
-import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, accountEvents, isAccountsLoaded, makeWhole } from './accounts';
+import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountRefreshed, makeWhole } from './accounts';
+import { navigate } from 'svelte-navigator';
 
-export const loadAccounts = async () => { 
-  // fetch data from local DB
-  return invoke('get_all_accounts')
-    .then((result: object) => {
-      all_accounts.set(result.accounts);
-      
-      if (get(signingAccount).account == "" && result.accounts.length > 0) {
-        // set initial signingAccount
-        let first = result.accounts[0];
-        setAccount(first.account, false);
-      } else {
-        /* TODO no accounts in the current network
-        signingAccount.set(new_account("", "", ""));
-        */
-      }
-      if (!get(isAccountsLoaded)) {
-        isAccountsLoaded.set(true);
-      }
+// export const loadAccounts = async () => { 
+//   console.log(">>> call loadAccounts");
+//   // fetch data from local DB
+//   return invoke('refresh_accounts')
+//     .then((result: { accounts: [AccountEntry] }) => {
+//       all_accounts.set(result.accounts);
+//       // if we have never set the signing account
+//       if (get(signingAccount).account == "" && result.accounts.length > 0) {
+//         // set initial signingAccount
+//         let first = result.accounts[0];
+//         setAccount(first.account, false);
+//       }
 
-      updateMakeWhole(result.accounts);
+//       if (!get(isAccountRefreshed)) {
+//         isAccountRefreshed.set(true);
+//       }
 
-      // fetch data from the chain
-      return refreshAccounts();
-    })
-    .catch((error) => raise_error(error, false, "loadAccounts"))
-}
+//       updateMakeWhole(result.accounts);
+
+//       // fetch data from the chain
+//       // return refreshAccounts();
+//     })
+//     .catch((error) => raise_error(error, false, "loadAccounts"))
+// }
 
 export const refreshAccounts = async () => {
   isRefreshingAccounts.set(true);
   return invoke('refresh_accounts')
-    .then((result: object) => { // TODO make this the correct return type
-      all_accounts.set(result.accounts);
-      result.accounts.forEach(el => {
-        tryRefreshSignerAccount(el);
-      });
+    .then((result: { accounts: [AccountEntry] }) => { // TODO make this the correct return type
       isRefreshingAccounts.set(false);
+      all_accounts.set(result.accounts);
+
+      if (get(signingAccount).account == "" && result.accounts.length > 0) {
+        // set initial signingAccount
+        let first = result.accounts[0];
+        setAccount(first.account, false);
+      }
+
+      if (!get(isAccountRefreshed)) {
+        isAccountRefreshed.set(true);
+      }
+
+      // result.accounts.forEach(el => {
+      //   tryRefreshSignerAccount(el);
+      // });
+      
     })
     .catch(_ => {
       isRefreshingAccounts.set(false);
+    })
+}
+
+export enum InitType {
+  Mnem,
+  PriKey,
+}
+
+export const handleAdd = async (init_type: InitType, secret: string): Promise<AccountEntry> => {
+  // isSubmitting = true;
+
+  let method_name = "";
+  let arg_obj = {};
+  if (init_type == InitType.Mnem) {
+    method_name = "init_from_mnem"
+    arg_obj = { mnem: secret.trim() };
+
+  } else if (init_type == InitType.PriKey) {
+    method_name = "init_from_private_key";
+    arg_obj = { priKeyString: secret.trim() };
+  };
+  // submit
+  return invoke(method_name, arg_obj)
+    .then((res: AccountEntry) => {
+      // set as init so we don't get sent back to Newbie account creation.
+      isInit.set(true);
+      responses.set(JSON.stringify(res));
+      signingAccount.set(res);
+
+      // only navigate away once we have refreshed the accounts including balances
+      refreshAccounts()
+      .then(() => {
+        notify_success(`Account Added: ${res.nickname}`);
+        navigate("/");
+      });
+      return res
+    })
+    .catch((error) => {
+      raise_error(error, false, "handleAdd");
     })
 }
 
@@ -57,14 +107,20 @@ export function tryRefreshSignerAccount(newData: AccountEntry) {
 
 
 export const isCarpeInit = async () => {
+  // on app load we want to avoid the Newbie view until we know it's not a new user
+  isRefreshingAccounts.set(true); 
+
   invoke("is_init", {})
     .then((res: boolean) => {
       responses.set(res.toString());
       isInit.set(res);
       // for testnet
-      res
+      isRefreshingAccounts.set(false);
     })
-    .catch((e) => raise_error(e, false, "isCarpeInit"));
+    .catch((e) => {
+      isRefreshingAccounts.set(false);
+      raise_error(e, false, "isCarpeInit")
+    });
 }
 
 export function findOneAccount(account: string): AccountEntry {
@@ -194,17 +250,18 @@ export let invoke_makewhole = async (account: String): Promise<number> => {
 }
 */
 
-function updateMakeWhole(accounts: Array<AccountEntry>) {
+export const updateMakeWhole = () => {
   let mk = get(makeWhole);
-  accounts.forEach(each => {
+  get(all_accounts).forEach(each => {
     let account = each.account;
     if (mk[account] == null) {
-      console.log(">>> query_makewhole called");
+      console.log(">>> query_makewhole");
       invoke("query_makewhole", { account })
         .then((credits) => {
           mk[account] = credits;
           makeWhole.set(mk);
         })
+        .catch(e => raise_error(e, true, "updateMakeWhole"));
     }
   })
 }

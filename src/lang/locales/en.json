@@ -2,7 +2,7 @@
   "nav": {
     "wallet": "Wallet",
     "miner": "Miner",
-    "transactions": "Transaction",
+    "transactions": "Transfer",
     "events": "Events"
   },
   "layout": {
@@ -18,7 +18,8 @@
       "recovery_mode": { 
         "title": "Recovery Mode",
         "body": "The network is up! But we are in Recovery Mode, and no rewards are being paid for proofs yet. Wait until Recovery Mode is finished to send proofs for rewards. Recovery ends when epoch {epoch_recovery_ends} changes to {epoch_recovery_ends_after}"
-      }
+      },
+      "attempting_to_connect": "Attempting to connect to the blockchain"
   },
   "wallet": {
     "wallet": "Wallet",
@@ -68,6 +69,10 @@
       "description": "Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions",
       "placeholder": "Recovery Mnemonic"
     },
+    "account_from_private": {
+      "description": "Recover the account using the private key.",
+      "placeholder": "Private Key"
+    },
     "account_switcher": {
       "select_account": "Select Account",
       "switch_account": "Switch Account",
@@ -94,7 +99,9 @@
     },
     "network_settings": {
       "title": "NETWORK SETTINGS",
-      "list_of_peers": "LIST OF PEERS",
+      "list_of_peers": "PEERS PLAYLIST",
+      "synced_peers": "Synced Peers",
+      "refresh_peers_button": "Check Fullnodes Sync",
       "description": "Choose a playlist of upstream nodes, so you can access the chain. Network connections will try the list in random order until a connection is made. Simply link to any playlist.json file here to update peers.",
       "playlist": "Update Playlist of Network Servers",
       "override_peers": "OVERRIDE PEERS",
@@ -109,7 +116,7 @@
     },
     "account_settings": {
       "title": "ACCOUNT SETTINGS",
-      "btn_remove": "REMOVE ACCOUNT",
+      "btn_remove": "REMOVE ACCOUNTS",
       "comfirm": "Confirm remove accounts from this device? This is not reversable.",
       "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
     }

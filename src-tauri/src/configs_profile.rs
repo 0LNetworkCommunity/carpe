@@ -4,11 +4,11 @@ use anyhow::Error;
 use glob::glob;
 use std::{fs, path::PathBuf};
 
-use diem_types::transaction::authenticator::AuthenticationKey;
+// use zapatos_types::transaction::authenticator::AuthenticationKey;
+use libra_types::exports::{AccountAddress, AuthenticationKey};
 
-use diem_types::account_address::AccountAddress;
-use ol::config::AppCfg;
-
+// use zapatos_types::account_address::AccountAddress;
+use crate::types::app_cfg::AppCfg;
 use crate::configs::{self, get_cfg};
 
 /// For switching between profiles in the Account DB.

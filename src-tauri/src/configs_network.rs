@@ -1,37 +1,42 @@
 //! network configs
 
 use futures::{stream::FuturesUnordered, StreamExt};
-use reqwest::ClientBuilder;
-use std::time::Duration;
-// use num_traits::pow::Pow;
+
+
+
 use crate::{
+
   carpe_error::CarpeError,
-  commands::read_preferences,
-  configs::{self, get_cfg},
-  waypoint,
+  configs::{ get_cfg, default_config_path},
+  // app_cfg,
+  // waypoint,
+  types::{
+    rpc_playlist::{self, FullnodePlaylist, HostInfo},
+    app_cfg::{AppCfg},
+  }
 };
 use anyhow::{bail, Error};
-use diem_types::{waypoint::Waypoint, chain_id::NamedChain};
-use ol::config::AppCfg;
-use ol_types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
+use libra_types::exports::{NamedChain, Client};
+// use crate::types::rpc_playlist::{self, FullnodePlaylist, HostInfo};
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 use url::Url;
+
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NetworkProfile {
   pub chain_id: NamedChain, // Todo, use the Network Enum
   pub urls: Vec<Url>,
-  pub waypoint: Waypoint,
+  // pub waypoint: Waypoint,
   pub profile: String, // tbd, to use default node, or to use upstream, or a custom url.
 }
 
 impl NetworkProfile {
-  pub fn new() -> Result<Self, CarpeError> {
-    let cfg = configs::get_cfg()?;
+  pub fn read_from_cfg() -> Result<Self, CarpeError> {
+    let cfg = get_cfg()?;
     Ok(NetworkProfile {
       chain_id: cfg.chain_info.chain_id,
       urls: cfg.profile.upstream_nodes,
-      waypoint: cfg.chain_info.base_waypoint.unwrap_or_default(),
+      // waypoint: cfg.chain_info.base_waypoint.unwrap_or_default(),
       profile: "default".to_string(),
     })
   }
@@ -62,18 +67,31 @@ pub fn set_network_configs(
   let playlist = if let Some(u) = custom_playlist {
     rpc_playlist::get_known_fullnodes(Some(u))?
   } else {
+    // TODO: set the default playlists
     match network {
-      NamedChain::TESTNET => rpc_playlist::get_known_fullnodes(Some(
-        "https://raw.githubusercontent.com/OLSF/seed-peers/main/fullnode_seed_playlist_testnet.json"
+      NamedChain::MAINNET => rpc_playlist::get_known_fullnodes(Some(
+        "https://raw.githubusercontent.com/0o-de-lally/seed-peers/main/fullnode_seed_playlist.json"
           .parse()
           .unwrap(),
       ))?,
-      NamedChain::TESTING => get_swarm_playlist()?,
+      NamedChain::TESTNET => rpc_playlist::get_known_fullnodes(Some(
+        "https://raw.githubusercontent.com/0o-de-lally/seed-peers/main/fullnode_seed_playlist.json"
+          .parse()
+          .unwrap(),
+      ))?,
+      NamedChain::TESTING => {
+        FullnodePlaylist {
+          nodes: vec![HostInfo {
+            note: "local".to_string(),
+            url: Url::parse("http://localhost:8080").unwrap(),
+          }],
+        }
+      },
       _ => rpc_playlist::get_known_fullnodes(None)?, // assume mainnet
     }
   };
 
-  playlist.update_config_file(Some(configs::default_config_path()))?; // None uses default path of 0L.toml
+  playlist.update_config_file(Some(default_config_path()))?; // None uses default path of 0L.toml
 
   // TODO: I don't think chain ID needs to change.
   set_chain_id(network).map_err(|e| {
@@ -81,33 +99,33 @@ pub fn set_network_configs(
     CarpeError::misc(&err_msg)
   })?;
 
-  tauri::async_runtime::block_on(set_waypoint_from_upstream()).ok();
+  // tauri::async_runtime::block_on(set_waypoint_from_upstream()).ok();
 
-  NetworkProfile::new()
+  NetworkProfile::read_from_cfg()
 }
 
 
-fn get_swarm_url() -> anyhow::Result<Url>{
-  let app_cfg = get_cfg()?;
-  let (url, _) = ol_types::config::get_swarm_rpc_url(app_cfg.workspace.node_home.join("swarm_temp/"));
-  Ok(url)
-}
+// fn get_swarm_url() -> anyhow::Result<Url>{
+//   let app_cfg = get_cfg()?;
+//   let (url, _) = ol_types::config::get_swarm_rpc_url(app_cfg.workspace.node_home.join("swarm_temp/"));
+//   Ok(url)
+// }
 
-fn get_swarm_playlist() -> anyhow::Result<FullnodePlaylist> {
+// fn get_swarm_playlist() -> anyhow::Result<FullnodePlaylist> {
 
-  let h = HostInfo {
-      note: "swarm".to_string(),
-      url: get_swarm_url()?,
-  };
+//   let h = HostInfo {
+//       note: "swarm".to_string(),
+//       url: get_swarm_url()?,
+//   };
   
-  let f = FullnodePlaylist {
-    nodes: vec![h],
-  };
+//   let f = FullnodePlaylist {
+//     nodes: vec![h],
+//   };
 
-  Ok(f)
-}
+//   Ok(f)
+// }
 // pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
-//   let cfg = configs::get_cfg()?;
+//   let cfg = get_cfg()?;
 
 //   // try getting waypoint from upstream nodes
 //   // no waypoint is necessary in advance.
@@ -137,37 +155,37 @@ fn get_swarm_playlist() -> anyhow::Result<FullnodePlaylist> {
 //   bail!("no waypoint found while querying upstream nodes")
 // }
 
-pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
-  let prefs = read_preferences()?;
-  if let Some(upstream) = prefs.network {
-    let mut urls = upstream.the_good_ones()?;
-    urls.shuffle(&mut thread_rng());
-    if let Some(u) = urls.first() {
-      match waypoint::bootstrap_waypoint_from_rpc(u.to_owned()).await {
-        Ok(w) => set_waypoint(w),
-        Err(e) => Err(e),
-      }
-    } else {
-      bail!("cannot find a synced upstream URL")
-    }
-  } else {
-    bail!("could not fetch network stats from preferences.json")
-  }
-}
+// pub async fn set_waypoint_from_upstream() -> Result<AppCfg, Error> {
+//   let prefs = read_preferences()?;
+//   if let Some(upstream) = prefs.network {
+//     let mut urls = upstream.the_good_ones()?;
+//     urls.shuffle(&mut thread_rng());
+//     if let Some(u) = urls.first() {
+//       match waypoint::bootstrap_waypoint_from_rpc(u.to_owned()).await {
+//         Ok(w) => set_waypoint(w),
+//         Err(e) => Err(e),
+//       }
+//     } else {
+//       bail!("cannot find a synced upstream URL")
+//     }
+//   } else {
+//     bail!("could not fetch network stats from preferences.json")
+//   }
+// }
 
-/// Set the base_waypoint used for client connections.
-pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
-  let mut cfg = configs::get_cfg()?;
-  cfg.chain_info.base_waypoint = Some(wp);
-  cfg.save_file()?;
-  Ok(cfg)
-}
+// /// Set the base_waypoint used for client connections.
+// pub fn set_waypoint(wp: Waypoint) -> Result<AppCfg, Error> {
+//   let mut cfg = get_cfg()?;
+//   cfg.chain_info.base_waypoint = Some(wp);
+//   cfg.save_file()?;
+//   Ok(cfg)
+// }
 
 /// Get all the 0L configs. For tx sending and upstream nodes
 /// Note: The default_node key in 0L is not used by Carpe. Carpe randomly tests
 /// all the endpoints in upstream_peers on every TX.
 pub fn override_upstream_node(url: Url) -> Result<AppCfg, Error> {
-  let mut cfg = configs::get_cfg()?;
+  let mut cfg = get_cfg()?;
   cfg.profile.upstream_nodes = vec![url];
   cfg.save_file()?;
   Ok(cfg)
@@ -175,7 +193,7 @@ pub fn override_upstream_node(url: Url) -> Result<AppCfg, Error> {
 
 // the 0L configs. For tx sending and upstream nodes
 pub fn set_chain_id(chain_id: NamedChain) -> Result<AppCfg, Error> {
-  let mut cfg = configs::get_cfg()?;
+  let mut cfg = get_cfg()?;
   cfg.chain_info.chain_id = chain_id;
   cfg.save_file()?;
   Ok(cfg)
@@ -183,7 +201,7 @@ pub fn set_chain_id(chain_id: NamedChain) -> Result<AppCfg, Error> {
 
 /// Set the list of upstream nodes
 pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
-  let mut cfg = configs::get_cfg()?;
+  let mut cfg = get_cfg()?;
   cfg.profile.upstream_nodes = vec_url;
   cfg.save_file()?;
   Ok(cfg)
@@ -192,7 +210,7 @@ pub fn set_upstream_nodes(vec_url: Vec<Url>) -> Result<AppCfg, Error> {
 /// Removes current node from upstream nodes
 /// To be used when DB is corrupted for instance.
 pub fn remove_node(host: String) -> Result<(), Error> {
-  match configs::get_cfg() {
+  match get_cfg() {
     Ok(mut cfg) => {
       let nodes = cfg.profile.upstream_nodes;
       match nodes.len() {
@@ -258,7 +276,7 @@ impl UpstreamStats {
   }
 
   pub async fn check_which_are_synced(mut self) -> anyhow::Result<Self> {
-    // let _cfg = configs::get_cfg()?;
+    // let _cfg = get_cfg()?;
     dbg!("check_which_are_synced");
 
     // try getting waypoint from upstream nodes
@@ -308,7 +326,7 @@ impl UpstreamStats {
   }
 
   pub async fn check_which_are_alive(mut self) -> anyhow::Result<Self> {
-    let _cfg = configs::get_cfg()?;
+    let _cfg = get_cfg()?;
     let mut upstream = self.nodes;
 
     // try getting waypoint from upstream nodes
@@ -320,7 +338,7 @@ impl UpstreamStats {
 
     // randomize to balance load on carpe nodes
     upstream.into_iter().for_each(|p| {
-      futures.push(p.check_rpc_header());
+      futures.push(p.check_sync());
     });
 
     // dbg!(&list);
@@ -350,9 +368,12 @@ pub struct FullnodeProfile {
 impl FullnodeProfile {
   async fn check_sync(mut self) -> anyhow::Result<FullnodeProfile> {
     // dbg!("check_sync", &self.url);
-    match waypoint::bootstrap_waypoint_from_rpc(self.url.clone()).await {
-      Ok(wp) => {
-        self.version = wp.version();
+    let client = Client::new(self.url.clone());
+
+    match client.get_index().await {
+      Ok(res) => {
+        
+        self.version = res.into_inner().ledger_version.into();
         self.is_api = true;
       }
       Err(_) => {
@@ -363,29 +384,30 @@ impl FullnodeProfile {
 
     Ok(self)
   }
-
-  /// get the waypoint from a fullnode
-  pub async fn check_rpc_header(mut self) -> anyhow::Result<FullnodeProfile> {
-    self.is_api = false;
-
-    let client = ClientBuilder::new()
-      .timeout(Duration::from_secs(1))
-      .build()?;
-
-    // handle all errors as a is_api = false
-    match client.head(self.url.to_owned()).send().await {
-      Ok(resp) => match resp.text().await {
-        Ok(_) => {
-          self.is_api = true;
-          return Ok(self.to_owned());
-        }
-        Err(_) => {}
-      },
-      Err(_) => {}
-    };
-    Ok(self)
-  }
 }
+
+//   /// get the waypoint from a fullnode
+//   pub async fn check_rpc_header(mut self) -> anyhow::Result<FullnodeProfile> {
+//     self.is_api = false;
+
+//     let client = ClientBuilder::new()
+//       .timeout(Duration::from_secs(1))
+//       .build()?;
+
+//     // handle all errors as a is_api = false
+//     match client.head(self.url.to_owned()).send().await {
+//       Ok(resp) => match resp.text().await {
+//         Ok(_) => {
+//           self.is_api = true;
+//           return Ok(self.to_owned());
+//         }
+//         Err(_) => {}
+//       },
+//       Err(_) => {}
+//     };
+//     Ok(self)
+//   }
+// }
 
 #[test]
 fn test_pick_upstream() {
@@ -407,5 +429,5 @@ fn test_pick_upstream() {
     nodes: vec![node_good, node_bad],
   };
 
-  tauri::async_runtime::block_on(UpstreamStats::check_which_are_alive(upstream));
+  tauri::async_runtime::block_on(UpstreamStats::check_which_are_alive(upstream)).unwrap();
 }

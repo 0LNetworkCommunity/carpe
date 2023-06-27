@@ -1,17 +1,17 @@
 use anyhow::{anyhow, Error};
 use log::error;
 use ol::config::AppCfg;
-use ol_types::config::{self, TxType};
+//use ol_types::config::{self, TxType};
 use std::path::PathBuf;
 use std::process::Command;
 use sysinfo::{ProcessExt, SystemExt};
 
-use ol::commands::init_cmd::initialize_host_swarm;
-use tower::{commit_proof, next_proof};
-use tower::proof::mine_once;
-use txs::{submit_tx, tx_params::TxParams};
+// use ol::commands::init_cmd::initialize_host_swarm;
+// use tower::{commit_proof, next_proof};
+// use tower::proof::mine_once;
+// use libra_txs::{submit_tx, tx_params::TxParams};
 
-use crate::configs::get_diem_client;
+use crate::configs::get_client;
 use crate::{
   carpe_error::CarpeError,
   configs::{dev_get_source_path, dev_get_swarm_temp, get_cfg},
@@ -109,7 +109,7 @@ fn get_swarm_cfg(config_dir: &str, is_swarm: bool) -> AppCfg {
     toml.push("0/")
   };
   toml.push("0L.toml");
-  config::parse_toml(Some(toml)).unwrap()
+  zapatos::common::types::CliConfig::(toml).unwrap()
 }
 
 #[tauri::command]
@@ -121,7 +121,7 @@ pub fn swarm_miner(swarm_dir: String, swarm_persona: String) -> String {
 
   let mut appcfg = get_swarm_cfg(&swarm_dir, true);
 
-  let client = get_diem_client(&appcfg).expect("could not start client");
+  let client = get_client();
   let next = match next_proof::get_next_proof_from_chain(&mut appcfg, client, Some(swarm_path)) {
     Ok(n) => n,
     // failover to local mode, if no onchain data can be found.
@@ -161,7 +161,7 @@ pub fn swarm_demo_tx() -> Result<String, CarpeError> {
   )
   .unwrap();
 
-  txs::commands::demo_cmd::demo_tx(&tx_params, None).unwrap();
+  libra_txs::commands::demo_cmd::demo_tx(&tx_params, None).unwrap();
 
   Ok("Demo tx submitted".to_string())
 }

@@ -1,14 +1,12 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { onDestroy, onMount } from "svelte";
-  import { Link } from "svelte-navigator";
   import {
     isRefreshingAccounts,
     all_accounts,
     signingAccount,
-    isAccountsLoaded,
+    isAccountRefreshed,
   } from "../../accounts";
-  import { routes } from "../../routes";
   import type { AccountEntry } from "../../accounts";
   import Newbie from "./Newbie.svelte";
   import AccountsList from "./AccountsList.svelte";
@@ -18,14 +16,14 @@
   import Icons from "uikit/dist/js/uikit-icons";
   import { connected } from "../../networks";
   import ConnectionError from "../layout/ConnectionError.svelte";
-  import AccountsListSkeleton from "./AccountsListSkeleton.svelte";
+  
   UIkit.use(Icons);
 
   let my_account: AccountEntry;
   let accountList: AccountEntry[] = null;
   let pendingAccounts: AccountEntry[] = [];
   let isMining = false;
-  let isRefreshing: boolean = true;
+  let isRefreshing: boolean = false;
   let isConnected: boolean = true;
   let isLoaded: boolean = false;
 
@@ -43,7 +41,7 @@
       pendingAccounts = all.filter((x) => !x.on_chain);
     });
     unsubsSigningAccount = signingAccount.subscribe((a) => (my_account = a));
-    unsubsIsAccountsLoaded = isAccountsLoaded.subscribe(
+    unsubsIsAccountsLoaded = isAccountRefreshed.subscribe(
       (boo) => (isLoaded = boo)
     );
     unsubsMinerLoopEnabled = minerLoopEnabled.subscribe(
@@ -68,44 +66,38 @@
   <div>
     {#if isRefreshing}
       <div style="position:relative">
-        <span uk-spinner style="position:absolute; top:0px; left:0px" />
+        <span uk-spinner style="position:absolute; top:0; left:0" />
       </div>
-    {/if}
-
-    {#if !isLoaded && !isRefreshing && !accountList }
-      <Newbie />
-    {/if}
-
-    {#if !isLoaded && accountList && accountList.length == 0}
-      <Newbie />
+    {:else}
+      <!-- TODO: let's move this logic to Newbie -->
+      <!-- if we have initialized the app, but deleted all accounts -->
+      {#if isLoaded && accountList && accountList.length == 0 }
+        <Newbie />
+      {/if}
+      <!-- acount list may return error -->
+      {#if !isLoaded && !accountList }
+        <Newbie />
+      {/if}
+      <!-- may return an empty array -->
+      {#if !isLoaded && accountList && accountList.length == 0}
+        <Newbie />
+      {/if}
     {/if}
 
     {#if isLoaded && accountList && accountList.length > 0}
+      <div class="uk-flex uk-flex-center">
+        <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
+          {$_("wallet.wallet")}
+        </h2>
+      </div>
+      <AccountsList {my_account} {accountList} {isMining} {isConnected} />
+
       {#if !isConnected}
+        <!-- <AccountsList {my_account} {accountList} {isMining} {isConnected} /> -->
+
         <ConnectionError />
       {:else}
-        <div class="uk-flex uk-flex-center">
-          <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
-            {$_("wallet.wallet")}
-          </h2>
-        </div>
-
-        <AccountsList {my_account} {accountList} {isMining} {isConnected} />
-
         <ReminderCreate {pendingAccounts} {isConnected} />
-
-        <div uk-grid class="uk-flex uk-flex-center">
-          <Link to={routes.keygen}>
-            <button class="uk-button uk-button-secondary"
-              >{$_("wallet.btn_new_account")}</button
-            >
-          </Link>
-          <Link to={routes.accountFromMnem}>
-            <button class="uk-button uk-button-default"
-              >{$_("wallet.btn_restore_account")}
-            </button>
-          </Link>
-        </div>
       {/if}
     {/if}
   </div>

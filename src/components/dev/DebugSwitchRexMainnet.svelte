@@ -1,9 +1,5 @@
 <script lang="ts">
-  import { invoke } from "@tauri-apps/api/tauri";
   import { onMount } from "svelte";
-  import type { CarpeError } from "../../carpeError";
-  import { raise_error } from "../../carpeError";
-  import { notify_success } from "../../carpeNotify";
   import {
     setNetwork,
     getNetwork,
@@ -11,28 +7,12 @@
     Networks,
   } from "../../networks";
 
-  import type { NetworkProfile} from "../../networks";
-
   let current_chain_id;
-  let waypoint = "";
-
-  function updateWaypoint() {
-    // check input data
-    // submit
-    invoke("force_waypoint", { wp: waypoint })
-      .then((res: NetworkProfile) => {
-        network_profile.set(res);
-        notify_success("Waypoint Updated");
-      })
-      .catch((error) => {
-        raise_error(error as CarpeError, false, "updateWaypoint");
-      });
-  }
 
   onMount(async () => {
     getNetwork();
     network_profile.subscribe((n) => {
-      waypoint = n.waypoint;
+      // waypoint = n.waypoint;
       current_chain_id = n.chain_id;
     });
   });
@@ -72,7 +52,7 @@
     </label>
   </div>
 
-  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+  <!-- <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
     Override The Waypoint
   </h5>
   <p>You need to know what you are doing here.</p>
@@ -91,5 +71,5 @@
       on:click={updateWaypoint}
       class="uk-button uk-button-primary uk-align-right"
       id="add-btn">Override Waypoint</span
-    >
+    > -->
 </div>

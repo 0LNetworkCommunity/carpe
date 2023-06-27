@@ -5,11 +5,13 @@
   import DebugSwitchRexMainnet from "./DebugSwitchRexMainnet.svelte";
   import DebugSwitcher from "./DebugSwitcher.svelte";
   import DebugPaths from "./DebugPaths.svelte";
+  import DebugNetworkInfo from "./DebugNetworkInfo.svelte";
 
 </script>
 
 <main class="uk-height-viewport">
   <div class="uk-margin uk-container uk-dark" style="margin-bottom: 280px">
+    <DebugNetworkInfo />
     <DebugCard />
     <DebugPaths />
     <DebugSwitcher />

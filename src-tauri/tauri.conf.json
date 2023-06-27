@@ -17,12 +17,12 @@
         "https://raw.githubusercontent.com/OLSF/carpe/main/autoupdater/autoupdater_payload.json"
       ],
       "dialog": true,
-      "pubkey": "YOUR_UPDATER_SIGNATURE_PUBKEY_HERE"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ4MEIzMzc4MzlGMzgwNUUKUldSZWdQTTVlRE1MMkszSGczY1B2OGlOaW5IWXBLdXpZWldKbVl2VGw1RDg0dFNPTHFpYk1WNGkK"
     },
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "com.tauri.0L",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -68,7 +68,7 @@
       }
     ],
     "security": {
-      "csp": "default-src blob: data: filesystem: ws: http: https: 'unsafe-eval' 'unsafe-inline'"
+      "csp": "default-src 'self' blob: data: filesystem: ws: http: https: 'unsafe-eval' 'unsafe-inline'"
     }
   }
 }

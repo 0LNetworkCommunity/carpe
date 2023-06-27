@@ -2,9 +2,15 @@ use crate::carpe_error::CarpeError;
 use crate::configs;
 use crate::configs_network::UpstreamStats;
 use anyhow::Error;
-use std::fs::File;
-use std::io::prelude::*;
-use std::path::PathBuf;
+use libra_types::legacy_types::mode_ol::MODE_0L;
+use url::Url;
+use std::{
+  fs::File,
+  io::prelude::*,
+  path::PathBuf,
+  env,
+};
+
 
 const PREFERENCES_DB_FILE: &str = "preferences.json";
 
@@ -80,7 +86,7 @@ fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
 
 
 #[tauri::command(async)]
-pub async fn refresh_upstream_peer_stats() -> Result<bool, CarpeError> {
+pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
   let cfg = configs::get_cfg()?;
   let stats = UpstreamStats::new(cfg.profile.upstream_nodes);
 
@@ -89,7 +95,28 @@ pub async fn refresh_upstream_peer_stats() -> Result<bool, CarpeError> {
   update_preferences(&preferences)?;
 
   match preferences.network {
-    Some(stats) => Ok(stats.the_good_ones()?.len() > 0),
-    None => Err(CarpeError::client_unknown_err("no good upstream to use")),
+      Some(stats) => Ok(stats.the_good_ones()?),
+      None => Err(CarpeError::client_unknown_err("no good upstream to use")),
+  }
 }
+
+
+#[tauri::command(async)]
+pub fn get_env() -> Result<String, CarpeError> {
+  let env = MODE_0L.clone();
+  Ok(env.to_string())
+}
+
+
+#[tauri::command(async)]
+pub fn set_env(env: String) -> Result<String, CarpeError> {
+  match env.as_ref() {
+    "test" => env::set_var("MODE_0L", "testing"),
+    "prod" => env::set_var("MODE_0L", "mainnet"),
+    _ => {}
+  }
+
+  let v = env::var("MODE_0L")
+    .map_err(|_| CarpeError::misc("environment variable MODE_0L is not set"))?;
+  Ok(v)
 }

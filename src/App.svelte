@@ -21,16 +21,19 @@
   import { getEnv, responses, debugMode } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
-  import { isCarpeInit} from "./accountActions";
+  import { isCarpeInit, refreshAccounts, updateMakeWhole } from "./accountActions";
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
   import { init_preferences } from "./preferences";
   import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
   import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
-  import { refreshUpstreamPeerStats } from "./networks";
-import { Level, logger } from "./logger";
+  import { getMetadata, refreshUpstreamPeerStats } from "./networks";
+  import { Level, logger } from "./logger";
+    import { isRefreshingAccounts } from "./accounts";
   
+  // Init i18n and preferences
+  // TODO: why is this duplicated in Nav.svelte?
   init_preferences();
  
   let unlistenProofStart;
@@ -41,21 +44,18 @@ import { Level, logger } from "./logger";
   let debug = false;
 
   onMount(async () => {
-
     logger(Level.Warn, "Webview is starting");
-    
-    isCarpeInit();
 
-    getEnv();
+    getEnv(); // load env vars
+    getVersion(); // git commit and version
 
-    getVersion();
-
-    // iterates through the list of peers in 0L.toml, and updates the statistics in preferences.json. So we don't need to test fullnodes on every transaction.
-    refreshUpstreamPeerStats()
-    .then(() => {
-      carpeTick();
-    });
-
+    // try to connect to a chain eagerly.
+    // if not we will be scanning for peers below
+    isCarpeInit()
+    .then(getMetadata) // try to connect to a chain eagerly.
+    .then(refreshAccounts) // should only try to refresh accounts if we are connected to a chain
+    .then(updateMakeWhole) // check for make whole only once on startup
+    .finally(refreshUpstreamPeerStats) // if not we will be scanning for peers
     healthTick = setInterval(carpeTick, 30000); // do a healthcheck, this is async
 
     debugMode.subscribe(b => debug = b);

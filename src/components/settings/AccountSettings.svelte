@@ -1,7 +1,7 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
 import { _ } from "svelte-i18n";
-  import { loadAccounts } from "../../accountActions";
+  import { refreshAccounts } from "../../accountActions";
   import { raise_error } from "../../carpeError";
   import { notify_success } from "../../carpeNotify";
   import { responses } from "../../debug";
@@ -10,7 +10,7 @@ import { _ } from "svelte-i18n";
       .then((res: any) => {
         responses.set(res);
         notify_success("accounts removed successfully");
-        loadAccounts()
+        refreshAccounts()
       })
       .catch((e) => {
         raise_error(e, false, "removeAccounts");

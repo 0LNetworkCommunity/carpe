@@ -3,8 +3,10 @@
   windows_subsystem = "windows"
 )]
 
-extern crate url;
-use crate::commands::*;
+#![allow(dead_code)]
+
+// use url;
+// use crate::commands::*;
 use log::{error, info, warn};
 use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
@@ -12,13 +14,14 @@ use simplelog::{
 use std::fs::{self, File};
 use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
 
-pub mod carpe_error;
-pub mod commands;
-pub mod configs;
-pub mod configs_network;
-pub mod configs_profile;
-pub mod key_manager;
-mod waypoint;
+pub(crate) mod types;
+pub(crate) mod carpe_error;
+pub(crate) mod commands;
+pub(crate) mod configs;
+pub(crate) mod configs_network;
+pub(crate) mod configs_profile;
+pub(crate) mod key_manager;
+// pub(crate) mod waypoint;
 
 fn main() {
   //////// FORCE TEST SETTINGS ON START ////////////////////
@@ -86,66 +89,69 @@ fn main() {
 
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
-      // Accounts
-      is_init,
-      refresh_accounts,
-      get_all_accounts,
-      get_account_events,
-      add_account,
-      keygen,
-      init_from_mnem,
-      remove_accounts,
-      switch_profile,
+      // // Accounts
+      commands::wallets::is_init,
+      commands::wallets::refresh_accounts,
+      commands::wallets::get_all_accounts,
+      // //get_account_events,
+      // add_account,
+      commands::wallets::keygen,
+      commands::wallets::init_from_mnem,
+      commands::wallets::init_from_private_key,
+
+      commands::wallets::remove_accounts,
+      commands::wallets::switch_profile,
       // Networks
-      refresh_upstream_peer_stats,
-      force_upstream,
-      force_waypoint,
-      override_playlist,
-      get_networks,
-      refresh_waypoint,
-      toggle_network,
-      // Queries
-      query_balance,
-      query_makewhole,
-      get_recovery_mode,
-      // Transactions
-      demo_tx,
-      create_user_account,
-      wallet_type,
-      coin_transfer,
-      claim_make_whole,
-      // Tower
-      miner_once,
-      start_backlog_sender_listener,
-      get_local_height,
-      get_epoch_rules,
-      submit_backlog,
-      get_last_local_proof,
-      get_env,
-      set_env,
-      submit_proof_zero,
-      // Version
-      get_app_version,
-      // Debug
-      log_this,
-      init_swarm,
-      swarm_miner,
-      swarm_files,
-      swarm_process,
-      easy_swarm,
-      debug_error,
-      debug_emit_event,
-      delay_async,
-      get_onchain_tower_state,
-      receive_event,
-      mock_build_tower,
-      start_forever_task,
-      debug_start_listener,
-      debug_highest_proof_path,
-      debug_preferences_path,
-      // Preferences
-      get_preferences,
-      set_preferences_locale
+      commands::preferences::refresh_upstream_peer_stats,
+      commands::networks::force_upstream,
+      // force_waypoint,
+      commands::networks::override_playlist,
+      commands::networks::get_networks,
+      // commands::networks::refresh_waypoint,
+      // toggle_network,
+      // // Queries
+      commands::query::query_balance,
+      commands::query::query_makewhole,
+      commands::query::get_recovery_mode,
+      commands::query::get_metadata,
+      // // Transactions
+      // demo_tx,
+      // create_user_account,
+      // wallet_type,
+      commands::tx::coin_transfer,
+      // //claim_make_whole,
+      // // Tower
+      // miner_once,
+      // start_backlog_sender_listener,
+      // get_local_height,
+      commands::mining::get_epoch_rules,
+      // submit_backlog,
+      commands::mining::get_last_local_proof,
+      commands::preferences::get_env,
+      // set_env,
+      // submit_proof_zero,
+      // // Version
+      commands::app_version::get_app_version,
+      // // Debug
+      commands::web_logs::log_this,
+      // init_swarm,
+      // swarm_miner,
+      // swarm_files,
+      // swarm_process,
+      // easy_swarm,
+      // debug_error,
+      // debug_emit_event,
+      // delay_async,
+      commands::query::get_onchain_tower_state,
+      // receive_event,
+      // mock_build_tower,
+      // start_forever_task,
+      // debug_start_listener,
+      // debug_highest_proof_path,
+      // debug_preferences_path,
+      // // Preferences
+      commands::preferences::get_preferences,
+      // set_preferences_locale
     ])
     .menu(menu)
     .run(tauri::generate_context!())
