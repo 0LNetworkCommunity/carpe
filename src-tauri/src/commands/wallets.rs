@@ -3,7 +3,7 @@ use crate::{
   commands::query,
   configs::{self, get_client}, 
   configs_profile,
-  key_manager,
+  key_manager, configs_network,
 };
 
 use std::fs::{self, create_dir_all, File};
@@ -11,6 +11,7 @@ use std::io::prelude::*;
 
 use anyhow::{anyhow, bail, Error};
 use libra_types::{
+  legacy_types::mode_ol::MODE_0L,
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
 };
 use libra_wallet::account_keys::{
@@ -203,6 +204,14 @@ pub async fn add_account(
     authkey: AuthenticationKey,
     mut address: AccountAddress,
 ) -> Result<Accounts, CarpeError> {
+
+    // this may be the first account and may not yet be initialized.
+    if !configs::is_initialized() {
+        // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
+        let _ = configs_network::set_network_configs(MODE_0L.clone(), None)
+        .await
+        .map_err(|_| CarpeError::config("cannot set network configs"));
+    }
 
     // maybe the address has been rotated previously
     // or its a legacy (founder) account
