@@ -1,17 +1,17 @@
 import { invoke } from "@tauri-apps/api/tauri";
 import { get, writable } from "svelte/store";
 import { raise_error } from "./carpeError";
-import { loadAccounts, refreshAccounts } from "./accountActions";
-import { notify_success } from "./carpeNotify";
+import { refreshAccounts } from "./accountActions";
 
 
 export interface NetworkPlaylist {
-  chain_id: Networks, // Todo, use the Network Enum
+  chain_id: NamedChain, // Todo, use the Network Enum
   nodes: [HostProfile],
 }
 
 export interface HostProfile {
   url: string,
+  note: string,
   version: number,
   is_api: boolean,
   is_sync: boolean,
@@ -32,17 +32,13 @@ export interface IndexResponse {
 
 
   // This matches a subset of NamedChain enum in Rust.
-export enum Networks {
+export enum NamedChain {
   MAINNET = "MAINNET",
   TESTNET = "TESTNET",
   TESTING = "TESTING",
 }
 
-export const network_profile = writable<NetworkPlaylist>({
-  chain_id: Networks.MAINNET, // Todo, use the Network Enum
-  urls: ["string"],
-  profile: "string",
-});
+export const network_profile = writable<NetworkPlaylist>();
 export const connected = writable<boolean>(true);
 export const scanning_fullnodes = writable<boolean>();
 export const scanning_fullnodes_backoff = writable<number>(new Date().getSeconds());
@@ -53,8 +49,8 @@ export const network_metadata = writable<IndexResponse>();
 // should match the Rust type Network Profile
 
 
-export function setNetwork(network: Networks) {
-  invoke("toggle_network", { network: Networks[network] })
+export function setNetwork(network: NamedChain) {
+  invoke("toggle_network", { network: NamedChain[network] })
       .then((res: NetworkPlaylist) => {
         network_profile.set(res);
         // update accounts from current network
@@ -65,7 +61,10 @@ export function setNetwork(network: Networks) {
 
 export function getNetwork() {
   invoke("get_networks", {})
-    .then((res: NetworkPlaylist) => network_profile.set(res))
+    .then((res: NetworkPlaylist) => {
+      console.log(res);
+      network_profile.set(res)
+    })
     .catch((error) => raise_error(error, false, "getNetwork"));
 }
 

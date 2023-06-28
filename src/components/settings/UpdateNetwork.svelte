@@ -20,9 +20,12 @@
   onMount(async () => {
     getNetwork();
 
-    network_profile.subscribe((n) => {
-      upstream_url = n.nodes.length == 1 ? n.urls[0] : ""; // just used to show OVERRIDE PEERS url
-      current_chain_id = n.chain_id;
+    network_profile.subscribe((n: NetworkPlaylist) => {
+      if (n) {
+        upstream_url = n.nodes.length == 1 ? n.nodes[0].url : ""; // just used to show OVERRIDE PEERS url
+        current_chain_id = n.chain_id;
+      }
+
     });
   });
 

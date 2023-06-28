@@ -4,7 +4,7 @@
     setNetwork,
     getNetwork,
     network_profile,
-    Networks,
+    NamedChain,
   } from "../../networks";
 
   let current_chain_id;
@@ -28,8 +28,8 @@
         class="uk-radio"
         type="radio"
         name="networkCb"
-        checked={current_chain_id == Networks.MAINNET}
-        on:click={() => setNetwork(Networks.MAINNET)}
+        checked={current_chain_id == NamedChain.MAINNET}
+        on:click={() => setNetwork(NamedChain.MAINNET)}
       /> Mainnet
     </label>
     <label
@@ -37,8 +37,8 @@
         class="uk-radio"
         type="radio"
         name="networkCb"
-        checked={current_chain_id == Networks.TESTNET}
-        on:click={() => setNetwork(Networks.TESTNET)}
+        checked={current_chain_id == NamedChain.TESTNET}
+        on:click={() => setNetwork(NamedChain.TESTNET)}
       /> Rex (testnet)
     </label>
     <label
@@ -46,8 +46,8 @@
         class="uk-radio"
         type="radio"
         name="networkCb"
-        checked={current_chain_id == Networks.TESTING}
-        on:click={() => setNetwork(Networks.TESTING)}
+        checked={current_chain_id == NamedChain.TESTING}
+        on:click={() => setNetwork(NamedChain.TESTING)}
       /> Swarm (devnet)
     </label>
   </div>

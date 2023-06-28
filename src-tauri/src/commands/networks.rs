@@ -20,7 +20,7 @@ pub async fn toggle_network(chain_id: NamedChain, custom_playlist: Option<Url>) 
 }
 
 #[tauri::command(async)]
-pub fn get_networks() -> Result<NetworkPlaylist, CarpeError> {
+pub async fn get_networks() -> Result<NetworkPlaylist, CarpeError> {
   let app_cfg = get_cfg()?;
   Ok(app_cfg.get_network_profile(None)?)
 }
