@@ -5,17 +5,27 @@ use crate::{
   configs::{get_cfg, get_client},
   // types::AppCfg,
 };
+use tauri::{
+  Window,
+  Runtime
+};
 
+use libra_tower::core::{
+  proof,
+  next_proof::{self, NextProof},
+  tower_error::TowerError,
+};
 
 
 use libra_types::{
   legacy_types::block::VDFProof,
-  type_extensions::client_ext::ClientExt,
+  type_extensions::client_ext::ClientExt, exports::Client,
 };
 
 
 
 
+use log::warn;
 use serde::{Deserialize, Serialize};
 
 // use tower::{
@@ -26,55 +36,59 @@ use serde::{Deserialize, Serialize};
 //   tower_errors::TowerError,
 // };
 
-// /// creates one proof and submits
-// #[tauri::command(async)]
-// pub fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, CarpeError> {
-//   println!("\nMining one proof\n");
+/// creates one proof and submits
+#[tauri::command(async)]
+pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, CarpeError> {
+  println!("\nMining one proof\n");
+  let mut app_cfg = get_cfg()?;
 
-//   window
-//     .emit("proof-start", {})
-//     .map_err(|_| CarpeError::misc("could not emit window event"))?;
+  let url = app_cfg.best_url(None)?;
+  let client = Client::new(url);
+
+  window
+    .emit("proof-start", {})
+    .map_err(|_| CarpeError::misc("could not emit window event"))?;
   
-//   let client = get_client();
-//   let next = match next_proof::get_next_proof_from_chain(&mut config, client, None) {
-//     Ok(n) => {
-//       println!("SUCCESS: fetched next proof params from chain");
-//       n
-//     }
-//     // failover to local mode, if no onchain data can be found.
-//     // TODO: this is important for migrating to the new protocol.
-//     // in future versions we should remove this since we may be producing bad proofs, and users should explicitly choose to use local mode.
-//     Err(e) => {
-//       dbg!(&e);
-//       // this may be a genesis proof
-//       match next_proof::get_next_proof_params_from_local(&mut config) {
-//         Ok(n) => {
-//           warn!("WARN: using next proof params from local");
-//           n
-//         }
-//         Err(_) => {
-//           warn!("WARN: no local proofs found, assuming genesis proof");
-//           NextProof::genesis_proof(&config)
-//         }
-//       }
-//     }
-//   };
+  // let client = get_client();
+  let next = match next_proof::get_next_proof_from_chain(&mut app_cfg, &client).await {
+    Ok(n) => {
+      println!("SUCCESS: fetched next proof params from chain");
+      n
+    }
+    // failover to local mode, if no onchain data can be found.
+    // TODO: this is important for migrating to the new protocol.
+    // in future versions we should remove this since we may be producing bad proofs, and users should explicitly choose to use local mode.
+    Err(e) => {
+      dbg!(&e);
+      // this may be a genesis proof
+      match next_proof::get_next_proof_params_from_local(&mut app_cfg) {
+        Ok(n) => {
+          warn!("WARN: using next proof params from local");
+          n
+        }
+        Err(_) => {
+          warn!("WARN: no local proofs found, assuming genesis proof");
+          NextProof::genesis_proof(&app_cfg)
+        }
+      }
+    }
+  };
 
-//   println!("next proof params: {:?}", next.diff);
+  println!("next proof params: {:?}", next.diff);
 
-//   let vdf = mine_once(&config, next).map_err(|e| {
-//     CarpeError::tower(
-//       &format!("could not mine one proof, message: {:?}", &e),
-//       TowerError::ProverError.value(),
-//     )
-//   })?;
+  let vdf = proof::mine_once(&app_cfg, next).map_err(|e| {
+    CarpeError::tower(
+      &format!("could not mine one proof, message: {:?}", &e),
+      TowerError::ProverError.value(),
+    )
+  })?;
 
-//   // TODO: Unsure why this is not triggering
-//   // window.emit("send-backlog", {})
-//   //   .map_err(|_| { CarpeError::misc("could not emit window event") })?;
+  // TODO: Unsure why this is not triggering
+  // window.emit("send-backlog", {})
+  //   .map_err(|_| { CarpeError::misc("could not emit window event") })?;
 
-//   Ok(vdf)
-// }
+  Ok(vdf)
+}
 // #[derive(Clone, serde::Serialize)]
 // pub struct BacklogSuccess {
 //   success: bool,

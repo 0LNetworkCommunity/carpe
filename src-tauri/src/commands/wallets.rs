@@ -1,9 +1,9 @@
 use crate::{
   carpe_error::CarpeError,
   commands::query,
-  configs::{self, get_client}, 
+  configs::{self, get_client, get_cfg}, 
   configs_profile,
-  key_manager, configs_network,
+  key_manager,
 };
 
 use std::fs::{self, create_dir_all, File};
@@ -204,11 +204,12 @@ pub async fn add_account(
     authkey: AuthenticationKey,
     mut address: AccountAddress,
 ) -> Result<Accounts, CarpeError> {
+   let mut app_cfg = get_cfg()?;
 
     // this may be the first account and may not yet be initialized.
     if !configs::is_initialized() {
         // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
-        let _ = configs_network::set_network_configs(MODE_0L.clone(), None)
+        let _ = app_cfg.update_network_playlist(Some(MODE_0L.clone()), None)
         .await
         .map_err(|_| CarpeError::config("cannot set network configs"));
     }

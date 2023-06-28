@@ -1,12 +1,10 @@
-use crate::carpe_error::CarpeError;
-use crate::configs;
-use crate::configs_network::UpstreamStats;
+use crate::{carpe_error::CarpeError, configs::get_cfg};
 use anyhow::Error;
 use libra_types::{
   global_config_dir,
   legacy_types::mode_ol::MODE_0L,
 };
-use url::Url;
+
 use std::{
   fs::File,
   io::prelude::*,
@@ -14,13 +12,14 @@ use std::{
   env,
 };
 
+use libra_types::legacy_types::network_playlist::NetworkPlaylist;
 
 const PREFERENCES_DB_FILE: &str = "preferences.json";
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Preferences {
   pub locale: Option<String>,
-  pub network: Option<UpstreamStats>
+  // pub network: Option<UpstreamStats>
 }
 
 /*
@@ -54,7 +53,7 @@ pub fn read_preferences() -> Result<Preferences, Error> {
       let file = File::open(db_path)?;
       Ok(serde_json::from_reader(file)?)
     }
-    false => Ok(Preferences { locale: None, network: None}),
+    false => Ok(Preferences { locale: None }),
   }
 }
 
@@ -86,18 +85,13 @@ fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
 
 
 #[tauri::command(async)]
-pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
-  let cfg = configs::get_cfg()?;
-  let stats = UpstreamStats::new(cfg.profile.upstream_nodes);
+/// refreshes statistics and returns all the network playlist
+pub async fn refresh_upstream_peer_stats() -> Result<NetworkPlaylist, CarpeError> {
+  let mut app_cfg = get_cfg()?;
+  app_cfg.refresh_network_profile_and_save(None).await?; // uses app_cfg.chain_info_chain_id
+  Ok(app_cfg.get_network_profile(None)?) // uses app_cfg.chain_info_chain_id
 
-  let mut preferences = read_preferences()?;
-  preferences.network = Some(stats.refresh().await?);
-  update_preferences(&preferences)?;
 
-  match preferences.network {
-      Some(stats) => Ok(stats.the_good_ones()?),
-      None => Err(CarpeError::client_unknown_err("no good upstream to use")),
-  }
 }
 
 

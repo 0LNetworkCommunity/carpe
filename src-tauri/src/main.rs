@@ -14,11 +14,10 @@ use simplelog::{
 use std::fs::{self, File};
 use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
 
-pub(crate) mod types;
 pub(crate) mod carpe_error;
 pub(crate) mod commands;
 pub(crate) mod configs;
-pub(crate) mod configs_network;
+// pub(crate) mod configs_network;
 pub(crate) mod configs_profile;
 pub(crate) mod key_manager;
 // pub(crate) mod waypoint;
@@ -103,12 +102,12 @@ fn main() {
       commands::wallets::switch_profile,
       // Networks
       commands::preferences::refresh_upstream_peer_stats,
-      commands::networks::force_upstream,
+      // commands::networks::force_upstream,
       // force_waypoint,
-      commands::networks::override_playlist,
+      // commands::networks::override_playlist,
       commands::networks::get_networks,
       // commands::networks::refresh_waypoint,
-      // toggle_network,
+      commands::networks::toggle_network,
       // // Queries
       commands::query::query_balance,
       commands::query::query_makewhole,

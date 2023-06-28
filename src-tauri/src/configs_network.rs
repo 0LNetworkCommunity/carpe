@@ -5,9 +5,7 @@ use futures::{stream::FuturesUnordered, StreamExt};
 use crate::{
 
   carpe_error::CarpeError,
-  configs::{ get_cfg, default_config_path},
-  // app_cfg,
-  // waypoint,
+  configs::{default_config_path, get_cfg},
   types::{
     rpc_playlist::{self, FullnodePlaylist, HostInfo},
   }
@@ -21,6 +19,7 @@ use libra_types::{
 use rand::seq::SliceRandom;
 use rand::thread_rng;
 use url::Url;
+use itertools::Itertools;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NetworkProfile {
@@ -94,7 +93,7 @@ pub async fn set_network_configs(
 
   dbg!("playlist");
 
-  playlist.update_config_file(Some(default_config_path()))?; // None uses default path of 0L.toml
+  playlist.update_config_file(None)?; // None uses default path of 0L.toml
 
   // TODO: I don't think chain ID needs to change.
   set_chain_id(network).map_err(|e| {
@@ -316,6 +315,9 @@ impl UpstreamStats {
 
     let checked: Vec<FullnodeProfile> = sync_list
       .into_iter()
+      .sort_by(|p| {
+        p.version
+      })
       .map(|mut p| {
         if p.version as f64 >= rms {
           // there may be only one in list
