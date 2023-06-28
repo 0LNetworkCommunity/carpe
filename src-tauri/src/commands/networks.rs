@@ -13,7 +13,9 @@ use url::Url;
 pub async fn toggle_network(chain_id: NamedChain, custom_playlist: Option<Url>) -> Result<NetworkPlaylist, CarpeError> {
   let mut app_cfg = get_cfg()?;
   app_cfg.set_chain_id(chain_id);
-  Ok(app_cfg.update_network_playlist(Some(chain_id), custom_playlist).await?)
+  let np = app_cfg.update_network_playlist(Some(chain_id), custom_playlist).await?;
+  app_cfg.save_file()?;
+  Ok(np)
 }
 
 #[tauri::command(async)]
@@ -25,7 +27,9 @@ pub async fn get_networks() -> Result<NetworkPlaylist, CarpeError> {
 #[tauri::command(async)]
 pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> {
     let mut app_cfg = get_cfg()?;
-    Ok(app_cfg.update_network_playlist(Some(app_cfg.chain_info.chain_id), Some(url)).await?)
+    let np = app_cfg.update_network_playlist(Some(app_cfg.chain_info.chain_id), Some(url)).await?;
+    app_cfg.save_file()?;
+    Ok(np)
 }
 
 #[tauri::command(async)]
@@ -39,5 +43,6 @@ pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
 
   app_cfg.network_playlist = Some(vec![dummy_playlist.clone()]);
   dbg!(&app_cfg);
+  app_cfg.save_file()?;
   Ok(dummy_playlist)
 }

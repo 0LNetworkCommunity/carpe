@@ -29,6 +29,7 @@ pub fn get_preferences() -> Result<Preferences, CarpeError> {
 pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
   let mut app_cfg = get_cfg()?;
   app_cfg.profile.locale = Some(locale);
+  app_cfg.save_file()?;
   Ok(())
 }
 
@@ -58,7 +59,9 @@ pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
 pub async fn refresh_upstream_peer_stats() -> Result<NetworkPlaylist, CarpeError> {
   let mut app_cfg = get_cfg()?;
   app_cfg.refresh_network_profile_and_save(None).await?; // uses app_cfg.chain_info_chain_id
-  Ok(app_cfg.get_network_profile(None)?) // uses app_cfg.chain_info_chain_id
+  let np = app_cfg.get_network_profile(None)?;
+  app_cfg.save_file()?;
+  Ok(np) // uses app_cfg.chain_info_chain_id
 }
 
 
