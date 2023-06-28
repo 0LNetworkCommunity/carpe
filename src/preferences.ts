@@ -1,5 +1,5 @@
 import { invoke } from '@tauri-apps/api/tauri';
-import { writable, get } from 'svelte/store';
+import { writable } from 'svelte/store';
 import { getLocaleFromNavigator, setupI18n } from "./lang/i18n";
 
 const empty_preferences = function(): Preferences {

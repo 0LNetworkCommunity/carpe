@@ -1,20 +1,11 @@
 use crate::{carpe_error::CarpeError, configs::get_cfg};
-use anyhow::Error;
 use libra_types::{
-  global_config_dir,
   legacy_types::mode_ol::MODE_0L,
 };
 
-use std::{
-  fs::File,
-  io::prelude::*,
-  path::PathBuf,
-  env,
-};
+use std::env;
 
 use libra_types::legacy_types::network_playlist::NetworkPlaylist;
-
-const PREFERENCES_DB_FILE: &str = "preferences.json";
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Preferences {
@@ -27,8 +18,8 @@ pub struct Preferences {
 */
 #[tauri::command]
 pub fn get_preferences() -> Result<Preferences, CarpeError> {
-  let preferences = read_preferences()?;
-  Ok(preferences)
+  let app_cfg = get_cfg()?;
+  Ok(Preferences { locale: app_cfg.profile.locale })
 }
 
 /*
@@ -36,52 +27,30 @@ pub fn get_preferences() -> Result<Preferences, CarpeError> {
 */
 #[tauri::command(async)]
 pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
-  let mut preferences = read_preferences()?;
-  preferences.locale = Some(locale);
-  update_preferences(&preferences)
-}
-
-#[tauri::command(async)]
-pub fn debug_preferences_path() -> Result<PathBuf, CarpeError> {
-  Ok(preferences_db_path().parent().unwrap().to_path_buf())
-}
-
-pub fn read_preferences() -> Result<Preferences, Error> {
-  let db_path = preferences_db_path();
-  match db_path.exists() {
-    true => {
-      let file = File::open(db_path)?;
-      Ok(serde_json::from_reader(file)?)
-    }
-    false => Ok(Preferences { locale: None }),
-  }
-}
-
-fn preferences_db_path() -> PathBuf {
-  global_config_dir().join(PREFERENCES_DB_FILE)
-}
-
-fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
-  let db_path = preferences_db_path();
-  let serialized = serde_json::to_vec(preferences)
-    .map_err(|e| CarpeError::config(&format!("json preferences db should serialize, {:?}", &e)))?;
-
-  File::create(db_path)
-    .map_err(|e| {
-      CarpeError::config(&format!(
-        "carpe preferences_db_file should be created!, {:?}",
-        &e
-      ))
-    })?
-    .write_all(&serialized)
-    .map_err(|e| {
-      CarpeError::config(&format!(
-        "carpe preferences_db_file should be written!, {:?}",
-        &e
-      ))
-    })?;
+  let mut app_cfg = get_cfg()?;
+  app_cfg.profile.locale = Some(locale);
   Ok(())
 }
+
+
+
+// pub fn read_preferences() -> Result<Preferences, Error> {
+//   let app_cfg = get_cfg()?;
+//   match app_cfg.profile.locale {
+//     Some(s) => Ok(Preferences { locale: s }),
+//     _ => Ok(Preferences { locale: None }),
+//   }
+// }
+
+// fn preferences_db_path() -> PathBuf {
+//   global_config_dir().join(PREFERENCES_DB_FILE)
+// }
+
+// fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
+//   let mut app_cfg = get_cfg()?;
+//   app_cfg.profile.locale = preferences.locale;
+//   Ok(())
+// }
 
 
 #[tauri::command(async)]
@@ -90,8 +59,6 @@ pub async fn refresh_upstream_peer_stats() -> Result<NetworkPlaylist, CarpeError
   let mut app_cfg = get_cfg()?;
   app_cfg.refresh_network_profile_and_save(None).await?; // uses app_cfg.chain_info_chain_id
   Ok(app_cfg.get_network_profile(None)?) // uses app_cfg.chain_info_chain_id
-
-
 }
 
 

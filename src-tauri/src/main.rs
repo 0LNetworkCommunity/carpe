@@ -102,11 +102,9 @@ fn main() {
       commands::wallets::switch_profile,
       // Networks
       commands::preferences::refresh_upstream_peer_stats,
-      // commands::networks::force_upstream,
-      // force_waypoint,
-      // commands::networks::override_playlist,
+      commands::networks::force_upstream,
+      commands::networks::override_playlist,
       commands::networks::get_networks,
-      // commands::networks::refresh_waypoint,
       commands::networks::toggle_network,
       // // Queries
       commands::query::query_balance,
@@ -127,7 +125,6 @@ fn main() {
       // submit_backlog,
       commands::mining::get_last_local_proof,
       commands::preferences::get_env,
-      // set_env,
       // submit_proof_zero,
       // // Version
       commands::app_version::get_app_version,
@@ -150,6 +147,7 @@ fn main() {
       // debug_preferences_path,
       // // Preferences
       commands::preferences::get_preferences,
+      // set_env,
       // set_preferences_locale
     ])
     .menu(menu)
