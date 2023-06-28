@@ -7,7 +7,7 @@
     getNetwork,
     synced_fullnodes,
   } from "../../networks";
-  import type { NetworkProfile } from "../../networks";
+  import type { NetworkPlaylist } from "../../networks";
   import { refreshUpstreamPeerStats } from "../../networks";
   import { invoke } from "@tauri-apps/api/tauri";
   import { notify_success } from "../../carpeNotify";
@@ -21,7 +21,7 @@
     getNetwork();
 
     network_profile.subscribe((n) => {
-      upstream_url = n.urls.length == 1 ? n.urls[0] : ""; // just used to show OVERRIDE PEERS url
+      upstream_url = n.nodes.length == 1 ? n.urls[0] : ""; // just used to show OVERRIDE PEERS url
       current_chain_id = n.chain_id;
     });
   });
@@ -39,7 +39,7 @@
 
   const forceUpstream = () => {
     invoke("force_upstream", { url: upstream_url })
-      .then((res: NetworkProfile) => {
+      .then((res: NetworkPlaylist) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");
       })

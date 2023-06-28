@@ -147,25 +147,26 @@
         <form id="account-form">
           <fieldset class="uk-fieldset uk-grid-small" uk-grid>
             <div class="uk-width-3-4@s">
-              <label class="uk-form-label" for="sender-text"
-                >{$_("txs.transfer.sender")}</label
-              >
+              <label class="uk-form-label" for="sender-text">{$_("txs.transfer.sender")}
+                </label>
               <div>
                 {account.account}
 
               </div>
             </div>
             <div class="uk-width-1-4@s">
-              <label class="uk-form-label" for="balance-text"
-                >{$_("txs.transfer.balance")}</label
-              >
+              <label class="uk-form-label" for="balance-text">
+                {$_("txs.transfer.balance")}
+              </label>
               <div>{printCoins(account.balance)}</div>
             </div>
             <div class="uk-width-1-1">
-              <label class="uk-form-label" for="receiver-text"
-                >{$_("txs.transfer.receiver")}</label
-              >
+              <label class="uk-form-label" for="receiver-text">
+                {$_("txs.transfer.receiver")}
+              </label>
               <div class="uk-form-controls">
+                <!-- svelte-ignore a11y-no-onchange -->
+
                 <input
                   id="receiver-text"
                   autofocus

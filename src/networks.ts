@@ -5,11 +5,16 @@ import { loadAccounts, refreshAccounts } from "./accountActions";
 import { notify_success } from "./carpeNotify";
 
 
-export interface NetworkProfile {
+export interface NetworkPlaylist {
   chain_id: Networks, // Todo, use the Network Enum
-  urls: [string],
-  // waypoint: string,
-  profile: string,
+  nodes: [HostProfile],
+}
+
+export interface HostProfile {
+  url: string,
+  version: number,
+  is_api: boolean,
+  is_sync: boolean,
 }
 
 // chain metadata matches the index of node api
@@ -33,7 +38,7 @@ export enum Networks {
   TESTING = "TESTING",
 }
 
-export const network_profile = writable<NetworkProfile>({
+export const network_profile = writable<NetworkPlaylist>({
   chain_id: Networks.MAINNET, // Todo, use the Network Enum
   urls: ["string"],
   profile: "string",
@@ -50,7 +55,7 @@ export const network_metadata = writable<IndexResponse>();
 
 export function setNetwork(network: Networks) {
   invoke("toggle_network", { network: Networks[network] })
-      .then((res: NetworkProfile) => {
+      .then((res: NetworkPlaylist) => {
         network_profile.set(res);
         // update accounts from current network
         refreshAccounts();
@@ -60,7 +65,7 @@ export function setNetwork(network: Networks) {
 
 export function getNetwork() {
   invoke("get_networks", {})
-    .then((res: NetworkProfile) => network_profile.set(res))
+    .then((res: NetworkPlaylist) => network_profile.set(res))
     .catch((error) => raise_error(error, false, "getNetwork"));
 }
 

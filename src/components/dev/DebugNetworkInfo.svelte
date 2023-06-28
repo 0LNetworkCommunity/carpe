@@ -18,6 +18,7 @@
     </h4>
     <button class="uk-button uk-button-default" on:click={getMetadata}>Update</button>
 
+    {#if metadata }
     <div>
         <div>chain_id: {metadata.chain_id} </div>
         <div>epoch: {metadata.epoch} </div>
@@ -29,5 +30,6 @@
         <div>block_height: {metadata.block_height} </div>
         <div>git_hash: {metadata.git_hash} </div>
     </div>
+    {/if}
   </div>
 </main>

@@ -3,7 +3,7 @@
   import type { CarpeError } from "../../carpeError";
   import { raise_error } from "../../carpeError";
   import { network_profile } from "../../networks";
-  import type { NetworkProfile} from "../../networks";
+  import type { NetworkPlaylist} from "../../networks";
   import { invoke } from "@tauri-apps/api/tauri";
   import { routes } from "../../routes";
   import { notify_success } from "../../carpeNotify";
@@ -16,7 +16,7 @@
     // check input data
     // submit
     invoke("override_playlist", { url })
-      .then((res: NetworkProfile) => {
+      .then((res: NetworkPlaylist) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");
 
