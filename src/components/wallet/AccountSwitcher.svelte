@@ -1,22 +1,22 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
-  import { signingAccount, all_accounts } from "../../accounts";
+  import { signingAccount, allAccounts } from "../../accounts";
   import { setAccount } from "../../accountActions";
-  import type { AccountEntry } from "../../accounts";
+  import type { Profile } from "../../accounts";
   import { Link } from "svelte-navigator";
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
   import { _ } from "svelte-i18n";
 
-  let my_account: AccountEntry;
-  let account_list: AccountEntry[];
+  let my_account: Profile;
+  let account_list: Profile[];
 
   let unsubsSigningAccount;
   let unsubsAll_accounts;
 
   onMount(async () => {
     unsubsSigningAccount = signingAccount.subscribe(value => my_account = value);
-    unsubsAll_accounts = all_accounts.subscribe(all => account_list = all);
+    unsubsAll_accounts = allAccounts.subscribe(all => account_list = all? all : null);
   });
 
   onDestroy(() => {

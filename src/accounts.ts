@@ -1,29 +1,32 @@
 import { writable } from 'svelte/store';
-
-export interface AccountEntry {
+export interface Profile {
   account: string,
-  authkey: string,
+  auth_key: string,
   nickname: string,
-  on_chain: any, // null or bool
-  balance: any, // null or number
+  on_chain: boolean, // null or bool
+  balance: number, // null or number
+  locale: string,
 }
 
-export const new_account = function (account: string, authkey: string, nickname: string): AccountEntry {
+export const new_account = (account: string, authkey: string, nickname: string): Profile => {
 
   return {
     account: account,
-    authkey: authkey,
+    auth_key: authkey,
     nickname: nickname,
-    on_chain: null,
-    balance: null,
+    on_chain: false,
+    balance: 0,
   }
 };
 
-export const signingAccount = writable<AccountEntry>(new_account("", "", ""));
-export const mnem = writable("");
+export const signingAccount = writable<Profile>(new_account("", "", ""));
+export const mnem = writable<string>();
 export const isInit = writable(false);
 export const isRefreshingAccounts = writable(false);
-export const all_accounts = writable<AccountEntry[]>([]);
+export const allAccounts = writable<Profile[]>([]);
 export const isAccountRefreshed = writable(false);
-export const accountEvents = writable({}); // TODO define interface AccountEvent
-export const makeWhole = writable({});
+export const accountEvents = writable<object>(); // TODO define interface AccountEvent
+export const makeWhole = writable<object>();
+
+
+

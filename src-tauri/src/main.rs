@@ -7,7 +7,7 @@
 
 // use url;
 // use crate::commands::*;
-use log::{error, info, warn};
+use log::{error, warn};
 use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
 };
@@ -59,7 +59,6 @@ fn main() {
   .unwrap();
 
   warn!("Carpe started"); // TODO: debugging only. `log` create features are being inherited from libra repo.
-  info!("Carpe started");
 
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
   let metadata = AboutMetadata::new();

@@ -3,11 +3,11 @@
   import { onDestroy, onMount } from "svelte";
   import {
     isRefreshingAccounts,
-    all_accounts,
+    allAccounts,
     signingAccount,
     isAccountRefreshed,
   } from "../../accounts";
-  import type { AccountEntry } from "../../accounts";
+  import type { Profile } from "../../accounts";
   import Newbie from "./Newbie.svelte";
   import AccountsList from "./AccountsList.svelte";
   import ReminderCreate from "./ReminderCreate.svelte";
@@ -19,9 +19,9 @@
   
   UIkit.use(Icons);
 
-  let my_account: AccountEntry;
-  let accountList: AccountEntry[] = null;
-  let pendingAccounts: AccountEntry[] = [];
+  let my_account: Profile;
+  let accountList: Profile[];
+  let pendingAccounts: Profile[];
   let isMining = false;
   let isRefreshing: boolean = false;
   let isConnected: boolean = true;
@@ -36,9 +36,11 @@
 
   onMount(async () => {
     unsubsConnected = connected.subscribe((b) => (isConnected = b));
-    unsubsAll_accounts = all_accounts.subscribe((all) => {
-      accountList = all;
-      pendingAccounts = all.filter((x) => !x.on_chain);
+    unsubsAll_accounts = allAccounts.subscribe((all) => {
+      if (all) {
+        accountList = all;
+        pendingAccounts = all.filter((x) => !x.on_chain);
+      }
     });
     unsubsSigningAccount = signingAccount.subscribe((a) => (my_account = a));
     unsubsIsAccountsLoaded = isAccountRefreshed.subscribe(
@@ -83,6 +85,8 @@
         <Newbie />
       {/if}
     {/if}
+
+    <!-- {isLoaded} {accountList && accountList.length} -->
 
     {#if isLoaded && accountList && accountList.length > 0}
       <div class="uk-flex uk-flex-center">

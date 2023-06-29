@@ -3,11 +3,11 @@
   import { invoke } from "@tauri-apps/api/tauri";
   import { responses } from "../../debug";
   import { notify_success } from "../../carpeNotify";
-  import type { AccountEntry } from "../../accounts";
+  import type { Profile } from "../../accounts";
   import { onMount } from "svelte";
   import UIkit from 'uikit';
 
-  export let account: AccountEntry;
+  export let account: Profile;
   export let onSuccess = (_) => {};
 
   let errorMessage = "";

@@ -5,8 +5,8 @@ use libra_types::{
 };
 use std::path::PathBuf;
 use std::env;
+use url::Url;
 
-use libra_types::legacy_types::network_playlist::NetworkPlaylist;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Preferences {
@@ -42,13 +42,13 @@ pub fn debug_preferences_path() -> Result<PathBuf, CarpeError> {
 
 
 #[tauri::command(async)]
-/// refreshes statistics and returns all the network playlist
-pub async fn refresh_upstream_peer_stats() -> Result<NetworkPlaylist, CarpeError> {
+/// refreshes statistics and returns the synced peers
+pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
   let mut app_cfg = get_cfg()?;
   app_cfg.refresh_network_profile_and_save(None).await?; // uses app_cfg.chain_info_chain_id
   let np = app_cfg.get_network_profile(None)?;
   app_cfg.save_file()?;
-  Ok(np) // uses app_cfg.chain_info_chain_id
+  Ok(np.the_good_ones()?) // uses app_cfg.chain_info_chain_id
 }
 
 

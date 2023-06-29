@@ -9,7 +9,7 @@
     printUnscaledCoins,
     printCoins,
   } from "../../coinHelpers";
-  import { AccountEntry, signingAccount } from "../../accounts";
+  import { Profile, signingAccount } from "../../accounts";
   import { onDestroy, onMount } from "svelte";
     import { raise_error } from "../../carpeError";
 
@@ -44,7 +44,7 @@
   //     ? $_("txs.transfer.error_receiver_equals_sender")
   //     : "";
 
-  let account: AccountEntry;
+  let account: Profile;
   let unsubs;
   onMount(async () => {
     unsubs = signingAccount.subscribe((obj) => (account = obj));

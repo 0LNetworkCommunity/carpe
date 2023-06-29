@@ -98,13 +98,12 @@ export const getMetadata = async (): Promise<IndexResponse>  => {
       return res;
     })
     .catch((e) => {
+      raise_error(e, true, "getMetadata");
       network_metadata.set(null);
       connected.set(false);
 
       incrementBackoff();
-
       refreshUpstreamPeerStats(); // update the metadata and if we are connected
-      raise_error(e, true, "getMetadata");
     });
 }
 

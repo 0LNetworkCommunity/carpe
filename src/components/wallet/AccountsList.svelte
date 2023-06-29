@@ -1,18 +1,18 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { setAccount } from "../../accountActions";
-  import type { AccountEntry } from "../../accounts";
+  import type { Profile } from "../../accounts";
   import IconMining from "../icons/IconMining.svelte";
   import UIkit from "uikit";
   import Icons from "uikit/dist/js/uikit-icons";
   import { printCoins, unscaledCoins } from "../../coinHelpers";  
-    import { Link } from "svelte-navigator";
-    import { routes } from "../../routes";
+  import { Link } from "svelte-navigator";
+  import { routes } from "../../routes";
 
   UIkit.use(Icons);
 
-  export let my_account: AccountEntry;
-  export let accountList: AccountEntry[];
+  export let my_account: Profile;
+  export let accountList: Profile[];
   export let isMining: boolean;
   export let isConnected: boolean;
 
@@ -31,7 +31,7 @@
         </tr>
       </thead>
       <tbody>
-        {#each accountList as a, i}
+        {#each accountList as a}
           <!-- svelte-ignore missing-declaration -->
           <tr
             class={isMining && a.account == my_account.account
@@ -50,7 +50,7 @@
             </td>
             <td>{a.nickname}</td>
             <td>{a.account}</td>
-            <td>{a.authkey.slice(0, 5)}...</td>
+            <td>{a.auth_key.slice(0, 5)}...</td>
             <td class="uk-text-right">
               {#if (a.on_chain != null) && (a.on_chain == false)}
                 {$_("wallet.account_list.account_on_chain")}

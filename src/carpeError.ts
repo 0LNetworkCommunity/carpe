@@ -23,20 +23,26 @@ export const carpeErrorLog = writable <[CarpeError]>([]);
 
 export function raise_error(err: CarpeError, quiet: boolean = false, caller: string) {
   let hasCustomErrorDisplay = false;
+
   // maybe we need to take an action on this error type
   if (err.category) { // check this is the expected type
     // errAction(event.paylod);
     hasCustomErrorDisplay = errAction(err);
     err.msg = `${caller}: ${err.msg}`;
-    console.log(err);
+
   } else {
-    console.log(`WARN: ${caller}: error type returned is not a CarpeError. Payload: ${err}`);
+    err =  {
+      category: 0,
+      uid: 0,
+      msg: `WARN: ${caller}: error type returned is not a CarpeError. Payload: ${err}`
+    };
+    // msg = `WARN: ${caller}: error type returned is not a CarpeError. Payload: ${err}`;
   }
 
-  let list = get(carpeErrorLog);
-  list.push(err);
-  carpeErrorLog.set(list);
-  console.log(list);
+  // let list = get(carpeErrorLog);
+  // list.push(err);
+  carpeErrorLog.update((list) => { list.push(err); return list });
+  // console.log(list);
   let display = `Error (${err.uid}): ${err.msg}`
 
   if (!quiet && !hasCustomErrorDisplay) {

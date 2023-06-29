@@ -14,9 +14,9 @@
     <b uk-navbar-toggle-icon uk-toggle="target: #offcanvas-nav-primary" />
 
     <ul id="component-nav" class="uk-switcher">
-      <li id="miner-panel">
+      <!-- <li id="miner-panel">
         <Wallet />
-      </li>
+      </li> -->
       <li id="miner-panel">
         <Miner />
       </li>

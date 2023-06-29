@@ -43,7 +43,7 @@ export interface EpochRules {
   difficulty: number,
   security: number,
 }
-export const tower = writable<ClientTowerStatus>(<ClientTowerStatus>{});
+export const tower = writable<ClientTowerStatus>();
 
 // is set to true if when the app starts and Rust emits the backlog-listener-ready event.
 export const backlogListenerReady = writable(false);

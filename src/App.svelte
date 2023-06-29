@@ -46,7 +46,7 @@
   onMount(async () => {
     logger(Level.Warn, "Webview is starting");
 
-    getEnv(); // load env vars
+    getEnv(); // load env var
     getVersion(); // git commit and version
 
     // try to connect to a chain eagerly.

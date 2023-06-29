@@ -6,7 +6,7 @@
   import MinerDebug from "./MinerDebug.svelte";
   import CantStart from "./cards/CantStart.svelte";
   import { isRefreshingAccounts, signingAccount } from "../../accounts";
-  import type { AccountEntry } from "../../accounts";
+  import type { Profile } from "../../accounts";
   import FirstProof from "./cards/FirstProof.svelte";
   import { backlogInProgress, isTowerNewbie, tower } from "../../miner";
   import type {ClientTowerStatus } from "../../miner";
@@ -20,7 +20,7 @@
 
   let newbie = false;
   let loading = true;
-  let account: AccountEntry;
+  let account: Profile;
   let isDevTest = false;
   let isSendInProgress = false;
   let hasProofs = false;

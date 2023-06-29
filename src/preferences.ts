@@ -1,6 +1,7 @@
 import { invoke } from '@tauri-apps/api/tauri';
 import { writable } from 'svelte/store';
 import { getLocaleFromNavigator, setupI18n } from "./lang/i18n";
+import { raise_error } from './carpeError';
 
 const empty_preferences = function(): Preferences {
   return {
@@ -14,7 +15,7 @@ export interface Preferences {
   locale: string,
 }
 
-export function init_preferences() {
+export const init_preferences = () => {
   console.log(">>> call init_preferences");
   
   // avoid using lib without init finished
@@ -34,6 +35,7 @@ export function init_preferences() {
         fallbackLocale: 'en',
       });
     })
+    .catch(e => raise_error(e, true, "get_preferences"))
 }
 
 export function setLocale(locale: string) {
@@ -44,5 +46,6 @@ export function setLocale(locale: string) {
         fallbackLocale: 'en',
       });
     })
+    .catch(e => raise_error(e, true, "set_preferences_locale"))
 }
 

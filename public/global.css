@@ -78,3 +78,8 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
   background-color: rgba(255,255,255,0.22);
 }
 
+.uk-notification {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column;
+}

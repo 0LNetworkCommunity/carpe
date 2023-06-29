@@ -3,13 +3,13 @@
   import { onDestroy, onMount } from "svelte";
   import { invoke } from "@tauri-apps/api/tauri";
   import { signingAccount, mnem } from "../../accounts";
-  import type { AccountEntry } from "../../accounts";
+  import type { Profile } from "../../accounts";
   import { raise_error } from "../../carpeError";
   import { responses } from "../../debug";
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
 
   interface NewKeygen {
-    entry: AccountEntry;
+    entry: Profile;
     mnem: string;
   }
 
@@ -24,7 +24,7 @@
     unsubsMnem = mnem.subscribe((m) => (display_mnem = m));
     unsubsSigningAccount = signingAccount.subscribe((a) => {
       address = a.account;
-      authkey = a.authkey;
+      authkey = a.auth_key;
     });
   });
 

@@ -4,7 +4,7 @@ import { raise_error } from './carpeError';
 import { responses } from './debug';
 import {ClientTowerStatus, minerLoopEnabled, tower} from "./miner";
 import { notify_success, notify_error } from './carpeNotify';
-import { AccountEntry, all_accounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountRefreshed, makeWhole } from './accounts';
+import { Profile, allAccounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountRefreshed, makeWhole } from './accounts';
 import { navigate } from 'svelte-navigator';
 
 // export const loadAccounts = async () => { 
@@ -35,13 +35,13 @@ import { navigate } from 'svelte-navigator';
 export const refreshAccounts = async () => {
   isRefreshingAccounts.set(true);
   return invoke('refresh_accounts')
-    .then((result: { accounts: [AccountEntry] }) => { // TODO make this the correct return type
+    .then((result: [Profile]) => { // TODO make this the correct return type
       isRefreshingAccounts.set(false);
-      all_accounts.set(result.accounts);
+      allAccounts.set(result);
 
-      if (get(signingAccount).account == "" && result.accounts.length > 0) {
         // set initial signingAccount
-        let first = result.accounts[0];
+      if (get(signingAccount).account = ""  && result.length > 0) {
+        let first = result[0];
         setAccount(first.account, false);
       }
 
@@ -54,8 +54,12 @@ export const refreshAccounts = async () => {
       // });
       
     })
-    .catch(_ => {
+    .catch( e => {
+      raise_error(e, true, "refresh_accounts");
       isRefreshingAccounts.set(false);
+      if (!get(isAccountRefreshed)) {
+        isAccountRefreshed.set(true);
+      }
     })
 }
 
@@ -64,7 +68,7 @@ export enum InitType {
   PriKey,
 }
 
-export const handleAdd = async (init_type: InitType, secret: string): Promise<AccountEntry> => {
+export const handleAdd = async (init_type: InitType, secret: string): Promise<Profile> => {
   // isSubmitting = true;
 
   let method_name = "";
@@ -79,7 +83,7 @@ export const handleAdd = async (init_type: InitType, secret: string): Promise<Ac
   };
   // submit
   return invoke(method_name, arg_obj)
-    .then((res: AccountEntry) => {
+    .then((res: Profile) => {
       // set as init so we don't get sent back to Newbie account creation.
       isInit.set(true);
       responses.set(JSON.stringify(res));
@@ -98,7 +102,7 @@ export const handleAdd = async (init_type: InitType, secret: string): Promise<Ac
     })
 }
 
-export function tryRefreshSignerAccount(newData: AccountEntry) {
+export function tryRefreshSignerAccount(newData: Profile) {
   let a = get(signingAccount).account;
   if (newData.account == a) {
     signingAccount.set(newData);
@@ -108,6 +112,7 @@ export function tryRefreshSignerAccount(newData: AccountEntry) {
 
 export const isCarpeInit = async () => {
   // on app load we want to avoid the Newbie view until we know it's not a new user
+  console.log(">>> isCarpeInit");
   isRefreshingAccounts.set(true); 
 
   invoke("is_init", {})
@@ -123,8 +128,8 @@ export const isCarpeInit = async () => {
     });
 }
 
-export function findOneAccount(account: string): AccountEntry {
-  let list = get(all_accounts);
+export function findOneAccount(account: string): Profile | undefined {
+  let list = get(allAccounts);
   let found = list.find((i) => i.account == account)
   return found
 }
@@ -172,11 +177,11 @@ export const setAccount = async (an_address: string, notifySucess = true) => {
   });
 }
 
-export function addNewAccount(account: AccountEntry) {
-  let list = get(all_accounts);
+export function addNewAccount(account: Profile) {
+  let list = get(allAccounts);
   // account.on_chain = false;
   list.push(account);    
-  all_accounts.set(list);
+  allAccounts.set(list);
 }
 
 export function checkSigningAccountBalance() {
@@ -188,20 +193,22 @@ export function checkSigningAccountBalance() {
       selected.balance = Number(balance);
       signingAccount.set(selected);
       
+      let accounts = get(allAccounts);
+      if (!accounts) return;
       // update all accounts set
-      let list = get(all_accounts).map(each => {
+      let list = accounts.map(each => {
         if (each.account == selected.account) {
           each.on_chain = true;
           each.balance = Number(balance);
         }
         return each;
       });
-      all_accounts.set(list);
+      allAccounts.set(list);
     })
     .catch((e) => raise_error(e, false, "checkSigningAccountBalance"));
 }
 
-export function getAccountEvents(account: AccountEntry, errorCallback = null) {
+export function getAccountEvents(account: Profile, errorCallback = null) {
   const address = account.account;
   
   if (!account.on_chain) {
@@ -252,7 +259,10 @@ export let invoke_makewhole = async (account: String): Promise<number> => {
 
 export const updateMakeWhole = () => {
   let mk = get(makeWhole);
-  get(all_accounts).forEach(each => {
+  let accounts = get(allAccounts);
+  if (!accounts) return;
+
+  accounts.forEach(each => {
     let account = each.account;
     if (mk[account] == null) {
       console.log(">>> query_makewhole");

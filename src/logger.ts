@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/tauri";
+import { raise_error } from "./carpeError";
 
 export enum Level {
   Warn = "Warn",
@@ -10,5 +11,6 @@ export const logger = async (level: Level, msg: String) => {
   invoke("log_this", {
     level,
     msg,
-  });
+  })
+  .catch(e => raise_error(e, true, "log_this"));
 }
