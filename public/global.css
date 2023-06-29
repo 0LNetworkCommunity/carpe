@@ -79,7 +79,28 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
 }
 
 .uk-notification {
+  margin: 0;
   width: 100% !important;
   display: flex !important;
   flex-direction: column;
+}
+
+.uk-notification-bottom-left {
+  margin: 0;
+  left: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  text-align: center;
+}
+
+
+.uk-notification-message-error {
+  color:#f8f8f8 !important;
+  background-color: #f0506e !important;
+}
+
+.uk-notification-message-success {
+  color: #f8f8f8 !important;
+  background-color: #32d296 !important;
 }
