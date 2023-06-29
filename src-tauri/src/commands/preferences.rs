@@ -1,8 +1,9 @@
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use libra_types::{
+  global_config_dir,
   legacy_types::mode_ol::MODE_0L,
 };
-
+use std::path::PathBuf;
 use std::env;
 
 use libra_types::legacy_types::network_playlist::NetworkPlaylist;
@@ -10,22 +11,18 @@ use libra_types::legacy_types::network_playlist::NetworkPlaylist;
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Preferences {
   pub locale: Option<String>,
-  // pub network: Option<UpstreamStats>
 }
 
-/*
-  get preferences
-*/
 #[tauri::command]
+/// fetch the preferences struct. Note it is only locale for now.
 pub fn get_preferences() -> Result<Preferences, CarpeError> {
   let app_cfg = get_cfg()?;
   Ok(Preferences { locale: app_cfg.profile.locale })
 }
 
-/*
-  set preferences
-*/
+
 #[tauri::command(async)]
+/// set the locale preference
 pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
   let mut app_cfg = get_cfg()?;
   app_cfg.profile.locale = Some(locale);
@@ -33,25 +30,11 @@ pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
   Ok(())
 }
 
-
-
-// pub fn read_preferences() -> Result<Preferences, Error> {
-//   let app_cfg = get_cfg()?;
-//   match app_cfg.profile.locale {
-//     Some(s) => Ok(Preferences { locale: s }),
-//     _ => Ok(Preferences { locale: None }),
-//   }
-// }
-
-// fn preferences_db_path() -> PathBuf {
-//   global_config_dir().join(PREFERENCES_DB_FILE)
-// }
-
-// fn update_preferences(preferences: &Preferences) -> Result<(), CarpeError> {
-//   let mut app_cfg = get_cfg()?;
-//   app_cfg.profile.locale = preferences.locale;
-//   Ok(())
-// }
+#[tauri::command]
+/// global config dir for convenience
+pub fn debug_preferences_path() -> Result<PathBuf, CarpeError> {
+  Ok(global_config_dir())
+}
 
 
 #[tauri::command(async)]

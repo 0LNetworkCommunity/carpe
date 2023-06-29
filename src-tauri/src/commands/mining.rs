@@ -5,6 +5,8 @@ use crate::{
   configs::{get_cfg, get_client},
   // types::AppCfg,
 };
+use std::path::PathBuf;
+
 use tauri::{
   Window,
   Runtime
@@ -251,20 +253,20 @@ pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
 //     })
 // }
 
-// #[tauri::command(async)]
-// pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {
-//   let config = get_cfg()?;
+#[tauri::command(async)]
+pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {
+  let config = get_cfg()?;
   
-//   let (_, path) = tower::proof::get_highest_block(&config.get_block_dir())
-//     // TODO: Why is the CarpeError From anyhow not working?
-//     .map_err(|e| {
-//       CarpeError::misc(&format!(
-//         "could not get local files, message: {:?}",
-//         e.to_string()
-//       ))
-//     })?;
-//   Ok(path)
-// }
+  let (_, path) = VDFProof::get_highest_block(&config.get_block_dir())
+    // TODO: Why is the CarpeError From anyhow not working?
+    .map_err(|e| {
+      CarpeError::misc(&format!(
+        "could not get local files, message: {:?}",
+        e.to_string()
+      ))
+    })?;
+  Ok(path)
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// the parameter e.g. upper and lower thresholds

@@ -143,9 +143,9 @@ fn main() {
       // mock_build_tower,
       // start_forever_task,
       // debug_start_listener,
-      // debug_highest_proof_path,
-      // debug_preferences_path,
+      commands::mining::debug_highest_proof_path,
       // // Preferences
+      commands::preferences::debug_preferences_path,
       commands::preferences::get_preferences,
       // set_env,
       // set_preferences_locale

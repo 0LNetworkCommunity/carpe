@@ -1,12 +1,15 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
+    import { raise_error } from "../../carpeError";
 
   let config_path;
   let last_proof_path;
 
-  invoke("debug_highest_proof_path", {}).then((path) => {
+  invoke("debug_highest_proof_path", {})
+  .then((path) => {
     last_proof_path = path;
-  });
+  })
+  .catch((e) => raise_error(e, true, "debug_highest_proof_path"));
 
   invoke("debug_preferences_path", {})
     .then((path) => {

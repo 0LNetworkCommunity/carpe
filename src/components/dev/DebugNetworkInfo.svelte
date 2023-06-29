@@ -6,7 +6,7 @@
   getMetadata();
 
   network_metadata.subscribe((n) => {
-    metadata = n;
+    if (n) metadata = n;
   });
 
 </script>

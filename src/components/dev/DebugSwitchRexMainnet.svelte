@@ -12,8 +12,9 @@
   onMount(async () => {
     getNetwork();
     network_profile.subscribe((n) => {
-      // waypoint = n.waypoint;
-      current_chain_id = n.chain_id;
+      if (n) {
+        current_chain_id = n.chain_id;
+      }
     });
   });
 </script>
