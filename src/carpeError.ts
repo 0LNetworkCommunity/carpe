@@ -1,7 +1,7 @@
 import { get, writable } from 'svelte/store';
 import { displayInsufficientBalance, displayDiscontinuity, displayInvalidProof, displayTooManyProofs, displayWrongDifficulty } from './carpeErrorUI';
 import { notify_error } from './carpeNotify';
-import { Level, logger } from './logger';
+import { invoke } from '@tauri-apps/api/tauri';
 export interface CarpeError {
   category: number;
   uid: number;
@@ -105,4 +105,18 @@ export const errAction = (err: CarpeError): boolean => {
       break;
   }
   return true
+}
+
+export enum Level {
+  Warn = "Warn",
+  Error = "Error",
+}
+
+// error logging to terminal and text file
+export const logger = async (level: Level, msg: String) => {
+  invoke("log_this", {
+    level,
+    msg,
+  })
+  .catch(e => raise_error(e, true, "log_this"));
 }

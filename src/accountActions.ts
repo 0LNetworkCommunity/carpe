@@ -309,3 +309,9 @@ export function claimMakeWhole(account: string, callback = null) {
       }      
     });
 }
+
+export const migrate = () => {
+  invoke("maybe_migrate", {})
+  .then((r) => console.log(r))
+  .catch(e => raise_error(e, false, "maybe_migrate"))
+}

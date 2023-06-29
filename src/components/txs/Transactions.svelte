@@ -73,7 +73,7 @@
       .catch((error) => {
         responses.set(JSON.stringify(error));
         raise_error(error, false, "coin_transfer");
-        // errorMessage = errorDic[error.msg]
+        // ergorMessage = errorDic[error.msg]
         //   ? errorDic[error.msg]
         //   : $_("txs.transfer.failed", { values: { code: error.msg } });
         waitingTxs = false;
@@ -169,7 +169,6 @@
 
                 <input
                   id="receiver-text"
-                  autofocus
                   disabled={waitingTxs}
                   class="uk-input"
                   type="text"

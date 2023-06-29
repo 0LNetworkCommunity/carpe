@@ -1,3 +1,4 @@
+use crate::migrate;
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use libra_types::{
   global_config_dir,
@@ -6,8 +7,6 @@ use libra_types::{
 use std::path::PathBuf;
 use std::env;
 use url::Url;
-
-
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Preferences {
   pub locale: Option<String>,
@@ -70,4 +69,11 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
   let v = env::var("MODE_0L")
     .map_err(|_| CarpeError::misc("environment variable MODE_0L is not set"))?;
   Ok(v)
+}
+
+
+#[tauri::command(async)]
+pub async fn maybe_migrate() -> Result<(), CarpeError> {
+  println!("attempting migration");
+  Ok(migrate::maybe_migrate_data().await?)
 }

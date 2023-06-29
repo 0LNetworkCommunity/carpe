@@ -37,9 +37,12 @@ fn read_accounts(dir: &PathBuf) -> anyhow::Result<Accounts> {
   }
 }
 
-pub async fn migrate_data() -> anyhow::Result<()> {
-  let mut app_cfg = get_cfg().ok();
+pub async fn maybe_migrate_data() -> anyhow::Result<()> {
+  // let mut app_cfg = get_cfg().ok();
+  let mut app_cfg = get_cfg().unwrap_or(AppCfg::default());
+
   if let Some(list) = read_accounts(&global_config_dir()).ok() {
+    println!("found an accounts.json file");
     list.accounts.iter().for_each(|a| {
       let mut p = Profile::new(a.authkey, a.account);
       p.balance = a.balance.unwrap_or(0);
@@ -47,35 +50,30 @@ pub async fn migrate_data() -> anyhow::Result<()> {
       p.nickname = a.nickname.clone();
 
       // if we do
-      if let Some(c) = &mut app_cfg {
-        if c
-          .user_profiles
-          .iter()
-          .find(|e| a.account == e.account)
-          .is_none()
-        {
-          // if we don't find the account in the list
+      if app_cfg
+        .user_profiles
+        .iter()
+        .find(|e| a.account == e.account)
+        .is_none()
+      {
+        // if we don't find the account in the list
 
-          c.user_profiles.push(p);
-          // app_cfg = Some(c);
-        }
-      } else {
-        let mut c = AppCfg::default();
-        c.user_profiles.push(p);
-        app_cfg = Some(c);
+        app_cfg.user_profiles.push(p);
+        // app_cfg = Some(c);
       }
     });
-
-    // now load the network info
-    if let Some(c) = &mut app_cfg {
-      let playlist_url = network_playlist::find_default_playlist(None)?;
-      c.network_playlist =
-        vec![NetworkPlaylist::from_url(playlist_url, Some(NamedChain::MAINNET)).await?];
-
-      let a = c.get_profile(None)?.account;
-      c.workspace.default_profile = get_nickname(a);
-    }
   }
+
+  // now load the network info
+  println!("attempting to fetch new default playlist");
+  let playlist_url = network_playlist::find_default_playlist(None)?;
+  app_cfg.network_playlist =
+    vec![NetworkPlaylist::from_url(playlist_url, Some(NamedChain::MAINNET)).await?];
+
+  let a = app_cfg.get_profile(None)?.account;
+  app_cfg.workspace.default_profile = get_nickname(a);
+
+  app_cfg.save_file()?;
 
   Ok(())
 }

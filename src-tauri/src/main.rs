@@ -5,8 +5,8 @@
 
 #![allow(dead_code)]
 
-// use url;
-// use crate::commands::*;
+use libra_types::global_config_dir;
+
 use log::{error, warn};
 use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
@@ -18,25 +18,25 @@ pub(crate) mod carpe_error;
 pub(crate) mod commands;
 pub(crate) mod configs;
 pub(crate) mod migrate;
-// pub(crate) mod configs_network;
 pub(crate) mod configs_profile;
 pub(crate) mod key_manager;
-// pub(crate) mod waypoint;
+
 
 fn main() {
   //////// FORCE TEST SETTINGS ON START ////////////////////
   // uncomment below to explicitly set "test" env
   // Tauri builder does not take env variable from terminal
-  // set_env("test".to_owned()).unwrap();
+  // set_env("testnet".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
 
-  match fs::create_dir_all(configs::default_config_path().parent().unwrap()) {
+  match fs::create_dir_all(global_config_dir()) {
     Ok(_) => (),
     Err(e) => {
       error!("could not create config dir. Message: {}", e);
       std::process::exit(1);
     }
   }
+
   // logging to file
   CombinedLogger::init(vec![
     TermLogger::new(
@@ -147,6 +147,7 @@ fn main() {
       // // Preferences
       commands::preferences::debug_preferences_path,
       commands::preferences::get_preferences,
+      commands::preferences::maybe_migrate,
       // set_env,
       // set_preferences_locale
     ])

@@ -16,12 +16,12 @@
   import Events from "./components/events/Events.svelte";
   import About from "./components/about/About.svelte";
   import { backlogInProgress, backlogSubmitted, minerEventReceived } from "./miner";
-  import { raise_error } from "./carpeError";
+  import { raise_error, logger, Level } from "./carpeError";
   import type { CarpeError } from "./carpeError";
   import { getEnv, responses, debugMode } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
-  import { isCarpeInit, refreshAccounts, updateMakeWhole } from "./accountActions";
+  import { isCarpeInit, migrate, refreshAccounts, updateMakeWhole } from "./accountActions";
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
   import { init_preferences } from "./preferences";
@@ -29,8 +29,7 @@
   import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
   import { getMetadata, refreshUpstreamPeerStats } from "./networks";
-  import { Level, logger } from "./logger";
-    import { isRefreshingAccounts } from "./accounts";
+
   
   // Init i18n and preferences
   // TODO: why is this duplicated in Nav.svelte?
@@ -48,6 +47,9 @@
 
     getEnv(); // load env var
     getVersion(); // git commit and version
+    
+    // try to migrate carpe files from v5-6 to v7
+    migrate();
 
     // try to connect to a chain eagerly.
     // if not we will be scanning for peers below
