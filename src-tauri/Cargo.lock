@@ -6699,7 +6699,7 @@ checksum = "f7012b1bbb0719e1097c47611d3898568c546d597c2e74d66f6087edd5233ff4"
 [[package]]
 name = "libra-cached-packages"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#47c6ea726b384b9481d8679eb2dee31ea7eb21d8"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#7a7f289e5d238f6b12e9858487fe5a6ca8e92188"
 dependencies = [
  "aptos-types",
  "bcs 0.1.3",
@@ -6711,7 +6711,7 @@ dependencies = [
 [[package]]
 name = "libra-config"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#47c6ea726b384b9481d8679eb2dee31ea7eb21d8"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#7a7f289e5d238f6b12e9858487fe5a6ca8e92188"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6728,7 +6728,7 @@ dependencies = [
 [[package]]
 name = "libra-framework"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#47c6ea726b384b9481d8679eb2dee31ea7eb21d8"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#7a7f289e5d238f6b12e9858487fe5a6ca8e92188"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6749,7 +6749,7 @@ dependencies = [
 [[package]]
 name = "libra-genesis-tools"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#47c6ea726b384b9481d8679eb2dee31ea7eb21d8"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#7a7f289e5d238f6b12e9858487fe5a6ca8e92188"
 dependencies = [
  "anyhow",
  "aptos-config",
@@ -6784,7 +6784,7 @@ dependencies = [
 [[package]]
 name = "libra-query"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#47c6ea726b384b9481d8679eb2dee31ea7eb21d8"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#7a7f289e5d238f6b12e9858487fe5a6ca8e92188"
 dependencies = [
  "anyhow",
  "aptos-sdk",
@@ -6797,7 +6797,7 @@ dependencies = [
 [[package]]
 name = "libra-tower"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#47c6ea726b384b9481d8679eb2dee31ea7eb21d8"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#7a7f289e5d238f6b12e9858487fe5a6ca8e92188"
 dependencies = [
  "anyhow",
  "aptos-sdk",
@@ -6816,7 +6816,7 @@ dependencies = [
 [[package]]
 name = "libra-txs"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#47c6ea726b384b9481d8679eb2dee31ea7eb21d8"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#7a7f289e5d238f6b12e9858487fe5a6ca8e92188"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6834,7 +6834,7 @@ dependencies = [
 [[package]]
 name = "libra-types"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#47c6ea726b384b9481d8679eb2dee31ea7eb21d8"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#7a7f289e5d238f6b12e9858487fe5a6ca8e92188"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6864,7 +6864,7 @@ dependencies = [
 [[package]]
 name = "libra-wallet"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#47c6ea726b384b9481d8679eb2dee31ea7eb21d8"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=tower-txs#7a7f289e5d238f6b12e9858487fe5a6ca8e92188"
 dependencies = [
  "anyhow",
  "aptos-config",

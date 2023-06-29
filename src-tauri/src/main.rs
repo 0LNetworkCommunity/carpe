@@ -88,68 +88,55 @@ fn main() {
 
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
-      // // Accounts
+      //////// Accounts ////////
       commands::wallets::is_init,
       commands::wallets::refresh_accounts,
       commands::wallets::get_all_accounts,
-      // //get_account_events,
+      // get_account_events,
       // add_account,
       commands::wallets::keygen,
       commands::wallets::init_from_mnem,
       commands::wallets::init_from_private_key,
-
       commands::wallets::remove_accounts,
       commands::wallets::switch_profile,
-      // Networks
+      //////// Networks ////////
       commands::preferences::refresh_upstream_peer_stats,
       commands::networks::force_upstream,
       commands::networks::override_playlist,
       commands::networks::get_networks,
       commands::networks::toggle_network,
-      // // Queries
+      //////// Queries ////////
       commands::query::query_balance,
       commands::query::query_makewhole,
       commands::query::get_recovery_mode,
       commands::query::get_metadata,
-      // // Transactions
-      // demo_tx,
-      // create_user_account,
       // wallet_type,
+
+      //////// Transactions ////////
       commands::tx::coin_transfer,
-      // //claim_make_whole,
-      // // Tower
-      // miner_once,
-      // start_backlog_sender_listener,
-      // get_local_height,
-      commands::mining::get_epoch_rules,
-      // submit_backlog,
-      commands::mining::get_last_local_proof,
-      commands::preferences::get_env,
-      // submit_proof_zero,
-      // // Version
-      commands::app_version::get_app_version,
-      // // Debug
-      commands::web_logs::log_this,
-      // init_swarm,
-      // swarm_miner,
-      // swarm_files,
-      // swarm_process,
-      // easy_swarm,
-      // debug_error,
-      // debug_emit_event,
-      // delay_async,
+      // claim_make_whole,
+      //////// Tower ////////
       commands::query::get_onchain_tower_state,
-      // receive_event,
-      // mock_build_tower,
-      // start_forever_task,
-      // debug_start_listener,
+      commands::mining::miner_once,
+      commands::mining::start_backlog_sender_listener,
+      commands::mining::get_local_height,
+      commands::mining::get_epoch_rules,
+      commands::mining::submit_backlog,
+      commands::mining::get_last_local_proof,
       commands::mining::debug_highest_proof_path,
-      // // Preferences
+      // submit_proof_zero,
+
+      //////// Preferences ////////
       commands::preferences::debug_preferences_path,
       commands::preferences::get_preferences,
       commands::preferences::maybe_migrate,
-      // set_env,
-      // set_preferences_locale
+      commands::preferences::get_env,
+      commands::preferences::set_env,
+      commands::preferences::set_preferences_locale,
+
+      ///////// Debug ////////
+      commands::app_version::get_app_version,
+      commands::web_logs::log_this,
     ])
     .menu(menu)
     .run(tauri::generate_context!())

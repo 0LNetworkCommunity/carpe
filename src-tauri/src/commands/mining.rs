@@ -7,9 +7,14 @@ use crate::{
 };
 use std::path::PathBuf;
 
+use libra_tower::core::backlog::process_backlog;
+use libra_tower::core::backlog::submit_or_delete;
+use libra_types::legacy_types::app_cfg::AppCfg;
+use crate::commands::query::get_onchain_tower_state;
+
 use tauri::{
   Window,
-  Runtime
+  Runtime, async_runtime::block_on
 };
 
 use libra_tower::core::{
@@ -27,7 +32,7 @@ use libra_types::{
 
 
 
-use log::warn;
+use log::{warn, error};
 use serde::{Deserialize, Serialize};
 
 // use tower::{
@@ -91,117 +96,123 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
 
   Ok(vdf)
 }
-// #[derive(Clone, serde::Serialize)]
-// pub struct BacklogSuccess {
-//   success: bool,
-// }
+#[derive(Clone, serde::Serialize)]
+pub struct BacklogSuccess {
+  success: bool,
+}
 
 // // When the user turns on the toggle, they will be prompted for OS password.
 // // the backlog listener prevents the user from having to re-enter the password everytime
 // // a new proof needs to be submitted.
 // // The backlog listener then should be started at the time the user toggles the mining.
 
-// #[tauri::command(async)]
-// pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Result<(), CarpeError> {
-//   println!("\nSTARTING BACKLOG LISTENER\n");
-//   // prepare listener to receive events
-//   // TODO: this is gross. Prevent cloning when using in closures
-//   let window_clone = window.clone();
-//   let config = get_cfg()?;
-//   let tx_params = get_tx_params()?;
-//   // This is tauri's event listener for the tower proof.
-//   // the front-ent/window will keep calling it when it needs a new proof done.
-//   let h = window.listen("send-backlog", move |_e| {
-//     println!("\nRECEIVED BACKLOG EVENT\n");
-//     window_clone.emit("ack-backlog-request", {}).unwrap();
+#[tauri::command(async)]
+pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Result<(), CarpeError> {
+  println!("\nSTARTING BACKLOG LISTENER\n");
+  // prepare listener to receive events
+  // TODO: this is gross. Prevent cloning when using in closures
+  let window_clone = window.clone();
+  let config = get_cfg()?;
+  // let tx_params = get_tx_params()?;
+  // This is tauri's event listener for the tower proof.
+  // the front-ent/window will keep calling it when it needs a new proof done.
+  let h = window.listen("send-backlog",  move |_e| {
+    println!("\nRECEIVED BACKLOG EVENT\n");
+    window_clone.emit("ack-backlog-request", {}).unwrap();
 
-//     match maybe_send_backlog(&config, &tx_params) {
-//       Ok(_) => {
-//         println!("backlog success");
-//         window_clone
-//           .emit("backlog-success", BacklogSuccess { success: true })
-//           .unwrap()
-//       }
-//       Err(e) => {
-//         error!("backlog error, msg: {:?}", &e);
+    match maybe_send_backlog(&config) {
+      Ok(_) => {
+        println!("backlog success");
+        window_clone
+          .emit("backlog-success", BacklogSuccess { success: true })
+          .unwrap()
+      }
+      Err(e) => {
+        error!("backlog error, msg: {:?}", &e);
 
-//         window_clone
-//           .emit("backlog-error", CarpeError::from(e))
-//           .unwrap();
-//       }
-//     }
-//   });
+        window_clone
+          .emit("backlog-error", CarpeError::from(e))
+          .unwrap();
+      }
+    }
+  });
 
-//   let window_clone = window.clone();
-//   window.once("kill-backlog-listener", move |_| {
-//     warn!("received kill listener event");
-//     window_clone.unlisten(h);
-//   });
+  let window_clone = window.clone();
+  window.once("kill-backlog-listener", move |_| {
+    warn!("received kill listener event");
+    window_clone.unlisten(h);
+  });
 
-//   Ok(())
-// }
+  Ok(())
+}
 
-// #[tauri::command(async)]
-// pub async fn submit_backlog<R: Runtime>(_window: Window<R>) -> Result<BacklogSuccess, CarpeError> {
-//   let config = get_cfg()?;
-//   let tx_params = get_tx_params()
-//     .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
+#[tauri::command(async)]
+pub async fn submit_backlog<R: Runtime>(_window: Window<R>) -> Result<BacklogSuccess, CarpeError> {
+  let config = get_cfg()?;
+  // let tx_params = get_tx_params()
+    // .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
 
-//   maybe_send_backlog(&config, &tx_params).map_err(|e| e.into())
-// }
+  Ok(maybe_send_backlog(&config)?)
+}
 
-// pub fn maybe_send_backlog(
-//   config: &AppCfg,
-//   tx_params: &TxParams,
-// ) -> Result<BacklogSuccess, CarpeError> {
-//   // check if this is a genesis block
-//   if get_onchain_tower_state(tx_params.owner_address.to_owned()).is_err() {
-//     warn!("cannot get tower state, maybe TowerState not initialized");
-//     maybe_send_genesis_proof(tx_params)
-//   } else {
-//     println!("\nprocessing backlog\n");
+/// function to send backlog
+/// Note: needed to use tauri's block_on here because the event listeners
+/// use simple closures.
+pub fn maybe_send_backlog(
+  config: &AppCfg,
+  // tx_params: &TxParams,
+) -> Result<BacklogSuccess, CarpeError> {
+  // check if this is a genesis block
+  let profile = config.get_profile(None)?;
+  let state = block_on(get_onchain_tower_state(profile.account));
+  if state.is_err() {
+    warn!("cannot get tower state, maybe TowerState not initialized");
+    block_on(maybe_send_genesis_proof(config))
+  } else {
+    println!("\nprocessing backlog\n");
 
-//     match process_backlog(config, tx_params) {
-//       Ok(_) => Ok(BacklogSuccess { success: true }),
-//       Err(e) => Err(CarpeError::from(e)),
-//     }
-//   }
-// }
+    // tauri::async_runtime::block_on(process_backlog(config))
+    match block_on(process_backlog(config)) {
+      Ok(_) => Ok(BacklogSuccess { success: true }),
+      Err(e) => Err(CarpeError::from(e)),
+    }
+  }
+}
 
-// pub fn maybe_send_genesis_proof(tx_params: &TxParams) -> Result<BacklogSuccess, CarpeError> {
-//   // check if the tower state has been initialized.
-//   // otherwise this is a genesis proof.
+pub async fn maybe_send_genesis_proof(config: &AppCfg) -> Result<BacklogSuccess, CarpeError> {
+  // check if the tower state has been initialized.
+  // otherwise this is a genesis proof.
 
-//   // check if any proof_0.json has been mined
-//   if let Some(proof) = get_proof_zero().ok() {
-//     match commit_proof_tx(tx_params, proof) {
-//       Ok(_) => {
-//         println!("submitted proof zero");
-//         Ok(BacklogSuccess { success: true })
-//       }
-//       Err(e) => {
-//         dbg!(&e);
-//         Err(CarpeError::from(e))
-//       }
-//     }
-//   } else {
-//     error!("No genesis proof found in vdf_proofs dir");
-//     Ok(BacklogSuccess { success: false })
-//   }
-// }
+  // check if any proof_0.json has been mined
+  if let Some((proof, path)) = get_proof_zero().ok() {
+    match submit_or_delete(config, proof, path).await {
+      Ok(_) => {
+        println!("submitted proof zero");
+        Ok(BacklogSuccess { success: true })
+      }
+      Err(e) => {
+        dbg!(&e);
+        Err(CarpeError::from(e))
+      }
+    }
+  } else {
+    error!("No genesis proof found in vdf_proofs dir");
+    Ok(BacklogSuccess { success: false })
+  }
+}
 
-// fn get_proof_zero() -> Result<VDFProof, Error> {
-//   let cfg = get_cfg()?;
-//   let path = cfg
-//     .workspace
-//     .node_home
-//     .join(cfg.workspace.block_dir)
-//     .join("proof_0.json");
-//   let string = std::fs::read_to_string(path)?;
-//   let proof: VDFProof = serde_json::from_str(&string)?;
+fn get_proof_zero() -> anyhow::Result<(VDFProof, PathBuf)> {
+  let cfg = get_cfg()?;
+  let path = cfg
+    .workspace
+    .node_home
+    .join(cfg.get_block_dir(None)?)
+    .join("proof_0.json");
+  let string = std::fs::read_to_string(&path)?;
+  let proof: VDFProof = serde_json::from_str(&string)?;
 
-//   Ok(proof)
-// }
+  Ok((proof, path))
+}
 
 // #[tauri::command(async)]
 // pub fn submit_proof_zero() -> Result<(), CarpeError> {
@@ -212,18 +223,18 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
 //   Ok(())
 // }
 
-// #[tauri::command(async)]
-// pub fn get_local_height() -> Result<u64, CarpeError> {
-//   let cfg = get_cfg()?;
+#[tauri::command(async)]
+pub fn get_local_height() -> Result<u64, CarpeError> {
+  let cfg = get_cfg()?;
 
-//   match get_latest_proof(&cfg, true) {
-//     Ok(proof) => Ok(proof.height),
-//     Err(_) => Err(CarpeError::tower(
-//       "could not get block height",
-//       TowerError::NoLocalBlocks.value(),
-//     )),
-//   }
-// }
+  match VDFProof::get_latest_proof(&cfg, true) {
+    Ok(proof) => Ok(proof.height),
+    Err(_) => Err(CarpeError::tower(
+      "could not get block height",
+      TowerError::NoLocalBlocks.value(),
+    )),
+  }
+}
 
 #[tauri::command(async)]
 /// helper to get the latest local proof
