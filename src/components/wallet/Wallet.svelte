@@ -16,10 +16,12 @@
   import Icons from "uikit/dist/js/uikit-icons";
   import { connected } from "../../networks";
   import ConnectionError from "../layout/ConnectionError.svelte";
+    import SigningAccount from "./SelectedAccount.svelte";
+    import SelectedAccount from "./SelectedAccount.svelte";
   
   UIkit.use(Icons);
 
-  let my_account: Profile;
+  let selectedAccount: Profile;
   let accountList: Profile[];
   let pendingAccounts: Profile[];
   let isMining = false;
@@ -42,7 +44,7 @@
         pendingAccounts = all.filter((x) => !x.on_chain);
       }
     });
-    unsubsSigningAccount = signingAccount.subscribe((a) => (my_account = a));
+    unsubsSigningAccount = signingAccount.subscribe((a) => (selectedAccount = a));
     unsubsIsAccountsLoaded = isAccountRefreshed.subscribe(
       (boo) => (isLoaded = boo)
     );
@@ -94,11 +96,11 @@
           {$_("wallet.wallet")}
         </h2>
       </div>
-      <AccountsList {my_account} {accountList} {isMining} {isConnected} />
+
+      <!-- <SelectedAccount {selectedAccount}/> -->
+      <AccountsList {selectedAccount} {accountList} {isMining} {isConnected} />
 
       {#if !isConnected}
-        <!-- <AccountsList {my_account} {accountList} {isMining} {isConnected} /> -->
-
         <ConnectionError />
       {:else}
         <ReminderCreate {pendingAccounts} {isConnected} />

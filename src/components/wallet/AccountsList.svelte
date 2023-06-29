@@ -11,7 +11,7 @@
 
   UIkit.use(Icons);
 
-  export let my_account: Profile;
+  export let selectedAccount: Profile;
   export let accountList: Profile[];
   export let isMining: boolean;
   export let isConnected: boolean;
@@ -34,13 +34,13 @@
         {#each accountList as a}
           <!-- svelte-ignore missing-declaration -->
           <tr
-            class={isMining && a.account == my_account.account
+            class={isMining && a.account == selectedAccount.account
               ? "uk-text-primary"
               : ""}
             on:click={() => setAccount(a.account)}
           >
             <td>
-              {#if a.account == my_account.account}
+              {#if a.account == selectedAccount.account}
                 {#if isMining}
                   <IconMining />
                 {:else}

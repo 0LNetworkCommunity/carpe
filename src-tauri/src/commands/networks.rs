@@ -8,12 +8,31 @@ use libra_types::exports::{NamedChain};
 use libra_types::legacy_types::network_playlist::NetworkPlaylist;
 use libra_types::legacy_types::network_playlist::HostProfile;
 use url::Url;
+use libra_types::legacy_types::app_cfg::AppCfg;
 
 #[tauri::command(async)]
-pub async fn toggle_network(chain_id: NamedChain, custom_playlist: Option<Url>) -> Result<NetworkPlaylist, CarpeError> {
+pub async fn toggle_network(chain_id: NamedChain) -> Result<NetworkPlaylist, CarpeError> {
+  println!("toggle_network");
   let mut app_cfg = get_cfg()?;
   app_cfg.set_chain_id(chain_id);
-  let np = app_cfg.update_network_playlist(Some(chain_id), custom_playlist).await?;
+  app_cfg.save_file()?;
+  
+  maybe_create_playlist(&mut app_cfg, chain_id).await.ok();
+
+  get_networks().await
+}
+
+async fn maybe_create_playlist(app_cfg: &mut AppCfg, chain_id: NamedChain) -> anyhow::Result<NetworkPlaylist>{
+
+  let np = if chain_id == NamedChain::TESTING {
+  let mut playlist = NetworkPlaylist::default();
+   playlist.chain_id = NamedChain::TESTING;
+   app_cfg.add_custom_playlist(playlist.clone());
+   playlist
+  } else { 
+    app_cfg.update_network_playlist(Some(chain_id), None).await?
+  };
+  app_cfg.workspace.default_chain_id = chain_id;
   app_cfg.save_file()?;
   Ok(np)
 }
@@ -27,7 +46,7 @@ pub async fn get_networks() -> Result<NetworkPlaylist, CarpeError> {
 #[tauri::command(async)]
 pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> {
     let mut app_cfg = get_cfg()?;
-    let np = app_cfg.update_network_playlist(Some(NamedChain::MAINNET), Some(url)).await?;
+    let np = app_cfg.update_network_playlist(None, Some(url)).await?;
     app_cfg.save_file()?;
     Ok(np)
 }
@@ -38,6 +57,7 @@ pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
   let mut app_cfg = get_cfg()?;
   dbg!(&app_cfg);
   let mut dummy_playlist = NetworkPlaylist::default();
+  dummy_playlist.chain_id = app_cfg.workspace.default_chain_id;
   dummy_playlist.nodes = vec![HostProfile::new(url)];
   dbg!(&dummy_playlist);
 

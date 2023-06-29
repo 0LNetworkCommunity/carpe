@@ -174,11 +174,14 @@ export const getTowerChainView = async () => {
   })
   .catch((e) => {
     //need to reset, otherwise may be looking at wrong account
-    let t = get(tower);
-    tower.update(t => { t.on_chain = null; return t });
-    if (t.on_chain && !t.on_chain.verified_tower_height) {
-      isTowerNewbie.set(true);
-    }
+    // let t = get(tower);
+    // if t {
+    //   tower.update(t => { t.on_chain = null; return t });
+    //   if (t.on_chain && !t.on_chain.verified_tower_height) {
+    //     isTowerNewbie.set(true);
+    //   }
+    // }
+
 
     raise_error(e, true, "getTowerChainView");
     isRefreshingAccounts.set(false);

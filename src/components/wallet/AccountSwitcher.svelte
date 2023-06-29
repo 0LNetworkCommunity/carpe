@@ -8,14 +8,14 @@
   import AboutLink from "../about/AboutLink.svelte";
   import { _ } from "svelte-i18n";
 
-  let my_account: Profile;
+  let selectedAccount: Profile;
   let account_list: Profile[];
 
   let unsubsSigningAccount;
   let unsubsAll_accounts;
 
   onMount(async () => {
-    unsubsSigningAccount = signingAccount.subscribe(value => my_account = value);
+    unsubsSigningAccount = signingAccount.subscribe(value => selectedAccount = value);
     unsubsAll_accounts = allAccounts.subscribe(all => account_list = all? all : null);
   });
 
@@ -32,8 +32,8 @@
       <NetworkIcon /> 
       {#if account_list && account_list.length > 0}
         <span class="uk-margin-small-left">
-          {#if my_account}
-            {my_account.nickname}
+          {#if selectedAccount}
+            {selectedAccount.nickname}
           {:else}
           {$_("wallet.account_switcher.select_account")}
           {/if}
@@ -54,7 +54,7 @@
               <li>
                 <a
                   href={"#"}
-                  class="{my_account.account == acc.account ? 'uk-text-primary' : ''}"
+                  class="{selectedAccount.account == acc.account ? 'uk-text-primary' : ''}"
                   on:click={() => setAccount(acc.account)}
                 >
                   {acc.nickname}
