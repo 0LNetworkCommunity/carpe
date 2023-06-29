@@ -57,9 +57,11 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
         .is_none()
       {
         // if we don't find the account in the list
-
         app_cfg.user_profiles.push(p);
-        // app_cfg = Some(c);
+
+        if let Some(p) = app_cfg.get_profile(None).ok() {
+          app_cfg.workspace.default_profile = get_nickname(p.account);
+        };
       }
     });
   }
@@ -69,9 +71,6 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   let playlist_url = network_playlist::find_default_playlist(None)?;
   app_cfg.network_playlist =
     vec![NetworkPlaylist::from_url(playlist_url, Some(NamedChain::MAINNET)).await?];
-
-  let a = app_cfg.get_profile(None)?.account;
-  app_cfg.workspace.default_profile = get_nickname(a);
 
   app_cfg.save_file()?;
 
