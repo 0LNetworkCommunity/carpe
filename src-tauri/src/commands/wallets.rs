@@ -209,9 +209,10 @@ pub async fn add_account(
     // this may be the first account and may not yet be initialized.
     if !configs::is_initialized() {
         // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
-        let _ = app_cfg.update_network_playlist(Some(MODE_0L.clone()), None)
-        .await
-        .map_err(|_| CarpeError::config("cannot set network configs"));
+        app_cfg.update_network_playlist(Some(MODE_0L.clone()), None)
+        .await?;
+        app_cfg.save_file()?;
+
     }
 
     // maybe the address has been rotated previously
@@ -220,16 +221,6 @@ pub async fn add_account(
       Ok(a) => address = a,
       Err(_) => {} // ignore the error, maybe couldn't connect we'll just use the address as is
     }
-
-    // // Todo: Does tauri parse the types automatically?
-    // let parsed_address: AccountAddress = address
-    //     .parse()
-    //     .map_err(|_| CarpeError::misc("cannot parse account address"))?;
-
-    // let parsed_auth: AuthenticationKey = authkey
-    //     .parse()
-    //     .map_err(|_| CarpeError::misc("cannot parse authkey"))?;
-
     insert_account_db(nickname, address, authkey).map_err(|e| {
         CarpeError::misc(&format!(
             "could not add account, message {:?}",

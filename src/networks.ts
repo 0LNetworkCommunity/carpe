@@ -50,12 +50,12 @@ export const network_metadata = writable<IndexResponse>();
 
 
 export function setNetwork(network: NamedChain) {
-  invoke("toggle_network", { network: NamedChain[network] })
-      .then((res: NetworkPlaylist) => {
-        network_profile.set(res);
-        // update accounts from current network
-        refreshAccounts();
-      })
+  invoke("toggle_network", { chainId: network})
+    .then((res: NetworkPlaylist) => {
+      network_profile.set(res);
+      // update accounts from current network
+      refreshAccounts();
+    })
     .catch((error) => raise_error(error, false, "setNetwork"));
 }
 

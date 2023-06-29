@@ -70,7 +70,7 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
         }
         Err(_) => {
           warn!("WARN: no local proofs found, assuming genesis proof");
-          NextProof::genesis_proof(&app_cfg)
+          NextProof::genesis_proof(&app_cfg)?
         }
       }
     }
