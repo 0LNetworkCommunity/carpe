@@ -27,7 +27,7 @@ pub async fn get_networks() -> Result<NetworkPlaylist, CarpeError> {
 #[tauri::command(async)]
 pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> {
     let mut app_cfg = get_cfg()?;
-    let np = app_cfg.update_network_playlist(Some(app_cfg.chain_info.chain_id), Some(url)).await?;
+    let np = app_cfg.update_network_playlist(Some(NamedChain::MAINNET), Some(url)).await?;
     app_cfg.save_file()?;
     Ok(np)
 }
@@ -41,7 +41,7 @@ pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
   dummy_playlist.nodes = vec![HostProfile::new(url)];
   dbg!(&dummy_playlist);
 
-  app_cfg.network_playlist = Some(vec![dummy_playlist.clone()]);
+  app_cfg.network_playlist = vec![dummy_playlist.clone()];
   dbg!(&app_cfg);
   app_cfg.save_file()?;
   Ok(dummy_playlist)

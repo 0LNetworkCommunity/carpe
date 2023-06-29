@@ -14,7 +14,7 @@ pub fn default_config_path() -> PathBuf {
 }
 
 pub fn get_cfg() -> anyhow::Result<AppCfg> {
-    AppCfg::parse_toml(app_cfg::default_file_path())
+    AppCfg::load(None)
 }
 
 pub async fn get_client() -> anyhow::Result<Client> {

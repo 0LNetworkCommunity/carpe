@@ -26,7 +26,7 @@ pub async fn set_account_profile(
   };
 
   // set as default profile
-  cfg.workspace.default_profile_nickname = Some(get_nickname(account));
+  cfg.workspace.default_profile = get_nickname(account);
   let profile = Profile::new(authkey, account);
   // add if we have not already
   cfg.maybe_add_profile(profile)?;
@@ -48,9 +48,16 @@ pub fn get_local_proofs_this_profile() -> anyhow::Result<Vec<PathBuf>> {
   println!("fetching local proofs");
   // Default is to fetch last 10 proofs.
   let cfg = get_cfg()?;
-  let block_dir = cfg.workspace.node_home.join(cfg.workspace.block_dir);
+  let block_dir = cfg.get_block_dir(None)?;
   let str_path = block_dir.to_str().unwrap();
   let p = glob(str_path)?.filter_map(Result::ok).collect();
-  dbg!(&p);
   Ok(p)
+}
+
+
+#[tokio::test]
+
+async fn test_create() {
+  let a = AuthenticationKey::random();
+  set_account_profile(a.derived_address(), a).await.unwrap();
 }

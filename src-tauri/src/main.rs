@@ -17,6 +17,7 @@ use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
 pub(crate) mod carpe_error;
 pub(crate) mod commands;
 pub(crate) mod configs;
+pub(crate) mod migrate;
 // pub(crate) mod configs_network;
 pub(crate) mod configs_profile;
 pub(crate) mod key_manager;

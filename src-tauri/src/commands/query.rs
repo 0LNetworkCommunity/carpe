@@ -24,7 +24,7 @@ pub async fn get_metadata() -> Result<IndexResponse, CarpeError> { // Todo retur
 #[tokio::test]
 pub async fn query_test() {
     // need to start a node in test mode first.
-    let client = get_client().unwrap();
+    let client = get_client().await.unwrap();
     let m = client.get_index().await.unwrap();
     println!("query_test: {:?}", m);
 

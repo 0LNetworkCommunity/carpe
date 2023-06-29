@@ -364,11 +364,11 @@ fn get_short(acc: AccountAddress) -> String {
 
 #[tokio::test]
 async fn test_init_mnem() {
-    use crate::types::app_cfg::parse_toml;
+    use libra_types::legacy_types::app_cfg::AppCfg;
     let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
     init_from_mnem(alice).await.unwrap();
     let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
-    let cfg = parse_toml(path);
+    let cfg = AppCfg::parse_toml(path).unwrap();
     dbg!(&cfg);
 }
 
