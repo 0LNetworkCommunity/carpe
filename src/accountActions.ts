@@ -34,7 +34,7 @@ import { navigate } from 'svelte-navigator';
 
 export const refreshAccounts = async () => {
   isRefreshingAccounts.set(true);
-  return invoke('refresh_accounts')
+  invoke('refresh_accounts')
     .then((result: [Profile]) => { // TODO make this the correct return type
       isRefreshingAccounts.set(false);
       allAccounts.set(result);
@@ -52,7 +52,7 @@ export const refreshAccounts = async () => {
       // result.accounts.forEach(el => {
       //   tryRefreshSignerAccount(el);
       // });
-      
+      result
     })
     .catch( e => {
       raise_error(e, true, "refresh_accounts");

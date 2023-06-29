@@ -29,11 +29,9 @@
 		"typescript": "^4.0.0"
 	},
 	"dependencies": {
-		"bootstrap": "^4.6.0",
 		"sirv-cli": "^1.0.0",
 		"svelte-i18n": "^3.3.13",
-		"svelte-navigator": "^3.1.5",
-		"sveltestrap": "^4.1.0",
+		"svelte-navigator": "^3.2.2",
 		"uikit": "^3.8.1"
 	}
 }

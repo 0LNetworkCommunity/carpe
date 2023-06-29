@@ -9,7 +9,6 @@ use crate::{
 
 use anyhow::{anyhow, Context};
 use libra_types::{
-  legacy_types::mode_ol::MODE_0L,
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
 };
 use libra_wallet::account_keys::{
@@ -213,43 +212,43 @@ fn find_account_data(account: AccountAddress) -> Result<Profile, CarpeError> {
     // }
 }
 
-/// Add an account (for tracking only).
-#[tauri::command(async)]
-pub async fn add_account(
-    _nickname: String, // TODO: remove
-    authkey: AuthenticationKey,
-    mut address: AccountAddress,
-) -> Result<Vec<Profile>, CarpeError> {
-   let mut app_cfg = get_cfg()?;
+// /// Add an account (for tracking only).
+// #[tauri::command(async)]
+// pub async fn add_account(
+//     _nickname: String, // TODO: remove
+//     authkey: AuthenticationKey,
+//     mut address: AccountAddress,
+// ) -> Result<Vec<Profile>, CarpeError> {
+//    let mut app_cfg = get_cfg()?;
 
-    // this may be the first account and may not yet be initialized.
-    if !configs::is_initialized() {
-        // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
-        app_cfg.update_network_playlist(Some(MODE_0L.clone()), None)
-        .await?;
-        app_cfg.save_file()?;
+//     // this may be the first account and may not yet be initialized.
+//     if !configs::is_initialized() {
+//         // will default to MAINNET, unless the ENV is set to MODE_0L=TESTING (for local development) or MODE_0L=TESTNET
+//         app_cfg.update_network_playlist(Some(MODE_0L.clone()), None)
+//         .await?;
+//         app_cfg.save_file()?;
 
-    }
+//     }
 
-    // maybe the address has been rotated previously
-    // or its a legacy (founder) account
-    match get_originating_address(authkey.clone()).await {
-      Ok(a) => address = a,
-      Err(_) => {} // ignore the error, maybe couldn't connect we'll just use the address as is
-    }
+//     // maybe the address has been rotated previously
+//     // or its a legacy (founder) account
+//     match get_originating_address(authkey.clone()).await {
+//       Ok(a) => address = a,
+//       Err(_) => {} // ignore the error, maybe couldn't connect we'll just use the address as is
+//     }
 
-    let profile = Profile::new(authkey, address);
-    app_cfg.maybe_add_profile(profile)?;
-    app_cfg.save_file()?;
-    Ok(app_cfg.user_profiles)
+//     let profile = Profile::new(authkey, address);
+//     app_cfg.maybe_add_profile(profile)?;
+//     app_cfg.save_file()?;
+//     Ok(app_cfg.user_profiles)
 
-    // insert_account_db(nickname, address, authkey).map_err(|e| {
-    //     CarpeError::misc(&format!(
-    //         "could not add account, message {:?}",
-    //         e.to_string()
-    //     ))
-    // })
-}
+//     // insert_account_db(nickname, address, authkey).map_err(|e| {
+//     //     CarpeError::misc(&format!(
+//     //         "could not add account, message {:?}",
+//     //         e.to_string()
+//     //     ))
+//     // })
+// }
 
 /// Switch tx profiles, change 0L.toml to use selected account
 #[tauri::command(async)]

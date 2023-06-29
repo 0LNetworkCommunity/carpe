@@ -257,7 +257,7 @@ pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
 pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {
   let config = get_cfg()?;
   
-  let (_, path) = VDFProof::get_highest_block(&config.get_block_dir())
+  let (_, path) = VDFProof::get_highest_block(&config.get_block_dir(None)?)
     // TODO: Why is the CarpeError From anyhow not working?
     .map_err(|e| {
       CarpeError::misc(&format!(

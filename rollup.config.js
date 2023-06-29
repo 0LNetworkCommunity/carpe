@@ -63,6 +63,8 @@ export default {
 		}),
 		commonjs(),
 		typescript({
+      // strict: true,
+      // noEmitOnError: true,
 			sourceMap: !production,
 			inlineSources: !production
 		}),
