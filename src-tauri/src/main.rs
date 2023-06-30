@@ -21,8 +21,8 @@ pub(crate) mod migrate;
 pub(crate) mod configs_profile;
 pub(crate) mod key_manager;
 
-
-fn main() {
+#[tokio::main]
+async fn main() {
   //////// FORCE TEST SETTINGS ON START ////////////////////
   // uncomment below to explicitly set "test" env
   // Tauri builder does not take env variable from terminal
