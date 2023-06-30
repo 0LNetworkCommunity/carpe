@@ -5,7 +5,7 @@ export interface Profile {
   nickname: string,
   on_chain: boolean, // null or bool
   balance: number, // null or number
-  locale: string,
+  locale?: string,
 }
 
 export const new_account = (account: string, authkey: string, nickname: string): Profile => {

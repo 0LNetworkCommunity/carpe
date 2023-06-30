@@ -6,8 +6,9 @@ import { raise_error } from "./carpeError";
 import { clearDisplayErrors } from "./carpeErrorUI";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof, TowerStateView, isTowerNewbie } from "./miner";
+import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof, TowerStateView, isTowerNewbie, ClientTowerStatus } from "./miner";
 import { NamedChain, network_profile } from "./networks";
+import { is_empty } from "svelte/internal";
 
 const current_window = getCurrent();
 
@@ -17,19 +18,21 @@ export const towerOnce = async () => {
   minerEventReceived.set(false);
   minerProofComplete.set(false);
 
+  let chain = get(network_profile) ? get(network_profile).chain_id: NamedChain.MAINNET;
   // defaults for newbies
-  let previous_duration = get(network_profile).chain_id == NamedChain.TESTING
+  let previous_duration = chain == NamedChain.TESTING
     ? 5 * 1000  // Test difficulty 
     
     : 60 * 60 * 1000; // Default to Prod difficulty, assume 60 minutes for newbies 
 
-  let t = get(tower);
-  if (t.last_local_proof && t.last_local_proof.elapsed_secs != null) {
+  // if we already have state, otherwise this is a newbie needing proof zero
+  let t: ClientTowerStatus = get(tower);
+  if (t && t.last_local_proof && t.last_local_proof.elapsed_secs != null) {
     previous_duration = 1 + (t.last_local_proof.elapsed_secs * 1000); // at least 1
   }
 
   let progress: ProofProgress = {
-    proof_in_progress: t.local_height ? t.local_height + 1 : 1,
+    proof_in_progress: t && t.local_height ? t.local_height + 1 : 1,
     time_start: Date.now(),
     previous_duration,
     complete: false,
@@ -37,17 +40,17 @@ export const towerOnce = async () => {
     time_elapsed: 0,
     pct_complete: 0,
   }
+  
   t.progress = progress;
   tower.set(t);
 
   // This is a long running async call.
   // when miner_once returnsm, it's with the response of the proof, or error.
   return invoke("miner_once", {})
-    .then(res => {
-      console.log('miner_once proof completed' + res);
-      responses.set(res as string);
+    .then((res: VDFProof) => {
       setProofComplete();
 
+      notify_success(`Miner proof ${res.height} complete!`);
       // start the sending of txs
       // TODO: unsure why when it emits immediately thre is no action on rust side, perhaps listener startup.
       setTimeout(emitBacklog, 1000);
@@ -55,16 +58,15 @@ export const towerOnce = async () => {
       // refresh local proofs view, also wait for file to be written
       setTimeout(getLocalHeight, 1000);
 
-
+      responses.set(JSON.stringify(res));
       return res
     })
     .catch(e => {
-      console.log('miner_once error: ' + e);
+      // console.log('miner_once error: ' + e);
       // disable mining when there is a proof error.
-      minerLoopEnabled.set(false);
       raise_error(e, false, "towerOnce");
-      proofError()
-      return false
+      minerLoopEnabled.set(false);
+      proofError();
     });
 
 };
@@ -202,9 +204,6 @@ export const getLocalHeight = async () => {
       responses.set(JSON.stringify(res));
     })
     .catch((e) => {
-      let t = get(tower);
-      t.local_height = -1;
-      tower.set(t);
       raise_error(e, true, "getLocalHeight")
     })
 };

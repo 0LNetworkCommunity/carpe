@@ -28,7 +28,7 @@
   import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
   import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
-  import { getMetadata, refreshUpstreamPeerStats } from "./networks";
+  import { getMetadata, getNetwork, refreshUpstreamPeerStats } from "./networks";
 
   
   // Init i18n and preferences
@@ -54,6 +54,7 @@
     // try to connect to a chain eagerly.
     // if not we will be scanning for peers below
     isCarpeInit()
+    .then(getNetwork)
     .then(getMetadata) // try to connect to a chain eagerly.
     .then(refreshAccounts) // should only try to refresh accounts if we are connected to a chain
     .then(updateMakeWhole) // check for make whole only once on startup

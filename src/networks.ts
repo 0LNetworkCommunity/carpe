@@ -9,6 +9,23 @@ export interface NetworkPlaylist {
   nodes: [HostProfile],
 }
 
+export const defaultPlaylist = (): NetworkPlaylist => {
+  let h: HostProfile = {
+    url: "http://localhost:8080",
+    note: "local-net",
+    version: 0,
+    is_api: false,
+    is_sync: false
+  };
+
+  let np: NetworkPlaylist = {
+    chain_id: NamedChain.TESTING,
+    nodes: [h]
+  };
+
+  return np
+}
+
 export interface HostProfile {
   url: string,
   note: string,
@@ -38,7 +55,7 @@ export enum NamedChain {
   TESTING = "TESTING",
 }
 
-export const network_profile = writable<NetworkPlaylist>();
+export const network_profile = writable<NetworkPlaylist>(defaultPlaylist());
 export const connected = writable<boolean>(true);
 export const scanning_fullnodes = writable<boolean>();
 export const scanning_fullnodes_backoff = writable<number>(new Date().getSeconds());
@@ -59,7 +76,7 @@ export function setNetwork(network: NamedChain) {
     .catch((error) => raise_error(error, false, "setNetwork"));
 }
 
-export function getNetwork() {
+export const getNetwork = async () => {
   invoke("get_networks", {})
     .then((res: NetworkPlaylist) => {
       console.log(res);
@@ -86,7 +103,7 @@ export function getNetwork() {
 
 
 
-export const getMetadata = async (): Promise<IndexResponse>  => {
+export const getMetadata = async () => {
   console.log(">>> get_metadata");
   return invoke("get_metadata", {})
     .then((res: IndexResponse ) => {
@@ -95,7 +112,7 @@ export const getMetadata = async (): Promise<IndexResponse>  => {
       // lets stop scanning for fullnodes if we got a good connection.
       scanning_fullnodes.set(false);
       scanning_fullnodes_backoff.set(new Date().getSeconds());
-      return res;
+      return res
     })
     .catch((e) => {
       raise_error(e, true, "getMetadata");
@@ -104,7 +121,7 @@ export const getMetadata = async (): Promise<IndexResponse>  => {
 
       incrementBackoff();
       refreshUpstreamPeerStats(); // update the metadata and if we are connected
-    });
+    })
 }
 
 export const refreshUpstreamPeerStats = async () => {
@@ -123,8 +140,7 @@ export const refreshUpstreamPeerStats = async () => {
       scanning_fullnodes_retries.set(0);
     })
     .catch((error) => {
-      getMetadata(); // update the metadata and if we are connected
-      raise_error(error, true, "refreshUpstreamPeerStats"); // we have a purpose-built error component for this
+      raise_error(error, true, "refreshUpstreamPeerStats");
     })
 }
 

@@ -24,9 +24,10 @@
     <DebugPaths />
     <DebugSwitchRexMainnet />
     <DebugSwitchProdTest />
+    <DebugActions />
     {#if !debugEnabled} 
       <DebugCard />
     {/if}
-    <!-- <DebugActions /> -->
+    
   </div>
 </main>

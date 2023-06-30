@@ -1,12 +1,10 @@
 import { get, writable } from 'svelte/store';
 export interface ClientTowerStatus {
-  last_local_proof: VDFProof,
+  last_local_proof?: VDFProof,
   on_chain?: TowerStateView,
-  count_proofs_this_session: number,
   local_height: number,
-  cpu_usage: number,
-  progress: ProofProgress,
-  rules: EpochRules,
+  progress?: ProofProgress,
+  rules?: EpochRules,
 }
 
 export interface VDFProof {
@@ -43,7 +41,7 @@ export interface EpochRules {
   difficulty: number,
   security: number,
 }
-export const tower = writable<ClientTowerStatus>();
+export const tower = writable<ClientTowerStatus>({ local_height: 0 });
 
 // is set to true if when the app starts and Rust emits the backlog-listener-ready event.
 export const backlogListenerReady = writable(false);

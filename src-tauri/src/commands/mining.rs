@@ -61,7 +61,7 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
     // TODO: this is important for migrating to the new protocol.
     // in future versions we should remove this since we may be producing bad proofs, and users should explicitly choose to use local mode.
     Err(e) => {
-      dbg!(&e);
+      warn!("cannot connect to network, message: {}", e.to_string());
       // this may be a genesis proof
       match next_proof::get_next_proof_params_from_local(&mut app_cfg) {
         Ok(n) => {

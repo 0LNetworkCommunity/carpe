@@ -48,10 +48,6 @@ export const refreshAccounts = async () => {
       if (!get(isAccountRefreshed)) {
         isAccountRefreshed.set(true);
       }
-
-      // result.accounts.forEach(el => {
-      //   tryRefreshSignerAccount(el);
-      // });
       result
     })
     .catch( e => {
@@ -68,7 +64,7 @@ export enum InitType {
   PriKey,
 }
 
-export const handleAdd = async (init_type: InitType, secret: string): Promise<Profile> => {
+export const handleAdd = async (init_type: InitType, secret: string) => {
   // isSubmitting = true;
 
   let method_name = "";
