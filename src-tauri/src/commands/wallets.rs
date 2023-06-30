@@ -212,6 +212,7 @@ fn find_account_data(account: AccountAddress) -> Result<Profile, CarpeError> {
     // }
 }
 
+
 // /// Add an account (for tracking only).
 // #[tauri::command(async)]
 // pub async fn add_account(

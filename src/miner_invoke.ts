@@ -113,8 +113,9 @@ export const startBacklogListener = async () => {
 
 // Stop listening on the rust side for new requests to mine a proof.
 export const killBacklogListener = async () => {
-  console.log("kill listener");
-  return current_window.emit("kill-backlog-listener").then(_ => backlogListenerReady.set(false));
+  return current_window.emit("kill-backlog-listener")
+  .then(_ => backlogListenerReady.set(false))
+  .catch(e => raise_error(e, true, "kill-backlog-listener"));
 }
 
 export const emitBacklog = async () => {

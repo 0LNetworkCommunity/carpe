@@ -2,7 +2,7 @@
   import { invoke } from "@tauri-apps/api/tauri";
   // import { responses } from "../../debug";
   import DemoTx from "../txs/DemoTx.svelte";
-    import { emitBacklog, killBacklogListener, startBacklogListener, towerOnce } from "../../miner_invoke";
+    import { emitBacklog, killBacklogListener, startBacklogListener, submitBacklog, towerOnce } from "../../miner_invoke";
   // import { raise_error } from "../../carpeError";
   // import { listen } from '@tauri-apps/api/event'
   // import { onMount } from "svelte";
@@ -109,6 +109,9 @@
     <div class="uk-margin-medium-bottom">
       <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin"> Tower </h4>
 
+      <button class="uk-button uk-button-default" on:click={towerOnce}> Mine One Proof </button>
+
+      <button class="uk-button uk-button-default" on:click={submitBacklog}> Submit Backlog </button>
 
       <button class="uk-button uk-button-default" on:click={startBacklogListener}>Start Backlog Listener </button>
 
@@ -116,7 +119,7 @@
 
       <button class="uk-button uk-button-default" on:click={emitBacklog}>Emit Start Backlog </button>
       
-      <button class="uk-button uk-button-default" on:click={towerOnce}> Mine One Proof </button>
+      
     </div>
 
 

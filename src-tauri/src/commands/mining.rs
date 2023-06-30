@@ -2,7 +2,7 @@ use crate::{
   carpe_error::CarpeError,
   // commands::get_onchain_tower_state,
   // configs::{get_cfg, get_client, get_tx_params},
-  configs::{get_cfg, get_client},
+  configs::{get_cfg, get_client}, key_manager::inject_private_key_to_cfg,
   // types::AppCfg,
 };
 use std::path::PathBuf;
@@ -10,6 +10,7 @@ use std::path::PathBuf;
 use libra_tower::core::backlog::process_backlog;
 use libra_tower::core::backlog::submit_or_delete;
 use libra_types::legacy_types::app_cfg::AppCfg;
+use tokio::task::block_in_place;
 use crate::commands::query::get_onchain_tower_state;
 
 use tauri::{
@@ -29,7 +30,7 @@ use libra_types::{
   type_extensions::client_ext::ClientExt,
 };
 
-use log::{warn, error};
+use log::{warn, error, info};
 use serde::{Deserialize, Serialize};
 
 // use tower::{
@@ -107,15 +108,14 @@ pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Res
   // prepare listener to receive events
   // TODO: this is gross. Prevent cloning when using in closures
   let window_clone = window.clone();
-  let config = get_cfg()?;
   // let tx_params = get_tx_params()?;
   // This is tauri's event listener for the tower proof.
   // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("send-backlog",  move |_e| {
     println!("\nRECEIVED BACKLOG EVENT\n");
     window_clone.emit("ack-backlog-request", {}).unwrap();
-
-    match maybe_send_backlog(&config) {
+    
+    match maybe_send_backlog_blocking() {
       Ok(_) => {
         println!("backlog success");
         window_clone
@@ -143,35 +143,42 @@ pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Res
 
 #[tauri::command(async)]
 pub async fn submit_backlog<R: Runtime>(_window: Window<R>) -> Result<BacklogSuccess, CarpeError> {
-  let config = get_cfg()?;
+  let mut config = get_cfg()?;
   // let tx_params = get_tx_params()
     // .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
 
-  Ok(maybe_send_backlog(&config)?)
+  Ok(maybe_send_backlog(&mut config).await?)
 }
 
 /// function to send backlog
 /// Note: needed to use tauri's block_on here because the event listeners
 /// use simple closures.
-pub fn maybe_send_backlog(
-  config: &AppCfg,
+pub async fn maybe_send_backlog(
+  app_cfg_mut: &mut AppCfg,
   // tx_params: &TxParams,
 ) -> Result<BacklogSuccess, CarpeError> {
   // check if this is a genesis block
-  let profile = config.get_profile(None)?;
-  let state = block_on(get_onchain_tower_state(profile.account.to_hex_literal()));
+  let profile = app_cfg_mut.get_profile(None)?;
+  let state = get_onchain_tower_state(profile.account.to_hex_literal()).await;
+
+  inject_private_key_to_cfg(app_cfg_mut)?;
+
   if state.is_err() {
     warn!("cannot get tower state, maybe TowerState not initialized");
-    block_on(maybe_send_genesis_proof(config))
+    maybe_send_genesis_proof(app_cfg_mut).await
   } else {
-    println!("\nprocessing backlog\n");
-
-    // tauri::async_runtime::block_on(process_backlog(config))
-    match block_on(process_backlog(config)) {
+    info!("processing backlog ...\n");
+    match process_backlog(app_cfg_mut).await {
       Ok(_) => Ok(BacklogSuccess { success: true }),
       Err(e) => Err(CarpeError::from(e)),
     }
   }
+}
+
+fn maybe_send_backlog_blocking() -> Result<BacklogSuccess, CarpeError> {
+  let mut app_cfg = get_cfg()?;
+
+  block_in_place(|| { block_on(maybe_send_backlog(&mut app_cfg))})
 }
 
 pub async fn maybe_send_genesis_proof(config: &AppCfg) -> Result<BacklogSuccess, CarpeError> {
