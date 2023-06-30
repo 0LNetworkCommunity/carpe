@@ -158,10 +158,13 @@ pub async fn maybe_send_backlog(
   // tx_params: &TxParams,
 ) -> Result<BacklogSuccess, CarpeError> {
   // check if this is a genesis block
+  
+
+  inject_private_key_to_cfg(app_cfg_mut)?;
   let profile = app_cfg_mut.get_profile(None)?;
   let state = get_onchain_tower_state(profile.account.to_hex_literal()).await;
 
-  inject_private_key_to_cfg(app_cfg_mut)?;
+  dbg!(&app_cfg_mut);
 
   if state.is_err() {
     warn!("cannot get tower state, maybe TowerState not initialized");

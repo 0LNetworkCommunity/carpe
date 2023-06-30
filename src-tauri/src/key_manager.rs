@@ -76,7 +76,7 @@ pub fn get_keypair(
 // NOTE to future devs: DANGER: make sure this is never called in a flow that uses save_file()
 pub fn inject_private_key_to_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<()>{
   // gets the default profile
-  let mut profile = app_cfg_mut.get_profile(None)?;
+  let mut profile = app_cfg_mut.get_profile_mut(None)?;
   let pri_key = get_private_key(&profile.account)?;
   profile.test_private_key = Some(pri_key);
   Ok(())
