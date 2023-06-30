@@ -5,7 +5,7 @@ export interface Profile {
   nickname: string,
   on_chain: boolean, // null or bool
   balance: number, // null or number
-  locale?: string,
+  locale?: string, // Todo: tauri now offers locale of the OS
 }
 
 export const new_account = (account: string, authkey: string, nickname: string): Profile => {
@@ -19,7 +19,7 @@ export const new_account = (account: string, authkey: string, nickname: string):
   }
 };
 
-export const signingAccount = writable<Profile>(new_account("", "", ""));
+export const signingAccount = writable<Profile>();
 export const mnem = writable<string>();
 export const isInit = writable(false);
 export const isRefreshingAccounts = writable(false);

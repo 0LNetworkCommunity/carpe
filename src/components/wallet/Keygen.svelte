@@ -37,7 +37,6 @@
   const keygen = async () => {
     invoke("keygen", {})
       .then((res: NewKeygen) => {
-        console.log(res);
         responses.set(JSON.stringify(res));
         signingAccount.set(res.entry);
         mnem.set(res.mnem);

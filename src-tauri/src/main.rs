@@ -40,7 +40,7 @@ async fn main() {
   // logging to file
   CombinedLogger::init(vec![
     TermLogger::new(
-      LevelFilter::Debug,
+      LevelFilter::Warn,
       Config::default(),
       TerminalMode::Mixed,
       ColorChoice::Auto,

@@ -77,20 +77,22 @@ export const handleAdd = async (init_type: InitType, secret: string) => {
     method_name = "init_from_private_key";
     arg_obj = { priKeyString: secret.trim() };
   };
+  // TODO: need to check where else the mnem is being used
+  mnem.set(null)
   // submit
   return invoke(method_name, arg_obj)
     .then((res: Profile) => {
+
       // set as init so we don't get sent back to Newbie account creation.
       isInit.set(true);
       responses.set(JSON.stringify(res));
       signingAccount.set(res);
 
       // only navigate away once we have refreshed the accounts including balances
-      refreshAccounts()
-      .then(() => {
-        notify_success(`Account Added: ${res.nickname}`);
-        navigate("/");
-      });
+      notify_success(`Account Added: ${res.nickname}`);
+      
+      refreshAccounts();
+      setTimeout(() => navigate("/"), 10);
       return res
     })
     .catch((error) => {
@@ -98,12 +100,12 @@ export const handleAdd = async (init_type: InitType, secret: string) => {
     })
 }
 
-export function tryRefreshSignerAccount(newData: Profile) {
-  let a = get(signingAccount).account;
-  if (newData.account == a) {
-    signingAccount.set(newData);
-  }
-}
+// export function tryRefreshSignerAccount(newData: Profile) {
+//   let a = get(signingAccount).account;
+//   if (newData.account == a) {
+//     signingAccount.set(newData);
+//   }
+// }
 
 
 export const isCarpeInit = async () => {
@@ -130,55 +132,34 @@ export function findOneAccount(account: string): Profile | undefined {
   return found
 }
 
-export const setAccount = async (an_address: string, notifySucess = true) => { 
-  if (get(signingAccount).account == an_address) {
-    return
-  }
- 
+export const setAccount = async (account: string, notifySucess = true) => { 
   // cannot switch profile with miner running
   if (get(minerLoopEnabled)) {
     notify_error("To switch accounts you need to turn miner off first.");
     return
   }
 
-  let a = findOneAccount(an_address);
-
-  // optimistic switch
-  let previous = get(signingAccount);
-  signingAccount.set(a);
- 
-  // reset user data
-  tower.set(<ClientTowerStatus>{});
-  mnem.set("");
-  
-  // initi account events for better UX
-  getAccountEvents(a, () => { /* ignore errors */ });
-  
   invoke("switch_profile", {
-    account: a.account,
+    account,
   })
-  .then((res) => {
-      if (typeof res === "string") {
-          responses.set(res);
-      }
+  .then((res: Profile) => {
+    signingAccount.set(res);
     if (notifySucess) {
-      notify_success("Account switched to " + a.nickname);
+      notify_success("Account switched to " + res.nickname);
     }
   })
   .catch((e) => {
     raise_error(e, false, "setAccount");
-    
-    // fallback optimistic change
-    signingAccount.set(previous);
+
   });
 }
 
-export function addNewAccount(account: Profile) {
-  let list = get(allAccounts);
-  // account.on_chain = false;
-  list.push(account);    
-  allAccounts.set(list);
-}
+// export function addNewAccount(account: Profile) {
+//   let list = get(allAccounts);
+//   // account.on_chain = false;
+//   list.push(account);    
+//   allAccounts.set(list);
+// }
 
 export function checkSigningAccountBalance() {
   let selected = get(signingAccount);

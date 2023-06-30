@@ -1,11 +1,9 @@
 use crate::{
   carpe_error::CarpeError,
-  // commands::get_onchain_tower_state,
-  // configs::{get_cfg, get_client, get_tx_params},
   configs::{get_cfg, get_client}, key_manager::inject_private_key_to_cfg,
-  // types::AppCfg,
 };
 use std::path::PathBuf;
+use std::sync::{Arc, Mutex};
 
 use libra_tower::core::backlog::process_backlog;
 use libra_tower::core::backlog::submit_or_delete;
@@ -20,31 +18,22 @@ use tauri::{
 
 use libra_tower::core::{
   proof,
-  next_proof::{self, NextProof},
+  next_proof::NextProof,
   tower_error::TowerError,
 };
 
 
 use libra_types::{
   legacy_types::block::VDFProof,
-  type_extensions::client_ext::ClientExt,
 };
 
 use log::{warn, error, info};
 use serde::{Deserialize, Serialize};
 
-// use tower::{
-//   backlog::process_backlog,
-//   commit_proof::commit_proof_tx,
-//   next_proof::{self, NextProof},
-//   proof::{get_latest_proof, mine_once},
-//   tower_errors::TowerError,
-// };
-
 /// creates one proof and submits
 #[tauri::command(async)]
 pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, CarpeError> {
-  println!("\nMining one proof\n");
+  info!("\nMining one proof");
   let mut app_cfg = get_cfg()?;
   let client = get_client()?;
 
@@ -53,31 +42,11 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
     .map_err(|_| CarpeError::misc("could not emit window event"))?;
   
   // let client = get_client();
-  let next = match next_proof::get_next_proof_from_chain(&mut app_cfg, &client).await {
-    Ok(n) => {
-      println!("SUCCESS: fetched next proof params from chain");
-      n
-    }
-    // failover to local mode, if no onchain data can be found.
-    // TODO: this is important for migrating to the new protocol.
-    // in future versions we should remove this since we may be producing bad proofs, and users should explicitly choose to use local mode.
-    Err(e) => {
-      warn!("cannot connect to network, message: {}", e.to_string());
-      // this may be a genesis proof
-      match next_proof::get_next_proof_params_from_local(&mut app_cfg) {
-        Ok(n) => {
-          warn!("WARN: using next proof params from local");
-          n
-        }
-        Err(_) => {
-          warn!("WARN: no local proofs found, assuming genesis proof");
-          NextProof::genesis_proof(&app_cfg)?
-        }
-      }
-    }
+  let next = match proof::get_next_proof(&mut app_cfg, &client, false).await {
+    Ok(p) => p,
+    Err(_) => NextProof::genesis_proof(&app_cfg)?
   };
-
-  println!("next proof params: {:?}", next.diff);
+  info!("next proof params: {:?}", next.diff);
 
   let vdf = proof::mine_once(&app_cfg, next).map_err(|e| {
     CarpeError::tower(
@@ -102,22 +71,28 @@ pub struct BacklogSuccess {
 // // a new proof needs to be submitted.
 // // The backlog listener then should be started at the time the user toggles the mining.
 
+
 #[tauri::command(async)]
 pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Result<(), CarpeError> {
-  println!("\nSTARTING BACKLOG LISTENER\n");
+  info!("\nSTARTING BACKLOG LISTENER");
+
+  let mut app_cfg = get_cfg()?;
+  inject_private_key_to_cfg(&mut app_cfg)?;
+  let cfg_mutex = Arc::new(Mutex::new(app_cfg));
+
   // prepare listener to receive events
   // TODO: this is gross. Prevent cloning when using in closures
   let window_clone = window.clone();
-  // let tx_params = get_tx_params()?;
+  
   // This is tauri's event listener for the tower proof.
   // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("send-backlog",  move |_e| {
-    println!("\nRECEIVED BACKLOG EVENT\n");
+    info!("\nRECEIVED BACKLOG EVENT\n");
     window_clone.emit("ack-backlog-request", {}).unwrap();
     
-    match maybe_send_backlog_blocking() {
+    match maybe_send_backlog_blocking(&mut cfg_mutex.lock().unwrap()) {
       Ok(_) => {
-        println!("backlog success");
+        info!("backlog success");
         window_clone
           .emit("backlog-success", BacklogSuccess { success: true })
           .unwrap()
@@ -144,9 +119,7 @@ pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Res
 #[tauri::command(async)]
 pub async fn submit_backlog<R: Runtime>(_window: Window<R>) -> Result<BacklogSuccess, CarpeError> {
   let mut config = get_cfg()?;
-  // let tx_params = get_tx_params()
-    // .map_err(|_e| CarpeError::config("could not fetch tx_params while sending backlog."))?;
-
+  inject_private_key_to_cfg(&mut config)?;
   Ok(maybe_send_backlog(&mut config).await?)
 }
 
@@ -155,16 +128,9 @@ pub async fn submit_backlog<R: Runtime>(_window: Window<R>) -> Result<BacklogSuc
 /// use simple closures.
 pub async fn maybe_send_backlog(
   app_cfg_mut: &mut AppCfg,
-  // tx_params: &TxParams,
 ) -> Result<BacklogSuccess, CarpeError> {
-  // check if this is a genesis block
-  
-
-  inject_private_key_to_cfg(app_cfg_mut)?;
   let profile = app_cfg_mut.get_profile(None)?;
   let state = get_onchain_tower_state(profile.account.to_hex_literal()).await;
-
-  dbg!(&app_cfg_mut);
 
   if state.is_err() {
     warn!("cannot get tower state, maybe TowerState not initialized");
@@ -178,10 +144,8 @@ pub async fn maybe_send_backlog(
   }
 }
 
-fn maybe_send_backlog_blocking() -> Result<BacklogSuccess, CarpeError> {
-  let mut app_cfg = get_cfg()?;
-
-  block_in_place(|| { block_on(maybe_send_backlog(&mut app_cfg))})
+fn maybe_send_backlog_blocking(app_cfg: &mut AppCfg) -> Result<BacklogSuccess, CarpeError> {
+  block_in_place(|| { block_on(maybe_send_backlog( app_cfg))})
 }
 
 pub async fn maybe_send_genesis_proof(config: &AppCfg) -> Result<BacklogSuccess, CarpeError> {
@@ -218,15 +182,6 @@ fn get_proof_zero() -> anyhow::Result<(VDFProof, PathBuf)> {
 
   Ok((proof, path))
 }
-
-// #[tauri::command(async)]
-// pub fn submit_proof_zero() -> Result<(), CarpeError> {
-//   let tx_params =
-//     get_tx_params().map_err(|_e| CarpeError::config("could not get configs from file"))?;
-//   let proof = get_proof_zero()?;
-//   commit_proof_tx(&tx_params, proof)?;
-//   Ok(())
-// }
 
 #[tauri::command(async)]
 pub fn get_local_height() -> Result<u64, CarpeError> {
@@ -286,17 +241,7 @@ pub struct EpochRules { // TODO: rename to VDFDifficulty as in tower_state
 #[tauri::command(async)]
 pub async fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
   let client = get_client()?;
-
-  let res = client.view_ext("0x1::tower_state::get_difficulty", None, None).await?;
-
-  if res.len() != 2 {
-    return Err(CarpeError::rpc_fail("could not get the current tower difficulty from chain"))
-  }
-
-  let difficulty: u64 = serde_json::from_value(res.clone().into_iter().nth(0).unwrap()).map_err(|_| CarpeError::rpc_fail("could not parse tower_state::get_difficulty"))?;
-
-  let security: u64 = serde_json::from_value(res.into_iter().nth(1).unwrap())
-  .map_err(|_| CarpeError::rpc_fail("could not parse tower_state::get_difficulty"))?;
+  let (difficulty, security) = libra_query::chain_queries::get_tower_difficulty(&client).await?;
 
 
   Ok(EpochRules {
