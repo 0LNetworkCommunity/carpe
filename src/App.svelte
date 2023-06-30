@@ -54,6 +54,7 @@
     // try to connect to a chain eagerly.
     // if not we will be scanning for peers below
     isCarpeInit()
+    .then(getDefaultProfile)
     .then(getNetwork)
     .then(getMetadata) // try to connect to a chain eagerly.
     .then(refreshAccounts) // should only try to refresh accounts if we are connected to a chain

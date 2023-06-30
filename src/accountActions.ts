@@ -7,30 +7,15 @@ import { notify_success, notify_error } from './carpeNotify';
 import { Profile, allAccounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountRefreshed, makeWhole } from './accounts';
 import { navigate } from 'svelte-navigator';
 
-// export const loadAccounts = async () => { 
-//   console.log(">>> call loadAccounts");
-//   // fetch data from local DB
-//   return invoke('refresh_accounts')
-//     .then((result: { accounts: [AccountEntry] }) => {
-//       all_accounts.set(result.accounts);
-//       // if we have never set the signing account
-//       if (get(signingAccount).account == "" && result.accounts.length > 0) {
-//         // set initial signingAccount
-//         let first = result.accounts[0];
-//         setAccount(first.account, false);
-//       }
-
-//       if (!get(isAccountRefreshed)) {
-//         isAccountRefreshed.set(true);
-//       }
-
-//       updateMakeWhole(result.accounts);
-
-//       // fetch data from the chain
-//       // return refreshAccounts();
-//     })
-//     .catch((error) => raise_error(error, false, "loadAccounts"))
-// }
+export const getDefaultProfile = async () => {
+  invoke("get_default_profile", {})
+  .then((res: Profile) => {
+    signingAccount.set(res);
+  })
+  .catch((e) => {
+    raise_error(e, true, "get_default_profile")
+  })
+}
 
 export const refreshAccounts = async () => {
   isRefreshingAccounts.set(true);

@@ -115,6 +115,15 @@ pub fn get_all_accounts() -> Result<Vec<Profile>, CarpeError> {
     Ok(app_cfg.user_profiles)
 }
 
+/// read all accounts from ACCOUNTS_DB_FILE
+#[tauri::command(async)]
+pub fn get_default_profile() -> Result<Profile, CarpeError> {
+    let app_cfg = get_cfg()?;
+
+    Ok(app_cfg.get_profile(None)?)
+}
+
+
 #[tauri::command(async)]
 pub async fn refresh_accounts() -> Result<Vec<Profile>, CarpeError> {
     // let mut all = Accounts::read_from_file()?;
