@@ -21,7 +21,7 @@
   import { getEnv, responses, debugMode } from "./debug";
   import { routes } from "./routes";
   import "uikit/dist/css/uikit.min.css";
-  import { isCarpeInit, migrate, refreshAccounts, updateMakeWhole } from "./accountActions";
+  import { getDefaultProfile, isCarpeInit, migrate, refreshAccounts, updateMakeWhole } from "./accountActions";
   import { getVersion } from "./version";
   import { carpeTick } from "./tick";
   import { init_preferences } from "./preferences";

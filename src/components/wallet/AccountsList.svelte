@@ -37,8 +37,13 @@
             class={isMining && a.account == selectedAccount.account
               ? "uk-text-primary"
               : ""}
-            on:click={() => setAccount(a.account)}
           >
+          <!-- <tr
+            class={isMining && a.account == selectedAccount.account
+              ? "uk-text-primary"
+              : ""}
+            on:click={() => setAccount(a.account)}
+          > -->
             <td>
               {#if a.account == selectedAccount.account}
                 {#if isMining}
