@@ -159,7 +159,7 @@ pub fn maybe_send_backlog(
 ) -> Result<BacklogSuccess, CarpeError> {
   // check if this is a genesis block
   let profile = config.get_profile(None)?;
-  let state = block_on(get_onchain_tower_state(profile.account));
+  let state = block_on(get_onchain_tower_state(profile.account.to_hex_literal()));
   if state.is_err() {
     warn!("cannot get tower state, maybe TowerState not initialized");
     block_on(maybe_send_genesis_proof(config))

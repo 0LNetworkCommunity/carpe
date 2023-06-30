@@ -40,9 +40,9 @@ pub async fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 
 #[tauri::command(async)]
 pub async fn get_onchain_tower_state(
-  account: AccountAddress,
+  account: String,
 ) -> Result<TowerProofHistoryView, CarpeError> {
-
+  let account: AccountAddress = account.parse()?;
   let client = get_client()?;
   let tower_access_path = "0x1::tower_state::TowerProofHistory";
   let res = client.get_account_resource_bcs::<TowerProofHistoryView>(account, tower_access_path).await?;
