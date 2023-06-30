@@ -26,11 +26,8 @@ use libra_tower::core::{
 
 use libra_types::{
   legacy_types::block::VDFProof,
-  type_extensions::client_ext::ClientExt, exports::Client,
+  type_extensions::client_ext::ClientExt,
 };
-
-
-
 
 use log::{warn, error};
 use serde::{Deserialize, Serialize};
@@ -48,9 +45,7 @@ use serde::{Deserialize, Serialize};
 pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, CarpeError> {
   println!("\nMining one proof\n");
   let mut app_cfg = get_cfg()?;
-
-  let url = app_cfg.best_url(None)?;
-  let client = Client::new(url);
+  let client = get_client()?;
 
   window
     .emit("proof-start", {})
@@ -239,17 +234,8 @@ pub fn get_local_height() -> Result<u64, CarpeError> {
 #[tauri::command(async)]
 /// helper to get the latest local proof
 pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
-  let _cfg = get_cfg()?;
-
-  todo!()
-  // VDFProof::default
-
-  // Ok(get_latest_proof(&cfg, true).map_err(|e| {
-  //   CarpeError::misc(&format!(
-  //     "could not get a local proof, message: {:?}",
-  //     e.to_string()
-  //   ))
-  // })?)
+  let app_cfg = get_cfg()?;
+  Ok(VDFProof::get_latest_proof(&app_cfg, true)?)
 }
 
 // #[tauri::command(async)]
@@ -289,7 +275,7 @@ pub struct EpochRules { // TODO: rename to VDFDifficulty as in tower_state
 
 #[tauri::command(async)]
 pub async fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
-  let client = get_client().await?;
+  let client = get_client()?;
 
   let res = client.view_ext("0x1::tower_state::get_difficulty", None, None).await?;
 

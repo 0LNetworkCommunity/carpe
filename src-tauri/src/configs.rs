@@ -4,8 +4,7 @@ use std::path::PathBuf;
 
 use libra_types::{
   legacy_types::app_cfg::{self, AppCfg},
-  type_extensions::client_ext::ClientExt,
-  exports::{Client}
+  exports::Client
 };
 
 // get the config path for files
@@ -17,8 +16,9 @@ pub fn get_cfg() -> anyhow::Result<AppCfg> {
     AppCfg::load(None)
 }
 
-pub async fn get_client() -> anyhow::Result<Client> {
-    Ok(Client::default().await?)
+pub fn get_client() -> anyhow::Result<Client> {
+    let app_cfg = get_cfg()?;
+    Ok(Client::new(app_cfg.pick_url(None)?))
 }
 
 pub fn is_initialized() -> bool {

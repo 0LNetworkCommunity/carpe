@@ -22,7 +22,7 @@ pub async fn coin_transfer(
 ) -> Result<(), CarpeError> {
   let ak = make_account_key(&sender)?;
   let m: IndexResponse = get_metadata().await?; // get the actual chain we are connected to
-  let client_opt = get_client().await.ok();
+  let client_opt = get_client().ok();
   let mut sender = Sender::new(ak, ChainId::new(m.chain_id), client_opt).await?;
   Ok(sender.transfer(receiver, amount).await?)
 }

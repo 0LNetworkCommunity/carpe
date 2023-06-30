@@ -193,7 +193,7 @@ pub async fn refresh_accounts() -> Result<Vec<Profile>, CarpeError> {
   }
 
 pub async fn get_originating_address(auth_key: AuthenticationKey) -> Result<AccountAddress, CarpeError> {
-    let client = get_client().await?;
+    let client = get_client()?;
     Ok(libra_query::account_queries::lookup_originating_address(&client, auth_key).await?)
 }
 
@@ -367,8 +367,8 @@ async fn test_init_mnem() {
     use libra_types::legacy_types::app_cfg::AppCfg;
     let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
     init_from_mnem(alice).await.unwrap();
-    let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
-    let cfg = AppCfg::parse_toml(path).unwrap();
+    // let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
+    let cfg = AppCfg::load(None).unwrap();
     dbg!(&cfg);
 }
 

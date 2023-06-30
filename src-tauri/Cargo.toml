@@ -45,3 +45,6 @@ url = { version = "^2.1", features = ["serde"] }
 [features]
 custom-protocol = ["tauri/custom-protocol"]
 default = ["custom-protocol"]
+
+[dev-dependencies]
+serde_yaml = "*"
