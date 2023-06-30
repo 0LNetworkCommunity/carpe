@@ -39,8 +39,14 @@ async fn maybe_create_playlist(app_cfg: &mut AppCfg, chain_id: NamedChain) -> an
 
 #[tauri::command(async)]
 pub async fn get_networks() -> Result<NetworkPlaylist, CarpeError> {
-  let app_cfg = get_cfg()?;
-  Ok(app_cfg.get_network_profile(None)?)
+  let mut app_cfg = get_cfg()?;
+  // always return a network profile
+  match app_cfg.get_network_profile(None) {
+    Ok(p) => Ok(p),
+    _ => {
+      Ok(maybe_create_playlist(&mut app_cfg, NamedChain::MAINNET).await?)
+    }
+  }
 }
 
 #[tauri::command(async)]

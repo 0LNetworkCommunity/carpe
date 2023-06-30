@@ -62,7 +62,7 @@ export const scanning_fullnodes_backoff = writable<number>(new Date().getSeconds
 export const scanning_fullnodes_retries= writable<number>(0);
 
 export const synced_fullnodes = writable<[string]>();
-export const network_metadata = writable<IndexResponse>();
+export const networkMetadata = writable<IndexResponse>();
 // should match the Rust type Network Profile
 
 
@@ -107,7 +107,7 @@ export const getMetadata = async () => {
   console.log(">>> get_metadata");
   return invoke("get_metadata", {})
     .then((res: IndexResponse ) => {
-      network_metadata.set(res);
+      networkMetadata.set(res);
       connected.set(true);
       // lets stop scanning for fullnodes if we got a good connection.
       scanning_fullnodes.set(false);
@@ -116,7 +116,7 @@ export const getMetadata = async () => {
     })
     .catch((e) => {
       raise_error(e, true, "getMetadata");
-      network_metadata.set(null);
+      networkMetadata.set(null);
       connected.set(false);
 
       incrementBackoff();

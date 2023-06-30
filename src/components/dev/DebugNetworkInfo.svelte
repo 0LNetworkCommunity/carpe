@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { IndexResponse, getMetadata, network_metadata } from "../../networks";
+  import { IndexResponse, getMetadata, networkMetadata } from "../../networks";
 
   let metadata: IndexResponse;
 
   getMetadata();
 
-  network_metadata.subscribe((n) => {
+  networkMetadata.subscribe((n) => {
     if (n) metadata = n;
   });
 
