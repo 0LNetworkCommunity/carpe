@@ -1,7 +1,7 @@
 //! query the chain
 use libra_types::{
   type_extensions::client_ext::ClientExt,
-  exports::{AccountAddress, IndexResponse},
+  exports::AccountAddress,
   legacy_types::{
     tower::TowerProofHistoryView,
     makewhole_resource::CreditResource,
@@ -11,26 +11,6 @@ use libra_types::{
 use libra_query::account_queries::get_account_balance_libra;
 use anyhow::{anyhow};
 use crate::{carpe_error::CarpeError, configs::get_client};
-
-#[tauri::command(async)]
-pub async fn get_metadata() -> Result<IndexResponse, CarpeError> { // Todo return the IndexResponse
-    let client = get_client()?;
-    let m = client.get_index().await?;
-    // .map_err(|e| CarpeError::client_unknown_err(&e.to_string()))?;
-    // dbg!(&m);
-    Ok(m.into_inner())
-}
-
-#[tokio::test]
-pub async fn query_test() {
-    // need to start a node in test mode first.
-    let client = get_client().unwrap();
-    let m = client.get_index().await.unwrap();
-    println!("query_test: {:?}", m);
-
-    let m = client.get_block_by_height(1407, false).await.unwrap();
-    println!("query_test: {:?}", m);
-}
 
 
 #[tauri::command(async)]
@@ -64,13 +44,7 @@ pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResour
   // match acc_state.get_resource::<MakeWholeResource>()? {
   //   Some(mk) => Ok(mk.credits),
   //   None => Ok(Vec::new()),
-  // }
 }
-
-// #[test]
-// fn test_makewhole() {
-//   get_makewhole("613b6d9599f72134a4fa20bba4c75c36".parse().unwrap());
-// }
 
 pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
     let client = get_client()?;
@@ -82,20 +56,11 @@ pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
 }
 
 pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
-    // todo
-    // Ok(0)
-    // let client = Client::default();
-
-    // dbg!("get_balance");
     let client = get_client()?;
-    // let coin_client = CoinClient::new(&client);
     let res = client.get_account(account).await
       .map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))?;
-    
-    // dbg!(&res);
-    
+
     Ok(res.into_inner().sequence_number)
-    // 
 }
 
 #[tauri::command(async)]
@@ -112,30 +77,6 @@ pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
     return Ok(value);
   }
   Err(CarpeError::rpc_fail("cannot get recovery mode view"))
-  // let resp = client
-  //           .get_account_resource(AccountAddress::ONE, "0x1::recovery_mode::RecoveryMode")
-  //           .await?;
-  
-  
-
-  // if let Some(state) = client.get_annotate_account_blob(AccountAddress::ZERO)?.0 {
-  //   let recovery = query::find_value_from_state(
-  //     &state,
-  //     "RecoveryMode".to_owned(),
-  //     "RecoveryMode".to_owned(),
-  //     "epoch_ends".to_owned(),
-  //   );
-  //   match recovery {
-  //     Some(AnnotatedMoveValue::U64(v)) => return Ok(v.to_owned()),
-  //     _ => {}
-  //   };
-  //   return Err(CarpeError::misc(&format!(
-  //     "No recovery mode struct. This is the typical case. Result: {:?}",
-  //     &recovery
-  //   )));
-  // }
-
-  // return Err(CarpeError::misc(&format!("Cannot get root account state")));
 }
 //
 //
@@ -226,3 +167,15 @@ pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
 //     Ok(_) => get_events(account, event_key),
 //   }
 // }
+
+
+#[tokio::test]
+pub async fn query_test() {
+    // need to start a node in test mode first.
+    let client = get_client().unwrap();
+    let m = client.get_index().await.unwrap();
+    println!("query_test: {:?}", m);
+
+    let m = client.get_block_by_height(1407, false).await.unwrap();
+    println!("query_test: {:?}", m);
+}

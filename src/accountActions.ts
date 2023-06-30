@@ -24,12 +24,6 @@ export const refreshAccounts = async () => {
       isRefreshingAccounts.set(false);
       allAccounts.set(result);
 
-        // set initial signingAccount
-      if (get(signingAccount).account = ""  && result.length > 0) {
-        let first = result[0];
-        setAccount(first.account, false);
-      }
-
       if (!get(isAccountRefreshed)) {
         isAccountRefreshed.set(true);
       }
@@ -129,6 +123,7 @@ export const setAccount = async (account: string, notifySucess = true) => {
   })
   .then((res: Profile) => {
     signingAccount.set(res);
+    isInit.set(true);
     if (notifySucess) {
       notify_success("Account switched to " + res.nickname);
     }

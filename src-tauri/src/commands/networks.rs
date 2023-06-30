@@ -1,18 +1,20 @@
 //! networks to connect to
 
-use crate::configs::get_cfg;
+use crate::configs::{get_client, get_cfg};
+
 use crate::{
   carpe_error::CarpeError,
 };
 use libra_types::exports::{NamedChain};
 use libra_types::legacy_types::network_playlist::NetworkPlaylist;
 use libra_types::legacy_types::network_playlist::HostProfile;
+use libra_types::exports::IndexResponse;
+
 use url::Url;
 use libra_types::legacy_types::app_cfg::AppCfg;
 
 #[tauri::command(async)]
 pub async fn toggle_network(chain_id: NamedChain) -> Result<NetworkPlaylist, CarpeError> {
-  println!("toggle_network");
   let mut app_cfg = get_cfg()?;
   app_cfg.set_chain_id(chain_id);
   app_cfg.save_file()?;
@@ -39,14 +41,24 @@ async fn maybe_create_playlist(app_cfg: &mut AppCfg, chain_id: NamedChain) -> an
 
 #[tauri::command(async)]
 pub async fn get_networks() -> Result<NetworkPlaylist, CarpeError> {
-  let mut app_cfg = get_cfg()?;
+  let app_cfg = get_cfg()?;
+  Ok(app_cfg.get_network_profile(None)?)
   // always return a network profile
-  match app_cfg.get_network_profile(None) {
-    Ok(p) => Ok(p),
-    _ => {
-      Ok(maybe_create_playlist(&mut app_cfg, NamedChain::MAINNET).await?)
-    }
-  }
+  // match app_cfg.get_network_profile(None) {
+  //   Ok(p) => Ok(p),
+  //   _ => {
+  //     Ok(maybe_create_playlist(&mut app_cfg, NamedChain::MAINNET).await?)
+  //   }
+  // }
+}
+
+#[tauri::command(async)]
+pub async fn get_metadata() -> Result<IndexResponse, CarpeError> { // Todo return the IndexResponse
+    let client = get_client()?;
+    let m = client.get_index().await?;
+    // .map_err(|e| CarpeError::client_unknown_err(&e.to_string()))?;
+    // dbg!(&m);
+    Ok(m.into_inner())
 }
 
 #[tauri::command(async)]
@@ -72,13 +84,6 @@ pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
   app_cfg.save_file()?;
   Ok(dummy_playlist)
 }
-
-
-
-// use libra_types::legacy_types::app_cfg::AppCfg;
-// use libra_types::exports::NamedChain;
-// use serde_yaml;
-// use super::commands::networks;
 
 #[tokio::test]
 async fn read_write() {

@@ -1,6 +1,6 @@
 //! transaction scripts
 use crate::carpe_error::CarpeError;
-use crate::commands::query::get_metadata;
+use crate::commands::networks::get_metadata;
 use crate::configs::get_client;
 use crate::key_manager::get_private_key;
 

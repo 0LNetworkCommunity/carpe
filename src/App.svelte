@@ -58,7 +58,7 @@
     .then(getNetwork)
     .then(getMetadata) // try to connect to a chain eagerly.
     .then(refreshAccounts) // should only try to refresh accounts if we are connected to a chain
-    .then(updateMakeWhole) // check for make whole only once on startup
+    // .then(updateMakeWhole) // check for make whole only once on startup
     .finally(refreshUpstreamPeerStats) // if not we will be scanning for peers
     healthTick = setInterval(carpeTick, 30000); // do a healthcheck, this is async
 

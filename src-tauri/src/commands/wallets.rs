@@ -7,7 +7,7 @@ use crate::{
 };
 
 
-use anyhow::{anyhow, Context};
+use anyhow::anyhow;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
 };
@@ -206,20 +206,20 @@ pub async fn get_originating_address(auth_key: AuthenticationKey) -> Result<Acco
     Ok(libra_query::account_queries::lookup_originating_address(&client, auth_key).await?)
 }
 
-fn find_account_data(account: AccountAddress) -> Result<Profile, CarpeError> {
-  let app_cfg = get_cfg()?;
-  let profile = app_cfg.user_profiles.into_iter()
-  .find(|e| {
-    e.account == account
-  });
+// fn find_account_data(account: AccountAddress) -> Result<Profile, CarpeError> {
+//   let app_cfg = get_cfg()?;
+//   let profile = app_cfg.user_profiles.into_iter()
+//   .find(|e| {
+//     e.account == account
+//   });
   
-  Ok(profile.context("could not find profile")?)
-    // let all = Accounts::read_from_file()?;
-    // match all.accounts.into_iter().find(|a| a.account == account) {
-    //     Some(entry) => Ok(entry),
-    //     None => Err(CarpeError::misc("could not find an account")),
-    // }
-}
+//   Ok(profile.context("could not find profile")?)
+//     // let all = Accounts::read_from_file()?;
+//     // match all.accounts.into_iter().find(|a| a.account == account) {
+//     //     Some(entry) => Ok(entry),
+//     //     None => Err(CarpeError::misc("could not find an account")),
+//     // }
+// }
 
 
 // /// Add an account (for tracking only).
@@ -263,15 +263,21 @@ fn find_account_data(account: AccountAddress) -> Result<Profile, CarpeError> {
 /// Switch tx profiles, change 0L.toml to use selected account
 #[tauri::command(async)]
 pub async fn switch_profile(account: AccountAddress) -> Result<Profile, CarpeError> {
-    match find_account_data(account) {
-        Ok(entry) => {
-            configs_profile::set_account_profile(account, entry.auth_key.clone())
-                .await
-                .map_err(|_| CarpeError::misc("could not switch profile"))?;
-            Ok(Profile::new(entry.auth_key, account))
-        }
-        Err(_) => Err(CarpeError::misc("could not switch profile")),
-    }
+    let mut app_cfg = get_cfg()?;
+    let p = app_cfg.get_profile(Some(account.to_string()))?;
+    app_cfg.workspace.default_profile = p.nickname.clone();
+    app_cfg.save_file()?;
+    Ok(p)
+    // Ok(app_cfg.get_profile(&account.to_string())?)
+    // match find_account_data(account) {
+    //     Ok(entry) => {
+    //         configs_profile::set_account_profile(account, entry.auth_key.clone())
+    //             .await
+    //             .map_err(|_| CarpeError::misc("could not switch profile"))?;
+    //         Ok(Profile::new(entry.auth_key, account))
+    //     }
+    //     Err(_) => Err(CarpeError::misc("could not switch profile")),
+    // }
 }
 
 // fn insert_account_db(

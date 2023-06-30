@@ -3,11 +3,21 @@ import { get, writable } from "svelte/store";
 import { raise_error } from "./carpeError";
 import { refreshAccounts } from "./accountActions";
 
-
+// matches rust equivalent
 export interface NetworkPlaylist {
   chain_id: NamedChain, // Todo, use the Network Enum
   nodes: [HostProfile],
 }
+
+// matches rust equivalent
+export interface HostProfile {
+  url: string,
+  note: string,
+  version: number,
+  is_api: boolean,
+  is_sync: boolean,
+}
+
 
 export const defaultPlaylist = (): NetworkPlaylist => {
   let h: HostProfile = {
@@ -24,14 +34,6 @@ export const defaultPlaylist = (): NetworkPlaylist => {
   };
 
   return np
-}
-
-export interface HostProfile {
-  url: string,
-  note: string,
-  version: number,
-  is_api: boolean,
-  is_sync: boolean,
 }
 
 // chain metadata matches the index of node api
@@ -63,8 +65,6 @@ export const scanning_fullnodes_retries= writable<number>(0);
 
 export const synced_fullnodes = writable<[string]>();
 export const networkMetadata = writable<IndexResponse>();
-// should match the Rust type Network Profile
-
 
 export function setNetwork(network: NamedChain) {
   invoke("toggle_network", { chainId: network})
@@ -79,29 +79,10 @@ export function setNetwork(network: NamedChain) {
 export const getNetwork = async () => {
   invoke("get_networks", {})
     .then((res: NetworkPlaylist) => {
-      console.log(res);
       network_profile.set(res)
     })
-    .catch((error) => raise_error(error, false, "getNetwork"));
+    .catch((error) => raise_error(error, true, "getNetwork"));
 }
-
-// export const refreshWaypoint = async () =>{
-//   console.log("refreshWaypoint");
-//   get_metadata();
-
-//   return invoke("refresh_waypoint", {})
-//     .then((res: NetworkProfile) => {
-//       network_profile.set(res);
-//       connected.set(true);
-//       // scanning_fullnodes.set(false);
-//     })
-//     .catch((error) => {
-//       connected.set(false);
-//       raise_error(error, true, "refreshWaypoint"); // we have a purpose-built error component for this
-//     })
-// }
-
-
 
 export const getMetadata = async () => {
   console.log(">>> get_metadata");
@@ -130,10 +111,9 @@ export const refreshUpstreamPeerStats = async () => {
   }
 
   scanning_fullnodes.set(true);
-  console.log(">>> calling refresh_upstream_peer_stats");
+  console.log(">>> refresh_upstream_peer_stats");
   return invoke("refresh_upstream_peer_stats", {})
     .then((res: [string]) => { // Urls
-      console.log("update peers finished");
       synced_fullnodes.set(res);
       getMetadata(); // check the metadata and if we are connected
       scanning_fullnodes.set(false);

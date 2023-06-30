@@ -40,6 +40,7 @@
       <Link to={routes.home}><span class="uk-text-muted" uk-icon="icon: arrow-left; ratio: 2" /></Link>
     {/if}
     <div class="uk-navbar-center">
+      {init} - {myAccountIsOnChain}
       <ul class="uk-navbar-nav { init && myAccountIsOnChain ? "" : "uk-invisible"}">
         <li><Link to={routes.home}> {$_("nav.wallet")} </Link></li>
         <li><Link to={routes.miner}>{$_("nav.miner")}</Link></li>

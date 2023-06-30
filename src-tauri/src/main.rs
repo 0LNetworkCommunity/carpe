@@ -92,6 +92,7 @@ async fn main() {
     .invoke_handler(tauri::generate_handler![
       //////// Accounts ////////
       commands::wallets::is_init,
+      commands::wallets::get_default_profile,
       commands::wallets::refresh_accounts,
       commands::wallets::get_all_accounts,
       // get_account_events,
@@ -107,11 +108,12 @@ async fn main() {
       commands::networks::override_playlist,
       commands::networks::get_networks,
       commands::networks::toggle_network,
+      commands::networks::get_metadata,
+
       //////// Queries ////////
       commands::query::query_balance,
       commands::query::query_makewhole,
       commands::query::get_recovery_mode,
-      commands::query::get_metadata,
       // wallet_type,
 
       //////// Transactions ////////

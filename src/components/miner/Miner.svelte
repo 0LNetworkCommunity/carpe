@@ -14,7 +14,7 @@
   import { get } from "svelte/store";
   import SyncProofs from "./cards/SyncProofs.svelte";
   import CommonErrors from "./CommonErrors.svelte";
-  import { getTowerChainView } from "../../miner_invoke";
+  import { getLocalHeight, getTowerChainView } from "../../miner_invoke";
   import EpochStatus from "./cards/EpochStatus.svelte";
   import { _ } from "svelte-i18n";
 
@@ -36,6 +36,7 @@
 
   onMount(async () => {
     getTowerChainView();
+    getLocalHeight();
     unsubsTower = tower.subscribe(t => {
       minerTower = t;
       hasProofs = minerTower.last_local_proof ? true : false;
