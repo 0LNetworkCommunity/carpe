@@ -34,7 +34,7 @@ yarn
 ...then start development server:
 
 ```bash
-yarn tauri dev
+yarn dev
 ```
 
 This will take care of running both frontend and backend of your app with watch attached to both. That means whenever you change something in `src` (svelte frontend code) or `src-tauri` (rust backend code), it will be automatically processed and hot reloaded. To finish dev/debug mode simply close the app window.
@@ -44,7 +44,7 @@ This will take care of running both frontend and backend of your app with watch 
 To create an optimised version of the app:
 
 ```bash
-yarn tauri build
+yarn build
 ```
 
 This will create standalone app and installer in `src-tauri/target/release` directory.

@@ -3,18 +3,14 @@
   import { responses } from "../../debug";
   import { notify_success } from "../../carpeNotify";
   import { invoke } from "@tauri-apps/api/tauri";
-  import UIkit from "uikit";
   import {
-    unscaledCoins,
     printUnscaledCoins,
     printCoins,
   } from "../../coinHelpers";
-  import { Profile, signingAccount } from "../../accounts";
+  import { signingAccount } from "../../accounts";
+  import type { Profile } from "../../accounts";
   import { onDestroy, onMount } from "svelte";
-    import { raise_error } from "../../carpeError";
-
-  // export let account;
-  // export let onSuccess = () => {};
+  import { raise_error } from "../../carpeError";
 
   const errorDic = {
     "120127": $_("txs.transfer.error_slow_wallet"),
@@ -23,6 +19,7 @@
 
   let receiver;
   let amountInput;
+
   let amount = 0;
   let amountFormatted = "";
   let errorMessage = "";

@@ -2,9 +2,12 @@ import { get } from 'svelte/store';
 import { invoke } from '@tauri-apps/api/tauri';
 import { raise_error } from './carpeError';
 import { responses } from './debug';
-import {ClientTowerStatus, minerLoopEnabled, tower} from "./miner";
+import {minerLoopEnabled} from "./miner";
+// import type { ClientTowerStatus } from "./miner";
+
 import { notify_success, notify_error } from './carpeNotify';
-import { Profile, allAccounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountRefreshed, makeWhole } from './accounts';
+import { allAccounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountRefreshed, makeWhole } from './accounts';
+import type { Profile } from './accounts';
 import { navigate } from 'svelte-navigator';
 
 export const getDefaultProfile = async () => {

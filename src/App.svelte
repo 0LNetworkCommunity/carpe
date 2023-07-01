@@ -29,6 +29,7 @@
   import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
   import { getMetadata, getNetwork, refreshUpstreamPeerStats } from "./networks";
+  import Style from "./style/Style.svelte"
 
   
   // Init i18n and preferences
@@ -117,6 +118,7 @@
 </script>
 
 <main class="uk-background-muted uk-height-viewport">
+  <Style/>
   <SearchingFullnodes />
   <RecoveryMode/>
   

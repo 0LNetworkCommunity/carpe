@@ -1,4 +1,4 @@
-<script src="ts">
+<script>
   import { _ } from "svelte-i18n";
 
   export let loadingError;

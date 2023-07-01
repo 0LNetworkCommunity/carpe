@@ -1,5 +1,5 @@
 
-import UIkit from 'uikit';
+import UIkit from 'uikit'
 
 
 export function notify_success(s: string) {

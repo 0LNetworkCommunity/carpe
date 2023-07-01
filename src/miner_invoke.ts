@@ -6,9 +6,11 @@ import { raise_error } from "./carpeError";
 import { clearDisplayErrors } from "./carpeErrorUI";
 import { notify_success } from "./carpeNotify";
 import { responses } from "./debug";
-import { backlogListenerReady, backlogInProgress, EpochRules, minerLoopEnabled, ProofProgress, tower, minerProofComplete, minerEventReceived, backlogSubmitted, VDFProof, TowerStateView, isTowerNewbie, ClientTowerStatus } from "./miner";
+import { backlogListenerReady, backlogInProgress, minerLoopEnabled, tower, minerProofComplete, minerEventReceived, backlogSubmitted, isTowerNewbie } from "./miner";
+
+import type { ClientTowerStatus, EpochRules, ProofProgress, TowerStateView, VDFProof } from "./miner";
 import { NamedChain, network_profile } from "./networks";
-import { is_empty } from "svelte/internal";
+// import { is_empty } from "svelte/internal";
 
 const current_window = getCurrent();
 
