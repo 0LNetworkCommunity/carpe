@@ -1,10 +1,12 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { onMount, onDestroy } from "svelte";
+
+  import type { CarpeError } from "../../../modules/carpeError";
+  import { displayWrongDifficulty } from "../../../modules/carpeErrorUI";
+
   import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
   import CardError from "../../layout/CardError.svelte";
-  import type { CarpeError } from "../../../carpeError";
-  import { displayWrongDifficulty } from "../../../carpeErrorUI";
 
   let unsubs;
   let display: CarpeError = null;

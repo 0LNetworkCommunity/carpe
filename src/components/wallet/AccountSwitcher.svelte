@@ -1,12 +1,15 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
-  import { signingAccount, allAccounts } from "../../accounts";
-  import { setAccount } from "../../accountActions";
-  import type { Profile } from "../../accounts";
+  import { _ } from "svelte-i18n";
   import { Link } from "svelte-navigator";
+
+  import { signingAccount, allAccounts } from "../../modules/accounts";
+  import { setAccount } from "../../modules/accountActions";
+  import type { Profile } from "../../modules/accounts";
+
   import NetworkIcon from "./NetworkIcon.svelte";
   import AboutLink from "../about/AboutLink.svelte";
-  import { _ } from "svelte-i18n";
+
 
   let selectedAccount: Profile;
   let account_list: Profile[];

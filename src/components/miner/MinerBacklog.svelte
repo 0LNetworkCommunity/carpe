@@ -1,8 +1,8 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { onMount, onDestroy } from "svelte";
-  import { submitBacklog } from "../../miner_invoke";
-  import { backlogInProgress } from "../../miner";
+  import { submitBacklog } from "../../modules/miner_invoke";
+  import { backlogInProgress } from "../../modules/miner";
 
   let unsubs;
   let inProgress = false;

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getMetadata, networkMetadata } from "../../networks";
-  import type { IndexResponse } from "../../networks";
+  import { getMetadata, networkMetadata } from "../../modules/networks";
+  import type { IndexResponse } from "../../modules/networks";
 
   let metadata: IndexResponse;
 

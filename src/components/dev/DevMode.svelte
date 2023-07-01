@@ -1,4 +1,8 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
+  import { debugMode } from "../../modules/debug";
+
   import DebugCard from "./DebugCard.svelte";
   import DebugActions from "./DebugActions.svelte";
   import DebugSwitchProdTest from "./DebugSwitchProdTest.svelte";
@@ -6,8 +10,7 @@
   import DebugSwitcher from "./DebugSwitcher.svelte";
   import DebugPaths from "./DebugPaths.svelte";
   import DebugNetworkInfo from "./DebugNetworkInfo.svelte";
-  import { onMount } from "svelte";
-  import { debugMode } from "../../debug";
+
 
   let debugEnabled = false;
 	onMount(async () => {

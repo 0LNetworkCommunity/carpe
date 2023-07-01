@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _ } from "../../lang/i18n";
-  import { setLocale } from "../../preferences";
+  import { setLocale } from "../../modules/preferences";
 
 </script>
 

@@ -1,11 +1,13 @@
 <script lang="ts">
 
   import { onMount, onDestroy } from "svelte";
-  import { accountEvents, signingAccount } from "../../accounts";
-  import { getAccountEvents } from "../../accountActions";
+  import { _ } from "svelte-i18n";
+
+  import { accountEvents, signingAccount } from "../../modules/accounts";
+  import { getAccountEvents } from "../../modules/accountActions";
+
   import EventsTable from "./EventsTable.svelte";
   import EventsTableDummy from "./EventsTableDummy.svelte";
-  import { _ } from "svelte-i18n";
   import EventsError from "./EventsError.svelte";
 
   let events = null;

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { onMount } from "svelte";
-  import { isTowerNewbie, tower } from "../../../miner";
+  import { isTowerNewbie, tower } from "../../../modules/miner";
 
   let actual_proofs: number;
   let newbie = false;

@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { getVersion, app_version } from "../../version";
+  import { getVersion, app_version } from "../../modules/version";
   import { _ } from "svelte-i18n";
   
   let release = {};

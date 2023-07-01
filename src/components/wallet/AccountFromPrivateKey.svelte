@@ -1,6 +1,7 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { InitType, handleAdd } from "../../accountActions";
+  import { InitType, handleAdd } from "../../modules/accountActions";
+  
   let danger_temp_private_key: string;
 
   const initAccount = (pri_key: string) => {

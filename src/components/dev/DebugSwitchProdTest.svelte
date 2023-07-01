@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { getEnv, nodeEnv, setDebugProdTest } from "../../debug";
+  import { getEnv, nodeEnv, setDebugProdTest } from "../../modules/debug";
 
   let current_env = "prod";
   

@@ -1,10 +1,11 @@
 <script lang="ts">
-  import UIkit from 'uikit';
-  import { printCoins } from '../../coinHelpers';
-  import { makeWhole } from "../../accounts";
   import { onDestroy, onMount } from 'svelte';
-  import { claimMakeWhole } from '../../accountActions';
   import { _ } from "svelte-i18n";
+
+  import UIkit from 'uikit';
+  import { printCoins } from '../../modules/coinHelpers';
+  import { makeWhole } from "../../modules/accounts";
+  import { claimMakeWhole } from '../../modules/accountActions';
     
   let credits;
   let unsubs;

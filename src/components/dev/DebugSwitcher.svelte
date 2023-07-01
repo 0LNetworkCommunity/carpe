@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from "svelte";
-  import { debugMode, debugModeToggle } from "../../debug";
+  import { debugMode, debugModeToggle } from "../../modules/debug";
 
   let debugEnabled = false;
 	onMount(async () => {

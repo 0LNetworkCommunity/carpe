@@ -1,11 +1,13 @@
 <script lang="ts">
-import { invoke } from "@tauri-apps/api/tauri";
-import { raise_error } from "../../carpeError";
-import type { CarpeError } from "../../carpeError";
-import { notify_success } from "../../carpeNotify";
-import { responses } from "../../debug";
 import UIkit from "uikit";
 import { _ } from "svelte-i18n";
+import { invoke } from "@tauri-apps/api/tauri";
+
+import { raise_error } from "../../modules/carpeError";
+import type { CarpeError } from "../../modules/carpeError";
+import { notify_success } from "../../modules/carpeNotify";
+import { responses } from "../../modules/debug";
+
 
   let loading = false;
   function setWallet (num: number) {

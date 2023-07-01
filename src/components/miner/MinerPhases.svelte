@@ -8,7 +8,7 @@
     backlogInProgress,
     backlogSubmitted,
     minerProofComplete,
-  } from "../../miner";
+  } from "../../modules/miner";
 
   let listenerReady;
   let loopEnabled;

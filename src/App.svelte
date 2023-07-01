@@ -3,6 +3,21 @@
   import type { Event } from "@tauri-apps/api/event";
   import { onDestroy, onMount } from "svelte";
   import { Router, Route, navigate } from "svelte-navigator";
+
+  // CARPE MODULES
+  import { backlogInProgress, backlogSubmitted, minerEventReceived } from "./modules/miner";
+  import { raise_error, logger, Level } from "./modules/carpeError";
+  import type { CarpeError } from "./modules/carpeError";
+  import { getEnv, responses, debugMode } from "./modules/debug";
+  import { routes } from "./modules/routes";
+  import "uikit/dist/css/uikit.min.css";
+  import { getDefaultProfile, isCarpeInit, migrate, refreshAccounts, updateMakeWhole } from "./modules/accountActions";
+  import { getVersion } from "./modules/version";
+  import { carpeTick } from "./modules/tick";
+  import { init_preferences } from "./modules/preferences";
+  import { getMetadata, getNetwork, refreshUpstreamPeerStats } from "./modules/networks";
+
+  // UI COMPONENTS
   import Nav from "./components/Nav.svelte";
   import DebugCard from "./components/dev/DebugCard.svelte";
   import Wallet from "./components/wallet/Wallet.svelte";
@@ -15,20 +30,11 @@
   import Transactions from "./components/txs/Transactions.svelte";
   import Events from "./components/events/Events.svelte";
   import About from "./components/about/About.svelte";
-  import { backlogInProgress, backlogSubmitted, minerEventReceived } from "./miner";
-  import { raise_error, logger, Level } from "./carpeError";
-  import type { CarpeError } from "./carpeError";
-  import { getEnv, responses, debugMode } from "./debug";
-  import { routes } from "./routes";
-  import "uikit/dist/css/uikit.min.css";
-  import { getDefaultProfile, isCarpeInit, migrate, refreshAccounts, updateMakeWhole } from "./accountActions";
-  import { getVersion } from "./version";
-  import { carpeTick } from "./tick";
-  import { init_preferences } from "./preferences";
   import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
   import RecoveryMode from "./components/layout/RecoveryMode.svelte";
   import MakeWhole from "./components/make-whole/MakeWhole.svelte";
-  import { getMetadata, getNetwork, refreshUpstreamPeerStats } from "./networks";
+
+
   import Style from "./style/Style.svelte"
 
   

@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/tauri';
 import { writable } from 'svelte/store';
-import { getLocaleFromNavigator, setupI18n } from "./lang/i18n";
+import { getLocaleFromNavigator, setupI18n } from "../lang/i18n";
 import { raise_error } from './carpeError';
 
 const empty_preferences = function(): Preferences {

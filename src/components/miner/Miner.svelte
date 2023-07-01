@@ -1,22 +1,24 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
+  import { _ } from "svelte-i18n";
+  import { get } from "svelte/store";
+
+  import { isRefreshingAccounts, signingAccount } from "../../modules/accounts";
+  import type { Profile } from "../../modules/accounts";
+  import { backlogInProgress, isTowerNewbie, tower } from "../../modules/miner";
+  import type {ClientTowerStatus } from "../../modules/miner";
+  import { nodeEnv } from "../../modules/debug";
+  import { getLocalHeight, getTowerChainView } from "../../modules/miner_invoke";
+
+  import SyncProofs from "./cards/SyncProofs.svelte";
+  import CommonErrors from "./CommonErrors.svelte";
+  import EpochStatus from "./cards/EpochStatus.svelte";
+  import FirstProof from "./cards/FirstProof.svelte";
   import ToggleMiner from "./ToggleMiner.svelte";
   import MinerProgress from "./MinerProgress.svelte";
   import TowerState from "./TowerState.svelte";
   import MinerDebug from "./MinerDebug.svelte";
   import CantStart from "./cards/CantStart.svelte";
-  import { isRefreshingAccounts, signingAccount } from "../../accounts";
-  import type { Profile } from "../../accounts";
-  import FirstProof from "./cards/FirstProof.svelte";
-  import { backlogInProgress, isTowerNewbie, tower } from "../../miner";
-  import type {ClientTowerStatus } from "../../miner";
-  import { nodeEnv } from "../../debug";
-  import { get } from "svelte/store";
-  import SyncProofs from "./cards/SyncProofs.svelte";
-  import CommonErrors from "./CommonErrors.svelte";
-  import { getLocalHeight, getTowerChainView } from "../../miner_invoke";
-  import EpochStatus from "./cards/EpochStatus.svelte";
-  import { _ } from "svelte-i18n";
 
   let newbie = false;
   let loading = true;

@@ -1,7 +1,7 @@
 <script>
   import { onMount, onDestroy } from "svelte";
-  import { toggleMining } from "../../miner_toggle";
-  import { minerLoopEnabled } from "../../miner";
+  import { toggleMining } from "../../modules/miner_toggle";
+  import { minerLoopEnabled } from "../../modules/miner";
 
   let enabled;
   let unsubscribe; 

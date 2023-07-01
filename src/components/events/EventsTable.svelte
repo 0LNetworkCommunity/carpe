@@ -1,8 +1,9 @@
 <script lang="ts">
   /* Account events table with pagination */
   import { _ } from "svelte-i18n";
+  import { printCoins } from "../../modules/coinHelpers";
+
   import PageNumber from "./PageNumber.svelte";
-  import { printCoins } from "../../coinHelpers";
 
   export let events;
   

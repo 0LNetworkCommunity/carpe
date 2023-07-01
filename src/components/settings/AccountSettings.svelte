@@ -1,10 +1,10 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-import { _ } from "svelte-i18n";
-  import { refreshAccounts } from "../../accountActions";
-  import { raise_error } from "../../carpeError";
-  import { notify_success } from "../../carpeNotify";
-  import { responses } from "../../debug";
+  import { _ } from "svelte-i18n";
+  import { refreshAccounts } from "../../modules/accountActions";
+  import { raise_error } from "../../modules/carpeError";
+  import { notify_success } from "../../modules/carpeNotify";
+  import { responses } from "../../modules/debug";
   const removeAccounts = async () => {
     invoke("remove_accounts", {})
       .then((res: any) => {

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-    import { raise_error } from "../../carpeError";
+  import { raise_error } from "../../modules/carpeError";
 
   let config_path;
   let last_proof_path;

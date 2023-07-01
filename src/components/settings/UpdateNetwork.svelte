@@ -1,18 +1,20 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { CarpeError } from "../../carpeError";
-  import { raise_error } from "../../carpeError";
+  import { _ } from "svelte-i18n";
+  import { invoke } from "@tauri-apps/api/tauri";
+
+  import type { CarpeError } from "../../modules/carpeError";
+  import { raise_error } from "../../modules/carpeError";
   import {
     network_profile,
     getNetwork,
     synced_fullnodes,
-  } from "../../networks";
-  import type { NetworkPlaylist } from "../../networks";
-  import { refreshUpstreamPeerStats } from "../../networks";
-  import { invoke } from "@tauri-apps/api/tauri";
-  import { notify_success } from "../../carpeNotify";
+    refreshUpstreamPeerStats,
+  } from "../../modules/networks";
+  import type { NetworkPlaylist } from "../../modules/networks";
+  import { notify_success } from "../../modules/carpeNotify";
+  
   import SetNetworkPlaylist from "./SetNetworkPlaylist.svelte";
-  import { _ } from "svelte-i18n";
 
   let upstream_url = "";
   let current_chain_id = "";

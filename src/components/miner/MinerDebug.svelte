@@ -1,14 +1,15 @@
 <script lang="ts">
+  import { onMount, onDestroy } from "svelte";
   import {
     emitBacklog,
     killBacklogListener,
     startBacklogListener,
     submitProofZero,
     towerOnce,
-  } from "../../miner_invoke";
-  import { debugMode } from "../../debug";
-  import { onMount, onDestroy } from "svelte";
-  import type { ClientTowerStatus } from "../../miner";
+  } from "../../modules/miner_invoke";
+  import { debugMode } from "../../modules/debug";
+  import type { ClientTowerStatus } from "../../modules/miner";
+
   import MinerPhases from "./MinerPhases.svelte";
 
   export let minerTower: ClientTowerStatus;

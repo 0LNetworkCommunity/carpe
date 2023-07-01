@@ -1,8 +1,10 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
-  import CardAlert from "../../layout/CardAlert.svelte";
-  import { minerLoopEnabled } from "../../../miner";
   import { _ } from "svelte-i18n";
+
+  import { minerLoopEnabled } from "../../../modules/miner";
+
+  import CardAlert from "../../layout/CardAlert.svelte";
 
   let enabled = false; 
   let unsubsLoopEnabled;

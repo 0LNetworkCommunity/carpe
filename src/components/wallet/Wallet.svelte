@@ -1,24 +1,26 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { onDestroy, onMount } from "svelte";
+  import UIkit from "uikit";
+  import Icons from "uikit/dist/js/uikit-icons";
+
   import {
     isRefreshingAccounts,
     allAccounts,
     signingAccount,
     isAccountRefreshed,
-  } from "../../accounts";
-  import type { Profile } from "../../accounts";
+  } from "../../modules/accounts";
+  import type { Profile } from "../../modules/accounts";
+  import { minerLoopEnabled } from "../../modules/miner";
+
+  import { connected } from "../../modules/networks";
+  import ConnectionError from "../layout/ConnectionError.svelte";
+  import SigningAccount from "./SelectedAccount.svelte";
+  import SelectedAccount from "./SelectedAccount.svelte";
   import Newbie from "./Newbie.svelte";
   import AccountsList from "./AccountsList.svelte";
   import ReminderCreate from "./ReminderCreate.svelte";
-  import { minerLoopEnabled } from "../../miner";
-  import UIkit from "uikit";
-  import Icons from "uikit/dist/js/uikit-icons";
-  import { connected } from "../../networks";
-  import ConnectionError from "../layout/ConnectionError.svelte";
-    import SigningAccount from "./SelectedAccount.svelte";
-    import SelectedAccount from "./SelectedAccount.svelte";
-  
+
   UIkit.use(Icons);
 
   let selectedAccount: Profile;

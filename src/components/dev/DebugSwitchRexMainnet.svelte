@@ -5,7 +5,7 @@
     getNetwork,
     network_profile,
     NamedChain,
-  } from "../../networks";
+  } from "../../modules/networks";
 
   let current_chain_id;
 

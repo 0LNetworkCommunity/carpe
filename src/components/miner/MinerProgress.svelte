@@ -4,8 +4,8 @@
   import {
     minerProofComplete,
     minerLoopEnabled,
-  } from "../../miner";
-  import { setProofProgres } from "../../miner_invoke";
+  } from "../../modules/miner";
+  import { setProofProgres } from "../../modules/miner_invoke";
 
   export let tower;
 

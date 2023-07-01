@@ -1,8 +1,8 @@
 <script lang="ts">
   import { afterUpdate } from "svelte";
   import { get } from "svelte/store";
-  import { carpeErrorLog, clearErrors } from "../../carpeError";
-  import { responses, debugModeToggle } from "../../debug"; // TODO: Make this read only
+  import { carpeErrorLog, clearErrors } from "../../modules/carpeError";
+  import { responses, debugModeToggle } from "../../modules/debug"; // TODO: Make this read only
 
   let result_string = "";
   let this_error = get(carpeErrorLog);

@@ -1,6 +1,6 @@
 <script>
   import { onDestroy, onMount } from "svelte";
-  import { NamedChain, network_profile } from "../../networks";
+  import { NamedChain, network_profile } from "../../modules/networks";
 
   let isTestNet = false;
   let unsubs;

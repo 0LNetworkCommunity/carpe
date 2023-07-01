@@ -2,10 +2,12 @@
   import { _ } from "svelte-i18n";
   import { onDestroy, onMount } from "svelte";
   import { invoke } from "@tauri-apps/api/tauri";
-  import { signingAccount, mnem } from "../../accounts";
-  import type { Profile } from "../../accounts";
-  import { raise_error } from "../../carpeError";
-  import { responses } from "../../debug";
+
+  import { signingAccount, mnem } from "../../modules/accounts";
+  import type { Profile } from "../../modules/accounts";
+  import { raise_error } from "../../modules/carpeError";
+  import { responses } from "../../modules/debug";
+
   import AccountFromMnemSubmit from "./AccountFromMnemSubmit.svelte";
 
   interface NewKeygen {

@@ -1,7 +1,8 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
   import { onDestroy, onMount, afterUpdate } from "svelte";
-  import { backlogListenerReady } from "../../../miner";
+  import { backlogListenerReady } from "../../../modules/miner";
+  
   import CardAlert from "../../layout/CardAlert.svelte";
   import SyncProofsError from "./SyncProofsError.svelte";
     

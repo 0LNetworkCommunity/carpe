@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { connected, scanning_fullnodes } from "../../networks";
-  import { isAccountRefreshed } from "../../accounts";
+  import { connected, scanning_fullnodes } from "../../modules/networks";
+  import { isAccountRefreshed } from "../../modules/accounts";
 
   let scanning = true;
   let isLoaded = false;

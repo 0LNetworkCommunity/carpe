@@ -1,8 +1,9 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/tauri";
-  import { setAccount } from "../../accountActions";
-  import { raise_error } from "../../carpeError";
-  import { responses } from "../../debug";
+  import { setAccount } from "../../modules/accountActions";
+  import { raise_error } from "../../modules/carpeError";
+  import { responses } from "../../modules/debug";
+  
   let home_path = "";
   let swarm_running = "";
   let swarm_files = "";

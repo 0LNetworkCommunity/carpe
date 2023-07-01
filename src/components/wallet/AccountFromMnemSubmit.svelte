@@ -1,9 +1,10 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { mnem } from "../../accounts";
   import { onDestroy, onMount } from "svelte";
-  import { InitType, handleAdd, } from "../../accountActions";
   import UIkit from "uikit";
+
+  import { mnem } from "../../modules/accounts";
+  import { InitType, handleAdd, } from "../../modules/accountActions";
 
   export let danger_temp_mnem: string;
   export let isNewAccount: boolean = true;

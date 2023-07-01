@@ -1,12 +1,15 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { Link, useLocation } from "svelte-navigator";
-  import { signingAccount, isInit } from "../accounts";
-  import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
-  import { routes } from "../routes";
+  import { get } from "svelte/store";
+
   import { _ } from "../lang/i18n";
-  import { init_preferences } from "../preferences";
-    import { get } from "svelte/store";
+  import { signingAccount, isInit } from "../modules/accounts";
+  import { routes } from "../modules/routes";
+  import { init_preferences } from "../modules/preferences";
+  
+  import AccountSwitcher from "./wallet/AccountSwitcher.svelte";
+
   // import MakeWholeLink from "./make-whole/MakeWholeLink.svelte";
   
   init_preferences();

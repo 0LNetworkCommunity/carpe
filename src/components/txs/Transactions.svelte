@@ -1,16 +1,18 @@
 <script lang="ts">
+  import { onDestroy, onMount } from "svelte";
   import { _ } from "svelte-i18n";
-  import { responses } from "../../debug";
-  import { notify_success } from "../../carpeNotify";
   import { invoke } from "@tauri-apps/api/tauri";
+
+
+  import { responses } from "../../modules/debug";
+  import { notify_success } from "../../modules/carpeNotify";
   import {
     printUnscaledCoins,
     printCoins,
-  } from "../../coinHelpers";
-  import { signingAccount } from "../../accounts";
-  import type { Profile } from "../../accounts";
-  import { onDestroy, onMount } from "svelte";
-  import { raise_error } from "../../carpeError";
+  } from "../../modules/coinHelpers";
+  import { signingAccount } from "../../modules/accounts";
+  import type { Profile } from "../../modules/accounts";
+  import { raise_error } from "../../modules/carpeError";
 
   const errorDic = {
     "120127": $_("txs.transfer.error_slow_wallet"),
