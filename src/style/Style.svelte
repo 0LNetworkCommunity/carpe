@@ -1,3 +1,3 @@
-<style type="text/scss">
-   @import "./global.sass";
-</style>
+<script type="ts">
+   import './global.scss';
+</script>

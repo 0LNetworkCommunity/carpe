@@ -25,7 +25,7 @@ export const boot_up = () => {
     // .then(updateMakeWhole) // check for make whole only once on startup
     .finally(refreshUpstreamPeerStats) // if not we will be scanning for peers
     .finally(() => navigate("wallet"))
-  
+
 
   setInterval(carpeTick, 30000); // do a healthcheck, this is async
 }
