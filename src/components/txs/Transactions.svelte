@@ -5,7 +5,7 @@
 
   import { responses } from '../../modules/debug'
   import { notify_success } from '../../modules/carpeNotify'
-  import { printUnscaledCoins, printCoins } from '../../modules/coinHelpers'
+  import { printUnscaledCoins, printCoins, unscaledCoins} from '../../modules/coinHelpers'
   import { signingAccount } from '../../modules/accounts'
   import type { Profile } from '../../modules/accounts'
   import { raise_error } from '../../modules/carpeError'
@@ -15,8 +15,15 @@
     '1004': $_('txs.transfer.error_account_does_not_exist'),
   }
 
-  let receiver
-  let amountInput
+  let account: Profile;
+  let unsubs;
+  onMount(async () => {
+    unsubs = signingAccount.subscribe((obj) => (account = obj))
+  })
+
+
+  let receiver: string;
+  let amountInput: number;
 
   let amount = 0
   let amountFormatted = ''
@@ -24,40 +31,35 @@
   let waitingTxs = false
   let waitingConfirmation = false
 
-  // const re = /[a-fA-F0-9]{32}/i
+  const re = /[a-fA-F0-9]{32}/i
 
   let isReceiverValid = true
   let isValidAmount = true
   let checkMessage = ''
 
-  // TODO: Can we not JQUERY please?
-  // $: isReceiverValid = receiver && re.test(receiver) && receiver != account.account;
-  // $: isValidAmount = amount > 0 && amount < unscaledCoins(account.balance);
-  // $: checkMessage = amount > unscaledCoins(account.balance)
-  //   ? $_("txs.transfer.error_amount_greater_than_balance")
-  //   : receiver && receiver.toUpperCase() == account.account.toUpperCase()
-  //     ? $_("txs.transfer.error_receiver_equals_sender")
-  //     : "";
+  // // TODO: Can we not JQUERY please?
+  $: isReceiverValid = account && receiver && re.test(receiver) && receiver != account.account;
+  $: isValidAmount = account && amount > 0 && amount < unscaledCoins(account.balance);
+  $: checkMessage = account && amount > unscaledCoins(account.balance)
+    ? $_("txs.transfer.error_amount_greater_than_balance")
+    : receiver && receiver.toUpperCase() == account.account.toUpperCase()
+      ? $_("txs.transfer.error_receiver_equals_sender")
+      : "";
 
-  let account: Profile
-  let unsubs
-  onMount(async () => {
-    unsubs = signingAccount.subscribe((obj) => (account = obj))
-  })
 
   onDestroy(async () => {
     unsubs && unsubs()
   })
 
-  const transferCoins = () => {
+  const transferCoins = async () => {
     waitingTxs = true
 
-    invoke('coin_transfer', { sender: account.account, receiver: receiver.trim(), amount })
+    return invoke('coin_transfer', { sender: account.account, receiver: receiver.trim(), amount: amount })
       .then((res) => {
         responses.set(JSON.stringify(res))
         notify_success($_('txs.transfer.success'))
         waitingTxs = false
-        amount = null
+        amount = 0
         amountFormatted = ''
         receiver = null
         // callback

@@ -31,7 +31,6 @@
   import SearchingFullnodes from './components/layout/SearchingFullnodes.svelte'
   import RecoveryMode from './components/layout/RecoveryMode.svelte'
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
-  import CarpeButton from './components/layout/CarpeButton.svelte'
 
   import Style from './style/Style.svelte'
 
@@ -94,26 +93,13 @@
     unlistenAck()
     unlistenBacklogSuccess()
     unlistenBacklogError()
-    // clearInterval(healthTick);
   })
 
-  const makeAlert = async function () {
-    // await setTimeout(() => {
-    //   window.alert("alert");
-    // }, 1000);
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(42), 1000);
-  });
-
-  }
-  // const color = "red";
-  // const text = "push";
 </script>
 
 <main class="uk-background-muted uk-height-viewport">
   <Style />
-  
-  <CarpeButton text={"push"} color={"red"} cbAction={makeAlert}/>
+
 
   <SearchingFullnodes />
   <RecoveryMode />
