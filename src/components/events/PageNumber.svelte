@@ -2,7 +2,7 @@
   export let number: number;
   export let index: number;
 </script>
-
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <a id={"pageIndex" + number} class="uk-align-left page-index-link" on:click="{() => index = number}">
   <div class="uk-text-center page-index {number == index ? 'page-index-selected' : 'page-index-not-selected' }" >
     <span class="page-index-number">{number}</span>

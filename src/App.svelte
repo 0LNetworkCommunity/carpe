@@ -2,20 +2,18 @@
   import { listen } from "@tauri-apps/api/event";
   import type { Event } from "@tauri-apps/api/event";
   import { onDestroy, onMount } from "svelte";
-  import { Router, Route, navigate } from "svelte-navigator";
+  import { Router, Route } from "svelte-navigator";
 
   // CARPE MODULES
   import { backlogInProgress, backlogSubmitted, minerEventReceived } from "./modules/miner";
-  import { raise_error, logger, Level } from "./modules/carpeError";
+  import { raise_error } from "./modules/carpeError";
   import type { CarpeError } from "./modules/carpeError";
-  import { getEnv, responses, debugMode } from "./modules/debug";
+  import { responses, debugMode } from "./modules/debug";
   import { routes } from "./modules/routes";
   import "uikit/dist/css/uikit.min.css";
-  import { getDefaultProfile, isCarpeInit, migrate, refreshAccounts, updateMakeWhole } from "./modules/accountActions";
-  import { getVersion } from "./modules/version";
+  import { init_preferences } from "./modules/preferences"
+
   import { carpeTick } from "./modules/tick";
-  import { init_preferences } from "./modules/preferences";
-  import { getMetadata, getNetwork, refreshUpstreamPeerStats } from "./modules/networks";
   import {boot_up} from "./boot/boot"
 
   // UI COMPONENTS
