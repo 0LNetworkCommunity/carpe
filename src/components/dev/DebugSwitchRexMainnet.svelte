@@ -1,28 +1,21 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import {
-    setNetwork,
-    getNetwork,
-    network_profile,
-    NamedChain,
-  } from "../../modules/networks";
+  import { onMount } from 'svelte'
+  import { setNetwork, getNetwork, network_profile, NamedChain } from '../../modules/networks'
 
-  let current_chain_id;
+  let current_chain_id
 
   onMount(async () => {
-    getNetwork();
+    getNetwork()
     network_profile.subscribe((n) => {
       if (n) {
-        current_chain_id = n.chain_id;
+        current_chain_id = n.chain_id
       }
-    });
-  });
+    })
+  })
 </script>
 
 <div class="uk-margin-medium-bottom">
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
-    Network Connection
-  </h4>
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">Network Connection</h4>
   <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
     <label
       ><input

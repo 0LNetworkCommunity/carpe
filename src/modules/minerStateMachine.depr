@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store'
 
 export const enum MinerActivity {
   Off,
@@ -7,7 +7,6 @@ export const enum MinerActivity {
   OnProofDone,
   OnSubmitBacklog,
 }
-
 
 export const enum TxState {
   MakeClient,
@@ -27,83 +26,81 @@ export const enum MinerErrors {
 }
 
 export interface StateMachine {
-  miner: MinerActivity,
-  tx?: TxState,
-  error?: MinerErrors,
-  advance_miner(success: boolean):void,
-  save():void,
+  miner: MinerActivity
+  tx?: TxState
+  error?: MinerErrors
+  advance_miner(success: boolean): void
+  save(): void
 }
-export const machine = writable<StateMachine>(<StateMachine>{});
+export const machine = writable<StateMachine>(<StateMachine>{})
 
 class M implements StateMachine {
-  miner: MinerActivity;
-  tx?: TxState;
-  error?: MinerErrors;
+  miner: MinerActivity
+  tx?: TxState
+  error?: MinerErrors
 
-  advance_miner(success: boolean): void  {
-    switch(this.miner) {
+  advance_miner(success: boolean): void {
+    switch (this.miner) {
       case MinerActivity.Off: {
         if (success) this.miner = MinerActivity.On
-        break;
+        break
       }
 
       case MinerActivity.On: {
         if (success) this.miner = MinerActivity.OnDelay
         else this.miner = MinerActivity.Off
-        break;
+        break
       }
 
       case MinerActivity.OnDelay: {
         if (success) this.miner = MinerActivity.OnProofDone
         else this.miner = MinerActivity.Off
-        break;
+        break
       }
 
       case MinerActivity.OnProofDone: {
         if (success) MinerActivity.OnSubmitBacklog
         else this.miner = MinerActivity.Off
 
-        break;
+        break
       }
 
       case MinerActivity.OnSubmitBacklog: {
         if (success) MinerActivity.On
         else this.miner = MinerActivity.On // If submit backlog fails, go back to miner start position.
-        break;
+        break
       }
 
       default: {
-        break;
+        break
       }
     }
+  }
 
-  };
-
-  advance_tx(success: boolean, err?: MinerActivity): void{
+  advance_tx(success: boolean, err?: MinerActivity): void {
     switch (this.tx) {
       case TxState.MakeClient: {
         if (success) this.tx = TxState.TxSent
-        break;
+        break
       }
 
       case TxState.TxSent: {
         if (success) this.tx = TxState.TxOk
-        break;
+        break
       }
 
       case TxState.TxOk: {
         if (success) this.tx = TxState.ProofComitted
-        break;
+        break
       }
 
       default: {
-        break;
+        break
       }
     }
   }
 
   save(): void {
-    machine.set(this);
-  };
-
+    machine.set(this)
+  }
 }

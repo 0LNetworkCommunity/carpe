@@ -1,42 +1,51 @@
-import { get } from 'svelte/store';
-import { invoke } from '@tauri-apps/api/tauri';
-import { raise_error } from './carpeError';
-import { responses } from './debug';
-import {minerLoopEnabled} from "./miner";
+import { get } from 'svelte/store'
+import { invoke } from '@tauri-apps/api/tauri'
+import { raise_error } from './carpeError'
+import { responses } from './debug'
+import { minerLoopEnabled } from './miner'
 // import type { ClientTowerStatus } from "./miner";
 
-import { notify_success, notify_error } from './carpeNotify';
-import { allAccounts, isInit, isRefreshingAccounts, mnem, signingAccount, isAccountRefreshed, makeWhole } from './accounts';
-import type { Profile } from './accounts';
-import { navigate } from 'svelte-navigator';
+import { notify_success, notify_error } from './carpeNotify'
+import {
+  allAccounts,
+  isInit,
+  isRefreshingAccounts,
+  mnem,
+  signingAccount,
+  isAccountRefreshed,
+  makeWhole,
+} from './accounts'
+import type { Profile } from './accounts'
+import { navigate } from 'svelte-navigator'
 
 export const getDefaultProfile = async () => {
-  invoke("get_default_profile", {})
-  .then((res: Profile) => {
-    signingAccount.set(res);
-  })
-  .catch((e) => {
-    raise_error(e, true, "get_default_profile")
-  })
+  invoke('get_default_profile', {})
+    .then((res: Profile) => {
+      signingAccount.set(res)
+    })
+    .catch((e) => {
+      raise_error(e, true, 'get_default_profile')
+    })
 }
 
 export const refreshAccounts = async () => {
-  isRefreshingAccounts.set(true);
+  isRefreshingAccounts.set(true)
   invoke('refresh_accounts')
-    .then((result: [Profile]) => { // TODO make this the correct return type
-      isRefreshingAccounts.set(false);
-      allAccounts.set(result);
+    .then((result: [Profile]) => {
+      // TODO make this the correct return type
+      isRefreshingAccounts.set(false)
+      allAccounts.set(result)
 
       if (!get(isAccountRefreshed)) {
-        isAccountRefreshed.set(true);
+        isAccountRefreshed.set(true)
       }
       result
     })
-    .catch( e => {
-      raise_error(e, true, "refresh_accounts");
-      isRefreshingAccounts.set(false);
+    .catch((e) => {
+      raise_error(e, true, 'refresh_accounts')
+      isRefreshingAccounts.set(false)
       if (!get(isAccountRefreshed)) {
-        isAccountRefreshed.set(true);
+        isAccountRefreshed.set(true)
       }
     })
 }
@@ -49,36 +58,34 @@ export enum InitType {
 export const handleAdd = async (init_type: InitType, secret: string) => {
   // isSubmitting = true;
 
-  let method_name = "";
-  let arg_obj = {};
+  let method_name = ''
+  let arg_obj = {}
   if (init_type == InitType.Mnem) {
-    method_name = "init_from_mnem"
-    arg_obj = { mnem: secret.trim() };
-
+    method_name = 'init_from_mnem'
+    arg_obj = { mnem: secret.trim() }
   } else if (init_type == InitType.PriKey) {
-    method_name = "init_from_private_key";
-    arg_obj = { priKeyString: secret.trim() };
-  };
+    method_name = 'init_from_private_key'
+    arg_obj = { priKeyString: secret.trim() }
+  }
   // TODO: need to check where else the mnem is being used
   mnem.set(null)
   // submit
   return invoke(method_name, arg_obj)
     .then((res: Profile) => {
-
       // set as init so we don't get sent back to Newbie account creation.
-      isInit.set(true);
-      responses.set(JSON.stringify(res));
-      signingAccount.set(res);
+      isInit.set(true)
+      responses.set(JSON.stringify(res))
+      signingAccount.set(res)
 
       // only navigate away once we have refreshed the accounts including balances
-      notify_success(`Account Added: ${res.nickname}`);
-      
-      refreshAccounts();
-      setTimeout(() => navigate("wallet"), 10);
+      notify_success(`Account Added: ${res.nickname}`)
+
+      refreshAccounts()
+      setTimeout(() => navigate('wallet'), 10)
       return res
     })
     .catch((error) => {
-      raise_error(error, false, "handleAdd");
+      raise_error(error, false, 'handleAdd')
     })
 }
 
@@ -89,90 +96,87 @@ export const handleAdd = async (init_type: InitType, secret: string) => {
 //   }
 // }
 
-
 export const isCarpeInit = async () => {
   // on app load we want to avoid the Newbie view until we know it's not a new user
-  console.log(">>> isCarpeInit");
-  isRefreshingAccounts.set(true); 
+  console.log('>>> isCarpeInit')
+  isRefreshingAccounts.set(true)
 
-  invoke("is_init", {})
+  invoke('is_init', {})
     .then((res: boolean) => {
-      responses.set(res.toString());
-      isInit.set(res);
+      responses.set(res.toString())
+      isInit.set(res)
       // for testnet
-      isRefreshingAccounts.set(false);
+      isRefreshingAccounts.set(false)
     })
     .catch((e) => {
-      isRefreshingAccounts.set(false);
-      raise_error(e, false, "isCarpeInit")
-    });
+      isRefreshingAccounts.set(false)
+      raise_error(e, false, 'isCarpeInit')
+    })
 }
 
 export function findOneAccount(account: string): Profile | undefined {
-  let list = get(allAccounts);
-  let found = list.find((i) => i.account == account)
+  const list = get(allAccounts)
+  const found = list.find((i) => i.account == account)
   return found
 }
 
-export const setAccount = async (account: string, notifySucess = true) => { 
+export const setAccount = async (account: string, notifySucess = true) => {
   // cannot switch profile with miner running
   if (get(minerLoopEnabled)) {
-    notify_error("To switch accounts you need to turn miner off first.");
+    notify_error('To switch accounts you need to turn miner off first.')
     return
   }
 
-  invoke("switch_profile", {
+  invoke('switch_profile', {
     account,
   })
-  .then((res: Profile) => {
-    signingAccount.set(res);
-    isInit.set(true);
-    if (notifySucess) {
-      notify_success("Account switched to " + res.nickname);
-    }
-  })
-  .catch((e) => {
-    raise_error(e, false, "setAccount");
-
-  });
+    .then((res: Profile) => {
+      signingAccount.set(res)
+      isInit.set(true)
+      if (notifySucess) {
+        notify_success('Account switched to ' + res.nickname)
+      }
+    })
+    .catch((e) => {
+      raise_error(e, false, 'setAccount')
+    })
 }
 
 // export function addNewAccount(account: Profile) {
 //   let list = get(allAccounts);
 //   // account.on_chain = false;
-//   list.push(account);    
+//   list.push(account);
 //   allAccounts.set(list);
 // }
 
 export function checkSigningAccountBalance() {
-  let selected = get(signingAccount);
-  invoke('query_balance', {account: selected.account})
+  const selected = get(signingAccount)
+  invoke('query_balance', { account: selected.account })
     .then((balance: number) => {
       // update signingAccount
-      selected.on_chain = true;
-      selected.balance = Number(balance);
-      signingAccount.set(selected);
-      
-      let accounts = get(allAccounts);
-      if (!accounts) return;
+      selected.on_chain = true
+      selected.balance = Number(balance)
+      signingAccount.set(selected)
+
+      const accounts = get(allAccounts)
+      if (!accounts) return
       // update all accounts set
-      let list = accounts.map(each => {
+      const list = accounts.map((each) => {
         if (each.account == selected.account) {
-          each.on_chain = true;
-          each.balance = Number(balance);
+          each.on_chain = true
+          each.balance = Number(balance)
         }
-        return each;
-      });
-      allAccounts.set(list);
+        return each
+      })
+      allAccounts.set(list)
     })
-    .catch((e) => raise_error(e, false, "checkSigningAccountBalance"));
+    .catch((e) => raise_error(e, false, 'checkSigningAccountBalance'))
 }
 
 export function getAccountEvents(account: Profile, errorCallback = null) {
-  const address = account.account;
-  
+
   if (!account.on_chain) {
-    return errorCallback && errorCallback("account_not_on_chain");
+    return errorCallback && errorCallback('account_not_on_chain')
   }
 
   return
@@ -218,20 +222,20 @@ export let invoke_makewhole = async (account: String): Promise<number> => {
 */
 
 export const updateMakeWhole = () => {
-  let mk = get(makeWhole);
-  let accounts = get(allAccounts);
-  if (!accounts) return;
+  const mk = get(makeWhole)
+  const accounts = get(allAccounts)
+  if (!accounts) return
 
-  accounts.forEach(each => {
-    let account = each.account;
+  accounts.forEach((each) => {
+    const account = each.account
     if (mk[account] == null) {
-      console.log(">>> query_makewhole");
-      invoke("query_makewhole", { account })
+      console.log('>>> query_makewhole')
+      invoke('query_makewhole', { account })
         .then((credits) => {
-          mk[account] = credits;
-          makeWhole.set(mk);
+          mk[account] = credits
+          makeWhole.set(mk)
         })
-        .catch(e => raise_error(e, true, "updateMakeWhole"));
+        .catch((e) => raise_error(e, true, 'updateMakeWhole'))
     }
   })
 }
@@ -243,35 +247,38 @@ export function claimMakeWhole(account: string, callback = null) {
   // account to claim must be the signingAccount
   if (get(signingAccount).account != account) {
     if (get(minerLoopEnabled)) {
-      return callback("To claim coins you need to turn miner off first.");
+      return callback('To claim coins you need to turn miner off first.')
     } else {
       // set sigining account
-      setAccount(account, false);
-    }    
+      setAccount(account, false)
+    }
   }
-  
-  let mk = get(makeWhole)
+
+  const mk = get(makeWhole)
   invoke('claim_make_whole', { account })
     .then(() => {
       // update account make_whole status
-      let accountCredits = mk[account];
-      mk[account] = accountCredits.map(each => { each.claimed = true; return each });
-      makeWhole.set(mk);
+      const accountCredits = mk[account]
+      mk[account] = accountCredits.map((each) => {
+        each.claimed = true
+        return each
+      })
+      makeWhole.set(mk)
       // update account balance
-      checkSigningAccountBalance();
-      callback(null);
+      checkSigningAccountBalance()
+      callback(null)
     })
-    .catch(e => {
+    .catch((e) => {
       if (callback) {
-        callback(e.msg);
+        callback(e.msg)
       } else {
-        raise_error(e, false, "claim_make_whole");
-      }      
-    });
+        raise_error(e, false, 'claim_make_whole')
+      }
+    })
 }
 
 export const migrate = () => {
-  invoke("maybe_migrate", {})
-  .then((r) => console.log(r))
-  .catch(e => raise_error(e, false, "maybe_migrate"))
+  invoke('maybe_migrate', {})
+    .then((r) => console.log(r))
+    .catch((e) => raise_error(e, false, 'maybe_migrate'))
 }

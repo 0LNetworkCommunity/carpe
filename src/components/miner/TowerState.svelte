@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { _ } from "svelte-i18n";
-  import TowerStateSkeleton from "./TowerStateSkeleton.svelte";
+  import { _ } from 'svelte-i18n'
+  import TowerStateSkeleton from './TowerStateSkeleton.svelte'
 
-  export let minerTower;
-  
+  export let minerTower
 </script>
 
 <main>
@@ -11,10 +10,10 @@
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
-          <th class="uk-text-center">{$_("miner.tower_state.local_height")}</th>
-          <th class="uk-text-center">{$_("miner.tower_state.on_chain_height")}</th>
-          <th class="uk-text-center">{$_("miner.tower_state.mined_in_last_epoch")}</th>
-          <th class="uk-text-center">{$_("miner.tower_state.sent_in_this_epoch")}</th>
+          <th class="uk-text-center">{$_('miner.tower_state.local_height')}</th>
+          <th class="uk-text-center">{$_('miner.tower_state.on_chain_height')}</th>
+          <th class="uk-text-center">{$_('miner.tower_state.mined_in_last_epoch')}</th>
+          <th class="uk-text-center">{$_('miner.tower_state.sent_in_this_epoch')}</th>
         </tr>
       </thead>
       <tbody>
@@ -24,14 +23,12 @@
             {#if minerTower.local_height >= 0}
               {minerTower.local_height}
             {:else}
-
-            <div class="uk-inline">
-              <span uk-icon="icon: minus-circle"/>
-              <div uk-dropdown>
-                {$_("miner.tower_state.empty")}
+              <div class="uk-inline">
+                <span uk-icon="icon: minus-circle" />
+                <div uk-dropdown>
+                  {$_('miner.tower_state.empty')}
+                </div>
               </div>
-            </div>
-
             {/if}
           </td>
           <td>{minerTower.on_chain.verified_tower_height}</td>
@@ -46,11 +43,11 @@
               {minerTower.on_chain.actual_count_proofs_in_epoch}
               <div uk-dropdown>
                 {#if minerTower.on_chain.actual_count_proofs_in_epoch >= 72}
-                  {$_("miner.tower_state.proof_more")}
+                  {$_('miner.tower_state.proof_more')}
                 {:else if minerTower.on_chain.actual_count_proofs_in_epoch >= 8}
-                  {$_("miner.tower_state.proof_ok")}
+                  {$_('miner.tower_state.proof_ok')}
                 {:else}
-                  {$_("miner.tower_state.proof_less")}
+                  {$_('miner.tower_state.proof_less')}
                 {/if}
               </div>
             </div>
@@ -58,7 +55,7 @@
         </tr>
       </tbody>
     </table>
-    
+
     <!-- <EpochStatus actual_proofs={minerTower.on_chain.actual_count_proofs_in_epoch} /> -->
   {:else}
     <TowerStateSkeleton />

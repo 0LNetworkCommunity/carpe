@@ -11,5 +11,5 @@ export const routes = {
   about: '/about',
   developer: '/dev',
   swarm: '/swarm',
-  makeWhole: '/make-whole'
+  makeWhole: '/make-whole',
 }

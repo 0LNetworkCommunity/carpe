@@ -101,6 +101,7 @@
         />
       </div>
 
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
       <span
         on:click={forceUpstream}
         class="uk-button uk-button-primary uk-align-right"

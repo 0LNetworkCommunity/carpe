@@ -1,21 +1,21 @@
 <script lang="ts">
-  import { afterUpdate } from "svelte";
-  import { get } from "svelte/store";
-  import { carpeErrorLog, clearErrors } from "../../modules/carpeError";
-  import { responses, debugModeToggle } from "../../modules/debug"; // TODO: Make this read only
+  import { afterUpdate } from 'svelte'
+  import { get } from 'svelte/store'
+  import { carpeErrorLog, clearErrors } from '../../modules/carpeError'
+  import { responses, debugModeToggle } from '../../modules/debug' // TODO: Make this read only
 
-  let result_string = "";
-  let this_error = get(carpeErrorLog);
+  let result_string = ''
+  let this_error = get(carpeErrorLog)
 
   afterUpdate(async () => {
     responses.subscribe((value) => {
-      result_string = value;
-    });
+      result_string = value
+    })
 
     carpeErrorLog.subscribe((value) => {
-      this_error = value;
-    });
-  });
+      this_error = value
+    })
+  })
 </script>
 
 <!-- <main style="position: fixed; bottom: 0px; left: 0px; right: 0px; height: 280px; overflow-y: auto; z-index: 10; border-style: ridge" >
@@ -24,11 +24,7 @@
     > -->
 <main class="uk-card uk-card-default uk-card-body">
   <div class="uk-row">
-    <h5
-      class="uk-margin-top uk-card-title uk-text-light uk-text-muted uk-text-uppercase"
-    >
-      LOGS
-    </h5>
+    <h5 class="uk-margin-top uk-card-title uk-text-light uk-text-muted uk-text-uppercase">LOGS</h5>
   </div>
 
   <div>

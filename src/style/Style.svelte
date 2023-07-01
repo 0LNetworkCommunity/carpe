@@ -1,3 +1,3 @@
 <script type="ts">
-   import './global.scss';
+  import './global.scss'
 </script>

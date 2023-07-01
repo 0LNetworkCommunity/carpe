@@ -43,6 +43,7 @@
       </div>
 
       <div>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <span
           on:click={updateNetwork(playlist_json_url)}
           class="uk-button uk-button-primary uk-align-right"

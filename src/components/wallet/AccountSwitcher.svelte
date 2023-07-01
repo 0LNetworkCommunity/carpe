@@ -1,44 +1,42 @@
 <script lang="ts">
-  import { onDestroy, onMount } from "svelte";
-  import { _ } from "svelte-i18n";
-  import { Link } from "svelte-navigator";
+  import { onDestroy, onMount } from 'svelte'
+  import { _ } from 'svelte-i18n'
+  import { Link } from 'svelte-navigator'
 
-  import { signingAccount, allAccounts } from "../../modules/accounts";
-  import { setAccount } from "../../modules/accountActions";
-  import type { Profile } from "../../modules/accounts";
+  import { signingAccount, allAccounts } from '../../modules/accounts'
+  import { setAccount } from '../../modules/accountActions'
+  import type { Profile } from '../../modules/accounts'
 
-  import NetworkIcon from "./NetworkIcon.svelte";
-  import AboutLink from "../about/AboutLink.svelte";
+  import NetworkIcon from './NetworkIcon.svelte'
+  import AboutLink from '../about/AboutLink.svelte'
 
+  let selectedAccount: Profile
+  let account_list: Profile[]
 
-  let selectedAccount: Profile;
-  let account_list: Profile[];
-
-  let unsubsSigningAccount;
-  let unsubsAll_accounts;
+  let unsubsSigningAccount
+  let unsubsAll_accounts
 
   onMount(async () => {
-    unsubsSigningAccount = signingAccount.subscribe(value => selectedAccount = value);
-    unsubsAll_accounts = allAccounts.subscribe(all => account_list = all? all : null);
-  });
+    unsubsSigningAccount = signingAccount.subscribe((value) => (selectedAccount = value))
+    unsubsAll_accounts = allAccounts.subscribe((all) => (account_list = all ? all : null))
+  })
 
   onDestroy(() => {
-    unsubsSigningAccount && unsubsSigningAccount();
-    unsubsAll_accounts && unsubsAll_accounts();
-  });
-
+    unsubsSigningAccount && unsubsSigningAccount()
+    unsubsAll_accounts && unsubsAll_accounts()
+  })
 </script>
 
 <main>
   <div>
     <button class="uk-button uk-button-default" type="button">
-      <NetworkIcon /> 
+      <NetworkIcon />
       {#if account_list && account_list.length > 0}
         <span class="uk-margin-small-left">
           {#if selectedAccount}
             {selectedAccount.nickname}
           {:else}
-          {$_("wallet.account_switcher.select_account")}
+            {$_('wallet.account_switcher.select_account')}
           {/if}
         </span>
       {/if}
@@ -48,22 +46,23 @@
       <ul class="uk-nav uk-dropdown-nav">
         {#if account_list && account_list.length > 0}
           <li class="uk-text-muted">
-            {$_("wallet.account_switcher.switch_account")}</li>
+            {$_('wallet.account_switcher.switch_account')}
+          </li>
           <li class="uk-nav-divider" />
-          {#if !account_list} <!-- TODO: move up --> 
+          {#if !account_list}
+            <!-- TODO: move up -->
             <p>loading...</p>
           {:else}
             {#each account_list as acc}
               <li>
                 <a
-                  href={"#"}
-                  class="{selectedAccount.account == acc.account ? 'uk-text-primary' : ''}"
+                  href={'#'}
+                  class={selectedAccount.account == acc.account ? 'uk-text-primary' : ''}
                   on:click={() => {
                     if (selectedAccount.account != acc.account) {
-                        setAccount(acc.account)
-                      }
+                      setAccount(acc.account)
                     }
-                  }
+                  }}
                 >
                   {acc.nickname}
                 </a>
@@ -73,14 +72,18 @@
           {/if}
         {/if}
         <li>
-          <a href={"#"}>
+          <a href={'#'}>
             <Link to="settings" class="uk-text-muted">
-              {$_("wallet.account_switcher.setting")}</Link></a>
+              {$_('wallet.account_switcher.setting')}</Link
+            ></a
+          >
         </li>
         <li>
-          <a href={"#"}>
+          <a href={'#'}>
             <Link to="dev" class="uk-text-muted">
-              {$_("wallet.account_switcher.developers")}</Link></a>
+              {$_('wallet.account_switcher.developers')}</Link
+            ></a
+          >
         </li>
         <li class="uk-text-muted">
           <AboutLink />

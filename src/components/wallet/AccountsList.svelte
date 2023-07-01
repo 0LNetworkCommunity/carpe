@@ -1,23 +1,21 @@
 <script lang="ts">
-  import { _ } from "svelte-i18n";
-  import { Link } from "svelte-navigator";
-  import UIkit from "uikit";
-  import Icons from "uikit/dist/js/uikit-icons";
+  import { _ } from 'svelte-i18n'
+  import { Link } from 'svelte-navigator'
+  import UIkit from 'uikit'
+  import Icons from 'uikit/dist/js/uikit-icons'
 
-  import { setAccount } from "../../modules/accountActions";
-  import type { Profile } from "../../modules/accounts";
-  import { printCoins, unscaledCoins } from "../../modules/coinHelpers";  
-  import { routes } from "../../modules/routes";
+  import type { Profile } from '../../modules/accounts'
+  import { printCoins, unscaledCoins } from '../../modules/coinHelpers'
+  import { routes } from '../../modules/routes'
 
-  import IconMining from "../icons/IconMining.svelte";
+  import IconMining from '../icons/IconMining.svelte'
 
-  UIkit.use(Icons);
+  UIkit.use(Icons)
 
-  export let selectedAccount: Profile;
-  export let accountList: Profile[];
-  export let isMining: boolean;
-  export let isConnected: boolean;
-
+  export let selectedAccount: Profile
+  export let accountList: Profile[]
+  export let isMining: boolean
+  export let isConnected: boolean
 </script>
 
 <main>
@@ -26,21 +24,17 @@
       <thead>
         <tr>
           <th />
-          <th>{$_("wallet.account_list.nickname")}</th>
-          <th>{$_("wallet.account_list.address")}</th>
-          <th>{$_("wallet.account_list.authkey")}</th>
-          <th class="uk-text-right">{$_("wallet.account_list.balance")}</th>
+          <th>{$_('wallet.account_list.nickname')}</th>
+          <th>{$_('wallet.account_list.address')}</th>
+          <th>{$_('wallet.account_list.authkey')}</th>
+          <th class="uk-text-right">{$_('wallet.account_list.balance')}</th>
         </tr>
       </thead>
       <tbody>
         {#each accountList as a}
           <!-- svelte-ignore missing-declaration -->
-          <tr
-            class={isMining && a.account == selectedAccount.account
-              ? "uk-text-primary"
-              : ""}
-          >
-          <!-- <tr
+          <tr class={isMining && a.account == selectedAccount.account ? 'uk-text-primary' : ''}>
+            <!-- <tr
             class={isMining && a.account == selectedAccount.account
               ? "uk-text-primary"
               : ""}
@@ -59,30 +53,26 @@
             <td>{a.account}</td>
             <td>{a.auth_key.slice(0, 5)}...</td>
             <td class="uk-text-right">
-              {#if (a.on_chain != null) && (a.on_chain == false)}
-                {$_("wallet.account_list.account_on_chain")}
+              {#if a.on_chain != null && a.on_chain == false}
+                {$_('wallet.account_list.account_on_chain')}
               {:else if a.on_chain}
                 <div class="uk-inline">
-                  
                   {#if unscaledCoins(a.balance) < 1}
                     <!-- TODO: make this icon align verical middle. -->
-                    <span
-                      class="uk-margin uk-text-warning"
-                      uk-icon="icon: info"
-                    />
+                    <span class="uk-margin uk-text-warning" uk-icon="icon: info" />
                     <div uk-dropdown>
-                      {$_("wallet.account_list.message")}
+                      {$_('wallet.account_list.message')}
                     </div>
                   {/if}
 
                   {printCoins(a.balance)}
                 </div>
               {:else if a.balance == null}
-                {$_("wallet.account_list.loading")}...
+                {$_('wallet.account_list.loading')}...
               {:else if !isConnected}
-                {$_("wallet.account_list.offline")}...
+                {$_('wallet.account_list.offline')}...
               {:else}
-                {$_("wallet.account_list.account_on_chain")}
+                {$_('wallet.account_list.account_on_chain')}
               {/if}
             </td>
           </tr>
@@ -90,16 +80,12 @@
       </tbody>
     </table>
   {/if}
-    <div class="uk-margin uk-flex uk-flex-center" uk-grid>
-      <Link to={routes.keygen}>
-        <button class="uk-button uk-button-secondary"
-          >{$_("wallet.btn_new_account")}</button
-        >
-      </Link>
-      <Link to={routes.accountFromMnem}>
-        <button class="uk-button uk-button-default"
-          >{$_("wallet.btn_restore_account")}
-        </button>
-      </Link>
-    </div>
+  <div class="uk-margin uk-flex uk-flex-center" uk-grid>
+    <Link to={routes.keygen}>
+      <button class="uk-button uk-button-secondary">{$_('wallet.btn_new_account')}</button>
+    </Link>
+    <Link to={routes.accountFromMnem}>
+      <button class="uk-button uk-button-default">{$_('wallet.btn_restore_account')} </button>
+    </Link>
+  </div>
 </main>

@@ -1,34 +1,34 @@
 <script lang="ts">
-  import { _ } from "svelte-i18n";
-  import { onMount, onDestroy } from "svelte";
+  import { _ } from 'svelte-i18n'
+  import { onMount, onDestroy } from 'svelte'
 
-  import type { CarpeError } from "../../../modules/carpeError";
-  import { displayWrongDifficulty } from "../../../modules/carpeErrorUI";
+  import type { CarpeError } from '../../../modules/carpeError'
+  import { displayWrongDifficulty } from '../../../modules/carpeErrorUI'
 
-  import ErrorAccordion from "../../layout/ErrorAccordion.svelte";
-  import CardError from "../../layout/CardError.svelte";
+  import ErrorAccordion from '../../layout/ErrorAccordion.svelte'
+  import CardError from '../../layout/CardError.svelte'
 
-  let unsubs;
-  let display: CarpeError = null;
+  let unsubs
+  let display: CarpeError = null
 
   onMount(async () => {
     unsubs = displayWrongDifficulty.subscribe((ce: CarpeError) => {
-      display = (ce.category? ce : null);
-    });
-  });
+      display = ce.category ? ce : null
+    })
+  })
 
   onDestroy(async () => {
-    unsubs && unsubs();
-  }); 
+    unsubs && unsubs()
+  })
 </script>
 
 {#if display}
   <main>
     <CardError>
-      <span slot="title">{$_("miner.cards.wrong_difficulty.title")}</span>
+      <span slot="title">{$_('miner.cards.wrong_difficulty.title')}</span>
       <div slot="body">
         <p>
-          {$_("miner.cards.wrong_difficulty.body")}
+          {$_('miner.cards.wrong_difficulty.body')}
         </p>
         <ErrorAccordion error={display} />
       </div>

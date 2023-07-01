@@ -6,15 +6,15 @@
     "events": "Events"
   },
   "layout": {
-      "connection_error": {
-         "title": "Oops, We Can't Connect to 0L Network",
-         "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
-      },
-      "error_accordion": {
-          "title": "Error Report",
-          "category": "Error Category",
-          "id": "ID"
-      }
+    "connection_error": {
+      "title": "Oops, We Can't Connect to 0L Network",
+      "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
+    },
+    "error_accordion": {
+      "title": "Error Report",
+      "category": "Error Category",
+      "id": "ID"
+    }
   },
   "wallet": {
     "wallet": "Wallet",
@@ -53,7 +53,7 @@
       "account_tips": "Your account does not exist yet on chain. You'll need to give someone your Onboarding Key so that they can create your account."
     },
     "account_from_mnem_submit": {
-      "title":" Heads Up!",
+      "title": " Heads Up!",
       "body": " <p>Are you sure you wrote down your mnemonic phrase?</p> <p>You won't be able to recover your account without it. No one can help you if lose it.</p><p>This is the last opportunity to write it down.</p>",
       "btn_cancel": "Let me check again",
       "btn_submit": "Submit Now",
@@ -248,7 +248,7 @@
     "sent_payment": "Sent Payment",
     "loading": {
       "error": "Error loading the account events:",
-      "corrupted_db": "Current connected node does not have all account events. Don't worry. Your wallet and coins are safe on the chain. Try connecting to another upstream node.", 
+      "corrupted_db": "Current connected node does not have all account events. Don't worry. Your wallet and coins are safe on the chain. Try connecting to another upstream node.",
       "account_off_chain": "Account selected not onboarded yet."
     }
   },
@@ -264,7 +264,7 @@
       "claim": "Claim"
     },
     "claim_btn": {
-      "await" : "Await...",
+      "await": "Await...",
       "claim": "Claim Now"
     },
     "modal_success": {

@@ -1,4 +1,3 @@
-
 /* -----------------------------
 Switch */
 
@@ -11,11 +10,11 @@ Switch */
 
 /* Hide default HTML checkbox */
 .uk-switch input {
-  display:none;
+  display: none;
 }
 /* Slider */
 .uk-switch-slider {
-  background-color: rgba(0,0,0,0.22);
+  background-color: rgba(0, 0, 0, 0.22);
   position: absolute;
   top: 0;
   left: 0;
@@ -24,8 +23,8 @@ Switch */
   bottom: 0;
   cursor: pointer;
   transition-property: background-color;
-	transition-duration: .2s;
-  box-shadow: inset 0 0 2px rgba(0,0,0,0.07);
+  transition-duration: 0.2s;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.07);
 }
 /* Switch pointer */
 .uk-switch-slider:before {
@@ -38,7 +37,7 @@ Switch */
   bottom: 2px;
   border-radius: 50%;
   transition-property: transform, box-shadow;
-	transition-duration: .2s;
+  transition-duration: 0.2s;
 }
 /* Slider active color */
 input:checked + .uk-switch-slider {
@@ -60,10 +59,10 @@ input:checked + .uk-switch-slider.uk-switch-on-off {
 /* Style Modifier */
 .uk-switch-slider.uk-switch-big:before {
   transform: scale(1.2);
-  box-shadow: 0 0 6px rgba(0,0,0,0.22);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.22);
 }
 .uk-switch-slider.uk-switch-small:before {
-  box-shadow: 0 0 6px rgba(0,0,0,0.22);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.22);
 }
 input:checked + .uk-switch-slider.uk-switch-big:before {
   transform: translateX(26px) scale(1.2);
@@ -71,7 +70,7 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
 
 /* Inverse Modifier - affects only default */
 .uk-light .uk-switch-slider:not(.uk-switch-on-off) {
-  background-color: rgba(255,255,255,0.22);
+  background-color: rgba(255, 255, 255, 0.22);
 }
 
 .uk-notification {
@@ -90,9 +89,8 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
   text-align: center;
 }
 
-
 .uk-notification-message-error {
-  color:#f8f8f8 !important;
+  color: #f8f8f8 !important;
   background-color: #f0506e !important;
 }
 

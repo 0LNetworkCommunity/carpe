@@ -6,20 +6,20 @@
     "events": "Events"
   },
   "layout": {
-      "connection_error": {
-         "title": "Oops, We Can't Connect to 0L Network",
-         "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
-      },
-      "error_accordion": {
-          "title": "Error Report",
-          "category": "Error Category",
-          "id": "ID"
-      },
-      "recovery_mode": { 
-        "title": "Recovery Mode",
-        "body": "The network is up! But we are in Recovery Mode, and no rewards are being paid for proofs yet. Wait until Recovery Mode is finished to send proofs for rewards. Recovery ends when epoch {epoch_recovery_ends} changes to {epoch_recovery_ends_after}"
-      },
-      "attempting_to_connect": "Attempting to connect to the blockchain"
+    "connection_error": {
+      "title": "Oops, We Can't Connect to 0L Network",
+      "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
+    },
+    "error_accordion": {
+      "title": "Error Report",
+      "category": "Error Category",
+      "id": "ID"
+    },
+    "recovery_mode": {
+      "title": "Recovery Mode",
+      "body": "The network is up! But we are in Recovery Mode, and no rewards are being paid for proofs yet. Wait until Recovery Mode is finished to send proofs for rewards. Recovery ends when epoch {epoch_recovery_ends} changes to {epoch_recovery_ends_after}"
+    },
+    "attempting_to_connect": "Attempting to connect to the blockchain"
   },
   "wallet": {
     "wallet": "Wallet",
@@ -58,7 +58,7 @@
       "account_tips": "Your account does not exist yet on chain. You'll need to give someone your Onboarding Key so that they can create your account."
     },
     "account_from_mnem_submit": {
-      "title":" Heads Up!",
+      "title": " Heads Up!",
       "body": " <p>Are you sure you wrote down your mnemonic phrase?</p> <p>You won't be able to recover your account without it. No one can help you if lose it.</p><p>This is the last opportunity to write it down.</p>",
       "btn_cancel": "Let me check again",
       "btn_submit": "Submit Now",
@@ -260,7 +260,7 @@
     "sent_payment": "Sent Payment",
     "loading": {
       "error": "Events Temporarily Unavailable",
-      "corrupted_db": "The server you are connected to does not have all your event history available.", 
+      "corrupted_db": "The server you are connected to does not have all your event history available.",
       "account_off_chain": "Account selected not onboarded yet, and has no events."
     }
   },
@@ -276,7 +276,7 @@
       "claim": "Claim"
     },
     "claim_btn": {
-      "await" : "Await...",
+      "await": "Await...",
       "claim": "Claim Now"
     },
     "modal_success": {
