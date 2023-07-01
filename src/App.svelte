@@ -2,7 +2,7 @@
   import { listen } from "@tauri-apps/api/event";
   import type { Event } from "@tauri-apps/api/event";
   import { onDestroy, onMount } from "svelte";
-  import { Router, Route } from "svelte-navigator";
+  import { Router, Route, navigate } from "svelte-navigator";
   import Nav from "./components/Nav.svelte";
   import DebugCard from "./components/dev/DebugCard.svelte";
   import Wallet from "./components/wallet/Wallet.svelte";
@@ -105,6 +105,8 @@
     });
   });
 
+  navigate("wallet");
+
   onDestroy(() => {
     unlistenProofStart();
     unlistenAck();
@@ -122,7 +124,7 @@
     <Router>
       <Nav />
       <div class="uk-background-muted uk-margin-large">
-        <Route path={routes.home} component={Wallet} primary={false} />
+        <Route path={routes.wallet} component={Wallet} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
         <Route
           path={routes.accountFromMnem}

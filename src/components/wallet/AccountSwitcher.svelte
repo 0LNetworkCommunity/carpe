@@ -55,7 +55,12 @@
                 <a
                   href={"#"}
                   class="{selectedAccount.account == acc.account ? 'uk-text-primary' : ''}"
-                  on:click={() => setAccount(acc.account)}
+                  on:click={() => {
+                    if (selectedAccount.account != acc.account) {
+                        setAccount(acc.account)
+                      }
+                    }
+                  }
                 >
                   {acc.nickname}
                 </a>

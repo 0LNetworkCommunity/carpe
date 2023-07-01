@@ -1,10 +1,11 @@
 export const routes = {
   home: '/',
+  wallet: '/wallet',
   addAccount: '/add-account',
   accountFromMnem: '/account-from-mnem',
   keygen: '/keygen',
   miner: '/miner',
-  transactions: '/txs',
+  transfer: '/transfer',
   events: '/events',
   settings: '/settings',
   about: '/about',

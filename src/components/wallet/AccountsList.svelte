@@ -88,7 +88,7 @@
       </tbody>
     </table>
   {/if}
-    <div uk-grid class="uk-margin uk-flex uk-flex-center">
+    <div class="uk-margin uk-flex uk-flex-center" uk-grid>
       <Link to={routes.keygen}>
         <button class="uk-button uk-button-secondary"
           >{$_("wallet.btn_new_account")}</button

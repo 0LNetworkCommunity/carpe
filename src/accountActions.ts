@@ -71,7 +71,7 @@ export const handleAdd = async (init_type: InitType, secret: string) => {
       notify_success(`Account Added: ${res.nickname}`);
       
       refreshAccounts();
-      setTimeout(() => navigate("/"), 10);
+      setTimeout(() => navigate("wallet"), 10);
       return res
     })
     .catch((error) => {
