@@ -16,6 +16,7 @@
   import { carpeTick } from "./modules/tick";
   import { init_preferences } from "./modules/preferences";
   import { getMetadata, getNetwork, refreshUpstreamPeerStats } from "./modules/networks";
+  import {boot_up} from "./boot/boot"
 
   // UI COMPONENTS
   import Nav from "./components/Nav.svelte";
@@ -50,26 +51,12 @@
   let debug = false;
 
   onMount(async () => {
-    logger(Level.Warn, "Webview is starting");
 
-    getEnv(); // load env var
-    getVersion(); // git commit and version
-    
-    // try to migrate carpe files from v5-6 to v7
-    migrate();
-
-    // try to connect to a chain eagerly.
-    // if not we will be scanning for peers below
-    isCarpeInit()
-    .then(getDefaultProfile)
-    .then(getNetwork)
-    .then(getMetadata) // try to connect to a chain eagerly.
-    .then(refreshAccounts) // should only try to refresh accounts if we are connected to a chain
-    // .then(updateMakeWhole) // check for make whole only once on startup
-    .finally(refreshUpstreamPeerStats) // if not we will be scanning for peers
-    healthTick = setInterval(carpeTick, 30000); // do a healthcheck, this is async
+    boot_up();
 
     debugMode.subscribe(b => debug = b);
+
+
     
     ///// Backlog /////
     // Todo: Should this listener only be started in the miner view?
@@ -92,8 +79,6 @@
       backlogInProgress.set(true);
     });
 
-    
-
     unlistenBacklogSuccess = await listen("backlog-success", (event: any) => {
       responses.set(event.payload);
       //update the tower stats after we show the backlog being up to date.
@@ -112,14 +97,13 @@
     });
   });
 
-  navigate("wallet");
 
   onDestroy(() => {
     unlistenProofStart();
     unlistenAck();
     unlistenBacklogSuccess();
     unlistenBacklogError();
-    clearInterval(healthTick);
+    // clearInterval(healthTick);
   })
 </script>
 
