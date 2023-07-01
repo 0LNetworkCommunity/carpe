@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Profile } from '../../accounts'
+  import type { Profile } from '../../modules/accounts'
 
   export let selectedAccount: Profile
 </script>

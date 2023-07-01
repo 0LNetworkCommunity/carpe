@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte'
-  import { carpeErrorLog } from '../../../carpeError'
-  import type { CarpeError } from '../../../carpeError'
+  import { carpeErrorLog } from '../../../modules/carpeError'
+  import type { CarpeError } from '../../../modules/carpeError'
   import ErrorAccordion from '../../layout/ErrorAccordion.svelte'
   import CardError from '../../layout/CardError.svelte'
   import { _ } from 'svelte-i18n'
