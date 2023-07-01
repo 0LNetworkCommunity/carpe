@@ -10,6 +10,7 @@ export default defineConfig({
   build: {
     sourcemap: true,
     target: ['chrome64', 'edge79', 'firefox62', 'safari11.1'],
+    chunkSizeWarningLimit: 1000,
   },
   plugins: [
     svelte({

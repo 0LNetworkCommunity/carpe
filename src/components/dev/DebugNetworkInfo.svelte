@@ -1,7 +1,8 @@
 <script lang="ts">
   import { getMetadata, networkMetadata } from '../../modules/networks'
   import type { IndexResponse } from '../../modules/networks'
-
+  import CarpeButton  from "../layout/CarpeButton.svelte"
+  
   let metadata: IndexResponse
 
   getMetadata()
@@ -14,7 +15,8 @@
 <main>
   <div class="uk-margin-bottom">
     <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">Chain Metadata</h4>
-    <button class="uk-button uk-button-default" on:click={getMetadata}>Update</button>
+    <CarpeButton color={""} text={"UPDATE"} cbAction={getMetadata}/>
+    <!-- <button class="uk-button uk-button-default" on:click={getMetadata}>Update</button> -->
 
     {#if metadata}
       <div>
