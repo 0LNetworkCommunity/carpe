@@ -14,32 +14,37 @@ built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
 
-libra-config = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
-libra-genesis-tools = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat"}
-libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
-libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
-libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
-libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "carpe-compat" }
+# libra-config = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
+# libra-genesis-tools = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs"}
+libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
+libra-tower = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
+libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
+libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
+libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
 
-ajson = "*"
+# ajson = "*"
 anyhow = "1.0.38"
-dirs = "4.0.0"
-futures = "0.3.17"
+# dirs = "4.0.0"
+futures = "= 0.3.24"
 glob = "0.3.0"
 hex = "0.4.3"
 keyring = "0.10.1"
+# itertools = "0.11.0"
 log = { version = "0.4", features = ["max_level_debug", "release_max_level_debug"] }
-rand = "^0.8"
-reqwest = "0.11.6"
+# rand = "^0.8"
+# reqwest = "0.11.6"
 serde = { version = "1.0", features = ["serde_derive"] }
 serde_json = "1.0"
 simplelog = { version = "^0.11.0", features = ["paris"] }
-sysinfo = "0.16.4"
+# sysinfo = "0.16.4"
 tauri = { version = "1.2.4", features = ["api-all", "updater"] }
 tokio = "*"
-toml = "*"
+# toml = "*"
 url = { version = "^2.1", features = ["serde"] }
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]
 default = ["custom-protocol"]
+
+[dev-dependencies]
+serde_yaml = "*"

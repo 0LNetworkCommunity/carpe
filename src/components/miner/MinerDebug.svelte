@@ -1,27 +1,28 @@
 <script lang="ts">
+  import { onMount, onDestroy } from 'svelte'
   import {
     emitBacklog,
     killBacklogListener,
     startBacklogListener,
     submitProofZero,
     towerOnce,
-  } from "../../miner_invoke";
-  import { debugMode } from "../../debug";
-  import { onMount, onDestroy } from "svelte";
-  import type { ClientTowerStatus } from "../../miner";
-  import MinerPhases from "./MinerPhases.svelte";
+  } from '../../modules/miner_invoke'
+  import { debugMode } from '../../modules/debug'
+  import type { ClientTowerStatus } from '../../modules/miner'
 
-  export let minerTower: ClientTowerStatus;
-  let debug: boolean;
-  let unsubsDebug;
+  import MinerPhases from './MinerPhases.svelte'
+
+  export let minerTower: ClientTowerStatus
+  let debug: boolean
+  let unsubsDebug
 
   onMount(async () => {
-    unsubsDebug = debugMode.subscribe(boo => debug = boo);
-  });
+    unsubsDebug = debugMode.subscribe((boo) => (debug = boo))
+  })
 
   onDestroy(async () => {
-    unsubsDebug && unsubsDebug();
-  });
+    unsubsDebug && unsubsDebug()
+  })
 </script>
 
 {#if debug}
@@ -35,31 +36,25 @@
         </div>
 
         <div class="uk-margin">
-          <button
-            class="uk-button uk-button-default uk-width-1-1"
-            on:click={startBacklogListener}>Start Backlog Listener</button
-          >
-        </div>        
-
-        <div class="uk-margin">
-          <button
-            class="uk-button uk-button-default uk-width-1-1"
-            on:click={killBacklogListener}>Kill Listener</button
+          <button class="uk-button uk-button-default uk-width-1-1" on:click={startBacklogListener}
+            >Start Backlog Listener</button
           >
         </div>
 
         <div class="uk-margin">
-          <button
-            class="uk-button uk-button-default uk-width-1-1"
-            on:click={emitBacklog}>Emit Backlog Event</button
+          <button class="uk-button uk-button-default uk-width-1-1" on:click={killBacklogListener}
+            >Kill Listener</button
           >
         </div>
 
         <div class="uk-margin">
-          <button
-            class="uk-button uk-button-default uk-width-1-1"
-            on:click={submitProofZero}
+          <button class="uk-button uk-button-default uk-width-1-1" on:click={emitBacklog}
+            >Emit Backlog Event</button
           >
+        </div>
+
+        <div class="uk-margin">
+          <button class="uk-button uk-button-default uk-width-1-1" on:click={submitProofZero}>
             Resend Proof Zero
           </button>
         </div>

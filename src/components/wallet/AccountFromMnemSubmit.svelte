@@ -1,44 +1,45 @@
 <script lang="ts">
-  import { _ } from "svelte-i18n";
-  import { mnem } from "../../accounts";
-  import { onDestroy, onMount } from "svelte";
-  import { InitType, handleAdd, } from "../../accountActions";
-  import UIkit from "uikit";
+  import { _ } from 'svelte-i18n'
+  import { onDestroy, onMount } from 'svelte'
+  import UIkit from 'uikit'
 
-  export let danger_temp_mnem: string;
-  export let isNewAccount: boolean = true;
+  import { mnem } from '../../modules/accounts'
+  import { InitType, handleAdd } from '../../modules/accountActions'
 
-  let unsubs;
+  export let danger_temp_mnem: string
+  export let isNewAccount = true
+
+  let unsubs
 
   // TODO: this implementation needs to be removed
   onMount(async () => {
-    unsubs = mnem.subscribe((m) => (danger_temp_mnem = m));
-  });
+    unsubs = mnem.subscribe((m) => (danger_temp_mnem = m))
+  })
 
   onDestroy(async () => {
-    unsubs && unsubs();
-  });
+    unsubs && unsubs()
+  })
 
   function openConfirmationModal() {
-    UIkit.modal("#submit-confirmation-modal").show();
+    UIkit.modal('#submit-confirmation-modal').show()
   }
 
-  let isSubmitting = false;
+  let isSubmitting = false
   function initAccount(mnem_string: string) {
-    isSubmitting = true;
+    isSubmitting = true
     handleAdd(InitType.Mnem, mnem_string.trim())
-    .then(() => {
+      .then(() => {
         if (isNewAccount) {
           // NOTE: this is for the keygen option, which shares this component
-          UIkit.modal("#submit-confirmation-modal").$destroy(true); // known bug https://github.com/uikit/uikit/issues/1370
+          UIkit.modal('#submit-confirmation-modal').$destroy(true) // known bug https://github.com/uikit/uikit/issues/1370
         }
-    })
-    .catch(() => {
+      })
+      .catch(() => {
         if (isNewAccount) {
-          UIkit.modal("#submit-confirmation-modal").hide();
+          UIkit.modal('#submit-confirmation-modal').hide()
         }
-        isSubmitting = false;
-    });
+        isSubmitting = false
+      })
   }
 </script>
 
@@ -49,22 +50,22 @@
     type="button"
     on:click|preventDefault={openConfirmationModal}
   >
-    {$_("wallet.keygen.btn_create_account")}
+    {$_('wallet.keygen.btn_create_account')}
   </button>
 
   <div id="submit-confirmation-modal" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
       <h2 class="uk-modal-title uk-text-uppercase uk-text-alert">
-        {$_("wallet.account_from_mnem_submit.title")}
+        {$_('wallet.account_from_mnem_submit.title')}
       </h2>
-      <p>{@html $_("wallet.account_from_mnem_submit.body")}</p>
+      <p>{@html $_('wallet.account_from_mnem_submit.body')}</p>
       <p class="uk-text-right">
         <button
           class="uk-button uk-button-default uk-modal-close"
           type="button"
           disabled={isSubmitting}
         >
-          {$_("wallet.account_from_mnem_submit.btn_cancel")}
+          {$_('wallet.account_from_mnem_submit.btn_cancel')}
         </button>
         <button
           class="uk-button uk-button-primary"
@@ -73,9 +74,9 @@
           on:click|preventDefault={initAccount(danger_temp_mnem)}
         >
           {#if isSubmitting}
-            {$_("wallet.account_from_mnem_submit.btn_submiting")}
+            {$_('wallet.account_from_mnem_submit.btn_submiting')}
           {:else}
-            {$_("wallet.account_from_mnem_submit.btn_submit")}
+            {$_('wallet.account_from_mnem_submit.btn_submit')}
           {/if}
         </button>
       </p>
@@ -89,9 +90,9 @@
     on:click|preventDefault={initAccount(danger_temp_mnem)}
   >
     {#if isSubmitting}
-      {$_("wallet.account_from_mnem_submit.btn_submiting")}...
+      {$_('wallet.account_from_mnem_submit.btn_submiting')}...
     {:else}
-      {$_("wallet.account_from_mnem_submit.btn_submit")}
+      {$_('wallet.account_from_mnem_submit.btn_submit')}
     {/if}
   </button>
 {/if}

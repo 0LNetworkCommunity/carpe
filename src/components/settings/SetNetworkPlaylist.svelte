@@ -1,13 +1,14 @@
 <script lang="ts">
   import { Link } from "svelte-navigator";
-  import type { CarpeError } from "../../carpeError";
-  import { raise_error } from "../../carpeError";
-  import { network_profile } from "../../networks";
-  import type { NetworkProfile} from "../../networks";
-  import { invoke } from "@tauri-apps/api/tauri";
-  import { routes } from "../../routes";
-  import { notify_success } from "../../carpeNotify";
   import { _ } from "svelte-i18n";
+  import { invoke } from "@tauri-apps/api/tauri";
+
+  import type { CarpeError } from "../../modules/carpeError";
+  import { raise_error } from "../../modules/carpeError";
+  import { network_profile } from "../../modules/networks";
+  import type { NetworkPlaylist} from "../../modules/networks";
+  import { routes } from "../../modules/routes";
+  import { notify_success } from "../../modules/carpeNotify";
 
   // default playlist which is provided in Carpe.
   let playlist_json_url = "https://raw.githubusercontent.com/0LNetworkCommunity/seed-peers/main/fullnode_seed_playlist.json";
@@ -16,7 +17,7 @@
     // check input data
     // submit
     invoke("override_playlist", { url })
-      .then((res: NetworkProfile) => {
+      .then((res: NetworkPlaylist) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");
 
@@ -42,6 +43,7 @@
       </div>
 
       <div>
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <span
           on:click={updateNetwork(playlist_json_url)}
           class="uk-button uk-button-primary uk-align-right"

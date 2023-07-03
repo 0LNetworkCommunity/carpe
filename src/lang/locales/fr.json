@@ -6,15 +6,15 @@
     "events": "Évènement"
   },
   "layout": {
-      "connection_error": {
-         "title": "Oops, connexion au réseau 0L impossible",
-         "body": "<p> Il est probable que le noeud pair en amont (server) soit déconnecté.</p> <h3> Ne vous inquiétez pas, votre compte et vos coins sont en sécurité.</h3> <p>Pour mettre à jour vos noeuds de paires, vous pouvez allez là:</p>"
-      },
-      "error_accordion": {
-          "title": "Rapport d'erreurs",
-          "category": "Categorie d'erreur",
-          "id": "ID"
-      }
+    "connection_error": {
+      "title": "Oops, connexion au réseau 0L impossible",
+      "body": "<p> Il est probable que le noeud pair en amont (server) soit déconnecté.</p> <h3> Ne vous inquiétez pas, votre compte et vos coins sont en sécurité.</h3> <p>Pour mettre à jour vos noeuds de paires, vous pouvez allez là:</p>"
+    },
+    "error_accordion": {
+      "title": "Rapport d'erreurs",
+      "category": "Categorie d'erreur",
+      "id": "ID"
+    }
   },
   "wallet": {
     "wallet": "Porte-feuille",
@@ -53,7 +53,7 @@
       "account_tips": "Votre compte n'existe pas encore sur la chaine. Vous devrez fournir votre clé d'embarquement à quelqu'un pour qu'il soit créé."
     },
     "account_from_mnem_submit": {
-      "title":" Attention!",
+      "title": " Attention!",
       "body": " <p>Avez-vous bien noté vore phrase mnemonique secrète?</p> <p>Vous ne pourrez pas récupérer votre compte sans. Personne ne peut vous aider si vous la perdez.</p><p>Dernier avertissement pour la noter.</p>",
       "btn_cancel": "Je veux re-vérifier",
       "btn_submit": "Créer ce compte",
@@ -264,7 +264,7 @@
       "claim": "Claim"
     },
     "claim_btn": {
-      "await" : "Await...",
+      "await": "Await...",
       "claim": "Claim Now"
     },
     "modal_success": {

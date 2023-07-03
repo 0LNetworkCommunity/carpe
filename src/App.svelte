@@ -1,65 +1,55 @@
 <script lang="ts">
-  import { listen } from "@tauri-apps/api/event";
-  import type { Event } from "@tauri-apps/api/event";
-  import { onDestroy, onMount } from "svelte";
-  import { Router, Route } from "svelte-navigator";
-  import Nav from "./components/Nav.svelte";
-  import DebugCard from "./components/dev/DebugCard.svelte";
-  import Wallet from "./components/wallet/Wallet.svelte";
-  import Miner from "./components/miner/Miner.svelte";
-  import Settings from "./components/settings/Settings.svelte";
-  import DevMode from "./components/dev/DevMode.svelte";
-  import AccountFromMnemForm from "./components/wallet/AccountFromMnemForm.svelte";
-  import Swarm from "./components/dev/Swarm.svelte";
-  import Keygen from "./components/wallet/Keygen.svelte";
-  import Transactions from "./components/txs/Transactions.svelte";
-  import Events from "./components/events/Events.svelte";
-  import About from "./components/about/About.svelte";
-  import { backlogInProgress, backlogSubmitted, minerEventReceived } from "./miner";
-  import { raise_error } from "./carpeError";
-  import type { CarpeError } from "./carpeError";
-  import { getEnv, responses, debugMode } from "./debug";
-  import { routes } from "./routes";
-  import "uikit/dist/css/uikit.min.css";
-  import { isCarpeInit, refreshAccounts, updateMakeWhole } from "./accountActions";
-  import { getVersion } from "./version";
-  import { carpeTick } from "./tick";
-  import { init_preferences } from "./preferences";
-  import SearchingFullnodes from "./components/layout/SearchingFullnodes.svelte";
-  import RecoveryMode from "./components/layout/RecoveryMode.svelte";
-  import MakeWhole from "./components/make-whole/MakeWhole.svelte";
-  import { getMetadata, refreshUpstreamPeerStats } from "./networks";
-  import { Level, logger } from "./logger";
-    import { isRefreshingAccounts } from "./accounts";
-  
+  import { listen } from '@tauri-apps/api/event'
+  import type { Event } from '@tauri-apps/api/event'
+  import { onDestroy, onMount } from 'svelte'
+  import { Router, Route } from 'svelte-navigator'
+
+  // CARPE MODULES
+  import { backlogInProgress, backlogSubmitted, minerEventReceived } from './modules/miner'
+  import { raise_error } from './modules/carpeError'
+  import type { CarpeError } from './modules/carpeError'
+  import { responses, debugMode } from './modules/debug'
+  import { routes } from './modules/routes'
+  import 'uikit/dist/css/uikit.min.css'
+  import { init_preferences } from './modules/preferences'
+
+  import { carpeTick } from './modules/tick'
+  import { boot_up } from './boot/boot'
+
+  // UI COMPONENTS
+  import Nav from './components/Nav.svelte'
+  import DebugCard from './components/dev/DebugCard.svelte'
+  import Wallet from './components/wallet/Wallet.svelte'
+  import Miner from './components/miner/Miner.svelte'
+  import Settings from './components/settings/Settings.svelte'
+  import DevMode from './components/dev/DevMode.svelte'
+  import AccountFromMnemForm from './components/wallet/AccountFromMnemForm.svelte'
+  import Keygen from './components/wallet/Keygen.svelte'
+  import Transactions from './components/txs/Transactions.svelte'
+  import Events from './components/events/Events.svelte'
+  import About from './components/about/About.svelte'
+  import SearchingFullnodes from './components/layout/SearchingFullnodes.svelte'
+  import RecoveryMode from './components/layout/RecoveryMode.svelte'
+  import MakeWhole from './components/make-whole/MakeWhole.svelte'
+
+  import Style from './style/Style.svelte'
+
   // Init i18n and preferences
   // TODO: why is this duplicated in Nav.svelte?
   init_preferences();
- 
+
   let unlistenProofStart;
   let unlistenAck;
   let unlistenBacklogSuccess;
   let unlistenBacklogError;
-  let healthTick;
+
   let debug = false;
 
   onMount(async () => {
-    logger(Level.Warn, "Webview is starting");
+    boot_up()
 
-    getEnv(); // load env vars
-    getVersion(); // git commit and version
+    debugMode.subscribe((b) => (debug = b))
 
-    // try to connect to a chain eagerly.
-    // if not we will be scanning for peers below
-    isCarpeInit()
-    .then(getMetadata) // try to connect to a chain eagerly.
-    .then(refreshAccounts) // should only try to refresh accounts if we are connected to a chain
-    .then(updateMakeWhole) // check for make whole only once on startup
-    .finally(refreshUpstreamPeerStats) // if not we will be scanning for peers
-    healthTick = setInterval(carpeTick, 30000); // do a healthcheck, this is async
-
-    debugMode.subscribe(b => debug = b);
-    
     ///// Backlog /////
     // Todo: Should this listener only be started in the miner view?
 
@@ -68,63 +58,59 @@
     // there is a listener service which loads the key once, and then waits for a specific
     // event to trigger the backlog submission.
 
-    unlistenProofStart = await listen("proof-start", (event: any) => {
-      responses.set(event.payload);
+    unlistenProofStart = await listen('proof-start', (event) => {
+      responses.set(event.payload)
       //update the tower stats after we show the backlog being up to date.
-      minerEventReceived.set(true);
-      backlogInProgress.set(false);
-      backlogSubmitted.set(false);
-    });
-    
+      minerEventReceived.set(true)
+      backlogInProgress.set(false)
+      backlogSubmitted.set(false)
+    })
 
-    unlistenAck = await listen ("ack-backlog-request", (event: any) => {
-      backlogInProgress.set(true);
-    });
+    unlistenAck = await listen('ack-backlog-request', () => {
+      backlogInProgress.set(true)
+    })
 
-    
-
-    unlistenBacklogSuccess = await listen("backlog-success", (event: any) => {
-      responses.set(event.payload);
+    unlistenBacklogSuccess = await listen('backlog-success', (event) => {
+      responses.set(event.payload)
       //update the tower stats after we show the backlog being up to date.
-      backlogInProgress.set(false);
-      backlogSubmitted.set(true);
-      carpeTick();
-    });
+      backlogInProgress.set(false)
+      backlogSubmitted.set(true)
+      carpeTick()
+    })
 
-    unlistenBacklogError = await listen("backlog-error", (event: Event<CarpeError>) => {
+    unlistenBacklogError = await listen('backlog-error', (event: Event<CarpeError>) => {
       // TODO: show an UX in the miner view for this type of error
-      
-      raise_error(event.payload, true, "listen(backlog-error)");
-      
-      backlogInProgress.set(false);
-      backlogSubmitted.set(false);
-    });
-  });
+
+      raise_error(event.payload, true, 'listen(backlog-error)')
+
+      backlogInProgress.set(false)
+      backlogSubmitted.set(false)
+    })
+  })
 
   onDestroy(() => {
-    unlistenProofStart();
-    unlistenAck();
-    unlistenBacklogSuccess();
-    unlistenBacklogError();
-    clearInterval(healthTick);
+    unlistenProofStart()
+    unlistenAck()
+    unlistenBacklogSuccess()
+    unlistenBacklogError()
   })
+
 </script>
 
 <main class="uk-background-muted uk-height-viewport">
+  <Style />
+
+
   <SearchingFullnodes />
-  <RecoveryMode/>
-  
+  <RecoveryMode />
+
   <div class="uk-container">
     <Router>
       <Nav />
       <div class="uk-background-muted uk-margin-large">
-        <Route path={routes.home} component={Wallet} primary={false} />
+        <Route path={routes.wallet} component={Wallet} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
-        <Route
-          path={routes.accountFromMnem}
-          component={AccountFromMnemForm}
-          primary={false}
-        />
+        <Route path={routes.accountFromMnem} component={AccountFromMnemForm} primary={false} />
         <Route path={routes.keygen} component={Keygen} primary={false} />
         <Route path={routes.miner} component={Miner} primary={false} />
         <Route path={routes.transactions} component={Transactions} primary={false} />
@@ -135,15 +121,12 @@
 
         <!-- DEV -->
         <Route path={routes.developer} component={DevMode} primary={false} />
-        <Route path={routes.swarm} component={Swarm} primary={false} />
 
         <!-- Show Debug Card Below -->
-        {#if debug }
-          <DebugCard/>
+        {#if debug}
+          <DebugCard />
         {/if}
-
-
       </div>
     </Router>
-  </div>  
+  </div>
 </main>

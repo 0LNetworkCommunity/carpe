@@ -1,113 +1,110 @@
 <script lang="ts">
-  import { _ } from "svelte-i18n";
-  import { responses } from "../../debug";
-  import { notify_success } from "../../carpeNotify";
-  import { invoke } from "@tauri-apps/api/tauri";
-  import UIkit from "uikit";
-  import {
-    unscaledCoins,
-    printUnscaledCoins,
-    printCoins,
-  } from "../../coinHelpers";
-  import { AccountEntry, signingAccount } from "../../accounts";
-  import { onDestroy, onMount } from "svelte";
-    import { raise_error } from "../../carpeError";
+  import { onDestroy, onMount } from 'svelte'
+  import { _ } from 'svelte-i18n'
+  import { invoke } from '@tauri-apps/api/tauri'
 
-  // export let account;
-  // export let onSuccess = () => {};
+  import { responses } from '../../modules/debug'
+  import { notify_success } from '../../modules/carpeNotify'
+  import { printUnscaledCoins, printCoins, unscaledCoins} from '../../modules/coinHelpers'
+  import { signingAccount } from '../../modules/accounts'
+  import type { Profile } from '../../modules/accounts'
+  import { raise_error } from '../../modules/carpeError'
 
   const errorDic = {
-    "120127": $_("txs.transfer.error_slow_wallet"),
-    "1004": $_("txs.transfer.error_account_does_not_exist"),
-  };
+    '120127': $_('txs.transfer.error_slow_wallet'),
+    '1004': $_('txs.transfer.error_account_does_not_exist'),
+  }
 
-  let receiver;
-  let amountInput;
-  let amount = 0;
-  let amountFormatted = "";
-  let errorMessage = "";
-  let waitingTxs = false;
-  let waitingConfirmation = false;
-
-  const re = /[a-fA-F0-9]{32}/i;
-
-  let isReceiverValid = true;
-  let isValidAmount = true;
-  let checkMessage = "";
-
-  // TODO: Can we not JQUERY please?
-  // $: isReceiverValid = receiver && re.test(receiver) && receiver != account.account;
-  // $: isValidAmount = amount > 0 && amount < unscaledCoins(account.balance);
-  // $: checkMessage = amount > unscaledCoins(account.balance)
-  //   ? $_("txs.transfer.error_amount_greater_than_balance")
-  //   : receiver && receiver.toUpperCase() == account.account.toUpperCase()
-  //     ? $_("txs.transfer.error_receiver_equals_sender")
-  //     : "";
-
-  let account: AccountEntry;
+  let account: Profile;
   let unsubs;
   onMount(async () => {
-    unsubs = signingAccount.subscribe((obj) => (account = obj));
-  });
+    unsubs = signingAccount.subscribe((obj) => (account = obj))
+  })
+
+
+  let receiver: string;
+  let amountInput: number;
+
+  let amount = 0
+  let amountFormatted = ''
+  let errorMessage = ''
+  let waitingTxs = false
+  let waitingConfirmation = false
+
+  const re = /[a-fA-F0-9]{32}/i
+
+  let isReceiverValid = true
+  let isValidAmount = true
+  let checkMessage = ''
+
+  // // TODO: Can we not JQUERY please?
+  $: isReceiverValid = account && receiver && re.test(receiver) && receiver != account.account;
+  $: isValidAmount = account && amount > 0 && amount < unscaledCoins(account.balance);
+  $: checkMessage = account && amount > unscaledCoins(account.balance)
+    ? $_("txs.transfer.error_amount_greater_than_balance")
+    : receiver && receiver.toUpperCase() == account.account.toUpperCase()
+      ? $_("txs.transfer.error_receiver_equals_sender")
+      : "";
+
 
   onDestroy(async () => {
-    unsubs && unsubs();
-  });
+    unsubs && unsubs()
+  })
 
-  const transferCoins = () => {
-    waitingTxs = true;
+  const transferCoins = async () => {
+    waitingTxs = true
 
-    invoke("coin_transfer", { sender: account.account, receiver: receiver.trim(), amount })
+    return invoke('coin_transfer', { sender: account.account, receiver: receiver.trim(), amount: amount })
       .then((res) => {
-        responses.set(JSON.stringify(res));
-        notify_success($_("txs.transfer.success"));
-        waitingTxs = false;
-        amount = null;
-        amountFormatted = "";
-        receiver = null;
+        responses.set(JSON.stringify(res))
+        notify_success($_('txs.transfer.success'))
+        waitingTxs = false
+        amount = 0
+        amountFormatted = ''
+        receiver = null
         // callback
         // onSuccess();
         // close modal
         // UIkit.modal('#coinTransferDialog').hide();
       })
       .catch((error) => {
-        responses.set(JSON.stringify(error));
-        raise_error(error, false, "coin_transfer");
-        // errorMessage = errorDic[error.msg]
-        //   ? errorDic[error.msg]
-        //   : $_("txs.transfer.failed", { values: { code: error.msg } });
-        waitingTxs = false;
-      });
-  };
+        responses.set(JSON.stringify(error))
+        raise_error(error, false, 'coin_transfer')
+        errorMessage = errorDic[error.msg]
+          ? errorDic[error.msg]
+          : $_("txs.transfer.failed", { values: { code: error.msg } });
+        waitingTxs = false
+      })
+  }
 
   const cancelClick = () => {
-    waitingConfirmation = false;
-  };
+    waitingConfirmation = false
+  }
 
   const confirmClick = () => {
-    waitingConfirmation = false;
-    transferCoins();
-  };
+    waitingConfirmation = false
+    transferCoins()
+  }
 
   const handleChange = () => {
     let cleanedInput = amountInput.value
-      .replace(/\D*/gm, "") // remove non digits
-      .replace(/^0+/gm, ""); // remove leading zeros
+      .replace(/\D*/gm, '') // remove non digits
+      .replace(/^0+/gm, '') // remove leading zeros
 
     if (cleanedInput.length === 0) {
-      amount = 0;
-      amountFormatted = "";
+      amount = 0
+      amountFormatted = ''
     } else {
-      amount = parseInt(cleanedInput);
-      amountFormatted = printUnscaledCoins(amount, 0, 0);
+      amount = parseInt(cleanedInput)
+      amountFormatted = printUnscaledCoins(amount, 0, 0)
     }
-  };
+  }
 </script>
 
 <main>
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
-      {$_("nav.transactions")}
+      {$_('nav.transactions')}
     </h2>
   </div>
   {#if account}
@@ -115,19 +112,19 @@
     <div>
       {#if waitingConfirmation}
         <h2 class="uk-text-muted uk-text-uppercase">
-          {$_("txs.transfer.confirm_title")}
+          {$_('txs.transfer.confirm_title')}
         </h2>
-        <p>{$_("txs.transfer.please_confirm")}</p>
+        <p>{$_('txs.transfer.please_confirm')}</p>
         <p class="uk-text-uppercase">
-          {$_("txs.transfer.sender")}:
+          {$_('txs.transfer.sender')}:
           <span class="uk-text-bold">{account.account}</span>
         </p>
         <p class="uk-text-uppercase">
-          {$_("txs.transfer.receiver")}:
+          {$_('txs.transfer.receiver')}:
           <span class="uk-text-bold">{receiver}</span>
         </p>
         <p class="uk-text-uppercase">
-          {$_("txs.transfer.amount")}:
+          {$_('txs.transfer.amount')}:
           <span class="uk-text-bold">{printUnscaledCoins(amount)}</span>
         </p>
 
@@ -135,51 +132,47 @@
           <button
             on:click={cancelClick}
             class="uk-button uk-button-default uk-margin-right"
-            type="button">{$_("txs.transfer.btn_cancel")}</button
+            type="button">{$_('txs.transfer.btn_cancel')}</button
           >
-          <button
-            on:click={confirmClick}
-            class="uk-button uk-button-primary"
-            type="button">{$_("txs.transfer.btn_confirm")}</button
+          <button on:click={confirmClick} class="uk-button uk-button-primary" type="button"
+            >{$_('txs.transfer.btn_confirm')}</button
           >
         </p>
       {:else}
         <form id="account-form">
           <fieldset class="uk-fieldset uk-grid-small" uk-grid>
             <div class="uk-width-3-4@s">
-              <label class="uk-form-label" for="sender-text"
-                >{$_("txs.transfer.sender")}</label
-              >
+              <label class="uk-form-label" for="sender-text">{$_('txs.transfer.sender')} </label>
               <div>
                 {account.account}
-
               </div>
             </div>
             <div class="uk-width-1-4@s">
-              <label class="uk-form-label" for="balance-text"
-                >{$_("txs.transfer.balance")}</label
-              >
+              <label class="uk-form-label" for="balance-text">
+                {$_('txs.transfer.balance')}
+              </label>
               <div>{printCoins(account.balance)}</div>
             </div>
             <div class="uk-width-1-1">
-              <label class="uk-form-label" for="receiver-text"
-                >{$_("txs.transfer.receiver")}</label
-              >
+              <label class="uk-form-label" for="receiver-text">
+                {$_('txs.transfer.receiver')}
+              </label>
               <div class="uk-form-controls">
+                <!-- svelte-ignore a11y-no-onchange -->
+
                 <input
                   id="receiver-text"
-                  autofocus
                   disabled={waitingTxs}
                   class="uk-input"
                   type="text"
-                  placeholder={$_("txs.transfer.receiver_placeholder")}
+                  placeholder={$_('txs.transfer.receiver_placeholder')}
                   bind:value={receiver}
                 />
               </div>
             </div>
             <div class="uk-width-1-1">
               <label class="uk-form-label" for="amount-text"
-                >{$_("txs.transfer.amount_label")}</label
+                >{$_('txs.transfer.amount_label')}</label
               >
               <div class="uk-form-controls uk-width-1-1">
                 <!-- add mask -->
@@ -188,7 +181,7 @@
                   disabled={waitingTxs}
                   class="uk-input"
                   type="text"
-                  placeholder={$_("txs.transfer.amount_placeholder")}
+                  placeholder={$_('txs.transfer.amount_placeholder')}
                   bind:value={amountFormatted}
                   bind:this={amountInput}
                   on:input={handleChange}
@@ -199,26 +192,17 @@
             <div class="uk-width-1-1">
               <div class="uk-align-right">
                 {#if waitingTxs}
-                  <span
-                    uk-spinner="ratio: 0.8"
-                    style="margin: 0px 10px 0px 0px"
-                  />
+                  <span uk-spinner="ratio: 0.8" style="margin: 0px 10px 0px 0px" />
                 {/if}
-                <button
-                  class="uk-button uk-button-default uk-modal-close uk-margin-right"
-                >
-                  {waitingTxs
-                    ? $_("txs.transfer.btn_close")
-                    : $_("txs.transfer.btn_cancel")}
+                <button class="uk-button uk-button-default uk-modal-close uk-margin-right">
+                  {waitingTxs ? $_('txs.transfer.btn_close') : $_('txs.transfer.btn_cancel')}
                 </button>
                 <button
                   on:click={() => (waitingConfirmation = true)}
                   disabled={waitingTxs || !isValidAmount || !isReceiverValid}
                   class="uk-button uk-button-primary"
                 >
-                  {waitingTxs
-                    ? $_("txs.transfer.await")
-                    : $_("txs.transfer.btn_next")}
+                  {waitingTxs ? $_('txs.transfer.await') : $_('txs.transfer.btn_next')}
                 </button>
               </div>
             </div>

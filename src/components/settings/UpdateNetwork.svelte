@@ -1,18 +1,20 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import type { CarpeError } from "../../carpeError";
-  import { raise_error } from "../../carpeError";
+  import { _ } from "svelte-i18n";
+  import { invoke } from "@tauri-apps/api/tauri";
+
+  import type { CarpeError } from "../../modules/carpeError";
+  import { raise_error } from "../../modules/carpeError";
   import {
     network_profile,
     getNetwork,
     synced_fullnodes,
-  } from "../../networks";
-  import type { NetworkProfile } from "../../networks";
-  import { refreshUpstreamPeerStats } from "../../networks";
-  import { invoke } from "@tauri-apps/api/tauri";
-  import { notify_success } from "../../carpeNotify";
+    refreshUpstreamPeerStats,
+  } from "../../modules/networks";
+  import type { NetworkPlaylist } from "../../modules/networks";
+  import { notify_success } from "../../modules/carpeNotify";
+  
   import SetNetworkPlaylist from "./SetNetworkPlaylist.svelte";
-  import { _ } from "svelte-i18n";
 
   let upstream_url = "";
   let current_chain_id = "";
@@ -20,9 +22,12 @@
   onMount(async () => {
     getNetwork();
 
-    network_profile.subscribe((n) => {
-      upstream_url = n.urls.length == 1 ? n.urls[0] : ""; // just used to show OVERRIDE PEERS url
-      current_chain_id = n.chain_id;
+    network_profile.subscribe((n: NetworkPlaylist) => {
+      if (n) {
+        upstream_url = n.nodes.length == 1 ? n.nodes[0].url : ""; // just used to show OVERRIDE PEERS url
+        current_chain_id = n.chain_id;
+      }
+
     });
   });
 
@@ -39,7 +44,7 @@
 
   const forceUpstream = () => {
     invoke("force_upstream", { url: upstream_url })
-      .then((res: NetworkProfile) => {
+      .then((res: NetworkPlaylist) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");
       })
@@ -96,6 +101,7 @@
         />
       </div>
 
+      <!-- svelte-ignore a11y-click-events-have-key-events -->
       <span
         on:click={forceUpstream}
         class="uk-button uk-button-primary uk-align-right"

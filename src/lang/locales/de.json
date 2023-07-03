@@ -6,19 +6,19 @@
     "events": "Ereignisse"
   },
   "layout": {
-      "connection_error": {
-         "title": "Ups, wir können keine Verbindung zum 0L-Netzwerk herstellen",
-         "body": "<p> Dies liegt wahrscheinlich daran, dass der von dir verwendete Upstream-Peer (Server) nicht verfügbar ist.</p> <h3> Keine Sorge, dein Konto und deine Coins sind sicher.</h3> <p>Wenn Du Deine Peers ändern oder aktualisieren musst, kannst Du das hier tun:</p>"
-      },
-      "error_accordion": {
-          "title": "Fehlerbericht",
-          "category": "Fehler-Kategorie",
-          "id": "ID"
-      },
-      "recovery_mode": { 
-        "title": "Wiederherstellungsmodus",
-        "body": "Das Netz ist wieder in Betrieb! Aber wir befinden uns im Wiederherstellungsmodus, und es werden noch keine Belohnungen für Proofs gezahlt. Warte, bis der Wiederherstellungsmodus beendet ist, um Proofs für Belohnungen zu senden. Die Wiederherstellung endet, wenn die Epoche {epoch_recovery_ends} auf {epoch_recovery_ends_after} wechselt."
-      }
+    "connection_error": {
+      "title": "Ups, wir können keine Verbindung zum 0L-Netzwerk herstellen",
+      "body": "<p> Dies liegt wahrscheinlich daran, dass der von dir verwendete Upstream-Peer (Server) nicht verfügbar ist.</p> <h3> Keine Sorge, dein Konto und deine Coins sind sicher.</h3> <p>Wenn Du Deine Peers ändern oder aktualisieren musst, kannst Du das hier tun:</p>"
+    },
+    "error_accordion": {
+      "title": "Fehlerbericht",
+      "category": "Fehler-Kategorie",
+      "id": "ID"
+    },
+    "recovery_mode": {
+      "title": "Wiederherstellungsmodus",
+      "body": "Das Netz ist wieder in Betrieb! Aber wir befinden uns im Wiederherstellungsmodus, und es werden noch keine Belohnungen für Proofs gezahlt. Warte, bis der Wiederherstellungsmodus beendet ist, um Proofs für Belohnungen zu senden. Die Wiederherstellung endet, wenn die Epoche {epoch_recovery_ends} auf {epoch_recovery_ends_after} wechselt."
+    }
   },
   "wallet": {
     "wallet": "Wallet",
@@ -57,7 +57,7 @@
       "account_tips": "Dein Konto existiert noch nicht auf der Chain. Du musst jemandem deinen Onboarding Key geben, damit er dein Konto erzeugen kann."
     },
     "account_from_mnem_submit": {
-      "title":" Aufgepasst!",
+      "title": " Aufgepasst!",
       "body": " <p>Bist du sicher, dass du deine Mnemonic Phrase aufgeschrieben hast?</p> <p>Ohne sie kannst du dein Konto nicht wiederherstellen. Niemand kann dir helfen, wenn du sie verlierst.</p><p>Dies ist die letzte Chance, sie aufzuschreiben.</p>",
       "btn_cancel": "Ich schaue nochmal nach",
       "btn_submit": "Jetzt Abschicken",
@@ -252,7 +252,7 @@
     "sent_payment": "Gesendete Zahlung",
     "loading": {
       "error": "Fehler beim Laden der Kontoereignisse:",
-      "corrupted_db": "Der aktuell verbundene Knoten verfügt nicht über alle Kontoereignisse. Keine Sorge. Deine Wallet und Coins sind in Sicherheit auf der Chain. Probiere, dich mit einem anderen Upstream-Knoten zu verbinden.", 
+      "corrupted_db": "Der aktuell verbundene Knoten verfügt nicht über alle Kontoereignisse. Keine Sorge. Deine Wallet und Coins sind in Sicherheit auf der Chain. Probiere, dich mit einem anderen Upstream-Knoten zu verbinden.",
       "account_off_chain": "Das ausgewählte Konto wurde noch nicht geonboarded."
     }
   },
@@ -268,7 +268,7 @@
       "claim": "Forderung"
     },
     "claim_btn": {
-      "await" : "Warten...",
+      "await": "Warten...",
       "claim": "Jetzt Einfordern"
     },
     "modal_success": {

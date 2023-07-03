@@ -6,15 +6,15 @@
     "events": "Eventos"
   },
   "layout": {
-      "connection_error": {
-         "title": "Opa, não foi possível conectar à rede 0L",
-         "body": "<p>Isto geralmente acontece porque o node (servidor) que você está usando está fora do ar.</p> <h3> Não se preocupe, sua conta e moedas estão seguras.</h3> <p>Se você precisar configurar ou atualizar seus nodes, você pode fazer isso aqui:</p>"
-      },
-      "error_accordion": {
-          "title": "Relatório de Erros",
-          "category": "Categoria de Erro",
-          "id": "ID"
-      }
+    "connection_error": {
+      "title": "Opa, não foi possível conectar à rede 0L",
+      "body": "<p>Isto geralmente acontece porque o node (servidor) que você está usando está fora do ar.</p> <h3> Não se preocupe, sua conta e moedas estão seguras.</h3> <p>Se você precisar configurar ou atualizar seus nodes, você pode fazer isso aqui:</p>"
+    },
+    "error_accordion": {
+      "title": "Relatório de Erros",
+      "category": "Categoria de Erro",
+      "id": "ID"
+    }
   },
   "wallet": {
     "wallet": "Carteira",
@@ -53,7 +53,7 @@
       "account_tips": "Sua conta não existe na rede ainda. Você precisará enviar para alguém sua Chave de Integração para que possam criar sua conta."
     },
     "account_from_mnem_submit": {
-      "title":"Anteção!",
+      "title": "Anteção!",
       "body": "<p>Você tem certeza que escreveu sua frase mnemônica?</p><p>Você não conseguirá recuperar sua conta sem ela de jeito algum. Ninguém pode te ajudar se você perdê-la.</p><p>Esta é a sua última oportunidade de escrevê-la em algum lugar.</p>",
       "btn_cancel": "Deixe-me verificar novamente",
       "btn_submit": "Enviar Agora",
@@ -264,7 +264,7 @@
       "claim": "Claim"
     },
     "claim_btn": {
-      "await" : "Await...",
+      "await": "Await...",
       "claim": "Claim Now"
     },
     "modal_success": {

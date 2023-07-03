@@ -5,6 +5,8 @@ extern crate keyring;
 use std::convert::TryInto;
 
 use libra_types::exports::AccountAddress;
+use libra_types::legacy_types::app_cfg::AppCfg;
+
 use anyhow::{anyhow, bail};
 use keyring::KeyringError;
 use libra_types::exports::{
@@ -13,6 +15,18 @@ use libra_types::exports::{
 
 const KEYRING_APP_NAME: &str = "carpe";
 
+/// overwrite then delete
+pub fn erase_keyring_address(address: AccountAddress) -> anyhow::Result<()>{
+    let addr_str = &address.to_string();
+    let kr = keyring::Keyring::new(KEYRING_APP_NAME, addr_str);
+
+    let bytes = &[0u8, 64];
+    let encoded = hex::encode(bytes);
+
+    kr.set_password(&encoded)?;
+    kr.delete_password()?;
+    Ok(())
+}
 /// send the encoded private key to OS keyring
 pub fn set_private_key(ol_address: &str, key: Ed25519PrivateKey) -> Result<(), KeyringError> {
     let kr = keyring::Keyring::new(KEYRING_APP_NAME, &ol_address);
@@ -56,6 +70,25 @@ pub fn get_keypair(
     // let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = k.try_into().unwrap(); // TODO: just return here.
     // Ok(p)
 }
+
+/// insert the public key into the AppCfg temporarily so that we don't need
+/// to prompt user for mnemonic.
+// NOTE to future devs: DANGER: make sure this is never called in a flow that uses save_file()
+pub fn inject_private_key_to_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<()>{
+  // gets the default profile
+  let mut profile = app_cfg_mut.get_profile_mut(None)?;
+  let pri_key = get_private_key(&profile.account)?;
+  profile.test_private_key = Some(pri_key);
+  Ok(())
+}
+
+pub fn clear_private_key_from_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<()> {
+    // gets the default profile
+  let mut profile = app_cfg_mut.get_profile(None)?;
+  profile.test_private_key = None;
+  Ok(())
+}
+
 
 // #[test]
 // fn encode_keys() {
