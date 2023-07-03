@@ -215,9 +215,21 @@ pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
 //     })
 // }
 
-#[tauri::command(async)]
-pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {
-  let config = get_cfg()?;
+// #[tauri::command(async)]
+// pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
+//   get_local_proofs_this_profile()
+//     // TODO: Why is the CarpeError From anyhow not working?
+//     .map_err(|e| {
+//       CarpeError::misc(&format!(
+//         "could not get local files, message: {:?}",
+//         e.to_string()
+//       ))
+//     })
+// }
+
+// #[tauri::command(async)]
+// pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {
+//   let config = get_cfg()?;
   
   let (_, path) = VDFProof::get_highest_block(&config.get_block_dir(None)?)
     // TODO: Why is the CarpeError From anyhow not working?

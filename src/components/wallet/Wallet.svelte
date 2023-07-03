@@ -95,6 +95,8 @@
       <AccountsList {selectedAccount} {accountList} {isMining} {isConnected} />
 
       {#if !isConnected}
+        <!-- <AccountsList {my_account} {accountList} {isMining} {isConnected} /> -->
+
         <ConnectionError />
       {:else}
         <ReminderCreate {pendingAccounts} {isConnected} />
