@@ -12,7 +12,7 @@
   } from '../../modules/accounts'
   import type { Profile } from '../../modules/accounts'
   import { minerLoopEnabled } from '../../modules/miner'
-
+  
   import { connected } from '../../modules/networks'
   import ConnectionError from '../layout/ConnectionError.svelte'
   import Newbie from './Newbie.svelte'
