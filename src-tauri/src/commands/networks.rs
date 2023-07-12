@@ -18,7 +18,7 @@ pub async fn toggle_network(chain_id: NamedChain) -> Result<NetworkPlaylist, Car
   let mut app_cfg = get_cfg()?;
   app_cfg.set_chain_id(chain_id);
   app_cfg.save_file()?;
-  
+
   maybe_create_playlist(&mut app_cfg, chain_id).await.ok();
 
   get_networks().await
@@ -29,9 +29,9 @@ async fn maybe_create_playlist(app_cfg: &mut AppCfg, chain_id: NamedChain) -> an
   let np = if chain_id == NamedChain::TESTING {
   let mut playlist = NetworkPlaylist::default();
    playlist.chain_id = NamedChain::TESTING;
-   app_cfg.add_custom_playlist(playlist.clone());
+   app_cfg.maybe_add_custom_playlist(&playlist);
    playlist
-  } else { 
+  } else {
     app_cfg.update_network_playlist(Some(chain_id), None).await?
   };
   app_cfg.workspace.default_chain_id = chain_id;

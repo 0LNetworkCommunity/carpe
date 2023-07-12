@@ -14,11 +14,13 @@ built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
 
-libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "genesis-econ" }
-libra-tower = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "genesis-econ" }
-libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "genesis-econ" }
-libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "genesis-econ" }
-libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "genesis-econ" }
+libra-config = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
+libra-genesis-tools = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features"}
+libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
+libra-tower = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
+libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
+libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
+libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
 
 anyhow = "1.0.38"
 futures = "0.3.24"
