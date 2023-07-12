@@ -9,8 +9,8 @@
 
   import AccountSwitcher from './wallet/AccountSwitcher.svelte'
   import { refreshAccounts } from '../modules/accountActions'
-    import { get } from 'svelte/store'
-    import { isBooted } from '../modules/boot'
+  import { get } from 'svelte/store'
+  import { isBooted } from '../modules/boot'
 
   // import MakeWholeLink from "./make-whole/MakeWholeLink.svelte";
 
@@ -38,7 +38,7 @@
       }
     })
   })
-  
+
   // let matchesWallet = useMatch("/wallet");
   useMatch("wallet").subscribe((r) => {
     if (r && r.path && r.path.includes("wallet") && get(isBooted)) {

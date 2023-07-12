@@ -4,8 +4,6 @@ import { getTowerChainView, maybeEmitBacklog, maybeStartMiner } from './miner_in
 import { getMetadata, scanning_fullnodes } from './networks'
 import { isInit } from './accounts'
 
-
-
 let tick_in_progress = false
 
 export const carpeTick = async () => {
