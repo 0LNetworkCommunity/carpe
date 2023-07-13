@@ -14,7 +14,8 @@
   let unsubsListener
 
   afterUpdate(() => {
-    delta = minerTower.local_height - minerTower.on_chain.verified_tower_height
+    let onChainHeight = minerTower.on_chain ? minerTower.on_chain : 0;
+    delta = minerTower.local_height - onChainHeight;
   })
 
   onMount(async () => {
@@ -47,6 +48,6 @@
       </div>
     </CardAlert>
   {:else if !loading && delta && delta > 0}
-    <SyncProofsError {minerTower} />
+    <SyncProofsError {delta} />
   {/if}
 </main>

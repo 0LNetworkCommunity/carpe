@@ -29,7 +29,8 @@ export const getDefaultProfile = async () => {
 }
 
 export const refreshAccounts = async () => {
-  isRefreshingAccounts.set(true)
+  console.log(">>> refresh_accounts");
+  isRefreshingAccounts.set(true);
   invoke('refresh_accounts')
     .then((result: [Profile]) => {
       // TODO make this the correct return type
@@ -183,7 +184,7 @@ export function getAccountEvents(account: Profile, errorCallback = null) {
   /*
   invoke('get_account_events', {account: address.toUpperCase()})
     .then((events: Array<T>) => {
-      let all = get(accountEvents);     
+      let all = get(accountEvents);
       all[address] = events
         .sort((a, b) => (a.transaction_version < b.transaction_version)
           ? 1
@@ -198,7 +199,7 @@ export function getAccountEvents(account: Profile, errorCallback = null) {
         errorCallback(e.msg);
       } else {
         raise_error(e, false, "getAccountEvents");
-      }      
+      }
     });
     */
 }
@@ -207,7 +208,7 @@ export function getAccountEvents(account: Profile, errorCallback = null) {
 export let invoke_makewhole = async (account: String): Promise<number> => {
  // let demo_account = "613b6d9599f72134a4fa20bba4c75c36";
  // account = demo_account;
-  
+
   console.log(">>> calling make whole");
   return await invoke("query_makewhole", { account })
     .then((a) => {
