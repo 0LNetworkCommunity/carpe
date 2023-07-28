@@ -54,6 +54,9 @@ jobs:
 
       - name: yarn installation
         run: yarn install
+      - name: pre-build rust
+        working-directory: ./src-tauri
+        run: cargo b --release
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
         env:

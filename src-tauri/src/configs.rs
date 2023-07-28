@@ -38,11 +38,12 @@ pub fn legacy_config_path() -> PathBuf {
   base.home_dir().join(".0L")
 }
 
-pub fn new_cfg() -> AppCfg{
+pub fn new_cfg() -> anyhow::Result<AppCfg>{
   // use carpe default system config path
   let mut c = AppCfg::default();
   c.workspace.node_home = default_config_path().to_owned();
-  c
+  c.save_file()?;
+  Ok(c)
 }
 
 

@@ -40,7 +40,10 @@ fn read_accounts(dir: &PathBuf) -> anyhow::Result<Accounts> {
 
 pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   // let mut app_cfg = get_cfg().ok();
-  let mut app_cfg = get_cfg().unwrap_or(configs::new_cfg());
+  let mut app_cfg = match get_cfg() {
+    Ok(a) => a,
+    _ => configs::new_cfg()?
+  };
 
   if let Some(list) = read_accounts(&configs::legacy_config_path()).ok() {
     println!("found an accounts.json file");
