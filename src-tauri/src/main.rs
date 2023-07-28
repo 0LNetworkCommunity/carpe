@@ -85,7 +85,7 @@ async fn main() {
       menu = menu.add_native_item(MenuItem::SelectAll);
       menu
     }));
-  
+
   tauri::async_runtime::set(tokio::runtime::Handle::current());
 
   tauri::Builder::default()

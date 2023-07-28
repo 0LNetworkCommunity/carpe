@@ -1,15 +1,33 @@
 //! 0L configs file
 
 use std::path::PathBuf;
-
+use std::path::Path;
 use libra_types::{
-  legacy_types::app_cfg::{self, AppCfg},
+  legacy_types::app_cfg::AppCfg,
   exports::Client
 };
+use once_cell::sync::Lazy;
 
-// get the config path for files
-pub fn default_config_path() -> PathBuf {
-    app_cfg::default_file_path()
+static CONFIG_PATH: Lazy<PathBuf> = Lazy::new(|| {
+    let os_path = directories::ProjectDirs::from("com", "carpe",  "Carpe").unwrap();
+    os_path.config_dir().to_path_buf()
+});
+
+
+/// get the config path for files
+// NOTE: update in V1 we are now using OS specific paths.
+// Lin: /home/alice/.config/carpe
+// Win: C:\Users\Alice\AppData\Roaming\carpe\Carpe\config
+// Mac: /Users/Alice/Library/Application Support/com.carpe.Carpe
+
+pub fn default_config_path()  -> &'static Path {
+    &CONFIG_PATH
+}
+
+/// Where carpe pre V1 used to be located
+pub fn legacy_path() -> PathBuf {
+  let base = directories::BaseDirs::new().unwrap();
+  base.home_dir().join(".0L")
 }
 
 pub fn get_cfg() -> anyhow::Result<AppCfg> {
@@ -23,4 +41,11 @@ pub fn get_client() -> anyhow::Result<Client> {
 
 pub fn is_initialized() -> bool {
     default_config_path().exists()
+}
+
+
+#[test]
+fn test_os_dir() {
+  dbg!(&default_config_path());
+  dbg!(&legacy_path());
 }
