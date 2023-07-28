@@ -9,7 +9,7 @@ use libra_types::{
   },
 };
 use libra_query::account_queries::get_account_balance_libra;
-use anyhow::{anyhow};
+use anyhow::anyhow;
 use crate::{carpe_error::CarpeError, configs::get_client};
 
 
@@ -52,7 +52,7 @@ pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
       .map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))?;
     // dbg!(&slow_balance);
     Ok(slow_balance.total)
-    // 
+    //
 }
 
 pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
@@ -71,12 +71,12 @@ pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
 
   let res = client.view_ext("0x1::recovery_mode::RecoveryMode::get_end_epoch", None, None).await?;
 
-  if let Some(r) = res.into_iter().next() {
-    let value: u64 = serde_json::from_value(r)
-      .map_err(|_| anyhow!("cannot parse recovery mode view"))?;
-    return Ok(value);
-  }
-  Err(CarpeError::rpc_fail("cannot get recovery mode view"))
+  let value: u64 = serde_json::from_value::<Vec<String>>(res)
+  .map_err(|_| anyhow!("cannot parse recovery mode view"))?[0]
+  .parse()
+  .map_err(|_| anyhow!("cannot parse recovery mode view"))?;
+
+  return Ok(value);
 }
 //
 //

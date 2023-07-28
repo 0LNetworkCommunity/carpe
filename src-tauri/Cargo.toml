@@ -3,7 +3,7 @@ authors = ["0LNetworkCommunity"]
 default-run = "carpe"
 description = "a light miner and wallet for libra"
 edition = "2021"
-license = "MIT"
+license = "Apache 2.0"
 name = "carpe"
 repository = "https://github.com/0LNetworkCommunity/carpe"
 version = "0.5.0"
@@ -14,13 +14,13 @@ built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
 
-# libra-config = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
-# libra-genesis-tools = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs"}
-libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
-libra-tower = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
-libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
-libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
-libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "tower-txs" }
+# libra-config = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
+# libra-genesis-tools = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move"}
+libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
+libra-tower = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
+libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
+libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
+libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
 
 # ajson = "*"
 anyhow = "1.0.38"
