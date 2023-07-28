@@ -48,6 +48,9 @@ jobs:
           # relative to the `$workspace` and defaults to "target" if not explicitly given.
           # default: ". -> target"
            workspaces: ./src-tauri
+           shared-key: "libra" # to share across CI builds, so it is not job-id specific
+           cache-all-crates: true
+
 
       - name: yarn installation
         run: yarn install

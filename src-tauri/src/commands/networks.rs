@@ -91,7 +91,7 @@ let raw_yaml = r"
 workspace:
   default_profile: '636'
   default_chain_id: TESTING
-  node_home: /Users/lucas/.0L
+  node_home: ~/.carpe
 user_profiles:
 - account: 63609dfa4c8786bef29b201500064b2864689de724ca134f4e975784e3642776
   auth_key: 0x63609dfa4c8786bef29b201500064b2864689de724ca134f4e975784e3642776
