@@ -2,16 +2,17 @@ use crate::configs::get_cfg;
 
 use anyhow::bail;
 use libra_types::exports::{AccountAddress, AuthenticationKey, NamedChain};
-use libra_types::legacy_types::app_cfg::AppCfg;
+// use libra_types::legacy_types::app_cfg::AppCfg;
 use libra_types::legacy_types::network_playlist;
 use libra_types::{
-  global_config_dir,
+  // global_config_dir,
   legacy_types::{
     app_cfg::{get_nickname, Profile},
     network_playlist::NetworkPlaylist,
   },
 };
 use std::path::PathBuf;
+use crate::configs;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
@@ -39,9 +40,9 @@ fn read_accounts(dir: &PathBuf) -> anyhow::Result<Accounts> {
 
 pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   // let mut app_cfg = get_cfg().ok();
-  let mut app_cfg = get_cfg().unwrap_or(AppCfg::default());
+  let mut app_cfg = get_cfg().unwrap_or(configs::new_cfg());
 
-  if let Some(list) = read_accounts(&global_config_dir()).ok() {
+  if let Some(list) = read_accounts(&configs::legacy_config_path()).ok() {
     println!("found an accounts.json file");
     list.accounts.iter().for_each(|a| {
       let mut p = Profile::new(a.authkey, a.account);

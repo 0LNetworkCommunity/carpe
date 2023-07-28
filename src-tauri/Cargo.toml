@@ -46,6 +46,7 @@ url = { version = "^2.1", features = ["serde"] }
 [features]
 custom-protocol = ["tauri/custom-protocol"]
 default = ["custom-protocol"]
+carpe-canary = [] # for building canary versions which use separate config dirs.
 
 [dev-dependencies]
 serde_yaml = "*"

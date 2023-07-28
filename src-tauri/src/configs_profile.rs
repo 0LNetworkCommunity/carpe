@@ -22,7 +22,7 @@ pub async fn set_account_profile(
   let is_newbie = configs::is_initialized();
   let mut cfg = match is_newbie {
     true => configs::get_cfg()?,
-    false => AppCfg::default(),
+    false => configs::new_cfg(),
   };
 
   // set as default profile
