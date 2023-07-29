@@ -11,17 +11,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # os: [ macos-11, ubuntu-20.04, windows-latest ]
-        os: [ ubuntu-20.04 ]
+        os: [ macos-11, ubuntu-20.04, ubuntu-22.04, windows-latest ]
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
+      # Setup Rust
       - uses: dtolnay/rust-toolchain@1.66.1
         with:
           components: rustfmt
-      - name: update cargo index
-        continue-on-error: true
-        run: cargo install empty-library
+
+      # Setup Node.js
       - name: setup node
         uses: actions/setup-node@v3
         with:
