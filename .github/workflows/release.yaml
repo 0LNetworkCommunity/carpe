@@ -1,4 +1,4 @@
-name: Build Binaries for Mac latest, Ubuntu 20-04, and Windows latest
+name: carpe release
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
       matrix:
         # os: [ macos-11, ubuntu-20.04, windows-latest ]
         os: [ macos-11 ]
-    name: Build Binary for ${{ matrix.os }}
+    name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: dtolnay/rust-toolchain@1.66.1
@@ -54,13 +54,18 @@ jobs:
 
       - name: yarn installation
         run: yarn install
+
       - name: pre-build rust
         working-directory: ./src-tauri
         run: cargo b --release
+
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # TAURI_PRIVATE_KEY: ${{secrets.TAURI_PRIVATE_KEY}}
+          # TAURI_KEY_PASSWORD: ${{secrets.TAURI_KEY_PASSWORD}}
+
           TAURI_PRIVATE_KEY: dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5N1FKS0ZZM1BwL25GaFdKU0tpNW5XREQyZnZjQTdkVWZSYUZWV0U5YThIUUFBQkFBQUFBQUFBQUFBQUlBQUFBQVp5dlhYNTlMa0c1OHMxK2hxWXNJWHc2VXVRZnRPUVR3TjloZTJTdXIrQnV2aXFSbTczWjNkdTlOU214YXhnVXA3SmNQQ3VzemlMV2ZKTWVNZTA0SWRraHU0VFJGbXI3UXpsTkREditxV1hFWUQ2MlVZam5lSDJ2OFA1Z05hZnY0U21mOWZxZ0JnZUk9Cg==
           TAURI_KEY_PASSWORD: 123456
         with:
@@ -69,22 +74,3 @@ jobs:
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
           prerelease: false
-
-#      - name: Rename binary
-#        run: mv src-tauri/target/release/bundle/${{ matrix.dir }}/*.${{ matrix.dir}} src-tauri/target/release/bundle/${{ matrix.dir }}/${{matrix.asset_name}}.${{matrix.dir}}
-#      - name: Upload binaries to release
-#        uses: svenstaro/upload-release-action@v1-release
-#        with:
-#          repo_token: ${{ secrets.GITHUB_TOKEN }}
-#          file: src-tauri/target/release/bundle/${{ matrix.dir }}/*.${{ matrix.dir}}
-#          tag: ${{ github.ref }}
-#          overwrite: true
-#          file_glob: true
-#      - name: Upload Updater Builds
-#        uses: svenstaro/upload-release-action@v1-release
-#        with:
-#          repo_token: ${{ secrets.GITHUB_TOKEN }}
-#          file: src-tauri/target/release/bundle/macos/*
-#          tag: ${{ github.ref }}
-#          overwrite: true
-#          file_glob: true
