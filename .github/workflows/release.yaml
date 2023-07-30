@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-11, ubuntu-20.04, ubuntu-22.04, windows-latest ]
+        os: [ windows-latest ]
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -45,8 +45,17 @@ jobs:
         with:
           version: "11.0"
           directory: ${{ runner.temp }}/llvm
-          name: Set LIBCLANG_PATH
-          run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
+      - name: Set LIBCLANG_PATH
+        if: matrix.os == 'windows-latest'
+        run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
+      - name: vcpkg build
+        if: matrix.os == 'windows-latest'
+        uses: johnwason/vcpkg-action@v5
+        id: vcpkg
+        with:
+          pkgs: gmp
+          triplet: x64-windows-release
+          token: ${{ github.token }}
 
       - uses: actions/checkout@v3
 
