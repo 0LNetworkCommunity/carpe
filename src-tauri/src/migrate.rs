@@ -1,15 +1,14 @@
 use crate::configs::get_cfg;
 
+use crate::configs;
 use anyhow::bail;
 use libra_types::exports::{AccountAddress, AuthenticationKey, NamedChain};
 use libra_types::legacy_types::network_playlist;
-use libra_types::
-  legacy_types::{
-    app_cfg::{get_nickname, Profile},
-    network_playlist::NetworkPlaylist,
-  };
-use std::path::PathBuf;
-use crate::configs;
+use libra_types::legacy_types::{
+  app_cfg::{get_nickname, Profile},
+  network_playlist::NetworkPlaylist,
+};
+use std::path::Path;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Accounts {
@@ -25,7 +24,7 @@ pub struct AccountEntry {
   pub balance: Option<u64>,
 }
 
-fn read_accounts(dir: &PathBuf) -> anyhow::Result<Accounts> {
+fn read_accounts(dir: &Path) -> anyhow::Result<Accounts> {
   let db_path = dir.join("accounts.json");
   if db_path.exists() {
     let file = std::fs::read_to_string(&db_path)?;
@@ -39,11 +38,11 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   // if we can find a config file in the new format we use that as a starting place
   let mut app_cfg = match get_cfg() {
     Ok(a) => a,
-    _ => configs::new_cfg()?
+    _ => configs::new_cfg()?,
   };
   let legacy_dir = configs::legacy_config_path();
 
-  if let Some(list) = read_accounts(&legacy_dir).ok() {
+  if let Ok(list) = read_accounts(&legacy_dir) {
     println!("found an accounts.json file");
     list.accounts.iter().for_each(|a| {
       let mut p = Profile::new(a.authkey, a.account);
@@ -52,16 +51,11 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
       p.nickname = a.nickname.clone();
 
       // if we do
-      if app_cfg
-        .user_profiles
-        .iter()
-        .find(|e| a.account == e.account)
-        .is_none()
-      {
+      if !app_cfg.user_profiles.iter().any(|e| a.account == e.account) {
         // if we don't find the account in the list
         app_cfg.user_profiles.push(p);
 
-        if let Some(p) = app_cfg.get_profile(None).ok() {
+        if let Ok(p) = app_cfg.get_profile(None) {
           app_cfg.workspace.default_profile = Some(get_nickname(p.account));
         };
       }

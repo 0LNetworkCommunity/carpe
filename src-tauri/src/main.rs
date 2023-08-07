@@ -2,23 +2,22 @@
   all(not(debug_assertions), target_os = "windows"),
   windows_subsystem = "windows"
 )]
-
 #![allow(dead_code)]
 
+use crate::configs::default_config_path;
 use log::{error, warn};
 use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
 };
 use std::fs::{self, File};
-use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
-use crate::configs::default_config_path;
+use tauri::{AboutMetadata, Menu, MenuItem, Submenu};
 
 pub(crate) mod carpe_error;
 pub(crate) mod commands;
 pub(crate) mod configs;
-pub(crate) mod migrate;
 pub(crate) mod configs_profile;
 pub(crate) mod key_manager;
+pub(crate) mod migrate;
 
 #[tokio::main]
 async fn main() {
@@ -108,7 +107,6 @@ async fn main() {
       commands::networks::get_networks,
       commands::networks::toggle_network,
       commands::networks::get_metadata,
-
       //////// Queries ////////
       commands::query::query_balance,
       commands::query::query_makewhole,
@@ -136,7 +134,6 @@ async fn main() {
       commands::preferences::get_env,
       commands::preferences::set_env,
       commands::preferences::set_preferences_locale,
-
       ///////// Debug ////////
       commands::app_version::get_app_version,
       commands::web_logs::log_this,

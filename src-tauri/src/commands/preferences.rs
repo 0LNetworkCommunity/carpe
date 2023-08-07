@@ -2,8 +2,8 @@ use crate::configs::default_config_path;
 use crate::migrate;
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use libra_types::legacy_types::mode_ol::MODE_0L;
-use std::path::PathBuf;
 use std::env;
+use std::path::PathBuf;
 use url::Url;
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct Preferences {
@@ -15,9 +15,10 @@ pub struct Preferences {
 pub fn get_preferences() -> Result<Preferences, CarpeError> {
   let app_cfg = get_cfg()?;
   let profile = app_cfg.get_profile(None)?;
-  Ok(Preferences { locale: profile.locale })
+  Ok(Preferences {
+    locale: profile.locale,
+  })
 }
-
 
 #[tauri::command(async)]
 /// set the locale preference
@@ -34,9 +35,8 @@ pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
 #[tauri::command]
 /// global config dir for convenience
 pub fn debug_preferences_path() -> Result<PathBuf, CarpeError> {
-  Ok(default_config_path().to_path_buf())
+  Ok(default_config_path())
 }
-
 
 #[tauri::command(async)]
 /// refreshes statistics and returns the synced peers
@@ -48,13 +48,11 @@ pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
   Ok(np.the_good_ones()?) // uses app_cfg.chain_info_chain_id
 }
 
-
 #[tauri::command(async)]
 pub fn get_env() -> Result<String, CarpeError> {
-  let env = MODE_0L.clone();
+  let env = *MODE_0L;
   Ok(env.to_string())
 }
-
 
 #[tauri::command(async)]
 pub fn set_env(env: String) -> Result<String, CarpeError> {
@@ -64,11 +62,10 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
     _ => {}
   }
 
-  let v = env::var("MODE_0L")
-    .map_err(|_| CarpeError::misc("environment variable MODE_0L is not set"))?;
+  let v =
+    env::var("MODE_0L").map_err(|_| CarpeError::misc("environment variable MODE_0L is not set"))?;
   Ok(v)
 }
-
 
 #[tauri::command(async)]
 pub async fn maybe_migrate() -> Result<(), CarpeError> {

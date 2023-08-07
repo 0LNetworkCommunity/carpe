@@ -1,40 +1,39 @@
 //! query the chain
+use crate::{carpe_error::CarpeError, configs::get_client};
+use anyhow::anyhow;
+use libra_query::account_queries::get_account_balance_libra;
 use libra_types::{
-  type_extensions::client_ext::ClientExt,
   exports::AccountAddress,
   legacy_types::{
+    makewhole_resource::CreditResource, makewhole_resource::MakeWholeResource,
     tower::TowerProofHistoryView,
-    makewhole_resource::CreditResource,
-    makewhole_resource::MakeWholeResource,
   },
+  type_extensions::client_ext::ClientExt,
 };
-use libra_query::account_queries::get_account_balance_libra;
-use anyhow::anyhow;
-use crate::{carpe_error::CarpeError, configs::get_client};
-
 
 #[tauri::command(async)]
 pub async fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
-    get_balance(account).await
+  get_balance(account).await
 }
 
 #[tauri::command(async)]
-pub async fn get_onchain_tower_state(
-  account: String,
-) -> Result<TowerProofHistoryView, CarpeError> {
+pub async fn get_onchain_tower_state(account: String) -> Result<TowerProofHistoryView, CarpeError> {
   let account: AccountAddress = account.parse()?;
   let client = get_client()?;
   let tower_access_path = "0x1::tower_state::TowerProofHistory";
-  let res = client.get_account_resource_bcs::<TowerProofHistoryView>(account, tower_access_path).await?;
+  let res = client
+    .get_account_resource_bcs::<TowerProofHistoryView>(account, tower_access_path)
+    .await?;
   Ok(res.into_inner())
-
 }
 //
 #[tauri::command(async)]
 pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError> {
-    let client = get_client()?;
+  let client = get_client()?;
   let access_path = "0x1::make_whole::MakeWhole";
-  let res = client.get_account_resource_bcs::<MakeWholeResource>(account, access_path).await?;
+  let res = client
+    .get_account_resource_bcs::<MakeWholeResource>(account, access_path)
+    .await?;
   let credits = res.into_inner().credits;
   Ok(credits)
 
@@ -47,20 +46,30 @@ pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResour
 }
 
 pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
-    let client = get_client()?;
-    let slow_balance = get_account_balance_libra(&client, account).await
-      .map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))?;
-    // dbg!(&slow_balance);
-    Ok(slow_balance.total)
-    //
+  let client = get_client()?;
+  let slow_balance = get_account_balance_libra(&client, account)
+    .await
+    .map_err(|e| {
+      CarpeError::misc(&format!(
+        "Could not get balance from account{}: {}",
+        account, e
+      ))
+    })?;
+  // dbg!(&slow_balance);
+  Ok(slow_balance.total)
+  //
 }
 
 pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
-    let client = get_client()?;
-    let res = client.get_account(account).await
-      .map_err(|e| CarpeError::misc(&format!("Could not get balance from account{}: {}", account, e.to_string())))?;
+  let client = get_client()?;
+  let res = client.get_account(account).await.map_err(|e| {
+    CarpeError::misc(&format!(
+      "Could not get balance from account{}: {}",
+      account, e
+    ))
+  })?;
 
-    Ok(res.into_inner().sequence_number)
+  Ok(res.into_inner().sequence_number)
 }
 
 #[tauri::command(async)]
@@ -69,14 +78,20 @@ pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
 
   // TODO: write a Move view for this
 
-  let res = client.view_ext("0x1::recovery_mode::RecoveryMode::get_end_epoch", None, None).await?;
+  let res = client
+    .view_ext(
+      "0x1::recovery_mode::RecoveryMode::get_end_epoch",
+      None,
+      None,
+    )
+    .await?;
 
   let value: u64 = serde_json::from_value::<Vec<String>>(res)
-  .map_err(|_| anyhow!("cannot parse recovery mode view"))?[0]
-  .parse()
-  .map_err(|_| anyhow!("cannot parse recovery mode view"))?;
+    .map_err(|_| anyhow!("cannot parse recovery mode view"))?[0]
+    .parse()
+    .map_err(|_| anyhow!("cannot parse recovery mode view"))?;
 
-  return Ok(value);
+  Ok(value)
 }
 //
 //
@@ -168,14 +183,13 @@ pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
 //   }
 // }
 
-
 #[tokio::test]
 pub async fn query_test() {
-    // need to start a node in test mode first.
-    let client = get_client().unwrap();
-    let m = client.get_index().await.unwrap();
-    println!("query_test: {:?}", m);
+  // need to start a node in test mode first.
+  let client = get_client().unwrap();
+  let m = client.get_index().await.unwrap();
+  println!("query_test: {:?}", m);
 
-    let m = client.get_block_by_height(1407, false).await.unwrap();
-    println!("query_test: {:?}", m);
+  let m = client.get_block_by_height(1407, false).await.unwrap();
+  println!("query_test: {:?}", m);
 }

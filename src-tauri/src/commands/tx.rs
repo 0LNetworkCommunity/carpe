@@ -4,8 +4,6 @@ use crate::commands::networks::get_metadata;
 use crate::configs::get_client;
 use crate::key_manager::get_private_key;
 
-use anyhow;
-
 use libra_txs::submit_transaction::Sender;
 use libra_types::exports::{AccountAddress, AccountKey, ChainId, IndexResponse};
 
