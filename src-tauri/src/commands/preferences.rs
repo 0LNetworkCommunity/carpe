@@ -1,9 +1,7 @@
+use crate::configs::default_config_path;
 use crate::migrate;
 use crate::{carpe_error::CarpeError, configs::get_cfg};
-use libra_types::{
-  global_config_dir,
-  legacy_types::mode_ol::MODE_0L,
-};
+use libra_types::legacy_types::mode_ol::MODE_0L;
 use std::path::PathBuf;
 use std::env;
 use url::Url;
@@ -36,7 +34,7 @@ pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
 #[tauri::command]
 /// global config dir for convenience
 pub fn debug_preferences_path() -> Result<PathBuf, CarpeError> {
-  Ok(global_config_dir())
+  Ok(default_config_path().to_path_buf())
 }
 
 

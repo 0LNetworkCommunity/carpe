@@ -1,7 +1,7 @@
 use crate::{
   carpe_error::CarpeError,
   commands::query,
-  configs::{self, get_client, get_cfg}, 
+  configs::{self, get_client, get_cfg},
   configs_profile,
   key_manager,
 };
@@ -128,7 +128,7 @@ pub fn get_default_profile() -> Result<Profile, CarpeError> {
 pub async fn refresh_accounts() -> Result<Vec<Profile>, CarpeError> {
     // let mut all = Accounts::read_from_file()?;
     let mut app_cfg = get_cfg()?;
-    
+
     // while we are here check if the accounts are on chain
     // under a different address than implied by authkey
     map_get_originating_address(&mut app_cfg.user_profiles).await?;
@@ -212,7 +212,7 @@ pub async fn get_originating_address(auth_key: AuthenticationKey) -> Result<Acco
 //   .find(|e| {
 //     e.account == account
 //   });
-  
+
 //   Ok(profile.context("could not find profile")?)
 //     // let all = Accounts::read_from_file()?;
 //     // match all.accounts.into_iter().find(|a| a.account == account) {
@@ -265,7 +265,7 @@ pub async fn get_originating_address(auth_key: AuthenticationKey) -> Result<Acco
 pub async fn switch_profile(account: AccountAddress) -> Result<Profile, CarpeError> {
     let mut app_cfg = get_cfg()?;
     let p = app_cfg.get_profile(Some(account.to_string()))?;
-    app_cfg.workspace.default_profile = p.nickname.clone();
+    app_cfg.workspace.default_profile = Some(p.nickname.clone());
     app_cfg.save_file()?;
     Ok(p)
     // Ok(app_cfg.get_profile(&account.to_string())?)

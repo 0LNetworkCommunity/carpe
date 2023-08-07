@@ -5,14 +5,13 @@
 
 #![allow(dead_code)]
 
-use libra_types::global_config_dir;
-
 use log::{error, warn};
 use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
 };
 use std::fs::{self, File};
 use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
+use crate::configs::default_config_path;
 
 pub(crate) mod carpe_error;
 pub(crate) mod commands;
@@ -29,7 +28,7 @@ async fn main() {
   // set_env("testnet".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
 
-  match fs::create_dir_all(global_config_dir()) {
+  match fs::create_dir_all(default_config_path()) {
     Ok(_) => (),
     Err(e) => {
       error!("could not create config dir. Message: {}", e);

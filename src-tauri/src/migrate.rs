@@ -2,15 +2,12 @@ use crate::configs::get_cfg;
 
 use anyhow::bail;
 use libra_types::exports::{AccountAddress, AuthenticationKey, NamedChain};
-// use libra_types::legacy_types::app_cfg::AppCfg;
 use libra_types::legacy_types::network_playlist;
-use libra_types::{
-  // global_config_dir,
+use libra_types::
   legacy_types::{
     app_cfg::{get_nickname, Profile},
     network_playlist::NetworkPlaylist,
-  },
-};
+  };
 use std::path::PathBuf;
 use crate::configs;
 
@@ -39,13 +36,14 @@ fn read_accounts(dir: &PathBuf) -> anyhow::Result<Accounts> {
 }
 
 pub async fn maybe_migrate_data() -> anyhow::Result<()> {
-  // let mut app_cfg = get_cfg().ok();
+  // if we can find a config file in the new format we use that as a starting place
   let mut app_cfg = match get_cfg() {
     Ok(a) => a,
     _ => configs::new_cfg()?
   };
+  let legacy_dir = configs::legacy_config_path();
 
-  if let Some(list) = read_accounts(&configs::legacy_config_path()).ok() {
+  if let Some(list) = read_accounts(&legacy_dir).ok() {
     println!("found an accounts.json file");
     list.accounts.iter().for_each(|a| {
       let mut p = Profile::new(a.authkey, a.account);
@@ -64,10 +62,12 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
         app_cfg.user_profiles.push(p);
 
         if let Some(p) = app_cfg.get_profile(None).ok() {
-          app_cfg.workspace.default_profile = get_nickname(p.account);
+          app_cfg.workspace.default_profile = Some(get_nickname(p.account));
         };
       }
     });
+    // if we are successful we should deprecate the old path, so we don't try to migrate again.
+    std::fs::rename(&legacy_dir, legacy_dir.parent().unwrap().join(".0L_bak"))?;
   }
 
   // now load the network info

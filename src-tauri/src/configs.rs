@@ -1,13 +1,11 @@
 //! 0L configs file
 
 use std::path::PathBuf;
-use std::path::Path;
 use libra_types::{
-  legacy_types::app_cfg::AppCfg,
+  legacy_types::app_cfg::{CONFIG_FILE_NAME, AppCfg},
   exports::Client
 };
 use once_cell::sync::Lazy;
-
 
 // Set up paths for the canary builds
 #[cfg(feature = "carpe-canary")]
@@ -17,7 +15,7 @@ static CONFIG_PATH: Lazy<PathBuf> = Lazy::new(|| {
 });
 
 #[cfg(not(feature = "carpe-canary"))]
-static CONFIG_PATH: Lazy<PathBuf> = Lazy::new(|| {
+static CONFIG_DIR: Lazy<PathBuf> = Lazy::new(|| {
     let os_path = directories::ProjectDirs::from("com", "carpe",  "Carpe").unwrap();
     os_path.config_dir().to_path_buf()
 });
@@ -28,8 +26,8 @@ static CONFIG_PATH: Lazy<PathBuf> = Lazy::new(|| {
 // Lin: /home/alice/.config/carpe
 // Win: C:\Users\Alice\AppData\Roaming\carpe\Carpe\config
 // Mac: /Users/Alice/Library/Application Support/com.carpe.Carpe
-pub fn default_config_path()  -> &'static Path {
-    &CONFIG_PATH
+pub fn default_config_path()  -> PathBuf {
+    CONFIG_DIR.join(CONFIG_FILE_NAME)
 }
 
 /// Where carpe pre V1 used to be located
@@ -58,11 +56,4 @@ pub fn get_client() -> anyhow::Result<Client> {
 
 pub fn is_initialized() -> bool {
     default_config_path().exists()
-}
-
-
-#[test]
-fn test_os_dir() {
-  dbg!(&default_config_path());
-  dbg!(&legacy_config_path());
 }

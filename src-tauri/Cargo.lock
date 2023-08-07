@@ -1870,42 +1870,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "aptos-release-builder"
-version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/zapatos.git?rev=3e524a2d#3e524a2d459582031604a1d264bb24ae7726948e"
-dependencies = [
- "anyhow",
- "aptos",
- "aptos-api-types",
- "aptos-build-info",
- "aptos-crypto",
- "aptos-framework",
- "aptos-gas",
- "aptos-genesis",
- "aptos-rest-client",
- "aptos-temppath",
- "aptos-types",
- "aptos-vm-genesis",
- "bcs 0.1.4",
- "clap 3.2.25",
- "futures",
- "git2 0.16.1",
- "handlebars",
- "hex",
- "move-binary-format",
- "move-core-types",
- "move-model",
- "once_cell",
- "serde 1.0.165",
- "serde_json",
- "serde_yaml 0.8.26",
- "tempfile",
- "tokio",
- "url",
- "walkdir",
-]
-
-[[package]]
 name = "aptos-resource-viewer"
 version = "0.1.0"
 source = "git+https://github.com/0o-de-lally/zapatos.git?rev=3e524a2d#3e524a2d459582031604a1d264bb24ae7726948e"
@@ -3235,7 +3199,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5b9c056b9ed43aee5e064b683aa1ec783e19c6acec7559e3ae931b7490472fbe"
 dependencies = [
  "cargo-lock",
- "git2 0.15.0",
+ "git2",
 ]
 
 [[package]]
@@ -5188,21 +5152,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "git2"
-version = "0.16.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ccf7f68c2995f392c49fffb4f95ae2c873297830eb25c6bc4c114ce8f4562acc"
-dependencies = [
- "bitflags 1.3.2",
- "libc",
- "libgit2-sys",
- "log",
- "openssl-probe",
- "openssl-sys",
- "url",
-]
-
-[[package]]
 name = "glib"
 version = "0.15.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5370,20 +5319,6 @@ dependencies = [
  "tokio",
  "tokio-util",
  "tracing",
-]
-
-[[package]]
-name = "handlebars"
-version = "4.3.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "83c3372087601b532857d332f5957cbae686da52bb7810bf038c3e3c3cc2fa0d"
-dependencies = [
- "log",
- "pest",
- "pest_derive",
- "serde 1.0.165",
- "serde_json",
- "thiserror",
 ]
 
 [[package]]
@@ -6257,9 +6192,7 @@ checksum = "7f3d95f6b51075fe9810a7ae22c7095f12b98005ab364d8544797a825ce946a4"
 dependencies = [
  "cc",
  "libc",
- "libssh2-sys",
  "libz-sys",
- "openssl-sys",
  "pkg-config",
 ]
 
@@ -6282,7 +6215,7 @@ checksum = "f7012b1bbb0719e1097c47611d3898568c546d597c2e74d66f6087edd5233ff4"
 [[package]]
 name = "libra-cached-packages"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#b19ccdb31833d2e41b069aa1756e10dd27148c12"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
 dependencies = [
  "aptos-types",
  "bcs 0.1.3",
@@ -6294,16 +6227,13 @@ dependencies = [
 [[package]]
 name = "libra-framework"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#b19ccdb31833d2e41b069aa1756e10dd27148c12"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
 dependencies = [
  "anyhow",
  "aptos",
  "aptos-build-info",
  "aptos-crypto",
  "aptos-framework",
- "aptos-release-builder",
- "aptos-rest-client",
- "aptos-temppath",
  "aptos-types",
  "bcs 0.1.3",
  "clap 3.2.25",
@@ -6311,13 +6241,12 @@ dependencies = [
  "move-command-line-common",
  "move-model",
  "once_cell",
- "serde_json",
 ]
 
 [[package]]
 name = "libra-query"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#b19ccdb31833d2e41b069aa1756e10dd27148c12"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
 dependencies = [
  "anyhow",
  "aptos-sdk",
@@ -6331,7 +6260,7 @@ dependencies = [
 [[package]]
 name = "libra-tower"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#b19ccdb31833d2e41b069aa1756e10dd27148c12"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
 dependencies = [
  "anyhow",
  "aptos-sdk",
@@ -6350,7 +6279,7 @@ dependencies = [
 [[package]]
 name = "libra-txs"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#b19ccdb31833d2e41b069aa1756e10dd27148c12"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6374,7 +6303,7 @@ dependencies = [
 [[package]]
 name = "libra-types"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#b19ccdb31833d2e41b069aa1756e10dd27148c12"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6406,7 +6335,7 @@ dependencies = [
 [[package]]
 name = "libra-wallet"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#b19ccdb31833d2e41b069aa1756e10dd27148c12"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
 dependencies = [
  "anyhow",
  "aptos-config",
@@ -6494,20 +6423,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3db8d6ba2cec9eacc40e6e8ccc98931840301f1006e95647ceb2dd5c3aa06f7c"
 dependencies = [
  "libsecp256k1-core",
-]
-
-[[package]]
-name = "libssh2-sys"
-version = "0.2.23"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b094a36eb4b8b8c8a7b4b8ae43b2944502be3e59cd87687595cf6b0a71b3f4ca"
-dependencies = [
- "cc",
- "libc",
- "libz-sys",
- "openssl-sys",
- "pkg-config",
- "vcpkg",
 ]
 
 [[package]]
@@ -10008,7 +9923,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8c0ea0c68418544f725eba5401a5b965a2263254c92458d04aeae74e9d88ff4e"
 dependencies = [
  "const_format",
- "git2 0.15.0",
+ "git2",
  "is_debug",
  "time 0.3.22",
  "tzdb",
