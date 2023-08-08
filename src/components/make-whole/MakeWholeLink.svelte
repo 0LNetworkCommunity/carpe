@@ -1,9 +1,10 @@
 <script>
   import { onDestroy, onMount } from 'svelte'
   import { Link } from 'svelte-navigator'
-  import { makeWhole } from '../../accounts'
-  import { routes } from '../../routes'
+
   import { _ } from 'svelte-i18n'
+  import { makeWhole } from '../../modules/accounts'
+  import { routes } from '../../modules/routes'
 
   let unsubs
   let hasMakeWhole = false

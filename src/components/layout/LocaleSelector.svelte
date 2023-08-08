@@ -10,7 +10,6 @@
 
 <div class="locale-selector">
   <div class="select">
-    <!-- svelte-ignore a11y-no-onchange -->
     <select {value} on:change={handleLocaleChange}>
       <option value="en">English</option>
       <option value="zh_cn">中文</option>

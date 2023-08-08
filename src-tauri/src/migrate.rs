@@ -35,12 +35,16 @@ fn read_accounts(dir: &Path) -> anyhow::Result<Accounts> {
 }
 
 pub async fn maybe_migrate_data() -> anyhow::Result<()> {
+  let legacy_dir = configs::legacy_config_path();
+
+  if !legacy_dir.exists() { bail!("legacy configs not found.")}
+
+  // failover. maybe this was halfway migrated.
   // if we can find a config file in the new format we use that as a starting place
   let mut app_cfg = match get_cfg() {
     Ok(a) => a,
     _ => configs::new_cfg()?,
   };
-  let legacy_dir = configs::legacy_config_path();
 
   if let Ok(list) = read_accounts(&legacy_dir) {
     println!("found an accounts.json file");

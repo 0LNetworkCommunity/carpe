@@ -43,13 +43,10 @@ export function raise_error(err: CarpeError, quiet = false, caller: string) {
     // msg = `WARN: ${caller}: error type returned is not a CarpeError. Payload: ${err}`;
   }
 
-  // let list = get(carpeErrorLog);
-  // list.push(err);
   carpeErrorLog.update((list) => {
     list.push(err)
     return list
   })
-  // console.log(list);
   const display = `Error (${err.uid}): ${err.msg}`
 
   if (!quiet && !hasCustomErrorDisplay) {
@@ -66,40 +63,32 @@ export function clearErrors() {
 export const errAction = (err: CarpeError): boolean => {
   switch (err.uid) {
     case ErrMap.NoClientCx:
-      // window.alert("no client connection");
       return false // todo
       break
 
     case ErrMap.AccountDNE:
-      // window.alert("account does not exist");
       return false //todo
       break
 
     case ErrMap.WrongDifficulty:
-      // window.alert("wrong difficulty");
       displayWrongDifficulty.set(err)
       break
 
     case ErrMap.TooManyProofs:
       displayTooManyProofs.set(err)
-
-      // window.alert("too many proofs submitted in epoch");
       break
 
     case ErrMap.Discontinuity:
       displayDiscontinuity.set(err)
-      // window.alert("your proofs are not chained. Perhaps some proofs have not been sent?");
       break
 
     // TODO: this last one may never/rarely occur.
     case ErrMap.InvalidProof:
-      // window.alert("proof does not verify");
       displayInvalidProof.set(err)
 
       break
 
     case ErrMap.InsufficientBalance:
-      // window.alert("insufficient balance");
       displayInsufficientBalance.set(err)
 
       break

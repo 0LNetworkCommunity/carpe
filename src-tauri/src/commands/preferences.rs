@@ -1,4 +1,4 @@
-use crate::configs::default_config_path;
+use crate::configs::{legacy_config_path, default_config_path};
 use crate::migrate;
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use libra_types::legacy_types::mode_ol::MODE_0L;
@@ -71,4 +71,11 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
 pub async fn maybe_migrate() -> Result<(), CarpeError> {
   println!("attempting migration");
   Ok(migrate::maybe_migrate_data().await?)
+}
+
+#[tauri::command]
+/// looks for $HOME/.0L/
+///  if a migration happened this will not be found since it will be renamed to .0L_bak
+pub async fn has_legacy_configs() -> bool {
+  legacy_config_path().exists()
 }

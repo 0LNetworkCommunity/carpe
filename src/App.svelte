@@ -113,7 +113,7 @@
         <Route path={routes.accountFromMnem} component={AccountFromMnemForm} primary={false} />
         <Route path={routes.keygen} component={Keygen} primary={false} />
         <Route path={routes.miner} component={Miner} primary={false} />
-        <Route path={routes.transactions} component={Transactions} primary={false} />
+        <Route path={routes.transfer} component={Transactions} primary={false} />
         <Route path={routes.events} component={Events} primary={false} />
         <Route path={routes.settings} component={Settings} primary={false} />
         <Route path={routes.about} component={About} primary={false} />

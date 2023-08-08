@@ -23,7 +23,7 @@
 
 
   let receiver: string;
-  let amountInput: number;
+  let amountInput: string;
 
   let amount = 0
   let amountFormatted = ''
@@ -37,7 +37,6 @@
   let isValidAmount = true
   let checkMessage = ''
 
-  // // TODO: Can we not JQUERY please?
   $: isReceiverValid = account && receiver && re.test(receiver) && receiver != account.account;
   $: isValidAmount = account && amount > 0 && amount < unscaledCoins(account.balance);
   $: checkMessage = account && amount > unscaledCoins(account.balance)
@@ -87,7 +86,7 @@
   }
 
   const handleChange = () => {
-    let cleanedInput = amountInput.value
+    let cleanedInput = amountInput
       .replace(/\D*/gm, '') // remove non digits
       .replace(/^0+/gm, '') // remove leading zeros
 
@@ -158,8 +157,6 @@
                 {$_('txs.transfer.receiver')}
               </label>
               <div class="uk-form-controls">
-                <!-- svelte-ignore a11y-no-onchange -->
-
                 <input
                   id="receiver-text"
                   disabled={waitingTxs}

@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
 
 export let text: string;
-export let color: string = "";
-export let cbAction: AsyncFunction;
+export let color = "";
+export let cbAction;
 
 let button_class = "uk-button-default";
 let is_disabled = false;
@@ -14,12 +13,12 @@ let is_spinner = false;
       button_class = "uk-button-primary";
       break;
     }
-      
+
     case "black": {
       button_class = "uk-button-secondary";
       break;
     }
-      
+
     case "red": {
       button_class = "uk-button-danger";
       break;
@@ -43,7 +42,7 @@ const click_it = () => {
 </script>
 
 <main>
-  <button class="uk-button {color ? button_class : "uk-button-default"}" 
+  <button class="uk-button {color ? button_class : "uk-button-default"}"
   disabled={is_disabled}
   on:click|preventDefault={click_it}
   >

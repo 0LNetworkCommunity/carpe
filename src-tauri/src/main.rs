@@ -131,9 +131,12 @@ async fn main() {
       commands::preferences::debug_preferences_path,
       commands::preferences::get_preferences,
       commands::preferences::maybe_migrate,
+      commands::preferences::has_legacy_configs,
+
       commands::preferences::get_env,
       commands::preferences::set_env,
       commands::preferences::set_preferences_locale,
+
       ///////// Debug ////////
       commands::app_version::get_app_version,
       commands::web_logs::log_this,
