@@ -1,5 +1,5 @@
 import { navigate } from 'svelte-navigator'
-import { getDefaultProfile, isCarpeInit, migrate, refreshAccounts } from '../modules/accountActions'
+import { getDefaultProfile, isCarpeInit, migrate, refreshAccounts, try_migrate } from '../modules/accountActions'
 import { Level, logger } from '../modules/carpeError'
 import { getEnv } from '../modules/debug'
 import { getMetadata, getNetwork, refreshUpstreamPeerStats } from '../modules/networks'
@@ -18,6 +18,7 @@ export const boot_up = () => {
   // try to connect to a chain eagerly.
   // if not we will be scanning for peers below
   isCarpeInit()
+    .then(try_migrate)
     .then(getDefaultProfile)
     .then(getNetwork)
     .then(getMetadata) // try to connect to a chain eagerly.

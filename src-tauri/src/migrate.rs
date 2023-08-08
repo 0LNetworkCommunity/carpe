@@ -45,9 +45,7 @@ where D: Deserializer<'de> {
 }
 
 fn read_accounts(account_file: &Path) -> anyhow::Result<Accounts> {
-  // let db_path = dir.join("accounts.json");
   if account_file.exists() {
-    dbg!("exists");
     let file = std::fs::read_to_string(&account_file)?;
     Ok(serde_json::from_str(&file)?)
   } else {
@@ -67,20 +65,13 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
     _ => configs::new_cfg()?,
   };
 
-  dbg!(&legacy_dir);
-
-  if let Ok(list) = read_accounts(&legacy_dir.join("accounts.js")) {
-    dbg!("found an accounts.json file");
+  if let Ok(list) = read_accounts(&legacy_dir.join("accounts.json")) {
     list.accounts.iter().for_each(|a| {
-      // let auth = AuthenticationKey::from_encoded_string(&a.authkey)?;
-      // let acc = AccountAddress::from_hex_literal(&a.account)?;
-
       let mut p = Profile::new(a.authkey, a.account);
       p.balance = a.balance.unwrap_or(0);
       p.on_chain = a.on_chain.unwrap_or(false);
       p.nickname = a.nickname.clone();
 
-      dbg!(&app_cfg.user_profiles);
       if !app_cfg.user_profiles.iter().any(|e| a.account == e.account) {
         // if we don't find the account in the list
         app_cfg.user_profiles.push(p);
@@ -90,12 +81,12 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
         };
       }
     });
+
     // if we are successful we should deprecate the old path, so we don't try to migrate again.
     std::fs::rename(&legacy_dir, legacy_dir.parent().unwrap().join(".0L_bak"))?;
   }
 
-    // now load the network info
-  // println!("attempting to fetch new default playlist");
+  // now load the network info
   let playlist_url = network_playlist::find_default_playlist(None)?;
   app_cfg.network_playlist =
     vec![NetworkPlaylist::from_url(playlist_url, Some(NamedChain::MAINNET)).await?];
@@ -118,7 +109,6 @@ fn read_legacy_accounts() {
   std::fs::write(&temp, serde_json::to_string_pretty(&j).unwrap()).unwrap();
 
   let acc = read_accounts(&temp).unwrap();
-  dbg!(&acc);
   assert!(acc.accounts.get(0).unwrap().account == AccountAddress::from_hex_literal("0x69a385e1744e33fbb24a42ecbd1603e3").unwrap());
  std::fs::remove_file(temp).unwrap();
 }

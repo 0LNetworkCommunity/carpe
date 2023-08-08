@@ -48,7 +48,7 @@ pub fn new_cfg() -> anyhow::Result<AppCfg> {
 }
 
 pub fn get_cfg() -> anyhow::Result<AppCfg> {
-  AppCfg::load(Some(default_config_path().to_path_buf()))
+  AppCfg::load(Some(config_file_path()))
 }
 
 pub fn get_client() -> anyhow::Result<Client> {

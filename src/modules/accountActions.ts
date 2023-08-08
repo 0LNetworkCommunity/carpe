@@ -1,6 +1,6 @@
 import { get } from 'svelte/store'
 import { invoke } from '@tauri-apps/api/tauri'
-import { raise_error } from './carpeError'
+import { raise_error, type CarpeError } from './carpeError'
 import { responses } from './debug'
 import { minerLoopEnabled } from './miner'
 // import type { ClientTowerStatus } from "./miner";
@@ -183,7 +183,7 @@ export function getAccountEvents(account: Profile, errorCallback = null) {
   /*
   invoke('get_account_events', {account: address.toUpperCase()})
     .then((events: Array<T>) => {
-      let all = get(accountEvents);     
+      let all = get(accountEvents);
       all[address] = events
         .sort((a, b) => (a.transaction_version < b.transaction_version)
           ? 1
@@ -198,16 +198,40 @@ export function getAccountEvents(account: Profile, errorCallback = null) {
         errorCallback(e.msg);
       } else {
         raise_error(e, false, "getAccountEvents");
-      }      
+      }
     });
     */
 }
 
+
+export const try_migrate = () => {
+  let canMigrate = false
+  let migrateSuccess = false;
+  let migrateInProgress = false;
+
+  invoke('has_legacy_configs', {})
+    .then((b: boolean) => {
+      canMigrate = b;
+      if (canMigrate) {
+        migrateInProgress = true;
+        invoke('maybe_migrate', {}) // TODO: clean up this nesting
+          .then((r: boolean) => {
+            migrateSuccess = r;
+          })
+
+          .catch((e: CarpeError) => raise_error(e, true, 'maybe_migrate'))
+          .finally(() => {
+            migrateInProgress = false;
+          })
+      }
+    })
+    .catch((e: CarpeError) => raise_error(e, true, 'has_legacy_configs'));
+}
 /*
 export let invoke_makewhole = async (account: String): Promise<number> => {
  // let demo_account = "613b6d9599f72134a4fa20bba4c75c36";
  // account = demo_account;
-  
+
   console.log(">>> calling make whole");
   return await invoke("query_makewhole", { account })
     .then((a) => {
