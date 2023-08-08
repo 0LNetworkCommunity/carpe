@@ -5,7 +5,7 @@ use libra_types::{
   legacy_types::app_cfg::{AppCfg, CONFIG_FILE_NAME},
 };
 use once_cell::sync::Lazy;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 // Set up paths for the canary builds
 #[cfg(feature = "carpe-canary")]
@@ -25,7 +25,11 @@ static CONFIG_DIR: Lazy<PathBuf> = Lazy::new(|| {
 // Lin: /home/alice/.config/carpe
 // Win: C:\Users\Alice\AppData\Roaming\carpe\Carpe\config
 // Mac: /Users/Alice/Library/Application Support/com.carpe.Carpe
-pub fn default_config_path() -> PathBuf {
+pub fn default_config_path() -> &'static Path {
+  &CONFIG_DIR
+}
+
+pub fn config_file_path() -> PathBuf {
   CONFIG_DIR.join(CONFIG_FILE_NAME)
 }
 
@@ -38,13 +42,13 @@ pub fn legacy_config_path() -> PathBuf {
 pub fn new_cfg() -> anyhow::Result<AppCfg> {
   // use carpe default system config path
   let mut c = AppCfg::default();
-  c.workspace.node_home = default_config_path();
+  c.workspace.node_home = default_config_path().to_path_buf();
   c.save_file()?;
   Ok(c)
 }
 
 pub fn get_cfg() -> anyhow::Result<AppCfg> {
-  AppCfg::load(Some(default_config_path()))
+  AppCfg::load(Some(default_config_path().to_path_buf()))
 }
 
 pub fn get_client() -> anyhow::Result<Client> {

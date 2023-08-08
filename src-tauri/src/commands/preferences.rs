@@ -35,7 +35,7 @@ pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
 #[tauri::command]
 /// global config dir for convenience
 pub fn debug_preferences_path() -> Result<PathBuf, CarpeError> {
-  Ok(default_config_path())
+  Ok(default_config_path().to_path_buf())
 }
 
 #[tauri::command(async)]

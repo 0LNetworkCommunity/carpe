@@ -29,7 +29,7 @@ pub async fn set_account_profile(
   // add if we have not already
   cfg.maybe_add_profile(profile)?;
 
-  cfg.workspace.node_home = default_config_path();
+  cfg.workspace.node_home = default_config_path().to_path_buf();
 
   if !cfg.workspace.node_home.exists() {
     fs::create_dir_all(&cfg.workspace.node_home)?;
