@@ -6215,7 +6215,7 @@ checksum = "f7012b1bbb0719e1097c47611d3898568c546d597c2e74d66f6087edd5233ff4"
 [[package]]
 name = "libra-cached-packages"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#70b8d93e6910bb20bb13ede759a6f4d22d6f5e38"
 dependencies = [
  "aptos-types",
  "bcs 0.1.3",
@@ -6227,7 +6227,7 @@ dependencies = [
 [[package]]
 name = "libra-framework"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#70b8d93e6910bb20bb13ede759a6f4d22d6f5e38"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6246,7 +6246,7 @@ dependencies = [
 [[package]]
 name = "libra-query"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#70b8d93e6910bb20bb13ede759a6f4d22d6f5e38"
 dependencies = [
  "anyhow",
  "aptos-sdk",
@@ -6260,7 +6260,7 @@ dependencies = [
 [[package]]
 name = "libra-tower"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#70b8d93e6910bb20bb13ede759a6f4d22d6f5e38"
 dependencies = [
  "anyhow",
  "aptos-sdk",
@@ -6279,7 +6279,7 @@ dependencies = [
 [[package]]
 name = "libra-txs"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#70b8d93e6910bb20bb13ede759a6f4d22d6f5e38"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6303,7 +6303,7 @@ dependencies = [
 [[package]]
 name = "libra-types"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#70b8d93e6910bb20bb13ede759a6f4d22d6f5e38"
 dependencies = [
  "anyhow",
  "aptos",
@@ -6335,7 +6335,7 @@ dependencies = [
 [[package]]
 name = "libra-wallet"
 version = "0.1.0"
-source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#a033dee08ee4d59797eaa8c5223e938432b60762"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=publish-move#70b8d93e6910bb20bb13ede759a6f4d22d6f5e38"
 dependencies = [
  "anyhow",
  "aptos-config",
