@@ -68,9 +68,9 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
 }
 
 #[tauri::command(async)]
-pub async fn maybe_migrate() -> Result<(), CarpeError> {
+pub async fn maybe_migrate() -> Result<bool, CarpeError> {
   println!("attempting migration");
-  Ok(migrate::maybe_migrate_data().await?)
+  Ok(migrate::maybe_migrate_data().await.is_ok())
 }
 
 #[tauri::command]
