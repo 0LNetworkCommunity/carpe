@@ -215,7 +215,7 @@ export const isLegacy = async () => {
 
 export const tryMigrate = async () => {
   migrateInProgress.set(true)
-  invoke('maybe_migrate', {}) // TODO: clean up this nesting
+  invoke('maybe_migrate', {})
     .then((r: boolean) => {
       migrateSuccess.set(r)
     })
@@ -299,10 +299,4 @@ export function claimMakeWhole(account: string, callback = null) {
         raise_error(e, false, 'claim_make_whole')
       }
     })
-}
-
-export const migrate = () => {
-  invoke('maybe_migrate', {})
-    .then((r) => console.log(r))
-    .catch((e) => raise_error(e, false, 'maybe_migrate'))
 }

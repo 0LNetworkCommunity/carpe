@@ -2,7 +2,6 @@ import { navigate } from 'svelte-navigator'
 import {
   getDefaultProfile,
   isCarpeInit,
-  migrate,
   refreshAccounts,
   isLegacy,
 } from '../modules/accountActions'
@@ -18,11 +17,6 @@ export const boot_up = () => {
   getEnv() // load env var
   getVersion() // git commit and version
 
-  // try to migrate carpe files from v5-6 to v7
-  migrate()
-
-  // try to connect to a chain eagerly.
-  // if not we will be scanning for peers below
   isCarpeInit()
     .then(isLegacy)
     .then(getDefaultProfile)
