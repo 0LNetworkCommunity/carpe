@@ -6,6 +6,7 @@
     "dev": "yarn lint && tauri dev",
     "dev:web": "vite",
     "build": "tauri build",
+    "build:canary": "tauri build --features carpe-canary",
     "build:web": "vite build",
     "lint": "svelte-check --tsconfig ./tsconfig.json && eslint src && prettier --check src",
     "format": "eslint --fix src/* && prettier --write src"

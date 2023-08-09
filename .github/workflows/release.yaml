@@ -86,8 +86,11 @@ jobs:
           TAURI_PRIVATE_KEY: dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5N1FKS0ZZM1BwL25GaFdKU0tpNW5XREQyZnZjQTdkVWZSYUZWV0U5YThIUUFBQkFBQUFBQUFBQUFBQUlBQUFBQVp5dlhYNTlMa0c1OHMxK2hxWXNJWHc2VXVRZnRPUVR3TjloZTJTdXIrQnV2aXFSbTczWjNkdTlOU214YXhnVXA3SmNQQ3VzemlMV2ZKTWVNZTA0SWRraHU0VFJGbXI3UXpsTkREditxV1hFWUQ2MlVZam5lSDJ2OFA1Z05hZnY0U21mOWZxZ0JnZUk9Cg==
           TAURI_KEY_PASSWORD: 123456
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          args: ${{contains(github.ref, 'canary') && '--features carpe-canary' || '' }} #pass the rust feature flags for canary if the tag includes "canary"
+          tagName: ${{contains(github.ref, 'canary') && 'carpe-canary-v__VERSION__' || 'carpe-v__VERSION__' }} # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: 'Carpe v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
+          # tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          # releaseName: 'Carpe v__VERSION__'
+          releaseBody: '[draft]'
           releaseDraft: true
           prerelease: false
