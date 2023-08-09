@@ -51,8 +51,7 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": "",
-        "installMode": "passive"
+        "timestampUrl": ""
       }
     },
     "allowlist": {
