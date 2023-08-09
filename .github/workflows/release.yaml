@@ -72,6 +72,10 @@ jobs:
       - name: yarn installation
         run: yarn install
 
+      - name: make canary icon
+        if: ${{contains(github.ref, 'canary') }}
+        run: yarn tauri icon ./app-icon-canary.png
+
       - name: pre-build rust
         working-directory: ./src-tauri
         run: cargo b --release
