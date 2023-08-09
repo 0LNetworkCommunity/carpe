@@ -31,7 +31,7 @@
     });
   });
 
-  let peers: [string];
+  let peers: string[];
   synced_fullnodes.subscribe((n) => {
     peers = n;
   });

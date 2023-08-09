@@ -61,7 +61,7 @@ export const scanning_fullnodes = writable<boolean>()
 export const scanning_fullnodes_backoff = writable<number>(new Date().getSeconds())
 export const scanning_fullnodes_retries = writable<number>(0)
 
-export const synced_fullnodes = writable<[string]>()
+export const synced_fullnodes = writable<string[]>([])
 export const networkMetadata = writable<IndexResponse>()
 
 export function setNetwork(network: NamedChain) {

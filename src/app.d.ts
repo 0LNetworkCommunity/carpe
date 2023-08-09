@@ -15,15 +15,15 @@ declare global {
   // Note: this is an issue with UIKIT types not being compatible
   namespace svelteHTML {
     interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
-      ['uk-accordion']?: boolean;
-      ['uk-alert']?: boolean;
-      ['uk-close']?: boolean;
-      ['uk-grid']?: boolean;
-      ['uk-countdown']?: string;
-      ['uk-icon']?: string;
-      [key: string]: any;
+      ['uk-accordion']?: boolean
+      ['uk-alert']?: boolean
+      ['uk-close']?: boolean
+      ['uk-grid']?: boolean
+      ['uk-countdown']?: string
+      ['uk-icon']?: string
+      [key: string]: any
     }
   }
 }
 
-export { };
+export {}

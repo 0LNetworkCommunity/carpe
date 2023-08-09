@@ -27,7 +27,7 @@ export enum ErrMap {
   Discontinuity = 130109,
   InvalidProof = 130110,
 }
-export const carpeErrorLog = writable<[CarpeError]>(null)
+export const carpeErrorLog = writable<CarpeError[]>([])
 
 export function raise_error(err: CarpeError, quiet = false, caller: string) {
   let hasCustomErrorDisplay = false
@@ -60,7 +60,7 @@ export function raise_error(err: CarpeError, quiet = false, caller: string) {
 }
 
 export function clearErrors() {
-  carpeErrorLog.set(null)
+  carpeErrorLog.set([])
 }
 
 // returns true if there is a UI for the error, so we know to display generic error notification.

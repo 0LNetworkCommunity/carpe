@@ -173,7 +173,6 @@ export function checkSigningAccountBalance() {
 }
 
 export function getAccountEvents(account: Profile, errorCallback = null) {
-
   if (!account.on_chain) {
     return errorCallback && errorCallback('account_not_on_chain')
   }
@@ -202,26 +201,25 @@ export function getAccountEvents(account: Profile, errorCallback = null) {
     */
 }
 
-
 export const try_migrate = async () => {
   let canMigrate = false
 
   invoke('has_legacy_configs', {})
     .then((b: boolean) => {
-      canMigrate = b;
+      canMigrate = b
       if (canMigrate) {
-        migrateInProgress.set(true);
+        migrateInProgress.set(true)
         invoke('maybe_migrate', {}) // TODO: clean up this nesting
           .then((r: boolean) => {
-            migrateSuccess.set(r);
+            migrateSuccess.set(r)
           })
           .catch((e: CarpeError) => raise_error(e, true, 'maybe_migrate'))
           .finally(() => {
-            migrateInProgress.set(false);
+            migrateInProgress.set(false)
           })
       }
     })
-    .catch((e: CarpeError) => raise_error(e, true, 'has_legacy_configs'));
+    .catch((e: CarpeError) => raise_error(e, true, 'has_legacy_configs'))
 }
 /*
 export let invoke_makewhole = async (account: String): Promise<number> => {

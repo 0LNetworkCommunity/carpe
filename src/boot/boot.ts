@@ -1,5 +1,11 @@
 import { navigate } from 'svelte-navigator'
-import { getDefaultProfile, isCarpeInit, migrate, refreshAccounts, try_migrate } from '../modules/accountActions'
+import {
+  getDefaultProfile,
+  isCarpeInit,
+  migrate,
+  refreshAccounts,
+  try_migrate,
+} from '../modules/accountActions'
 import { Level, logger } from '../modules/carpeError'
 import { getEnv } from '../modules/debug'
 import { getMetadata, getNetwork, refreshUpstreamPeerStats } from '../modules/networks'

@@ -8,7 +8,7 @@
     "build": "tauri build",
     "build:web": "vite build",
     "lint": "svelte-check --tsconfig ./tsconfig.json && eslint src && prettier --check src",
-    "format": "eslint --fix src/* && prettier --write src/*"
+    "format": "eslint --fix src/* && prettier --write src"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.2.0",
