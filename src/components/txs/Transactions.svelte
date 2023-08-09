@@ -26,7 +26,6 @@
   let amountInput: string;
 
   let amount = 0
-  let amountFormatted = ''
   let errorMessage = ''
   let waitingTxs = false
   let waitingConfirmation = false
@@ -59,7 +58,7 @@
         notify_success($_('txs.transfer.success'))
         waitingTxs = false
         amount = 0
-        amountFormatted = ''
+        // amountFormatted = ''
         receiver = null
         // callback
         // onSuccess();
@@ -92,10 +91,10 @@
 
     if (cleanedInput.length === 0) {
       amount = 0
-      amountFormatted = ''
+      amountInput = ''
     } else {
       amount = parseInt(cleanedInput)
-      amountFormatted = printUnscaledCoins(amount, 0, 0)
+      amountInput = printUnscaledCoins(amount, 0, 0)
     }
   }
 </script>
@@ -179,8 +178,7 @@
                   class="uk-input"
                   type="text"
                   placeholder={$_('txs.transfer.amount_placeholder')}
-                  bind:value={amountFormatted}
-                  bind:this={amountInput}
+                  bind:value={amountInput}
                   on:input={handleChange}
                 />
               </div>

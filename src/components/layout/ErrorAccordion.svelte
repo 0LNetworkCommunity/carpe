@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
 
-  import type { CarpeError } from '../../carpeError'
+  import type { CarpeError } from '../../modules/carpeError'
 
   export let error: CarpeError
 </script>

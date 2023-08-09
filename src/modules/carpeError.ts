@@ -8,6 +8,10 @@ import {
 } from './carpeErrorUI'
 import { notify_error } from './carpeNotify'
 import { invoke } from '@tauri-apps/api/tauri'
+
+export interface CarpeOkReturn {
+  payload: string
+}
 export interface CarpeError {
   category: number
   uid: number
@@ -23,7 +27,7 @@ export enum ErrMap {
   Discontinuity = 130109,
   InvalidProof = 130110,
 }
-export const carpeErrorLog = writable<[CarpeError]>([])
+export const carpeErrorLog = writable<[CarpeError]>(null)
 
 export function raise_error(err: CarpeError, quiet = false, caller: string) {
   let hasCustomErrorDisplay = false
@@ -56,7 +60,7 @@ export function raise_error(err: CarpeError, quiet = false, caller: string) {
 }
 
 export function clearErrors() {
-  carpeErrorLog.set([])
+  carpeErrorLog.set(null)
 }
 
 // returns true if there is a UI for the error, so we know to display generic error notification.

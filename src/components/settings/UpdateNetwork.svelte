@@ -13,7 +13,7 @@
   } from "../../modules/networks";
   import type { NetworkPlaylist } from "../../modules/networks";
   import { notify_success } from "../../modules/carpeNotify";
-  
+
   import SetNetworkPlaylist from "./SetNetworkPlaylist.svelte";
 
   let upstream_url = "";
@@ -101,11 +101,10 @@
         />
       </div>
 
-      <!-- svelte-ignore a11y-click-events-have-key-events -->
-      <span
+      <button
         on:click={forceUpstream}
         class="uk-button uk-button-primary uk-align-right"
-        id="add-btn">{$_("settings.network_settings.btn_update")}</span
+        id="add-btn">{$_("settings.network_settings.btn_update")}</button
       >
 
       <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">

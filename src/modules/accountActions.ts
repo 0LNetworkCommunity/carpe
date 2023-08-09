@@ -3,7 +3,6 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { raise_error, type CarpeError } from './carpeError'
 import { responses } from './debug'
 import { minerLoopEnabled } from './miner'
-// import type { ClientTowerStatus } from "./miner";
 
 import { notify_success, notify_error } from './carpeNotify'
 import {
@@ -14,6 +13,8 @@ import {
   signingAccount,
   isAccountRefreshed,
   makeWhole,
+  migrateInProgress,
+  migrateSuccess,
 } from './accounts'
 import type { Profile } from './accounts'
 import { navigate } from 'svelte-navigator'
@@ -56,8 +57,6 @@ export enum InitType {
 }
 
 export const handleAdd = async (init_type: InitType, secret: string) => {
-  // isSubmitting = true;
-
   let method_name = ''
   let arg_obj = {}
   if (init_type == InitType.Mnem) {
@@ -204,24 +203,21 @@ export function getAccountEvents(account: Profile, errorCallback = null) {
 }
 
 
-export const try_migrate = () => {
+export const try_migrate = async () => {
   let canMigrate = false
-  let migrateSuccess = false;
-  let migrateInProgress = false;
 
   invoke('has_legacy_configs', {})
     .then((b: boolean) => {
       canMigrate = b;
       if (canMigrate) {
-        migrateInProgress = true;
+        migrateInProgress.set(true);
         invoke('maybe_migrate', {}) // TODO: clean up this nesting
           .then((r: boolean) => {
-            migrateSuccess = r;
+            migrateSuccess.set(r);
           })
-
           .catch((e: CarpeError) => raise_error(e, true, 'maybe_migrate'))
           .finally(() => {
-            migrateInProgress = false;
+            migrateInProgress.set(false);
           })
       }
     })

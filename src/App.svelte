@@ -7,7 +7,7 @@
   // CARPE MODULES
   import { backlogInProgress, backlogSubmitted, minerEventReceived } from './modules/miner'
   import { raise_error } from './modules/carpeError'
-  import type { CarpeError } from './modules/carpeError'
+  import type { CarpeError, CarpeOkReturn } from './modules/carpeError'
   import { responses, debugMode } from './modules/debug'
   import { routes } from './modules/routes'
   import 'uikit/dist/css/uikit.min.css'
@@ -58,7 +58,7 @@
     // there is a listener service which loads the key once, and then waits for a specific
     // event to trigger the backlog submission.
 
-    unlistenProofStart = await listen('proof-start', (event) => {
+    unlistenProofStart = await listen('proof-start', (event: CarpeOkReturn) => {
       responses.set(event.payload)
       //update the tower stats after we show the backlog being up to date.
       minerEventReceived.set(true)
@@ -70,7 +70,7 @@
       backlogInProgress.set(true)
     })
 
-    unlistenBacklogSuccess = await listen('backlog-success', (event) => {
+    unlistenBacklogSuccess = await listen('backlog-success', (event: CarpeOkReturn) => {
       responses.set(event.payload)
       //update the tower stats after we show the backlog being up to date.
       backlogInProgress.set(false)

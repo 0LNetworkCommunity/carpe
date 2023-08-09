@@ -14,6 +14,9 @@ module.exports = {
     ecmaVersion: 2020,
     extraFileExtensions: ['.svelte'],
   },
+  rules: {
+    "svelte/no-at-html-tags" : "off" // we use @html for translations only
+  },
   env: {
     browser: true,
     es2017: true,

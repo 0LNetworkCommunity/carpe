@@ -31,7 +31,7 @@
       .then(() => {
         if (isNewAccount) {
           // NOTE: this is for the keygen option, which shares this component
-          UIkit.modal('#submit-confirmation-modal').$destroy(true) // known bug https://github.com/uikit/uikit/issues/1370
+          UIkit.modal('#submit-confirmation-modal').hide() // known bug https://github.com/uikit/uikit/issues/1370
         }
       })
       .catch(() => {

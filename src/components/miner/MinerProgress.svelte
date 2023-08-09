@@ -20,7 +20,9 @@
     // - Rust side sends event with a proof completed
     // - Rust side send event with a failure
     if (tower.progress && tower.progress.pct_complete) {
-      let bar = document.getElementById('mining-progressbar')
+      /* eslint @typescript-eslint/no-explicit-any: "warn" */
+      // TODO: replace the `any` type
+      let bar: any = document.getElementById('mining-progressbar')
       bar.value = percent = tower.progress.pct_complete
     }
   })

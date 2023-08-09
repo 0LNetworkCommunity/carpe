@@ -31,15 +31,13 @@
     <div class="uk-vertical-align-middle">
       <span class="uk-margin-small-right"> ERRORS </span>
       <div class="uk-align-right">
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <span
+        <button
           class="uk-margin-medium"
           uk-icon="trash"
           uk-tooltip="title: Clear Errors"
           on:click={() => clearErrors()}
         />
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <span
+        <button
           uk-icon="sign-out"
           uk-tooltip="title: Exit Debug Mode"
           on:click={() => debugModeToggle()}

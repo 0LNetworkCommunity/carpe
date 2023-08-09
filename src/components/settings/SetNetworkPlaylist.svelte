@@ -43,14 +43,13 @@
       </div>
 
       <div>
-        <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <span
+        <button
           on:click={updateNetwork(playlist_json_url)}
           class="uk-button uk-button-primary uk-align-right"
-          id="add-btn">{$_("settings.network_settings.btn_submit")}</span
+          id="add-btn">{$_("settings.network_settings.btn_submit")}</button
         >
         <Link to={routes.home}>
-          <span class="uk-button uk-button-default uk-align-right">{$_("settings.network_settings.btn_cancel")}</span>
+          <button class="uk-button uk-button-default uk-align-right">{$_("settings.network_settings.btn_cancel")}</button>
         </Link>
       </div>
     </fieldset>
