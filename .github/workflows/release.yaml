@@ -84,11 +84,8 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # TAURI_PRIVATE_KEY: ${{secrets.TAURI_PRIVATE_KEY}}
-          # TAURI_KEY_PASSWORD: ${{secrets.TAURI_KEY_PASSWORD}}
-
-          TAURI_PRIVATE_KEY: dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5N1FKS0ZZM1BwL25GaFdKU0tpNW5XREQyZnZjQTdkVWZSYUZWV0U5YThIUUFBQkFBQUFBQUFBQUFBQUlBQUFBQVp5dlhYNTlMa0c1OHMxK2hxWXNJWHc2VXVRZnRPUVR3TjloZTJTdXIrQnV2aXFSbTczWjNkdTlOU214YXhnVXA3SmNQQ3VzemlMV2ZKTWVNZTA0SWRraHU0VFJGbXI3UXpsTkREditxV1hFWUQ2MlVZam5lSDJ2OFA1Z05hZnY0U21mOWZxZ0JnZUk9Cg==
-          TAURI_KEY_PASSWORD: 123456
+          TAURI_PRIVATE_KEY: ${{secrets.TAURI_PRIVATE_KEY}}
+          TAURI_KEY_PASSWORD: ${{secrets.TAURI_KEY_PASSWORD}}
         with:
           args: ${{contains(github.ref, 'canary') && '--features carpe-canary' || '' }} #pass the rust feature flags for canary if the tag includes "canary"
           tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__' || 'v__VERSION__-canary' }} # the action automatically replaces \_\_VERSION\_\_ with the app version
