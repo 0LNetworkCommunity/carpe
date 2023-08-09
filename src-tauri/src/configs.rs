@@ -9,7 +9,7 @@ use std::path::{Path, PathBuf};
 
 // Set up paths for the canary builds
 #[cfg(feature = "carpe-canary")]
-static CONFIG_PATH: Lazy<PathBuf> = Lazy::new(|| {
+static CONFIG_DIR: Lazy<PathBuf> = Lazy::new(|| {
   let os_path = directories::ProjectDirs::from("com", "carpe", "CarpeCanary").unwrap();
   os_path.config_dir().to_path_buf()
 });
