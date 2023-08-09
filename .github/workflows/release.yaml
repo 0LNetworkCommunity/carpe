@@ -87,7 +87,7 @@ jobs:
           TAURI_KEY_PASSWORD: ${{secrets.TAURI_KEY_PASSWORD}}
         with:
           args: ${{contains(github.ref, 'canary') && '--features carpe-canary' || '' }} #pass the rust feature flags for canary if the tag includes "canary"
-          tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__' || 'v__VERSION__-canary' }} # the action automatically replaces \_\_VERSION\_\_ with the app version
+          tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }} # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: 'Carpe v__VERSION__'
           # tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
           # releaseName: 'Carpe v__VERSION__'
