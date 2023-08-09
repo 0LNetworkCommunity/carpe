@@ -77,6 +77,8 @@ jobs:
       - name: copy gmp.dll
         if: matrix.os == 'windows-latest'
         run: |
+          $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
+          Copy-Item ('${{ github.workspace }}' + '\.github' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
           Copy-Item ('${{ github.workspace }}' + '\.github' + '\redist' + '\x86_64\*')  -Destination '${{ github.workspace }}' + '\target' + '\release' -Recurse
 
       - name: Build Tauri
