@@ -15,9 +15,11 @@ import {
   makeWhole,
   migrateInProgress,
   migrateSuccess,
+  canMigrate,
 } from './accounts'
 import type { Profile } from './accounts'
 import { navigate } from 'svelte-navigator'
+import { carpeTick } from './tick'
 
 export const getDefaultProfile = async () => {
   invoke('get_default_profile', {})
@@ -56,7 +58,7 @@ export enum InitType {
   PriKey,
 }
 
-export const handleAdd = async (init_type: InitType, secret: string) => {
+export const addAccount = async (init_type: InitType, secret: string) => {
   let method_name = ''
   let arg_obj = {}
   if (init_type == InitType.Mnem) {
@@ -201,25 +203,29 @@ export function getAccountEvents(account: Profile, errorCallback = null) {
     */
 }
 
-export const try_migrate = async () => {
-  let canMigrate = false
+export const isLegacy = async () => {
+  // let canMigrate = false
 
   invoke('has_legacy_configs', {})
     .then((b: boolean) => {
-      canMigrate = b
-      if (canMigrate) {
-        migrateInProgress.set(true)
-        invoke('maybe_migrate', {}) // TODO: clean up this nesting
-          .then((r: boolean) => {
-            migrateSuccess.set(r)
-          })
-          .catch((e: CarpeError) => raise_error(e, true, 'maybe_migrate'))
-          .finally(() => {
-            migrateInProgress.set(false)
-          })
-      }
+      canMigrate.set(b)
     })
     .catch((e: CarpeError) => raise_error(e, true, 'has_legacy_configs'))
+}
+
+export const tryMigrate = async () => {
+  migrateInProgress.set(true)
+  invoke('maybe_migrate', {}) // TODO: clean up this nesting
+    .then((r: boolean) => {
+      migrateSuccess.set(r)
+    })
+    .then(refreshAccounts)
+    .then(getDefaultProfile)
+    .then(carpeTick)
+    .catch((e: CarpeError) => raise_error(e, true, 'maybe_migrate'))
+    .finally(() => {
+      migrateInProgress.set(false)
+    })
 }
 /*
 export let invoke_makewhole = async (account: String): Promise<number> => {

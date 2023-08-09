@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "tauri": "tauri",
-    "dev": "tauri dev",
+    "dev": "yarn lint && tauri dev",
     "dev:web": "vite",
     "build": "tauri build",
     "build:web": "vite build",

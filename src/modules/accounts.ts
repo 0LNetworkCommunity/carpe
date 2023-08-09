@@ -27,5 +27,6 @@ export const isAccountRefreshed = writable(false)
 export const accountEvents = writable<object>() // TODO define interface AccountEvent
 export const makeWhole = writable<object>()
 
+export const canMigrate = writable<boolean>()
 export const migrateSuccess = writable<boolean>()
 export const migrateInProgress = writable<boolean>()

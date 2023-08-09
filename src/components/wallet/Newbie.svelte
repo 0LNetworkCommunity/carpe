@@ -2,16 +2,19 @@
   import { _ } from '../../lang/i18n'
   import { Link } from 'svelte-navigator'
   import { routes } from '../../modules/routes'
-
+  import { canMigrate, migrateInProgress, migrateSuccess } from '../../modules/accounts'
+  import { tryMigrate } from '../../modules/accountActions'
 </script>
 
 <main style="position:absolute" class="uk-position-center uk-margin-large">
-
-  <!-- <div>
-    can Migrate {canMigrate}
-    in progress: {migrateInProgress}
-    migrate success: {migrateSuccess}
-  </div> -->
+  <div>
+    <div>
+      can Migrate {canMigrate}
+      <button on:click={tryMigrate}> migrate </button>
+    </div>
+    <div>in progress: {migrateInProgress}</div>
+    <div>migrate success: {migrateSuccess}</div>
+  </div>
 
   <div class="uk-container uk-align-center">
     <h1 class="uk-text-light uk-text-muted uk-text-uppercase uk-text-center">

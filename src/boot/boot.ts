@@ -4,7 +4,7 @@ import {
   isCarpeInit,
   migrate,
   refreshAccounts,
-  try_migrate,
+  isLegacy,
 } from '../modules/accountActions'
 import { Level, logger } from '../modules/carpeError'
 import { getEnv } from '../modules/debug'
@@ -24,7 +24,7 @@ export const boot_up = () => {
   // try to connect to a chain eagerly.
   // if not we will be scanning for peers below
   isCarpeInit()
-    .then(try_migrate)
+    .then(isLegacy)
     .then(getDefaultProfile)
     .then(getNetwork)
     .then(getMetadata) // try to connect to a chain eagerly.
