@@ -30,8 +30,8 @@
         "icons/icon.ico"
       ],
       "resources": [
-        ".github/redist/x86_64/gmp.dll",
-        ".github/redist/x86_64/gmp.lib"
+        "./.github/redist/x86_64/gmp.dll",
+        "./.github/redist/x86_64/gmp.lib"
       ],
       "externalBin": [],
       "copyright": "",
