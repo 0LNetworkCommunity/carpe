@@ -1,4 +1,4 @@
-name: carpe release
+name: carpe-release
 
 on:
   push:
@@ -56,12 +56,12 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
 
-      # Package the windows dependencies
-      - name: copy gmp.dll
-        if: matrix.os == 'windows-latest'
-        run: |
-          $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
-          Copy-Item ('${{ github.workspace }}' + '\.github' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
+      # # Package the windows dependencies
+      # - name: copy gmp.dll
+      #   if: matrix.os == 'windows-latest'
+      #   run: |
+      #     $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
+      #     Copy-Item ('${{ github.workspace }}' + '\.github' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
 
 ########  CACHE  ########
 
@@ -76,10 +76,6 @@ jobs:
       - name: yarn installation
         run: yarn install
 
-      - name: make canary icon
-        if: ${{contains(github.ref, 'canary') }}
-        run: yarn tauri icon ./app-icon-canary.png
-
       - name: pre-build rust
         working-directory: ./src-tauri
         run: cargo b --release
@@ -91,7 +87,7 @@ jobs:
           TAURI_PRIVATE_KEY: ${{secrets.TAURI_PRIVATE_KEY}}
           TAURI_KEY_PASSWORD: ${{secrets.TAURI_KEY_PASSWORD}}
         with:
-          args: ${{contains(github.ref, 'canary') && '--features carpe-canary' || '' }} #pass the rust feature flags for canary if the tag includes "canary"
+          args: ${{contains(github.ref, 'canary') && '--config src-tauri/tauri.conf.canary.json --features carpe-canary' || '' }} #pass the rust feature flags for canary if the tag includes "canary"
           tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }} # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }}
           releaseBody: '[draft]'

@@ -1,6 +1,6 @@
 {
   "package": {
-    "productName": "carpe",
+    "productName": "carpe-canary",
     "version": "1.0.0-1"
   },
   "build": {
@@ -13,7 +13,7 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://raw.githubusercontent.com/0LNetworkCommunity/carpe/main/autoupdater/autoupdater_payload.json"
+        "https://raw.githubusercontent.com/0o-de-lally/carpe/canary/autoupdater/autoupdater_payload_canary.json"
       ],
       "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ4MEIzMzc4MzlGMzgwNUUKUldSZWdQTTVlRE1MMkszSGczY1B2OGlOaW5IWXBLdXpZWldKbVl2VGw1RDg0dFNPTHFpYk1WNGkK"
@@ -21,13 +21,13 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.Carpe",
+      "identifier": "com.tauri.CarpeCanary",
       "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
+        "icons-canary/32x32.png",
+        "icons-canary/128x128.png",
+        "icons-canary/128x128@2x.png",
+        "icons-canary/icon.icns",
+        "icons-canary/icon.ico"
       ],
       "resources": [
         "gmp.dll",

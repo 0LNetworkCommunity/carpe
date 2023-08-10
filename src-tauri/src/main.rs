@@ -9,10 +9,7 @@ use log::{error, warn};
 use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
 };
-use std::{
-  fs::{self, File},
-  path::Path,
-};
+use std::fs::{self, File};
 use tauri::{AboutMetadata, Menu, MenuItem, Submenu};
 
 pub(crate) mod carpe_error;
@@ -90,32 +87,32 @@ async fn main() {
   tauri::async_runtime::set(tokio::runtime::Handle::current());
 
   // Canary releases need to know to look for a different upgrade release URL
-  let mut context = tauri::generate_context!();
-  if cfg!(feature = "carpe-canary") {
-    let new_updater_url = "https://raw.githubusercontent.com/0o-de-lally/carpe/canary/autoupdater/autoupdater_payload_canary.json";
-    let updater = &mut context.config_mut().tauri.updater;
-    let urls = vec![tauri::utils::config::UpdaterEndpoint(
-      new_updater_url.parse().expect("invalid updater URL"),
-    )];
-    updater.endpoints.replace(urls);
+  // let mut context = tauri::generate_context!();
+  // if cfg!(feature = "carpe-canary") {
+  //   let new_updater_url = "https://raw.githubusercontent.com/0o-de-lally/carpe/canary/autoupdater/autoupdater_payload_canary.json";
+  //   let updater = &mut context.config_mut().tauri.updater;
+  //   let urls = vec![tauri::utils::config::UpdaterEndpoint(
+  //     new_updater_url.parse().expect("invalid updater URL"),
+  //   )];
+  //   updater.endpoints.replace(urls);
 
-    let mut build = &mut context.config_mut();
-    build.package.product_name = Some("carpe-canary".to_string());
-  }
+  //   // let mut build = &mut context.config_mut();
+  //   // build.package.product_name = Some("carpe-canary".to_string());
+  // }
   // copy add the dll resources in case of windows.
-  if cfg!(target_os = "windows") {
-    let bundle = &mut context.config_mut().tauri.bundle;
-    let base = Path::new(env!("CARGO_MANIFEST_DIR"))
-      .join(".github")
-      .join("redist")
-      .join("x86_64");
+  // if cfg!(target_os = "windows") {
+  //   let bundle = &mut context.config_mut().tauri.bundle;
+  //   let base = Path::new(env!("CARGO_MANIFEST_DIR"))
+  //     .join(".github")
+  //     .join("redist")
+  //     .join("x86_64");
 
-    bundle.resources = Some(vec![
-      base.join("gmp.dll").to_str().unwrap().to_owned(),
-      base.join("gmp.lib").to_str().unwrap().to_owned(),
-      // base.join("libgmp-10.dll").to_str().unwrap().to_owned(),
-      ]);
-  }
+  //   bundle.resources = Some(vec![
+  //     base.join("gmp.dll").to_str().unwrap().to_owned(),
+  //     base.join("gmp.lib").to_str().unwrap().to_owned(),
+  //     // base.join("libgmp-10.dll").to_str().unwrap().to_owned(),
+  //     ]);
+  // }
 
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
@@ -171,6 +168,6 @@ async fn main() {
       commands::web_logs::log_this,
     ])
     .menu(menu)
-    .run(context)
+    .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
