@@ -10,10 +10,9 @@ use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
 };
 use std::{
-  path::Path,
-  fs::{self, File}
-};
-use tauri::{AboutMetadata, Menu, MenuItem, Submenu};
+    path::Path,
+    fs::{self, File}
+};use tauri::{AboutMetadata, Menu, MenuItem, Submenu};
 
 pub(crate) mod carpe_error;
 pub(crate) mod commands;
@@ -109,6 +108,18 @@ async fn main() {
         base.join("gmp.lib").to_str().unwrap().to_owned()
       ]);
 
+  }
+
+    // copy add the dll resources in case of windows.
+    if cfg!(target_os = "windows") {
+      let bundle = &mut context.config_mut().tauri.bundle;
+      let base = Path::new(env!("CARGO_MANIFEST_DIR")).join(".github").join("redist").join("x86_64");
+
+      bundle.resources = Some(vec![
+        base.join("gmp.dll").to_str().unwrap().to_owned(),
+        base.join("gmp.lib").to_str().unwrap().to_owned(),
+        //base.join("libgmp-10.dll").to_str().unwrap().to_owned()
+      ]);
   }
 
   tauri::Builder::default()
