@@ -111,9 +111,9 @@ async fn main() {
       .join("x86_64");
 
     bundle.resources = Some(vec![
-      // base.join("gmp.dll").to_str().unwrap().to_owned(),
-      // base.join("gmp.lib").to_str().unwrap().to_owned(),
-      base.join("libgmp-10.dll").to_str().unwrap().to_owned(),
+      base.join("gmp.dll").to_str().unwrap().to_owned(),
+      base.join("gmp.lib").to_str().unwrap().to_owned(),
+      // base.join("libgmp-10.dll").to_str().unwrap().to_owned(),
       ]);
   }
 
