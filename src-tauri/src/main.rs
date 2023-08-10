@@ -10,9 +10,10 @@ use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
 };
 use std::{
-    path::Path,
-    fs::{self, File}
-};use tauri::{AboutMetadata, Menu, MenuItem, Submenu};
+  fs::{self, File},
+  path::Path,
+};
+use tauri::{AboutMetadata, Menu, MenuItem, Submenu};
 
 pub(crate) mod carpe_error;
 pub(crate) mod commands;
@@ -91,35 +92,28 @@ async fn main() {
   // Canary releases need to know to look for a different upgrade release URL
   let mut context = tauri::generate_context!();
   if cfg!(feature = "carpe-canary") {
-      let new_updater_url = "https://raw.githubusercontent.com/0o-de-lally/carpe/canary/autoupdater/autoupdater_payload_canary.json";
-      let updater = &mut context.config_mut().tauri.updater;
-      let urls = vec![tauri::utils::config::UpdaterEndpoint(
-        new_updater_url.parse().expect("invalid updater URL"),
-      )];
-      updater.endpoints.replace(urls);
+    let new_updater_url = "https://raw.githubusercontent.com/0o-de-lally/carpe/canary/autoupdater/autoupdater_payload_canary.json";
+    let updater = &mut context.config_mut().tauri.updater;
+    let urls = vec![tauri::utils::config::UpdaterEndpoint(
+      new_updater_url.parse().expect("invalid updater URL"),
+    )];
+    updater.endpoints.replace(urls);
+
+    let mut build = &mut context.config_mut();
+    build.package.product_name = Some("carpe-canary".to_string());
   }
-    // copy add the dll resources in case of windows.
-    if cfg!(target_os = "windows") {
-      let bundle = &mut context.config_mut().tauri.bundle;
-      let base = Path::new(env!("CARGO_MANIFEST_DIR")).join(".github").join("redist").join("x86_64");
+  // copy add the dll resources in case of windows.
+  if cfg!(target_os = "windows") {
+    let bundle = &mut context.config_mut().tauri.bundle;
+    let base = Path::new(env!("CARGO_MANIFEST_DIR"))
+      .join(".github")
+      .join("redist")
+      .join("x86_64");
 
-      bundle.resources = Some(vec![
-        base.join("gmp.dll").to_str().unwrap().to_owned(),
-        base.join("gmp.lib").to_str().unwrap().to_owned()
-      ]);
-
-  }
-
-    // copy add the dll resources in case of windows.
-    if cfg!(target_os = "windows") {
-      let bundle = &mut context.config_mut().tauri.bundle;
-      let base = Path::new(env!("CARGO_MANIFEST_DIR")).join(".github").join("redist").join("x86_64");
-
-      bundle.resources = Some(vec![
-        base.join("gmp.dll").to_str().unwrap().to_owned(),
-        base.join("gmp.lib").to_str().unwrap().to_owned(),
-        //base.join("libgmp-10.dll").to_str().unwrap().to_owned()
-      ]);
+    bundle.resources = Some(vec![
+      base.join("gmp.dll").to_str().unwrap().to_owned(),
+      base.join("gmp.lib").to_str().unwrap().to_owned(),
+    ]);
   }
 
   tauri::Builder::default()
@@ -168,11 +162,9 @@ async fn main() {
       commands::preferences::get_preferences,
       commands::preferences::maybe_migrate,
       commands::preferences::has_legacy_configs,
-
       commands::preferences::get_env,
       commands::preferences::set_env,
       commands::preferences::set_preferences_locale,
-
       ///////// Debug ////////
       commands::app_version::get_app_version,
       commands::web_logs::log_this,
