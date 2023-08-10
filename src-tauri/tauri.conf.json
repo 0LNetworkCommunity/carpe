@@ -31,6 +31,7 @@
       ],
       "resources": [
         "gmp.dll",
+        "gmp.lib",
         "libgmp.a"
       ],
       "externalBin": [],
