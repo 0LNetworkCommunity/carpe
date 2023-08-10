@@ -29,10 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "resources": [
-        "./.github/redist/x86_64/gmp.dll",
-        "./.github/redist/x86_64/gmp.lib"
-      ],
+      "resources": [],
       "externalBin": [],
       "copyright": "",
       "category": "DeveloperTool",
