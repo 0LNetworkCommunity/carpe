@@ -1,4 +1,4 @@
-name: carpe release
+name: gmp-compile
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
         uses: johnwason/vcpkg-action@v5
         id: vcpkg
         with:
-          pkgs: boost-date-time
+          pkgs: gmp
           triplet: ${{ matrix.config.vcpkg_triplet }}
           cache-key: ${{ matrix.config.os }}
           revision: master
