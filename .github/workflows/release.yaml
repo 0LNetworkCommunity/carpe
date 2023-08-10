@@ -93,9 +93,7 @@ jobs:
         with:
           args: ${{contains(github.ref, 'canary') && '--features carpe-canary' || '' }} #pass the rust feature flags for canary if the tag includes "canary"
           tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }} # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: 'Carpe v__VERSION__'
-          # tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          # releaseName: 'Carpe v__VERSION__'
+          releaseName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }}
           releaseBody: '[draft]'
           releaseDraft: true
           prerelease: false
