@@ -17,8 +17,8 @@ jobs:
         #   vcpkg_triplet: x64-linux-release
         - os: macos-11
           vcpkg_triplet: x64-osx-release
-        # - os: windows-2019
-        #   vcpkg_triplet: x64-windows-release
+        - os: windows-2019
+          vcpkg_triplet: x64-windows-release
     steps:
       - name: osx deps
         if: ${{ matrix.config.os }} == macos-11
@@ -43,4 +43,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: gmp-libraries-${{ matrix.config.os }}
-          files: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*
+          body: "gmp libs built from source"
+          files: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
