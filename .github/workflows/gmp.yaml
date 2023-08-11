@@ -16,7 +16,7 @@ jobs:
         # - os: ubuntu-20.04
         #   vcpkg_triplet: x64-linux-release
         - os: macos-11
-          vcpkg_triplet: x64-osx-release
+          vcpkg_triplet: x64-osx-dynamic
         - os: windows-2019
           vcpkg_triplet: x64-windows-release
     steps:
@@ -37,12 +37,28 @@ jobs:
           token: ${{ github.token }}
 
       - uses: actions/upload-artifact@v3
+        if: ${{ matrix.config.os }} == macos-11
         with:
           name: gmp-compile
           path: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
 
-      - name: release
+      - uses: actions/upload-artifact@v3
+        if: ${{ matrix.config.os }} == windows-2019
+        with:
+          name: gmp-compile
+          path: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
+
+      - name: release win
         uses: softprops/action-gh-release@v1
+        if: ${{ matrix.config.os }} == windows-2019
+        with:
+          tag_name: gmp-libraries-${{ matrix.config.os }}
+          body: "gmp libs built from source"
+          files: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
+
+      - name: release osx
+        uses: softprops/action-gh-release@v1
+        if: ${{ matrix.config.os }} == windows-2019
         with:
           tag_name: gmp-libraries-${{ matrix.config.os }}
           body: "gmp libs built from source"
