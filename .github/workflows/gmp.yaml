@@ -14,8 +14,8 @@ jobs:
         config:
         # - os: ubuntu-20.04
         #   vcpkg_triplet: x64-linux-release
-        # - os: macos-11
-        #   vcpkg_triplet: x64-osx-release
+        - os: macos-11
+          vcpkg_triplet: x64-osx-release
         - os: windows-2019
           vcpkg_triplet: x64-windows-release
     steps:
@@ -36,7 +36,6 @@ jobs:
 
       - name: release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
-          tag_name: windows-gmp
+          tag_name: gmp-libraries-${{ matrix.config.os }}
           files: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*
