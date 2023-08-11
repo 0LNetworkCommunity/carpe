@@ -10,14 +10,15 @@ jobs:
   buildme:
     runs-on: ${{ matrix.config.os }}
     strategy:
+      fail-fast: false
       matrix:
         config:
         # - os: ubuntu-20.04
         #   vcpkg_triplet: x64-linux-release
         - os: macos-11
           vcpkg_triplet: x64-osx-release
-        - os: windows-2019
-          vcpkg_triplet: x64-windows-release
+        # - os: windows-2019
+        #   vcpkg_triplet: x64-windows-release
     steps:
       - name: vcpkg build
         uses: johnwason/vcpkg-action@v5
