@@ -32,7 +32,8 @@
       "resources": [
         "gmp.dll",
         "gmp.lib",
-        "libgmp.a"
+        "libgmp.a",
+        "libgmp.10.dylib"
       ],
       "externalBin": [],
       "copyright": "",
