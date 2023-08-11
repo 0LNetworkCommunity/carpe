@@ -20,12 +20,12 @@ jobs:
         - os: windows-2019
           vcpkg_triplet: x64-windows-release
     steps:
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          detached: true
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     detached: true
       - name: osx deps
-        if: ${{ matrix.config.os }} == macos-11
+        if: ${{ matrix.config.os }} == 'macos-11'
         run: brew install autoconf automake libtool
 
       - name: vcpkg build
@@ -38,30 +38,33 @@ jobs:
           revision: master
           token: ${{ github.token }}
 
-      - uses: actions/upload-artifact@v3
-        if: ${{ matrix.config.os }} == macos-11
+      - name: upload mac
+        uses: actions/upload-artifact@v3
+        if: ${{ matrix.config.os }} == 'macos-11'
         with:
           name: gmp-compile
-          path: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
+          path: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/libgmp*/
 
-      - uses: actions/upload-artifact@v3
-        if: ${{ matrix.config.os }} == windows-2019
+      - name: upload windows
+        uses: actions/upload-artifact@v3
+        if: ${{ matrix.config.os }} == 'windows-2019'
         with:
           name: gmp-compile
-          path: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
+          path: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*
+
+      - name: release mac
+        uses: softprops/action-gh-release@v1
+        if: ${{ matrix.config.os }} == 'macos-11'
+        with:
+          tag_name: gmp-libraries-${{ matrix.config.os }}
+          body: "gmp libs built from source"
+          files: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/libgmp*
 
       - name: release win
         uses: softprops/action-gh-release@v1
-        if: ${{ matrix.config.os }} == windows-2019
+        if: ${{ matrix.config.os }} == 'windows-2019'
         with:
           tag_name: gmp-libraries-${{ matrix.config.os }}
           body: "gmp libs built from source"
           files: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*
 
-      - name: release osx
-        uses: softprops/action-gh-release@v1
-        if: ${{ matrix.config.os }} == macos-11
-        with:
-          tag_name: gmp-libraries-${{ matrix.config.os }}
-          body: "gmp libs built from source"
-          files: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/libgmp*
