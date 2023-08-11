@@ -8,6 +8,8 @@ on:
       - '*'
 jobs:
   buildme:
+    permissions:
+      contents: write
     runs-on: ${{ matrix.config.os }}
     strategy:
       fail-fast: false
