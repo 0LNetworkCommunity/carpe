@@ -20,6 +20,8 @@ jobs:
         - os: windows-2019
           vcpkg_triplet: x64-windows-release
     steps:
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: osx deps
         if: ${{ matrix.config.os }} == macos-11
         run: brew install autoconf automake libtool
