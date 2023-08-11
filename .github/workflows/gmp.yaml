@@ -68,5 +68,5 @@ jobs:
         with:
           tag_name: gmp-libraries-${{ matrix.config.os }}
           body: "gmp libs built from source"
-          files: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}\**\*gmp*
+          files: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
 
