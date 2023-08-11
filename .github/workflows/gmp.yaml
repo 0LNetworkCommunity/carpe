@@ -27,7 +27,7 @@ jobs:
       #   with:
       #     detached: true
       - name: osx deps
-        if: ${{ matrix.config.os }} == 'macos-11'
+        if: contains(${{ matrix.config.os }}, 'macos')
         run: brew install autoconf automake libtool
 
       - name: vcpkg build
@@ -42,21 +42,21 @@ jobs:
 
       - name: upload mac
         uses: actions/upload-artifact@v3
-        if: ${{ matrix.config.os }} == 'macos-11'
+        if: contains(${{ matrix.config.os }}, 'macos')
         with:
           name: gmp-compile
           path: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/libgmp*/
 
       - name: upload windows
         uses: actions/upload-artifact@v3
-        if: ${{ matrix.config.os }} == 'windows-2019'
+        if: contains(${{ matrix.config.os }}, 'windows-2019')
         with:
           name: gmp-compile
           path: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*
 
       - name: release mac
         uses: softprops/action-gh-release@v1
-        if: ${{ matrix.config.os }} == 'macos-11'
+        if: contains(${{ matrix.config.os }}, 'macos')
         with:
           tag_name: gmp-libraries-${{ matrix.config.os }}
           body: "gmp libs built from source"
@@ -64,7 +64,7 @@ jobs:
 
       - name: release win
         uses: softprops/action-gh-release@v1
-        if: ${{ matrix.config.os }} == 'windows-2019'
+        if: contains(${{ matrix.config.os }}, 'windows-2019')
         with:
           tag_name: gmp-libraries-${{ matrix.config.os }}
           body: "gmp libs built from source"
