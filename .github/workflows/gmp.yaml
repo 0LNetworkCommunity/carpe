@@ -2,10 +2,8 @@ name: gmp-compile
 
 on:
   push:
-    tags:
-      - '*'
     branches:
-      - '*'
+      - '*gmp'
 jobs:
   buildme:
     permissions:
