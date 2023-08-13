@@ -53,18 +53,22 @@ jobs:
           path: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
 
       - name: release mac
-        uses: softprops/action-gh-release@v1
         if: matrix.config.os == 'macos-11'
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: gmp-libraries-${{ matrix.config.os }}
+          allowUpdates: true
+          tag: gmp-libraries-${{ matrix.config.os }}
+          commit: ${{github.ref}}
           body: "gmp libs built from source"
-          files: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/libgmp*
+          artifacts: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/*.dylib, ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/*.a
 
       - name: release win
-        uses: softprops/action-gh-release@v1
         if: matrix.config.os == 'windows-2019'
+        uses: ncipollo/release-action@v1
         with:
-          tag_name: gmp-libraries-${{ matrix.config.os }}
+          allowUpdates: true
+          tag: gmp-libraries-${{ matrix.config.os }}
+          commit: ${{github.ref}}
           body: "gmp libs built from source"
-          files: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
+          artifacts: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.lib,  ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.dll
 
