@@ -1,12 +1,12 @@
 [package]
+name = "carpe"
+version = "1.0.0"
 authors = ["0LNetworkCommunity"]
 default-run = "carpe"
 description = "a light miner and wallet for libra"
 edition = "2021"
 license = "Apache 2.0"
-name = "carpe"
 repository = "https://github.com/0LNetworkCommunity/carpe"
-version = "0.5.0"
 
 [build-dependencies]
 tauri-build = { version = "1.2.1", features = [] }
