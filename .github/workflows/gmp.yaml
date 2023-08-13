@@ -58,14 +58,17 @@ jobs:
         with:
           allowUpdates: true
           tag: gmp-libraries-${{ matrix.config.os }}
+          commit: ${{github.ref}}
           body: "gmp libs built from source"
           artifacts: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/libgmp*
 
       - name: release win
+        if: matrix.config.os == 'windows-2019'
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
           tag: gmp-libraries-${{ matrix.config.os }}
+          commit: ${{github.ref}}
           body: "gmp libs built from source"
-          artifacts: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*
+          artifacts: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.*
 
