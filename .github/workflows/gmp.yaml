@@ -70,5 +70,5 @@ jobs:
           tag: gmp-libraries-${{ matrix.config.os }}
           commit: ${{github.ref}}
           body: "gmp libs built from source"
-          artifacts: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.*,  ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/libgmp*.*
+          artifacts: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.lib,  ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.dll
 
