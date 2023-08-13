@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - 'v*'
+    branches:
+      - 'canary'
+      - 'ci'
 jobs:
   publish:
     strategy:
