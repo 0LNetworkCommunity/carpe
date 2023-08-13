@@ -60,7 +60,7 @@ jobs:
           tag: gmp-libraries-${{ matrix.config.os }}
           commit: ${{github.ref}}
           body: "gmp libs built from source"
-          artifacts: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/libgmp*
+          artifacts: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/*.dylib, ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/*.a
 
       - name: release win
         if: matrix.config.os == 'windows-2019'
