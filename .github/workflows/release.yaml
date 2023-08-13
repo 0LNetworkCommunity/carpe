@@ -3,9 +3,7 @@ name: carpe-release
 on:
   push:
     tags:
-      - '*'
-    branches:
-      - '*'
+      - 'v*'
 jobs:
   publish:
     strategy:
