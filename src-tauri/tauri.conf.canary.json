@@ -30,6 +30,7 @@
         "icons-canary/icon.ico"
       ],
       "resources": [
+        "libgmp-10.dll",
         "gmp.dll",
         "gmp.lib",
         "libgmp.a",
