@@ -31,7 +31,7 @@
       ],
       "resources": [
         "gmp.dll",
-        "gmp-10.dll",
+        "libgmp-10.dll",
         "gmp.lib",
         "libgmp.a",
         "libgmp.10.dylib"
