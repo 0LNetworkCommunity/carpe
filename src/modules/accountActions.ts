@@ -86,7 +86,7 @@ export const addAccount = async (init_type: InitType, secret: string) => {
       return res
     })
     .catch((error) => {
-      raise_error(error, false, 'handleAdd')
+      raise_error(error, false, 'addAccount')
     })
 }
 

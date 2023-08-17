@@ -4,6 +4,7 @@
   "scripts": {
     "tauri": "tauri",
     "dev": "yarn lint && tauri dev",
+    "dev:canary": "tauri dev --config src-tauri/tauri.conf.canary.json --features carpe-canary",
     "dev:web": "vite",
     "build": "tauri build",
     "build:canary": "tauri build --config src-tauri/tauri.conf.canary.json --features carpe-canary",

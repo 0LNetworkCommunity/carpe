@@ -17,8 +17,9 @@ pub async fn set_account_profile(
   account: AccountAddress,
   authkey: AuthenticationKey,
 ) -> anyhow::Result<AppCfg> {
-  let is_newbie = configs::is_initialized();
-  let mut cfg = match is_newbie {
+  let configs_exist = configs::is_initialized();
+  dbg!(&configs_exist);
+  let mut cfg = match configs_exist {
     true => configs::get_cfg()?,
     false => configs::new_cfg()?,
   };

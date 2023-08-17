@@ -26,6 +26,7 @@ static CONFIG_DIR: Lazy<PathBuf> = Lazy::new(|| {
 // Win: C:\Users\Alice\AppData\Roaming\carpe\Carpe\config
 // Mac: /Users/Alice/Library/Application Support/com.carpe.Carpe
 pub fn default_config_path() -> &'static Path {
+  dbg!(&CONFIG_DIR);
   &CONFIG_DIR
 }
 
@@ -57,5 +58,5 @@ pub fn get_client() -> anyhow::Result<Client> {
 }
 
 pub fn is_initialized() -> bool {
-  default_config_path().exists()
+  config_file_path().exists()
 }
