@@ -47,13 +47,6 @@ async fn maybe_create_playlist(
 pub async fn get_networks() -> Result<NetworkPlaylist, CarpeError> {
   let app_cfg = get_cfg()?;
   Ok(app_cfg.get_network_profile(None)?)
-  // always return a network profile
-  // match app_cfg.get_network_profile(None) {
-  //   Ok(p) => Ok(p),
-  //   _ => {
-  //     Ok(maybe_create_playlist(&mut app_cfg, NamedChain::MAINNET).await?)
-  //   }
-  // }
 }
 
 #[tauri::command(async)]
@@ -61,8 +54,6 @@ pub async fn get_metadata() -> Result<IndexResponse, CarpeError> {
   // Todo return the IndexResponse
   let client = get_client()?;
   let m = client.get_index().await?;
-  // .map_err(|e| CarpeError::client_unknown_err(&e.to_string()))?;
-  // dbg!(&m);
   Ok(m.into_inner())
 }
 
@@ -91,6 +82,7 @@ pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
   app_cfg.save_file()?;
   Ok(dummy_playlist)
 }
+
 
 #[tokio::test]
 async fn read_write() {

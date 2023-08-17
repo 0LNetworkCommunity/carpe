@@ -36,13 +36,6 @@ pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResour
     .await?;
   let credits = res.into_inner().credits;
   Ok(credits)
-
-  // let client = get_client();
-  // let acc_state = client.get_account_state(account)?;
-
-  // match acc_state.get_resource::<MakeWholeResource>()? {
-  //   Some(mk) => Ok(mk.credits),
-  //   None => Ok(Vec::new()),
 }
 
 pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
@@ -55,9 +48,7 @@ pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
         account, e
       ))
     })?;
-  // dbg!(&slow_balance);
   Ok(slow_balance.total)
-  //
 }
 
 pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {

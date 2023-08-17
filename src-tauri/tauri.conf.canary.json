@@ -33,7 +33,8 @@
         "gmp.dll",
         "gmp.lib",
         "libgmp-10.dll",
-        "libgmp.10.dylib"
+        "libgmp.10.dylib",
+        "libgmp.a"
       ],
       "externalBin": [],
       "copyright": "",
