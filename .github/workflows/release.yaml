@@ -57,6 +57,12 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
 
+
+      - name: patch tauri nsis bug
+        if: matrix.os == 'windows-latest'
+        run: |
+          Copy-Item ('${{ github.workspace }}' + '\redist\nsis_tauri_utils.dll')  -Destination AppData\Local\tauri\NSIS\x86-unicode -Recurse
+
       # Package the windows dependencies
       - name: copy gmp.dll for build
         if: matrix.os == 'windows-latest'
