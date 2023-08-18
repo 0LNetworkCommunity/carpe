@@ -61,7 +61,7 @@ jobs:
       - name: patch tauri nsis bug
         if: matrix.os == 'windows-latest'
         run: |
-          Copy-Item ('${{ github.workspace }}' + '\redist\nsis_tauri_utils.dll')  -Destination %AppData%\Local\tauri\NSIS\x86-unicode -Recurse
+          Copy-Item ('${{ github.workspace }}' + '\redist\nsis_tauri_utils.dll')  -Destination $env:LOCALAPPDATA\tauri\NSIS\x86-unicode -Recurse
 
       # Package the windows dependencies
       - name: copy gmp.dll for build
