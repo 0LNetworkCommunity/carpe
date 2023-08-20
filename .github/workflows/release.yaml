@@ -82,11 +82,6 @@ jobs:
       - name: yarn installation
         run: yarn install
 
-      - name: patch tauri nsis bug
-        if: matrix.os == 'windows-latest'
-        run: |
-          Copy-Item ('${{ github.workspace }}' + '\redist\nsis_tauri_utils.dll')  -Destination $env:LOCALAPPDATA\tauri\NSIS\x86-unicode -Recurse
-
       - name: pre-build rust
         working-directory: ./src-tauri
         run: cargo b --release
