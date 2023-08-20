@@ -21,7 +21,7 @@ jobs:
         with:
           detached: true
       # Setup Rust
-      - uses: dtolnay/rust-toolchain@1.66.1
+      - uses: dtolnay/rust-toolchain@1.70.0
         with:
           components: rustfmt
 
