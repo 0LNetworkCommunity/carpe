@@ -13,11 +13,11 @@ tauri-build = { version = "1.2.1", features = [] }
 built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
-libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
-libra-tower = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
-libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
-libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
-libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "publish-move" }
+libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "zapatos-1.6.2" }
+libra-tower = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "zapatos-1.6.2" }
+libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "zapatos-1.6.2" }
+libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "zapatos-1.6.2" }
+libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "zapatos-1.6.2" }
 
 anyhow = "1.0.38"
 directories = "5.0.1"
