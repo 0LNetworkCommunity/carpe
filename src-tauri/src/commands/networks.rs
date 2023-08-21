@@ -10,9 +10,11 @@ use libra_types::legacy_types::network_playlist::NetworkPlaylist;
 
 use libra_types::legacy_types::app_cfg::AppCfg;
 use url::Url;
+use std::str::FromStr;
 
 #[tauri::command(async)]
-pub async fn toggle_network(chain_id: NamedChain) -> Result<NetworkPlaylist, CarpeError> {
+pub async fn toggle_network(chain_id_str: &str) -> Result<NetworkPlaylist, CarpeError> {
+  let chain_id = NamedChain::from_str(chain_id_str)?;
   let mut app_cfg = get_cfg()?;
   app_cfg.set_chain_id(chain_id);
   app_cfg.save_file()?;
