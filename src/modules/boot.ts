@@ -7,8 +7,7 @@ import { getVersion } from './version'
 import { carpeTick } from './tick'
 import { writable } from 'svelte/store'
 
-export const isBooted = writable(false);
-
+export const isBooted = writable(false)
 
 export const bootUp = () => {
   logger(Level.Warn, 'Webview is starting')
@@ -28,10 +27,9 @@ export const bootUp = () => {
     .then(refreshAccounts) // should only try to refresh accounts if we are connected to a chain
     // .then(updateMakeWhole) // check for make whole only once on startup
     .finally(() => {
-      refreshUpstreamPeerStats();
+      refreshUpstreamPeerStats()
       setInterval(carpeTick, 30000) // do a healthcheck, this is async
-      isBooted.set(true);
-      navigate('wallet');
+      isBooted.set(true)
+      navigate('wallet')
     })
-
 }
