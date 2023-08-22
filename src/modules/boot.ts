@@ -1,5 +1,5 @@
 import { navigate } from 'svelte-navigator'
-import { getDefaultProfile, isCarpeInit, migrate, refreshAccounts } from './accountActions'
+import { getDefaultProfile, isCarpeInit, tryMigrate, refreshAccounts } from './accountActions'
 import { Level, logger } from './carpeError'
 import { getEnv } from './debug'
 import { getMetadata, getNetwork, refreshUpstreamPeerStats } from './networks'
@@ -17,7 +17,7 @@ export const bootUp = () => {
   getVersion() // git commit and version
 
   // try to migrate carpe files from v5-6 to v7
-  migrate()
+  tryMigrate()
 
   // try to connect to a chain eagerly.
   // if not we will be scanning for peers below
