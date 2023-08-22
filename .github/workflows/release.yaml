@@ -17,10 +17,11 @@ jobs:
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
-      - name: setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          detached: true
+      ### DO NOT REMOVE: uncomment if you need to debug runner ###
+      # - name: setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     detached: true
       # Setup Rust
       - uses: dtolnay/rust-toolchain@1.70.0
         with:
