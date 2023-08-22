@@ -10,4 +10,3 @@ fn main() {
     .expect("Failed to acquire build-time information");
   tauri_build::build()
 }
-

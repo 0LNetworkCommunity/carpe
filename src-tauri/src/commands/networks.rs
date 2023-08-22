@@ -9,8 +9,8 @@ use libra_types::legacy_types::network_playlist::HostProfile;
 use libra_types::legacy_types::network_playlist::NetworkPlaylist;
 
 use libra_types::legacy_types::app_cfg::AppCfg;
-use url::Url;
 use std::str::FromStr;
+use url::Url;
 
 #[tauri::command(async)]
 pub async fn toggle_network(chain_id_str: &str) -> Result<NetworkPlaylist, CarpeError> {
@@ -84,7 +84,6 @@ pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
   app_cfg.save_file()?;
   Ok(dummy_playlist)
 }
-
 
 #[tokio::test]
 async fn read_write() {
@@ -161,6 +160,6 @@ tx_configs:
 
   let cfg: AppCfg = serde_yaml::from_str(raw_yaml).unwrap();
   assert!(cfg.workspace.default_chain_id == NamedChain::TESTING);
-  let np = toggle_network(NamedChain::TESTING).await.unwrap();
+  let np = toggle_network("testing").await.unwrap();
   assert!(np.chain_id == NamedChain::TESTING);
 }

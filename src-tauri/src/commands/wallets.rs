@@ -63,7 +63,6 @@ pub async fn init_from_private_key(pri_key_string: String) -> Result<Profile, Ca
     .await
     .unwrap_or(acc_struct.account); // the account may not have been created on chain. If we can't get the address, we'll just use the one we derived from the private key
 
-
   key_manager::set_private_key(&address.to_string(), acc_struct.pri_key)
     .map_err(|e| CarpeError::config(&e.to_string()))?;
 
@@ -101,16 +100,12 @@ pub async fn refresh_accounts() -> Result<Vec<Profile>, CarpeError> {
 }
 
 async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeError> {
-  futures::future::join_all(
-    list
-      .iter_mut()
-      .map(|e| async {
-        if let Ok(addr) = get_originating_address(e.auth_key).await {
-          e.account = addr;
-          e.nickname = get_short(addr);
-        }
-      }),
-  )
+  futures::future::join_all(list.iter_mut().map(|e| async {
+    if let Ok(addr) = get_originating_address(e.auth_key).await {
+      e.account = addr;
+      e.nickname = get_short(addr);
+    }
+  }))
   .await;
   Ok(())
 }
@@ -145,7 +140,6 @@ pub async fn switch_profile(account: AccountAddress) -> Result<Profile, CarpeErr
   app_cfg.save_file()?;
   Ok(p)
 }
-
 
 // remove all accounts which are being tracked.
 #[tauri::command]

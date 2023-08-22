@@ -1,4 +1,4 @@
-use crate::configs::{legacy_config_path, default_config_path};
+use crate::configs::{default_config_path, legacy_config_path};
 use crate::migrate;
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use libra_types::legacy_types::mode_ol::MODE_0L;

@@ -2,7 +2,9 @@ use crate::configs::get_cfg;
 
 use crate::configs;
 use anyhow::bail;
-use libra_types::exports::{AccountAddress, AuthenticationKey, NamedChain, ValidCryptoMaterialStringExt};
+use libra_types::exports::{
+  AccountAddress, AuthenticationKey, NamedChain, ValidCryptoMaterialStringExt,
+};
 use libra_types::legacy_types::network_playlist;
 use libra_types::legacy_types::{
   app_cfg::{get_nickname, Profile},
@@ -29,24 +31,26 @@ pub struct AccountEntry {
 
 // hard to believe this doesn't exist
 fn deserialize_authkey<'de, D>(deserializer: D) -> Result<AuthenticationKey, D::Error>
-where D: Deserializer<'de> {
-    let buf = String::deserialize(deserializer)?;
-    AuthenticationKey::from_encoded_string(&buf)
-    .map_err(serde::de::Error::custom)
+where
+  D: Deserializer<'de>,
+{
+  let buf = String::deserialize(deserializer)?;
+  AuthenticationKey::from_encoded_string(&buf).map_err(serde::de::Error::custom)
 }
 
 // hard to believe this doesn't exist
 fn deserialize_acc<'de, D>(deserializer: D) -> Result<AccountAddress, D::Error>
-where D: Deserializer<'de> {
-    let buf = String::deserialize(deserializer)?;
-    let prepended = format!("0x{}", &buf);
-    AccountAddress::from_hex_literal(&prepended)
-    .map_err(serde::de::Error::custom)
+where
+  D: Deserializer<'de>,
+{
+  let buf = String::deserialize(deserializer)?;
+  let prepended = format!("0x{}", &buf);
+  AccountAddress::from_hex_literal(&prepended).map_err(serde::de::Error::custom)
 }
 
 fn read_accounts(account_file: &Path) -> anyhow::Result<Accounts> {
   if account_file.exists() {
-    let file = std::fs::read_to_string(&account_file)?;
+    let file = std::fs::read_to_string(account_file)?;
     Ok(serde_json::from_str(&file)?)
   } else {
     bail!("no accounts.json file found");
@@ -56,7 +60,9 @@ fn read_accounts(account_file: &Path) -> anyhow::Result<Accounts> {
 pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   let legacy_dir = configs::legacy_config_path();
 
-  if !legacy_dir.exists() { bail!("legacy configs not found.")}
+  if !legacy_dir.exists() {
+    bail!("legacy configs not found.")
+  }
 
   // failover. maybe this was halfway migrated.
   // if we can find a config file in the new format we use that as a starting place
@@ -91,12 +97,10 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   app_cfg.network_playlist =
     vec![NetworkPlaylist::from_url(playlist_url, Some(NamedChain::MAINNET)).await?];
 
-
   app_cfg.save_file()?;
 
   Ok(())
 }
-
 
 #[test]
 fn read_legacy_accounts() {
@@ -109,6 +113,9 @@ fn read_legacy_accounts() {
   std::fs::write(&temp, serde_json::to_string_pretty(&j).unwrap()).unwrap();
 
   let acc = read_accounts(&temp).unwrap();
-  assert!(acc.accounts.get(0).unwrap().account == AccountAddress::from_hex_literal("0x69a385e1744e33fbb24a42ecbd1603e3").unwrap());
- std::fs::remove_file(temp).unwrap();
+  assert!(
+    acc.accounts.get(0).unwrap().account
+      == AccountAddress::from_hex_literal("0x69a385e1744e33fbb24a42ecbd1603e3").unwrap()
+  );
+  std::fs::remove_file(temp).unwrap();
 }
