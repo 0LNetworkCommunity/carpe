@@ -18,7 +18,6 @@ pub async fn toggle_network(chain_id_str: &str) -> Result<NetworkPlaylist, Carpe
   let mut app_cfg = get_cfg()?;
   app_cfg.set_chain_id(chain_id);
   app_cfg.save_file()?;
-
   maybe_create_playlist(&mut app_cfg, chain_id).await.ok();
 
   get_networks().await

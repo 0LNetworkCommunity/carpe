@@ -32,7 +32,8 @@ export const getDefaultProfile = async () => {
 }
 
 export const refreshAccounts = async () => {
-  isRefreshingAccounts.set(true)
+  console.log(">>> refresh_accounts");
+  isRefreshingAccounts.set(true);
   invoke('refresh_accounts')
     .then((result: [Profile]) => {
       // TODO make this the correct return type

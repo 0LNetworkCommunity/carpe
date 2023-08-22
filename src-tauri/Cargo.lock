@@ -3428,6 +3428,8 @@ dependencies = [
  "glob",
  "hex",
  "keyring",
+ "libra-config",
+ "libra-genesis-tools",
  "libra-query",
  "libra-tower",
  "libra-txs",
@@ -6267,6 +6269,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "libra-config"
+version = "0.1.0"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=txs-features#ff2c0f64a61a01e1ec958046d1dff15ee3667228"
+dependencies = [
+ "anyhow",
+ "aptos",
+ "aptos-crypto",
+ "aptos-rest-client",
+ "aptos-types",
+ "clap 3.2.25",
+ "libra-types",
+ "libra-wallet",
+ "tokio",
+ "url",
+]
+
+[[package]]
 name = "libra-framework"
 version = "0.1.0"
 source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=zapatos-1.6.2#f2238ca37b9692352d31231f6e94aa28a9b75038"
@@ -6283,6 +6302,40 @@ dependencies = [
  "move-command-line-common",
  "move-model",
  "once_cell",
+]
+
+[[package]]
+name = "libra-genesis-tools"
+version = "0.1.0"
+source = "git+https://github.com/0o-de-lally/libra-v7.git?branch=txs-features#ff2c0f64a61a01e1ec958046d1dff15ee3667228"
+dependencies = [
+ "anyhow",
+ "aptos-config",
+ "aptos-crypto",
+ "aptos-framework",
+ "aptos-gas",
+ "aptos-genesis",
+ "aptos-github-client",
+ "aptos-types",
+ "aptos-vm",
+ "aptos-vm-genesis",
+ "base64 0.13.1",
+ "bcs 0.1.3",
+ "chrono",
+ "clap 3.2.25",
+ "console",
+ "dialoguer",
+ "dirs 5.0.1",
+ "hex",
+ "indicatif",
+ "libra-framework",
+ "libra-types",
+ "libra-wallet",
+ "move-core-types",
+ "reqwest",
+ "serde 1.0.165",
+ "serde_json",
+ "ureq",
 ]
 
 [[package]]

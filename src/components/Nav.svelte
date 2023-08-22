@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { Link, useLocation } from 'svelte-navigator'
+  import { Link, useLocation, useMatch } from 'svelte-navigator'
 
   import { _ } from '../lang/i18n'
   import { signingAccount, isInit } from '../modules/accounts'
@@ -8,6 +8,9 @@
   import { init_preferences } from '../modules/preferences'
 
   import AccountSwitcher from './wallet/AccountSwitcher.svelte'
+  import { refreshAccounts } from '../modules/accountActions'
+  import { get } from 'svelte/store'
+  import { isBooted } from '../modules/boot'
 
   // import MakeWholeLink from "./make-whole/MakeWholeLink.svelte";
 
@@ -35,6 +38,14 @@
       }
     })
   })
+
+  // let matchesWallet = useMatch("/wallet");
+  useMatch("wallet").subscribe((r) => {
+    if (r && r.path && r.path.includes("wallet") && get(isBooted)) {
+      // window.alert("refresh");
+      refreshAccounts();
+    }
+  });
 </script>
 
 <main class="uk-margin-top">

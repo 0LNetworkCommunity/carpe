@@ -14,7 +14,7 @@
   import { init_preferences } from './modules/preferences'
 
   import { carpeTick } from './modules/tick'
-  import { boot_up } from './boot/boot'
+  import { bootUp } from './modules/boot'
 
   // UI COMPONENTS
   import Nav from './components/Nav.svelte'
@@ -46,7 +46,7 @@
   let debug = false;
 
   onMount(async () => {
-    boot_up()
+    bootUp()
 
     debugMode.subscribe((b) => (debug = b))
 

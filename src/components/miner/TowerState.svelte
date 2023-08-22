@@ -22,7 +22,7 @@
           <td>
             {#if minerTower.local_height >= 0}
               {minerTower.local_height}
-            {:else}
+            {:else if minerTower.on_chain}
               <div class="uk-inline">
                 <span uk-icon="icon: minus-circle" />
                 <div uk-dropdown>
@@ -56,7 +56,10 @@
       </tbody>
     </table>
 
-    <!-- <EpochStatus actual_proofs={minerTower.on_chain.actual_count_proofs_in_epoch} /> -->
+  {:else if minerTower && !minerTower.on_chain }
+    <div class="uk-align-center">
+      <span uk-spinner />
+    </div>
   {:else}
     <TowerStateSkeleton />
   {/if}
