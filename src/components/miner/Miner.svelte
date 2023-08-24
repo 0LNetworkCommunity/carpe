@@ -97,7 +97,7 @@
               {#if isSendInProgress}
                 <SyncProofs {minerTower} {loading} />
               {:else}
-                <EpochStatus {minerTower} isTowerNewbie={newbie} />
+                <EpochStatus isTowerNewbie={newbie} minerTower={minerTower}/>
               {/if}
             </div>
             <div class="uk-width-2-3">

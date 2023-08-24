@@ -3,12 +3,9 @@ use ol_types::block::VDFProof;
 use std::{thread, time};
 use tauri::{Runtime, Window};
 use tauri::Manager;
-// use crate::{carpe_error::CarpeError, configs::{get_cfg, get_tx_params}};
 
 #[tauri::command]
 pub fn debug_error<R: Runtime>(debug_err: bool, _window: Window<R>) -> Result<String, CarpeError> {
-  dbg!(&debug_err);
-
   match debug_err {
     true => Ok("good".to_owned()),
     false => Err(CarpeError::misc("test")),
@@ -17,7 +14,6 @@ pub fn debug_error<R: Runtime>(debug_err: bool, _window: Window<R>) -> Result<St
 
 #[tauri::command]
 pub async fn receive_event<R: Runtime>(window: Window<R>) -> Result<String, String> {
-  // window.emit("test-event", Payload{ message: threadpool_future}).unwrap();
   window.listen("hello-rust", |event| {
     dbg!("event received: {:?}", event);
   });
@@ -65,8 +61,6 @@ pub async fn delay_async<R: Runtime>(window: Window<R>) {
       )
       .unwrap();
   }
-
-  // Ok(threadpool_future)
 }
 
 #[tauri::command]

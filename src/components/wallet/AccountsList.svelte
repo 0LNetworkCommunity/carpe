@@ -3,11 +3,9 @@
   import { Link } from 'svelte-navigator'
   import UIkit from 'uikit'
   import Icons from 'uikit/dist/js/uikit-icons'
-
   import type { Profile } from '../../modules/accounts'
   import { printCoins, unscaledCoins } from '../../modules/coinHelpers'
   import { routes } from '../../modules/routes'
-
   import IconMining from '../icons/IconMining.svelte'
 
   UIkit.use(Icons)

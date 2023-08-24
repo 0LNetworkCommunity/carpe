@@ -1,20 +1,20 @@
 //! networks to connect to
 
-use crate::configs::{get_client, get_cfg};
+use crate::configs::{get_cfg, get_client};
 
-use crate::{
-  carpe_error::CarpeError,
-};
-use libra_types::exports::{NamedChain};
-use libra_types::legacy_types::network_playlist::NetworkPlaylist;
-use libra_types::legacy_types::network_playlist::HostProfile;
+use crate::carpe_error::CarpeError;
 use libra_types::exports::IndexResponse;
+use libra_types::exports::NamedChain;
+use libra_types::legacy_types::network_playlist::HostProfile;
+use libra_types::legacy_types::network_playlist::NetworkPlaylist;
 
-use url::Url;
 use libra_types::legacy_types::app_cfg::AppCfg;
+use std::str::FromStr;
+use url::Url;
 
 #[tauri::command(async)]
-pub async fn toggle_network(chain_id: NamedChain) -> Result<NetworkPlaylist, CarpeError> {
+pub async fn toggle_network(chain_id_str: &str) -> Result<NetworkPlaylist, CarpeError> {
+  let chain_id = NamedChain::from_str(chain_id_str)?;
   let mut app_cfg = get_cfg()?;
   app_cfg.set_chain_id(chain_id);
   app_cfg.save_file()?;
@@ -23,15 +23,21 @@ pub async fn toggle_network(chain_id: NamedChain) -> Result<NetworkPlaylist, Car
   get_networks().await
 }
 
-async fn maybe_create_playlist(app_cfg: &mut AppCfg, chain_id: NamedChain) -> anyhow::Result<NetworkPlaylist>{
-
+async fn maybe_create_playlist(
+  app_cfg: &mut AppCfg,
+  chain_id: NamedChain,
+) -> anyhow::Result<NetworkPlaylist> {
   let np = if chain_id == NamedChain::TESTING {
-  let mut playlist = NetworkPlaylist::default();
-   playlist.chain_id = NamedChain::TESTING;
-   app_cfg.maybe_add_custom_playlist(&playlist);
-   playlist
+    let playlist = NetworkPlaylist {
+      chain_id: NamedChain::TESTING,
+      ..Default::default()
+    };
+    app_cfg.maybe_add_custom_playlist(&playlist);
+    playlist
   } else {
-    app_cfg.update_network_playlist(Some(chain_id), None).await?
+    app_cfg
+      .update_network_playlist(Some(chain_id), None)
+      .await?
   };
   app_cfg.workspace.default_chain_id = chain_id;
   app_cfg.save_file()?;
@@ -42,30 +48,22 @@ async fn maybe_create_playlist(app_cfg: &mut AppCfg, chain_id: NamedChain) -> an
 pub async fn get_networks() -> Result<NetworkPlaylist, CarpeError> {
   let app_cfg = get_cfg()?;
   Ok(app_cfg.get_network_profile(None)?)
-  // always return a network profile
-  // match app_cfg.get_network_profile(None) {
-  //   Ok(p) => Ok(p),
-  //   _ => {
-  //     Ok(maybe_create_playlist(&mut app_cfg, NamedChain::MAINNET).await?)
-  //   }
-  // }
 }
 
 #[tauri::command(async)]
-pub async fn get_metadata() -> Result<IndexResponse, CarpeError> { // Todo return the IndexResponse
-    let client = get_client()?;
-    let m = client.get_index().await?;
-    // .map_err(|e| CarpeError::client_unknown_err(&e.to_string()))?;
-    // dbg!(&m);
-    Ok(m.into_inner())
+pub async fn get_metadata() -> Result<IndexResponse, CarpeError> {
+  // Todo return the IndexResponse
+  let client = get_client()?;
+  let m = client.get_index().await?;
+  Ok(m.into_inner())
 }
 
 #[tauri::command(async)]
 pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> {
-    let mut app_cfg = get_cfg()?;
-    let np = app_cfg.update_network_playlist(None, Some(url)).await?;
-    app_cfg.save_file()?;
-    Ok(np)
+  let mut app_cfg = get_cfg()?;
+  let np = app_cfg.update_network_playlist(None, Some(url)).await?;
+  app_cfg.save_file()?;
+  Ok(np)
 }
 
 #[tauri::command(async)]
@@ -73,9 +71,11 @@ pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> 
 pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
   let mut app_cfg = get_cfg()?;
   dbg!(&app_cfg);
-  let mut dummy_playlist = NetworkPlaylist::default();
-  dummy_playlist.chain_id = app_cfg.workspace.default_chain_id;
-  dummy_playlist.nodes = vec![HostProfile::new(url)];
+  let dummy_playlist = NetworkPlaylist {
+    chain_id: app_cfg.workspace.default_chain_id,
+    nodes: vec![HostProfile::new(url)],
+  };
+
   dbg!(&dummy_playlist);
 
   app_cfg.network_playlist = vec![dummy_playlist.clone()];
@@ -86,11 +86,11 @@ pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
 
 #[tokio::test]
 async fn read_write() {
-let raw_yaml = r"
+  let raw_yaml = r"
 workspace:
   default_profile: '636'
   default_chain_id: TESTING
-  node_home: /Users/lucas/.0L
+  node_home: ~/.carpe
 user_profiles:
 - account: 63609dfa4c8786bef29b201500064b2864689de724ca134f4e975784e3642776
   auth_key: 0x63609dfa4c8786bef29b201500064b2864689de724ca134f4e975784e3642776
@@ -157,8 +157,8 @@ tx_configs:
     user_tx_timeout: 5000
 ";
 
-  let cfg: AppCfg = serde_yaml::from_str(&raw_yaml).unwrap();
+  let cfg: AppCfg = serde_yaml::from_str(raw_yaml).unwrap();
   assert!(cfg.workspace.default_chain_id == NamedChain::TESTING);
-  let np = toggle_network(NamedChain::TESTING).await.unwrap();
+  let np = toggle_network("testing").await.unwrap();
   assert!(np.chain_id == NamedChain::TESTING);
 }

@@ -4,7 +4,7 @@
   import UIkit from 'uikit'
 
   import { mnem } from '../../modules/accounts'
-  import { InitType, handleAdd } from '../../modules/accountActions'
+  import { InitType, addAccount } from '../../modules/accountActions'
 
   export let danger_temp_mnem: string
   export let isNewAccount = true
@@ -27,11 +27,11 @@
   let isSubmitting = false
   function initAccount(mnem_string: string) {
     isSubmitting = true
-    handleAdd(InitType.Mnem, mnem_string.trim())
+    addAccount(InitType.Mnem, mnem_string.trim())
       .then(() => {
         if (isNewAccount) {
           // NOTE: this is for the keygen option, which shares this component
-          UIkit.modal('#submit-confirmation-modal').$destroy(true) // known bug https://github.com/uikit/uikit/issues/1370
+          UIkit.modal('#submit-confirmation-modal').hide() // known bug https://github.com/uikit/uikit/issues/1370
         }
       })
       .catch(() => {

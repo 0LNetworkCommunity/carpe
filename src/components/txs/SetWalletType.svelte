@@ -22,7 +22,7 @@
         raise_error(e, false, 'setWallet')
       })
 
-    UIkit.dropdown(document.getElementsByClassName('send-drop')).hide(500)
+    UIkit.dropdown(document.getElementsByClassName('send-drop')).hide(true)
   }
 </script>
 

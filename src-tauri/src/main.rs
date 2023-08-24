@@ -2,24 +2,22 @@
   all(not(debug_assertions), target_os = "windows"),
   windows_subsystem = "windows"
 )]
-
 #![allow(dead_code)]
 
-use libra_types::global_config_dir;
-
+use crate::configs::default_config_path;
 use log::{error, warn};
 use simplelog::{
   ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode, WriteLogger,
 };
 use std::fs::{self, File};
-use tauri::{Menu, MenuItem, Submenu, AboutMetadata};
+use tauri::{AboutMetadata, Menu, MenuItem, Submenu};
 
 pub(crate) mod carpe_error;
 pub(crate) mod commands;
 pub(crate) mod configs;
-pub(crate) mod migrate;
 pub(crate) mod configs_profile;
 pub(crate) mod key_manager;
+pub(crate) mod migrate;
 
 #[tokio::main]
 async fn main() {
@@ -29,7 +27,7 @@ async fn main() {
   // set_env("testnet".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
 
-  match fs::create_dir_all(global_config_dir()) {
+  match fs::create_dir_all(default_config_path()) {
     Ok(_) => (),
     Err(e) => {
       error!("could not create config dir. Message: {}", e);
@@ -85,8 +83,36 @@ async fn main() {
       menu = menu.add_native_item(MenuItem::SelectAll);
       menu
     }));
-  
+
   tauri::async_runtime::set(tokio::runtime::Handle::current());
+
+  // Canary releases need to know to look for a different upgrade release URL
+  // let mut context = tauri::generate_context!();
+  // if cfg!(feature = "carpe-canary") {
+  //   let new_updater_url = "https://raw.githubusercontent.com/0o-de-lally/carpe/canary/autoupdater/autoupdater_payload_canary.json";
+  //   let updater = &mut context.config_mut().tauri.updater;
+  //   let urls = vec![tauri::utils::config::UpdaterEndpoint(
+  //     new_updater_url.parse().expect("invalid updater URL"),
+  //   )];
+  //   updater.endpoints.replace(urls);
+
+  //   // let mut build = &mut context.config_mut();
+  //   // build.package.product_name = Some("carpe-canary".to_string());
+  // }
+  // copy add the dll resources in case of windows.
+  // if cfg!(target_os = "windows") {
+  //   let bundle = &mut context.config_mut().tauri.bundle;
+  //   let base = Path::new(env!("CARGO_MANIFEST_DIR"))
+  //     .join(".github")
+  //     .join("redist")
+  //     .join("x86_64");
+
+  //   bundle.resources = Some(vec![
+  //     base.join("gmp.dll").to_str().unwrap().to_owned(),
+  //     base.join("gmp.lib").to_str().unwrap().to_owned(),
+  //     // base.join("libgmp-10.dll").to_str().unwrap().to_owned(),
+  //     ]);
+  // }
 
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
@@ -109,7 +135,6 @@ async fn main() {
       commands::networks::get_networks,
       commands::networks::toggle_network,
       commands::networks::get_metadata,
-
       //////// Queries ////////
       commands::query::query_balance,
       commands::query::query_makewhole,
@@ -134,10 +159,10 @@ async fn main() {
       commands::preferences::debug_preferences_path,
       commands::preferences::get_preferences,
       commands::preferences::maybe_migrate,
+      commands::preferences::has_legacy_configs,
       commands::preferences::get_env,
       commands::preferences::set_env,
       commands::preferences::set_preferences_locale,
-
       ///////// Debug ////////
       commands::app_version::get_app_version,
       commands::web_logs::log_this,

@@ -1,9 +1,8 @@
 import { get } from 'svelte/store'
 import { invoke } from '@tauri-apps/api/tauri'
-import { raise_error } from './carpeError'
+import { raise_error, type CarpeError } from './carpeError'
 import { responses } from './debug'
 import { minerLoopEnabled } from './miner'
-// import type { ClientTowerStatus } from "./miner";
 
 import { notify_success, notify_error } from './carpeNotify'
 import {
@@ -14,9 +13,13 @@ import {
   signingAccount,
   isAccountRefreshed,
   makeWhole,
+  migrateInProgress,
+  migrateSuccess,
+  canMigrate,
 } from './accounts'
 import type { Profile } from './accounts'
 import { navigate } from 'svelte-navigator'
+import { carpeTick } from './tick'
 
 export const getDefaultProfile = async () => {
   invoke('get_default_profile', {})
@@ -29,8 +32,8 @@ export const getDefaultProfile = async () => {
 }
 
 export const refreshAccounts = async () => {
-  console.log(">>> refresh_accounts");
-  isRefreshingAccounts.set(true);
+  console.log('>>> refresh_accounts')
+  isRefreshingAccounts.set(true)
   invoke('refresh_accounts')
     .then((result: [Profile]) => {
       // TODO make this the correct return type
@@ -56,9 +59,7 @@ export enum InitType {
   PriKey,
 }
 
-export const handleAdd = async (init_type: InitType, secret: string) => {
-  // isSubmitting = true;
-
+export const addAccount = async (init_type: InitType, secret: string) => {
   let method_name = ''
   let arg_obj = {}
   if (init_type == InitType.Mnem) {
@@ -86,7 +87,7 @@ export const handleAdd = async (init_type: InitType, secret: string) => {
       return res
     })
     .catch((error) => {
-      raise_error(error, false, 'handleAdd')
+      raise_error(error, false, 'addAccount')
     })
 }
 
@@ -175,7 +176,6 @@ export function checkSigningAccountBalance() {
 }
 
 export function getAccountEvents(account: Profile, errorCallback = null) {
-
   if (!account.on_chain) {
     return errorCallback && errorCallback('account_not_on_chain')
   }
@@ -204,6 +204,30 @@ export function getAccountEvents(account: Profile, errorCallback = null) {
     */
 }
 
+export const isLegacy = async () => {
+  // let canMigrate = false
+
+  invoke('has_legacy_configs', {})
+    .then((b: boolean) => {
+      canMigrate.set(b)
+    })
+    .catch((e: CarpeError) => raise_error(e, true, 'has_legacy_configs'))
+}
+
+export const tryMigrate = async () => {
+  migrateInProgress.set(true)
+  invoke('maybe_migrate', {})
+    .then((r: boolean) => {
+      migrateSuccess.set(r)
+    })
+    .then(refreshAccounts)
+    .then(getDefaultProfile)
+    .then(carpeTick)
+    .catch((e: CarpeError) => raise_error(e, true, 'maybe_migrate'))
+    .finally(() => {
+      migrateInProgress.set(false)
+    })
+}
 /*
 export let invoke_makewhole = async (account: String): Promise<number> => {
  // let demo_account = "613b6d9599f72134a4fa20bba4c75c36";
@@ -276,10 +300,4 @@ export function claimMakeWhole(account: string, callback = null) {
         raise_error(e, false, 'claim_make_whole')
       }
     })
-}
-
-export const migrate = () => {
-  invoke('maybe_migrate', {})
-    .then((r) => console.log(r))
-    .catch((e) => raise_error(e, false, 'maybe_migrate'))
 }

@@ -3,39 +3,38 @@
 use glob::glob;
 use std::{fs, path::PathBuf};
 
-use libra_types::{
-  legacy_types::{
-    app_cfg::AppCfg,
-  },
-  exports::{AccountAddress, AuthenticationKey}
-};
 use crate::configs::{self, get_cfg};
-use libra_types::legacy_types::app_cfg::Profile;
+use crate::default_config_path;
 use libra_types::legacy_types::app_cfg::get_nickname;
-use libra_types::global_config_dir;
+use libra_types::legacy_types::app_cfg::Profile;
+use libra_types::{
+  exports::{AccountAddress, AuthenticationKey},
+  legacy_types::app_cfg::AppCfg,
+};
 
 /// For switching between profiles in the Account DB.
 pub async fn set_account_profile(
   account: AccountAddress,
   authkey: AuthenticationKey,
 ) -> anyhow::Result<AppCfg> {
-  let is_newbie = configs::is_initialized();
-  let mut cfg = match is_newbie {
+  let configs_exist = configs::is_initialized();
+  dbg!(&configs_exist);
+  let mut cfg = match configs_exist {
     true => configs::get_cfg()?,
-    false => AppCfg::default(),
+    false => configs::new_cfg()?,
   };
 
   // set as default profile
-  cfg.workspace.default_profile = get_nickname(account);
+  cfg.workspace.default_profile = Some(get_nickname(account));
   let profile = Profile::new(authkey, account);
   // add if we have not already
   cfg.maybe_add_profile(profile)?;
 
-  cfg.workspace.node_home = global_config_dir();
+  cfg.workspace.node_home = default_config_path().to_path_buf();
 
   if !cfg.workspace.node_home.exists() {
     fs::create_dir_all(&cfg.workspace.node_home)?;
-    fs::create_dir_all(&cfg.get_block_dir(None)?)?;
+    fs::create_dir_all(cfg.get_block_dir(None)?)?;
   }
 
   cfg.save_file()?;
@@ -53,7 +52,6 @@ pub fn get_local_proofs_this_profile() -> anyhow::Result<Vec<PathBuf>> {
   let p = glob(str_path)?.filter_map(Result::ok).collect();
   Ok(p)
 }
-
 
 #[tokio::test]
 

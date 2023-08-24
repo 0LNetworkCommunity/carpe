@@ -8,12 +8,12 @@
     "allowJs": true,
     "checkJs": true,
     "isolatedModules": true,
-    "strict": false
+    "strict": false,
   },
   "include": [
     "src/**/*.d.ts",
     "src/**/*.ts",
     "src/**/*.js",
-    "src/**/*.svelte"
-, "src/modules/minerStateMachine.depr"  ]
+    "src/**/*.svelte",
+  ]
 }

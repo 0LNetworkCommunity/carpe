@@ -1,23 +1,10 @@
 pub(crate) mod app_version;
-pub(crate) mod client;
-// mod examples;
 pub(crate) mod mining;
 pub(crate) mod networks;
 pub(crate) mod preferences;
 pub(crate) mod query;
-// mod swarm;
 pub(crate) mod tx;
 pub(crate) mod wallets;
 pub(crate) mod web_logs;
 
 pub use app_version::*;
-pub use client::*;
-// pub use examples::*;
-// pub use mining::*;
-// pub use networks::*;
-// pub use preferences::*;
-// pub use query::*;
-// pub use swarm::*;
-// pub use tx::*;
-// pub use wallets::*;
-// pub use web_logs::*;

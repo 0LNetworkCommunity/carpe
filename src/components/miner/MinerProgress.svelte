@@ -5,6 +5,9 @@
   import { setProofProgres } from '../../modules/miner_invoke'
 
   export let tower
+  interface progressBar extends HTMLElement {
+    value?: number
+  }
 
   let percent = 0
   let looper
@@ -20,7 +23,9 @@
     // - Rust side sends event with a proof completed
     // - Rust side send event with a failure
     if (tower.progress && tower.progress.pct_complete) {
-      let bar = document.getElementById('mining-progressbar')
+      /* eslint @typescript-eslint/no-explicit-any: "warn" */
+      // TODO: replace the `any` type
+      let bar: progressBar = document.getElementById('mining-progressbar')
       bar.value = percent = tower.progress.pct_complete
     }
   })

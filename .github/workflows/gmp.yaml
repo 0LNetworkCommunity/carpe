@@ -1,0 +1,74 @@
+name: gmp-compile
+
+on:
+  push:
+    branches:
+      - '*gmp'
+jobs:
+  buildme:
+    permissions:
+      contents: write
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        # - os: ubuntu-20.04
+        #   vcpkg_triplet: x64-linux-release
+        - os: macos-11
+          vcpkg_triplet: x64-osx-dynamic
+        - os: windows-2019
+          vcpkg_triplet: x64-windows-release
+    steps:
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     detached: true
+      - name: osx deps
+        if: matrix.config.os == 'macos-11'
+        run: brew install autoconf automake libtool
+
+      - name: vcpkg build
+        uses: johnwason/vcpkg-action@v5
+        id: vcpkg
+        with:
+          pkgs: gmp
+          triplet: ${{ matrix.config.vcpkg_triplet }}
+          cache-key: ${{ matrix.config.os }}
+          revision: master
+          token: ${{ github.token }}
+
+      - name: upload mac
+        uses: actions/upload-artifact@v3
+        if: matrix.config.os == 'macos-11'
+        with:
+          name: gmp-compile
+          path: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/libgmp*/
+
+      - name: upload windows
+        uses: actions/upload-artifact@v3
+        if: matrix.config.os == 'windows-2019'
+        with:
+          name: gmp-compile
+          path: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}
+
+      - name: release mac
+        if: matrix.config.os == 'macos-11'
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          tag: gmp-libraries-${{ matrix.config.os }}
+          commit: ${{github.ref}}
+          body: "gmp libs built from source"
+          artifacts: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/*.dylib, ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/*.a
+
+      - name: release win
+        if: matrix.config.os == 'windows-2019'
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          tag: gmp-libraries-${{ matrix.config.os }}
+          commit: ${{github.ref}}
+          body: "gmp libs built from source"
+          artifacts: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.lib,  ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.dll
+

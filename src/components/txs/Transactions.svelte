@@ -23,10 +23,9 @@
 
 
   let receiver: string;
-  let amountInput: number;
+  let amountInput: string;
 
   let amount = 0
-  let amountFormatted = ''
   let errorMessage = ''
   let waitingTxs = false
   let waitingConfirmation = false
@@ -37,7 +36,6 @@
   let isValidAmount = true
   let checkMessage = ''
 
-  // // TODO: Can we not JQUERY please?
   $: isReceiverValid = account && receiver && re.test(receiver) && receiver != account.account;
   $: isValidAmount = account && amount > 0 && amount < unscaledCoins(account.balance);
   $: checkMessage = account && amount > unscaledCoins(account.balance)
@@ -60,7 +58,7 @@
         notify_success($_('txs.transfer.success'))
         waitingTxs = false
         amount = 0
-        amountFormatted = ''
+        // amountFormatted = ''
         receiver = null
         // callback
         // onSuccess();
@@ -87,16 +85,16 @@
   }
 
   const handleChange = () => {
-    let cleanedInput = amountInput.value
+    let cleanedInput = amountInput
       .replace(/\D*/gm, '') // remove non digits
       .replace(/^0+/gm, '') // remove leading zeros
 
     if (cleanedInput.length === 0) {
       amount = 0
-      amountFormatted = ''
+      amountInput = ''
     } else {
       amount = parseInt(cleanedInput)
-      amountFormatted = printUnscaledCoins(amount, 0, 0)
+      amountInput = printUnscaledCoins(amount, 0, 0)
     }
   }
 </script>
@@ -158,8 +156,6 @@
                 {$_('txs.transfer.receiver')}
               </label>
               <div class="uk-form-controls">
-                <!-- svelte-ignore a11y-no-onchange -->
-
                 <input
                   id="receiver-text"
                   disabled={waitingTxs}
@@ -182,8 +178,7 @@
                   class="uk-input"
                   type="text"
                   placeholder={$_('txs.transfer.amount_placeholder')}
-                  bind:value={amountFormatted}
-                  bind:this={amountInput}
+                  bind:value={amountInput}
                   on:input={handleChange}
                 />
               </div>

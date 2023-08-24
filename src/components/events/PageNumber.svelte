@@ -3,8 +3,7 @@
   export let index: number
 </script>
 
-<!-- svelte-ignore a11y-click-events-have-key-events -->
-<a
+<button
   id={'pageIndex' + number}
   class="uk-align-left page-index-link"
   on:click={() => (index = number)}
@@ -16,7 +15,7 @@
   >
     <span class="page-index-number">{number}</span>
   </div>
-</a>
+</button>
 
 <style>
   .page-index-link {

@@ -1,50 +1,41 @@
 use crate::{
   carpe_error::CarpeError,
-  configs::{get_cfg, get_client}, key_manager::inject_private_key_to_cfg,
+  configs::{get_cfg, get_client},
+  key_manager::inject_private_key_to_cfg,
 };
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
+use crate::commands::query::get_onchain_tower_state;
 use libra_tower::core::backlog::process_backlog;
 use libra_tower::core::backlog::submit_or_delete;
 use libra_types::legacy_types::app_cfg::AppCfg;
 use tokio::task::block_in_place;
-use crate::commands::query::get_onchain_tower_state;
 
-use tauri::{
-  Window,
-  Runtime, async_runtime::block_on
-};
+use tauri::{async_runtime::block_on, Runtime, Window};
 
-use libra_tower::core::{
-  proof,
-  next_proof::NextProof,
-  tower_error::TowerError,
-};
+use libra_tower::core::{next_proof::NextProof, proof, tower_error::TowerError};
 
+use libra_types::legacy_types::block::VDFProof;
 
-use libra_types::{
-  legacy_types::block::VDFProof,
-};
-
-use log::{warn, error, info};
+use log::{error, info, warn};
 use serde::{Deserialize, Serialize};
 
 /// creates one proof and submits
 #[tauri::command(async)]
 pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, CarpeError> {
   info!("\nMining one proof");
-  let mut app_cfg = get_cfg()?;
+  let app_cfg = get_cfg()?;
   let client = get_client()?;
 
   window
-    .emit("proof-start", {})
+    .emit("proof-start", ())
     .map_err(|_| CarpeError::misc("could not emit window event"))?;
-  
+
   // let client = get_client();
-  let next = match proof::get_next_proof(&mut app_cfg, &client, false).await {
+  let next = match proof::get_next_proof(&app_cfg, &client, false).await {
     Ok(p) => p,
-    Err(_) => NextProof::genesis_proof(&app_cfg)?
+    Err(_) => NextProof::genesis_proof(&app_cfg)?,
   };
   info!("next proof params: {:?}", next.diff);
 
@@ -71,9 +62,10 @@ pub struct BacklogSuccess {
 // // a new proof needs to be submitted.
 // // The backlog listener then should be started at the time the user toggles the mining.
 
-
 #[tauri::command(async)]
-pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Result<(), CarpeError> {
+pub async fn start_backlog_sender_listener<R: Runtime>(
+  window: Window<R>,
+) -> Result<(), CarpeError> {
   info!("\nSTARTING BACKLOG LISTENER");
 
   let mut app_cfg = get_cfg()?;
@@ -83,13 +75,13 @@ pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Res
   // prepare listener to receive events
   // TODO: this is gross. Prevent cloning when using in closures
   let window_clone = window.clone();
-  
+
   // This is tauri's event listener for the tower proof.
   // the front-ent/window will keep calling it when it needs a new proof done.
-  let h = window.listen("send-backlog",  move |_e| {
+  let h = window.listen("send-backlog", move |_e| {
     info!("\nRECEIVED BACKLOG EVENT\n");
-    window_clone.emit("ack-backlog-request", {}).unwrap();
-    
+    window_clone.emit("ack-backlog-request", ()).unwrap();
+
     match maybe_send_backlog_blocking(&mut cfg_mutex.lock().unwrap()) {
       Ok(_) => {
         info!("backlog success");
@@ -100,9 +92,7 @@ pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Res
       Err(e) => {
         error!("backlog error, msg: {:?}", &e);
 
-        window_clone
-          .emit("backlog-error", CarpeError::from(e))
-          .unwrap();
+        window_clone.emit("backlog-error", e).unwrap();
       }
     }
   });
@@ -120,15 +110,13 @@ pub async fn start_backlog_sender_listener<R: Runtime>(window: Window<R>) -> Res
 pub async fn submit_backlog<R: Runtime>(_window: Window<R>) -> Result<BacklogSuccess, CarpeError> {
   let mut config = get_cfg()?;
   inject_private_key_to_cfg(&mut config)?;
-  Ok(maybe_send_backlog(&mut config).await?)
+  maybe_send_backlog(&mut config).await
 }
 
 /// function to send backlog
 /// Note: needed to use tauri's block_on here because the event listeners
 /// use simple closures.
-pub async fn maybe_send_backlog(
-  app_cfg_mut: &mut AppCfg,
-) -> Result<BacklogSuccess, CarpeError> {
+pub async fn maybe_send_backlog(app_cfg_mut: &mut AppCfg) -> Result<BacklogSuccess, CarpeError> {
   let profile = app_cfg_mut.get_profile(None)?;
   let state = get_onchain_tower_state(profile.account.to_hex_literal()).await;
 
@@ -145,7 +133,7 @@ pub async fn maybe_send_backlog(
 }
 
 fn maybe_send_backlog_blocking(app_cfg: &mut AppCfg) -> Result<BacklogSuccess, CarpeError> {
-  block_in_place(|| { block_on(maybe_send_backlog( app_cfg))})
+  block_in_place(|| block_on(maybe_send_backlog(app_cfg)))
 }
 
 pub async fn maybe_send_genesis_proof(config: &AppCfg) -> Result<BacklogSuccess, CarpeError> {
@@ -153,7 +141,7 @@ pub async fn maybe_send_genesis_proof(config: &AppCfg) -> Result<BacklogSuccess,
   // otherwise this is a genesis proof.
 
   // check if any proof_0.json has been mined
-  if let Some((proof, path)) = get_proof_zero().ok() {
+  if let Ok((proof, path)) = get_proof_zero() {
     match submit_or_delete(config, proof, path).await {
       Ok(_) => {
         println!("submitted proof zero");
@@ -230,7 +218,7 @@ pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
 #[tauri::command(async)]
 pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {
   let config = get_cfg()?;
-  
+
   let (_, path) = VDFProof::get_highest_block(&config.get_block_dir(None)?)
     // TODO: Why is the CarpeError From anyhow not working?
     .map_err(|e| {
@@ -245,7 +233,8 @@ pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 /// the parameter e.g. upper and lower thresholds
 // TODO: This is deprecated.
-pub struct EpochRules { // TODO: rename to VDFDifficulty as in tower_state
+pub struct EpochRules {
+  // TODO: rename to VDFDifficulty as in tower_state
   pub difficulty: u64,
   pub security: u64,
 }
@@ -255,11 +244,8 @@ pub async fn get_epoch_rules() -> Result<EpochRules, CarpeError> {
   let client = get_client()?;
   let (difficulty, security) = libra_query::chain_queries::get_tower_difficulty(&client).await?;
 
-
   Ok(EpochRules {
     difficulty,
     security,
   })
 }
-
-

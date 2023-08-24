@@ -1,34 +1,32 @@
 [package]
+name = "carpe"
+version = "1.0.0"
 authors = ["0LNetworkCommunity"]
 default-run = "carpe"
 description = "a light miner and wallet for libra"
 edition = "2021"
-license = "MIT"
-name = "carpe"
+license = "Apache 2.0"
 repository = "https://github.com/0LNetworkCommunity/carpe"
-version = "0.5.0"
 
 [build-dependencies]
 tauri-build = { version = "1.2.1", features = [] }
 built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
-
-libra-config = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
-libra-genesis-tools = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features"}
-libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
-libra-tower = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
-libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
-libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
-libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "txs-features" }
+libra-query = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "zapatos-1.6.2" }
+libra-tower = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "zapatos-1.6.2" }
+libra-types = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "zapatos-1.6.2" }
+libra-txs = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "zapatos-1.6.2" }
+libra-wallet = { git = "https://github.com/0o-de-lally/libra-v7.git", branch = "zapatos-1.6.2" }
 
 anyhow = "1.0.38"
-futures = "0.3.24"
+directories = "5.0.1"
+futures = "= 0.3.24"
 glob = "0.3.0"
 hex = "0.4.3"
 keyring = "0.10.1"
-# itertools = "0.11.0"
 log = { version = "0.4", features = ["max_level_debug", "release_max_level_debug"] }
+once_cell = "1.18.0"
 serde = { version = "1.0", features = ["serde_derive"] }
 serde_json = "1.0"
 simplelog = { version = "^0.11.0", features = ["paris"] }
@@ -39,6 +37,7 @@ url = { version = "^2.1", features = ["serde"] }
 [features]
 custom-protocol = ["tauri/custom-protocol"]
 default = ["custom-protocol"]
+carpe-canary = [] # for building canary versions which use separate config dirs.
 
 [dev-dependencies]
 serde_yaml = "*"

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
-  import { InitType, handleAdd } from '../../modules/accountActions'
+  import { InitType, addAccount } from '../../modules/accountActions'
 
   let danger_temp_private_key: string
 
   const initAccount = (pri_key: string) => {
-    handleAdd(InitType.PriKey, pri_key.trim())
+    addAccount(InitType.PriKey, pri_key.trim())
   }
 </script>
 
