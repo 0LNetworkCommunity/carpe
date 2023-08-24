@@ -6,6 +6,13 @@ on:
       - '*'
     branches:
       - '*'
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - 'release**'
+      - 'main'
 jobs:
   ts-lint:
     runs-on: ubuntu-latest
