@@ -51,6 +51,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: cache rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "libra" # to share across CI builds, so it is not job-id specific
+          cache-on-failure: true
+
       - name: check format
         working-directory: ./src-tauri
         run: cargo fmt --all -- --check
