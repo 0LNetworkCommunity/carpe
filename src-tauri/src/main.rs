@@ -157,7 +157,7 @@ async fn main() {
 
       //////// Preferences ////////
       commands::preferences::debug_preferences_path,
-      commands::preferences::get_preferences,
+      // commands::preferences::get_preferences,
       commands::preferences::maybe_migrate,
       commands::preferences::has_legacy_configs,
       commands::preferences::get_env,

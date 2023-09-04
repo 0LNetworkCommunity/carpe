@@ -1,8 +1,8 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
-  import type { Profile } from '../../modules/accounts'
+  import type { CarpeProfile } from '../../modules/accounts'
 
-  export let pendingAccounts: Profile[]
+  export let pendingAccounts: CarpeProfile[]
   export let isConnected: boolean
 </script>
 

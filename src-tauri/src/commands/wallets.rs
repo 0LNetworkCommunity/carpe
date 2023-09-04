@@ -6,11 +6,13 @@ use crate::{
 };
 
 use anyhow::anyhow;
-use libra_types::exports::{
-  AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt,
+use libra_types::{
+  exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
+  legacy_types::app_cfg::Profile,
+  type_extensions::client_ext::ClientExt,
 };
-use libra_types::legacy_types::app_cfg::Profile;
 use libra_wallet::account_keys::{self, KeyChain};
+use serde::{Deserialize, Serialize};
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NewKeygen {
@@ -18,10 +20,33 @@ pub struct NewKeygen {
   mnem: String,
 }
 
+/// a subset of AppCfg::Profile, dropping the private key
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CarpeProfile {
+  account: AccountAddress,
+  auth_key: AuthenticationKey,
+  nickname: String,
+  on_chain: bool,
+  balance: u64,
+  locale: Option<String>, // TODO: refactor, tauri now offers locale of the OS
+}
+
+impl From<&Profile> for CarpeProfile {
+  fn from(core_profile: &Profile) -> Self {
+    Self {
+      account: core_profile.account,
+      auth_key: core_profile.auth_key,
+      nickname: core_profile.nickname.clone(),
+      on_chain: core_profile.on_chain,
+      balance: core_profile.balance,
+      locale: core_profile.locale.clone(),
+    }
+  }
+}
+
 /// Keygen handler
 #[tauri::command]
 pub fn keygen() -> Result<NewKeygen, CarpeError> {
-  dbg!("keygen");
   let legacy_key = account_keys::legacy_keygen()?;
   let mnemonic_string = legacy_key.mnemonic;
 
@@ -43,14 +68,14 @@ pub fn is_init() -> Result<bool, CarpeError> {
 
 /// default way accounts get initialized in Carpe
 #[tauri::command(async)] // don't want this to be async. We want it to block before moving back to the wallets page (and then needing a refresh), it's a smoother UI.
-pub async fn init_from_mnem(mnem: String) -> Result<Profile, CarpeError> {
+pub async fn init_from_mnem(mnem: String) -> Result<CarpeProfile, CarpeError> {
   let wallet = account_keys::get_keys_from_mnem(mnem.clone())?;
   init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?).await
 }
 
 #[tauri::command(async)]
 
-pub async fn init_from_private_key(pri_key_string: String) -> Result<Profile, CarpeError> {
+pub async fn init_from_private_key(pri_key_string: String) -> Result<CarpeProfile, CarpeError> {
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
     .map_err(|_| anyhow!("cannot parse encoded private key"))?;
   let acc_struct = account_keys::get_account_from_private(&pri);
@@ -67,27 +92,28 @@ pub async fn init_from_private_key(pri_key_string: String) -> Result<Profile, Ca
     .map_err(|e| CarpeError::config(&e.to_string()))?;
 
   configs_profile::set_account_profile(address, authkey).await?;
-
-  Ok(Profile::new(authkey, address))
+  let core_profile = &Profile::new(authkey, address);
+  Ok(core_profile.into())
 }
 
 /// read all accounts from profile
 #[tauri::command(async)]
-pub fn get_all_accounts() -> Result<Vec<Profile>, CarpeError> {
+pub fn get_all_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   let app_cfg = get_cfg()?;
-  Ok(app_cfg.user_profiles)
+  let mapped: Vec<CarpeProfile> = app_cfg.user_profiles.iter().map(|p| p.into()).collect();
+  Ok(mapped)
 }
 
 /// read all accounts from profile
 #[tauri::command(async)]
-pub fn get_default_profile() -> Result<Profile, CarpeError> {
+pub fn get_default_profile() -> Result<CarpeProfile, CarpeError> {
   let app_cfg = get_cfg()?;
-
-  Ok(app_cfg.get_profile(None)?)
+  let p = app_cfg.get_profile(None)?;
+  Ok(p.into())
 }
 
 #[tauri::command(async)]
-pub async fn refresh_accounts() -> Result<Vec<Profile>, CarpeError> {
+pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   // let mut all = Accounts::read_from_file()?;
   let mut app_cfg = get_cfg()?;
 
@@ -96,7 +122,9 @@ pub async fn refresh_accounts() -> Result<Vec<Profile>, CarpeError> {
   map_get_originating_address(&mut app_cfg.user_profiles).await?;
   map_get_balance(&mut app_cfg.user_profiles).await?;
   app_cfg.save_file()?;
-  Ok(app_cfg.user_profiles)
+
+  let mapped: Vec<CarpeProfile> = app_cfg.user_profiles.iter().map(|p| p.into()).collect();
+  Ok(mapped)
 }
 
 async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeError> {
@@ -128,17 +156,20 @@ pub async fn get_originating_address(
   auth_key: AuthenticationKey,
 ) -> Result<AccountAddress, CarpeError> {
   let client = get_client()?;
-  Ok(libra_query::account_queries::lookup_originating_address(&client, auth_key).await?)
+  Ok(client.lookup_originating_address(auth_key).await?)
 }
 
 /// Switch tx profiles, change 0L.toml to use selected account
 #[tauri::command(async)]
-pub async fn switch_profile(account: AccountAddress) -> Result<Profile, CarpeError> {
+// IMPORTANT: don't return the profile, since it has keys
+pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, CarpeError> {
   let mut app_cfg = get_cfg()?;
   let p = app_cfg.get_profile(Some(account.to_string()))?;
-  app_cfg.workspace.default_profile = Some(p.nickname.clone());
+  app_cfg.workspace.set_default(p.nickname.clone());
   app_cfg.save_file()?;
-  Ok(p)
+  // TODO: gross, fix upstream `app_cfg.rs` to prevent the borrow issues here
+  let profile = app_cfg.get_profile(Some(account.to_string()))?;
+  Ok(profile.into())
 }
 
 // remove all accounts which are being tracked.

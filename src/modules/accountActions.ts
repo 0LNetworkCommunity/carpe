@@ -17,13 +17,13 @@ import {
   migrateSuccess,
   canMigrate,
 } from './accounts'
-import type { Profile } from './accounts'
+import type { CarpeProfile } from './accounts'
 import { navigate } from 'svelte-navigator'
 import { carpeTick } from './tick'
 
 export const getDefaultProfile = async () => {
   invoke('get_default_profile', {})
-    .then((res: Profile) => {
+    .then((res: CarpeProfile) => {
       signingAccount.set(res)
     })
     .catch((e) => {
@@ -35,7 +35,7 @@ export const refreshAccounts = async () => {
   console.log('>>> refresh_accounts')
   isRefreshingAccounts.set(true)
   invoke('refresh_accounts')
-    .then((result: [Profile]) => {
+    .then((result: [CarpeProfile]) => {
       // TODO make this the correct return type
       isRefreshingAccounts.set(false)
       allAccounts.set(result)
@@ -73,7 +73,7 @@ export const addAccount = async (init_type: InitType, secret: string) => {
   mnem.set(null)
   // submit
   return invoke(method_name, arg_obj)
-    .then((res: Profile) => {
+    .then((res: CarpeProfile) => {
       // set as init so we don't get sent back to Newbie account creation.
       isInit.set(true)
       responses.set(JSON.stringify(res))
@@ -116,7 +116,7 @@ export const isCarpeInit = async () => {
     })
 }
 
-export function findOneAccount(account: string): Profile | undefined {
+export function findOneAccount(account: string): CarpeProfile | undefined {
   const list = get(allAccounts)
   const found = list.find((i) => i.account == account)
   return found
@@ -132,7 +132,7 @@ export const setAccount = async (account: string, notifySucess = true) => {
   invoke('switch_profile', {
     account,
   })
-    .then((res: Profile) => {
+    .then((res: CarpeProfile) => {
       signingAccount.set(res)
       isInit.set(true)
       if (notifySucess) {
@@ -175,7 +175,7 @@ export function checkSigningAccountBalance() {
     .catch((e) => raise_error(e, false, 'checkSigningAccountBalance'))
 }
 
-export function getAccountEvents(account: Profile, errorCallback = null) {
+export function getAccountEvents(account: CarpeProfile, errorCallback = null) {
   if (!account.on_chain) {
     return errorCallback && errorCallback('account_not_on_chain')
   }

@@ -5,13 +5,13 @@
 
   import { signingAccount, allAccounts } from '../../modules/accounts'
   import { setAccount } from '../../modules/accountActions'
-  import type { Profile } from '../../modules/accounts'
+  import type { CarpeProfile } from '../../modules/accounts'
 
   import NetworkIcon from './NetworkIcon.svelte'
   import AboutLink from '../about/AboutLink.svelte'
 
-  let selectedAccount: Profile
-  let account_list: Profile[]
+  let selectedAccount: CarpeProfile
+  let account_list: CarpeProfile[]
 
   let unsubsSigningAccount
   let unsubsAll_accounts

@@ -35,9 +35,7 @@ async fn maybe_create_playlist(
     app_cfg.maybe_add_custom_playlist(&playlist);
     playlist
   } else {
-    app_cfg
-      .update_network_playlist(Some(chain_id), None)
-      .await?
+    app_cfg.update_network_playlist(Some(chain_id), None)?
   };
   app_cfg.workspace.default_chain_id = chain_id;
   app_cfg.save_file()?;
@@ -61,7 +59,7 @@ pub async fn get_metadata() -> Result<IndexResponse, CarpeError> {
 #[tauri::command(async)]
 pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> {
   let mut app_cfg = get_cfg()?;
-  let np = app_cfg.update_network_playlist(None, Some(url)).await?;
+  let np = app_cfg.update_network_playlist(None, Some(url))?;
   app_cfg.save_file()?;
   Ok(np)
 }

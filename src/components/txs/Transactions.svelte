@@ -7,7 +7,7 @@
   import { notify_success } from '../../modules/carpeNotify'
   import { printUnscaledCoins, printCoins, unscaledCoins} from '../../modules/coinHelpers'
   import { signingAccount } from '../../modules/accounts'
-  import type { Profile } from '../../modules/accounts'
+  import type { CarpeProfile } from '../../modules/accounts'
   import { raise_error } from '../../modules/carpeError'
 
   const errorDic = {
@@ -15,7 +15,7 @@
     '1004': $_('txs.transfer.error_account_does_not_exist'),
   }
 
-  let account: Profile;
+  let account: CarpeProfile;
   let unsubs;
   onMount(async () => {
     unsubs = signingAccount.subscribe((obj) => (account = obj))

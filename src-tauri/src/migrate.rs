@@ -94,8 +94,10 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
 
   // now load the network info
   let playlist_url = network_playlist::find_default_playlist(None)?;
-  app_cfg.network_playlist =
-    vec![NetworkPlaylist::from_url(playlist_url, Some(NamedChain::MAINNET)).await?];
+  app_cfg.network_playlist = vec![NetworkPlaylist::from_url(
+    playlist_url,
+    Some(NamedChain::MAINNET),
+  )?];
 
   app_cfg.save_file()?;
 
