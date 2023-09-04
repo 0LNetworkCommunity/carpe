@@ -27,24 +27,34 @@ jobs:
       - name: checkout source
         uses: actions/checkout@v3
 
-########  Lint  ########
-
       - name: yarn installation
         run: yarn install
+
       - name: lint TS
         run: yarn lint
 
   rust-lint:
     runs-on: ubuntu-latest
     steps:
-      - name: format
-        uses: actions-rs/cargo@v1
+      - uses: actions-rs/toolchain@v1
         with:
-          command: fmt
-          args: --all -- --check
+          profile: minimal
+          toolchain: 1.70.0
+          override: true
 
-      - name: clippy
-        uses: actions-rs/cargo@v1
+      - name: install rustfmt clippy
+        shell: bash
+        run: rustup component add rustfmt clippy
+
+      - name: checkout sources
+        uses: actions/checkout@v3
         with:
-          command: clippy
-          args: --workspace --tests -- -D warnings
+          fetch-depth: 0
+
+      - name: check format
+        working-directory: ./src-tauri
+        run: cargo fmt --all -- --check
+
+      - name: lint
+        working-directory: ./src-tauri
+        run: cargo clippy --workspace --tests -- -D warnings
