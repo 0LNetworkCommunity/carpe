@@ -19,7 +19,7 @@ export const new_account = (account: string, authkey: string, nickname: string):
 }
 
 export const signingAccount = writable<CarpeProfile>()
-export const mnem = writable<string>()
+
 export const isInit = writable(false)
 export const isRefreshingAccounts = writable(false)
 export const allAccounts = writable<CarpeProfile[]>([])

@@ -3,7 +3,7 @@
   import AccountFromMnemSubmit from './AccountFromMnemSubmit.svelte'
   import AccountFromPrivateKey from './AccountFromPrivateKey.svelte'
 
-  let danger_temp_mnem: string
+  let formDangerMnem: string
 </script>
 
 <main>
@@ -18,11 +18,11 @@
           class="uk-input"
           type="text"
           placeholder={$_('wallet.account_from_mnem_from.placeholder')}
-          bind:value={danger_temp_mnem}
+          bind:value={formDangerMnem}
         />
       </div>
 
-      <AccountFromMnemSubmit {danger_temp_mnem} isNewAccount={false} />
+      <AccountFromMnemSubmit {formDangerMnem} isNewAccount={false} />
     </fieldset>
   </form>
 

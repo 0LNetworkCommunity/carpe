@@ -9,7 +9,6 @@ import {
   allAccounts,
   isInit,
   isRefreshingAccounts,
-  mnem,
   signingAccount,
   isAccountRefreshed,
   makeWhole,
@@ -69,8 +68,6 @@ export const addAccount = async (init_type: InitType, secret: string) => {
     method_name = 'init_from_private_key'
     arg_obj = { priKeyString: secret.trim() }
   }
-  // TODO: need to check where else the mnem is being used
-  mnem.set(null)
   // submit
   return invoke(method_name, arg_obj)
     .then((res: CarpeProfile) => {
@@ -89,6 +86,7 @@ export const addAccount = async (init_type: InitType, secret: string) => {
     .catch((error) => {
       raise_error(error, false, 'addAccount')
     })
+    .finally(() => (secret = null))
 }
 
 // export function tryRefreshSignerAccount(newData: Profile) {

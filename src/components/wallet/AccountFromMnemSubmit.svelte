@@ -1,24 +1,9 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
-  import { onDestroy, onMount } from 'svelte'
   import UIkit from 'uikit'
-
-  import { mnem } from '../../modules/accounts'
   import { InitType, addAccount } from '../../modules/accountActions'
-
-  export let danger_temp_mnem: string
+  export let formDangerMnem: string
   export let isNewAccount = true
-
-  let unsubs
-
-  // TODO: this implementation needs to be removed
-  onMount(async () => {
-    unsubs = mnem.subscribe((m) => (danger_temp_mnem = m))
-  })
-
-  onDestroy(async () => {
-    unsubs && unsubs()
-  })
 
   function openConfirmationModal() {
     UIkit.modal('#submit-confirmation-modal').show()
@@ -39,6 +24,9 @@
           UIkit.modal('#submit-confirmation-modal').hide()
         }
         isSubmitting = false
+      })
+      .finally(() => {
+        mnem_string = null
       })
   }
 </script>
@@ -71,7 +59,7 @@
           class="uk-button uk-button-primary"
           type="button"
           disabled={isSubmitting}
-          on:click|preventDefault={initAccount(danger_temp_mnem)}
+          on:click|preventDefault={initAccount(formDangerMnem)}
         >
           {#if isSubmitting}
             {$_('wallet.account_from_mnem_submit.btn_submiting')}
@@ -87,7 +75,7 @@
     class="uk-button uk-button-primary"
     type="button"
     disabled={isSubmitting}
-    on:click|preventDefault={initAccount(danger_temp_mnem)}
+    on:click|preventDefault={initAccount(formDangerMnem)}
   >
     {#if isSubmitting}
       {$_('wallet.account_from_mnem_submit.btn_submiting')}...

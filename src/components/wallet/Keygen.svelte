@@ -1,13 +1,10 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
-  import { onDestroy, onMount } from 'svelte'
   import { invoke } from '@tauri-apps/api/tauri'
-
-  import { signingAccount, mnem } from '../../modules/accounts'
+  import { signingAccount } from '../../modules/accounts'
   import type { CarpeProfile } from '../../modules/accounts'
   import { raise_error } from '../../modules/carpeError'
   import { responses } from '../../modules/debug'
-
   import AccountFromMnemSubmit from './AccountFromMnemSubmit.svelte'
 
   interface NewKeygen {
@@ -15,36 +12,19 @@
     mnem: string
   }
 
-  let display_mnem: string
-  let address: string
-  // let authkey: string
-
-  let unsubsMnem
-  let unsubsSigningAccount
-
-  onMount(async () => {
-    unsubsMnem = mnem.subscribe((m) => (display_mnem = m))
-    unsubsSigningAccount = signingAccount.subscribe((a) => {
-      address = a.account
-      // authkey = a.auth_key
-    })
-  })
-
-  onDestroy(async () => {
-    unsubsMnem && unsubsMnem()
-    unsubsSigningAccount && unsubsSigningAccount()
-  })
+  let tempDangerDisplayMnem: string
 
   let hide = true
-  const keygen = async () => {
+  const do_keygen = async () => {
     invoke('keygen', {})
       .then((res: NewKeygen) => {
+        tempDangerDisplayMnem = res.mnem
+        res.mnem = null;
         responses.set(JSON.stringify(res))
         signingAccount.set(res.entry)
-        mnem.set(res.mnem)
         hide = false
       })
-      .catch((e) => raise_error(e, true, 'keygen'))
+      .catch((e) => raise_error(e, true, 'do_keygen'))
   }
 </script>
 
@@ -55,10 +35,10 @@
     </h3>
   </div>
 
-  {#if address && !hide}
+  {#if $signingAccount.account && !hide}
     <div class="uk-margin uk-card uk-card-default uk-card-body uk-text-muted">
       <h5 class="uk-text-muted uk-text-uppercase">{$_('wallet.keygen.account_address')}</h5>
-      <p class="uk-text-emphasis uk-text-uppercase">{address}</p>
+      <p class="uk-text-emphasis uk-text-uppercase">{$signingAccount.account}</p>
 
 
       <h5 class="uk-text-muted uk-text-uppercase uk-text-danger">
@@ -68,7 +48,7 @@
         {$_('wallet.keygen.securite_note')}
       </p>
       <div class="uk-margin">
-        <textarea class="uk-textarea" rows="3" readonly>{display_mnem}</textarea>
+        <textarea class="uk-textarea" rows="3" readonly>{tempDangerDisplayMnem}</textarea>
       </div>
     </div>
 
@@ -79,9 +59,9 @@
     </div>
 
     <div>
-      <AccountFromMnemSubmit danger_temp_mnem={''} />
+      <AccountFromMnemSubmit formDangerMnem={tempDangerDisplayMnem} />
 
-      <button class="uk-button uk-button-default uk-align-right" on:click={keygen}>
+      <button class="uk-button uk-button-default uk-align-right" on:click={do_keygen}>
         {$_('wallet.keygen.btn_generate_keys_2')}
       </button>
     </div>
@@ -93,7 +73,7 @@
     </div>
 
     <div class="uk-position-center">
-      <button class="uk-button uk-button-secondary uk-align-right" on:click={keygen}>
+      <button class="uk-button uk-button-secondary uk-align-right" on:click={do_keygen}>
         {$_('wallet.keygen.btn_generate_keys')}
       </button>
     </div>
