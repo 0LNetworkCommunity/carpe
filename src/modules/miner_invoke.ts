@@ -69,18 +69,13 @@ export const towerOnce = async () => {
     .then((res: VDFProof) => {
       // setProofComplete()
       tower.update((b) => {
-        b.progress.complete = true
+        if (b.progress) b.progress.complete = true
         return b
       })
+      // TODO: this store is potentially duplicated with progress.complete
       minerProofComplete.set(true)
 
       notify_success(`Miner proof ${res.height} complete!`)
-      // start the sending of txs
-      // TODO: unsure why when it emits immediately there is no action on rust side, perhaps listener startup.
-      // setTimeout(emitBacklog, 1000)
-
-      // refresh local proofs view, also wait for file to be written
-      // setTimeout(getLocalHeight, 1000)
 
       responses.set(JSON.stringify(res))
       // return res
@@ -88,6 +83,7 @@ export const towerOnce = async () => {
     .then(emitBacklog)
     .then(getLocalHeight)
     .catch((e) => {
+      console.log('miner_once: ', e)
       // disable mining when there is a proof error.
       raise_error(e, false, 'towerOnce')
       minerLoopEnabled.set(false)

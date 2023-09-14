@@ -57,10 +57,12 @@
       </tbody>
     </table>
 
+
   <!-- {:else if minerTower && !minerTower.on_chain }
-    <div class="uk-align-center">
+    <!-- <div class="uk-align-center">
       <span uk-spinner />
     </div> -->
+    <!-- <SyncProofs loading={false} minerTower/> -->
   {:else}
     <TowerStateSkeleton />
   {/if}
