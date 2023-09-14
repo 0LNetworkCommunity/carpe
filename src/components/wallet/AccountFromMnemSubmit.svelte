@@ -2,6 +2,8 @@
   import { _ } from 'svelte-i18n'
   import UIkit from 'uikit'
   import { InitType, addAccount } from '../../modules/accountActions'
+    import { onDestroy } from 'svelte'
+
   export let formDangerMnem: string
   export let isNewAccount = true
 
@@ -29,6 +31,9 @@
         mnem_string = null
       })
   }
+
+  onDestroy(() => formDangerMnem=null)
+
 </script>
 
 {#if isNewAccount}

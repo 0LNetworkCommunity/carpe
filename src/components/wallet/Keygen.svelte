@@ -6,6 +6,7 @@
   import { raise_error } from '../../modules/carpeError'
   import { responses } from '../../modules/debug'
   import AccountFromMnemSubmit from './AccountFromMnemSubmit.svelte'
+  import { onDestroy } from 'svelte'
 
   interface NewKeygen {
     entry: CarpeProfile
@@ -26,6 +27,9 @@
       })
       .catch((e) => raise_error(e, true, 'do_keygen'))
   }
+
+  onDestroy(() => tempDangerDisplayMnem = null)
+
 </script>
 
 <main>
