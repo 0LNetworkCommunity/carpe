@@ -14,7 +14,7 @@ use tokio::task::block_in_place;
 
 use tauri::{async_runtime::block_on, Runtime, Window};
 
-use libra_tower::core::{next_proof::NextProof, proof, tower_error::TowerError};
+use libra_tower::core::{proof, tower_error::TowerError};
 
 use libra_types::legacy_types::block::VDFProof;
 
@@ -35,15 +35,28 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
   // let client = get_client();
   let next = match proof::get_next_proof(&app_cfg, &client, false).await {
     Ok(p) => p,
-    Err(_) => NextProof::genesis_proof(&app_cfg)?,
+    Err(_) => {
+      return proof::write_genesis(&app_cfg)
+          .map_err(|e| {
+            dbg!(&e);
+            CarpeError::tower(
+              &format!("could not mine one proof, message: {:?}", &e),
+              TowerError::ProverError.value(),
+            )
+          });
+
+    },
   };
+
   info!("next proof params: {:?}", next.diff);
 
-  let vdf = proof::mine_once(&app_cfg, next).map_err(|e| {
-    CarpeError::tower(
-      &format!("could not mine one proof, message: {:?}", &e),
-      TowerError::ProverError.value(),
-    )
+  let vdf = proof::mine_once(&app_cfg, next)
+    .map_err(|e| {
+      dbg!(&e);
+      CarpeError::tower(
+        &format!("could not mine one proof, message: {:?}", &e),
+        TowerError::ProverError.value(),
+      )
   })?;
 
   // TODO: Unsure why this is not triggering

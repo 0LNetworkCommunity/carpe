@@ -42,6 +42,7 @@ export interface EpochRules {
   security: number
 }
 export const tower = writable<ClientTowerStatus>({ local_height: 0 })
+export const resetTowerStatus = () => tower.set({ local_height: 0 })
 
 // is set to true if when the app starts and Rust emits the backlog-listener-ready event.
 export const backlogListenerReady = writable(false)
@@ -66,8 +67,7 @@ export const backlogInProgress = writable(false)
 // is set to false when a backlog-fail event is received
 export const backlogSubmitted = writable(false)
 
-// TODO:
-export const isTowerNewbie = writable(false)
+export const isTowerNewbie = writable(true)
 
 export function getProgess(): ProofProgress {
   return get(tower).progress

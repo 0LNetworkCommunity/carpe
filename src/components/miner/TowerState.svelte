@@ -1,8 +1,9 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
   import TowerStateSkeleton from './TowerStateSkeleton.svelte'
+  import type { ClientTowerStatus } from '../../modules/miner'
 
-  export let minerTower
+  export let minerTower: ClientTowerStatus
 </script>
 
 <main>

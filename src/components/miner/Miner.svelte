@@ -39,7 +39,7 @@
   onMount(async () => {
     getTowerChainView()
     getLocalHeight()
-    unsubsTower = tower.subscribe((t) => {
+    unsubsTower = tower.subscribe((t: ClientTowerStatus) => {
       minerTower = t
       hasProofs = minerTower.last_local_proof ? true : false
     })
@@ -61,6 +61,7 @@
 </script>
 
 <main class="uk-height-viewport">
+  state : { JSON.stringify($tower)}
   {#if loading}
     <div style="position:relative">
       <span style="position:absolute; left:0px; top:0px;" uk-spinner />
@@ -89,6 +90,7 @@
       </div>
 
       <div class="uk-width-1-1">
+        is newbie {newbie}
         {#if newbie && !hasProofs}
           <FirstProof />
         {:else}

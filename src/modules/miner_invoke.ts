@@ -15,6 +15,7 @@ import {
   minerEventReceived,
   backlogSubmitted,
   isTowerNewbie,
+  resetTowerStatus,
 } from './miner'
 
 import type {
@@ -57,28 +58,36 @@ export const towerOnce = async () => {
     pct_complete: 0,
   }
 
-  t.progress = progress
-  tower.set(t)
+  tower.update((b) => {
+    b.progress = progress
+    return b
+  })
 
   // This is a long running async call.
   // when miner_once returnsm, it's with the response of the proof, or error.
   return invoke('miner_once', {})
     .then((res: VDFProof) => {
-      setProofComplete()
+      // setProofComplete()
+      tower.update((b) => {
+        b.progress.complete = true
+        return b
+      })
+      minerProofComplete.set(true)
 
       notify_success(`Miner proof ${res.height} complete!`)
       // start the sending of txs
-      // TODO: unsure why when it emits immediately thre is no action on rust side, perhaps listener startup.
-      setTimeout(emitBacklog, 1000)
+      // TODO: unsure why when it emits immediately there is no action on rust side, perhaps listener startup.
+      // setTimeout(emitBacklog, 1000)
 
       // refresh local proofs view, also wait for file to be written
-      setTimeout(getLocalHeight, 1000)
+      // setTimeout(getLocalHeight, 1000)
 
       responses.set(JSON.stringify(res))
-      return res
+      // return res
     })
+    .then(emitBacklog)
+    .then(getLocalHeight)
     .catch((e) => {
-      // console.log('miner_once error: ' + e);
       // disable mining when there is a proof error.
       raise_error(e, false, 'towerOnce')
       minerLoopEnabled.set(false)
@@ -190,13 +199,8 @@ export const getTowerChainView = async () => {
     })
     .catch((e) => {
       //need to reset, otherwise may be looking at wrong account
-      // let t = get(tower);
-      // if t {
-      //   tower.update(t => { t.on_chain = null; return t });
-      //   if (t.on_chain && !t.on_chain.verified_tower_height) {
-      //     isTowerNewbie.set(true);
-      //   }
-      // }
+      resetTowerStatus()
+      isTowerNewbie.set(true)
 
       raise_error(e, true, 'getTowerChainView')
       isRefreshingAccounts.set(false)
@@ -243,13 +247,13 @@ export function proofError() {
   tower.set(t)
 }
 
-export function setProofComplete() {
-  const t = get(tower)
-  t.progress.complete = true
-  tower.set(t)
+// export function setProofComplete() {
+//   const t = get(tower)
+//   t.progress.complete = true
+//   tower.set(t)
 
-  minerProofComplete.set(true)
-}
+//   minerProofComplete.set(true)
+// }
 
 export function setProofProgres() {
   const t = get(tower)

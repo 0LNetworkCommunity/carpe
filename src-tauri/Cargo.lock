@@ -6266,7 +6266,7 @@ checksum = "f7012b1bbb0719e1097c47611d3898568c546d597c2e74d66f6087edd5233ff4"
 [[package]]
 name = "libra-cached-packages"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#12813c75f04373aec82feef07bf51e25342efe53"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=carpe-patches#221bd7e12dfb6a116b63ebf45e0143e4d56b3513"
 dependencies = [
  "bcs 0.1.4",
  "diem-types",
@@ -6278,7 +6278,7 @@ dependencies = [
 [[package]]
 name = "libra-framework"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#12813c75f04373aec82feef07bf51e25342efe53"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=carpe-patches#221bd7e12dfb6a116b63ebf45e0143e4d56b3513"
 dependencies = [
  "anyhow",
  "bcs 0.1.4",
@@ -6298,7 +6298,7 @@ dependencies = [
 [[package]]
 name = "libra-query"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#12813c75f04373aec82feef07bf51e25342efe53"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=carpe-patches#221bd7e12dfb6a116b63ebf45e0143e4d56b3513"
 dependencies = [
  "anyhow",
  "clap 4.3.10",
@@ -6312,7 +6312,7 @@ dependencies = [
 [[package]]
 name = "libra-tower"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#12813c75f04373aec82feef07bf51e25342efe53"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=carpe-patches#221bd7e12dfb6a116b63ebf45e0143e4d56b3513"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -6332,7 +6332,7 @@ dependencies = [
 [[package]]
 name = "libra-txs"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#12813c75f04373aec82feef07bf51e25342efe53"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=carpe-patches#221bd7e12dfb6a116b63ebf45e0143e4d56b3513"
 dependencies = [
  "anyhow",
  "bcs 0.1.4",
@@ -6357,7 +6357,7 @@ dependencies = [
 [[package]]
 name = "libra-types"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#12813c75f04373aec82feef07bf51e25342efe53"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=carpe-patches#221bd7e12dfb6a116b63ebf45e0143e4d56b3513"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -6392,7 +6392,7 @@ dependencies = [
 [[package]]
 name = "libra-wallet"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#12813c75f04373aec82feef07bf51e25342efe53"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=carpe-patches#221bd7e12dfb6a116b63ebf45e0143e4d56b3513"
 dependencies = [
  "anyhow",
  "blst",
