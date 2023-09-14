@@ -130,6 +130,8 @@ pub async fn submit_backlog<R: Runtime>(_window: Window<R>) -> Result<BacklogSuc
 /// Note: needed to use tauri's block_on here because the event listeners
 /// use simple closures.
 pub async fn maybe_send_backlog(app_cfg_mut: &mut AppCfg) -> Result<BacklogSuccess, CarpeError> {
+    dbg!("\n submitting backlog");
+
   let profile = app_cfg_mut.get_profile(None)?;
   let state = get_onchain_tower_state(profile.account.to_hex_literal()).await;
 

@@ -130,18 +130,17 @@ export const setAccount = async (account: string, notifySucess = true) => {
   }
 
   invoke('switch_profile', { account })
-  .then((res: CarpeProfile) => {
-    signingAccount.set(res)
-    isInit.set(true)
-    if (notifySucess) {
-      notify_success('Account switched to ' + res.nickname)
-    }
-
-  })
-  .then(carpeTick)
-  .catch((e) => {
-    raise_error(e, false, 'setAccount')
-  })
+    .then((res: CarpeProfile) => {
+      signingAccount.set(res)
+      isInit.set(true)
+      if (notifySucess) {
+        notify_success('Account switched to ' + res.nickname)
+      }
+    })
+    .then(carpeTick)
+    .catch((e) => {
+      raise_error(e, false, 'setAccount')
+    })
 }
 
 // export function addNewAccount(account: Profile) {

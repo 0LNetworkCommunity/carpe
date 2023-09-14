@@ -190,10 +190,10 @@ export const getTowerChainView = async () => {
       if (res.verified_tower_height) {
         isTowerNewbie.set(false)
       }
-      tower.update(b => {
-        b.on_chain = res;
+      tower.update((b) => {
+        b.on_chain = res
         return b
-      });
+      })
 
       responses.set(JSON.stringify(res))
 

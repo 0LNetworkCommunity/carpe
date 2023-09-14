@@ -22,7 +22,7 @@ export const carpeTick = async () => {
         .then(getTowerChainView)
         .then(maybeEmitBacklog)
         .then(maybeStartMiner)
-        .finally(() => tick_in_progress = false);
+        .finally(() => (tick_in_progress = false))
     }
   }
 }
