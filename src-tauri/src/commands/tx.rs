@@ -22,7 +22,7 @@ pub async fn coin_transfer(
   let m: IndexResponse = get_metadata().await?; // get the actual chain we are connected to
   let client_opt = get_client().ok();
   let mut sender = Sender::new(ak, ChainId::new(m.chain_id), client_opt).await?;
-  Ok(sender.transfer(receiver, amount).await?)
+  Ok(sender.transfer(receiver, amount as f64, false).await?)
 }
 
 // #[tauri::command(async)]
