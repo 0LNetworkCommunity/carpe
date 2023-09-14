@@ -17,7 +17,7 @@
 
   let display_mnem: string
   let address: string
-  let authkey: string
+  // let authkey: string
 
   let unsubsMnem
   let unsubsSigningAccount
@@ -26,7 +26,7 @@
     unsubsMnem = mnem.subscribe((m) => (display_mnem = m))
     unsubsSigningAccount = signingAccount.subscribe((a) => {
       address = a.account
-      authkey = a.auth_key
+      // authkey = a.auth_key
     })
   })
 
@@ -59,9 +59,7 @@
     <div class="uk-margin uk-card uk-card-default uk-card-body uk-text-muted">
       <h5 class="uk-text-muted uk-text-uppercase">{$_('wallet.keygen.account_address')}</h5>
       <p class="uk-text-emphasis uk-text-uppercase">{address}</p>
-      <h5 class="uk-text-muted uk-text-uppercase">{$_('wallet.keygen.onboard_key')}</h5>
-      <p class="uk-text-emphasis uk-text-uppercase">{authkey}</p>
-      <p>{$_('wallet.keygen.onboard_key_description')}</p>
+
 
       <h5 class="uk-text-muted uk-text-uppercase uk-text-danger">
         {$_('wallet.keygen.securite_recovery_phrase')}

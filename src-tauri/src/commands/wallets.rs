@@ -47,7 +47,7 @@ impl From<&Profile> for CarpeProfile {
 /// Keygen handler
 #[tauri::command]
 pub fn keygen() -> Result<NewKeygen, CarpeError> {
-  let legacy_key = account_keys::legacy_keygen()?;
+  let legacy_key = account_keys::legacy_keygen(false)?;
   let mnemonic_string = legacy_key.mnemonic;
 
   let keys = account_keys::get_keys_from_mnem(mnemonic_string.clone())?;
