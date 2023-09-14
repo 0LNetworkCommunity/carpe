@@ -4,14 +4,14 @@
   import { invoke } from '@tauri-apps/api/tauri'
 
   import { signingAccount, mnem } from '../../modules/accounts'
-  import type { Profile } from '../../modules/accounts'
+  import type { CarpeProfile } from '../../modules/accounts'
   import { raise_error } from '../../modules/carpeError'
   import { responses } from '../../modules/debug'
 
   import AccountFromMnemSubmit from './AccountFromMnemSubmit.svelte'
 
   interface NewKeygen {
-    entry: Profile
+    entry: CarpeProfile
     mnem: string
   }
 

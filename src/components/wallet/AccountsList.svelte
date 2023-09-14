@@ -3,15 +3,15 @@
   import { Link } from 'svelte-navigator'
   import UIkit from 'uikit'
   import Icons from 'uikit/dist/js/uikit-icons'
-  import type { Profile } from '../../modules/accounts'
+  import type { CarpeProfile } from '../../modules/accounts'
   import { printCoins, unscaledCoins } from '../../modules/coinHelpers'
   import { routes } from '../../modules/routes'
   import IconMining from '../icons/IconMining.svelte'
 
   UIkit.use(Icons)
 
-  export let selectedAccount: Profile
-  export let accountList: Profile[]
+  export let selectedAccount: CarpeProfile
+  export let accountList: CarpeProfile[]
   export let isMining: boolean
   export let isConnected: boolean
 </script>

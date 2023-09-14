@@ -4,7 +4,7 @@
   import { get } from 'svelte/store'
 
   import { isRefreshingAccounts, signingAccount } from '../../modules/accounts'
-  import type { Profile } from '../../modules/accounts'
+  import type { CarpeProfile } from '../../modules/accounts'
   import { backlogInProgress, isTowerNewbie, tower } from '../../modules/miner'
   import type { ClientTowerStatus } from '../../modules/miner'
   import { nodeEnv } from '../../modules/debug'
@@ -22,7 +22,7 @@
 
   let newbie = false
   let loading = true
-  let account: Profile
+  let account: CarpeProfile
   let isDevTest = false
   let isSendInProgress = false
   let hasProofs = false

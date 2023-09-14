@@ -65,76 +65,16 @@ pub fn get_keypair(
     }
     Err(e) => bail!(e),
   }
-  // let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = k.try_into().unwrap(); // TODO: just return here.
-  // Ok(p)
 }
 
 /// insert the public key into the AppCfg temporarily so that we don't need
 /// to prompt user for mnemonic.
-// NOTE to future devs: DANGER: make sure this is never called in a flow that uses save_file()
+// NOTE to future devs: DANGER: make sure this is never called in a flow that uses save_file(). The upstream prevents the key from serializing, but it should be guarded here as well.
 pub fn inject_private_key_to_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<()> {
   // gets the default profile
-  let mut profile = app_cfg_mut.get_profile_mut(None)?;
+  let profile = app_cfg_mut.get_profile_mut(None)?;
   let pri_key = get_private_key(&profile.account)?;
-  profile.test_private_key = Some(pri_key);
+  profile.set_private_key(&pri_key);
+  // NOTE: intentionally not saving profile
   Ok(())
 }
-
-pub fn clear_private_key_from_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<()> {
-  // gets the default profile
-  let mut profile = app_cfg_mut.get_profile(None)?;
-  profile.test_private_key = None;
-  Ok(())
-}
-
-// #[test]
-// fn encode_keys() {
-//     let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
-//     use ol_keys::scheme::KeyScheme;
-//     let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
-//     let private = scheme.child_0_owner.get_private_key();
-//     let bytes: &[u8] = &(private.to_bytes());
-
-//     let encoded = hex::encode(bytes);
-
-//     let new_bytes = hex::decode(encoded).unwrap();
-//     let back: Ed25519PrivateKey = new_bytes.as_slice().try_into().unwrap();
-
-//     assert_eq!(&back, &private);
-// }
-
-// #[test]
-// #[ignore] // TODO: this needs to be hand tested since it requires OS password input.
-// fn test_set() -> Result<(), Box<dyn Error>> {
-//     use ol_keys::scheme::KeyScheme;
-//     let ol_address = "0x0";
-
-//     let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
-
-//     let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
-//     let private = scheme.child_0_owner.get_private_key();
-
-//     // let password = "topS3cr3tP4$$w0rd";
-//     set_private_key(ol_address, private).unwrap();
-
-//     Ok(())
-// }
-
-// #[test]
-// #[ignore] // TODO: this needs to be hand tested since it requires OS password input.
-// fn test_get() -> Result<(), Box<dyn Error>> {
-//     use ol_keys::scheme::KeyScheme;
-//     let ol_address = "0x123";
-
-//     let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
-
-//     let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
-//     let private = scheme.child_0_owner.get_private_key();
-
-//     set_private_key(ol_address, private.clone()).unwrap();
-
-//     let read = get_private_key(ol_address).unwrap();
-//     assert_eq!(&read, &private);
-
-//     Ok(())
-// }

@@ -10,24 +10,24 @@ pub struct Preferences {
   pub locale: Option<String>,
 }
 
-#[tauri::command]
-/// fetch the preferences struct. Note it is only locale for now.
-pub fn get_preferences() -> Result<Preferences, CarpeError> {
-  let app_cfg = get_cfg()?;
-  let profile = app_cfg.get_profile(None)?;
-  Ok(Preferences {
-    locale: profile.locale,
-  })
-}
+// #[tauri::command]
+// /// fetch the preferences struct. Note it is only locale for now.
+// pub fn get_preferences() -> Result<Preferences, CarpeError> {
+//   let app_cfg = get_cfg()?;
+//   let profile = app_cfg.get_profile(None)?;
+//   Ok(Preferences {
+//     locale: profile.locale,
+//   })
+// }
 
 #[tauri::command(async)]
 /// set the locale preference
 pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
   let mut app_cfg = get_cfg()?;
-  let mut profile = app_cfg.get_profile(None)?;
+  let profile = app_cfg.get_profile_mut(None)?;
 
   profile.locale = Some(locale);
-  app_cfg.maybe_add_profile(profile)?;
+  // app_cfg.maybe_add_profile(*profile)?;
   app_cfg.save_file()?;
   Ok(())
 }

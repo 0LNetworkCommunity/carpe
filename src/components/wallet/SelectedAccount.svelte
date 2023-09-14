@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { Profile } from '../../modules/accounts'
+  import type { CarpeProfile } from '../../modules/accounts'
 
-  export let selectedAccount: Profile
+  export let selectedAccount: CarpeProfile
 </script>
 
 <main>

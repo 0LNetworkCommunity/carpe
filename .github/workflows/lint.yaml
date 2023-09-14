@@ -6,6 +6,13 @@ on:
       - '*'
     branches:
       - '*'
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - 'release**'
+      - 'main'
 jobs:
   ts-lint:
     runs-on: ubuntu-latest
@@ -20,9 +27,45 @@ jobs:
       - name: checkout source
         uses: actions/checkout@v3
 
-########  Lint  ########
-
       - name: yarn installation
         run: yarn install
+
       - name: lint TS
         run: yarn lint
+
+  rust-lint:
+    runs-on: macos-latest
+    steps:
+      # - uses: awalsh128/cache-apt-pkgs-action@latest
+      #   with:
+      #     packages: build-essential lld pkg-config libclang-dev libwebkit2gtk-4.0-dev libglib2.0-* libssl-dev libgtk-3-dev libappindicator3-dev patchelf librsvg2-dev libvips-dev libgmp-dev
+      #     version: 1.0
+
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: 1.70.0
+          override: true
+
+      - name: install rustfmt clippy
+        shell: bash
+        run: rustup component add rustfmt clippy
+
+      - name: checkout sources
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: cache rust
+        uses: Swatinem/rust-cache@v2
+        with:
+          shared-key: "libra" # to share across CI builds, so it is not job-id specific
+          cache-on-failure: true
+
+      - name: check format
+        working-directory: ./src-tauri
+        run: cargo fmt --all -- --check
+
+      - name: lint
+        working-directory: ./src-tauri
+        run: cargo clippy --workspace --tests -- -D warnings

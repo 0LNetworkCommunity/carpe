@@ -10,7 +10,7 @@
     signingAccount,
     isAccountRefreshed,
   } from '../../modules/accounts'
-  import type { Profile } from '../../modules/accounts'
+  import type { CarpeProfile } from '../../modules/accounts'
   import { minerLoopEnabled } from '../../modules/miner'
 
   import { connected } from '../../modules/networks'
@@ -21,9 +21,9 @@
 
   UIkit.use(Icons)
 
-  let selectedAccount: Profile
-  let accountList: Profile[]
-  let pendingAccounts: Profile[]
+  let selectedAccount: CarpeProfile
+  let accountList: CarpeProfile[]
+  let pendingAccounts: CarpeProfile[]
   let isMining = false
   let isRefreshing = false
   let isConnected = true

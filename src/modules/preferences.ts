@@ -1,7 +1,8 @@
 import { invoke } from '@tauri-apps/api/tauri'
-import { writable } from 'svelte/store'
+import { get, writable } from 'svelte/store'
 import { getLocaleFromNavigator, setupI18n } from '../lang/i18n'
 import { raise_error } from './carpeError'
+import { signingAccount } from './accounts'
 
 const empty_preferences = function (): Preferences {
   return {
@@ -24,16 +25,12 @@ export const init_preferences = () => {
     fallbackLocale: 'en',
   })
 
-  invoke('get_preferences')
-    .then((result: Preferences) => {
-      // init locale preference
-      const locale = result.locale ? result.locale : getLocaleFromNavigator()
-      setupI18n({
-        withLocale: locale,
-        fallbackLocale: 'en',
-      })
-    })
-    .catch((e) => raise_error(e, true, 'get_preferences'))
+  const acct = get(signingAccount)
+  const locale = acct.locale ? acct.locale : getLocaleFromNavigator()
+  setupI18n({
+    withLocale: locale,
+    fallbackLocale: 'en',
+  })
 }
 
 export function setLocale(locale: string) {
