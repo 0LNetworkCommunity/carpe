@@ -89,10 +89,11 @@ export const towerOnce = async () => {
       minerLoopEnabled.set(false)
       proofError()
     })
+    .finally(maybeEmitBacklog)
 }
 
 export const maybeStartMiner = async () => {
-  console.log('>>> maybeEmitBacklog')
+  console.log('>>> maybeStartMiner')
 
   // this should be instant
   await getEpochRules().catch((e) => {
@@ -105,20 +106,23 @@ export const maybeStartMiner = async () => {
   })
 
   // maybe try to start a new proof
-  console.log('maybeStartMiner')
+  // console.log('maybeStartMiner')
 
   const t = get(tower)
-  const proofComplete = t && t.progress && t.progress.complete
-
+  const proofInProgress = t && t.progress && t.progress.complete == false
+  console.log(JSON.stringify(t))
+  console.log(get(minerLoopEnabled))
+  console.log(!get(backlogInProgress))
+  console.log(!proofInProgress)
   if (
     // user must have set mining switch on
     get(minerLoopEnabled) &&
     // there should be no backlog in progress
     !get(backlogInProgress) &&
     // only try to restart if a proof has completed.
-    proofComplete
+    !proofInProgress
   ) {
-    return towerOnce()
+    towerOnce()
   }
 }
 
@@ -178,18 +182,20 @@ export const maybeEmitBacklog = async () => {
 export const getTowerChainView = async () => {
   console.log('>>> getTowerChainView')
   isRefreshingAccounts.set(true)
+  resetTowerStatus()
   return invoke('get_onchain_tower_state', {
     account: get(signingAccount).account,
   })
     .then((res: TowerStateView) => {
-      const t = get(tower)
-      t.on_chain = res
-      tower.set(t)
-      responses.set(JSON.stringify(res))
-
-      if (t.on_chain && t.on_chain.verified_tower_height) {
+      if (res.verified_tower_height) {
         isTowerNewbie.set(false)
       }
+      tower.update(b => {
+        b.on_chain = res;
+        return b
+      });
+
+      responses.set(JSON.stringify(res))
 
       isRefreshingAccounts.set(false)
     })

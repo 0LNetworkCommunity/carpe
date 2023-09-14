@@ -5,7 +5,7 @@
   import { Router, Route } from 'svelte-navigator'
 
   // CARPE MODULES
-  import { backlogInProgress, backlogSubmitted, minerEventReceived } from './modules/miner'
+  import { backlogInProgress, backlogListenerReady, backlogSubmitted, minerEventReceived } from './modules/miner'
   import { raise_error } from './modules/carpeError'
   import type { CarpeError, CarpeOkReturn } from './modules/carpeError'
   import { responses, debugMode } from './modules/debug'
@@ -68,6 +68,8 @@
 
     unlistenAck = await listen('ack-backlog-request', () => {
       backlogInProgress.set(true)
+      // set listener ready in case
+      backlogListenerReady.set(true)
     })
 
     unlistenBacklogSuccess = await listen('backlog-success', (event: CarpeOkReturn) => {

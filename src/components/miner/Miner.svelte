@@ -7,6 +7,7 @@
   import type { CarpeProfile } from '../../modules/accounts'
   import { backlogInProgress, isTowerNewbie, tower } from '../../modules/miner'
   import type { ClientTowerStatus } from '../../modules/miner'
+  import { backlogListenerReady, minerLoopEnabled} from '../../modules/miner'
   import { nodeEnv } from '../../modules/debug'
   import { getLocalHeight, getTowerChainView } from '../../modules/miner_invoke'
 
@@ -92,6 +93,13 @@
 
       <div class="uk-width-1-1">
         is newbie {newbie}
+        <br>
+        listener ready {$backlogListenerReady}
+        <br>
+        loop enabled {$minerLoopEnabled}
+
+        <br>
+        backlog in progress {$backlogInProgress}
         {#if newbie && !hasProofs}
           <FirstProof />
         {:else}

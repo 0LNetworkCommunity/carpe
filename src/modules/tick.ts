@@ -20,11 +20,9 @@ export const carpeTick = async () => {
       // don't try to connect while we are booting up the app and looking for fullnodes
       refreshAccounts()
         .then(getTowerChainView)
-        .then(() => {
-          maybeEmitBacklog() // do this no matter what
-          maybeStartMiner()
-          tick_in_progress = false
-        })
+        .then(maybeEmitBacklog)
+        .then(maybeStartMiner)
+        .finally(() => tick_in_progress = false);
     }
   }
 }
