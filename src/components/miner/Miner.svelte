@@ -38,7 +38,8 @@
 
   onMount(async () => {
     getTowerChainView()
-    getLocalHeight()
+    .then(getLocalHeight)
+    // getLocalHeight()
     unsubsTower = tower.subscribe((t: ClientTowerStatus) => {
       minerTower = t
       hasProofs = minerTower.last_local_proof ? true : false
