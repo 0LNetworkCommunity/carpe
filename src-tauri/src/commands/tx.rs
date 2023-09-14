@@ -1,6 +1,6 @@
 //! transaction scripts
-use crate::{carpe_error::CarpeError, configs::get_cfg};
 use crate::key_manager::{get_private_key, inject_private_key_to_cfg};
+use crate::{carpe_error::CarpeError, configs::get_cfg};
 
 use libra_txs::submit_transaction::Sender;
 use libra_types::exports::{AccountAddress, AccountKey};
