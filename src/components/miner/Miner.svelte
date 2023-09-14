@@ -2,12 +2,10 @@
   import { onMount, onDestroy } from 'svelte'
   import { _ } from 'svelte-i18n'
   import { get } from 'svelte/store'
-
   import { isRefreshingAccounts, signingAccount } from '../../modules/accounts'
   import type { CarpeProfile } from '../../modules/accounts'
   import { backlogInProgress, isTowerNewbie, tower } from '../../modules/miner'
   import type { ClientTowerStatus } from '../../modules/miner'
-  import { backlogListenerReady, minerLoopEnabled} from '../../modules/miner'
   import { nodeEnv } from '../../modules/debug'
   import { getLocalHeight, getTowerChainView } from '../../modules/miner_invoke'
 
@@ -63,7 +61,6 @@
 </script>
 
 <main class="uk-height-viewport">
-  state : { JSON.stringify($tower)}
   {#if loading}
     <div style="position:relative">
       <span style="position:absolute; left:0px; top:0px;" uk-spinner />
@@ -92,14 +89,6 @@
       </div>
 
       <div class="uk-width-1-1">
-        is newbie {newbie}
-        <br>
-        listener ready {$backlogListenerReady}
-        <br>
-        loop enabled {$minerLoopEnabled}
-
-        <br>
-        backlog in progress {$backlogInProgress}
         {#if newbie && !hasProofs}
           <FirstProof />
         {:else}
