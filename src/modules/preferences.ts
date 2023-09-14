@@ -26,7 +26,7 @@ export const init_preferences = () => {
   })
 
   const acct = get(signingAccount)
-  const locale = acct.locale ? acct.locale : getLocaleFromNavigator()
+  const locale = acct && acct.locale ? acct.locale : getLocaleFromNavigator()
   setupI18n({
     withLocale: locale,
     fallbackLocale: 'en',
