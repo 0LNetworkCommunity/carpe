@@ -8,7 +8,9 @@
   "layout": {
     "connection_error": {
       "title": "Oops, We Can't Connect to 0L Network",
-      "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
+      "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>",
+      "dont_worry": "Don't worry, your account and coins are safe",
+      "refresh_instructions": "If you need to update or refresh your peers you can do so here:"
     },
     "error_accordion": {
       "title": "Error Report",
@@ -19,7 +21,8 @@
       "title": "Recovery Mode",
       "body": "The network is up! But we are in Recovery Mode, and no rewards are being paid for proofs yet. Wait until Recovery Mode is finished to send proofs for rewards. Recovery ends when epoch {epoch_recovery_ends} changes to {epoch_recovery_ends_after}"
     },
-    "attempting_to_connect": "Attempting to connect to the blockchain"
+    "attempting_to_connect": "Attempting to connect to the blockchain",
+    "not_connected_to_chain": "Not connected to chain, data may be out of sync"
   },
   "wallet": {
     "wallet": "Wallet",

@@ -39,7 +39,8 @@
       >
     {/if}
     <div class="uk-navbar-center">
-      <ul class="uk-navbar-nav uk-flex {$isInit && myAccountIsOnChain ? '' : 'uk-invisible'}">
+
+      <ul class="uk-navbar-nav uk-flex">
         <li class="uk-padding {$location_store.pathname.includes('wallet') ? 'uk-active' : ''}">
           <Link to={routes.wallet}>{$_('nav.wallet')}</Link>
         </li>

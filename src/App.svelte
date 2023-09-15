@@ -108,8 +108,8 @@
   <Style />
 
   {#if $isInit}
-    <SpinnerAccount />
     <SearchingFullnodes />
+    <SpinnerAccount />
     <RecoveryMode />
   {/if}
 
@@ -131,11 +131,6 @@
         <!-- DEV -->
         <Route path={routes.developer} component={DevMode} primary={false} />
       </div>
-
-      <!-- TODO: DO WE SHOW CONNECTION ERROR ON EVERY ROUTE? -->
-      {#if !$connected}
-        <ConnectionError />
-      {/if}
 
       <!-- Show Debug Card Below -->
       {#if $debugMode}
