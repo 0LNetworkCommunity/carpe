@@ -57,7 +57,7 @@ export enum NamedChain {
 
 export const network_profile = writable<NetworkPlaylist>(defaultPlaylist())
 export const connected = writable<boolean>(true)
-export const scanning_fullnodes = writable<boolean>()
+export const scanningForFullnodes = writable<boolean>()
 export const scanning_fullnodes_backoff = writable<number>(new Date().getSeconds())
 export const scanning_fullnodes_retries = writable<number>(0)
 
@@ -89,7 +89,7 @@ export const getMetadata = async () => {
       networkMetadata.set(res)
       connected.set(true)
       // lets stop scanning for fullnodes if we got a good connection.
-      scanning_fullnodes.set(false)
+      scanningForFullnodes.set(false)
       scanning_fullnodes_backoff.set(new Date().getSeconds())
       return res
     })
@@ -108,14 +108,14 @@ export const refreshUpstreamPeerStats = async () => {
     return
   }
 
-  scanning_fullnodes.set(true)
+  scanningForFullnodes.set(true)
   logger(Level.Info, ' refresh_upstream_peer_stats')
   return invoke('refresh_upstream_peer_stats', {})
-    .then((res: [string]) => {
+    .then((res: string[]) => {
       // Urls
       synced_fullnodes.set(res)
       getMetadata() // check the metadata and if we are connected
-      scanning_fullnodes.set(false)
+      scanningForFullnodes.set(false)
       scanning_fullnodes_retries.set(0)
     })
     .catch((error) => {

@@ -1,11 +1,12 @@
 <script lang="ts">
+    import { onMount } from 'svelte'
   import { getMetadata, networkMetadata } from '../../modules/networks'
   import type { IndexResponse } from '../../modules/networks'
   import CarpeButton  from "../layout/CarpeButton.svelte"
-  
+
   let metadata: IndexResponse
 
-  getMetadata()
+  onMount(getMetadata)
 
   networkMetadata.subscribe((n) => {
     if (n) metadata = n
@@ -16,7 +17,6 @@
   <div class="uk-margin-bottom">
     <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">Chain Metadata</h4>
     <CarpeButton color={""} text={"UPDATE"} cbAction={getMetadata}/>
-    <!-- <button class="uk-button uk-button-default" on:click={getMetadata}>Update</button> -->
 
     {#if metadata}
       <div>

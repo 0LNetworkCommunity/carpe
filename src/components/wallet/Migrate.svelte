@@ -15,7 +15,7 @@
 
           <button on:click={tryMigrate} class="uk-button uk-button-primary"> migrate </button>
 
-          <button on:click={ignoreMigrate} class="uk-button uk-button-primary"> ignore </button>
+          <button on:click={ignoreMigrate} class="uk-button uk-button-default"> ignore </button>
         </div>
       </div>
     </CardAlert>

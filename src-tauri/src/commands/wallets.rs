@@ -74,7 +74,6 @@ pub async fn init_from_mnem(mnem: String) -> Result<CarpeProfile, CarpeError> {
 }
 
 #[tauri::command(async)]
-
 pub async fn init_from_private_key(pri_key_string: String) -> Result<CarpeProfile, CarpeError> {
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
     .map_err(|_| anyhow!("cannot parse encoded private key"))?;

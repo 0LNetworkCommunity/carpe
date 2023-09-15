@@ -34,7 +34,7 @@ export const refreshAccounts = async () => {
   logger(Level.Info, ' refresh_accounts')
   isRefreshingAccounts.set(true)
   invoke('refresh_accounts')
-    .then((result: [CarpeProfile]) => {
+    .then((result: CarpeProfile[]) => {
       // TODO make this the correct return type
       isRefreshingAccounts.set(false)
       allAccounts.set(result)
@@ -224,7 +224,7 @@ export const tryMigrate = async () => {
   invoke('maybe_migrate', {})
     .then((r: boolean) => {
       migrateSuccess.set(r)
-      notify_success("Successfully migrated accounts");
+      notify_success('Successfully migrated accounts')
     })
     .then(refreshAccounts)
     .then(getDefaultProfile)
@@ -241,7 +241,6 @@ export const ignoreMigrate = () => {
   invoke('ignore_migrate', {})
     .then((r: boolean) => {
       migrateSuccess.set(r)
-
     })
     .then(isLegacy) // reset if we actually did migrate the files
     .catch((e: CarpeError) => raise_error(e, true, 'ignore_migrate'))
