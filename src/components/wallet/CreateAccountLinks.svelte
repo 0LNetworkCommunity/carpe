@@ -5,9 +5,6 @@
 </script>
 
 <main class="uk-margin uk-flex uk-flex-center" uk-grid>
-    <h5 class="uk-text-light uk-text-muted uk-text-uppercase uk-text-center">
-      {$_('wallet.newbie_message')}
-    </h5>
     <div uk-grid class="uk-margin uk-flex uk-flex-center">
       <Link to={routes.keygen}>
         <button class="uk-button uk-button-secondary">{$_('wallet.btn_new_account')}</button>

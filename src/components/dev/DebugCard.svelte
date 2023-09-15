@@ -20,10 +20,6 @@
   })
 </script>
 
-<!-- <main style="position: fixed; bottom: 0px; left: 0px; right: 0px; height: 280px; overflow-y: auto; z-index: 10; border-style: ridge" >
-    <div style="margin: 0px !important; min-height: 100%"
-      class="uk-margin-top uk-margin-bottom uk-card uk-card-default uk-card-body uk-width-1-1"
-    > -->
 <main class="uk-card uk-card-default uk-card-body">
   <div class="uk-row">
     <h5 class="uk-margin-top uk-card-title uk-text-light uk-text-muted uk-text-uppercase">LOGS</h5>
@@ -70,11 +66,14 @@
     </p>
   </div>
 
-  <p>is init: {$isInit}</p>
-  <p> is connected: {$connected}</p>
-  <p> is refreshing: {$isRefreshingAccounts}</p>
-  <p> signing account: {JSON.stringify($signingAccount, null, 2)}</p>
-  <p> can migrate: {$canMigrate}</p>
-  <p> is account refreshed: {$isAccountRefreshed}</p>
-  <p> all accounts: {$allAccounts}</p>
+  <ul>
+      <li> is init: {$isInit}</li>
+      <li> is connected: {$connected}</li>
+      <li> is refreshing: {$isRefreshingAccounts}</li>
+      <li> signing account: {JSON.stringify($signingAccount, null, 2)}</li>
+      <li> can migrate: {$canMigrate}</li>
+      <li> is account refreshed: {$isAccountRefreshed}</li>
+      <li> all accounts: {JSON.stringify($allAccounts, null, 2)}</li>
+  </ul>
+
 </main>

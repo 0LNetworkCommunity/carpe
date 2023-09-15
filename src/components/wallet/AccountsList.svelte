@@ -1,23 +1,19 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
-  import { Link } from 'svelte-navigator'
   import UIkit from 'uikit'
   import Icons from 'uikit/dist/js/uikit-icons'
-  import type { CarpeProfile } from '../../modules/accounts'
+  import { allAccounts, signingAccount } from '../../modules/accounts'
   import { printCoins, unscaledCoins } from '../../modules/coinHelpers'
-  import { routes } from '../../modules/routes'
   import IconMining from '../icons/IconMining.svelte'
+  import { minerLoopEnabled } from '../../modules/miner'
+  import { connected } from '../../modules/networks'
 
   UIkit.use(Icons)
 
-  export let selectedAccount: CarpeProfile
-  export let accountList: CarpeProfile[]
-  export let isMining: boolean
-  export let isConnected: boolean
 </script>
 
 <main>
-  {#if accountList.length > 0}
+  {#if $allAccounts.length > 0}
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
@@ -29,9 +25,9 @@
         </tr>
       </thead>
       <tbody>
-        {#each accountList as a}
+        {#each $allAccounts as a}
           <!-- svelte-ignore missing-declaration -->
-          <tr class={isMining && a.account == selectedAccount.account ? 'uk-text-primary' : ''}>
+          <tr class={$minerLoopEnabled && a.account == $signingAccount.account ? 'uk-text-primary' : ''}>
             <!-- <tr
             class={isMining && a.account == selectedAccount.account
               ? "uk-text-primary"
@@ -39,8 +35,8 @@
             on:click={() => setAccount(a.account)}
           > -->
             <td>
-              {#if a.account == selectedAccount.account}
-                {#if isMining}
+              {#if a.account == $signingAccount.account}
+                {#if $minerLoopEnabled}
                   <IconMining />
                 {:else}
                   <span uk-icon="user" />
@@ -67,7 +63,7 @@
                 </div>
               {:else if a.balance == null}
                 {$_('wallet.account_list.loading')}...
-              {:else if !isConnected}
+              {:else if !$connected}
                 {$_('wallet.account_list.offline')}...
               {:else}
                 {$_('wallet.account_list.account_on_chain')}

@@ -34,7 +34,7 @@ export const getAccounts = async () => {
   // first make sure we don't have empty accounts
   invoke('get_all_accounts')
     .then((result: CarpeProfile[]) => allAccounts.set(result))
-    .catch((e) => raise_error(e, true, "get_all_accounts"))
+    .catch((e) => raise_error(e, true, 'get_all_accounts'))
 }
 
 export const refreshAccounts = async () => {
@@ -96,13 +96,6 @@ export const addAccount = async (init_type: InitType, secret: string) => {
     })
     .finally(() => (secret = null))
 }
-
-// export function tryRefreshSignerAccount(newData: Profile) {
-//   let a = get(signingAccount).account;
-//   if (newData.account == a) {
-//     signingAccount.set(newData);
-//   }
-// }
 
 export const isCarpeInit = async (): Promise<boolean> => {
   // on app load we want to avoid the Newbie view until we know it's not a new user
