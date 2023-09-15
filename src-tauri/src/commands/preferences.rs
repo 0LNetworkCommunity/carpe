@@ -1,5 +1,5 @@
 use crate::configs::{default_config_path, legacy_config_path};
-use crate::migrate;
+use crate::migrate::{self, read_accounts, backup_legacy_dir};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use libra_types::legacy_types::mode_ol::MODE_0L;
 use log::{warn, error, info};
@@ -72,9 +72,20 @@ pub async fn maybe_migrate() -> Result<bool, CarpeError> {
   }
 }
 
+#[tauri::command(async)]
+pub async fn ignore_migrate() -> Result<bool, CarpeError> {
+  warn!("ignoring migration");
+  Ok(backup_legacy_dir().is_ok())
+}
+
 #[tauri::command]
 /// looks for $HOME/.0L/
 ///  if a migration happened this will not be found since it will be renamed to .0L_bak
 pub async fn has_legacy_configs() -> bool {
-  legacy_config_path().exists()
+  if let Some(acc) = read_accounts(&legacy_config_path()).ok() {
+      info!("alegacy configs found at: {}", legacy_config_path().display());
+      info!("accounts: {:?}", acc);
+    return true
+  }
+  false
 }

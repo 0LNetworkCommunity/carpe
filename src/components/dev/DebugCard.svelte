@@ -3,7 +3,7 @@
   import { get } from 'svelte/store'
   import { carpeErrorLog, clearErrors } from '../../modules/carpeError'
   import { responses, debugModeToggle } from '../../modules/debug' // TODO: Make this read only
-    import { isInit } from '../../modules/accounts'
+    import { canMigrate, isInit } from '../../modules/accounts'
 
   let result_string = ''
   let this_error = get(carpeErrorLog)
@@ -70,4 +70,5 @@
   </div>
 
   <p>is init: {$isInit}</p>
+  <p>can migrate: {$canMigrate}</p>
 </main>

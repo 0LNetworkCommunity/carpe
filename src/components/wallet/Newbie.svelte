@@ -2,6 +2,8 @@
   import { _ } from '../../lang/i18n'
   import { Link } from 'svelte-navigator'
   import { routes } from '../../modules/routes'
+    import Migrate from './Migrate.svelte'
+    import { canMigrate } from '../../modules/accounts'
 </script>
 
 <main style="position:absolute" class="uk-position-center uk-margin-large">
@@ -22,5 +24,10 @@
       <Link to={routes.accountFromMnem}>
         <button class="uk-button uk-button-default">{$_('wallet.btn_restore_account')}</button>
       </Link>
+
     </div>
+
+    {#if $canMigrate}
+      <Migrate />
+    {/if}
 </main>

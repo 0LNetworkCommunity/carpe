@@ -1,5 +1,3 @@
-use crate::configs::get_cfg;
-
 use crate::configs;
 use anyhow::bail;
 use libra_types::exports::{
@@ -49,7 +47,8 @@ where
   AccountAddress::from_hex_literal(&prepended).map_err(serde::de::Error::custom)
 }
 
-fn read_accounts(account_file: &Path) -> anyhow::Result<Accounts> {
+pub fn read_accounts(legcy_dir: &Path) -> anyhow::Result<Accounts> {
+  let account_file = legcy_dir.join("accounts.json");
   if account_file.exists() {
     let file = std::fs::read_to_string(account_file)?;
     Ok(serde_json::from_str(&file)?)
@@ -66,7 +65,7 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   }
 
   let mut app_cfg = configs::new_cfg()?;
-  if let Ok(list) = read_accounts(&legacy_dir.join("accounts.json")) {
+  if let Ok(list) = read_accounts(&legacy_dir) {
     list.accounts.iter().for_each(|a| {
       info!("found account: {}", a.account);
       let mut p = Profile::new(a.authkey, a.account);
@@ -84,14 +83,7 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
       }
     });
 
-
-
-    let dt = std::time::SystemTime::now();
-    let filename = format!(".0L_migrated_{}", dt.duration_since(std::time::UNIX_EPOCH)?.as_secs());
-    let backup_path = legacy_dir.parent().unwrap().join(filename);
-    // if we are successful we should deprecate the old path, so we don't try to migrate again.
-    std::fs::rename(&legacy_dir, &backup_path)?;
-    info!("renamed {}, to {}", &legacy_dir.display(), &backup_path.display());
+    backup_legacy_dir()?;
   }
 
   // now load the network info
@@ -101,6 +93,18 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
 
   app_cfg.save_file()?;
 
+  Ok(())
+}
+
+pub fn backup_legacy_dir() -> anyhow::Result<()>{
+  let legacy_dir = configs::legacy_config_path();
+  if !legacy_dir.exists() { bail!("legacy files do not exist") };
+  let dt = std::time::SystemTime::now();
+  let filename = format!(".0L_migrated_{}", dt.duration_since(std::time::UNIX_EPOCH)?.as_secs());
+  let backup_path = legacy_dir.parent().unwrap().join(filename);
+  // if we are successful we should deprecate the old path, so we don't try to migrate again.
+  std::fs::rename(&legacy_dir, &backup_path)?;
+  info!("renamed {}, to {}", &legacy_dir.display(), &backup_path.display());
   Ok(())
 }
 

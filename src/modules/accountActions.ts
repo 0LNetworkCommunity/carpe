@@ -224,14 +224,27 @@ export const tryMigrate = async () => {
   invoke('maybe_migrate', {})
     .then((r: boolean) => {
       migrateSuccess.set(r)
+      notify_success("Successfully migrated accounts");
     })
-    // .then(refreshAccounts)
-    // .then(getDefaultProfile)
-    // .then(carpeTick)
+    .then(refreshAccounts)
+    .then(getDefaultProfile)
+    .then(carpeTick)
     .catch((e: CarpeError) => raise_error(e, true, 'maybe_migrate'))
     .finally(() => {
       migrateInProgress.set(false)
     })
+}
+
+export const ignoreMigrate = () => {
+  logger(Level.Warn, 'ignoring migration')
+
+  invoke('ignore_migrate', {})
+    .then((r: boolean) => {
+      migrateSuccess.set(r)
+
+    })
+    .then(isLegacy) // reset if we actually did migrate the files
+    .catch((e: CarpeError) => raise_error(e, true, 'ignore_migrate'))
 }
 /*
 export let invoke_makewhole = async (account: String): Promise<number> => {

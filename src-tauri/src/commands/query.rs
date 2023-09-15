@@ -71,7 +71,7 @@ pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
 
   let res = client
     .view_ext(
-      "0x1::recovery_mode::RecoveryMode::get_end_epoch",
+      "0x1::recovery_mode::get_end_epoch",
       None,
       None,
     )

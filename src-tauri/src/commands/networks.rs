@@ -70,16 +70,12 @@ pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> 
 /// we want to elimated the entire playlist and use a single fullnode
 pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
   let mut app_cfg = get_cfg()?;
-  dbg!(&app_cfg);
   let dummy_playlist = NetworkPlaylist {
     chain_id: app_cfg.workspace.default_chain_id,
     nodes: vec![HostProfile::new(url)],
   };
 
-  dbg!(&dummy_playlist);
-
   app_cfg.network_playlist = vec![dummy_playlist.clone()];
-  dbg!(&app_cfg);
   app_cfg.save_file()?;
   Ok(dummy_playlist)
 }

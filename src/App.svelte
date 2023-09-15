@@ -39,8 +39,7 @@
 
   import Style from './style/Style.svelte'
   import DebugSwitcher from './components/dev/DebugSwitcher.svelte'
-    import { canMigrate, isInit } from './modules/accounts'
-    import Migrate from './components/wallet/Migrate.svelte'
+  import { isInit } from './modules/accounts'
 
   // Init i18n and preferences
   // TODO: why is this duplicated in Nav.svelte?
@@ -107,13 +106,10 @@
 
   <DebugSwitcher />
 
-  {#if $canMigrate}
-    <Migrate />
-  {/if}
-
   {#if $isInit}
     <SearchingFullnodes />
     <RecoveryMode />
+  {/if}
 
     <div class="uk-container">
       <Router>
@@ -135,7 +131,6 @@
         </div>
       </Router>
     </div>
-  {/if}
   <!-- Show Debug Card Below -->
   {#if $debugMode}
     <DebugCard />

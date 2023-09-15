@@ -3,17 +3,19 @@
   import { onDestroy, onMount } from 'svelte'
   import UIkit from 'uikit'
   import Icons from 'uikit/dist/js/uikit-icons'
-
   import {
     isRefreshingAccounts,
     allAccounts,
     signingAccount,
     isAccountRefreshed,
   } from '../../modules/accounts'
-  import type { CarpeProfile } from '../../modules/accounts'
   import { minerLoopEnabled } from '../../modules/miner'
-
   import { connected } from '../../modules/networks'
+
+  // types
+  import type { CarpeProfile } from '../../modules/accounts'
+
+  // views
   import ConnectionError from '../layout/ConnectionError.svelte'
   import Newbie from './Newbie.svelte'
   import AccountsList from './AccountsList.svelte'
