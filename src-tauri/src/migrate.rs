@@ -60,20 +60,22 @@ fn read_accounts(account_file: &Path) -> anyhow::Result<Accounts> {
 
 pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   let legacy_dir = configs::legacy_config_path();
-  info!("{}", &legacy_dir.display());
+  info!("legacy data path: {}", &legacy_dir.display());
   if !legacy_dir.exists() {
     bail!("legacy configs not found.")
   }
 
-  // failover. maybe this was halfway migrated.
-  // if we can find a config file in the new format we use that as a starting place
-  let mut app_cfg = match get_cfg() {
-    Ok(a) => a,
-    _ => configs::new_cfg()?,
-  };
+  // // failover. maybe this was halfway migrated.
+  // // if we can find a config file in the new format we use that as a starting place
+  // let mut app_cfg = match get_cfg() {
+  //   Ok(a) => a,
+  //   _ => configs::new_cfg()?,
+  // };
 
+  let mut app_cfg = configs::new_cfg()?;
   if let Ok(list) = read_accounts(&legacy_dir.join("accounts.json")) {
     list.accounts.iter().for_each(|a| {
+      info!("found account: {}", a.account);
       let mut p = Profile::new(a.authkey, a.account);
       p.balance = a.balance.unwrap_or(0);
       p.on_chain = a.on_chain.unwrap_or(false);
@@ -89,8 +91,15 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
       }
     });
 
+
+
+    let dt = std::time::SystemTime::now();
+    // let timestamp: i64 = dt.timestamp();
+    let filename = format!(".0L_migrated_{}", dt.duration_since(std::time::UNIX_EPOCH)?.as_secs());
+    let backup_path = legacy_dir.parent().unwrap().join(filename);
     // if we are successful we should deprecate the old path, so we don't try to migrate again.
-    std::fs::rename(&legacy_dir, legacy_dir.parent().unwrap().join(".0L_bak"))?;
+    std::fs::rename(&legacy_dir, &backup_path)?;
+    info!("renamed {}, to {}", &legacy_dir.display(), &backup_path.display());
   }
 
   // now load the network info
