@@ -4,7 +4,7 @@
   import CardAlert from '../layout/CardAlert.svelte'
 </script>
 
-<main>
+<main class="uk-container">
   {#if $canMigrate && !$migrateInProgress}
     <CardAlert>
       <span slot="title">Looks like you are an 0L OG</span>

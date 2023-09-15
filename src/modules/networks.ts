@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { get, writable } from 'svelte/store'
-import { raise_error } from './carpeError'
+import { Level, logger, raise_error } from './carpeError'
 import { refreshAccounts } from './accountActions'
 
 // matches rust equivalent
@@ -83,7 +83,7 @@ export const getNetwork = async () => {
 }
 
 export const getMetadata = async () => {
-  console.log('>>> get_metadata')
+  logger(Level.Info, ' get_metadata')
   return invoke('get_metadata', {})
     .then((res: IndexResponse) => {
       networkMetadata.set(res)
@@ -109,7 +109,7 @@ export const refreshUpstreamPeerStats = async () => {
   }
 
   scanning_fullnodes.set(true)
-  console.log('>>> refresh_upstream_peer_stats')
+  logger(Level.Info, ' refresh_upstream_peer_stats')
   return invoke('refresh_upstream_peer_stats', {})
     .then((res: [string]) => {
       // Urls

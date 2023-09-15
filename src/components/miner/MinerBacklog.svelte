@@ -1,19 +1,8 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
-  import { onMount, onDestroy } from 'svelte'
-  import { submitBacklog } from '../../modules/miner_invoke'
   import { backlogInProgress } from '../../modules/miner'
+  import { submitBacklog } from '../../modules/submitBacklog'
 
-  let unsubs
-  let inProgress = false
-
-  onMount(async () => {
-    unsubs = backlogInProgress.subscribe((b) => (inProgress = b))
-  })
-
-  onDestroy(async () => {
-    unsubs && unsubs()
-  })
 </script>
 
 <main class="uk-margin">
@@ -25,7 +14,7 @@
       <p>
         {$_('miner.miner_backlog.subtitle')}
       </p>
-      {#if inProgress}
+      {#if $backlogInProgress}
         <button class="uk-button" disabled>{$_('miner.miner_backlog.in_process')}</button>
       {:else}
         <button class="uk-button uk-button-default" on:click={() => submitBacklog()}>

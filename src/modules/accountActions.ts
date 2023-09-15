@@ -31,7 +31,7 @@ export const getDefaultProfile = async () => {
 }
 
 export const refreshAccounts = async () => {
-  console.log('>>> refresh_accounts')
+  logger(Level.Info, ' refresh_accounts')
   isRefreshingAccounts.set(true)
   invoke('refresh_accounts')
     .then((result: [CarpeProfile]) => {
@@ -98,7 +98,7 @@ export const addAccount = async (init_type: InitType, secret: string) => {
 
 export const isCarpeInit = async (): Promise<boolean> => {
   // on app load we want to avoid the Newbie view until we know it's not a new user
-  console.log('>>> isCarpeInit')
+  logger(Level.Info, ' isCarpeInit')
   isRefreshingAccounts.set(true)
 
   return invoke('is_init', {})
@@ -208,6 +208,7 @@ export const isLegacy = async (): Promise<boolean> => {
 
   return invoke('has_legacy_configs', {})
     .then((b: boolean) => {
+      if (b) logger(Level.Warn, 'legacy configs found, should try to migrate')
       canMigrate.set(b)
       return b
     })
@@ -258,7 +259,7 @@ export const updateMakeWhole = () => {
   accounts.forEach((each) => {
     const account = each.account
     if (mk[account] == null) {
-      console.log('>>> query_makewhole')
+      logger(Level.Info, ' query_makewhole')
       invoke('query_makewhole', { account })
         .then((credits) => {
           mk[account] = credits

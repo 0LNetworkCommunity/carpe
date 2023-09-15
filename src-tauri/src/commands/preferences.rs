@@ -2,6 +2,7 @@ use crate::configs::{default_config_path, legacy_config_path};
 use crate::migrate;
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use libra_types::legacy_types::mode_ol::MODE_0L;
+use log::warn;
 use std::env;
 use std::path::PathBuf;
 use url::Url;
@@ -69,7 +70,7 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
 
 #[tauri::command(async)]
 pub async fn maybe_migrate() -> Result<bool, CarpeError> {
-  println!("attempting migration");
+  warn!("attempting migration");
   Ok(migrate::maybe_migrate_data().await.is_ok())
 }
 

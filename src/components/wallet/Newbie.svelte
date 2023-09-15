@@ -2,8 +2,6 @@
   import { _ } from '../../lang/i18n'
   import { Link } from 'svelte-navigator'
   import { routes } from '../../modules/routes'
-  import Migrate from './Migrate.svelte'
-  import { canMigrate } from '../../modules/accounts'
 </script>
 
 <main style="position:absolute" class="uk-position-center uk-margin-large">
@@ -14,9 +12,6 @@
 
   </div>
 
-  {#if $canMigrate}
-    <Migrate />
-  {:else}
     <h5 class="uk-text-light uk-text-muted uk-text-uppercase uk-text-center">
       {$_('wallet.newbie_message')}
     </h5>
@@ -28,5 +23,4 @@
         <button class="uk-button uk-button-default">{$_('wallet.btn_restore_account')}</button>
       </Link>
     </div>
-  {/if}
 </main>

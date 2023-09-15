@@ -105,12 +105,14 @@ export const errAction = (err: CarpeError): boolean => {
 }
 
 export enum Level {
+  Info = 'Info',
   Warn = 'Warn',
   Error = 'Error',
 }
 
 // error logging to terminal and text file
 export const logger = async (level: Level, msg: string) => {
+  console.log(`${level}: ${msg}`)
   invoke('log_this', {
     level,
     msg,

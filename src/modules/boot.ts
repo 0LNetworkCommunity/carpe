@@ -10,7 +10,7 @@ import { writable } from 'svelte/store'
 export const isBooted = writable(false)
 
 export const bootUp = async () => {
-  logger(Level.Warn, 'Webview is starting')
+  logger(Level.Warn, 'webview is starting')
 
   getEnv() // load env var
   getVersion() // git commit and version
@@ -33,6 +33,7 @@ export const bootUp = async () => {
         navigate('wallet')
       })
   } else {
+    logger(Level.Warn, 'carpe settings not initialized')
     await isLegacy()
   }
 }

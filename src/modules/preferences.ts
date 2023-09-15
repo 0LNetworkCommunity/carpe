@@ -1,7 +1,7 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { get, writable } from 'svelte/store'
 import { getLocaleFromNavigator, setupI18n } from '../lang/i18n'
-import { raise_error } from './carpeError'
+import { Level, logger, raise_error } from './carpeError'
 import { signingAccount } from './accounts'
 
 const empty_preferences = function (): Preferences {
@@ -17,7 +17,7 @@ export interface Preferences {
 }
 
 export const init_preferences = () => {
-  console.log('>>> call init_preferences')
+  logger(Level.Info, ' call init_preferences')
 
   // avoid using lib without init finished
   setupI18n({

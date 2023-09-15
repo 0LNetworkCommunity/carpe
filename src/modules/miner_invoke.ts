@@ -2,7 +2,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { getCurrent } from '@tauri-apps/api/window'
 import { get } from 'svelte/store'
 import { isRefreshingAccounts, signingAccount } from './accounts'
-import { raise_error } from './carpeError'
+import { Level, logger, raise_error } from './carpeError'
 import { clearDisplayErrors } from './carpeErrorUI'
 import { notify_success } from './carpeNotify'
 import { responses } from './debug'
@@ -13,7 +13,6 @@ import {
   tower,
   minerProofComplete,
   minerEventReceived,
-  backlogSubmitted,
   isTowerNewbie,
   resetTowerStatus,
 } from './miner'
@@ -93,7 +92,7 @@ export const towerOnce = async () => {
 }
 
 export const maybeStartMiner = async () => {
-  console.log('>>> maybeStartMiner')
+  logger(Level.Info, ' maybeStartMiner')
 
   // this should be instant
   await getEpochRules().catch((e) => {
@@ -170,7 +169,7 @@ export const hasProofsPending = (): boolean => {
   return false
 }
 export const maybeEmitBacklog = async () => {
-  console.log('>>> maybeEmitBacklog')
+  logger(Level.Info, ' maybeEmitBacklog')
   // only emit a backlog event, if there are any proofs pending
   // and there is no backlog already in progress
   // and finally check that the listener has started.
@@ -180,7 +179,7 @@ export const maybeEmitBacklog = async () => {
 }
 
 export const getTowerChainView = async () => {
-  console.log('>>> getTowerChainView')
+  logger(Level.Info, ' getTowerChainView')
   isRefreshingAccounts.set(true)
   resetTowerStatus()
   return invoke('get_onchain_tower_state', {
@@ -265,28 +264,6 @@ export function setProofProgres() {
     t.progress.pct_complete = t.progress.time_elapsed / t.progress.previous_duration
     tower.set(t)
   }
-}
-
-// submit any transactions that are in the backlog. Proofs that have been mined but for any reason were not committed.
-export const submitBacklog = async () => {
-  console.log('submitBacklog called')
-  clearDisplayErrors()
-  backlogInProgress.set(true)
-  invoke('submit_backlog', {})
-    .then((res) => {
-      backlogInProgress.set(false)
-      backlogSubmitted.set(true)
-      console.log('submit_backlog response: ' + res)
-      responses.set(res as string)
-      notify_success('Backlog submitted')
-      return res
-    })
-    .catch((e) => {
-      backlogInProgress.set(false)
-      backlogSubmitted.set(false)
-      console.log('>>> submit_backlog error: ' + e)
-      raise_error(e, false, 'submitBacklog')
-    })
 }
 
 // For debugging or rescue purposes. Sometimes the user may have a proof that for some reason was not committed to the chain.

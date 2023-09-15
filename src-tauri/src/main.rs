@@ -24,13 +24,13 @@ async fn main() {
   // logging to file
   CombinedLogger::init(vec![
     TermLogger::new(
-      LevelFilter::Warn,
+      LevelFilter::Info,
       Config::default(),
       TerminalMode::Mixed,
       ColorChoice::Auto,
     ),
     WriteLogger::new(
-      LevelFilter::Trace,
+      LevelFilter::Info,
       Config::default(),
       File::create(
         configs::default_config_path()

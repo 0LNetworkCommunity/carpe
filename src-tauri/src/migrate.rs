@@ -10,6 +10,7 @@ use libra_types::legacy_types::{
   app_cfg::{get_nickname, Profile},
   network_playlist::NetworkPlaylist,
 };
+use log::info;
 use serde::{Deserialize, Deserializer};
 use std::path::Path;
 
@@ -59,7 +60,7 @@ fn read_accounts(account_file: &Path) -> anyhow::Result<Accounts> {
 
 pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   let legacy_dir = configs::legacy_config_path();
-
+  info!("{}", &legacy_dir.display());
   if !legacy_dir.exists() {
     bail!("legacy configs not found.")
   }

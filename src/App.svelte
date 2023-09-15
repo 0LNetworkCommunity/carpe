@@ -5,7 +5,12 @@
   import { Router, Route } from 'svelte-navigator'
 
   // CARPE MODULES
-  import { backlogInProgress, backlogListenerReady, backlogSubmitted, minerEventReceived } from './modules/miner'
+  import {
+    backlogInProgress,
+    backlogListenerReady,
+    backlogSubmitted,
+    minerEventReceived,
+  } from './modules/miner'
   import { raise_error } from './modules/carpeError'
   import type { CarpeError, CarpeOkReturn } from './modules/carpeError'
   import { responses, debugMode } from './modules/debug'
@@ -33,23 +38,21 @@
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
 
   import Style from './style/Style.svelte'
-    import DebugSwitcher from './components/dev/DebugSwitcher.svelte'
+  import DebugSwitcher from './components/dev/DebugSwitcher.svelte'
+    import { canMigrate, isInit } from './modules/accounts'
+    import Migrate from './components/wallet/Migrate.svelte'
 
   // Init i18n and preferences
   // TODO: why is this duplicated in Nav.svelte?
-  init_preferences();
+  init_preferences()
 
-  let unlistenProofStart;
-  let unlistenAck;
-  let unlistenBacklogSuccess;
-  let unlistenBacklogError;
-
-  let debug = false;
+  let unlistenProofStart
+  let unlistenAck
+  let unlistenBacklogSuccess
+  let unlistenBacklogError
 
   onMount(async () => {
     bootUp()
-
-    debugMode.subscribe((b) => (debug = b))
 
     ///// Backlog /////
     // Todo: Should this listener only be started in the miner view?
@@ -97,40 +100,44 @@
     unlistenBacklogSuccess()
     unlistenBacklogError()
   })
-
 </script>
 
 <main class="uk-background-muted uk-height-viewport">
   <Style />
 
-  <DebugSwitcher/>
+  <DebugSwitcher />
 
-  <SearchingFullnodes />
-  <RecoveryMode />
+  {#if $canMigrate}
+    <Migrate />
+  {/if}
 
-  <div class="uk-container">
-    <Router>
-      <Nav />
-      <div class="uk-background-muted uk-margin-large">
-        <Route path={routes.wallet} component={Wallet} primary={false} />
-        <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
-        <Route path={routes.accountFromMnem} component={AccountFromMnemForm} primary={false} />
-        <Route path={routes.keygen} component={Keygen} primary={false} />
-        <Route path={routes.miner} component={Miner} primary={false} />
-        <Route path={routes.transfer} component={Transactions} primary={false} />
-        <Route path={routes.events} component={Events} primary={false} />
-        <Route path={routes.settings} component={Settings} primary={false} />
-        <Route path={routes.about} component={About} primary={false} />
-        <Route path={routes.makeWhole} component={MakeWhole} primary={false} />
+  {#if $isInit}
+    <SearchingFullnodes />
+    <RecoveryMode />
 
-        <!-- DEV -->
-        <Route path={routes.developer} component={DevMode} primary={false} />
+    <div class="uk-container">
+      <Router>
+        <Nav />
+        <div class="uk-background-muted uk-margin-large">
+          <Route path={routes.wallet} component={Wallet} primary={false} />
+          <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
+          <Route path={routes.accountFromMnem} component={AccountFromMnemForm} primary={false} />
+          <Route path={routes.keygen} component={Keygen} primary={false} />
+          <Route path={routes.miner} component={Miner} primary={false} />
+          <Route path={routes.transfer} component={Transactions} primary={false} />
+          <Route path={routes.events} component={Events} primary={false} />
+          <Route path={routes.settings} component={Settings} primary={false} />
+          <Route path={routes.about} component={About} primary={false} />
+          <Route path={routes.makeWhole} component={MakeWhole} primary={false} />
 
-        <!-- Show Debug Card Below -->
-        {#if debug}
-          <DebugCard />
-        {/if}
-      </div>
-    </Router>
-  </div>
+          <!-- DEV -->
+          <Route path={routes.developer} component={DevMode} primary={false} />
+        </div>
+      </Router>
+    </div>
+  {/if}
+  <!-- Show Debug Card Below -->
+  {#if $debugMode}
+    <DebugCard />
+  {/if}
 </main>

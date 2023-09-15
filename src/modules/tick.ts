@@ -3,12 +3,13 @@ import { refreshAccounts } from './accountActions'
 import { getTowerChainView, maybeEmitBacklog, maybeStartMiner } from './miner_invoke'
 import { getMetadata, scanning_fullnodes } from './networks'
 import { isInit } from './accounts'
+import { Level, logger } from './carpeError'
 
 let tick_in_progress = false
 
 export const carpeTick = async () => {
   if (!tick_in_progress) {
-    console.log('>>> carpeTick')
+    logger(Level.Info, ' carpeTick')
     tick_in_progress = true
 
     // This will check for a network connection
