@@ -7,7 +7,7 @@
 <main>
   {#if $canMigrate && !$migrateInProgress}
     <CardAlert>
-      <span slot="title">Looks like you are an 0G</span>
+      <span slot="title">Looks like you are an 0L OG</span>
       <div slot="body">
         <div>
           <p>We need to migrate some files on your computer.</p>

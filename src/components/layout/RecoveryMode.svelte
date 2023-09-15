@@ -3,19 +3,19 @@
 
   import { _ } from 'svelte-i18n'
   import CardAlert from '../layout/CardAlert.svelte'
+    import { raise_error } from '../../modules/carpeError'
 
   let is_recovery = false
   let epoch_recovery_ends = null
   invoke('get_recovery_mode', {})
     .then((ends: number) => {
-      console.log('>>> get_recovery_mode')
-      console.log(ends)
       if (ends > 0) {
-        ;(is_recovery = true), (epoch_recovery_ends = ends)
+        is_recovery = true
+        epoch_recovery_ends = ends
       }
     })
     .catch((e) => {
-      console.log(e)
+      raise_error(e, true, "get_recovery_mode")
     })
 </script>
 

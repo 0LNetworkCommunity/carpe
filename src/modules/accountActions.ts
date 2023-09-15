@@ -1,6 +1,6 @@
 import { get } from 'svelte/store'
 import { invoke } from '@tauri-apps/api/tauri'
-import { raise_error, type CarpeError } from './carpeError'
+import { raise_error, type CarpeError, logger, Level } from './carpeError'
 import { responses } from './debug'
 import { minerLoopEnabled } from './miner'
 
@@ -96,21 +96,23 @@ export const addAccount = async (init_type: InitType, secret: string) => {
 //   }
 // }
 
-export const isCarpeInit = async () => {
+export const isCarpeInit = async (): Promise<boolean> => {
   // on app load we want to avoid the Newbie view until we know it's not a new user
   console.log('>>> isCarpeInit')
   isRefreshingAccounts.set(true)
 
-  invoke('is_init', {})
+  return invoke('is_init', {})
     .then((res: boolean) => {
       responses.set(res.toString())
       isInit.set(res)
       // for testnet
       isRefreshingAccounts.set(false)
+      return res
     })
     .catch((e) => {
       isRefreshingAccounts.set(false)
       raise_error(e, false, 'isCarpeInit')
+      return false
     })
 }
 
@@ -201,25 +203,30 @@ export function getAccountEvents(account: CarpeProfile, errorCallback = null) {
     */
 }
 
-export const isLegacy = async () => {
+export const isLegacy = async (): Promise<boolean> => {
   // let canMigrate = false
 
-  invoke('has_legacy_configs', {})
+  return invoke('has_legacy_configs', {})
     .then((b: boolean) => {
       canMigrate.set(b)
+      return b
     })
-    .catch((e: CarpeError) => raise_error(e, true, 'has_legacy_configs'))
+    .catch((e: CarpeError) => {
+      raise_error(e, true, 'has_legacy_configs')
+      return false
+    })
 }
 
 export const tryMigrate = async () => {
+  logger(Level.Warn, 'trying to migrate legacy user')
   migrateInProgress.set(true)
   invoke('maybe_migrate', {})
     .then((r: boolean) => {
       migrateSuccess.set(r)
     })
-    .then(refreshAccounts)
-    .then(getDefaultProfile)
-    .then(carpeTick)
+    // .then(refreshAccounts)
+    // .then(getDefaultProfile)
+    // .then(carpeTick)
     .catch((e: CarpeError) => raise_error(e, true, 'maybe_migrate'))
     .finally(() => {
       migrateInProgress.set(false)

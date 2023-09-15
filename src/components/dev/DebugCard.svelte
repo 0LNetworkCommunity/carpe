@@ -3,6 +3,7 @@
   import { get } from 'svelte/store'
   import { carpeErrorLog, clearErrors } from '../../modules/carpeError'
   import { responses, debugModeToggle } from '../../modules/debug' // TODO: Make this read only
+    import { isInit } from '../../modules/accounts'
 
   let result_string = ''
   let this_error = get(carpeErrorLog)
@@ -67,4 +68,6 @@
       <br />
     </p>
   </div>
+
+  <p>is init: {$isInit}</p>
 </main>
