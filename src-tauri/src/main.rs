@@ -21,7 +21,7 @@ pub(crate) mod migrate;
 
 #[tokio::main]
 async fn main() {
-    // logging to file
+  // logging to file
   CombinedLogger::init(vec![
     TermLogger::new(
       LevelFilter::Warn,
