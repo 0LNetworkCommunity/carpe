@@ -3,7 +3,8 @@
   import { get } from 'svelte/store'
   import { carpeErrorLog, clearErrors } from '../../modules/carpeError'
   import { responses, debugModeToggle } from '../../modules/debug' // TODO: Make this read only
-    import { canMigrate, isInit } from '../../modules/accounts'
+  import { allAccounts, canMigrate, isAccountRefreshed, isInit, isRefreshingAccounts, signingAccount } from '../../modules/accounts'
+    import { connected } from '../../modules/networks'
 
   let result_string = ''
   let this_error = get(carpeErrorLog)
@@ -70,5 +71,10 @@
   </div>
 
   <p>is init: {$isInit}</p>
-  <p>can migrate: {$canMigrate}</p>
+  <p> is connected: {$connected}</p>
+  <p> is refreshing: {$isRefreshingAccounts}</p>
+  <p> signing account: {JSON.stringify($signingAccount, null, 2)}</p>
+  <p> can migrate: {$canMigrate}</p>
+  <p> is account refreshed: {$isAccountRefreshed}</p>
+  <p> all accounts: {$allAccounts}</p>
 </main>

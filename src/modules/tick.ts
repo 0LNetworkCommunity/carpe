@@ -16,11 +16,15 @@ export const carpeTick = async () => {
     // will also refresh peer stats looking for good peers.
     // await getMetadata()
 
+    // you should always try to refresh accounts, even on error
+    refreshAccounts()
+
     if (get(isInit)) {
       tick_in_progress = true
+
       // don't try to connect while we are booting up the app and looking for fullnodes
+      // things that need network connectivity e.g. miner happen here
       getMetadata()
-        .then(refreshAccounts)
         .then(getTowerChainView)
         .then(maybeEmitBacklog)
         .then(maybeStartMiner)

@@ -39,7 +39,9 @@
 
   import Style from './style/Style.svelte'
   import DebugSwitcher from './components/dev/DebugSwitcher.svelte'
-  import { isInit } from './modules/accounts'
+  import { isInit, isRefreshingAccounts } from './modules/accounts'
+  import { connected } from './modules/networks'
+  import ConnectionError from './components/layout/ConnectionError.svelte'
 
   // Init i18n and preferences
   // TODO: why is this duplicated in Nav.svelte?
@@ -107,30 +109,39 @@
   <DebugSwitcher />
 
   {#if $isInit}
+    {#if $isRefreshingAccounts && $connected}
+      <div style="position:relative">
+        <span uk-spinner style="position:absolute; top:0; left:0" />
+      </div>
+    {/if}
     <SearchingFullnodes />
     <RecoveryMode />
   {/if}
 
-    <div class="uk-container">
-      <Router>
-        <Nav />
-        <div class="uk-background-muted uk-margin-large">
-          <Route path={routes.wallet} component={Wallet} primary={false} />
-          <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
-          <Route path={routes.accountFromMnem} component={AccountFromMnemForm} primary={false} />
-          <Route path={routes.keygen} component={Keygen} primary={false} />
-          <Route path={routes.miner} component={Miner} primary={false} />
-          <Route path={routes.transfer} component={Transactions} primary={false} />
-          <Route path={routes.events} component={Events} primary={false} />
-          <Route path={routes.settings} component={Settings} primary={false} />
-          <Route path={routes.about} component={About} primary={false} />
-          <Route path={routes.makeWhole} component={MakeWhole} primary={false} />
+  <div class="uk-container">
+    <Router>
+      <Nav />
+      <div class="uk-background-muted uk-margin-large">
+        <Route path={routes.wallet} component={Wallet} primary={false} />
+        <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
+        <Route path={routes.accountFromMnem} component={AccountFromMnemForm} primary={false} />
+        <Route path={routes.keygen} component={Keygen} primary={false} />
+        <Route path={routes.miner} component={Miner} primary={false} />
+        <Route path={routes.transfer} component={Transactions} primary={false} />
+        <Route path={routes.events} component={Events} primary={false} />
+        <Route path={routes.settings} component={Settings} primary={false} />
+        <Route path={routes.about} component={About} primary={false} />
+        <Route path={routes.makeWhole} component={MakeWhole} primary={false} />
 
-          <!-- DEV -->
-          <Route path={routes.developer} component={DevMode} primary={false} />
-        </div>
-      </Router>
-    </div>
+        <!-- DEV -->
+        <Route path={routes.developer} component={DevMode} primary={false} />
+      </div>
+    </Router>
+  </div>
+
+  {#if !$connected}
+    <ConnectionError />
+  {/if}
   <!-- Show Debug Card Below -->
   {#if $debugMode}
     <DebugCard />

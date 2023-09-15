@@ -28,7 +28,7 @@ export const bootUp = async () => {
       // .then(updateMakeWhole) // check for make whole only once on startup
       .finally(() => {
         refreshUpstreamPeerStats()
-        setInterval(carpeTick, 30000) // do a healthcheck, this is async
+        setInterval(carpeTick, 30000) // start the carpe tick for every 30 secs, this is async
         isBooted.set(true)
         navigate('wallet')
       })
