@@ -33,6 +33,7 @@
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
 
   import Style from './style/Style.svelte'
+    import DebugSwitcher from './components/dev/DebugSwitcher.svelte'
 
   // Init i18n and preferences
   // TODO: why is this duplicated in Nav.svelte?
@@ -102,6 +103,7 @@
 <main class="uk-background-muted uk-height-viewport">
   <Style />
 
+  <DebugSwitcher/>
 
   <SearchingFullnodes />
   <RecoveryMode />

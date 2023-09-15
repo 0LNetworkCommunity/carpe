@@ -97,7 +97,7 @@ jobs:
           TAURI_PRIVATE_KEY: ${{secrets.TAURI_PRIVATE_KEY}}
           TAURI_KEY_PASSWORD: ${{secrets.TAURI_KEY_PASSWORD}}
         with:
-          args: ${{contains(github.ref, 'canary') && '--config src-tauri/tauri.conf.canary.json --features carpe-canary' || '' }} #pass the rust feature flags for canary if the tag includes "canary"
+          args: ${{contains(github.ref, 'canary') && '--config src-tauri/tauri.conf.canary.json --features carpe-canary --debug' || '' }} #pass the rust feature flags for canary if the tag includes "canary"
           tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }} # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }}
           releaseBody: '[draft]'

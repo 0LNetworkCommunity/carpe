@@ -21,6 +21,28 @@ pub(crate) mod migrate;
 
 #[tokio::main]
 async fn main() {
+    // logging to file
+  CombinedLogger::init(vec![
+    TermLogger::new(
+      LevelFilter::Warn,
+      Config::default(),
+      TerminalMode::Mixed,
+      ColorChoice::Auto,
+    ),
+    WriteLogger::new(
+      LevelFilter::Trace,
+      Config::default(),
+      File::create(
+        configs::default_config_path()
+          .parent()
+          .unwrap()
+          .join("carpe.log"),
+      )
+      .expect("could not create carpe.log file"),
+    ),
+  ])
+  .expect("could not start simple_log logger");
+
   //////// FORCE TEST SETTINGS ON START ////////////////////
   // uncomment below to explicitly set "test" env
   // Tauri builder does not take env variable from terminal
@@ -34,30 +56,6 @@ async fn main() {
       std::process::exit(1);
     }
   }
-
-  // logging to file
-  CombinedLogger::init(vec![
-    TermLogger::new(
-      LevelFilter::Warn,
-      Config::default(),
-      TerminalMode::Mixed,
-      ColorChoice::Auto,
-    ),
-    WriteLogger::new(
-      LevelFilter::Warn,
-      Config::default(),
-      File::create(
-        configs::default_config_path()
-          .parent()
-          .unwrap()
-          .join("carpe.log"),
-      )
-      .unwrap(),
-    ),
-  ])
-  .unwrap();
-
-  warn!("Carpe started"); // TODO: debugging only. `log` create features are being inherited from libra repo.
 
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
   let metadata = AboutMetadata::new();
@@ -86,34 +84,7 @@ async fn main() {
 
   tauri::async_runtime::set(tokio::runtime::Handle::current());
 
-  // Canary releases need to know to look for a different upgrade release URL
-  // let mut context = tauri::generate_context!();
-  // if cfg!(feature = "carpe-canary") {
-  //   let new_updater_url = "https://raw.githubusercontent.com/0o-de-lally/carpe/canary/autoupdater/autoupdater_payload_canary.json";
-  //   let updater = &mut context.config_mut().tauri.updater;
-  //   let urls = vec![tauri::utils::config::UpdaterEndpoint(
-  //     new_updater_url.parse().expect("invalid updater URL"),
-  //   )];
-  //   updater.endpoints.replace(urls);
-
-  //   // let mut build = &mut context.config_mut();
-  //   // build.package.product_name = Some("carpe-canary".to_string());
-  // }
-  // copy add the dll resources in case of windows.
-  // if cfg!(target_os = "windows") {
-  //   let bundle = &mut context.config_mut().tauri.bundle;
-  //   let base = Path::new(env!("CARGO_MANIFEST_DIR"))
-  //     .join(".github")
-  //     .join("redist")
-  //     .join("x86_64");
-
-  //   bundle.resources = Some(vec![
-  //     base.join("gmp.dll").to_str().unwrap().to_owned(),
-  //     base.join("gmp.lib").to_str().unwrap().to_owned(),
-  //     // base.join("libgmp-10.dll").to_str().unwrap().to_owned(),
-  //     ]);
-  // }
-
+  warn!("Carpe starting"); // TODO: debugging only. `log` create features are being inherited from libra repo.
   tauri::Builder::default()
     .invoke_handler(tauri::generate_handler![
       //////// Accounts ////////
