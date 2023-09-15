@@ -13,7 +13,7 @@
   <div>
     <button class="uk-button uk-button-default" type="button">
       <NetworkIcon />
-      {#if $allAccounts && $allAccounts.length > 1}
+      {#if $allAccounts && $allAccounts.length > 0}
         <span class="uk-margin-small-left">
           {#if $signingAccount}
             {$signingAccount.nickname}
@@ -26,7 +26,7 @@
 
     <div uk-dropdown>
       <ul class="uk-nav uk-dropdown-nav">
-        {#if $signingAccount && $allAccounts && $allAccounts.length > 0}
+        {#if $signingAccount && $allAccounts && $allAccounts.length > 1}
           <li class="uk-text-muted">
             {$_('wallet.account_switcher.switch_account')}
           </li>

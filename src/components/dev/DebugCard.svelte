@@ -66,6 +66,8 @@
     </p>
   </div>
 
+  <hr />
+  <p> CLIENT STATE </p>
   <ul>
       <li> is init: {$isInit}</li>
       <li> is connected: {$connected}</li>

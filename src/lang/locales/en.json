@@ -74,7 +74,7 @@
       "placeholder": "Private Key"
     },
     "account_switcher": {
-      "select_account": "Select Account",
+      "select_account": "Settings",
       "switch_account": "Switch Account",
       "setting": "Settings",
       "developers": "Developers"

@@ -13,7 +13,7 @@
   } from './modules/miner'
   import { raise_error } from './modules/carpeError'
   import type { CarpeError, CarpeOkReturn } from './modules/carpeError'
-  import { responses, debugMode } from './modules/debug'
+  import { responses, debugMode, debugModeToggle } from './modules/debug'
   import { routes } from './modules/routes'
   import 'uikit/dist/css/uikit.min.css'
   import { init_preferences } from './modules/preferences'
@@ -39,9 +39,10 @@
 
   import Style from './style/Style.svelte'
   import DebugSwitcher from './components/dev/DebugSwitcher.svelte'
-  import { isInit, isRefreshingAccounts } from './modules/accounts'
+  import { isInit } from './modules/accounts'
   import { connected } from './modules/networks'
   import ConnectionError from './components/layout/ConnectionError.svelte'
+   import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
 
   // Init i18n and preferences
   // TODO: why is this duplicated in Nav.svelte?
@@ -106,14 +107,8 @@
 <main class="uk-background-muted uk-height-viewport">
   <Style />
 
-  <DebugSwitcher />
-
   {#if $isInit}
-    {#if $isRefreshingAccounts && $connected}
-      <div style="position:relative">
-        <span uk-spinner style="position:absolute; top:0; left:0" />
-      </div>
-    {/if}
+    <SpinnerAccount />
     <SearchingFullnodes />
     <RecoveryMode />
   {/if}
@@ -148,7 +143,5 @@
       {/if}
     </Router>
   </div>
-
-
-
+  <DebugSwitcher />
 </main>

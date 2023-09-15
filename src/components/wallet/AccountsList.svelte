@@ -13,7 +13,7 @@
 </script>
 
 <main>
-  {#if $allAccounts.length > 0}
+  {#if $signingAccount && $allAccounts && $allAccounts.length > 0}
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
