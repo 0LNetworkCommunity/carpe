@@ -65,13 +65,6 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
     bail!("legacy configs not found.")
   }
 
-  // // failover. maybe this was halfway migrated.
-  // // if we can find a config file in the new format we use that as a starting place
-  // let mut app_cfg = match get_cfg() {
-  //   Ok(a) => a,
-  //   _ => configs::new_cfg()?,
-  // };
-
   let mut app_cfg = configs::new_cfg()?;
   if let Ok(list) = read_accounts(&legacy_dir.join("accounts.json")) {
     list.accounts.iter().for_each(|a| {
@@ -94,7 +87,6 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
 
 
     let dt = std::time::SystemTime::now();
-    // let timestamp: i64 = dt.timestamp();
     let filename = format!(".0L_migrated_{}", dt.duration_since(std::time::UNIX_EPOCH)?.as_secs());
     let backup_path = legacy_dir.parent().unwrap().join(filename);
     // if we are successful we should deprecate the old path, so we don't try to migrate again.

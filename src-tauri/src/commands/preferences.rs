@@ -1,7 +1,6 @@
 use crate::configs::{default_config_path, legacy_config_path};
 use crate::migrate;
 use crate::{carpe_error::CarpeError, configs::get_cfg};
-use anyhow::anyhow;
 use libra_types::legacy_types::mode_ol::MODE_0L;
 use log::{warn, error, info};
 use std::env;
@@ -12,16 +11,6 @@ pub struct Preferences {
   pub locale: Option<String>,
 }
 
-// #[tauri::command]
-// /// fetch the preferences struct. Note it is only locale for now.
-// pub fn get_preferences() -> Result<Preferences, CarpeError> {
-//   let app_cfg = get_cfg()?;
-//   let profile = app_cfg.get_profile(None)?;
-//   Ok(Preferences {
-//     locale: profile.locale,
-//   })
-// }
-
 #[tauri::command(async)]
 /// set the locale preference
 pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
@@ -29,7 +18,6 @@ pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
   let profile = app_cfg.get_profile_mut(None)?;
 
   profile.locale = Some(locale);
-  // app_cfg.maybe_add_profile(*profile)?;
   app_cfg.save_file()?;
   Ok(())
 }
