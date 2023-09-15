@@ -30,11 +30,19 @@ export const getDefaultProfile = async () => {
     })
 }
 
+export const getAccounts = async () => {
+  // first make sure we don't have empty accounts
+  invoke('get_all_accounts')
+    .then((result: CarpeProfile[]) => allAccounts.set(result))
+    .catch((e) => raise_error(e, true, "get_all_accounts"))
+}
+
 export const refreshAccounts = async () => {
   logger(Level.Info, ' refresh_accounts')
+
   isRefreshingAccounts.set(true)
   invoke('refresh_accounts')
-    .then((result: CarpeProfile[]) => {
+    .then((result: [CarpeProfile]) => {
       // TODO make this the correct return type
       isRefreshingAccounts.set(false)
       allAccounts.set(result)
