@@ -16,7 +16,7 @@ export interface Preferences {
   locale: string
 }
 
-export const init_preferences = () => {
+export const init_locale_preferences = () => {
   logger(Level.Info, ' call init_preferences')
 
   // avoid using lib without init finished

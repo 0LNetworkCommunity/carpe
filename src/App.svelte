@@ -1,4 +1,7 @@
 <script lang="ts">
+  // CSS
+  import Style from './style/Style.svelte'
+  // JS
   import { listen } from '@tauri-apps/api/event'
   import type { Event } from '@tauri-apps/api/event'
   import { onDestroy, onMount } from 'svelte'
@@ -16,10 +19,10 @@
   import { responses, debugMode, debugModeToggle } from './modules/debug'
   import { routes } from './modules/routes'
   import 'uikit/dist/css/uikit.min.css'
-  import { init_preferences } from './modules/preferences'
-
+  import { init_locale_preferences } from './modules/preferences'
   import { carpeTick } from './modules/tick'
   import { bootUp } from './modules/boot'
+  import { isInit } from './modules/accounts'
 
   // UI COMPONENTS
   import Nav from './components/Nav.svelte'
@@ -36,17 +39,14 @@
   import SearchingFullnodes from './components/layout/SearchingFullnodes.svelte'
   import RecoveryMode from './components/layout/RecoveryMode.svelte'
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
-
-  import Style from './style/Style.svelte'
   import DebugSwitcher from './components/dev/DebugSwitcher.svelte'
-  import { isInit } from './modules/accounts'
-  import { connected } from './modules/networks'
-  import ConnectionError from './components/layout/ConnectionError.svelte'
-   import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
+  import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
+  import { getLocaleFromNavigator, setupI18n } from './lang/i18n'
 
-  // Init i18n and preferences
-  // TODO: why is this duplicated in Nav.svelte?
-  init_preferences()
+
+  // black magic with I18n here
+  // temporarily set up here otherwise... issues
+  init_locale_preferences()
 
   let unlistenProofStart
   let unlistenAck
@@ -54,6 +54,7 @@
   let unlistenBacklogError
 
   onMount(async () => {
+
     bootUp()
 
     ///// Backlog /////
@@ -138,5 +139,6 @@
       {/if}
     </Router>
   </div>
-  <DebugSwitcher />
+
+  <button on:click={debugModeToggle} style="position:absolute; bottom:0; left:0" class="uk-button uk-button-link">🐇</button>
 </main>

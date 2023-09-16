@@ -1,16 +1,14 @@
 <script lang="ts">
   import { Link, useLocation } from 'svelte-navigator'
-
   import { _ } from '../lang/i18n'
-  import { isInit, signingAccount } from '../modules/accounts'
   import { routes } from '../modules/routes'
-  import { init_preferences } from '../modules/preferences'
+  // import { init_preferences } from '../modules/preferences'
 
+  // views
   import AccountSwitcher from './wallet/AccountSwitcher.svelte'
 
   // import MakeWholeLink from "./make-whole/MakeWholeLink.svelte";
-
-  init_preferences()
+  // init_preferences()
 
   const secondaryRoutes = [
     routes.settings,
@@ -21,14 +19,7 @@
   ]
 
   const location_store = useLocation()
-  let myAccountIsOnChain = $signingAccount && $signingAccount.on_chain
 
-  // useMatch("wallet").subscribe((r) => {
-  //   if (r && r.path && r.path.includes("wallet") && get(isBooted)) {
-  //     // window.alert("refresh");
-  //     refreshAccounts();
-  //   }
-  // });
 </script>
 
 <main class="uk-margin-top">
@@ -39,7 +30,6 @@
       >
     {/if}
     <div class="uk-navbar-center">
-
       <ul class="uk-navbar-nav uk-flex">
         <li class="uk-padding {$location_store.pathname.includes('wallet') ? 'uk-active' : ''}">
           <Link to={routes.wallet}>{$_('nav.wallet')}</Link>
@@ -58,13 +48,13 @@
     </div>
 
     <!-- {#if $isInit} -->
-      <div class="uk-navbar-right">
-        <ul class="uk-navbar-nav">
-          <li>
-            <AccountSwitcher />
-          </li>
-        </ul>
-      </div>
+    <div class="uk-navbar-right">
+      <ul class="uk-navbar-nav">
+        <li>
+          <AccountSwitcher />
+        </li>
+      </ul>
+    </div>
     <!-- {/if} -->
   </nav>
 </main>
