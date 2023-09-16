@@ -62,7 +62,7 @@ pub fn get_client() -> anyhow::Result<Client> {
 
 /// check if we have a file and it's populated with at least one profile
 pub fn is_initialized() -> bool {
-  if let Some(cfg) = get_cfg().ok() {
+  if let Ok(cfg) = get_cfg() {
     cfg.get_profile(None).is_ok()
   } else {
     false

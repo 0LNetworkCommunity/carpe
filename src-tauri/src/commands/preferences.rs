@@ -1,8 +1,8 @@
 use crate::configs::{default_config_path, legacy_config_path};
-use crate::migrate::{self, read_accounts, backup_legacy_dir};
+use crate::migrate::{self, backup_legacy_dir, read_accounts};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use libra_types::legacy_types::mode_ol::MODE_0L;
-use log::{warn, error, info};
+use log::{error, info, warn};
 use std::env;
 use std::path::PathBuf;
 use url::Url;
@@ -82,10 +82,13 @@ pub async fn ignore_migrate() -> Result<bool, CarpeError> {
 /// looks for $HOME/.0L/
 ///  if a migration happened this will not be found since it will be renamed to .0L_bak
 pub async fn has_legacy_configs() -> bool {
-  if let Some(acc) = read_accounts(&legacy_config_path()).ok() {
-      info!("alegacy configs found at: {}", legacy_config_path().display());
-      info!("accounts: {:?}", acc);
-    return true
+  if let Ok(acc) = read_accounts(&legacy_config_path()) {
+    info!(
+      "alegacy configs found at: {}",
+      legacy_config_path().display()
+    );
+    info!("accounts: {:?}", acc);
+    return true;
   }
   false
 }

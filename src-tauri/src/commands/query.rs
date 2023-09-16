@@ -70,11 +70,7 @@ pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
   // TODO: write a Move view for this
 
   let res = client
-    .view_ext(
-      "0x1::recovery_mode::get_end_epoch",
-      None,
-      None,
-    )
+    .view_ext("0x1::recovery_mode::get_end_epoch", None, None)
     .await?;
 
   let value: u64 = serde_json::from_value::<Vec<String>>(res)

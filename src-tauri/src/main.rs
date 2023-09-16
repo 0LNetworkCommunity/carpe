@@ -32,11 +32,8 @@ async fn main() {
     WriteLogger::new(
       LevelFilter::Info,
       Config::default(),
-      File::create(
-        configs::default_config_path()
-          .join("carpe.log"),
-      )
-      .expect("could not create carpe.log file"),
+      File::create(configs::default_config_path().join("carpe.log"))
+        .expect("could not create carpe.log file"),
     ),
   ])
   .expect("could not start simple_log logger");

@@ -96,15 +96,24 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   Ok(())
 }
 
-pub fn backup_legacy_dir() -> anyhow::Result<()>{
+pub fn backup_legacy_dir() -> anyhow::Result<()> {
   let legacy_dir = configs::legacy_config_path();
-  if !legacy_dir.exists() { bail!("legacy files do not exist") };
+  if !legacy_dir.exists() {
+    bail!("legacy files do not exist")
+  };
   let dt = std::time::SystemTime::now();
-  let filename = format!(".0L_migrated_{}", dt.duration_since(std::time::UNIX_EPOCH)?.as_secs());
+  let filename = format!(
+    ".0L_migrated_{}",
+    dt.duration_since(std::time::UNIX_EPOCH)?.as_secs()
+  );
   let backup_path = legacy_dir.parent().unwrap().join(filename);
   // if we are successful we should deprecate the old path, so we don't try to migrate again.
   std::fs::rename(&legacy_dir, &backup_path)?;
-  info!("renamed {}, to {}", &legacy_dir.display(), &backup_path.display());
+  info!(
+    "renamed {}, to {}",
+    &legacy_dir.display(),
+    &backup_path.display()
+  );
   Ok(())
 }
 

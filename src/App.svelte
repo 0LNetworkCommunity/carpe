@@ -39,9 +39,7 @@
   import SearchingFullnodes from './components/layout/SearchingFullnodes.svelte'
   import RecoveryMode from './components/layout/RecoveryMode.svelte'
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
-  import DebugSwitcher from './components/dev/DebugSwitcher.svelte'
   import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
-  import { getLocaleFromNavigator, setupI18n } from './lang/i18n'
 
 
   // black magic with I18n here
