@@ -34,8 +34,6 @@ async fn main() {
       Config::default(),
       File::create(
         configs::default_config_path()
-          .parent()
-          .unwrap()
           .join("carpe.log"),
       )
       .expect("could not create carpe.log file"),
