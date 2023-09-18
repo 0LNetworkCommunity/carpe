@@ -9,7 +9,7 @@ use anyhow::anyhow;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
   legacy_types::app_cfg::Profile,
-  type_extensions::client_ext::ClientExt,
+  type_extensions::client_ext::ClientExt, move_resource::gas_coin::SlowWalletBalance,
 };
 use libra_wallet::account_keys::{self, KeyChain};
 use serde::{Deserialize, Serialize};
@@ -27,7 +27,7 @@ pub struct CarpeProfile {
   auth_key: AuthenticationKey,
   nickname: String,
   on_chain: bool,
-  balance: u64,
+  balance: SlowWalletBalance,
   locale: Option<String>, // TODO: refactor, tauri now offers locale of the OS
 }
 
@@ -38,7 +38,10 @@ impl From<&Profile> for CarpeProfile {
       auth_key: core_profile.auth_key,
       nickname: core_profile.nickname.clone(),
       on_chain: core_profile.on_chain,
-      balance: core_profile.balance,
+      balance: SlowWalletBalance {
+        unlocked: 0, // TODO: patch upstream types
+        total: core_profile.balance
+      },
       locale: core_profile.locale.clone(),
     }
   }
@@ -140,7 +143,7 @@ async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeEr
 async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError> {
   futures::future::join_all(list.iter_mut().map(|e| async {
     if let Ok(b) = query::get_balance(e.account).await {
-      e.balance = b
+      e.balance = b.total
     }
 
     if query::get_seq_num(e.account).await.is_ok() {

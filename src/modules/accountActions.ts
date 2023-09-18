@@ -16,7 +16,7 @@ import {
   migrateSuccess,
   canMigrate,
 } from './accounts'
-import type { CarpeProfile } from './accounts'
+import type { CarpeProfile, SlowWalletBalance } from './accounts'
 import { navigate } from 'svelte-navigator'
 import { carpeTick } from './tick'
 
@@ -154,10 +154,10 @@ export const setAccount = async (account: string, notifySucess = true) => {
 export function checkSigningAccountBalance() {
   const selected = get(signingAccount)
   invoke('query_balance', { account: selected.account })
-    .then((balance: number) => {
+    .then((balance: SlowWalletBalance) => {
       // update signingAccount
       selected.on_chain = true
-      selected.balance = Number(balance)
+      selected.balance = balance
       signingAccount.set(selected)
 
       const accounts = get(allAccounts)
@@ -166,7 +166,7 @@ export function checkSigningAccountBalance() {
       const list = accounts.map((each) => {
         if (each.account == selected.account) {
           each.on_chain = true
-          each.balance = Number(balance)
+          each.balance = balance
         }
         return each
       })

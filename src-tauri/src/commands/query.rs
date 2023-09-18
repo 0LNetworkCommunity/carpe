@@ -8,7 +8,7 @@ use libra_types::{
     makewhole_resource::CreditResource, makewhole_resource::MakeWholeResource,
     tower::TowerProofHistoryView,
   },
-  type_extensions::client_ext::ClientExt,
+  type_extensions::client_ext::ClientExt, move_resource::gas_coin::SlowWalletBalance,
 };
 
 #[tauri::command(async)]
@@ -38,17 +38,16 @@ pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResour
   Ok(credits)
 }
 
-pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
+pub async fn get_balance(account: AccountAddress) -> Result<SlowWalletBalance, CarpeError> {
   let client = get_client()?;
-  let slow_balance = get_account_balance_libra(&client, account)
+  get_account_balance_libra(&client, account)
     .await
     .map_err(|e| {
       CarpeError::misc(&format!(
         "Could not get balance from account{}: {}",
         account, e
       ))
-    })?;
-  Ok(slow_balance.total)
+    })
 }
 
 pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
