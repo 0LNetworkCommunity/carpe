@@ -8,7 +8,8 @@ use libra_types::{
     makewhole_resource::CreditResource, makewhole_resource::MakeWholeResource,
     tower::TowerProofHistoryView,
   },
-  type_extensions::client_ext::ClientExt, move_resource::gas_coin::SlowWalletBalance,
+  move_resource::gas_coin::SlowWalletBalance,
+  type_extensions::client_ext::ClientExt,
 };
 
 #[tauri::command(async)]

@@ -9,7 +9,8 @@ use anyhow::anyhow;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
   legacy_types::app_cfg::Profile,
-  type_extensions::client_ext::ClientExt, move_resource::gas_coin::SlowWalletBalance,
+  move_resource::gas_coin::SlowWalletBalance,
+  type_extensions::client_ext::ClientExt,
 };
 use libra_wallet::account_keys::{self, KeyChain};
 use serde::{Deserialize, Serialize};
@@ -40,7 +41,7 @@ impl From<&Profile> for CarpeProfile {
       on_chain: core_profile.on_chain,
       balance: SlowWalletBalance {
         unlocked: 0, // TODO: patch upstream types
-        total: core_profile.balance
+        total: core_profile.balance,
       },
       locale: core_profile.locale.clone(),
     }
