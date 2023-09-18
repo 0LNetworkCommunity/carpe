@@ -21,6 +21,8 @@
           <th>{$_('wallet.account_list.nickname')}</th>
           <th>{$_('wallet.account_list.address')}</th>
           <th>{$_('wallet.account_list.authkey')}</th>
+          <th>{$_('wallet.account_list.unlocked')}</th>
+
           <th class="uk-text-right">{$_('wallet.account_list.balance')}</th>
         </tr>
       </thead>
@@ -44,8 +46,9 @@
               {/if}
             </td>
             <td>{a.nickname}</td>
-            <td>{a.account}</td>
+            <td class="uk-text-truncate">{a.account}</td>
             <td>{a.auth_key.slice(0, 5)}...</td>
+            <td>{printCoins(a.balance.unlocked)}</td>
             <td class="uk-text-right">
               {#if a.on_chain != null && a.on_chain == false}
                 {$_('wallet.account_list.account_on_chain')}
@@ -59,7 +62,7 @@
                     </div>
                   {/if}
 
-                  {printCoins(a.balance)}
+                  {printCoins(a.balance.total)}
                 </div>
               {:else if a.balance == null}
                 {$_('wallet.account_list.loading')}...

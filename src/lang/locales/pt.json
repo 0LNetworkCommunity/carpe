@@ -33,6 +33,7 @@
       "nickname": "Apelido",
       "address": "Conta",
       "authkey": "Chave de autenticação",
+      "unlocked": "Unlocked",
       "balance": "Saldo",
       "offline": "offline",
       "loading": "carregando",

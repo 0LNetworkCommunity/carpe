@@ -12,7 +12,7 @@ use libra_types::{
 };
 
 #[tauri::command(async)]
-pub async fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
+pub async fn query_balance(account: AccountAddress) -> Result<SlowWalletBalance, CarpeError> {
   get_balance(account).await
 }
 
