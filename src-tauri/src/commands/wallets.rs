@@ -122,10 +122,12 @@ pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   // while we are here check if the accounts are on chain
   // under a different address than implied by authkey
   map_get_originating_address(&mut app_cfg.user_profiles).await?;
-  map_get_balance(&mut app_cfg.user_profiles).await?;
+
   app_cfg.save_file()?;
 
-  let mapped: Vec<CarpeProfile> = app_cfg.user_profiles.iter().map(|p| p.into()).collect();
+  let mut mapped: Vec<CarpeProfile> = app_cfg.user_profiles.iter().map(|p| p.into()).collect();
+
+  map_get_balance(&mut mapped).await?;
   Ok(mapped)
 }
 
@@ -140,10 +142,10 @@ async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeEr
   Ok(())
 }
 
-async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError> {
+async fn map_get_balance(list: &mut [CarpeProfile]) -> anyhow::Result<(), CarpeError> {
   futures::future::join_all(list.iter_mut().map(|e| async {
     if let Ok(b) = query::get_balance(e.account).await {
-      e.balance = b.total
+      e.balance = b
     }
 
     if query::get_seq_num(e.account).await.is_ok() {
