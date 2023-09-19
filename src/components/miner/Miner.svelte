@@ -38,6 +38,9 @@
       </p>
     </div>
   {/if}
+    {#if !$signingAccount.on_chain}
+      <CantStart />
+    {/if}
   <div class="uk-grid uk-margin-small">
     {#if ($signingAccount && $signingAccount.on_chain) || ($tower && $tower.progress && $tower.progress.pct_complete)}
    <!-- so we don't get a flash of the error card on an intermittent local network connection if we are in fact mining -->
@@ -48,6 +51,9 @@
       </div>
 
       <div class="uk-width-1-1">
+        newbie: {$isTowerNewbie}
+        local: {$tower.last_local_proof}
+
         {#if $isTowerNewbie && !$tower.last_local_proof}
           <FirstProof />
         {:else}
@@ -65,8 +71,6 @@
           </div>
         {/if}
       </div>
-    {:else if $signingAccount}
-      <CantStart />
     {/if}
   </div>
   <CommonErrors />

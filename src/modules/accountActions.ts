@@ -38,7 +38,7 @@ export const getAccounts = async () => {
 }
 
 export const refreshAccounts = async () => {
-  logger(Level.Info, ' refresh_accounts')
+  logger(Level.Info, 'refresh_accounts')
 
   isRefreshingAccounts.set(true)
   invoke('refresh_accounts')

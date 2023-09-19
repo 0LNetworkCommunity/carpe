@@ -12,7 +12,7 @@ export const carpeTick = async () => {
   getAccounts()
 
   if (!tick_in_progress) {
-    logger(Level.Info, ' carpeTick')
+    logger(Level.Info, 'carpeTick')
 
     // This will check for a network connection
     // If successful this will set the `network.connected` bool to true. And wallet will display a view.
