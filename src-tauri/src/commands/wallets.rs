@@ -39,7 +39,10 @@ impl From<&Profile> for CarpeProfile {
       auth_key: core_profile.auth_key,
       nickname: core_profile.nickname.clone(),
       on_chain: core_profile.on_chain,
-      balance: SlowWalletBalance { unlocked: core_profile.balance.unlocked, total: core_profile.balance.total }, // TODO: refactor upstream to have Clone
+      balance: SlowWalletBalance {
+        unlocked: core_profile.balance.unlocked,
+        total: core_profile.balance.total,
+      }, // TODO: refactor upstream to have Clone
       locale: core_profile.locale.clone(),
     }
   }

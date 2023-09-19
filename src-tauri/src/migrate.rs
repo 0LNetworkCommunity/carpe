@@ -70,7 +70,10 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
     list.accounts.iter().for_each(|a| {
       info!("found account: {}", a.account);
       let mut p = Profile::new(a.authkey, a.account);
-      p.balance = SlowWalletBalance { unlocked: 0, total: a.balance.unwrap_or(0) };
+      p.balance = SlowWalletBalance {
+        unlocked: 0,
+        total: a.balance.unwrap_or(0),
+      };
       p.on_chain = a.on_chain.unwrap_or(false);
       p.nickname = a.nickname.clone();
 
