@@ -29,7 +29,7 @@ async fn maybe_create_playlist(
 ) -> anyhow::Result<NetworkPlaylist> {
   let np = if chain_id == NamedChain::TESTING {
     let playlist = NetworkPlaylist {
-      chain_id: NamedChain::TESTING,
+      chain_name: NamedChain::TESTING,
       ..Default::default()
     };
     app_cfg.maybe_add_custom_playlist(&playlist);
@@ -71,7 +71,7 @@ pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> 
 pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
   let mut app_cfg = get_cfg()?;
   let dummy_playlist = NetworkPlaylist {
-    chain_id: app_cfg.workspace.default_chain_id,
+    chain_name: app_cfg.workspace.default_chain_id,
     nodes: vec![HostProfile::new(url)],
   };
 

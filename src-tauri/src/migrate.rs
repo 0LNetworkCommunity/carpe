@@ -8,6 +8,7 @@ use libra_types::legacy_types::{
   app_cfg::{get_nickname, Profile},
   network_playlist::NetworkPlaylist,
 };
+use libra_types::move_resource::gas_coin::SlowWalletBalance;
 use log::info;
 use serde::{Deserialize, Deserializer};
 use std::path::Path;
@@ -69,7 +70,7 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
     list.accounts.iter().for_each(|a| {
       info!("found account: {}", a.account);
       let mut p = Profile::new(a.authkey, a.account);
-      p.balance = a.balance.unwrap_or(0);
+      p.balance = SlowWalletBalance { unlocked: 0, total: a.balance.unwrap_or(0) };
       p.on_chain = a.on_chain.unwrap_or(false);
       p.nickname = a.nickname.clone();
 
@@ -88,7 +89,7 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
 
   // now load the network info
   let playlist_url = network_playlist::find_default_playlist(None)?;
-  let np = NetworkPlaylist::from_url(playlist_url, Some(NamedChain::MAINNET)).await?;
+  let np = NetworkPlaylist::from_playlist_url(playlist_url, Some(NamedChain::MAINNET)).await?;
   app_cfg.network_playlist = vec![np];
 
   app_cfg.save_file()?;

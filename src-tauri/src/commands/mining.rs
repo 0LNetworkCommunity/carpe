@@ -48,7 +48,8 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
 
   info!("next proof params: {:?}", next.diff);
 
-  let vdf = proof::mine_once(&app_cfg, next).map_err(|e| {
+  let path = app_cfg.get_block_dir(None)?;
+  let vdf = proof::mine_once(&path, &next).map_err(|e| {
     dbg!(&e);
     CarpeError::tower(
       &format!("could not mine one proof, message: {:?}", &e),
