@@ -156,5 +156,5 @@ tx_configs:
   let cfg: AppCfg = serde_yaml::from_str(raw_yaml).unwrap();
   assert!(cfg.workspace.default_chain_id == NamedChain::TESTING);
   let np = toggle_network("testing").await.unwrap();
-  assert!(np.chain_id == NamedChain::TESTING);
+  assert!(np.chain_name == NamedChain::TESTING);
 }
