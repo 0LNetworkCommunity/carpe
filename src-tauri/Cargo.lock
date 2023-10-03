@@ -6266,7 +6266,7 @@ checksum = "f7012b1bbb0719e1097c47611d3898568c546d597c2e74d66f6087edd5233ff4"
 [[package]]
 name = "libra-cached-packages"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#6677a6635080e57a57c6ca58526d2f3aa3dfbc49"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#97b691ffd0db866e880e62b3c8616f8546f04da6"
 dependencies = [
  "bcs 0.1.4",
  "diem-types",
@@ -6278,7 +6278,7 @@ dependencies = [
 [[package]]
 name = "libra-framework"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#6677a6635080e57a57c6ca58526d2f3aa3dfbc49"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#97b691ffd0db866e880e62b3c8616f8546f04da6"
 dependencies = [
  "anyhow",
  "bcs 0.1.4",
@@ -6298,7 +6298,7 @@ dependencies = [
 [[package]]
 name = "libra-query"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#6677a6635080e57a57c6ca58526d2f3aa3dfbc49"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#97b691ffd0db866e880e62b3c8616f8546f04da6"
 dependencies = [
  "anyhow",
  "clap 4.3.10",
@@ -6312,7 +6312,7 @@ dependencies = [
 [[package]]
 name = "libra-tower"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#6677a6635080e57a57c6ca58526d2f3aa3dfbc49"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#97b691ffd0db866e880e62b3c8616f8546f04da6"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -6333,14 +6333,14 @@ dependencies = [
 [[package]]
 name = "libra-txs"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#6677a6635080e57a57c6ca58526d2f3aa3dfbc49"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#97b691ffd0db866e880e62b3c8616f8546f04da6"
 dependencies = [
  "anyhow",
  "bcs 0.1.4",
  "clap 4.3.10",
  "diem",
  "diem-framework",
- "diem-global-constants",
+ "diem-genesis",
  "diem-logger",
  "diem-sdk",
  "diem-types",
@@ -6351,6 +6351,7 @@ dependencies = [
  "libra-types",
  "libra-wallet",
  "serde_json",
+ "serde_yaml 0.8.26",
  "tokio",
  "url",
 ]
@@ -6358,7 +6359,7 @@ dependencies = [
 [[package]]
 name = "libra-types"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#6677a6635080e57a57c6ca58526d2f3aa3dfbc49"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#97b691ffd0db866e880e62b3c8616f8546f04da6"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -6393,7 +6394,7 @@ dependencies = [
 [[package]]
 name = "libra-wallet"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#6677a6635080e57a57c6ca58526d2f3aa3dfbc49"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?branch=main#97b691ffd0db866e880e62b3c8616f8546f04da6"
 dependencies = [
  "anyhow",
  "blst",
