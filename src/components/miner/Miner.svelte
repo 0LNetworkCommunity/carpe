@@ -51,9 +51,6 @@
       </div>
 
       <div class="uk-width-1-1">
-        newbie: {$isTowerNewbie}
-        local: {$tower.last_local_proof}
-
         {#if $isTowerNewbie && !$tower.last_local_proof}
           <FirstProof />
         {:else}
