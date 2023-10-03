@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { writable, get } from 'svelte/store'
-import { raise_error } from './carpeError'
+import { Level, logger, raise_error } from './carpeError'
 import { notify_success } from './carpeNotify'
 
 export const responses = writable('')
@@ -21,7 +21,7 @@ export const nodeEnvIsTest = writable<boolean>(false)
 
 // helper to figure out what environment we are in TEST/PROD
 export function getEnv() {
-  console.log('>>> getEnv')
+  logger(Level.Info, ' getEnv')
 
   invoke('get_env', {})
     .then((res: string) => {

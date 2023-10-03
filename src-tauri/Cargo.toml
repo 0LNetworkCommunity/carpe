@@ -20,16 +20,13 @@ libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", bra
 libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", branch = "main" }
 
 # shared with libra-framework and diem
-# anyhow = "1.0.38"
 anyhow = "1.0.62"
 futures = "= 0.3.24"
 glob = "0.3.0"
 hex = { version = "0.4.3", features = ["serde"] }
-# once_cell = "1.18.0"
 once_cell = "1.10.0"
 serde = { version = "1.0.137", features = ["derive"] }
 serde_json = { version = "1.0.81", features = ["preserve_order"] }
-# log = { version = "0.4", features = ["max_level_debug", "release_max_level_debug"] }
 log = "0.4.17"
 tokio = { version = "1.21.0", features = ["full"] }
 url = { version = "2.2.2", features = ["serde"] }

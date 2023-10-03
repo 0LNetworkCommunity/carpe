@@ -8,11 +8,12 @@ use libra_types::{
     makewhole_resource::CreditResource, makewhole_resource::MakeWholeResource,
     tower::TowerProofHistoryView,
   },
+  move_resource::gas_coin::SlowWalletBalance,
   type_extensions::client_ext::ClientExt,
 };
 
 #[tauri::command(async)]
-pub async fn query_balance(account: AccountAddress) -> Result<u64, CarpeError> {
+pub async fn query_balance(account: AccountAddress) -> Result<SlowWalletBalance, CarpeError> {
   get_balance(account).await
 }
 
@@ -38,17 +39,16 @@ pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResour
   Ok(credits)
 }
 
-pub async fn get_balance(account: AccountAddress) -> Result<u64, CarpeError> {
+pub async fn get_balance(account: AccountAddress) -> Result<SlowWalletBalance, CarpeError> {
   let client = get_client()?;
-  let slow_balance = get_account_balance_libra(&client, account)
+  get_account_balance_libra(&client, account)
     .await
     .map_err(|e| {
       CarpeError::misc(&format!(
         "Could not get balance from account{}: {}",
         account, e
       ))
-    })?;
-  Ok(slow_balance.total)
+    })
 }
 
 pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
@@ -70,11 +70,7 @@ pub async fn get_recovery_mode() -> Result<u64, CarpeError> {
   // TODO: write a Move view for this
 
   let res = client
-    .view_ext(
-      "0x1::recovery_mode::RecoveryMode::get_end_epoch",
-      None,
-      None,
-    )
+    .view_ext("0x1::recovery_mode::get_end_epoch", None, None)
     .await?;
 
   let value: u64 = serde_json::from_value::<Vec<String>>(res)

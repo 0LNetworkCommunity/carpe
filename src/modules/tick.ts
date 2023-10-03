@@ -1,30 +1,33 @@
 import { get } from 'svelte/store'
-import { refreshAccounts } from './accountActions'
+import { getAccounts, refreshAccounts } from './accountActions'
 import { getTowerChainView, maybeEmitBacklog, maybeStartMiner } from './miner_invoke'
-import { getMetadata, scanning_fullnodes } from './networks'
+import { getMetadata } from './networks'
 import { isInit } from './accounts'
+import { Level, logger } from './carpeError'
 
 let tick_in_progress = false
 
 export const carpeTick = async () => {
+  // you should always try to refresh accounts, even on error
+  getAccounts()
+
   if (!tick_in_progress) {
-    console.log('>>> carpeTick')
-    tick_in_progress = true
+    logger(Level.Info, 'carpeTick')
 
     // This will check for a network connection
     // If successful this will set the `network.connected` bool to true. And wallet will display a view.
-    // will also refresh peer stats looking for good peers.
-    await getMetadata()
+    // will also refresh peer stats looking to find good peers.
+    if (get(isInit)) {
+      tick_in_progress = true
 
-    if (!get(scanning_fullnodes) && get(isInit)) {
       // don't try to connect while we are booting up the app and looking for fullnodes
-      refreshAccounts()
+      // things that need network connectivity e.g. miner happen here
+      getMetadata()
+        .then(refreshAccounts)
         .then(getTowerChainView)
-        .then(() => {
-          maybeEmitBacklog() // do this no matter what
-          maybeStartMiner()
-          tick_in_progress = false
-        })
+        .then(maybeEmitBacklog)
+        .then(maybeStartMiner)
+        .finally(() => (tick_in_progress = false))
     }
   }
 }

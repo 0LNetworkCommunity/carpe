@@ -29,7 +29,7 @@ async fn maybe_create_playlist(
 ) -> anyhow::Result<NetworkPlaylist> {
   let np = if chain_id == NamedChain::TESTING {
     let playlist = NetworkPlaylist {
-      chain_id: NamedChain::TESTING,
+      chain_name: NamedChain::TESTING,
       ..Default::default()
     };
     app_cfg.maybe_add_custom_playlist(&playlist);
@@ -70,16 +70,12 @@ pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> 
 /// we want to elimated the entire playlist and use a single fullnode
 pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
   let mut app_cfg = get_cfg()?;
-  dbg!(&app_cfg);
   let dummy_playlist = NetworkPlaylist {
-    chain_id: app_cfg.workspace.default_chain_id,
+    chain_name: app_cfg.workspace.default_chain_id,
     nodes: vec![HostProfile::new(url)],
   };
 
-  dbg!(&dummy_playlist);
-
   app_cfg.network_playlist = vec![dummy_playlist.clone()];
-  dbg!(&app_cfg);
   app_cfg.save_file()?;
   Ok(dummy_playlist)
 }
@@ -160,5 +156,5 @@ tx_configs:
   let cfg: AppCfg = serde_yaml::from_str(raw_yaml).unwrap();
   assert!(cfg.workspace.default_chain_id == NamedChain::TESTING);
   let np = toggle_network("testing").await.unwrap();
-  assert!(np.chain_id == NamedChain::TESTING);
+  assert!(np.chain_name == NamedChain::TESTING);
 }

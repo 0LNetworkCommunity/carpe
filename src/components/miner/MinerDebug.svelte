@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount, onDestroy } from 'svelte'
   import {
     emitBacklog,
     killBacklogListener,
@@ -9,23 +8,13 @@
   } from '../../modules/miner_invoke'
   import { debugMode } from '../../modules/debug'
   import type { ClientTowerStatus } from '../../modules/miner'
-
   import MinerPhases from './MinerPhases.svelte'
 
   export let minerTower: ClientTowerStatus
-  let debug: boolean
-  let unsubsDebug
 
-  onMount(async () => {
-    unsubsDebug = debugMode.subscribe((boo) => (debug = boo))
-  })
-
-  onDestroy(async () => {
-    unsubsDebug && unsubsDebug()
-  })
 </script>
 
-{#if debug}
+{#if $debugMode}
   <main class="uk-margin">
     <div class="uk-grid">
       <div class="uk-width-1-2">
@@ -66,7 +55,11 @@
     </div>
 
     {#if minerTower}
-      <p>Latest on-chain proof hash: {minerTower.on_chain.previous_proof_hash}</p>
+
+      <p class="uk-text-break">
+        <span>minerTower:</span>
+        {JSON.stringify(minerTower, null, 2)}
+      </p>
     {/if}
   </main>
 {/if}

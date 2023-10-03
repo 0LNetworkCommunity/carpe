@@ -1,20 +1,28 @@
 <script lang="ts">
+  // CSS
+  import Style from './style/Style.svelte'
+  // JS
   import { listen } from '@tauri-apps/api/event'
   import type { Event } from '@tauri-apps/api/event'
   import { onDestroy, onMount } from 'svelte'
   import { Router, Route } from 'svelte-navigator'
 
   // CARPE MODULES
-  import { backlogInProgress, backlogSubmitted, minerEventReceived } from './modules/miner'
+  import {
+    backlogInProgress,
+    backlogListenerReady,
+    backlogSubmitted,
+    minerEventReceived,
+  } from './modules/miner'
   import { raise_error } from './modules/carpeError'
   import type { CarpeError, CarpeOkReturn } from './modules/carpeError'
-  import { responses, debugMode } from './modules/debug'
+  import { responses, debugMode, debugModeToggle } from './modules/debug'
   import { routes } from './modules/routes'
   import 'uikit/dist/css/uikit.min.css'
-  import { init_preferences } from './modules/preferences'
-
+  import { init_locale_preferences } from './modules/preferences'
   import { carpeTick } from './modules/tick'
   import { bootUp } from './modules/boot'
+  import { isInit } from './modules/accounts'
 
   // UI COMPONENTS
   import Nav from './components/Nav.svelte'
@@ -31,24 +39,21 @@
   import SearchingFullnodes from './components/layout/SearchingFullnodes.svelte'
   import RecoveryMode from './components/layout/RecoveryMode.svelte'
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
+  import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
 
-  import Style from './style/Style.svelte'
 
-  // Init i18n and preferences
-  // TODO: why is this duplicated in Nav.svelte?
-  init_preferences();
+  // black magic with I18n here
+  // temporarily set up here otherwise... issues
+  init_locale_preferences()
 
-  let unlistenProofStart;
-  let unlistenAck;
-  let unlistenBacklogSuccess;
-  let unlistenBacklogError;
-
-  let debug = false;
+  let unlistenProofStart
+  let unlistenAck
+  let unlistenBacklogSuccess
+  let unlistenBacklogError
 
   onMount(async () => {
-    bootUp()
 
-    debugMode.subscribe((b) => (debug = b))
+    bootUp()
 
     ///// Backlog /////
     // Todo: Should this listener only be started in the miner view?
@@ -68,6 +73,8 @@
 
     unlistenAck = await listen('ack-backlog-request', () => {
       backlogInProgress.set(true)
+      // set listener ready in case
+      backlogListenerReady.set(true)
     })
 
     unlistenBacklogSuccess = await listen('backlog-success', (event: CarpeOkReturn) => {
@@ -94,15 +101,16 @@
     unlistenBacklogSuccess()
     unlistenBacklogError()
   })
-
 </script>
 
 <main class="uk-background-muted uk-height-viewport">
   <Style />
 
-
-  <SearchingFullnodes />
-  <RecoveryMode />
+  {#if $isInit}
+    <SearchingFullnodes />
+    <SpinnerAccount />
+    <RecoveryMode />
+  {/if}
 
   <div class="uk-container">
     <Router>
@@ -121,12 +129,14 @@
 
         <!-- DEV -->
         <Route path={routes.developer} component={DevMode} primary={false} />
-
-        <!-- Show Debug Card Below -->
-        {#if debug}
-          <DebugCard />
-        {/if}
       </div>
+
+      <!-- Show Debug Card Below -->
+      {#if $debugMode}
+        <DebugCard />
+      {/if}
     </Router>
   </div>
+
+  <button on:click={debugModeToggle} style="position:absolute; bottom:0; left:0" class="uk-button uk-button-link">🐇</button>
 </main>

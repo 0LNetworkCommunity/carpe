@@ -1,20 +1,14 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { Link, useLocation, useMatch } from 'svelte-navigator'
-
+  import { Link, useLocation } from 'svelte-navigator'
   import { _ } from '../lang/i18n'
-  import { signingAccount, isInit } from '../modules/accounts'
   import { routes } from '../modules/routes'
-  import { init_preferences } from '../modules/preferences'
+  // import { init_preferences } from '../modules/preferences'
 
+  // views
   import AccountSwitcher from './wallet/AccountSwitcher.svelte'
-  import { refreshAccounts } from '../modules/accountActions'
-  import { get } from 'svelte/store'
-  import { isBooted } from '../modules/boot'
 
   // import MakeWholeLink from "./make-whole/MakeWholeLink.svelte";
-
-  init_preferences()
+  // init_preferences()
 
   const secondaryRoutes = [
     routes.settings,
@@ -26,26 +20,6 @@
 
   const location_store = useLocation()
 
-  let myAccountIsOnChain = false // assume initialized until not
-  let init = false // assume initialized until not
-
-  onMount(async () => {
-    isInit.subscribe((i) => (init = i))
-
-    signingAccount.subscribe((myAccount) => {
-      if (myAccount) {
-        myAccountIsOnChain = myAccount.on_chain
-      }
-    })
-  })
-
-  // let matchesWallet = useMatch("/wallet");
-  useMatch("wallet").subscribe((r) => {
-    if (r && r.path && r.path.includes("wallet") && get(isBooted)) {
-      // window.alert("refresh");
-      refreshAccounts();
-    }
-  });
 </script>
 
 <main class="uk-margin-top">
@@ -56,7 +30,7 @@
       >
     {/if}
     <div class="uk-navbar-center">
-      <ul class="uk-navbar-nav uk-flex {init && myAccountIsOnChain ? '' : 'uk-invisible'}">
+      <ul class="uk-navbar-nav uk-flex">
         <li class="uk-padding {$location_store.pathname.includes('wallet') ? 'uk-active' : ''}">
           <Link to={routes.wallet}>{$_('nav.wallet')}</Link>
         </li>
@@ -73,14 +47,14 @@
       </ul>
     </div>
 
-    {#if init}
-      <div class="uk-navbar-right">
-        <ul class="uk-navbar-nav">
-          <li>
-            <AccountSwitcher />
-          </li>
-        </ul>
-      </div>
-    {/if}
+    <!-- {#if $isInit} -->
+    <div class="uk-navbar-right">
+      <ul class="uk-navbar-nav">
+        <li>
+          <AccountSwitcher />
+        </li>
+      </ul>
+    </div>
+    <!-- {/if} -->
   </nav>
 </main>

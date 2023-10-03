@@ -1,8 +1,9 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
   import TowerStateSkeleton from './TowerStateSkeleton.svelte'
+  import type { ClientTowerStatus } from '../../modules/miner'
 
-  export let minerTower
+  export let minerTower: ClientTowerStatus
 </script>
 
 <main>
@@ -56,10 +57,12 @@
       </tbody>
     </table>
 
-  {:else if minerTower && !minerTower.on_chain }
-    <div class="uk-align-center">
+
+  <!-- {:else if minerTower && !minerTower.on_chain }
+    <!-- <div class="uk-align-center">
       <span uk-spinner />
-    </div>
+    </div> -->
+    <!-- <SyncProofs loading={false} minerTower/> -->
   {:else}
     <TowerStateSkeleton />
   {/if}

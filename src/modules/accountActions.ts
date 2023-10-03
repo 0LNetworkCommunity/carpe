@@ -1,6 +1,6 @@
 import { get } from 'svelte/store'
 import { invoke } from '@tauri-apps/api/tauri'
-import { raise_error, type CarpeError } from './carpeError'
+import { raise_error, type CarpeError, logger, Level } from './carpeError'
 import { responses } from './debug'
 import { minerLoopEnabled } from './miner'
 
@@ -9,7 +9,6 @@ import {
   allAccounts,
   isInit,
   isRefreshingAccounts,
-  mnem,
   signingAccount,
   isAccountRefreshed,
   makeWhole,
@@ -17,7 +16,7 @@ import {
   migrateSuccess,
   canMigrate,
 } from './accounts'
-import type { CarpeProfile } from './accounts'
+import type { CarpeProfile, SlowWalletBalance } from './accounts'
 import { navigate } from 'svelte-navigator'
 import { carpeTick } from './tick'
 
@@ -31,8 +30,16 @@ export const getDefaultProfile = async () => {
     })
 }
 
+export const getAccounts = async () => {
+  // first make sure we don't have empty accounts
+  invoke('get_all_accounts')
+    .then((result: CarpeProfile[]) => allAccounts.set(result))
+    .catch((e) => raise_error(e, true, 'get_all_accounts'))
+}
+
 export const refreshAccounts = async () => {
-  console.log('>>> refresh_accounts')
+  logger(Level.Info, 'refresh_accounts')
+
   isRefreshingAccounts.set(true)
   invoke('refresh_accounts')
     .then((result: [CarpeProfile]) => {
@@ -69,8 +76,6 @@ export const addAccount = async (init_type: InitType, secret: string) => {
     method_name = 'init_from_private_key'
     arg_obj = { priKeyString: secret.trim() }
   }
-  // TODO: need to check where else the mnem is being used
-  mnem.set(null)
   // submit
   return invoke(method_name, arg_obj)
     .then((res: CarpeProfile) => {
@@ -89,30 +94,26 @@ export const addAccount = async (init_type: InitType, secret: string) => {
     .catch((error) => {
       raise_error(error, false, 'addAccount')
     })
+    .finally(() => (secret = null))
 }
 
-// export function tryRefreshSignerAccount(newData: Profile) {
-//   let a = get(signingAccount).account;
-//   if (newData.account == a) {
-//     signingAccount.set(newData);
-//   }
-// }
-
-export const isCarpeInit = async () => {
+export const isCarpeInit = async (): Promise<boolean> => {
   // on app load we want to avoid the Newbie view until we know it's not a new user
-  console.log('>>> isCarpeInit')
+  logger(Level.Info, ' isCarpeInit')
   isRefreshingAccounts.set(true)
 
-  invoke('is_init', {})
+  return invoke('is_init', {})
     .then((res: boolean) => {
       responses.set(res.toString())
       isInit.set(res)
       // for testnet
       isRefreshingAccounts.set(false)
+      return res
     })
     .catch((e) => {
       isRefreshingAccounts.set(false)
       raise_error(e, false, 'isCarpeInit')
+      return false
     })
 }
 
@@ -129,9 +130,7 @@ export const setAccount = async (account: string, notifySucess = true) => {
     return
   }
 
-  invoke('switch_profile', {
-    account,
-  })
+  invoke('switch_profile', { account })
     .then((res: CarpeProfile) => {
       signingAccount.set(res)
       isInit.set(true)
@@ -139,6 +138,7 @@ export const setAccount = async (account: string, notifySucess = true) => {
         notify_success('Account switched to ' + res.nickname)
       }
     })
+    .then(carpeTick)
     .catch((e) => {
       raise_error(e, false, 'setAccount')
     })
@@ -154,10 +154,10 @@ export const setAccount = async (account: string, notifySucess = true) => {
 export function checkSigningAccountBalance() {
   const selected = get(signingAccount)
   invoke('query_balance', { account: selected.account })
-    .then((balance: number) => {
+    .then((balance: SlowWalletBalance) => {
       // update signingAccount
       selected.on_chain = true
-      selected.balance = Number(balance)
+      selected.balance = balance
       signingAccount.set(selected)
 
       const accounts = get(allAccounts)
@@ -166,7 +166,7 @@ export function checkSigningAccountBalance() {
       const list = accounts.map((each) => {
         if (each.account == selected.account) {
           each.on_chain = true
-          each.balance = Number(balance)
+          each.balance = balance
         }
         return each
       })
@@ -204,21 +204,28 @@ export function getAccountEvents(account: CarpeProfile, errorCallback = null) {
     */
 }
 
-export const isLegacy = async () => {
+export const isLegacy = async (): Promise<boolean> => {
   // let canMigrate = false
 
-  invoke('has_legacy_configs', {})
+  return invoke('has_legacy_configs', {})
     .then((b: boolean) => {
+      if (b) logger(Level.Warn, 'legacy configs found, should try to migrate')
       canMigrate.set(b)
+      return b
     })
-    .catch((e: CarpeError) => raise_error(e, true, 'has_legacy_configs'))
+    .catch((e: CarpeError) => {
+      raise_error(e, true, 'has_legacy_configs')
+      return false
+    })
 }
 
 export const tryMigrate = async () => {
+  logger(Level.Warn, 'trying to migrate legacy user')
   migrateInProgress.set(true)
   invoke('maybe_migrate', {})
     .then((r: boolean) => {
       migrateSuccess.set(r)
+      notify_success('Successfully migrated accounts')
     })
     .then(refreshAccounts)
     .then(getDefaultProfile)
@@ -227,6 +234,17 @@ export const tryMigrate = async () => {
     .finally(() => {
       migrateInProgress.set(false)
     })
+}
+
+export const ignoreMigrate = () => {
+  logger(Level.Warn, 'ignoring migration')
+
+  invoke('ignore_migrate', {})
+    .then((r: boolean) => {
+      migrateSuccess.set(r)
+    })
+    .then(isLegacy) // reset if we actually did migrate the files
+    .catch((e: CarpeError) => raise_error(e, true, 'ignore_migrate'))
 }
 /*
 export let invoke_makewhole = async (account: String): Promise<number> => {
@@ -254,7 +272,7 @@ export const updateMakeWhole = () => {
   accounts.forEach((each) => {
     const account = each.account
     if (mk[account] == null) {
-      console.log('>>> query_makewhole')
+      logger(Level.Info, ' query_makewhole')
       invoke('query_makewhole', { account })
         .then((credits) => {
           mk[account] = credits

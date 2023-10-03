@@ -33,6 +33,7 @@
       "nickname": "Surnom",
       "address": "Adresse",
       "authkey": "Authkey",
+      "unlocked": "Unlocked",
       "balance": "Solde",
       "offline": "hors-ligne",
       "loading": "chargement",

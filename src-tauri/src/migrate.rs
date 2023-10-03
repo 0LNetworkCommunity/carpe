@@ -1,5 +1,3 @@
-use crate::configs::get_cfg;
-
 use crate::configs;
 use anyhow::bail;
 use libra_types::exports::{
@@ -10,6 +8,8 @@ use libra_types::legacy_types::{
   app_cfg::{get_nickname, Profile},
   network_playlist::NetworkPlaylist,
 };
+use libra_types::move_resource::gas_coin::SlowWalletBalance;
+use log::info;
 use serde::{Deserialize, Deserializer};
 use std::path::Path;
 
@@ -48,7 +48,8 @@ where
   AccountAddress::from_hex_literal(&prepended).map_err(serde::de::Error::custom)
 }
 
-fn read_accounts(account_file: &Path) -> anyhow::Result<Accounts> {
+pub fn read_accounts(legcy_dir: &Path) -> anyhow::Result<Accounts> {
+  let account_file = legcy_dir.join("accounts.json");
   if account_file.exists() {
     let file = std::fs::read_to_string(account_file)?;
     Ok(serde_json::from_str(&file)?)
@@ -59,22 +60,20 @@ fn read_accounts(account_file: &Path) -> anyhow::Result<Accounts> {
 
 pub async fn maybe_migrate_data() -> anyhow::Result<()> {
   let legacy_dir = configs::legacy_config_path();
-
+  info!("legacy data path: {}", &legacy_dir.display());
   if !legacy_dir.exists() {
     bail!("legacy configs not found.")
   }
 
-  // failover. maybe this was halfway migrated.
-  // if we can find a config file in the new format we use that as a starting place
-  let mut app_cfg = match get_cfg() {
-    Ok(a) => a,
-    _ => configs::new_cfg()?,
-  };
-
-  if let Ok(list) = read_accounts(&legacy_dir.join("accounts.json")) {
+  let mut app_cfg = configs::new_cfg()?;
+  if let Ok(list) = read_accounts(&legacy_dir) {
     list.accounts.iter().for_each(|a| {
+      info!("found account: {}", a.account);
       let mut p = Profile::new(a.authkey, a.account);
-      p.balance = a.balance.unwrap_or(0);
+      p.balance = SlowWalletBalance {
+        unlocked: 0,
+        total: a.balance.unwrap_or(0),
+      };
       p.on_chain = a.on_chain.unwrap_or(false);
       p.nickname = a.nickname.clone();
 
@@ -88,17 +87,37 @@ pub async fn maybe_migrate_data() -> anyhow::Result<()> {
       }
     });
 
-    // if we are successful we should deprecate the old path, so we don't try to migrate again.
-    std::fs::rename(&legacy_dir, legacy_dir.parent().unwrap().join(".0L_bak"))?;
+    backup_legacy_dir()?;
   }
 
   // now load the network info
   let playlist_url = network_playlist::find_default_playlist(None)?;
-  let np = NetworkPlaylist::from_url(playlist_url, Some(NamedChain::MAINNET)).await?;
+  let np = NetworkPlaylist::from_playlist_url(playlist_url, Some(NamedChain::MAINNET)).await?;
   app_cfg.network_playlist = vec![np];
 
   app_cfg.save_file()?;
 
+  Ok(())
+}
+
+pub fn backup_legacy_dir() -> anyhow::Result<()> {
+  let legacy_dir = configs::legacy_config_path();
+  if !legacy_dir.exists() {
+    bail!("legacy files do not exist")
+  };
+  let dt = std::time::SystemTime::now();
+  let filename = format!(
+    ".0L_migrated_{}",
+    dt.duration_since(std::time::UNIX_EPOCH)?.as_secs()
+  );
+  let backup_path = legacy_dir.parent().unwrap().join(filename);
+  // if we are successful we should deprecate the old path, so we don't try to migrate again.
+  std::fs::rename(&legacy_dir, &backup_path)?;
+  info!(
+    "renamed {}, to {}",
+    &legacy_dir.display(),
+    &backup_path.display()
+  );
   Ok(())
 }
 

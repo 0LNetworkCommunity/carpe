@@ -2,7 +2,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { getCurrent } from '@tauri-apps/api/window'
 import { get } from 'svelte/store'
 import { isRefreshingAccounts, signingAccount } from './accounts'
-import { raise_error } from './carpeError'
+import { Level, logger, raise_error } from './carpeError'
 import { clearDisplayErrors } from './carpeErrorUI'
 import { notify_success } from './carpeNotify'
 import { responses } from './debug'
@@ -13,8 +13,8 @@ import {
   tower,
   minerProofComplete,
   minerEventReceived,
-  backlogSubmitted,
   isTowerNewbie,
+  resetTowerStatus,
 } from './miner'
 
 import type {
@@ -57,37 +57,42 @@ export const towerOnce = async () => {
     pct_complete: 0,
   }
 
-  t.progress = progress
-  tower.set(t)
+  tower.update((b) => {
+    b.progress = progress
+    return b
+  })
 
   // This is a long running async call.
   // when miner_once returnsm, it's with the response of the proof, or error.
   return invoke('miner_once', {})
     .then((res: VDFProof) => {
-      setProofComplete()
+      // setProofComplete()
+      tower.update((b) => {
+        if (b.progress) b.progress.complete = true
+        return b
+      })
+      // TODO: this store is potentially duplicated with progress.complete
+      minerProofComplete.set(true)
 
       notify_success(`Miner proof ${res.height} complete!`)
-      // start the sending of txs
-      // TODO: unsure why when it emits immediately thre is no action on rust side, perhaps listener startup.
-      setTimeout(emitBacklog, 1000)
-
-      // refresh local proofs view, also wait for file to be written
-      setTimeout(getLocalHeight, 1000)
 
       responses.set(JSON.stringify(res))
-      return res
+      // return res
     })
+    .then(emitBacklog)
+    .then(getLocalHeight)
     .catch((e) => {
-      // console.log('miner_once error: ' + e);
+      console.log('miner_once: ', e)
       // disable mining when there is a proof error.
       raise_error(e, false, 'towerOnce')
       minerLoopEnabled.set(false)
       proofError()
     })
+    .finally(maybeEmitBacklog)
 }
 
 export const maybeStartMiner = async () => {
-  console.log('>>> maybeEmitBacklog')
+  logger(Level.Info, ' maybeStartMiner')
 
   // this should be instant
   await getEpochRules().catch((e) => {
@@ -100,20 +105,23 @@ export const maybeStartMiner = async () => {
   })
 
   // maybe try to start a new proof
-  console.log('maybeStartMiner')
+  // console.log('maybeStartMiner')
 
   const t = get(tower)
-  const proofComplete = t && t.progress && t.progress.complete
-
+  const proofInProgress = t && t.progress && t.progress.complete == false
+  console.log(JSON.stringify(t))
+  console.log(get(minerLoopEnabled))
+  console.log(!get(backlogInProgress))
+  console.log(!proofInProgress)
   if (
     // user must have set mining switch on
     get(minerLoopEnabled) &&
     // there should be no backlog in progress
     !get(backlogInProgress) &&
     // only try to restart if a proof has completed.
-    proofComplete
+    !proofInProgress
   ) {
-    return towerOnce()
+    towerOnce()
   }
 }
 
@@ -161,7 +169,7 @@ export const hasProofsPending = (): boolean => {
   return false
 }
 export const maybeEmitBacklog = async () => {
-  console.log('>>> maybeEmitBacklog')
+  logger(Level.Info, ' maybeEmitBacklog')
   // only emit a backlog event, if there are any proofs pending
   // and there is no backlog already in progress
   // and finally check that the listener has started.
@@ -171,32 +179,29 @@ export const maybeEmitBacklog = async () => {
 }
 
 export const getTowerChainView = async () => {
-  console.log('>>> getTowerChainView')
+  logger(Level.Info, ' getTowerChainView')
   isRefreshingAccounts.set(true)
+  resetTowerStatus()
   return invoke('get_onchain_tower_state', {
     account: get(signingAccount).account,
   })
     .then((res: TowerStateView) => {
-      const t = get(tower)
-      t.on_chain = res
-      tower.set(t)
-      responses.set(JSON.stringify(res))
-
-      if (t.on_chain && t.on_chain.verified_tower_height) {
+      if (res.verified_tower_height) {
         isTowerNewbie.set(false)
       }
+      tower.update((b) => {
+        b.on_chain = res
+        return b
+      })
+
+      responses.set(JSON.stringify(res))
 
       isRefreshingAccounts.set(false)
     })
     .catch((e) => {
       //need to reset, otherwise may be looking at wrong account
-      // let t = get(tower);
-      // if t {
-      //   tower.update(t => { t.on_chain = null; return t });
-      //   if (t.on_chain && !t.on_chain.verified_tower_height) {
-      //     isTowerNewbie.set(true);
-      //   }
-      // }
+      resetTowerStatus()
+      isTowerNewbie.set(true)
 
       raise_error(e, true, 'getTowerChainView')
       isRefreshingAccounts.set(false)
@@ -243,13 +248,13 @@ export function proofError() {
   tower.set(t)
 }
 
-export function setProofComplete() {
-  const t = get(tower)
-  t.progress.complete = true
-  tower.set(t)
+// export function setProofComplete() {
+//   const t = get(tower)
+//   t.progress.complete = true
+//   tower.set(t)
 
-  minerProofComplete.set(true)
-}
+//   minerProofComplete.set(true)
+// }
 
 export function setProofProgres() {
   const t = get(tower)
@@ -259,28 +264,6 @@ export function setProofProgres() {
     t.progress.pct_complete = t.progress.time_elapsed / t.progress.previous_duration
     tower.set(t)
   }
-}
-
-// submit any transactions that are in the backlog. Proofs that have been mined but for any reason were not committed.
-export const submitBacklog = async () => {
-  console.log('submitBacklog called')
-  clearDisplayErrors()
-  backlogInProgress.set(true)
-  invoke('submit_backlog', {})
-    .then((res) => {
-      backlogInProgress.set(false)
-      backlogSubmitted.set(true)
-      console.log('submit_backlog response: ' + res)
-      responses.set(res as string)
-      notify_success('Backlog submitted')
-      return res
-    })
-    .catch((e) => {
-      backlogInProgress.set(false)
-      backlogSubmitted.set(false)
-      console.log('>>> submit_backlog error: ' + e)
-      raise_error(e, false, 'submitBacklog')
-    })
 }
 
 // For debugging or rescue purposes. Sometimes the user may have a proof that for some reason was not committed to the chain.

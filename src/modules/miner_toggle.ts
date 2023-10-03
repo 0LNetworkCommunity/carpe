@@ -3,9 +3,8 @@ import { minerLoopEnabled } from './miner'
 import { killBacklogListener, startBacklogListener, towerOnce } from './miner_invoke'
 import { carpeTick } from './tick'
 
-export async function enableMining(): Promise<boolean> {
+export const enableMining = async (): Promise<void> => {
   if (!get(minerLoopEnabled)) {
-    minerLoopEnabled.set(true)
     // When the user turns on the toggle, they will be prompted for OS password.
     // the backlog listener prevents the user from having to re-enter the password everytime
     // a new proof needs to be submitted.
@@ -15,13 +14,9 @@ export async function enableMining(): Promise<boolean> {
     // if the user has stuck proofs, we will show an error screen with a button for
     // manually triggering the backlog.
     startBacklogListener()
-
-    // start the first iteration of the loop.
-    carpeTick()
-
-    towerOnce()
-
-    return true
+      .then(carpeTick)
+      .then(() => minerLoopEnabled.set(true))
+      .then(towerOnce)
   }
 }
 

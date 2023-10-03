@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Link } from "svelte-navigator";
   import { _ } from "svelte-i18n";
   import { invoke } from "@tauri-apps/api/tauri";
 
@@ -7,7 +6,6 @@
   import { raise_error } from "../../modules/carpeError";
   import { network_profile } from "../../modules/networks";
   import type { NetworkPlaylist} from "../../modules/networks";
-  import { routes } from "../../modules/routes";
   import { notify_success } from "../../modules/carpeNotify";
 
   // default playlist which is provided in Carpe.
@@ -48,9 +46,9 @@
           class="uk-button uk-button-primary uk-align-right"
           id="add-btn">{$_("settings.network_settings.btn_submit")}</button
         >
-        <Link to={routes.home}>
+        <!-- <Link to={routes.home}>
           <button class="uk-button uk-button-default uk-align-right">{$_("settings.network_settings.btn_cancel")}</button>
-        </Link>
+        </Link> -->
       </div>
     </fieldset>
   </form>

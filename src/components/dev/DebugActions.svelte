@@ -4,9 +4,11 @@
     emitBacklog,
     killBacklogListener,
     startBacklogListener,
-    submitBacklog,
     towerOnce,
   } from '../../modules/miner_invoke'
+
+  import { submitBacklog } from '../../modules/submitBacklog';
+
 </script>
 
 <main>

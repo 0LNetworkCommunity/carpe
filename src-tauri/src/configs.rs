@@ -26,10 +26,10 @@ static CONFIG_DIR: Lazy<PathBuf> = Lazy::new(|| {
 // Win: C:\Users\Alice\AppData\Roaming\carpe\Carpe\config
 // Mac: /Users/Alice/Library/Application Support/com.carpe.Carpe
 pub fn default_config_path() -> &'static Path {
-  dbg!(&CONFIG_DIR);
   &CONFIG_DIR
 }
 
+/// default config path for platform
 pub fn config_file_path() -> PathBuf {
   CONFIG_DIR.join(CONFIG_FILE_NAME)
 }
@@ -40,6 +40,7 @@ pub fn legacy_config_path() -> PathBuf {
   base.home_dir().join(".0L")
 }
 
+/// create a new config file for initialization
 pub fn new_cfg() -> anyhow::Result<AppCfg> {
   // use carpe default system config path
   let mut c = AppCfg::default();
@@ -48,15 +49,22 @@ pub fn new_cfg() -> anyhow::Result<AppCfg> {
   Ok(c)
 }
 
+/// get the AppCfg with the default file path
 pub fn get_cfg() -> anyhow::Result<AppCfg> {
   AppCfg::load(Some(config_file_path()))
 }
 
+/// get a client struct from default configs
 pub fn get_client() -> anyhow::Result<Client> {
   let app_cfg = get_cfg()?;
   Ok(Client::new(app_cfg.pick_url(None)?))
 }
 
+/// check if we have a file and it's populated with at least one profile
 pub fn is_initialized() -> bool {
-  config_file_path().exists()
+  if let Ok(cfg) = get_cfg() {
+    cfg.get_profile(None).is_ok()
+  } else {
+    false
+  }
 }

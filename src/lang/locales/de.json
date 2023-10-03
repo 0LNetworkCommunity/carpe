@@ -37,6 +37,7 @@
       "nickname": "Spitzname",
       "address": "Adresse",
       "authkey": "Authkey",
+      "unlocked": "Unlocked",
       "balance": "Guthaben",
       "offline": "offline",
       "loading": "wird geladen",

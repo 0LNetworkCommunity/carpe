@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { get, writable } from 'svelte/store'
-import { raise_error } from './carpeError'
+import { Level, logger, raise_error } from './carpeError'
 import { refreshAccounts } from './accountActions'
 
 // matches rust equivalent
@@ -57,7 +57,7 @@ export enum NamedChain {
 
 export const network_profile = writable<NetworkPlaylist>(defaultPlaylist())
 export const connected = writable<boolean>(true)
-export const scanning_fullnodes = writable<boolean>()
+export const scanningForFullnodes = writable<boolean>(false)
 export const scanning_fullnodes_backoff = writable<number>(new Date().getSeconds())
 export const scanning_fullnodes_retries = writable<number>(0)
 
@@ -83,13 +83,13 @@ export const getNetwork = async () => {
 }
 
 export const getMetadata = async () => {
-  console.log('>>> get_metadata')
+  logger(Level.Info, ' get_metadata')
   return invoke('get_metadata', {})
     .then((res: IndexResponse) => {
       networkMetadata.set(res)
       connected.set(true)
       // lets stop scanning for fullnodes if we got a good connection.
-      scanning_fullnodes.set(false)
+      scanningForFullnodes.set(false)
       scanning_fullnodes_backoff.set(new Date().getSeconds())
       return res
     })
@@ -108,14 +108,14 @@ export const refreshUpstreamPeerStats = async () => {
     return
   }
 
-  scanning_fullnodes.set(true)
-  console.log('>>> refresh_upstream_peer_stats')
+  scanningForFullnodes.set(true)
+  logger(Level.Info, ' refresh_upstream_peer_stats')
   return invoke('refresh_upstream_peer_stats', {})
-    .then((res: [string]) => {
+    .then((res: string[]) => {
       // Urls
       synced_fullnodes.set(res)
       getMetadata() // check the metadata and if we are connected
-      scanning_fullnodes.set(false)
+      scanningForFullnodes.set(false)
       scanning_fullnodes_retries.set(0)
     })
     .catch((error) => {

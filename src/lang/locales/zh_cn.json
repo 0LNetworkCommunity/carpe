@@ -33,6 +33,7 @@
       "nickname": "昵称",
       "address": "地址",
       "authkey": "激活码",
+      "unlocked": "Unlocked",
       "balance": "余额",
       "offline": "断线",
       "loading": "加载中",

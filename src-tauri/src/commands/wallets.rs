@@ -9,6 +9,7 @@ use anyhow::anyhow;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
   legacy_types::app_cfg::Profile,
+  move_resource::gas_coin::SlowWalletBalance,
   type_extensions::client_ext::ClientExt,
 };
 use libra_wallet::account_keys::{self, KeyChain};
@@ -27,7 +28,7 @@ pub struct CarpeProfile {
   auth_key: AuthenticationKey,
   nickname: String,
   on_chain: bool,
-  balance: u64,
+  balance: SlowWalletBalance,
   locale: Option<String>, // TODO: refactor, tauri now offers locale of the OS
 }
 
@@ -38,7 +39,10 @@ impl From<&Profile> for CarpeProfile {
       auth_key: core_profile.auth_key,
       nickname: core_profile.nickname.clone(),
       on_chain: core_profile.on_chain,
-      balance: core_profile.balance,
+      balance: SlowWalletBalance {
+        unlocked: core_profile.balance.unlocked,
+        total: core_profile.balance.total,
+      }, // TODO: refactor upstream to have Clone
       locale: core_profile.locale.clone(),
     }
   }
@@ -47,7 +51,7 @@ impl From<&Profile> for CarpeProfile {
 /// Keygen handler
 #[tauri::command]
 pub fn keygen() -> Result<NewKeygen, CarpeError> {
-  let legacy_key = account_keys::legacy_keygen()?;
+  let legacy_key = account_keys::legacy_keygen(false)?;
   let mnemonic_string = legacy_key.mnemonic;
 
   let keys = account_keys::get_keys_from_mnem(mnemonic_string.clone())?;
@@ -74,7 +78,6 @@ pub async fn init_from_mnem(mnem: String) -> Result<CarpeProfile, CarpeError> {
 }
 
 #[tauri::command(async)]
-
 pub async fn init_from_private_key(pri_key_string: String) -> Result<CarpeProfile, CarpeError> {
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
     .map_err(|_| anyhow!("cannot parse encoded private key"))?;
@@ -132,6 +135,7 @@ async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeEr
     if let Ok(addr) = get_originating_address(e.auth_key).await {
       e.account = addr;
       e.nickname = get_short(addr);
+      e.on_chain = true;
     }
   }))
   .await;
@@ -141,11 +145,12 @@ async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeEr
 async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError> {
   futures::future::join_all(list.iter_mut().map(|e| async {
     if let Ok(b) = query::get_balance(e.account).await {
-      e.balance = b
+      e.balance = b;
+      e.on_chain = true;
     }
 
     if query::get_seq_num(e.account).await.is_ok() {
-      e.on_chain = true
+      e.on_chain = true;
     }
   }))
   .await;

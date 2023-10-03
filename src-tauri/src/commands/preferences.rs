@@ -1,7 +1,8 @@
 use crate::configs::{default_config_path, legacy_config_path};
-use crate::migrate;
+use crate::migrate::{self, backup_legacy_dir, read_accounts};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use libra_types::legacy_types::mode_ol::MODE_0L;
+use log::{error, info, warn};
 use std::env;
 use std::path::PathBuf;
 use url::Url;
@@ -10,16 +11,6 @@ pub struct Preferences {
   pub locale: Option<String>,
 }
 
-// #[tauri::command]
-// /// fetch the preferences struct. Note it is only locale for now.
-// pub fn get_preferences() -> Result<Preferences, CarpeError> {
-//   let app_cfg = get_cfg()?;
-//   let profile = app_cfg.get_profile(None)?;
-//   Ok(Preferences {
-//     locale: profile.locale,
-//   })
-// }
-
 #[tauri::command(async)]
 /// set the locale preference
 pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
@@ -27,7 +18,6 @@ pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
   let profile = app_cfg.get_profile_mut(None)?;
 
   profile.locale = Some(locale);
-  // app_cfg.maybe_add_profile(*profile)?;
   app_cfg.save_file()?;
   Ok(())
 }
@@ -69,13 +59,36 @@ pub fn set_env(env: String) -> Result<String, CarpeError> {
 
 #[tauri::command(async)]
 pub async fn maybe_migrate() -> Result<bool, CarpeError> {
-  println!("attempting migration");
-  Ok(migrate::maybe_migrate_data().await.is_ok())
+  warn!("attempting migration");
+  match migrate::maybe_migrate_data().await {
+    Ok(_) => {
+      info!("migration success");
+      Ok(true)
+    }
+    Err(e) => {
+      error!("migration error {:?}", e);
+      Err(CarpeError::from(e))
+    }
+  }
+}
+
+#[tauri::command(async)]
+pub async fn ignore_migrate() -> Result<bool, CarpeError> {
+  warn!("ignoring migration");
+  Ok(backup_legacy_dir().is_ok())
 }
 
 #[tauri::command]
 /// looks for $HOME/.0L/
 ///  if a migration happened this will not be found since it will be renamed to .0L_bak
 pub async fn has_legacy_configs() -> bool {
-  legacy_config_path().exists()
+  if let Ok(acc) = read_accounts(&legacy_config_path()) {
+    info!(
+      "alegacy configs found at: {}",
+      legacy_config_path().display()
+    );
+    info!("accounts: {:?}", acc);
+    return true;
+  }
+  false
 }
