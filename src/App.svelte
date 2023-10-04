@@ -16,7 +16,7 @@
   } from './modules/miner'
   import { raise_error } from './modules/carpeError'
   import type { CarpeError, CarpeOkReturn } from './modules/carpeError'
-  import { responses, debugMode, debugModeToggle } from './modules/debug'
+  import { responses, debugMode } from './modules/debug'
   import { routes } from './modules/routes'
   import 'uikit/dist/css/uikit.min.css'
   import { init_locale_preferences } from './modules/preferences'
@@ -137,6 +137,4 @@
       {/if}
     </Router>
   </div>
-
-  <button on:click={debugModeToggle} style="position:absolute; bottom:0; left:0" class="uk-button uk-button-link">🐇</button>
 </main>
