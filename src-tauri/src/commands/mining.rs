@@ -69,7 +69,8 @@ pub struct BacklogSuccess {
 }
 
 // // When the user turns on the toggle, they will be prompted for OS password.
-// // the backlog listener prevents the user from having to re-enter the password everytime
+// // the backlog listener prevents the user from having to re-enter the
+// password every time
 // // a new proof needs to be submitted.
 // // The backlog listener then should be started at the time the user toggles the mining.
 
@@ -184,9 +185,7 @@ fn get_proof_zero() -> anyhow::Result<(VDFProof, PathBuf)> {
 
 #[tauri::command(async)]
 pub fn get_local_height() -> Result<u64, CarpeError> {
-  let cfg = get_cfg()?;
-
-  match VDFProof::get_latest_proof(&cfg, true) {
+  match get_last_local_proof() {
     Ok(proof) => Ok(proof.height),
     Err(_) => Err(CarpeError::tower(
       "could not get block height",
