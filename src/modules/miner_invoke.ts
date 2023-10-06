@@ -30,7 +30,7 @@ import { disableMining } from './miner_toggle'
 const current_window = getCurrent()
 
 export const towerOnce = async () => {
-  if (!get(minerLoopEnabled)){
+  if (!get(minerLoopEnabled)) {
     console.log('tower disabled')
     return
   }
