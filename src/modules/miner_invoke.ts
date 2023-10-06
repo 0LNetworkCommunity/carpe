@@ -63,7 +63,7 @@ export const towerOnce = async () => {
   })
 
   // This is a long running async call.
-  // when miner_once returnsm, it's with the response of the proof, or error.
+  // when miner_once returns, it's with the response of the proof, or error.
   return invoke('miner_once', {})
     .then((res: VDFProof) => {
       // setProofComplete()
@@ -92,7 +92,7 @@ export const towerOnce = async () => {
 }
 
 export const maybeStartMiner = async () => {
-  logger(Level.Info, ' maybeStartMiner')
+  logger(Level.Info, 'maybeStartMiner')
 
   // this should be instant
   await getEpochRules().catch((e) => {
@@ -103,9 +103,6 @@ export const maybeStartMiner = async () => {
   await getLocalHeight().catch((e) => {
     console.log('error getting local height', e)
   })
-
-  // maybe try to start a new proof
-  // console.log('maybeStartMiner')
 
   const t = get(tower)
   const proofInProgress = t && t.progress && t.progress.complete == false
@@ -213,8 +210,7 @@ export const getLocalHeight = async () => {
   console.log('getLocalHeight')
   return invoke('get_last_local_proof', {})
     .then((res: VDFProof) => {
-      // console.log(res);
-      // if res.
+      // console.log(res)
       const t = get(tower)
       t.last_local_proof = res
       t.local_height = res.height
@@ -248,18 +244,12 @@ export function proofError() {
   tower.set(t)
 }
 
-// export function setProofComplete() {
-//   const t = get(tower)
-//   t.progress.complete = true
-//   tower.set(t)
-
-//   minerProofComplete.set(true)
-// }
-
-export function setProofProgres() {
+export function setProofPercent() {
   const t = get(tower)
-  const done = get(minerProofComplete)
-  if (t.progress && !done) {
+  // const done = get(minerProofComplete)
+  // console.log('proof progress', done, t.progress)
+
+  if (t.progress && !t.progress.complete) {
     t.progress.time_elapsed = Date.now() - t.progress.time_start
     t.progress.pct_complete = t.progress.time_elapsed / t.progress.previous_duration
     tower.set(t)

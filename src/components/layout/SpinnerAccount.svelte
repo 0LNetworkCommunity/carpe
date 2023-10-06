@@ -3,7 +3,7 @@
     import { connected } from "../../modules/networks"
 </script>
 
-  <main>
+  <main class="uk-padding">
     {#if $isRefreshingAccounts && $connected}
       <div style="position:relative">
         <span uk-spinner style="position:absolute; top:0; left:0" />

@@ -6,7 +6,8 @@ import { carpeTick } from './tick'
 export const enableMining = async (): Promise<void> => {
   if (!get(minerLoopEnabled)) {
     // When the user turns on the toggle, they will be prompted for OS password.
-    // the backlog listener prevents the user from having to re-enter the password everytime
+    // the backlog listener prevents the user from having to re-enter the
+    // password every time
     // a new proof needs to be submitted.
 
     // The backlog listener requires the OS login of the user.
@@ -21,7 +22,7 @@ export const enableMining = async (): Promise<void> => {
 }
 
 export async function disableMining(): Promise<boolean> {
-  // stop the envent listener.
+  // stop the event listener.
   // set mining to disabled
   minerLoopEnabled.set(false)
   killBacklogListener() // TODO: how do we prevent zombie listeners from makeing duplicates.

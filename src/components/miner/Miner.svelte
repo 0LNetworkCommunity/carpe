@@ -46,7 +46,7 @@
    <!-- so we don't get a flash of the error card on an intermittent local network connection if we are in fact mining -->
       <div class="uk-width-1-1 uk-align-center">
         <ToggleMiner />
-        <MinerProgress tower={$tower} />
+        <MinerProgress />
         <!-- Lost time is never found again. -->
       </div>
 
