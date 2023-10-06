@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 /// creates one proof and submits
 #[tauri::command(async)]
 pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, CarpeError> {
-  info!("\nMining one proof");
+  info!("\nmining one proof");
   let app_cfg = get_cfg()?;
   let client = get_client()?;
 
@@ -45,7 +45,7 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
     }
   };
 
-  info!("next proof params: {:?}", next.diff);
+  info!("next proof params: {:?}", next);
 
   let path = app_cfg.get_block_dir(None)?;
   let vdf = proof::mine_once(&path, &next).map_err(|e| {
