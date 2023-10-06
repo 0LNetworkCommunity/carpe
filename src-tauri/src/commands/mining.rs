@@ -37,7 +37,6 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
     Ok(p) => p,
     Err(_) => {
       return proof::write_genesis(&app_cfg).map_err(|e| {
-        dbg!(&e);
         CarpeError::tower(
           &format!("could not mine one proof, message: {:?}", &e),
           TowerError::ProverError.value(),
@@ -50,16 +49,11 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
 
   let path = app_cfg.get_block_dir(None)?;
   let vdf = proof::mine_once(&path, &next).map_err(|e| {
-    dbg!(&e);
     CarpeError::tower(
       &format!("could not mine one proof, message: {:?}", &e),
       TowerError::ProverError.value(),
     )
   })?;
-
-  // TODO: Unsure why this is not triggering
-  // window.emit("send-backlog", {})
-  //   .map_err(|_| { CarpeError::misc("could not emit window event") })?;
 
   Ok(vdf)
 }
@@ -91,7 +85,7 @@ pub async fn start_backlog_sender_listener<R: Runtime>(
   // This is tauri's event listener for the tower proof.
   // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("send-backlog", move |_e| {
-    info!("\nRECEIVED BACKLOG EVENT\n");
+    info!("received backlog event");
     window_clone.emit("ack-backlog-request", ()).unwrap();
 
     match maybe_send_backlog_blocking(&mut cfg_mutex.lock().unwrap()) {
@@ -160,7 +154,6 @@ pub async fn maybe_send_genesis_proof(config: &AppCfg) -> Result<BacklogSuccess,
         Ok(BacklogSuccess { success: true })
       }
       Err(e) => {
-        dbg!(&e);
         Err(CarpeError::from(e))
       }
     }
@@ -201,29 +194,6 @@ pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
   Ok(VDFProof::get_latest_proof(&app_cfg, true)?)
 }
 
-// #[tauri::command(async)]
-// pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
-//   get_local_proofs_this_profile()
-//     // TODO: Why is the CarpeError From anyhow not working?
-//     .map_err(|e| {
-//       CarpeError::misc(&format!(
-//         "could not get local files, message: {:?}",
-//         e.to_string()
-//       ))
-//     })
-// }
-
-// #[tauri::command(async)]
-// pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
-//   get_local_proofs_this_profile()
-//     // TODO: Why is the CarpeError From anyhow not working?
-//     .map_err(|e| {
-//       CarpeError::misc(&format!(
-//         "could not get local files, message: {:?}",
-//         e.to_string()
-//       ))
-//     })
-// }
 
 #[tauri::command(async)]
 pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {

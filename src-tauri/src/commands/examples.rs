@@ -27,7 +27,6 @@ struct Payload {
 
 #[tauri::command]
 pub fn debug_emit_event<R: Runtime>(window: Window<R>) -> Result<String, CarpeError> {
-  dbg!(&window.label());
 
   window
     .emit(
@@ -44,7 +43,6 @@ pub fn debug_emit_event<R: Runtime>(window: Window<R>) -> Result<String, CarpeEr
 async fn delay() -> String {
   let time = time::Duration::from_secs(3);
   thread::sleep(time);
-  dbg!("time!");
   "time done".to_string()
 }
 

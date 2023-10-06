@@ -25,7 +25,7 @@ export async function disableMining(): Promise<boolean> {
   // stop the event listener.
   // set mining to disabled
   minerLoopEnabled.set(false)
-  killBacklogListener() // TODO: how do we prevent zombie listeners from makeing duplicates.
+  killBacklogListener() // TODO: how do we prevent zombie listeners from making duplicates.
   return true
 }
 
