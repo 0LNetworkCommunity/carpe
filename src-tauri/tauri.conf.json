@@ -6,8 +6,8 @@
   "build": {
     "distDir": "../dist",
     "devPath": "http://localhost:3000",
-    "beforeDevCommand": "bun dev:web",
-    "beforeBuildCommand": "bun build:web"
+    "beforeDevCommand": "yarn dev:web",
+    "beforeBuildCommand": "yarn build:web"
   },
   "tauri": {
     "updater": {
