@@ -1,6 +1,6 @@
 import { get } from 'svelte/store'
 import { minerLoopEnabled } from './miner'
-import { killBacklogListener, startBacklogListener, towerOnce } from './miner_invoke'
+import { killBacklogListener, startBacklogListener, maybeTowerOnce } from './miner_invoke'
 import { carpeTick } from './tick'
 
 export const enableMining = async (): Promise<void> => {
@@ -17,7 +17,7 @@ export const enableMining = async (): Promise<void> => {
     startBacklogListener()
       .then(carpeTick)
       .then(() => minerLoopEnabled.set(true))
-      .then(towerOnce)
+      .then(maybeTowerOnce)
   }
 }
 

@@ -15,6 +15,7 @@ import {
   minerEventReceived,
   isTowerNewbie,
   resetTowerStatus,
+  canMine,
 } from './miner'
 
 import type {
@@ -29,9 +30,17 @@ import { disableMining } from './miner_toggle'
 
 const current_window = getCurrent()
 
-export const towerOnce = async () => {
-  if (!get(minerLoopEnabled)) {
-    console.log('tower disabled')
+export const maybeTowerOnce = async () => {
+  if (!canMine()) {
+    raise_error(
+      {
+        category: 1,
+        uid: 1,
+        msg: 'cannot mine proof, invalid state',
+      },
+      true,
+      'towerOnce',
+    )
     return
   }
   console.log('mine tower once')
@@ -76,7 +85,7 @@ export const towerInvoke = async () => {
   return invoke('miner_once', {})
     .catch((e) => {
       // disable mining when there is a proof error.
-      raise_error(e, false, 'towerOnce')
+      raise_error(e, false, 'towerInvoke')
       disableMining()
       tower.update((b) => {
         if (b.progress) {
@@ -91,6 +100,7 @@ export const towerInvoke = async () => {
     .then((res: VDFProof) => {
       // TODO: this store is potentially duplicated with progress.complete
       minerProofComplete.set(true)
+      minerEventReceived.set(false) //reset for next proof request
 
       tower.update((b) => {
         b.last_local_proof = res
@@ -105,7 +115,6 @@ export const towerInvoke = async () => {
       responses.set(JSON.stringify(res))
     })
     .then(getLocalHeight)
-    .then(towerOnce) // ping pong
     .finally(emitBacklog)
 }
 
@@ -136,7 +145,7 @@ export const maybeStartMiner = async () => {
     // only try to restart if a proof has completed.
     !proofInProgress
   ) {
-    towerOnce()
+    maybeTowerOnce()
   }
 }
 
@@ -194,13 +203,13 @@ export const maybeEmitBacklog = async () => {
 }
 
 export const getTowerChainView = async () => {
-  logger(Level.Info, ' getTowerChainView')
+  logger(Level.Info, 'getTowerChainView')
   isRefreshingAccounts.set(true)
-  resetTowerStatus()
   return invoke('get_onchain_tower_state', {
     account: get(signingAccount).account,
   })
     .then((res: TowerStateView) => {
+      resetTowerStatus()
       if (res.verified_tower_height) {
         isTowerNewbie.set(false)
       }
@@ -208,7 +217,6 @@ export const getTowerChainView = async () => {
         b.on_chain = res
         return b
       })
-
       responses.set(JSON.stringify(res))
 
       isRefreshingAccounts.set(false)
@@ -228,11 +236,11 @@ export const getLocalHeight = async () => {
   console.log('getLocalHeight')
   return invoke('get_last_local_proof', {})
     .then((res: VDFProof) => {
-      // console.log(res)
-      const t = get(tower)
-      t.last_local_proof = res
-      t.local_height = res.height
-      tower.set(t)
+      tower.update((s) => {
+        s.last_local_proof = res
+        s.local_height = res.height
+        return s
+      })
       responses.set(JSON.stringify(res))
     })
     .catch((e) => {
@@ -246,9 +254,11 @@ export const getEpochRules = async () => {
     .then((res: EpochRules) => {
       // console.log(res);
       // if res.
-      const t = get(tower)
-      t.rules = res
-      tower.set(t)
+      tower.update((s) => {
+        s.rules = res
+        return s
+      })
+
       responses.set(JSON.stringify(res))
     })
     .catch((e) => {
@@ -258,9 +268,6 @@ export const getEpochRules = async () => {
 
 export function setProofPercent() {
   const t = get(tower)
-  // const done = get(minerProofComplete)
-  // console.log('proof progress', done, t.progress)
-
   if (t.progress && !t.progress.complete) {
     t.progress.time_elapsed = Date.now() - t.progress.time_start
     t.progress.pct_complete = t.progress.time_elapsed / t.progress.previous_duration

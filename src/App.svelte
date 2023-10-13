@@ -20,7 +20,6 @@
   import { routes } from './modules/routes'
   import 'uikit/dist/css/uikit.min.css'
   import { init_locale_preferences } from './modules/preferences'
-  import { carpeTick } from './modules/tick'
   import { bootUp } from './modules/boot'
   import { isInit } from './modules/accounts'
 
@@ -40,7 +39,7 @@
   import RecoveryMode from './components/layout/RecoveryMode.svelte'
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
   import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
-
+  import { maybeTowerOnce as maybeTowerOnce } from './modules/miner_invoke'
 
   // black magic with I18n here
   // temporarily set up here otherwise... issues
@@ -52,7 +51,6 @@
   let unlistenBacklogError
 
   onMount(async () => {
-
     bootUp()
 
     ///// Backlog /////
@@ -67,12 +65,12 @@
       responses.set(event.payload)
       //update the tower stats after we show the backlog being up to date.
       minerEventReceived.set(true)
-      backlogInProgress.set(false)
-      backlogSubmitted.set(false)
     })
 
     unlistenAck = await listen('ack-backlog-request', () => {
       backlogInProgress.set(true)
+      backlogSubmitted.set(false)
+
       // set listener ready in case
       backlogListenerReady.set(true)
     })
@@ -82,7 +80,9 @@
       //update the tower stats after we show the backlog being up to date.
       backlogInProgress.set(false)
       backlogSubmitted.set(true)
-      carpeTick()
+
+      // this is what keeps the loop going
+      maybeTowerOnce()
     })
 
     unlistenBacklogError = await listen('backlog-error', (event: Event<CarpeError>) => {
