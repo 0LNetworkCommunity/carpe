@@ -83,13 +83,8 @@ jobs:
 
 ########  BUILD  ########
 
-      # - name: yarn installation
-      #   run: yarn install
-      - name: bun
-        run: npm install -g bun
-
-      - name: installation
-        run: bun install
+      - name: yarn installation
+        run: yarn install
 
       - name: pre-build rust
         working-directory: ./src-tauri

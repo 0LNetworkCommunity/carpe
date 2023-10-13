@@ -27,14 +27,11 @@ jobs:
       - name: checkout source
         uses: actions/checkout@v3
 
-      - name: bun
-        run: npm install -g bun
-
-      - name: installation
-        run: bun install
+      - name: yarn installation
+        run: yarn install
 
       - name: lint TS
-        run: bun lint
+        run: yarn lint
 
   rust-lint:
     runs-on: macos-latest
