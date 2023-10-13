@@ -23,7 +23,6 @@ export interface TowerStateView {
   epochs_validating_and_mining: number
   contiguous_epochs_validating_and_mining: number
   epochs_since_last_account_creation: number
-  actual_count_proofs_in_epoch: number
 }
 
 export interface ProofProgress {

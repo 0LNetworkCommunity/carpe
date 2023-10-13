@@ -11,7 +11,7 @@
 <main>
   {#if $tower && $tower.progress}
     <div class="uk-inline">
-      tower: {JSON.stringify($tower.progress)}
+      <!-- tower: {JSON.stringify($tower.progress)} -->
       <span class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
         {#if $tower.progress && $tower.progress.complete}
           {$_('miner.miner_process.status_complete')}

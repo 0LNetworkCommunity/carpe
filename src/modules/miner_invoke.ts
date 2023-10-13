@@ -114,6 +114,7 @@ export const towerInvoke = async () => {
       notify_success(`Miner proof ${res.height} complete!`)
       responses.set(JSON.stringify(res))
     })
+    .then(getTowerChainView)
     .then(getLocalHeight)
     .finally(emitBacklog)
 }
