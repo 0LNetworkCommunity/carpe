@@ -27,7 +27,7 @@ pub async fn get_onchain_tower_state(account: String) -> Result<TowerProofHistor
     .await?;
   let epoch = res.state().epoch;
   let mut state = res.into_inner();
-  if state.latest_epoch_mining !=  epoch {
+  if state.latest_epoch_mining != epoch {
     state.count_proofs_in_epoch = 0;
   }
 

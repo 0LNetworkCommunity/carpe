@@ -153,9 +153,7 @@ pub async fn maybe_send_genesis_proof(config: &AppCfg) -> Result<BacklogSuccess,
         println!("submitted proof zero");
         Ok(BacklogSuccess { success: true })
       }
-      Err(e) => {
-        Err(CarpeError::from(e))
-      }
+      Err(e) => Err(CarpeError::from(e)),
     }
   } else {
     error!("No genesis proof found in vdf_proofs dir");
@@ -193,7 +191,6 @@ pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
   let app_cfg = get_cfg()?;
   Ok(VDFProof::get_latest_proof(&app_cfg, true)?)
 }
-
 
 #[tauri::command(async)]
 pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {
