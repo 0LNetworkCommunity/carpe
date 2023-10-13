@@ -5,10 +5,10 @@
     "tauri": "tauri",
     "dev": "bun format && bun lint && bun tauri dev",
     "dev:canary": "tauri dev --config src-tauri/tauri.conf.canary.json --features carpe-canary",
-    "dev:web": "vite",
+    "dev:web": "bunx --bun vite",
     "build": "tauri build",
     "build:canary": "tauri build --config src-tauri/tauri.conf.canary.json --features carpe-canary",
-    "build:web": "vite build",
+    "build:web": "bunx --bun vite build",
     "lint": "svelte-check --tsconfig ./tsconfig.json && eslint src && prettier --check src",
     "format": "eslint --fix src/* && prettier --write src"
   },
