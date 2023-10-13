@@ -59,7 +59,7 @@
               {#if $backlogInProgress}
                 <SyncProofs minerTower={$tower} loading={$isAccountRefreshed} />
               {:else}
-                <EpochStatus isTowerNewbie={$isTowerNewbie} minerTower={$tower} />
+                <EpochStatus isTowerNewbie={$isTowerNewbie} />
               {/if}
             </div>
             <div class="uk-width-2-3">

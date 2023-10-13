@@ -9,7 +9,7 @@
     "build": "tauri build",
     "build:canary": "tauri build --config src-tauri/tauri.conf.canary.json --features carpe-canary",
     "build:web": "bunx --bun vite build",
-    "lint": "svelte-check --tsconfig ./tsconfig.json && eslint src && prettier --check src",
+    "lint": "bunx --bun svelte-check --tsconfig ./tsconfig.json && bunx --bun eslint src && bunx --bun prettier --check src",
     "format": "eslint --fix src/* && prettier --write src"
   },
   "devDependencies": {
