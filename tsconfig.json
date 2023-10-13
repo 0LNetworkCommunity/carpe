@@ -9,6 +9,13 @@
     "checkJs": true,
     "isolatedModules": true,
     "strict": false,
+    "lib": [
+      "ESNext"
+    ],
+    // "bun-types" is the important part
+    "types": [
+      "bun-types"
+    ],
   },
   "include": [
     "src/**/*.d.ts",

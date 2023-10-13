@@ -6,7 +6,7 @@
 
   let enabled: boolean
   let unsubscribe
-  let looper: number
+  let looper
 
   onMount(async () => {
     unsubscribe = minerLoopEnabled.subscribe((boo) => (enabled = boo))

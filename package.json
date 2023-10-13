@@ -38,5 +38,8 @@
     "printWidth": 100,
     "semi": false,
     "singleQuote": true
+  },
+  "dependencies": {
+    "bun-types": "^1.0.6"
   }
 }
