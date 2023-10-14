@@ -6,6 +6,10 @@
     "events": "Events"
   },
   "layout": {
+    "key_error": {
+      "title": "ERROR: key not configured",
+      "body": "Your private key could not be found. Maybe this is due to a migration or upgrade. You should enter your mnemonic again save on your operating system's secure keychain."
+    },
     "connection_error": {
       "title": "Oops, We Can't Connect to 0L Network",
       "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>",
@@ -71,11 +75,12 @@
     "account_from_mnem_from": {
       "title": "RESTORE ACCOUNT",
       "description": "Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions",
-      "placeholder": "Recovery Mnemonic"
+      "placeholder": "Recovery Words"
     },
     "account_from_private": {
       "description": "Recover the account using the private key.",
-      "placeholder": "Private Key"
+      "placeholder": "Private Key",
+      "accordion_title": "advanced: use private key"
     },
     "account_switcher": {
       "select_account": "Settings",

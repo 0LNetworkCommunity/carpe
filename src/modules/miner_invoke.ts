@@ -1,8 +1,8 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { getCurrent } from '@tauri-apps/api/window'
 import { get } from 'svelte/store'
-import { isRefreshingAccounts, signingAccount } from './accounts'
-import { Level, logger, raise_error } from './carpeError'
+import { isKeyError, isRefreshingAccounts, signingAccount } from './accounts'
+import { Level, logger, raise_error, type CarpeError } from './carpeError'
 import { clearDisplayErrors } from './carpeErrorUI'
 import { notify_success } from './carpeNotify'
 import { responses } from './debug'
@@ -158,7 +158,15 @@ export const startBacklogListener = async () => {
       backlogListenerReady.set(true)
       return res
     })
-    .catch((e) => raise_error(e, false, 'startBacklogListener'))
+    .catch((e: CarpeError) => {
+      let be_quiet = false
+      if (e.uid == 104) {
+        // check for know error: key not found after upgrade
+        isKeyError.set(true)
+        be_quiet = true
+      }
+      raise_error(e, be_quiet, 'startBacklogListener')
+    })
 }
 
 // Stop listening on the rust side for new requests to mine a proof.

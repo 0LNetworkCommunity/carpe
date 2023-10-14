@@ -30,7 +30,7 @@
   import Miner from './components/miner/Miner.svelte'
   import Settings from './components/settings/Settings.svelte'
   import DevMode from './components/dev/DevMode.svelte'
-  import AccountFromMnemForm from './components/wallet/AccountFromMnemForm.svelte'
+  import AccountCreate from './components/wallet/AccountCreate.svelte'
   import Keygen from './components/wallet/Keygen.svelte'
   import Transactions from './components/txs/Transactions.svelte'
   import Events from './components/events/Events.svelte'
@@ -40,6 +40,7 @@
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
   import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
   import { maybeTowerOnce as maybeTowerOnce } from './modules/miner_invoke'
+    import KeyError from './components/layout/KeyError.svelte'
 
   // black magic with I18n here
   // temporarily set up here otherwise... issues
@@ -108,6 +109,7 @@
 
   {#if $isInit}
     <SearchingFullnodes />
+    <KeyError/>
     <SpinnerAccount />
     <RecoveryMode />
   {/if}
@@ -118,7 +120,7 @@
       <div class="uk-background-muted uk-margin-large">
         <Route path={routes.wallet} component={Wallet} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
-        <Route path={routes.accountFromMnem} component={AccountFromMnemForm} primary={false} />
+        <Route path={routes.accountFromMnem} component={AccountCreate} primary={false} />
         <Route path={routes.keygen} component={Keygen} primary={false} />
         <Route path={routes.miner} component={Miner} primary={false} />
         <Route path={routes.transfer} component={Transactions} primary={false} />
