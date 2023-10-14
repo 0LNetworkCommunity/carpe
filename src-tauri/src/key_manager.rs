@@ -11,6 +11,8 @@ use anyhow::{anyhow, bail};
 use keyring::KeyringError;
 use libra_types::exports::{Ed25519PrivateKey, Ed25519PublicKey, KeyPair};
 
+use crate::carpe_error::{CarpeError, ErrorCat, E_KEY_NOT_REGISTERED};
+
 const KEYRING_APP_NAME: &str = "carpe";
 
 /// overwrite then delete
@@ -70,10 +72,15 @@ pub fn get_keypair(
 /// insert the public key into the AppCfg temporarily so that we don't need
 /// to prompt user for mnemonic.
 // NOTE to future devs: DANGER: make sure this is never called in a flow that uses save_file(). The upstream prevents the key from serializing, but it should be guarded here as well.
-pub fn inject_private_key_to_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<()> {
+pub fn inject_private_key_to_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<(), CarpeError> {
   // gets the default profile
   let profile = app_cfg_mut.get_profile_mut(None)?;
-  let pri_key = get_private_key(&profile.account)?;
+  let pri_key = get_private_key(&profile.account).map_err(|e| CarpeError {
+    category: ErrorCat::Configs,
+    uid: E_KEY_NOT_REGISTERED,
+    msg: "no keys found on OS keychain".to_string(),
+    trace: e.to_string(),
+  })?;
   profile.set_private_key(&pri_key);
   // NOTE: intentionally not saving profile
   Ok(())
