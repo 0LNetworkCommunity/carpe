@@ -24,7 +24,7 @@ use serde::{Deserialize, Serialize};
 /// creates one proof and submits
 #[tauri::command(async)]
 pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, CarpeError> {
-  info!("\nMining one proof");
+  info!("\nmining one proof");
   let app_cfg = get_cfg()?;
   let client = get_client()?;
 
@@ -37,7 +37,6 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
     Ok(p) => p,
     Err(_) => {
       return proof::write_genesis(&app_cfg).map_err(|e| {
-        dbg!(&e);
         CarpeError::tower(
           &format!("could not mine one proof, message: {:?}", &e),
           TowerError::ProverError.value(),
@@ -46,20 +45,15 @@ pub async fn miner_once<R: Runtime>(window: Window<R>) -> Result<VDFProof, Carpe
     }
   };
 
-  info!("next proof params: {:?}", next.diff);
+  info!("next proof params: {:?}", next);
 
   let path = app_cfg.get_block_dir(None)?;
   let vdf = proof::mine_once(&path, &next).map_err(|e| {
-    dbg!(&e);
     CarpeError::tower(
       &format!("could not mine one proof, message: {:?}", &e),
       TowerError::ProverError.value(),
     )
   })?;
-
-  // TODO: Unsure why this is not triggering
-  // window.emit("send-backlog", {})
-  //   .map_err(|_| { CarpeError::misc("could not emit window event") })?;
 
   Ok(vdf)
 }
@@ -69,7 +63,8 @@ pub struct BacklogSuccess {
 }
 
 // // When the user turns on the toggle, they will be prompted for OS password.
-// // the backlog listener prevents the user from having to re-enter the password everytime
+// // the backlog listener prevents the user from having to re-enter the
+// password every time
 // // a new proof needs to be submitted.
 // // The backlog listener then should be started at the time the user toggles the mining.
 
@@ -90,7 +85,7 @@ pub async fn start_backlog_sender_listener<R: Runtime>(
   // This is tauri's event listener for the tower proof.
   // the front-ent/window will keep calling it when it needs a new proof done.
   let h = window.listen("send-backlog", move |_e| {
-    info!("\nRECEIVED BACKLOG EVENT\n");
+    info!("received backlog event");
     window_clone.emit("ack-backlog-request", ()).unwrap();
 
     match maybe_send_backlog_blocking(&mut cfg_mutex.lock().unwrap()) {
@@ -158,10 +153,7 @@ pub async fn maybe_send_genesis_proof(config: &AppCfg) -> Result<BacklogSuccess,
         println!("submitted proof zero");
         Ok(BacklogSuccess { success: true })
       }
-      Err(e) => {
-        dbg!(&e);
-        Err(CarpeError::from(e))
-      }
+      Err(e) => Err(CarpeError::from(e)),
     }
   } else {
     error!("No genesis proof found in vdf_proofs dir");
@@ -184,9 +176,7 @@ fn get_proof_zero() -> anyhow::Result<(VDFProof, PathBuf)> {
 
 #[tauri::command(async)]
 pub fn get_local_height() -> Result<u64, CarpeError> {
-  let cfg = get_cfg()?;
-
-  match VDFProof::get_latest_proof(&cfg, true) {
+  match get_last_local_proof() {
     Ok(proof) => Ok(proof.height),
     Err(_) => Err(CarpeError::tower(
       "could not get block height",
@@ -201,30 +191,6 @@ pub fn get_last_local_proof() -> Result<VDFProof, CarpeError> {
   let app_cfg = get_cfg()?;
   Ok(VDFProof::get_latest_proof(&app_cfg, true)?)
 }
-
-// #[tauri::command(async)]
-// pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
-//   get_local_proofs_this_profile()
-//     // TODO: Why is the CarpeError From anyhow not working?
-//     .map_err(|e| {
-//       CarpeError::misc(&format!(
-//         "could not get local files, message: {:?}",
-//         e.to_string()
-//       ))
-//     })
-// }
-
-// #[tauri::command(async)]
-// pub fn get_local_proofs() -> Result<Vec<PathBuf>, CarpeError> {
-//   get_local_proofs_this_profile()
-//     // TODO: Why is the CarpeError From anyhow not working?
-//     .map_err(|e| {
-//       CarpeError::misc(&format!(
-//         "could not get local files, message: {:?}",
-//         e.to_string()
-//       ))
-//     })
-// }
 
 #[tauri::command(async)]
 pub fn debug_highest_proof_path() -> Result<PathBuf, CarpeError> {

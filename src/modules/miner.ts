@@ -2,7 +2,7 @@ import { get, writable } from 'svelte/store'
 export interface ClientTowerStatus {
   last_local_proof?: VDFProof
   on_chain?: TowerStateView
-  local_height: number
+  local_height?: number
   progress?: ProofProgress
   rules?: EpochRules
 }
@@ -23,7 +23,6 @@ export interface TowerStateView {
   epochs_validating_and_mining: number
   contiguous_epochs_validating_and_mining: number
   epochs_since_last_account_creation: number
-  actual_count_proofs_in_epoch: number
 }
 
 export interface ProofProgress {
@@ -41,21 +40,30 @@ export interface EpochRules {
   difficulty: number
   security: number
 }
-export const tower = writable<ClientTowerStatus>({ local_height: 0 })
-export const resetTowerStatus = () => tower.set({ local_height: 0 })
+export const tower = writable<ClientTowerStatus>({})
+export const resetTowerStatus = () => tower.set({})
 
-// is set to true if when the app starts and Rust emits the backlog-listener-ready event.
-export const backlogListenerReady = writable(false)
-
+export const canMine = (): boolean => {
+  return (
+    get(minerLoopEnabled) && // user wants to mine
+    get(backlogListenerReady) && // the backlog listener started
+    !get(minerEventReceived) && // there isn't a miner event in progress
+    !get(backlogInProgress)
+  ) // there is no backlog in progress
+  // we don't care if the backlog was successful last time
+}
 // is set to true when the user toggles the miner-toggle
 // is set to false when the user manually sets to off, or the mineOnce async invocation returns error.
 export const minerLoopEnabled = writable(false)
+
+// is set to true if when the app starts and Rust emits the backlog-listener-ready event.
+export const backlogListenerReady = writable(false)
 
 // is set to true when the window.emit event is received
 // is set to false when a new proof starts
 export const minerEventReceived = writable(false)
 
-// is set to true when the asyc MineOnce returns a proof
+// is set to true when the async MineOnce returns a proof
 // is set to false when a new proof starts
 export const minerProofComplete = writable(false)
 
@@ -69,6 +77,6 @@ export const backlogSubmitted = writable(false)
 
 export const isTowerNewbie = writable(true)
 
-export function getProgess(): ProofProgress {
+export function getProgress(): ProofProgress {
   return get(tower).progress
 }

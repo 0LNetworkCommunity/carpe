@@ -1,12 +1,13 @@
 import { get } from 'svelte/store'
 import { minerLoopEnabled } from './miner'
-import { killBacklogListener, startBacklogListener, towerOnce } from './miner_invoke'
+import { killBacklogListener, startBacklogListener, maybeTowerOnce } from './miner_invoke'
 import { carpeTick } from './tick'
 
 export const enableMining = async (): Promise<void> => {
   if (!get(minerLoopEnabled)) {
     // When the user turns on the toggle, they will be prompted for OS password.
-    // the backlog listener prevents the user from having to re-enter the password everytime
+    // the backlog listener prevents the user from having to re-enter the
+    // password every time
     // a new proof needs to be submitted.
 
     // The backlog listener requires the OS login of the user.
@@ -16,15 +17,15 @@ export const enableMining = async (): Promise<void> => {
     startBacklogListener()
       .then(carpeTick)
       .then(() => minerLoopEnabled.set(true))
-      .then(towerOnce)
+      .then(maybeTowerOnce)
   }
 }
 
 export async function disableMining(): Promise<boolean> {
-  // stop the envent listener.
+  // stop the event listener.
   // set mining to disabled
   minerLoopEnabled.set(false)
-  killBacklogListener() // TODO: how do we prevent zombie listeners from makeing duplicates.
+  killBacklogListener() // TODO: how do we prevent zombie listeners from making duplicates.
   return true
 }
 

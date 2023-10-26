@@ -149,7 +149,7 @@
               <label class="uk-form-label" for="balance-text">
                 {$_('txs.transfer.balance')}
               </label>
-              <div>{printCoins(account.balance)}</div>
+              <div>{printCoins(account.balance.unlocked)}</div>
             </div>
             <div class="uk-width-1-1">
               <label class="uk-form-label" for="receiver-text">

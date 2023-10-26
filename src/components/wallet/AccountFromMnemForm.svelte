@@ -1,8 +1,7 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
   import AccountFromMnemSubmit from './AccountFromMnemSubmit.svelte'
-  import AccountFromPrivateKey from './AccountFromPrivateKey.svelte'
-    import { onDestroy } from 'svelte'
+  import { onDestroy } from 'svelte'
 
   let formDangerMnem: string
 
@@ -28,6 +27,4 @@
       <AccountFromMnemSubmit {formDangerMnem} isNewAccount={false} />
     </fieldset>
   </form>
-
-  <AccountFromPrivateKey />
 </main>

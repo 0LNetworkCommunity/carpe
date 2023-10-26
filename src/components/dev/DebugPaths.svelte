@@ -27,7 +27,7 @@
       <span>Configs Path: {config_path} </span>
     </div>
     <div>
-      <span>App Configs: {config_path}/0L.toml </span>
+      <span>App Configs: {config_path}/libra.yaml </span>
     </div>
     <div>
       <span>App Logs: {config_path}/carpe.log </span>

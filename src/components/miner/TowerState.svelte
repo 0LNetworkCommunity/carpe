@@ -36,16 +36,16 @@
           <td>{minerTower.on_chain.latest_epoch_mining}</td>
           <td>
             <div class="uk-inline">
-              {#if minerTower.on_chain.actual_count_proofs_in_epoch >= 8}
+              {#if minerTower.on_chain.count_proofs_in_epoch >= 8}
                 <span class="uk-text-muted uk-margin" uk-icon="icon: check" />
               {:else}
                 <span class="uk-text-warning uk-margin" uk-icon="icon: minus-circle" />
               {/if}
-              {minerTower.on_chain.actual_count_proofs_in_epoch}
+              {minerTower.on_chain.count_proofs_in_epoch}
               <div uk-dropdown>
-                {#if minerTower.on_chain.actual_count_proofs_in_epoch >= 72}
+                {#if minerTower.on_chain.count_proofs_in_epoch >= 72}
                   {$_('miner.tower_state.proof_more')}
-                {:else if minerTower.on_chain.actual_count_proofs_in_epoch >= 8}
+                {:else if minerTower.on_chain.count_proofs_in_epoch >= 8}
                   {$_('miner.tower_state.proof_ok')}
                 {:else}
                   {$_('miner.tower_state.proof_less')}

@@ -16,11 +16,10 @@
   } from './modules/miner'
   import { raise_error } from './modules/carpeError'
   import type { CarpeError, CarpeOkReturn } from './modules/carpeError'
-  import { responses, debugMode, debugModeToggle } from './modules/debug'
+  import { responses, debugMode } from './modules/debug'
   import { routes } from './modules/routes'
   import 'uikit/dist/css/uikit.min.css'
   import { init_locale_preferences } from './modules/preferences'
-  import { carpeTick } from './modules/tick'
   import { bootUp } from './modules/boot'
   import { isInit } from './modules/accounts'
 
@@ -31,7 +30,7 @@
   import Miner from './components/miner/Miner.svelte'
   import Settings from './components/settings/Settings.svelte'
   import DevMode from './components/dev/DevMode.svelte'
-  import AccountFromMnemForm from './components/wallet/AccountFromMnemForm.svelte'
+  import AccountCreate from './components/wallet/AccountCreate.svelte'
   import Keygen from './components/wallet/Keygen.svelte'
   import Transactions from './components/txs/Transactions.svelte'
   import Events from './components/events/Events.svelte'
@@ -40,7 +39,8 @@
   import RecoveryMode from './components/layout/RecoveryMode.svelte'
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
   import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
-
+  import { maybeTowerOnce as maybeTowerOnce } from './modules/miner_invoke'
+    import KeyError from './components/layout/KeyError.svelte'
 
   // black magic with I18n here
   // temporarily set up here otherwise... issues
@@ -52,7 +52,6 @@
   let unlistenBacklogError
 
   onMount(async () => {
-
     bootUp()
 
     ///// Backlog /////
@@ -67,12 +66,12 @@
       responses.set(event.payload)
       //update the tower stats after we show the backlog being up to date.
       minerEventReceived.set(true)
-      backlogInProgress.set(false)
-      backlogSubmitted.set(false)
     })
 
     unlistenAck = await listen('ack-backlog-request', () => {
       backlogInProgress.set(true)
+      backlogSubmitted.set(false)
+
       // set listener ready in case
       backlogListenerReady.set(true)
     })
@@ -82,7 +81,9 @@
       //update the tower stats after we show the backlog being up to date.
       backlogInProgress.set(false)
       backlogSubmitted.set(true)
-      carpeTick()
+
+      // this is what keeps the loop going
+      maybeTowerOnce()
     })
 
     unlistenBacklogError = await listen('backlog-error', (event: Event<CarpeError>) => {
@@ -108,6 +109,7 @@
 
   {#if $isInit}
     <SearchingFullnodes />
+    <KeyError/>
     <SpinnerAccount />
     <RecoveryMode />
   {/if}
@@ -118,7 +120,7 @@
       <div class="uk-background-muted uk-margin-large">
         <Route path={routes.wallet} component={Wallet} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
-        <Route path={routes.accountFromMnem} component={AccountFromMnemForm} primary={false} />
+        <Route path={routes.accountFromMnem} component={AccountCreate} primary={false} />
         <Route path={routes.keygen} component={Keygen} primary={false} />
         <Route path={routes.miner} component={Miner} primary={false} />
         <Route path={routes.transfer} component={Transactions} primary={false} />
@@ -137,6 +139,4 @@
       {/if}
     </Router>
   </div>
-
-  <button on:click={debugModeToggle} style="position:absolute; bottom:0; left:0" class="uk-button uk-button-link">🐇</button>
 </main>

@@ -4,7 +4,7 @@
     emitBacklog,
     killBacklogListener,
     startBacklogListener,
-    towerOnce,
+    maybeTowerOnce,
   } from '../../modules/miner_invoke'
 
   import { submitBacklog } from '../../modules/submitBacklog';
@@ -16,7 +16,7 @@
     <div class="uk-margin-medium-bottom">
       <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">Tower</h4>
 
-      <button class="uk-button uk-button-default" on:click={towerOnce}> Mine One Proof </button>
+      <button class="uk-button uk-button-default" on:click={maybeTowerOnce}> Mine One Proof </button>
 
       <button class="uk-button uk-button-default" on:click={submitBacklog}> Submit Backlog </button>
 

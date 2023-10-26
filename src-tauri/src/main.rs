@@ -41,6 +41,7 @@ async fn main() {
   //////// FORCE TEST SETTINGS ON START ////////////////////
   // uncomment below to explicitly set "test" env
   // Tauri builder does not take env variable from terminal
+  // use crate::commands::preferences::set_env
   // set_env("testnet".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
 

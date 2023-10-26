@@ -25,7 +25,13 @@ pub async fn get_onchain_tower_state(account: String) -> Result<TowerProofHistor
   let res = client
     .get_account_resource_bcs::<TowerProofHistoryView>(account, tower_access_path)
     .await?;
-  Ok(res.into_inner())
+  let epoch = res.state().epoch;
+  let mut state = res.into_inner();
+  if state.latest_epoch_mining != epoch {
+    state.count_proofs_in_epoch = 0;
+  }
+
+  Ok(state)
 }
 //
 #[tauri::command(async)]

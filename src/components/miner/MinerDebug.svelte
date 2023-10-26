@@ -4,7 +4,7 @@
     killBacklogListener,
     startBacklogListener,
     submitProofZero,
-    towerOnce,
+    maybeTowerOnce,
   } from '../../modules/miner_invoke'
   import { debugMode } from '../../modules/debug'
   import type { ClientTowerStatus } from '../../modules/miner'
@@ -19,7 +19,7 @@
     <div class="uk-grid">
       <div class="uk-width-1-2">
         <div class="uk-margin">
-          <button class="uk-button uk-button-default uk-width-1-1" on:click={towerOnce}
+          <button class="uk-button uk-button-default uk-width-1-1" on:click={maybeTowerOnce}
             >Start Tower</button
           >
         </div>

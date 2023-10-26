@@ -3,7 +3,7 @@
   "type": "module",
   "scripts": {
     "tauri": "tauri",
-    "dev": "yarn format && yarn lint && tauri dev",
+    "dev": "yarn format && yarn lint && yarn tauri dev",
     "dev:canary": "tauri dev --config src-tauri/tauri.conf.canary.json --features carpe-canary",
     "dev:web": "vite",
     "build": "tauri build",
@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.2.0",
-    "@tauri-apps/api": "^1.4.0",
-    "@tauri-apps/cli": "^1.4.0",
+    "@tauri-apps/api": "latest",
+    "@tauri-apps/cli": "latest",
     "@tsconfig/svelte": "^5.0.0",
     "@types/uikit": "^3.14.0",
     "@typescript-eslint/eslint-plugin": "^6.3.0",

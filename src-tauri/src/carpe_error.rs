@@ -1,15 +1,17 @@
-//! Carpe error type for client
-
-// use std::fmt::Display;
-
-// use zapatos_sdk::{
-//   // bcs,
-//   rest_client::error::RestError,
-//   move_types::account_address::AccountAddressParseError,
-// };
-
 use libra_types::exports::{AccountAddressParseError, RestError};
-// use reqwest::StatusCode;
+
+// catch all
+pub const E_UNKNOWN: u64 = 100;
+// config errors
+pub const E_APP_CONFIG: u64 = 103; // consistent with TowerError.rs
+pub const E_KEY_NOT_REGISTERED: u64 = 104; // consistent with TowerError.rs
+
+// Client Errors
+pub const E_CLIENT_UNKNOWN: u64 = 500;
+pub const E_CLIENT_CX: u64 = 404;
+
+// Transaction Errors
+pub const E_TX_UNKNOWN: u64 = 300;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub enum ErrorCat {
@@ -97,41 +99,6 @@ impl From<RestError> for CarpeError {
     }
   }
 }
-
-// impl From<TxError> for CarpeError {
-//   fn from(e: TxError) -> Self {
-//     let uid = e.abort_code.unwrap_or(E_UNKNOWN);
-//     let msg = format!(
-//       "Transaction Error: Location {:?}, AbortCode: {:?}, Message: {:?}",
-//       &e.location, &e.abort_code, &e.err
-//     );
-//     let trace = format!("TxView: {:?}", &e.tx_view);
-//     // check if the is a tower error
-//     match tower::tower_errors::parse_error(&e) {
-//       tower::tower_errors::TowerError::Unknown => {
-//         // this isn't a tower error, so it must be another TX error
-//         CarpeError::new(ErrorCat::Tx, uid, msg, trace)
-//       }
-//       tower::tower_errors::TowerError::Other(_v) => {
-//         // TODO: Use VMStatusView?
-//         CarpeError::new(ErrorCat::Tx, uid, msg, trace)
-//       }
-//
-//       any_tower_err => CarpeError::tower(&any_tower_err.to_string(), any_tower_err.value()),
-//     }
-//   }
-// }
-
-pub const E_UNKNOWN: u64 = 100;
-
-pub const E_APP_CONFIG: u64 = 103; // consistent with TowerError.rs
-
-// Client Errors
-pub const E_CLIENT_UNKNOWN: u64 = 200;
-pub const E_CLIENT_CX: u64 = 404;
-
-// Transaction Errors
-pub const E_TX_UNKNOWN: u64 = 300;
 
 impl CarpeError {
   pub fn new(category: ErrorCat, uid: u64, msg: String, trace: String) -> Self {

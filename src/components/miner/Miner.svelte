@@ -46,14 +46,11 @@
    <!-- so we don't get a flash of the error card on an intermittent local network connection if we are in fact mining -->
       <div class="uk-width-1-1 uk-align-center">
         <ToggleMiner />
-        <MinerProgress tower={$tower} />
+        <MinerProgress />
         <!-- Lost time is never found again. -->
       </div>
 
       <div class="uk-width-1-1">
-        newbie: {$isTowerNewbie}
-        local: {$tower.last_local_proof}
-
         {#if $isTowerNewbie && !$tower.last_local_proof}
           <FirstProof />
         {:else}
@@ -62,7 +59,7 @@
               {#if $backlogInProgress}
                 <SyncProofs minerTower={$tower} loading={$isAccountRefreshed} />
               {:else}
-                <EpochStatus isTowerNewbie={$isTowerNewbie} minerTower={$tower} />
+                <EpochStatus isTowerNewbie={$isTowerNewbie} />
               {/if}
             </div>
             <div class="uk-width-2-3">

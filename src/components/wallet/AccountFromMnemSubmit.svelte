@@ -2,7 +2,7 @@
   import { _ } from 'svelte-i18n'
   import UIkit from 'uikit'
   import { InitType, addAccount } from '../../modules/accountActions'
-    import { onDestroy } from 'svelte'
+  import { onDestroy } from 'svelte'
 
   export let formDangerMnem: string
   export let isNewAccount = true
@@ -13,6 +13,8 @@
 
   let isSubmitting = false
   function initAccount(mnem_string: string) {
+    if (mnem_string.length == 0) return
+
     isSubmitting = true
     addAccount(InitType.Mnem, mnem_string.trim())
       .then(() => {
@@ -28,6 +30,7 @@
         isSubmitting = false
       })
       .finally(() => {
+        isSubmitting = false
         mnem_string = null
       })
   }

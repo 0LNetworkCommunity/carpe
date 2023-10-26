@@ -35,7 +35,6 @@ export function raise_error(err: CarpeError, quiet = false, caller: string) {
   // maybe we need to take an action on this error type
   if (err.category) {
     // check this is the expected type
-    // errAction(event.paylod);
     hasCustomErrorDisplay = errAction(err)
     err.msg = `${caller}: ${err.msg}`
   } else {
@@ -44,7 +43,6 @@ export function raise_error(err: CarpeError, quiet = false, caller: string) {
       uid: 0,
       msg: `WARN: ${caller}: error type returned is not a CarpeError. Payload: ${err}`,
     }
-    // msg = `WARN: ${caller}: error type returned is not a CarpeError. Payload: ${err}`;
   }
 
   carpeErrorLog.update((list) => {

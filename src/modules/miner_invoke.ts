@@ -1,8 +1,8 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { getCurrent } from '@tauri-apps/api/window'
 import { get } from 'svelte/store'
-import { isRefreshingAccounts, signingAccount } from './accounts'
-import { Level, logger, raise_error } from './carpeError'
+import { isKeyError, isRefreshingAccounts, signingAccount } from './accounts'
+import { Level, logger, raise_error, type CarpeError } from './carpeError'
 import { clearDisplayErrors } from './carpeErrorUI'
 import { notify_success } from './carpeNotify'
 import { responses } from './debug'
@@ -15,6 +15,7 @@ import {
   minerEventReceived,
   isTowerNewbie,
   resetTowerStatus,
+  canMine,
 } from './miner'
 
 import type {
@@ -25,12 +26,25 @@ import type {
   VDFProof,
 } from './miner'
 import { NamedChain, network_profile } from './networks'
-// import { is_empty } from "svelte/internal";
+import { disableMining } from './miner_toggle'
 
 const current_window = getCurrent()
 
-export const towerOnce = async () => {
+export const maybeTowerOnce = async () => {
+  if (!canMine()) {
+    raise_error(
+      {
+        category: 1,
+        uid: 1,
+        msg: 'cannot mine proof, invalid state',
+      },
+      true,
+      'towerOnce',
+    )
+    return
+  }
   console.log('mine tower once')
+
   minerEventReceived.set(false)
   minerProofComplete.set(false)
 
@@ -62,37 +76,51 @@ export const towerOnce = async () => {
     return b
   })
 
+  towerInvoke()
+}
+
+export const towerInvoke = async () => {
   // This is a long running async call.
-  // when miner_once returnsm, it's with the response of the proof, or error.
+  // when miner_once returns, it's with the response of the proof, or error.
   return invoke('miner_once', {})
-    .then((res: VDFProof) => {
-      // setProofComplete()
+    .catch((e) => {
+      // disable mining when there is a proof error.
+      raise_error(e, false, 'towerInvoke')
+      disableMining()
       tower.update((b) => {
-        if (b.progress) b.progress.complete = true
+        if (b.progress) {
+          b.progress.pct_complete = 0
+          b.progress.complete = false
+          b.progress.error = true
+        }
+
         return b
       })
+    })
+    .then((res: VDFProof) => {
       // TODO: this store is potentially duplicated with progress.complete
       minerProofComplete.set(true)
+      minerEventReceived.set(false) //reset for next proof request
 
+      tower.update((b) => {
+        b.last_local_proof = res
+        if (b.progress) {
+          b.progress.pct_complete = 1
+          b.progress.complete = true
+        }
+
+        return b
+      })
       notify_success(`Miner proof ${res.height} complete!`)
-
       responses.set(JSON.stringify(res))
-      // return res
     })
-    .then(emitBacklog)
+    .then(getTowerChainView)
     .then(getLocalHeight)
-    .catch((e) => {
-      console.log('miner_once: ', e)
-      // disable mining when there is a proof error.
-      raise_error(e, false, 'towerOnce')
-      minerLoopEnabled.set(false)
-      proofError()
-    })
-    .finally(maybeEmitBacklog)
+    .finally(emitBacklog)
 }
 
 export const maybeStartMiner = async () => {
-  logger(Level.Info, ' maybeStartMiner')
+  logger(Level.Info, 'maybeStartMiner')
 
   // this should be instant
   await getEpochRules().catch((e) => {
@@ -103,9 +131,6 @@ export const maybeStartMiner = async () => {
   await getLocalHeight().catch((e) => {
     console.log('error getting local height', e)
   })
-
-  // maybe try to start a new proof
-  // console.log('maybeStartMiner')
 
   const t = get(tower)
   const proofInProgress = t && t.progress && t.progress.complete == false
@@ -121,7 +146,7 @@ export const maybeStartMiner = async () => {
     // only try to restart if a proof has completed.
     !proofInProgress
   ) {
-    towerOnce()
+    maybeTowerOnce()
   }
 }
 
@@ -133,7 +158,15 @@ export const startBacklogListener = async () => {
       backlogListenerReady.set(true)
       return res
     })
-    .catch((e) => raise_error(e, false, 'startBacklogListener'))
+    .catch((e: CarpeError) => {
+      let be_quiet = false
+      if (e.uid == 104) {
+        // check for know error: key not found after upgrade
+        isKeyError.set(true)
+        be_quiet = true
+      }
+      raise_error(e, be_quiet, 'startBacklogListener')
+    })
 }
 
 // Stop listening on the rust side for new requests to mine a proof.
@@ -169,7 +202,7 @@ export const hasProofsPending = (): boolean => {
   return false
 }
 export const maybeEmitBacklog = async () => {
-  logger(Level.Info, ' maybeEmitBacklog')
+  logger(Level.Info, 'maybeEmitBacklog')
   // only emit a backlog event, if there are any proofs pending
   // and there is no backlog already in progress
   // and finally check that the listener has started.
@@ -179,13 +212,13 @@ export const maybeEmitBacklog = async () => {
 }
 
 export const getTowerChainView = async () => {
-  logger(Level.Info, ' getTowerChainView')
+  logger(Level.Info, 'getTowerChainView')
   isRefreshingAccounts.set(true)
-  resetTowerStatus()
   return invoke('get_onchain_tower_state', {
     account: get(signingAccount).account,
   })
     .then((res: TowerStateView) => {
+      resetTowerStatus()
       if (res.verified_tower_height) {
         isTowerNewbie.set(false)
       }
@@ -193,7 +226,6 @@ export const getTowerChainView = async () => {
         b.on_chain = res
         return b
       })
-
       responses.set(JSON.stringify(res))
 
       isRefreshingAccounts.set(false)
@@ -213,12 +245,11 @@ export const getLocalHeight = async () => {
   console.log('getLocalHeight')
   return invoke('get_last_local_proof', {})
     .then((res: VDFProof) => {
-      // console.log(res);
-      // if res.
-      const t = get(tower)
-      t.last_local_proof = res
-      t.local_height = res.height
-      tower.set(t)
+      tower.update((s) => {
+        s.last_local_proof = res
+        s.local_height = res.height
+        return s
+      })
       responses.set(JSON.stringify(res))
     })
     .catch((e) => {
@@ -232,9 +263,11 @@ export const getEpochRules = async () => {
     .then((res: EpochRules) => {
       // console.log(res);
       // if res.
-      const t = get(tower)
-      t.rules = res
-      tower.set(t)
+      tower.update((s) => {
+        s.rules = res
+        return s
+      })
+
       responses.set(JSON.stringify(res))
     })
     .catch((e) => {
@@ -242,24 +275,9 @@ export const getEpochRules = async () => {
     })
 }
 
-export function proofError() {
+export function setProofPercent() {
   const t = get(tower)
-  t.progress.error = true
-  tower.set(t)
-}
-
-// export function setProofComplete() {
-//   const t = get(tower)
-//   t.progress.complete = true
-//   tower.set(t)
-
-//   minerProofComplete.set(true)
-// }
-
-export function setProofProgres() {
-  const t = get(tower)
-  const done = get(minerProofComplete)
-  if (t.progress && !done) {
+  if (t.progress && !t.progress.complete) {
     t.progress.time_elapsed = Date.now() - t.progress.time_start
     t.progress.pct_complete = t.progress.time_elapsed / t.progress.previous_duration
     tower.set(t)

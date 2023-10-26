@@ -1,16 +1,22 @@
-<script>
+<script lang="ts">
   import { onMount, onDestroy } from 'svelte'
   import { toggleMining } from '../../modules/miner_toggle'
   import { minerLoopEnabled } from '../../modules/miner'
+    import { setProofPercent } from '../../modules/miner_invoke'
 
-  let enabled
+  let enabled: boolean
   let unsubscribe
+  let looper
 
   onMount(async () => {
     unsubscribe = minerLoopEnabled.subscribe((boo) => (enabled = boo))
+    // for safety clear the interval
+    clearInterval(looper)
+    looper = setInterval(() => setProofPercent(), 1000)
   })
 
   onDestroy(async () => {
+    clearInterval(looper)
     unsubscribe && unsubscribe()
   })
 </script>

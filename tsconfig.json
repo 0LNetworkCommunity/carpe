@@ -9,6 +9,9 @@
     "checkJs": true,
     "isolatedModules": true,
     "strict": false,
+    "lib": [
+      "ESNext"
+    ],
   },
   "include": [
     "src/**/*.d.ts",

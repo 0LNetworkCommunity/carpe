@@ -6,6 +6,10 @@
     "events": "Events"
   },
   "layout": {
+    "key_error": {
+      "title": "ERROR: key not configured",
+      "body": "Your private key could not be found. Maybe this is due to a migration or upgrade. You should enter your mnemonic again save on your operating system's secure keychain."
+    },
     "connection_error": {
       "title": "Oops, We Can't Connect to 0L Network",
       "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>",
@@ -66,16 +70,17 @@
       "body": " <p>Are you sure you wrote down your mnemonic phrase?</p> <p>You won't be able to recover your account without it. No one can help you if lose it.</p><p>This is the last opportunity to write it down.</p>",
       "btn_cancel": "Let me check again",
       "btn_submit": "Submit Now",
-      "btn_submiting": "Submiting"
+      "btn_submiting": "Submitting"
     },
     "account_from_mnem_from": {
       "title": "RESTORE ACCOUNT",
       "description": "Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions",
-      "placeholder": "Recovery Mnemonic"
+      "placeholder": "Recovery Words"
     },
     "account_from_private": {
       "description": "Recover the account using the private key.",
-      "placeholder": "Private Key"
+      "placeholder": "Private Key",
+      "accordion_title": "advanced: use private key"
     },
     "account_switcher": {
       "select_account": "Settings",
@@ -121,7 +126,7 @@
     "account_settings": {
       "title": "ACCOUNT SETTINGS",
       "btn_remove": "REMOVE ACCOUNTS",
-      "comfirm": "Confirm remove accounts from this device? This is not reversable.",
+      "comfirm": "Confirm remove accounts from this device? This is not reversible.",
       "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
     }
   },
@@ -223,21 +228,21 @@
       "title": "Set your Account Type",
       "subtitle": " Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
       "btn_slow": "Set Slow Wallet",
-      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversable.",
+      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversible.",
       "slow_confirm": "Set Slow",
       "btn_community": "Set Community Wallet",
       "btn_confirm_community": "Set Community",
-      "community_confirm": "Confirm Set Community Wallet? This is not reversable."
+      "community_confirm": "Confirm Set Community Wallet? This is not reversible."
     },
     "transfer": {
       "title": "Coin Transfer",
       "sender": "Sender",
-      "balance": "Balance",
+      "balance": "Unlocked Balance",
       "receiver": "Receiver",
       "amount": "Amount",
       "amount_label": "Amount (fractions not allowed yet)",
       "receiver_placeholder": "Receiver address",
-      "amount_placeholder": "Amount to be transfered",
+      "amount_placeholder": "Amount to be transferred",
       "confirm_title": "Heads up!",
       "please_confirm": "Please confirm your transfer information:",
       "await": "Await txs",
