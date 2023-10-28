@@ -45,7 +45,9 @@
         "depends": []
       },
       "macOS": {
-        "frameworks": [],
+        "frameworks": [
+          "./libgmp.10.dylib"
+        ],
         "minimumSystemVersion": "",
         "exceptionDomain": "localhost",
         "signingIdentity": null,
