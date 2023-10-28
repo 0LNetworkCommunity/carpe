@@ -30,11 +30,11 @@
         "icons/icon.ico"
       ],
       "resources": [
-        "../gmp.dll",
-        "../gmp.lib",
-        "../libgmp-10.dll",
-        "../libgmp.10.dylib",
-        "../libgmp.a"
+        "gmp.dll",
+        "gmp.lib",
+        "libgmp-10.dll",
+        "libgmp.10.dylib",
+        "libgmp.a"
       ],
       "externalBin": [],
       "copyright": "",
@@ -46,11 +46,11 @@
       },
       "macOS": {
         "frameworks": [
-          "gmp.dll",
-          "gmp.lib",
-          "libgmp-10.dll",
-          "libgmp.10.dylib",
-          "libgmp.a"
+          "../gmp.dll",
+          "../gmp.lib",
+          "../libgmp-10.dll",
+          "../libgmp.10.dylib",
+          "../libgmp.a"
         ],
         "minimumSystemVersion": "",
         "exceptionDomain": "localhost",
