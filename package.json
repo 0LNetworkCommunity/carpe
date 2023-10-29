@@ -14,8 +14,8 @@
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.2.0",
-    "@tauri-apps/api": "latest",
-    "@tauri-apps/cli": "latest",
+    "@tauri-apps/api": "^1.5.1",
+    "@tauri-apps/cli": "^1.5.6",
     "@tsconfig/svelte": "^5.0.0",
     "@types/uikit": "^3.14.0",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
