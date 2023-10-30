@@ -34,6 +34,9 @@
         "gmp.lib",
         "libgmp-10.dll",
         "libgmp.10.dylib",
+        "libgmp.dylib",
+        "libgmpxx.4.dylib",
+        "libgmpxx.dylib",
         "libgmp.a"
       ],
       "externalBin": [],
@@ -46,7 +49,10 @@
       },
       "macOS": {
         "frameworks": [
-          "./libgmp.10.dylib"
+          "./libgmp.10.dylib",
+          "./libgmp.dylib",
+          "./libgmpxx.4.dylib",
+          "./libgmpxx.dylib"
         ],
         "minimumSystemVersion": "",
         "exceptionDomain": "localhost",
