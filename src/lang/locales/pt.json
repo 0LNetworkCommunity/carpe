@@ -107,7 +107,7 @@
     "account_settings": {
       "title": "CONFIGURAÇÕES DA CONTA",
       "btn_remove": "REMOVER CONTA",
-      "comfirm": "Confirmar remover contas deste dispositivo? Isso não é reversível.",
+      "confirm": "Confirmar remover contas deste dispositivo? Isso não é reversível.",
       "description": "Isso não exclui nenhuma conta da rede. Apenas remove as contas deste dispositivo. Se você não tiver seus códigos de recuperação (mnemônicos) armazenados em algum lugar, poderá ser bloqueado desta conta permanentemente. NINGUÉM PODE AJUDÁ-LO A RECUPERAR O MNEMONIC."
     }
   },
