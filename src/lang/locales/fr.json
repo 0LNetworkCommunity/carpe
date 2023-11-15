@@ -107,7 +107,7 @@
     "account_settings": {
       "title": "PARAMÈTRES DE COMPTE",
       "btn_remove": "SUPPRIMER LE COMPE",
-      "comfirm": "Confirmer la suppression du compte de ce dispositif? Cela est irreversible.",
+      "confirm": "Confirmer la suppression du compte de ce dispositif? Cela est irreversible.",
       "description": "Votre compte sera toujours sur la chaine. Cela l'enlève juste de ce dispositif. Si vous n'avez plus votre phrase de récupération (mnémonique), vous pourrez être vérrouillé de ce compte définitivement. PERSONNE NE PEUT RETROUVER VOTRE MNÉMONIQUE."
     }
   },

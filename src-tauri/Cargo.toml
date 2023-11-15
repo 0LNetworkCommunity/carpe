@@ -9,7 +9,7 @@ license = "Apache 2.0"
 repository = "https://github.com/0LNetworkCommunity/carpe"
 
 [build-dependencies]
-tauri-build = { version = "1.2.1", features = [] }
+tauri-build = { version = "^1.5.0", features = [] }
 built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
@@ -35,7 +35,7 @@ url = { version = "2.2.2", features = ["serde"] }
 directories = "5.0.1"
 keyring = "0.10.1"
 simplelog = { version = "^0.11.0", features = ["paris"] }
-tauri = { version = "1.2.4", features = ["api-all", "updater"] }
+tauri = { version = "^1.5.2", features = ["api-all", "updater"] }
 
 
 [features]
@@ -45,3 +45,14 @@ carpe-canary = [] # for building canary versions which use separate config dirs.
 
 [dev-dependencies]
 serde_yaml = "0.8.24"
+
+# uses a profile similar to `cli` in Diem/Cargo.toml
+# optimized for performance and size
+# if you are hunting bugs, this is not the profile to use.
+# [profile.release]
+# opt-level = 'z'   # Optimize for size.
+# lto = true        # Enable Link Time Optimization
+# codegen-units = 1 # Reduce number of codegen units to increase optimizations.
+# panic = 'abort'   # Abort on panic
+# debug = false     # remove debug on compile
+# strip = true      # strip debug and symbols for size

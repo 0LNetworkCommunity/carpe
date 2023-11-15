@@ -21,6 +21,16 @@ pub(crate) mod migrate;
 
 #[tokio::main]
 async fn main() {
+  dbg!(&configs::default_config_path());
+
+  match fs::create_dir_all(default_config_path()) {
+    Ok(_) => (),
+    Err(e) => {
+      error!("could not create config dir. Message: {}", e);
+      std::process::exit(1);
+    }
+  }
+
   // logging to file
   CombinedLogger::init(vec![
     TermLogger::new(
@@ -44,14 +54,6 @@ async fn main() {
   // use crate::commands::preferences::set_env
   // set_env("testnet".to_owned()).unwrap();
   //////////////////////////////////////////////////////////
-
-  match fs::create_dir_all(default_config_path()) {
-    Ok(_) => (),
-    Err(e) => {
-      error!("could not create config dir. Message: {}", e);
-      std::process::exit(1);
-    }
-  }
 
   // example menu https://github.com/probablykasper/mr-tagger/blob/b40fa319055d83b57f8ce59e82a14c0863f256ac/src-tauri/src/main.rs#L28-L78
   let metadata = AboutMetadata::new();
