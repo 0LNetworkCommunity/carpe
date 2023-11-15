@@ -34,3 +34,7 @@ export const makeWhole = writable<object>()
 export const canMigrate = writable<boolean>(false)
 export const migrateSuccess = writable<boolean>()
 export const migrateInProgress = writable<boolean>()
+
+export const format_account = (acc: string): string => {
+  return acc.replace("00", "")
+}

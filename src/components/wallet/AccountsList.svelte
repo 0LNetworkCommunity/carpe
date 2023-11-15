@@ -2,7 +2,7 @@
   import { _ } from 'svelte-i18n'
   import UIkit from 'uikit'
   import Icons from 'uikit/dist/js/uikit-icons'
-  import { allAccounts, signingAccount } from '../../modules/accounts'
+  import { allAccounts, format_account, signingAccount } from '../../modules/accounts'
   import { printCoins, unscaledCoins } from '../../modules/coinHelpers'
   import IconMining from '../icons/IconMining.svelte'
   import { minerLoopEnabled } from '../../modules/miner'
@@ -46,7 +46,7 @@
               {/if}
             </td>
             <td>{a.nickname}</td>
-            <td class="uk-text-truncate">{a.account}</td>
+            <td class="uk-text-truncate">{format_account(a.account)}</td>
             <td>{a.auth_key.slice(0, 5)}...</td>
             <td>{printCoins(a.balance.unlocked)}</td>
             <td class="uk-text-right">
