@@ -6,7 +6,7 @@
   import { responses } from '../../modules/debug'
   import { notify_success } from '../../modules/carpeNotify'
   import { printUnscaledCoins, printCoins, unscaledCoins} from '../../modules/coinHelpers'
-  import { signingAccount } from '../../modules/accounts'
+  import { formatAccount, signingAccount } from '../../modules/accounts'
   import type { CarpeProfile } from '../../modules/accounts'
   import { raise_error } from '../../modules/carpeError'
 
@@ -142,7 +142,7 @@
             <div class="uk-width-3-4@s">
               <label class="uk-form-label" for="sender-text">{$_('txs.transfer.sender')} </label>
               <div>
-                {account.account}
+                {formatAccount(account.account)}
               </div>
             </div>
             <div class="uk-width-1-4@s">
