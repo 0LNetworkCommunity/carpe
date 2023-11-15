@@ -182,9 +182,9 @@ pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, Car
 pub fn remove_accounts() -> Result<String, CarpeError> {
   // Note: this only removes the account tracking, doesn't delete account on chain.
   let mut cfg = configs::get_cfg()?;
-  cfg.profiles = vec![]
+  cfg.user_profiles = vec![];
 
-  return Ok("removed all accounts".to_owned());
+  Ok("removed all accounts".to_owned())
 }
 
 pub fn danger_get_keys(mnemonic: String) -> Result<KeyChain, anyhow::Error> {
