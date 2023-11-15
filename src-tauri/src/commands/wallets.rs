@@ -181,28 +181,10 @@ pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, Car
 #[tauri::command]
 pub fn remove_accounts() -> Result<String, CarpeError> {
   // Note: this only removes the account tracking, doesn't delete account on chain.
-  todo!()
-
-  // let db_path = configs::default_accounts_db_path();
-  // dbg!(&db_path);
-  // if db_path.exists() {
-  //     match fs::remove_file(&db_path) {
-  //         Ok(_) => return Ok("removed all accounts".to_owned()),
-  //         _ => {
-  //             return Err(CarpeError::misc(&format!(
-  //                 "unable to delete account file found at {:?}",
-  //                 &db_path
-  //             )));
-  //         }
-  //     }
-  // }
-  // return Err(CarpeError::misc(
-  //     &format!(
-  //         "No accounts to remove. No account file found at {:?}",
-  //         &db_path
-  //     )
-  //         .to_owned(),
-  // ));
+  let mut cfg = configs::get_cfg()?;
+  cfg.user_profiles = vec![];
+  cfg.save_file()?;
+  Ok("removed all accounts".to_owned())
 }
 
 pub fn danger_get_keys(mnemonic: String) -> Result<KeyChain, anyhow::Error> {
@@ -213,7 +195,7 @@ pub fn danger_get_keys(mnemonic: String) -> Result<KeyChain, anyhow::Error> {
 fn get_short(acc: AccountAddress) -> String {
   // let's check if this is a legacy/founder key, it will have 16 zeros at the start, and that's not a useful nickname
   if acc.to_string()[..32] == *"00000000000000000000000000000000" {
-    return acc.to_string()[33..36].to_owned();
+    return acc.to_string()[32..35].to_owned();
   }
   acc.to_string()[..3].to_owned()
 }
