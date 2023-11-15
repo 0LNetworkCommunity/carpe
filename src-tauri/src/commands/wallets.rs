@@ -195,7 +195,7 @@ pub fn danger_get_keys(mnemonic: String) -> Result<KeyChain, anyhow::Error> {
 fn get_short(acc: AccountAddress) -> String {
   // let's check if this is a legacy/founder key, it will have 16 zeros at the start, and that's not a useful nickname
   if acc.to_string()[..32] == *"00000000000000000000000000000000" {
-    return acc.to_string()[33..36].to_owned();
+    return acc.to_string()[32..35].to_owned();
   }
   acc.to_string()[..3].to_owned()
 }

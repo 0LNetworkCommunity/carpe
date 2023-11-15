@@ -36,5 +36,5 @@ export const migrateSuccess = writable<boolean>()
 export const migrateInProgress = writable<boolean>()
 
 export const format_account = (acc: string): string => {
-  return acc.replace("00", "")
+  return acc.replace('00000000000000000000000000000000', '')
 }
