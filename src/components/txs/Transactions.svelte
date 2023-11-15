@@ -31,7 +31,7 @@
   let waitingConfirmation = false
 
   const re = /[a-fA-F0-9]{32}/i
-  let unscaled;
+
   let isReceiverValid = true
   let isValidAmount = true
   let checkMessage = ''
