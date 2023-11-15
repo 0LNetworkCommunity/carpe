@@ -181,28 +181,10 @@ pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, Car
 #[tauri::command]
 pub fn remove_accounts() -> Result<String, CarpeError> {
   // Note: this only removes the account tracking, doesn't delete account on chain.
-  todo!()
+  let mut cfg = configs::get_cfg()?;
+  cfg.profiles = vec![]
 
-  // let db_path = configs::default_accounts_db_path();
-  // dbg!(&db_path);
-  // if db_path.exists() {
-  //     match fs::remove_file(&db_path) {
-  //         Ok(_) => return Ok("removed all accounts".to_owned()),
-  //         _ => {
-  //             return Err(CarpeError::misc(&format!(
-  //                 "unable to delete account file found at {:?}",
-  //                 &db_path
-  //             )));
-  //         }
-  //     }
-  // }
-  // return Err(CarpeError::misc(
-  //     &format!(
-  //         "No accounts to remove. No account file found at {:?}",
-  //         &db_path
-  //     )
-  //         .to_owned(),
-  // ));
+  return Ok("removed all accounts".to_owned());
 }
 
 pub fn danger_get_keys(mnemonic: String) -> Result<KeyChain, anyhow::Error> {
