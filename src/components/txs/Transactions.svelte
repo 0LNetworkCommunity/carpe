@@ -31,13 +31,14 @@
   let waitingConfirmation = false
 
   const re = /[a-fA-F0-9]{32}/i
-
+  let unscaled;
   let isReceiverValid = true
   let isValidAmount = true
   let checkMessage = ''
 
   $: isReceiverValid = account && receiver && re.test(receiver) && receiver != account.account;
-  $: isValidAmount = account && amount > 0 && amount < unscaledCoins(account.balance);
+  $: isValidAmount = account && amount > 0 && amount < unscaledCoins(account.balance.unlocked);
+
   $: checkMessage = account && amount > unscaledCoins(account.balance)
     ? $_("txs.transfer.error_amount_greater_than_balance")
     : receiver && receiver.toUpperCase() == account.account.toUpperCase()
@@ -106,7 +107,6 @@
     </h2>
   </div>
   {#if account}
-    <!-- <div id="coinTransferDialog" uk-modal> -->
     <div>
       {#if waitingConfirmation}
         <h2 class="uk-text-muted uk-text-uppercase">
@@ -115,7 +115,7 @@
         <p>{$_('txs.transfer.please_confirm')}</p>
         <p class="uk-text-uppercase">
           {$_('txs.transfer.sender')}:
-          <span class="uk-text-bold">{account.account}</span>
+          <span class="uk-text-bold">{formatAccount(account.account)}</span>
         </p>
         <p class="uk-text-uppercase">
           {$_('txs.transfer.receiver')}:
@@ -206,5 +206,4 @@
       {/if}
     </div>
   {/if}
-  <!-- </div> -->
 </main>

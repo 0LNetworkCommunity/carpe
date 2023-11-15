@@ -183,7 +183,7 @@ pub fn remove_accounts() -> Result<String, CarpeError> {
   // Note: this only removes the account tracking, doesn't delete account on chain.
   let mut cfg = configs::get_cfg()?;
   cfg.user_profiles = vec![];
-
+  cfg.save_file()?;
   Ok("removed all accounts".to_owned())
 }
 
