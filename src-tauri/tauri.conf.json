@@ -32,12 +32,7 @@
       "resources": [
         "gmp.dll",
         "gmp.lib",
-        "libgmp-10.dll",
-        "libgmp.10.dylib",
-        "libgmp.dylib",
-        "libgmpxx.4.dylib",
-        "libgmpxx.dylib",
-        "libgmp.a"
+        "libgmp-10.dll"
       ],
       "externalBin": [],
       "copyright": "",
@@ -49,10 +44,10 @@
       },
       "macOS": {
         "frameworks": [
-          "./libgmp.10.dylib",
-          "./libgmp.dylib",
-          "./libgmpxx.4.dylib",
-          "./libgmpxx.dylib"
+          "/opt/homebrew/Cellar/gmp/6.3.0/lib/libgmp.10.dylib",
+          "/opt/homebrew/Cellar/gmp/6.3.0/lib/libgmp.dylib",
+          "/opt/homebrew/Cellar/gmp/6.3.0/lib/libgmpxx.4.dylib",
+          "/opt/homebrew/Cellar/gmp/6.3.0/lib/libgmpxx.dylib"
         ],
         "minimumSystemVersion": "",
         "exceptionDomain": "localhost",
