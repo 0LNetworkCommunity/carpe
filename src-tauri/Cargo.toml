@@ -13,11 +13,11 @@ tauri-build = { version = "^1.5.0", features = [] }
 built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
-libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", branch = "main" }
-libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", branch = "main" }
-libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", branch = "main" }
-libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", branch = "main" }
-libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", branch = "main" }
+libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "cc2ce46" }
+libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "cc2ce46" }
+libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "cc2ce46" }
+libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "cc2ce46" }
+libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "cc2ce46" }
 
 # shared with libra-framework and diem
 anyhow = "1.0.62"
