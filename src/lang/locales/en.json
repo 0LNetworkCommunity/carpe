@@ -165,7 +165,7 @@
     "cards": {
       "cant_start": {
         "title": "Your account does not exist on chain yet ",
-        "body": "The miner can't start until the account can be found on chain. Maybe you've generated new keys locally, but no one has sent any coins to that address?"
+        "body": "The Carpe can't do anything until the account can be found on chain. Maybe you've generated new keys locally, but no one has sent any coins to that address?"
       },
       "disco_error": {
         "title": "Discontinuity ",
