@@ -51,7 +51,7 @@ jobs:
 
       - name: install gmp
         if: matrix.os == 'macos-11'
-        run: >
+        run: |
           brew reinstall gmp
           brew --prefix
 
