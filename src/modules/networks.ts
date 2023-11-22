@@ -109,7 +109,7 @@ export const refreshUpstreamPeerStats = async () => {
   }
 
   scanningForFullnodes.set(true)
-  logger(Level.Info, ' refresh_upstream_peer_stats')
+  logger(Level.Info, 'refresh_upstream_peer_stats')
   return invoke('refresh_upstream_peer_stats', {})
     .then((res: string[]) => {
       // Urls

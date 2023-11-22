@@ -38,8 +38,8 @@
       "card_title": "Onboarding",
       "message_headline": "You have generated keys for an account, but it does not yet exist on chain.",
       "message_prefix": "Join our community on ",
-      "message_suffix": " and provide us your Onboard Key to get onboarded.",
-      "onboard_key": "ONBOARD KEY"
+      "message_suffix": " and provide us your Address to get onboarded.",
+      "onboard_key": "ADDRESS"
     },
     "account_list": {
       "nickname": "Nickname",
@@ -165,7 +165,7 @@
     "cards": {
       "cant_start": {
         "title": "Your account does not exist on chain yet ",
-        "body": "The miner can't start until the account can be found on chain. Maybe you've generated new keys locally, but no one has sent any coins to that address?"
+        "body": "The Carpe can't do anything until the account can be found on chain. Maybe you've generated new keys locally, but no one has sent any coins to that address?"
       },
       "disco_error": {
         "title": "Discontinuity ",
