@@ -46,7 +46,9 @@
                 {/if}
               {/if}
             </td>
-            <td on:click={() => setAccount(a.account)} style="cursor: grab">{a.nickname}</td>
+            <td on:click={() => setAccount(a.account)} style="cursor:
+            grab">{a.nickname}</td>
+
             <td class="uk-text-truncate">{formatAccount(a.account)}</td>
             <td>{a.auth_key.slice(0, 5)}...</td>
             <td>{printCoins(a.balance.unlocked)}</td>
