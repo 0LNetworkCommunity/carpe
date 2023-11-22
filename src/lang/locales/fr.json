@@ -136,7 +136,7 @@
     "tower_state": {
       "local_height": "Hauteur de la Tour locale",
       "on_chain_height": "Hauteur de la Tour on-chain",
-      "mined_in_last_epoch": "Dernier Epoch Minée",
+      "mined_in_last_epoch": "Dernière Epoch minée",
       "sent_in_this_epoch": "Preuves envoyées pour cette Epoch",
       "empty": "Pas de preuve locale trouvée",
       "proof_more": "Vous avez soumis le maximum de preuves (max 72)",
