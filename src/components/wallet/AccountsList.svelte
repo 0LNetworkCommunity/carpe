@@ -7,6 +7,7 @@
   import IconMining from '../icons/IconMining.svelte'
   import { minerLoopEnabled } from '../../modules/miner'
   import { connected } from '../../modules/networks'
+  import { setAccount } from '../../modules/accountActions'
 
   UIkit.use(Icons)
 
@@ -45,7 +46,7 @@
                 {/if}
               {/if}
             </td>
-            <td>{a.nickname}</td>
+            <td on:click={() => setAccount(a.account)} style="cursor: grab">{a.nickname}</td>
             <td class="uk-text-truncate">{formatAccount(a.account)}</td>
             <td>{a.auth_key.slice(0, 5)}...</td>
             <td>{printCoins(a.balance.unlocked)}</td>

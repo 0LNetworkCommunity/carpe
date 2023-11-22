@@ -156,7 +156,7 @@ export function checkSigningAccountBalance() {
   invoke('query_balance', { account: selected.account })
     .then((balance: SlowWalletBalance) => {
       // update signingAccount
-      selected.on_chain = true
+      // selected.on_chain = true
       selected.balance = balance
       signingAccount.set(selected)
 
@@ -165,7 +165,7 @@ export function checkSigningAccountBalance() {
       // update all accounts set
       const list = accounts.map((each) => {
         if (each.account == selected.account) {
-          each.on_chain = true
+          // each.on_chain = true
           each.balance = balance
         }
         return each

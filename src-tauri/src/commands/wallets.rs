@@ -144,14 +144,15 @@ async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeEr
 
 async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError> {
   futures::future::join_all(list.iter_mut().map(|e| async {
+    // if query::get_seq_num(e.account).await.is_ok() {
+    //   // e.on_chain = true;
+    // }
     if let Ok(b) = query::get_balance(e.account).await {
       e.balance = b;
-      e.on_chain = true;
+      // e.on_chain = true;
     }
 
-    if query::get_seq_num(e.account).await.is_ok() {
-      e.on_chain = true;
-    }
+
   }))
   .await;
   Ok(())

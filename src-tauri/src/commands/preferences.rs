@@ -1,6 +1,7 @@
 use crate::configs::{default_config_path, legacy_config_path};
 use crate::migrate::{self, backup_legacy_dir, read_accounts};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
+use anyhow::Context;
 use libra_types::legacy_types::mode_ol::MODE_0L;
 use log::{error, info, warn};
 use std::env;
@@ -34,8 +35,23 @@ pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
   let mut app_cfg = get_cfg()?;
   app_cfg.refresh_network_profile_and_save(None).await?; // uses app_cfg.chain_info_chain_id
   let np = app_cfg.get_network_profile(None)?;
+  // dbg!(&np);
   app_cfg.save_file()?;
-  Ok(np.the_good_ones()?) // uses app_cfg.chain_info_chain_id
+
+  let peers =  match np.the_good_ones() {
+    Ok(r) => r,
+    _ => {
+      let first_url = np.nodes.iter()
+      .next()
+      .context("no hosts in network playlist")?
+      .url.to_owned();
+
+      vec![first_url]
+    }
+
+  };
+  dbg!(&peers);
+  Ok(peers) // uses app_cfg.chain_info_chain_id
 }
 
 #[tauri::command(async)]

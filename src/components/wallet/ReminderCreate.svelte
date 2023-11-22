@@ -10,7 +10,7 @@
   {#if pendingAccounts.length > 0 && isConnected}
     <div class="uk-margin-large">
       <div class="uk-card uk-card-primary uk-card-hover uk-card-body uk-light">
-        <h3 class="uk-card-title">{$_('wallet.reminder_create.card_title')}</h3>
+        <h3 class="uk-card-title uk-text-uppercase uk-text-light">{$_('wallet.reminder_create.card_title')}</h3>
         <p>{$_('wallet.reminder_create.message_headline')}</p>
         <p>
           {$_('wallet.reminder_create.message_prefix')}
