@@ -17,21 +17,10 @@
 
     isSubmitting = true
     addAccount(InitType.Mnem, mnem_string.trim())
-      .then(() => {
-        if (isNewAccount) {
-          // NOTE: this is for the keygen option, which shares this component
-          UIkit.modal('#submit-confirmation-modal').hide() // known bug https://github.com/uikit/uikit/issues/1370
-        }
-      })
-      .catch(() => {
-        if (isNewAccount) {
-          UIkit.modal('#submit-confirmation-modal').hide()
-        }
-        isSubmitting = false
-      })
       .finally(() => {
         isSubmitting = false
         mnem_string = null
+        UIkit.modal('#submit-confirmation-modal').hide()
       })
   }
 

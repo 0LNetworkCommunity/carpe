@@ -2,10 +2,10 @@
   import { Link, useLocation } from 'svelte-navigator'
   import { _ } from '../lang/i18n'
   import { routes } from '../modules/routes'
-  // import { init_preferences } from '../modules/preferences'
 
   // views
   import AccountSwitcher from './wallet/AccountSwitcher.svelte'
+    import { signingAccount } from '../modules/accounts'
 
   // import MakeWholeLink from "./make-whole/MakeWholeLink.svelte";
   // init_preferences()
@@ -29,6 +29,8 @@
         ><span class="uk-text-muted" uk-icon="icon: arrow-left; ratio: 2" /></Link
       >
     {/if}
+
+    {#if !$signingAccount}
     <div class="uk-navbar-center">
       <ul class="uk-navbar-nav uk-flex">
         <li class="uk-padding {$location_store.pathname.includes('wallet') ? 'uk-active' : ''}">
@@ -46,7 +48,7 @@
         <!--<li><MakeWholeLink /></li>-->
       </ul>
     </div>
-
+    {/if}
     <!-- {#if $isInit} -->
     <div class="uk-navbar-right">
       <ul class="uk-navbar-nav">

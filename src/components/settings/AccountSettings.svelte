@@ -9,7 +9,7 @@
     invoke('remove_accounts', {})
       .then((res: string) => {
         responses.set(res)
-        notify_success('accounts removed successfully')
+        notify_success('Accounts removed successfully')
         refreshAccounts()
       })
       .catch((e) => {
