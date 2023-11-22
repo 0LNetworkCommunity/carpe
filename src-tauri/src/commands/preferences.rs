@@ -38,17 +38,19 @@ pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
   // dbg!(&np);
   app_cfg.save_file()?;
 
-  let peers =  match np.the_good_ones() {
+  let peers = match np.the_good_ones() {
     Ok(r) => r,
     _ => {
-      let first_url = np.nodes.iter()
-      .next()
-      .context("no hosts in network playlist")?
-      .url.to_owned();
+      let first_url = np
+        .nodes
+        .iter()
+        .next()
+        .context("no hosts in network playlist")?
+        .url
+        .to_owned();
 
       vec![first_url]
     }
-
   };
   dbg!(&peers);
   Ok(peers) // uses app_cfg.chain_info_chain_id

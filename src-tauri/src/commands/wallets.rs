@@ -151,8 +151,6 @@ async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError>
       e.balance = b;
       // e.on_chain = true;
     }
-
-
   }))
   .await;
   Ok(())
