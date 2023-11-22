@@ -44,10 +44,10 @@
       },
       "macOS": {
         "frameworks": [
-          "/opt/homebrew/Cellar/gmp/6.3.0/lib/libgmp.10.dylib",
-          "/opt/homebrew/Cellar/gmp/6.3.0/lib/libgmp.dylib",
-          "/opt/homebrew/Cellar/gmp/6.3.0/lib/libgmpxx.4.dylib",
-          "/opt/homebrew/Cellar/gmp/6.3.0/lib/libgmpxx.dylib"
+          "/usr/local/Cellar/gmp/6.3.0/lib/libgmp.10.dylib",
+          "/usr/local/Cellar/gmp/6.3.0/lib/libgmp.dylib",
+          "/usr/local/Cellar/gmp/6.3.0/lib/libgmpxx.4.dylib",
+          "/usr/local/Cellar/gmp/6.3.0/lib/libgmpxx.dylib"
         ],
         "minimumSystemVersion": "",
         "exceptionDomain": "localhost",
