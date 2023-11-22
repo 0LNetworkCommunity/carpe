@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-11 ]
+        os: [ macos-11, windows-latest ]
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -56,24 +56,23 @@ jobs:
 
 ########  WIN  ########
 
-      # - name: install dependencies (windows only)
-      #   if: matrix.os == 'windows-latest'
-      #   uses: KyleMayes/install-llvm-action@v1
-      #   with:
-      #     version: "11.0"
-      #     directory: ${{ runner.temp }}/llvm
+      - name: install dependencies (windows only)
+        if: matrix.os == 'windows-latest'
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "11.0"
+          directory: ${{ runner.temp }}/llvm
 
-      # - name: Set LIBCLANG_PATH
-      #   if: matrix.os == 'windows-latest'
-      #   run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
+      - name: Set LIBCLANG_PATH
+        if: matrix.os == 'windows-latest'
+        run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
 
-
-      # # Package the windows dependencies
-      # - name: copy gmp.dll for build
-      #   if: matrix.os == 'windows-latest'
-      #   run: |
-      #     $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
-      #     Copy-Item ('${{ github.workspace }}' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
+      # Package the windows dependencies
+      - name: copy gmp.dll for build
+        if: matrix.os == 'windows-latest'
+        run: |
+          $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
+          Copy-Item ('${{ github.workspace }}' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
 
 ########  CACHE  ########
 
@@ -99,8 +98,10 @@ jobs:
           TAURI_PRIVATE_KEY: ${{secrets.TAURI_PRIVATE_KEY}}
           TAURI_KEY_PASSWORD: ${{secrets.TAURI_KEY_PASSWORD}}
         with:
-          args: ${{contains(github.ref, 'canary') && '--config src-tauri/tauri.conf.canary.json --features carpe-canary' || '' }} #pass the rust feature flags for canary if the tag includes "canary"
-          tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }} # the action automatically replaces \_\_VERSION\_\_ with the app version
+          args: ${{contains(github.ref, 'canary') && '--config src-tauri/tauri.conf.canary.json --features carpe-canary' || '' }}
+          # pass the rust feature flags for canary if the tag includes "canary"
+          tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }}
+          # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }}
           releaseBody: '[draft]'
           releaseDraft: true
