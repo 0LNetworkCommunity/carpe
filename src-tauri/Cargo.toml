@@ -9,7 +9,9 @@ license = "Apache 2.0"
 repository = "https://github.com/0LNetworkCommunity/carpe"
 
 [build-dependencies]
-tauri-build = { version = "^1.5.0", features = [] }
+# tauri-build = { version = "^1.5.0", features = [] }
+tauri-build = { version = "1.2.1", features = [] }
+
 built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
@@ -35,8 +37,8 @@ url = { version = "2.2.2", features = ["serde"] }
 directories = "5.0.1"
 keyring = "0.10.1"
 simplelog = { version = "^0.11.0", features = ["paris"] }
-tauri = { version = "^1.5.2", features = ["api-all", "updater"] }
-
+# tauri = { version = "^1.5.2", features = ["api-all", "updater"] }
+tauri = { version = "1.2.4", features = ["api-all", "updater"] }
 
 [features]
 custom-protocol = ["tauri/custom-protocol"]

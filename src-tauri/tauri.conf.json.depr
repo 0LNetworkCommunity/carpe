@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "carpe",
-    "version": "1.0.0-9"
+    "version": "1.0.0-7"
   },
   "build": {
     "distDir": "../dist",
@@ -29,7 +29,11 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "resources": [],
+      "resources": [
+        "gmp.dll",
+        "gmp.lib",
+        "libgmp-10.dll"
+      ],
       "externalBin": [],
       "copyright": "",
       "category": "DeveloperTool",
@@ -39,7 +43,12 @@
         "depends": []
       },
       "macOS": {
-        "frameworks": [],
+        "frameworks": [
+          "/usr/local/Cellar/gmp/6.3.0/lib/libgmp.10.dylib",
+          "/usr/local/Cellar/gmp/6.3.0/lib/libgmp.dylib",
+          "/usr/local/Cellar/gmp/6.3.0/lib/libgmpxx.4.dylib",
+          "/usr/local/Cellar/gmp/6.3.0/lib/libgmpxx.dylib"
+        ],
         "minimumSystemVersion": "",
         "exceptionDomain": "localhost",
         "signingIdentity": null,
@@ -48,7 +57,10 @@
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
-        "timestampUrl": ""
+        "timestampUrl": "",
+        "webviewInstallMode": {
+          "type": "embedBootstrapper"
+        }
       }
     },
     "allowlist": {
