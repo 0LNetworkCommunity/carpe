@@ -13,6 +13,8 @@ tauri-build = { version = "^1.5.0", features = [] }
 built = { version = "0.5.1", features = ["git2"] }
 
 [dependencies]
+gmp-mpfr-sys = { version = "1.6", default-features = false }
+
 libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "cc2ce46" }
 libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "cc2ce46" }
 libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "cc2ce46" }

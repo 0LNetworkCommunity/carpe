@@ -1035,6 +1035,7 @@ dependencies = [
  "directories 5.0.1",
  "futures",
  "glob",
+ "gmp-mpfr-sys",
  "hex",
  "keyring",
  "libra-query",
@@ -5162,6 +5163,16 @@ dependencies = [
  "bitflags 1.3.2",
  "ignore",
  "walkdir",
+]
+
+[[package]]
+name = "gmp-mpfr-sys"
+version = "1.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "19c5c67d8c29fe87e3266e691dd60948e6e4df4496c53355ef3551142945721b"
+dependencies = [
+ "libc",
+ "windows-sys 0.42.0",
 ]
 
 [[package]]
