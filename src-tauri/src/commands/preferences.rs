@@ -42,9 +42,7 @@ pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
     Ok(r) => r,
     _ => {
       let first_url = np
-        .nodes
-        .iter()
-        .next()
+        .nodes.first()
         .context("no hosts in network playlist")?
         .url
         .to_owned();
