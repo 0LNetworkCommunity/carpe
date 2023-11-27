@@ -30,7 +30,7 @@
       >
     {/if}
 
-    {#if !$signingAccount}
+    {#if $signingAccount}
     <div class="uk-navbar-center">
       <ul class="uk-navbar-nav uk-flex">
         <li class="uk-padding {$location_store.pathname.includes('wallet') ? 'uk-active' : ''}">

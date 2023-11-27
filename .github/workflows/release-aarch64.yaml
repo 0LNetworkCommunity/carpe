@@ -1,0 +1,78 @@
+name: carpe-release-aarch64
+
+on:
+  push:
+    branches:
+      - '*aarch64*'
+
+env:
+  LDFLAGS: '/opt/homebrew/lib'
+  LD_LIBRARY_PATH: '/opt/homebrew/lib'
+jobs:
+  publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [  macos-latest-xlarge ]
+    name: build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      ### DO NOT REMOVE: uncomment if you need to debug runner ###
+      - name: setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          detached: true
+
+      # Setup Rust
+      - uses: dtolnay/rust-toolchain@1.70.0
+        with:
+          components: rustfmt
+
+      # Setup Node.js
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      # checkout
+      - name: checkout source
+        uses: actions/checkout@v3
+
+
+########  MAC  ########
+      - name: osx deps
+        run: |
+          brew update
+          brew reinstall llvm
+          brew reinstall gmp
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+           workspaces: ./src-tauri
+           shared-key: ${{ matrix.os }}
+           cache-all-crates: true
+           cache-on-failure: true
+
+########  BUILD  ########
+
+      - name: yarn installation
+        run: yarn install
+
+
+      - name: pre-build rust
+        working-directory: ./src-tauri
+        run: export LIBRARY_PATH=$LIBRARY_PATH:$(brew --prefix)/lib && cargo b --release
+
+      - name: Build Tauri
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_PRIVATE_KEY: ${{secrets.TAURI_PRIVATE_KEY}}
+          TAURI_KEY_PASSWORD: ${{secrets.TAURI_KEY_PASSWORD}}
+          LIBRARY_PATH: /opt/homebrew/lib
+        with:
+          args: ${{contains(github.ref, 'canary') && '--config src-tauri/tauri.conf.aarch64.json --features carpe-canary' || '--config src-tauri/tauri.conf.aarch64.json' }} #pass the rust feature flags for canary if the tag includes "canary"
+          tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }} # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: ${{contains(github.ref, 'canary') && 'v__VERSION__-aarch64-canary' ||  'v__VERSION__-aarch64' }}
+          releaseBody: '[draft]'
+          releaseDraft: true
+          prerelease: false

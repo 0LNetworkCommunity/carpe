@@ -73,6 +73,7 @@
       <li> is connected: {$connected}</li>
       <li> is refreshing: {$isRefreshingAccounts}</li>
       <li> signing account: {JSON.stringify($signingAccount, null, 2)}</li>
+      <li> is onchain: {$signingAccount && $signingAccount.on_chain}</li>
       <li> can migrate: {$canMigrate}</li>
       <li> is account refreshed: {$isAccountRefreshed}</li>
       <li> all accounts: {JSON.stringify($allAccounts, null, 2)}</li>

@@ -5,25 +5,25 @@
 
   import { responses } from '../../modules/debug'
   import { notify_success } from '../../modules/carpeNotify'
-  import { printUnscaledCoins, printCoins, unscaledCoins} from '../../modules/coinHelpers'
+  import { printUnscaledCoins, printCoins, unscaledCoins } from '../../modules/coinHelpers'
   import { formatAccount, signingAccount } from '../../modules/accounts'
   import type { CarpeProfile } from '../../modules/accounts'
   import { raise_error } from '../../modules/carpeError'
+  import CantStart from '../miner/cards/CantStart.svelte'
 
   const errorDic = {
     '120127': $_('txs.transfer.error_slow_wallet'),
     '1004': $_('txs.transfer.error_account_does_not_exist'),
   }
 
-  let account: CarpeProfile;
-  let unsubs;
+  let account: CarpeProfile
+  let unsubs
   onMount(async () => {
     unsubs = signingAccount.subscribe((obj) => (account = obj))
   })
 
-
-  let receiver: string;
-  let amountInput: string;
+  let receiver: string
+  let amountInput: string
 
   let amount = 0
   let errorMessage = ''
@@ -36,15 +36,15 @@
   let isValidAmount = true
   let checkMessage = ''
 
-  $: isReceiverValid = account && receiver && re.test(receiver) && receiver != account.account;
-  $: isValidAmount = account && amount > 0 && amount < unscaledCoins(account.balance.unlocked);
+  $: isReceiverValid = account && receiver && re.test(receiver) && receiver != account.account
+  $: isValidAmount = account && amount > 0 && amount < unscaledCoins(account.balance.unlocked)
 
-  $: checkMessage = account && amount > unscaledCoins(account.balance)
-    ? $_("txs.transfer.error_amount_greater_than_balance")
-    : receiver && receiver.toUpperCase() == account.account.toUpperCase()
-      ? $_("txs.transfer.error_receiver_equals_sender")
-      : "";
-
+  $: checkMessage =
+    account && amount > unscaledCoins(account.balance)
+      ? $_('txs.transfer.error_amount_greater_than_balance')
+      : receiver && receiver.toUpperCase() == account.account.toUpperCase()
+        ? $_('txs.transfer.error_receiver_equals_sender')
+        : ''
 
   onDestroy(async () => {
     unsubs && unsubs()
@@ -53,7 +53,11 @@
   const transferCoins = async () => {
     waitingTxs = true
 
-    return invoke('coin_transfer', { sender: account.account, receiver: receiver.trim(), amount: amount })
+    return invoke('coin_transfer', {
+      sender: account.account,
+      receiver: receiver.trim(),
+      amount: amount,
+    })
       .then((res) => {
         responses.set(JSON.stringify(res))
         notify_success($_('txs.transfer.success'))
@@ -71,7 +75,7 @@
         raise_error(error, false, 'coin_transfer')
         errorMessage = errorDic[error.msg]
           ? errorDic[error.msg]
-          : $_("txs.transfer.failed", { values: { code: error.msg } });
+          : $_('txs.transfer.failed', { values: { code: error.msg } })
         waitingTxs = false
       })
   }
@@ -106,7 +110,10 @@
       {$_('nav.transactions')}
     </h2>
   </div>
-  {#if account}
+
+  {#if !$signingAccount.on_chain}
+    <CantStart />
+  {:else if account}
     <div>
       {#if waitingConfirmation}
         <h2 class="uk-text-muted uk-text-uppercase">
