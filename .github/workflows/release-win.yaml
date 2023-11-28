@@ -1,4 +1,4 @@
-name: carpe-release
+name: carpe-release-win
 
 on:
   push:
