@@ -29,7 +29,11 @@
         "icons-canary/icon.icns",
         "icons-canary/icon.ico"
       ],
-      "resources": [],
+      "resources": [
+        "gmp.dll",
+        "gmp.lib",
+        "libgmp-10.dll"
+      ],
       "externalBin": [],
       "copyright": "",
       "category": "DeveloperTool",
