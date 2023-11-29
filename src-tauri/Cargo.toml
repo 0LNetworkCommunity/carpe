@@ -12,6 +12,11 @@ repository = "https://github.com/0LNetworkCommunity/carpe"
 tauri-build = { version = "^1.5.0", features = [] }
 built = { version = "0.5.1", features = ["git2"] }
 
+# this will bundle gmp for mac and ubuntu
+# TODO: windows will not build unless using msys2 for build
+[target.'cfg(unix)'.dependencies]
+gmp-mpfr-sys = { version = "1.6", default-features = false }
+
 [dependencies]
 libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "cc2ce46" }
 libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "cc2ce46" }

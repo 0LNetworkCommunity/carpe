@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "carpe-canary",
-    "version": "1.0.0-7"
+    "version": "1.0.0-10"
   },
   "build": {
     "distDir": "../dist",
@@ -43,12 +43,7 @@
         "depends": []
       },
       "macOS": {
-        "frameworks": [
-          "/usr/local/Cellar/gmp/6.3.0/lib/libgmp.10.dylib",
-          "/usr/local/Cellar/gmp/6.3.0/lib/libgmp.dylib",
-          "/usr/local/Cellar/gmp/6.3.0/lib/libgmpxx.4.dylib",
-          "/usr/local/Cellar/gmp/6.3.0/lib/libgmpxx.dylib"
-        ],
+        "frameworks": [],
         "minimumSystemVersion": "",
         "exceptionDomain": "localhost",
         "signingIdentity": null,
