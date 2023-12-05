@@ -14,6 +14,6 @@ export function notify_error(s: string) {
     message: `<span uk-icon=icon: warning></span> ${s}`,
     pos: 'bottom-left',
     status: 'danger',
-    timeout: 15000,
+    timeout: 10000,
   })
 }

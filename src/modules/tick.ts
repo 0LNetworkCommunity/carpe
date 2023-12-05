@@ -24,6 +24,7 @@ export const carpeTick = async () => {
       // things that need network connectivity e.g. miner happen here
       getMetadata()
         .then(refreshAccounts)
+        // tower things
         .then(getTowerChainView)
         .then(getLocalHeight)
         .then(maybeEmitBacklog)

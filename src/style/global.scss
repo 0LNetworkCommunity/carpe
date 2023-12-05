@@ -89,7 +89,7 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
   text-align: center;
 }
 
-.uk-notification-message-error {
+.uk-notification-message-danger {
   color: #f8f8f8 !important;
   background-color: #f0506e !important;
 }
@@ -97,4 +97,12 @@ input:checked + .uk-switch-slider.uk-switch-big:before {
 .uk-notification-message-success {
   color: #f8f8f8 !important;
   background-color: #32d296 !important;
+}
+
+.uk-notification-close {
+  color: #f8f8f8 !important;
+}
+
+.uk-progress {
+  background-color: #dae9f7 !important;
 }

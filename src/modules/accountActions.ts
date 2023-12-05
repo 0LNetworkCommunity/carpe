@@ -2,7 +2,7 @@ import { get } from 'svelte/store'
 import { invoke } from '@tauri-apps/api/tauri'
 import { raise_error, type CarpeError, logger, Level } from './carpeError'
 import { responses } from './debug'
-import { minerLoopEnabled } from './miner'
+import { isTowerNewbie, minerLoopEnabled, resetTowerStatus } from './miner'
 
 import { notify_success, notify_error } from './carpeNotify'
 import {
@@ -141,6 +141,11 @@ export const setAccount = async (account: string, notifySucess = true) => {
     .then(carpeTick)
     .catch((e) => {
       raise_error(e, false, 'setAccount')
+    })
+    .finally(() => {
+      //need to reset, otherwise may be looking at wrong account
+      resetTowerStatus()
+      isTowerNewbie.set(true)
     })
 }
 
