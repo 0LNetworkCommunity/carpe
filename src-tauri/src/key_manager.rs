@@ -14,10 +14,14 @@ use crate::carpe_error::{CarpeError, ErrorCat, E_KEY_NOT_REGISTERED};
 
 const KEYRING_APP_NAME: &str = "carpe";
 
+fn keyring_addr_string_format(address: &AccountAddress) -> String {
+  address.short_str_lossless().to_uppercase().to_string()
+}
+
 /// overwrite then delete
-pub fn erase_keyring_address(address: AccountAddress) -> anyhow::Result<()> {
-  let addr_str = &address.to_string();
-  let kr = keyring::Entry::new(KEYRING_APP_NAME, addr_str);
+pub fn erase_keyring_address(address: &AccountAddress) -> anyhow::Result<()> {
+  let ol_address: String = keyring_addr_string_format(address);
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
 
   let bytes = &[0u8, 64];
   let encoded = hex::encode(bytes);
@@ -27,8 +31,9 @@ pub fn erase_keyring_address(address: AccountAddress) -> anyhow::Result<()> {
   Ok(())
 }
 /// send the encoded private key to OS keyring
-pub fn set_private_key(ol_address: &str, key: Ed25519PrivateKey) -> Result<(), keyring::Error> {
-  let kr = keyring::Entry::new(KEYRING_APP_NAME, ol_address);
+pub fn set_private_key(address: &AccountAddress, key: Ed25519PrivateKey) -> Result<(), keyring::Error> {
+  let ol_address: String = keyring_addr_string_format(address);
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
 
   let bytes: &[u8] = &(key.to_bytes());
   let encoded = hex::encode(bytes);
@@ -38,7 +43,7 @@ pub fn set_private_key(ol_address: &str, key: Ed25519PrivateKey) -> Result<(), k
 
 /// retrieve a private key from OS keyring
 pub fn get_private_key(address: &AccountAddress) -> Result<Ed25519PrivateKey, anyhow::Error> {
-  let ol_address = address.to_string();
+  let ol_address: String = keyring_addr_string_format(address);
   let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
   match kr.get_password() {
     Ok(s) => {
@@ -83,4 +88,16 @@ pub fn inject_private_key_to_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<(),
   profile.set_private_key(&pri_key);
   // NOTE: intentionally not saving profile
   Ok(())
+}
+
+
+#[test]
+fn test_keyring_addr_format() {
+  use std::str::FromStr;
+
+  let addr = AccountAddress::from_str("0x4c613c2f4b1e67ca8d98a542ee3f59f5").unwrap();
+
+  let s = keyring_addr_string_format(&addr);
+  assert!("4C613C2F4B1E67CA8D98A542EE3F59F5" == s);
+
 }

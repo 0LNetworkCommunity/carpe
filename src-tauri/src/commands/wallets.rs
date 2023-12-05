@@ -91,7 +91,7 @@ pub async fn init_from_private_key(pri_key_string: String) -> Result<CarpeProfil
     .await
     .unwrap_or(acc_struct.account); // the account may not have been created on chain. If we can't get the address, we'll just use the one we derived from the private key
 
-  key_manager::set_private_key(&address.to_string(), acc_struct.pri_key)
+  key_manager::set_private_key(&address, acc_struct.pri_key)
     .map_err(|e| CarpeError::config(&e.to_string()))?;
 
   configs_profile::set_account_profile(address, authkey).await?;
