@@ -1,16 +1,12 @@
 //! key management tools, leveraging OS keyrings.
 
 extern crate keyring;
-
-use std::convert::TryInto;
-
-use libra_types::exports::AccountAddress;
-use libra_types::legacy_types::app_cfg::AppCfg;
-
-use anyhow::{anyhow, bail};
-use libra_types::exports::{Ed25519PrivateKey, Ed25519PublicKey, KeyPair};
-
 use crate::carpe_error::{CarpeError, ErrorCat, E_KEY_NOT_REGISTERED};
+use anyhow::{anyhow, bail};
+use libra_types::exports::AccountAddress;
+use libra_types::exports::{Ed25519PrivateKey, Ed25519PublicKey, KeyPair};
+use libra_types::legacy_types::app_cfg::AppCfg;
+use std::convert::TryInto;
 
 const KEYRING_APP_NAME: &str = "carpe";
 
@@ -31,7 +27,10 @@ pub fn erase_keyring_address(address: &AccountAddress) -> anyhow::Result<()> {
   Ok(())
 }
 /// send the encoded private key to OS keyring
-pub fn set_private_key(address: &AccountAddress, key: Ed25519PrivateKey) -> Result<(), keyring::Error> {
+pub fn set_private_key(
+  address: &AccountAddress,
+  key: Ed25519PrivateKey,
+) -> Result<(), keyring::Error> {
   let ol_address: String = keyring_addr_string_format(address);
   let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
 
@@ -90,7 +89,6 @@ pub fn inject_private_key_to_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<(),
   Ok(())
 }
 
-
 #[test]
 fn test_keyring_addr_format() {
   use std::str::FromStr;
@@ -99,5 +97,4 @@ fn test_keyring_addr_format() {
 
   let s = keyring_addr_string_format(&addr);
   assert!("4C613C2F4B1E67CA8D98A542EE3F59F5" == s);
-
 }
