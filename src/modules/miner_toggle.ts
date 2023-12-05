@@ -22,10 +22,7 @@ export const enableMining = async (): Promise<void> => {
     // if the user has stuck proofs, we will show an error screen with a button for
     // manually triggering the backlog.
 
-    startBacklogListener()
-      .then(carpeTick)
-      .then(() => minerLoopEnabled.set(true))
-      .then(maybeTowerOnce)
+    startBacklogListener().then(carpeTick).then(maybeTowerOnce)
 
     looper = setInterval(() => setProofPercent(), 5000)
   }

@@ -156,16 +156,20 @@ export const startBacklogListener = async () => {
     .then((res) => {
       responses.set(res as string)
       backlogListenerReady.set(true)
+      minerLoopEnabled.set(true)
       return res
     })
     .catch((e: CarpeError) => {
-      let be_quiet = false
+      let quiet_errors = false
       if (e.uid == 104) {
-        // check for know error: key not found after upgrade
+        // check for known error: key not found after upgrade
         isKeyError.set(true)
-        be_quiet = true
+        backlogListenerReady.set(false)
+        minerLoopEnabled.set(false)
+
+        quiet_errors = true
       }
-      raise_error(e, be_quiet, 'startBacklogListener')
+      raise_error(e, quiet_errors, 'startBacklogListener')
     })
 }
 
