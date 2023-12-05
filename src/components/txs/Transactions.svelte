@@ -10,7 +10,6 @@
   import type { CarpeProfile } from '../../modules/accounts'
   import { raise_error } from '../../modules/carpeError'
   import CantStart from '../miner/cards/CantStart.svelte'
-    import UIkit from 'uikit'
 
   const errorDic = {
     '120127': $_('txs.transfer.error_slow_wallet'),
