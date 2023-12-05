@@ -38,7 +38,7 @@ url = { version = "2.2.2", features = ["serde"] }
 
 # only in carpe
 directories = "5.0.1"
-keyring = "0.10.1"
+keyring = "^1.2"
 simplelog = { version = "^0.11.0", features = ["paris"] }
 tauri = { version = "^1.5.2", features = ["api-all", "updater"] }
 

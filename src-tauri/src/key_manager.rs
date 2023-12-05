@@ -8,7 +8,6 @@ use libra_types::exports::AccountAddress;
 use libra_types::legacy_types::app_cfg::AppCfg;
 
 use anyhow::{anyhow, bail};
-use keyring::KeyringError;
 use libra_types::exports::{Ed25519PrivateKey, Ed25519PublicKey, KeyPair};
 
 use crate::carpe_error::{CarpeError, ErrorCat, E_KEY_NOT_REGISTERED};
@@ -18,7 +17,7 @@ const KEYRING_APP_NAME: &str = "carpe";
 /// overwrite then delete
 pub fn erase_keyring_address(address: AccountAddress) -> anyhow::Result<()> {
   let addr_str = &address.to_string();
-  let kr = keyring::Keyring::new(KEYRING_APP_NAME, addr_str);
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, addr_str);
 
   let bytes = &[0u8, 64];
   let encoded = hex::encode(bytes);
@@ -28,8 +27,8 @@ pub fn erase_keyring_address(address: AccountAddress) -> anyhow::Result<()> {
   Ok(())
 }
 /// send the encoded private key to OS keyring
-pub fn set_private_key(ol_address: &str, key: Ed25519PrivateKey) -> Result<(), KeyringError> {
-  let kr = keyring::Keyring::new(KEYRING_APP_NAME, ol_address);
+pub fn set_private_key(ol_address: &str, key: Ed25519PrivateKey) -> Result<(), keyring::Error> {
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, ol_address);
 
   let bytes: &[u8] = &(key.to_bytes());
   let encoded = hex::encode(bytes);
@@ -40,7 +39,7 @@ pub fn set_private_key(ol_address: &str, key: Ed25519PrivateKey) -> Result<(), K
 /// retrieve a private key from OS keyring
 pub fn get_private_key(address: &AccountAddress) -> Result<Ed25519PrivateKey, anyhow::Error> {
   let ol_address = address.to_string();
-  let kr = keyring::Keyring::new(KEYRING_APP_NAME, &ol_address);
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
   match kr.get_password() {
     Ok(s) => {
       let ser = hex::decode(s)?;

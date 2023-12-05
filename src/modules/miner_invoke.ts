@@ -231,10 +231,6 @@ export const getTowerChainView = async () => {
       isRefreshingAccounts.set(false)
     })
     .catch((e) => {
-      //need to reset, otherwise may be looking at wrong account
-      resetTowerStatus()
-      isTowerNewbie.set(true)
-
       raise_error(e, true, 'getTowerChainView')
       isRefreshingAccounts.set(false)
     })
