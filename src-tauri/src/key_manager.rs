@@ -11,7 +11,7 @@ use std::convert::TryInto;
 const KEYRING_APP_NAME: &str = "carpe";
 
 fn keyring_addr_string_format(address: &AccountAddress) -> String {
-  address.short_str_lossless().to_uppercase().to_string()
+  address.short_str_lossless().to_uppercase()
 }
 
 /// overwrite then delete
