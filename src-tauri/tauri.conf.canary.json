@@ -2,6 +2,7 @@
   "package": {
     "productName": "carpe-canary",
     "version": "1.0.0-11"
+
   },
   "build": {
     "distDir": "../dist",
