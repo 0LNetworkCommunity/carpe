@@ -1,15 +1,15 @@
 {
-  "name": "v1.0.0-11",
+  "version": "v1.0.0-11",
   "notes": "canary",
   "pub_date": "2023-12-02T00:00:00Z",
   "platforms": {
-    "darwin": {
+    "darwin-x86_64": {
       "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.0-11-canary/carpe-canary_x64.app.tar.gz"
     },
-    "linux": {
+    "linux-x86_64": {
       "url": "https://tbd.tbd"
     },
-    "win64": {
+    "windows-x86_64": {
       "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.0-11-canary/carpe-canary_1.0.0-11_x64-setup.nsis.zip"
     }
   }
