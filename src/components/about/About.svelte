@@ -2,6 +2,7 @@
   import { onMount } from 'svelte'
   import { getVersion, app_version } from '../../modules/version'
   import { _ } from 'svelte-i18n'
+    import UpgradeApp from './UpgradeApp.svelte'
 
   let release = {}
   onMount(async () => {
@@ -26,4 +27,6 @@
       <span class="uk-text-bold">{$_('about.branch')}: </span>{release.head}
     </p>
   </div>
+
+  <UpgradeApp/>
 </main>
