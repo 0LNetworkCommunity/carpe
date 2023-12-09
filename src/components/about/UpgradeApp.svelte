@@ -1,13 +1,28 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte'
-  import { stopUpdateListener, updateStatus } from '../../modules/updater'
+  import { onDestroy, onMount } from 'svelte'
+  import { updateStatus } from '../../modules/updater'
   import { debugMode } from '../../modules/debug'
   import UpgradeButtonManual from './UpgradeButtonManual.svelte'
   import CardAlert from '../layout/CardAlert.svelte'
+  import { onUpdaterEvent } from '@tauri-apps/api/updater'
+
+  let unlisten
+
+  onMount(async () => {
+    unlisten = await onUpdaterEvent(({ error, status }) => {
+      // This will log all updater events, including status updates and errors.
+      updateStatus.update((u) => {
+        u.error = error ?? null
+        u.status = status
+        return u
+      })
+      console.log('Updater event', error, status)
+    })
+  })
 
   onDestroy(() => {
     // don't duplicate listener next time we navigate here
-    stopUpdateListener()
+    unlisten()
   })
 </script>
 
