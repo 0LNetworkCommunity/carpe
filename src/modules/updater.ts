@@ -1,7 +1,6 @@
 import {
   checkUpdate,
   installUpdate,
-  onUpdaterEvent,
   type UpdateManifest,
   type UpdateStatus,
 } from '@tauri-apps/api/updater'
@@ -24,20 +23,6 @@ enum UpdateErrors {
 }
 
 export const updateStatus = writable<WhatsUpdate>({ refreshing: false })
-
-const unlisten = await onUpdaterEvent(({ error, status }) => {
-  // This will log all updater events, including status updates and errors.
-  updateStatus.update((u) => {
-    u.error = error ?? null
-    u.status = status
-    return u
-  })
-  console.log('Updater event', error, status)
-})
-
-export const stopUpdateListener = () => {
-  unlisten()
-}
 
 export const tryUpdate = async () => {
   updateStatus.set({ refreshing: true })
