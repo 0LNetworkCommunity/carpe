@@ -20,6 +20,7 @@ enum UpdateErrors {
   None,
   MalformedManifest = 'The update URL is not providing a valid JSON',
   InvalidSignature = "The update's code signature does not match the pubkey provided",
+  KeyID = 'The key ID does not match',
 }
 
 export const updateStatus = writable<WhatsUpdate>({ refreshing: false })
@@ -78,9 +79,11 @@ export const tryUpdate = async () => {
 export const parseErrorString = (msg: string): UpdateErrors => {
   let errEnum = UpdateErrors.None
   if (msg.includes('UnexpectedKeyId')) {
-    errEnum = UpdateErrors.InvalidSignature
+    errEnum = UpdateErrors.KeyID
   } else if (msg.includes('missing')) {
     errEnum = UpdateErrors.MalformedManifest
+  } else if (msg.includes('InvalidSignature')) {
+    errEnum = UpdateErrors.InvalidSignature
   }
   return errEnum
 }
