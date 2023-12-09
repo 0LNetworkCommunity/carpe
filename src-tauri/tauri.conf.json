@@ -13,9 +13,9 @@
     "updater": {
       "active": true,
       "endpoints": [
-        "https://raw.githubusercontent.com/0LNetworkCommunity/carpe/main/autoupdater/autoupdater_payload.json"
+        "https://raw.githubusercontent.com/0LNetworkCommunity/carpe/canary/autoupdater/autoupdater_payload_canary.json"
       ],
-      "dialog": true,
+      "dialog": false,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ4MEIzMzc4MzlGMzgwNUUKUldSZWdQTTVlRE1MMkszSGczY1B2OGlOaW5IWXBLdXpZWldKbVl2VGw1RDg0dFNPTHFpYk1WNGkK"
     },
     "bundle": {

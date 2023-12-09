@@ -2,7 +2,7 @@
   import { onMount } from 'svelte'
   import { getVersion, app_version } from '../../modules/version'
   import { _ } from 'svelte-i18n'
-    import UpgradeApp from './UpgradeApp.svelte'
+  import UpgradeButtonManual from './UpgradeButtonManual.svelte'
 
   let release = {}
   onMount(async () => {
@@ -28,5 +28,5 @@
     </p>
   </div>
 
-  <UpgradeApp/>
+  <UpgradeButtonManual />
 </main>
