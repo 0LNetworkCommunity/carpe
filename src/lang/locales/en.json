@@ -94,7 +94,10 @@
     "release": "Release",
     "version": "Version",
     "branch": "Branch",
-    "commit": "Commit"
+    "commit": "Commit",
+    "upgrade_uptodate": "You are on the current version",
+    "upgrade_available": "There is an upgrade available",
+    "upgrade_checkagain": "Check Upgrade"
   },
   "settings": {
     "title": "SETTINGS",

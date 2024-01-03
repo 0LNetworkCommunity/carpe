@@ -15,18 +15,23 @@
   <div class="uk-flex uk-flex-center">
     <h2 class="uk-text-light uk-text-muted uk-text-uppercase">{$_('about.about')}</h2>
   </div>
-  <div class="uk-card uk-card-default uk-card-body uk-width-1-2@m">
-    <h3 class="uk-card-title uk-text-muted">{$_('about.release')}</h3>
-    <p class="uk-text-muted">
-      <span class="uk-text-bold">{$_('about.version')}: </span>v{release.version}
-    </p>
-    <p class="uk-text-muted">
-      <span class="uk-text-bold">{$_('about.commit')}: </span>{release.hash}
-    </p>
-    <p class="uk-text-muted">
-      <span class="uk-text-bold">{$_('about.branch')}: </span>{release.head}
-    </p>
+  <div class="uk-flex uk-flex-center">
+    <div class="uk-card uk-card-default uk-card-body uk-width-1-2@m">
+      <h3 class="uk-card-title uk-text-muted">{$_('about.release')}</h3>
+      <p class="uk-text-muted">
+        <span class="uk-text-bold">{$_('about.version')}: </span>v{release.version}
+        <UpgradeButtonManual />
+      </p>
+      {#if release.hash}
+        <p class="uk-text-muted">
+          <span class="uk-text-bold">{$_('about.commit')}: </span>{release.hash}
+        </p>
+      {/if}
+      {#if release.head}
+        <p class="uk-text-muted">
+          <span class="uk-text-bold">{$_('about.branch')}: </span>{release.head}
+        </p>
+      {/if}
+    </div>
   </div>
-
-  <UpgradeButtonManual />
 </main>

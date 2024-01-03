@@ -8,17 +8,18 @@
 
   let unlisten
 
-  onMount(async () => {
-    unlisten = await onUpdaterEvent(({ error, status }) => {
+  // onMount(async () => {
+  //   unlisten = await
+  // })
+  onUpdaterEvent(({ error, status }) => {
       // This will log all updater events, including status updates and errors.
       updateStatus.update((u) => {
         u.error = error ?? null
         u.status = status
         return u
       })
-      console.log('Updater event', error, status)
+      console.log('onMount Updater event', error, status)
     })
-  })
 
   onDestroy(() => {
     // don't duplicate listener next time we navigate here
@@ -27,6 +28,9 @@
 </script>
 
 <main class="uk-padding">
+  Upgrade App
+  {JSON.stringify($updateStatus)}
+
   {#if $updateStatus?.manifest}
     <CardAlert>
       <div slot="title">

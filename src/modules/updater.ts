@@ -28,9 +28,9 @@ export const tryUpdate = async () => {
   updateStatus.set({ refreshing: true })
   try {
     const { shouldUpdate, manifest } = await checkUpdate()
-
+    const u = get(updateStatus)
     if (shouldUpdate) {
-      const u = get(updateStatus)
+
       u.msg = 'upgrade is available'
       u.manifest = manifest
 
@@ -49,8 +49,12 @@ export const tryUpdate = async () => {
       // You could use this step to display another confirmation dialog.
       await relaunch()
       u.refreshing = false
-      updateStatus.set(u)
+
+    } else {
+      u.msg = 'You are on the latest version'
+      u.refreshing = false
     }
+    updateStatus.set(u)
   } catch (e) {
     updateStatus.update((u) => {
       u.error = e
