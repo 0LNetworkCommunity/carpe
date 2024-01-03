@@ -6,6 +6,7 @@ import {
 } from '@tauri-apps/api/updater'
 import { relaunch } from '@tauri-apps/api/process'
 import { get, writable } from 'svelte/store'
+import { _ } from 'svelte-i18n'
 
 interface WhatsUpdate {
   refreshing: boolean
@@ -28,31 +29,28 @@ export const tryUpdate = async () => {
   updateStatus.set({ refreshing: true })
   try {
     const { shouldUpdate, manifest } = await checkUpdate()
-    const u = get(updateStatus)
-    if (shouldUpdate) {
 
-      u.msg = 'upgrade is available'
+    const u = get(updateStatus)
+    u.refreshing = false
+
+    if (shouldUpdate) {
+      u.msg = get(_('upgrade.available')) // use internationalization to have consistent strings
       u.manifest = manifest
 
       updateStatus.set(u)
       // You could show a dialog asking the user if they want to install the update here.
       console.log(`Installing update ${manifest?.version}, ${manifest?.date}, ${manifest?.body}`)
 
-      u.msg = 'attempting install'
-      updateStatus.set(u)
       // Install the update. This will also restart the app on Windows!
       await installUpdate()
 
-      u.msg = 'attempting relaunch'
+      u.msg = get(_('upgrade.restart'))
       updateStatus.set(u)
       // On macOS and Linux you will need to restart the app manually.
       // You could use this step to display another confirmation dialog.
       await relaunch()
-      u.refreshing = false
-
     } else {
-      u.msg = 'You are on the latest version'
-      u.refreshing = false
+      u.msg = get(_('upgrade.uptodate'))
     }
     updateStatus.set(u)
   } catch (e) {
@@ -75,4 +73,17 @@ export const parseErrorString = (msg: string): UpdateErrors => {
     errEnum = UpdateErrors.InvalidSignature
   }
   return errEnum
+}
+
+export const whatUpdateStep = (u: WhatsUpdate): number => {
+  switch (u.status) {
+    case 'PENDING':
+      return 1
+    case 'DOWNLOADED':
+      return 2
+    case 'DONE':
+      return 3
+    default:
+      return 0
+  }
 }

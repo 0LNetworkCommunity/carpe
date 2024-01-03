@@ -94,10 +94,13 @@
     "release": "Release",
     "version": "Version",
     "branch": "Branch",
-    "commit": "Commit",
-    "upgrade_uptodate": "You are on the current version",
-    "upgrade_available": "There is an upgrade available",
-    "upgrade_checkagain": "Check Upgrade"
+    "commit": "Commit"
+  },
+  "upgrade": {
+    "uptodate": "You are on the current version",
+    "available": "There is an upgrade available",
+    "check_again": "Check Upgrade",
+    "restart": "You can now restart the app"
   },
   "settings": {
     "title": "SETTINGS",

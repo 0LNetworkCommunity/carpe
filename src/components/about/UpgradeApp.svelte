@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte'
-  import { updateStatus } from '../../modules/updater'
+  import { onDestroy } from 'svelte'
+  import { updateStatus, whatUpdateStep } from '../../modules/updater'
   import { debugMode } from '../../modules/debug'
   import UpgradeButtonManual from './UpgradeButtonManual.svelte'
   import CardAlert from '../layout/CardAlert.svelte'
@@ -8,18 +8,15 @@
 
   let unlisten
 
-  // onMount(async () => {
-  //   unlisten = await
-  // })
   onUpdaterEvent(({ error, status }) => {
-      // This will log all updater events, including status updates and errors.
-      updateStatus.update((u) => {
-        u.error = error ?? null
-        u.status = status
-        return u
-      })
-      console.log('onMount Updater event', error, status)
+    // This will log all updater events, including status updates and errors.
+    updateStatus.update((u) => {
+      u.error = error ?? null
+      u.status = status
+      return u
     })
+    console.log('onMount Updater event', error, status)
+  })
 
   onDestroy(() => {
     // don't duplicate listener next time we navigate here
@@ -28,13 +25,15 @@
 </script>
 
 <main class="uk-padding">
+  {whatUpdateStep($updateStatus)}
+
   Upgrade App
   {JSON.stringify($updateStatus)}
 
   {#if $updateStatus?.manifest}
     <CardAlert>
       <div slot="title">
-        {#if $updateStatus.refreshing}
+        {#if !$updateStatus}
           <div class="uk-text-center">
             <span class="uk-text-muted">Checking for upgrade</span>
             <span class="uk-padding" uk-spinner="ratio: 0.66"></span>
@@ -46,11 +45,14 @@
         {/if}
       </div>
 
-      <div slot="body">
-        {#if !$updateStatus?.refreshing}
-          <div class="uk-padding uk-flex uk-grid">
-            <div class="uk-margin">
-              <!-- <h4>Update Available {$updateStatus?.manifest.version}</h4> -->
+      <div slot="body" class="uk-padding">
+        {#if $updateStatus?.refreshing}
+          <div class="uk-margin">
+            <progress class="uk-progress" value={whatUpdateStep($updateStatus)} max="4" />
+            <p>{$updateStatus.msg}</p>
+          </div>
+          <div class="uk-flex uk-grid">
+            <div>
               <h5 class="uk-text-uppercase">Update Notes</h5>
               <p>{$updateStatus?.manifest.body}</p>
             </div>

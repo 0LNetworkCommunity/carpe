@@ -11,11 +11,11 @@
   <div>
     <p>
       {#if upToDate}
-        {$_('about.upgrade_uptodate')}
+        {$_('upgrade.uptodate')}
       {:else}
-        {$_('about.upgrade_available')}
+        {$_('upgrade.available')}
       {/if}
     </p>
-    <button class="uk-button uk-button-default" on:click={tryUpdate} disabled={checking}>{$_('about.upgrade_checkagain')}</button>
+    <button class="uk-button uk-button-default" on:click={tryUpdate} disabled={checking}>{$_('upgrade.checkagain')}</button>
   </div>
 </main>
