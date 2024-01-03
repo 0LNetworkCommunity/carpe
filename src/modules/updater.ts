@@ -8,8 +8,6 @@ import { relaunch } from '@tauri-apps/api/process'
 import { get, writable } from 'svelte/store'
 import { format } from 'svelte-i18n'
 
-
-
 interface WhatsUpdate {
   refreshing: boolean
   msg?: string
@@ -29,7 +27,7 @@ export const updateStatus = writable<WhatsUpdate>({ refreshing: false })
 
 export const tryUpdate = async () => {
   const u = get(updateStatus)
-  u.refreshing = true;
+  u.refreshing = true
   try {
     const { shouldUpdate, manifest } = await checkUpdate()
     u.refreshing = false
@@ -64,7 +62,7 @@ export const tryUpdate = async () => {
   }
 }
 
-export const parseErrorString = (msg: String): UpdateErrors => {
+export const parseErrorString = (msg: string): UpdateErrors => {
   let errEnum = UpdateErrors.None
   if (msg.length > 0) {
     if (msg.includes('UnexpectedKeyId')) {
@@ -78,15 +76,16 @@ export const parseErrorString = (msg: String): UpdateErrors => {
   return errEnum
 }
 
-export const whatUpdateStep = (u: WhatsUpdate): number => {
-  switch (u.status) {
-    case 'PENDING':
-      return 1
-    case 'DOWNLOADED':
-      return 2
-    case 'DONE':
-      return 3
-    default:
-      return 0
-  }
-}
+// TODO: when you need a progress bar
+// export const whatUpdateStep = (u: WhatsUpdate): number => {
+//   switch (u.status) {
+//     case 'PENDING':
+//       return 1
+//     case 'DOWNLOADED':
+//       return 2
+//     case 'DONE':
+//       return 3
+//     default:
+//       return 0
+//   }
+// }
