@@ -25,7 +25,7 @@
   })
 </script>
 
-<main class="uk-padding">
+<main>
   {#if $updateStatus?.manifest}
     <CardAlert>
       <div slot="title">
