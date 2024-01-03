@@ -11,9 +11,7 @@ on:
       - 'canary*'
       - 'release-[0-9]+.[0-9]+.[0-9]+'
       - 'ci'
-env:
-  TAURI_PRIVATE_KEY: "dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5UmJEV1cwNHlkUm8rNnFkei9tRlBUaTdoWlRYT0EzWEZVYXE3SHRvNzBSQUFBQkFBQUFBQUFBQUFBQUlBQUFBQWZsNU9Gb0VLeFBCVEJrRkcrbjNaNklCTElxZ1d2V1BDcHZvWVNDbzd6YXNUa09MZmp1VzJ2bDRHbXR0NTdGM2luZWlsc08wL1B6eERGU1JwMHRTU3BNdDU1UStnTWR2MmU5NElVQWFCUFhPTExycE5maUh1NGRUQjBUdHV0TjJyejZHQjVKd3dIRFE9Cg=="
-  TAURI_KEY_PASSWORD: "testonly"
+
 jobs:
   publish:
     strategy:
@@ -56,9 +54,9 @@ jobs:
       - name: yarn installation
         run: yarn install
 
-      # - name: pre-build rust
-      #   working-directory: ./src-tauri
-      #   run: cargo b --release
+      - name: pre-build rust
+        working-directory: ./src-tauri
+        run: cargo b --release
 
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
