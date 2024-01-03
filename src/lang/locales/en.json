@@ -99,8 +99,9 @@
   "upgrade": {
     "uptodate": "You are on the current version",
     "available": "There is an upgrade available",
+    "download": "Downloading",
     "check_again": "Check Upgrade",
-    "restart": "You can now restart the app"
+    "restart": "Success. You can now restart Carpe"
   },
   "settings": {
     "title": "SETTINGS",

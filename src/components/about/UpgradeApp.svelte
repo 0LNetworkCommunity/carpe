@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
-  import { updateStatus, whatUpdateStep } from '../../modules/updater'
+  import { updateStatus } from '../../modules/updater'
   import { debugMode } from '../../modules/debug'
   import UpgradeButtonManual from './UpgradeButtonManual.svelte'
   import CardAlert from '../layout/CardAlert.svelte'
@@ -11,6 +11,7 @@
   onUpdaterEvent(({ error, status }) => {
     // This will log all updater events, including status updates and errors.
     updateStatus.update((u) => {
+      // u.refreshing = false
       u.error = error ?? null
       u.status = status
       return u
@@ -25,15 +26,10 @@
 </script>
 
 <main class="uk-padding">
-  {whatUpdateStep($updateStatus)}
-
-  Upgrade App
-  {JSON.stringify($updateStatus)}
-
   {#if $updateStatus?.manifest}
     <CardAlert>
       <div slot="title">
-        {#if !$updateStatus}
+        {#if $updateStatus.refreshing}
           <div class="uk-text-center">
             <span class="uk-text-muted">Checking for upgrade</span>
             <span class="uk-padding" uk-spinner="ratio: 0.66"></span>
@@ -46,9 +42,10 @@
       </div>
 
       <div slot="body" class="uk-padding">
-        {#if $updateStatus?.refreshing}
+        {#if $updateStatus}
           <div class="uk-margin">
-            <progress class="uk-progress" value={whatUpdateStep($updateStatus)} max="4" />
+            <!-- // TODO: can I haz progress -->
+            <!-- <progress class="uk-progress" value={whatUpdateStep($updateStatus)} max="4" /> -->
             <p>{$updateStatus.msg}</p>
           </div>
           <div class="uk-flex uk-grid">
