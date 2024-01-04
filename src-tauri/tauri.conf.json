@@ -16,7 +16,7 @@
         "https://raw.githubusercontent.com/0LNetworkCommunity/carpe/main/autoupdater/autoupdater_payload.json"
       ],
       "dialog": false,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ4MEIzMzc4MzlGMzgwNUUKUldSZWdQTTVlRE1MMkszSGczY1B2OGlOaW5IWXBLdXpZWldKbVl2VGw1RDg0dFNPTHFpYk1WNGkK"
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk2NDM3QUIwRDdENjkyNjgKUldSb2t0YlhzSHBEbHZOTkNCT3ljZTJESE1yc2t5c1dqbFd0VkZ2THM3N0RucTV0TC9FeDBQb1oK"
     },
     "bundle": {
       "active": true,

@@ -16,6 +16,6 @@
         {$_('upgrade.available')}
       {/if}
     </p>
-    <button class="uk-button uk-button-default" on:click={tryUpdate} disabled={checking}>{$_('upgrade.checkagain')}</button>
+    <button class="uk-button uk-button-default" on:click={tryUpdate} disabled={checking}>{$_('upgrade.check_again')}</button>
   </div>
 </main>
