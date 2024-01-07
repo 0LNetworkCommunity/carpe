@@ -1,4 +1,6 @@
 //! transaction scripts
+use std::str::FromStr;
+
 use crate::key_manager::{get_private_key, inject_private_key_to_cfg};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 
@@ -13,13 +15,25 @@ fn make_account_key(address: &AccountAddress) -> anyhow::Result<AccountKey> {
 #[tauri::command(async)]
 pub async fn coin_transfer(
   _sender: AccountAddress,
-  receiver: AccountAddress,
+  receiver: &str,
   amount: u64,
 ) -> Result<(), CarpeError> {
+  // NOTE: unsure Serde was catching all cases check serialization
+  let receiver_account = match AccountAddress::from_str(receiver) {
+    Ok(a) => a,
+    Err(e) => {
+      dbg!(e);
+      // try prepending
+      AccountAddress::from_str(&format!("0x{}", receiver))?
+    }
+  };
+
   let mut config = get_cfg()?;
   inject_private_key_to_cfg(&mut config)?;
   let mut sender = Sender::from_app_cfg(&config, None).await?;
-  sender.transfer(receiver, amount as f64, false).await?;
+  sender
+    .transfer(receiver_account, amount as f64, false)
+    .await?;
   Ok(())
 }
 

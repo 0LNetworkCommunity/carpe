@@ -63,12 +63,7 @@
         notify_success($_('txs.transfer.success'))
         waitingTxs = false
         amount = 0
-        // amountFormatted = ''
         receiver = null
-        // callback
-        // onSuccess();
-        // close modal
-        // UIkit.modal('#coinTransferDialog').hide();
       })
       .catch((error) => {
         responses.set(JSON.stringify(error))
