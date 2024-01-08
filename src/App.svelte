@@ -41,6 +41,8 @@
   import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
   import { maybeTowerOnce as maybeTowerOnce } from './modules/miner_invoke'
     import KeyError from './components/layout/KeyError.svelte'
+    import UpgradeApp from './components/about/UpgradeApp.svelte'
+    import { tryUpdate } from './modules/updater'
 
   // black magic with I18n here
   // temporarily set up here otherwise... issues
@@ -52,6 +54,7 @@
   let unlistenBacklogError
 
   onMount(async () => {
+    tryUpdate()
     bootUp()
 
     ///// Backlog /////
@@ -106,6 +109,7 @@
 
 <main class="uk-background-muted uk-height-viewport">
   <Style />
+  <UpgradeApp />
 
   {#if $isInit}
     <SearchingFullnodes />

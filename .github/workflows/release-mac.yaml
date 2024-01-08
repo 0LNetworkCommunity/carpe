@@ -11,6 +11,7 @@ on:
       - 'canary*'
       - 'release-[0-9]+.[0-9]+.[0-9]+'
       - 'ci'
+
 jobs:
   publish:
     strategy:
@@ -53,9 +54,9 @@ jobs:
       - name: yarn installation
         run: yarn install
 
-      # - name: pre-build rust
-      #   working-directory: ./src-tauri
-      #   run: cargo b --release
+      - name: pre-build rust
+        working-directory: ./src-tauri
+        run: cargo b --release
 
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0

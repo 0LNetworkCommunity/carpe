@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "carpe-canary",
-    "version": "1.0.0-11"
+    "version": "0.0.0-12"
   },
   "build": {
     "distDir": "../dist",
@@ -15,8 +15,8 @@
       "endpoints": [
         "https://raw.githubusercontent.com/0LNetworkCommunity/carpe/canary/autoupdater/autoupdater_payload_canary.json"
       ],
-      "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ4MEIzMzc4MzlGMzgwNUUKUldSZWdQTTVlRE1MMkszSGczY1B2OGlOaW5IWXBLdXpZWldKbVl2VGw1RDg0dFNPTHFpYk1WNGkK"
+      "dialog": false,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk2NDM3QUIwRDdENjkyNjgKUldSb2t0YlhzSHBEbHZOTkNCT3ljZTJESE1yc2t5c1dqbFd0VkZ2THM3N0RucTV0TC9FeDBQb1oK"
     },
     "bundle": {
       "active": true,
@@ -66,7 +66,7 @@
     },
     "windows": [
       {
-        "title": "CARPE",
+        "title": "CARPE CANARY",
         "width": 1000,
         "height": 800,
         "resizable": true,

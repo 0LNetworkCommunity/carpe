@@ -96,6 +96,13 @@
     "branch": "Branch",
     "commit": "Commit"
   },
+  "upgrade": {
+    "uptodate": "You are on the current version",
+    "available": "There is an upgrade available",
+    "download": "Downloading",
+    "check_again": "Check Upgrade",
+    "restart": "Success. You can now restart Carpe"
+  },
   "settings": {
     "title": "SETTINGS",
     "langapp_settings": {
