@@ -10,6 +10,7 @@
   import CreateAccountLinks from './CreateAccountLinks.svelte'
   import ReminderCreate from './ReminderCreate.svelte'
   import { connected } from '../../modules/networks'
+    import Actions from './Actions.svelte'
 
   UIkit.use(Icons)
 
@@ -29,8 +30,9 @@
 
       <AccountsList />
 
-      <CreateAccountLinks />
+      <Actions />
 
+      <CreateAccountLinks />
       {#if $connected && pendingAccounts.length > 0}
         <ReminderCreate {pendingAccounts} isConnected={$connected} />
       {/if}
