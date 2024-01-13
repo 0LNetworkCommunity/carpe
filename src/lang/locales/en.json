@@ -50,7 +50,8 @@
       "offline": "offline",
       "loading": "loading",
       "account_on_chain": "Account Not On Chain",
-      "message": " Your balance will go down for every transaction you send, including mining."
+      "message": "Your balance will go down for every transaction you send, including mining.",
+      "info_title": "Account Info"
     },
     "keygen": {
       "title": "Create New Account",
@@ -87,6 +88,11 @@
       "switch_account": "Switch Account",
       "setting": "Settings",
       "developers": "Developers"
+    },
+    "settings": {
+      "title": "Wallet Options",
+      "warn": "These changes will appear on blockchain.",
+      "slow_wallet_warn": "WARNING: SETTING YOUR WALLET TO SLOW OR COMMUNITY IS PERMANENT"
     }
   },
   "about": {
@@ -132,7 +138,7 @@
     },
     "account_settings": {
       "title": "ACCOUNT SETTINGS",
-      "btn_remove": "REMOVE ACCOUNTS",
+      "btn_remove": "REMOVE ACCOUNTS FROM CARPE",
       "confirm": "Confirm remove accounts from this device? This is not reversible.",
       "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
     }
@@ -235,11 +241,11 @@
       "title": "Set your Account Type",
       "subtitle": " Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
       "btn_slow": "Set Slow Wallet",
-      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversible.",
-      "slow_confirm": "Set Slow",
+      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversible",
+      "warning": "Warning: this change is forever",
       "btn_community": "Set Community Wallet",
       "btn_confirm_community": "Set Community",
-      "community_confirm": "Confirm Set Community Wallet? This is not reversible."
+      "community_confirm": "Confirm Set Community Wallet? This is not reversible"
     },
     "transfer": {
       "title": "Coin Transfer",

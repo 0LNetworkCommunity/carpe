@@ -1,28 +1,16 @@
 <script lang="ts">
   import UIkit from 'uikit'
   import { _ } from 'svelte-i18n'
-  import { invoke } from '@tauri-apps/api/tauri'
-
-  import { raise_error } from '../../modules/carpeError'
-  import type { CarpeError } from '../../modules/carpeError'
-  import { notify_success } from '../../modules/carpeNotify'
-  import { responses } from '../../modules/debug'
+  import { setWalletType } from '../../modules/accountTransactions'
+  import { WalletType } from '../../modules/accountTransactions'
 
   let loading = false
-  function setWallet(num: number) {
+  const setWallet = (wtype: WalletType) => {
     loading = true
-    invoke('wallet_type', { typeInt: num })
-      .then((res: string) => {
-        loading = false
-        notify_success('Account set to Slow Wallet')
-        responses.set(res)
-      })
-      .catch((e: CarpeError) => {
-        loading = false
-        raise_error(e, false, 'setWallet')
-      })
-
-    UIkit.dropdown(document.getElementsByClassName('send-drop')).hide(true)
+    setWalletType(wtype).finally(() => {
+      loading = false
+    })
+    UIkit.modal('.wallet-modal').hide()
   }
 </script>
 
@@ -31,20 +19,19 @@
     {$_('txs.set_wallet_type.title')}
   </h4>
 
-  <p>{$_('txs.set_wallet_type.subtitle')}</p>
+  <p>{$_('txs.set_wallet_type.subtitle')}.</p>
   <div>
     <div class="uk-inline">
-      <button class="uk-button uk-button-default" type="button" disabled={loading ? true : false}
-        >{$_('txs.set_wallet_type.btn_slow')}</button
-      >
-      <div class="send-drop" uk-dropdown="mode: click">
-        <p>{$_('txs.set_wallet_type.confirm_slow')}</p>
-        <button class="uk-button uk-button-danger" on:click={() => setWallet(0)}>
-          {$_('txs.set_wallet_type.btn_confirm_slow')}
-        </button>
-      </div>
+      <button
+        class="uk-button uk-button-default"
+        type="button"
+        uk-toggle="target: #slow"
+        disabled={loading ? true : false}
+        >
+      {$_('txs.set_wallet_type.btn_slow')} ...
+      </button>
     </div>
-
+    <!--
     <div class="uk-inline">
       <button class="uk-button uk-button-default" type="button" disabled={loading ? true : false}
         >{$_('txs.set_wallet_type.btn_community')}</button
@@ -55,12 +42,22 @@
           {$_('txs.set_wallet_type.btn_confirm_community')}
         </button>
       </div>
-    </div>
+    </div> -->
 
     {#if loading}
       <div class="uk-flex uk-flex-center">
         <span uk-spinner />
       </div>
     {/if}
+  </div>
+
+  <!-- SLOW WALLET MODAL -->
+  <div id="slow" uk-modal class="uk-modal-container wallet-modal uk-text-center">
+    <div class="uk-modal-dialog uk-modal-body uk-padding-large">
+      <h4 class="uk-modal-title uk-text-uppercase uk-text-muted">{$_('txs.set_wallet_type.warning')}</h4>
+      <button class="uk-button uk-button-danger" on:click={() => setWallet(WalletType.Slow)}>
+        {$_('txs.set_wallet_type.btn_confirm_slow')}
+      </button>
+    </div>
   </div>
 </main>
