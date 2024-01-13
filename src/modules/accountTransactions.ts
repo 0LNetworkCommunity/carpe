@@ -9,7 +9,10 @@ export enum WalletType {
 }
 
 export const setWalletType = async (wtype: WalletType) => {
-  invoke('wallet_type', { typeInt: wtype })
+  // TODO: implement community if necessary
+  if (wtype != WalletType.Slow) return
+
+  invoke('set_slow_wallet')
     .then((res: string) => {
       notify_success(`Account set to ${wtype}`)
       responses.set(res)

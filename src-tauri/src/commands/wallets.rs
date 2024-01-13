@@ -2,10 +2,12 @@ use crate::{
   carpe_error::CarpeError,
   commands::query,
   configs::{self, get_cfg, get_client},
-  configs_profile, key_manager,
+  configs_profile, key_manager::{self, inject_private_key_to_cfg},
 };
 
 use anyhow::anyhow;
+use libra_cached_packages::libra_stdlib;
+use libra_txs::submit_transaction::Sender;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
   legacy_types::app_cfg::Profile,
@@ -215,4 +217,17 @@ async fn test_fetch_originating() {
   .unwrap();
   let r = get_originating_address(a).await.unwrap();
   dbg!(&r);
+}
+
+
+#[tauri::command(async)]
+pub async fn set_slow_wallet() -> Result<(), CarpeError> {
+  // NOTE: unsure Serde was catching all cases check serialization
+  let mut config = get_cfg()?;
+  inject_private_key_to_cfg(&mut config)?;
+  let mut sender = Sender::from_app_cfg(&config, None).await?;
+
+  let payload = libra_stdlib::slow_wallet_set_slow();
+  sender.sign_submit_wait(payload).await?;
+  Ok(())
 }
