@@ -108,7 +108,6 @@ async fn main() {
       commands::query::query_balance,
       commands::query::query_makewhole,
       commands::query::get_recovery_mode,
-      // wallet_type,
 
       //////// Transactions ////////
       commands::tx::coin_transfer,
