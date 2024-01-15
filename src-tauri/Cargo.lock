@@ -6143,7 +6143,7 @@ checksum = "f7012b1bbb0719e1097c47611d3898568c546d597c2e74d66f6087edd5233ff4"
 [[package]]
 name = "libra-cached-packages"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=dfdd948#dfdd9482376a51f3d97b3740d3a80f9089d71555"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=c0be610#c0be61092d60453e68f0992c4b0d6bb0033e75b6"
 dependencies = [
  "bcs 0.1.4",
  "diem-types",
@@ -6155,7 +6155,7 @@ dependencies = [
 [[package]]
 name = "libra-framework"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=dfdd948#dfdd9482376a51f3d97b3740d3a80f9089d71555"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=c0be610#c0be61092d60453e68f0992c4b0d6bb0033e75b6"
 dependencies = [
  "anyhow",
  "bcs 0.1.4",
@@ -6176,7 +6176,7 @@ dependencies = [
 [[package]]
 name = "libra-query"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=dfdd948#dfdd9482376a51f3d97b3740d3a80f9089d71555"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=c0be610#c0be61092d60453e68f0992c4b0d6bb0033e75b6"
 dependencies = [
  "anyhow",
  "clap 4.3.10",
@@ -6190,7 +6190,7 @@ dependencies = [
 [[package]]
 name = "libra-tower"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=dfdd948#dfdd9482376a51f3d97b3740d3a80f9089d71555"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=c0be610#c0be61092d60453e68f0992c4b0d6bb0033e75b6"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -6211,7 +6211,7 @@ dependencies = [
 [[package]]
 name = "libra-txs"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=dfdd948#dfdd9482376a51f3d97b3740d3a80f9089d71555"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=c0be610#c0be61092d60453e68f0992c4b0d6bb0033e75b6"
 dependencies = [
  "anyhow",
  "bcs 0.1.4",
@@ -6225,6 +6225,7 @@ dependencies = [
  "hex",
  "indoc",
  "libra-cached-packages",
+ "libra-framework",
  "libra-query",
  "libra-types",
  "libra-wallet",
@@ -6237,7 +6238,7 @@ dependencies = [
 [[package]]
 name = "libra-types"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=dfdd948#dfdd9482376a51f3d97b3740d3a80f9089d71555"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=c0be610#c0be61092d60453e68f0992c4b0d6bb0033e75b6"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -6272,7 +6273,7 @@ dependencies = [
 [[package]]
 name = "libra-wallet"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=dfdd948#dfdd9482376a51f3d97b3740d3a80f9089d71555"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=c0be610#c0be61092d60453e68f0992c4b0d6bb0033e75b6"
 dependencies = [
  "anyhow",
  "blst",

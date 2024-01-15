@@ -18,12 +18,12 @@ built = { version = "0.5.1", features = ["git2"] }
 gmp-mpfr-sys = { version = "1.6", default-features = false }
 
 [dependencies]
-libra-cached-packages = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "dfdd948" }
-libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "dfdd948" }
-libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "dfdd948" }
-libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "dfdd948" }
-libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "dfdd948" }
-libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "dfdd948" }
+libra-cached-packages = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "c0be610" }
+libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "c0be610" }
+libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "c0be610" }
+libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "c0be610" }
+libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "c0be610" }
+libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "c0be610" }
 
 # shared with libra-framework and diem
 anyhow = "1.0.62"

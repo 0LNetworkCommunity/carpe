@@ -227,7 +227,7 @@ pub async fn set_slow_wallet() -> Result<(), CarpeError> {
   inject_private_key_to_cfg(&mut config)?;
   let mut sender = Sender::from_app_cfg(&config, None).await?;
 
-  let payload = libra_stdlib::slow_wallet_set_slow();
+  let payload = libra_stdlib::slow_wallet_user_set_slow();
   sender.sign_submit_wait(payload).await?;
   Ok(())
 }
