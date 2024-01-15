@@ -2,7 +2,8 @@ use crate::{
   carpe_error::CarpeError,
   commands::query,
   configs::{self, get_cfg, get_client},
-  configs_profile, key_manager::{self, inject_private_key_to_cfg},
+  configs_profile,
+  key_manager::{self, inject_private_key_to_cfg},
 };
 
 use anyhow::anyhow;
@@ -218,7 +219,6 @@ async fn test_fetch_originating() {
   let r = get_originating_address(a).await.unwrap();
   dbg!(&r);
 }
-
 
 #[tauri::command(async)]
 pub async fn set_slow_wallet() -> Result<(), CarpeError> {
