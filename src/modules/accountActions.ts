@@ -210,8 +210,6 @@ export function getAccountEvents(account: CarpeProfile, errorCallback = null) {
 }
 
 export const isLegacy = async (): Promise<boolean> => {
-  // let canMigrate = false
-
   return invoke('has_legacy_configs', {})
     .then((b: boolean) => {
       if (b) logger(Level.Warn, 'legacy configs found, should try to migrate')

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ } from '../../lang/i18n'
-  import Migrate from './Migrate.svelte'
-  import { canMigrate } from '../../modules/accounts'
+  // import Migrate from './Migrate.svelte'
+  // import { canMigrate } from '../../modules/accounts'
   import CreateAccountLinks from './CreateAccountLinks.svelte'
 </script>
 
@@ -16,7 +16,7 @@
   </h5>
   <CreateAccountLinks />
 
-  {#if $canMigrate}
+  <!-- {#if $canMigrate}
     <Migrate />
-  {/if}
+  {/if} -->
 </main>
