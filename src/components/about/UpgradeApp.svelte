@@ -26,7 +26,6 @@
 </script>
 
 <main>
-  {#if $updateStatus?.manifest}
     <CardAlert>
       <div slot="title">
         {#if $updateStatus.refreshing}
