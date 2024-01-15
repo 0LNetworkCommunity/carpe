@@ -124,6 +124,8 @@ export function findOneAccount(account: string): CarpeProfile | undefined {
 }
 
 export const setAccount = async (account: string, notifySucess = true) => {
+  if (get(signingAccount).account == account) return
+
   // cannot switch profile with miner running
   if (get(minerLoopEnabled)) {
     notify_error('To switch accounts you need to turn miner off first.')
