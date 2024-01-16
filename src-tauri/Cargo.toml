@@ -16,9 +16,9 @@ built = { version = "0.5.1", features = ["git2"] }
 # TODO: windows will not build unless using msys2 for build
 [target.'cfg(unix)'.dependencies]
 gmp-mpfr-sys = { version = "1.6", default-features = false }
+openssl-sys = "0.9.98"
 
 [dependencies]
-
 libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "7adbda6" }
 libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "7adbda6" }
 libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "7adbda6" }
