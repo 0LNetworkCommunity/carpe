@@ -19,7 +19,7 @@
     {$_('txs.set_wallet_type.title')}
   </h4>
 
-  <p>{$_('txs.set_wallet_type.subtitle')}.</p>
+  <p>{$_('txs.set_wallet_type.subtitle')}</p>
   <div>
     <div class="uk-inline">
       <button
