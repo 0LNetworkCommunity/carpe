@@ -1,17 +1,7 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
   import { signingAccount } from '../../modules/accounts'
-  import { copyToClipboard } from '@svelte-put/copy';
   import Copy from '../../components/layout/Copy.svelte'
-
-  let icon = "copy"
-  const copyThis = () => {
-    icon = "check"
-    copyToClipboard($signingAccount.account)
-    setTimeout(() => {
-      icon = "copy"
-    }, 3000)
-  }
 
 </script>
 
