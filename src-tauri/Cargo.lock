@@ -1038,7 +1038,6 @@ dependencies = [
  "gmp-mpfr-sys",
  "hex",
  "keyring",
- "libra-cached-packages",
  "libra-query",
  "libra-tower",
  "libra-txs",

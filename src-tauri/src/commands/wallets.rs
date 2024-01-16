@@ -7,8 +7,7 @@ use crate::{
 };
 
 use anyhow::{anyhow, Context};
-use libra_cached_packages::libra_stdlib;
-use libra_txs::submit_transaction::Sender;
+use libra_txs::{submit_transaction::Sender, txs_cli_user::SetSlowTx};
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
   legacy_types::app_cfg::Profile,
@@ -242,7 +241,9 @@ pub async fn set_slow_wallet() -> Result<(), CarpeError> {
   inject_private_key_to_cfg(&mut config)?;
   let mut sender = Sender::from_app_cfg(&config, None).await?;
 
-  let payload = libra_stdlib::slow_wallet_user_set_slow();
-  sender.sign_submit_wait(payload).await?;
+  let t = SetSlowTx {};
+  t.run(&mut sender).await?;
+  // let payload = libra_stdlib::slow_wallet_user_set_slow();
+  // sender.sign_submit_wait(payload).await?;
   Ok(())
 }
