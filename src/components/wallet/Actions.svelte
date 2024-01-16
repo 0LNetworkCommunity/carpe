@@ -10,7 +10,7 @@
 <main>
   <Card>
 
-    <span slot="title">{$_('wallet.settings.title')} </span>
+    <!-- <span slot="title">{$_('wallet.settings.title')} </span> -->
 
     <div slot="body">
       <Info />

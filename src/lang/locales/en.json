@@ -240,8 +240,9 @@
       "no_balance_body2": "Looks like you have less than 2 coins in your account, this means you won't be able to onboard anyone."
     },
     "set_wallet_type": {
-      "title": "Set your Account Type",
-      "subtitle": " Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
+      "actions_title": "Account Actions",
+      "set_slow_title": "Make Slow Wallet (danger)",
+      "subtitle": "Be sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
       "btn_slow": "Set Slow Wallet",
       "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversible",
       "warning": "Warning: this change is forever",
