@@ -6,7 +6,7 @@ use crate::{
   key_manager::{self, inject_private_key_to_cfg},
 };
 
-use anyhow::anyhow;
+use anyhow::{anyhow, Context};
 use libra_cached_packages::libra_stdlib;
 use libra_txs::submit_transaction::Sender;
 use libra_types::{
@@ -133,6 +133,25 @@ pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   Ok(mapped)
 }
 
+#[tauri::command(async)]
+/// check if this account is a slow wallet
+pub async fn is_slow(account: AccountAddress) -> anyhow::Result<bool, CarpeError> {
+  let c = get_client()?;
+  println!("is slow");
+  let b = c
+    .view_ext(
+      "0x1::slow_wallet::is_slow",
+      None,
+      Some(account.to_hex_literal()),
+    )
+    .await?;
+  dbg!(&b);
+  match b.as_array().context("no bool found")?[0].as_bool() {
+    Some(b) => Ok(b),
+    None => Ok(false),
+  }
+}
+
 async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeError> {
   futures::future::join_all(list.iter_mut().map(|e| async {
     if let Ok(addr) = get_originating_address(e.auth_key).await {
@@ -147,12 +166,8 @@ async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeEr
 
 async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError> {
   futures::future::join_all(list.iter_mut().map(|e| async {
-    // if query::get_seq_num(e.account).await.is_ok() {
-    //   // e.on_chain = true;
-    // }
     if let Ok(b) = query::get_balance(e.account).await {
       e.balance = b;
-      // e.on_chain = true;
     }
   }))
   .await;

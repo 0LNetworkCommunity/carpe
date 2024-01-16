@@ -14,7 +14,7 @@ export const setWalletType = async (wtype: WalletType) => {
 
   invoke('set_slow_wallet')
     .then((res: string) => {
-      notify_success(`Account set to ${wtype}`)
+      notify_success(`The account is set to: ${wtype.toString}`)
       responses.set(res)
     })
     .catch((e: CarpeError) => {

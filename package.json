@@ -15,6 +15,7 @@
     "format": "eslint --fix src/* && prettier --write src"
   },
   "devDependencies": {
+    "@svelte-put/copy": "^3.0.0",
     "@sveltejs/vite-plugin-svelte": "^2.2.0",
     "@tauri-apps/api": "^1.5.1",
     "@tauri-apps/cli": "^1.5.6",

@@ -151,12 +151,17 @@ export const setAccount = async (account: string, notifySucess = true) => {
     })
 }
 
-// export function addNewAccount(account: Profile) {
-//   let list = get(allAccounts);
-//   // account.on_chain = false;
-//   list.push(account);
-//   allAccounts.set(list);
-// }
+// check if a wallet is slow
+export const is_slow_wallet = async (account: string): Promise<boolean> => {
+  return invoke('is_slow', { account })
+  // .then((b) => {
+  //   return b
+  // })
+  // .catch((e) => {
+  //   raise_error(e, false, 'setAccount')
+  //   return false
+  // })
+}
 
 export function checkSigningAccountBalance() {
   const selected = get(signingAccount)

@@ -1,12 +1,32 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
-    import { signingAccount } from '../../modules/accounts'
+  import { signingAccount } from '../../modules/accounts'
+  import { copyToClipboard } from '@svelte-put/copy';
+  import Copy from '../../components/layout/Copy.svelte'
+
+  let icon = "copy"
+  const copyThis = () => {
+    icon = "check"
+    copyToClipboard($signingAccount.account)
+    setTimeout(() => {
+      icon = "copy"
+    }, 3000)
+  }
+
 </script>
 
 <main>
-    <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
     {$_('wallet.account_list.info_title')}
   </h4>
-  <p>{$_('wallet.account_list.address')}: {$signingAccount.account}</p>
-  <p>{$_('wallet.account_list.authkey')}: {$signingAccount.auth_key}</p>
+  <p class="uk-text-uppercase">
+    {$_('wallet.account_list.address')}:
+    <code class="uk-text-light">{$signingAccount.account}</code>
+    <Copy text={$signingAccount.account}/>
+
+  </p>
+  <p class="uk-text-uppercase">{$_('wallet.account_list.authkey')}:
+      <code class="uk-text-light">{$signingAccount.auth_key}</code>
+    <Copy text={$signingAccount.auth_key}/>
+  </p>
 </main>

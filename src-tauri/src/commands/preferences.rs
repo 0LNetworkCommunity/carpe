@@ -51,7 +51,6 @@ pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
       vec![first_url]
     }
   };
-  dbg!(&peers);
   Ok(peers) // uses app_cfg.chain_info_chain_id
 }
 
@@ -101,7 +100,7 @@ pub async fn ignore_migrate() -> Result<bool, CarpeError> {
 pub async fn has_legacy_configs() -> bool {
   if let Ok(acc) = read_accounts(&legacy_config_path()) {
     info!(
-      "alegacy configs found at: {}",
+      "legacy configs found at: {}",
       legacy_config_path().display()
     );
     info!("accounts: {:?}", acc);

@@ -91,6 +91,8 @@
     },
     "settings": {
       "title": "Wallet Options",
+      "slow_label": "Slow Wallet",
+      "slow_info": "This is a slow wallet, transfers are limited to the amount unlocked. Each day 41,000 coins unlock on Slow Wallets",
       "warn": "These changes will appear on blockchain.",
       "slow_wallet_warn": "WARNING: SETTING YOUR WALLET TO SLOW OR COMMUNITY IS PERMANENT"
     }
