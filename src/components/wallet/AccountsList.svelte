@@ -17,6 +17,11 @@
   const toggleOptions = () => {
     showOptions ? (showOptions = false) : (showOptions = true)
   }
+
+  signingAccount.subscribe(() => {
+    showOptions = false
+  })
+
 </script>
 
 <main>
