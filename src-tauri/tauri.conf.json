@@ -34,7 +34,9 @@
         "gmp.lib",
         "libgmp-10.dll",
         "libcrypto.dylib",
-        "libssl.dylib"
+        "libcrypto.3.dylib",
+        "libssl.dylib",
+        "libssl.3.dylib"
       ],
       "externalBin": [],
       "copyright": "",
