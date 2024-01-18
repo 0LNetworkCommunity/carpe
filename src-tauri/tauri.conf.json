@@ -32,7 +32,9 @@
       "resources": [
         "gmp.dll",
         "gmp.lib",
-        "libgmp-10.dll"
+        "libgmp-10.dll",
+        "libcrypto.dylib",
+        "libssl.dylib"
       ],
       "externalBin": [],
       "copyright": "",
