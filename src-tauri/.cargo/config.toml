@@ -42,5 +42,6 @@ rustflags = [
 rustflags = [
     "--cfg",
     "tokio_unstable",
-    "-L /opt/homebrew/Cellar/gmp/6.3.0/lib/",
+    "-L",
+    "/opt/homebrew/Cellar/gmp/6.3.0/lib/",
 ]
