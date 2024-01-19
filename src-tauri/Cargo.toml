@@ -16,13 +16,14 @@ built = { version = "0.5.1", features = ["git2"] }
 # TODO: windows will not build unless using msys2 for build
 [target.'cfg(unix)'.dependencies]
 gmp-mpfr-sys = { version = "1.6", default-features = false }
+openssl-sys = "0.9.98"
 
 [dependencies]
-libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "8de53d4" }
-libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "8de53d4" }
-libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "8de53d4" }
-libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "8de53d4" }
-libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "8de53d4" }
+libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "da8bcdb4" }
+libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "da8bcdb4" }
+libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "da8bcdb4" }
+libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "da8bcdb4" }
+libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "da8bcdb4" }
 
 # shared with libra-framework and diem
 anyhow = "1.0.62"

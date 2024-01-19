@@ -1,9 +1,8 @@
 <script lang="ts">
-  import MinerBacklog from '../miner/MinerBacklog.svelte'
   import AccountSettings from './AccountSettings.svelte'
   import UpdateNetwork from './UpdateNetwork.svelte'
   import LangAppearanceSettings from './LangAppearanceSettings.svelte'
-  import SetWalletType from '../txs/SetWalletType.svelte'
+
   import { _ } from 'svelte-i18n'
 </script>
 
@@ -15,6 +14,4 @@
   <LangAppearanceSettings />
   <UpdateNetwork />
   <AccountSettings />
-  <MinerBacklog />
-  <SetWalletType />
 </main>

@@ -1045,6 +1045,7 @@ dependencies = [
  "libra-wallet",
  "log",
  "once_cell",
+ "openssl-sys",
  "serde 1.0.165",
  "serde_json",
  "serde_yaml 0.8.26",
@@ -6142,7 +6143,7 @@ checksum = "f7012b1bbb0719e1097c47611d3898568c546d597c2e74d66f6087edd5233ff4"
 [[package]]
 name = "libra-cached-packages"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=8de53d4#8de53d412d723e5d50826766c47aed245ff756bd"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=da8bcdb4#da8bcdb425c9568370a939c5ead644a7e846d635"
 dependencies = [
  "bcs 0.1.4",
  "diem-types",
@@ -6154,7 +6155,7 @@ dependencies = [
 [[package]]
 name = "libra-framework"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=8de53d4#8de53d412d723e5d50826766c47aed245ff756bd"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=da8bcdb4#da8bcdb425c9568370a939c5ead644a7e846d635"
 dependencies = [
  "anyhow",
  "bcs 0.1.4",
@@ -6175,7 +6176,7 @@ dependencies = [
 [[package]]
 name = "libra-query"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=8de53d4#8de53d412d723e5d50826766c47aed245ff756bd"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=da8bcdb4#da8bcdb425c9568370a939c5ead644a7e846d635"
 dependencies = [
  "anyhow",
  "clap 4.3.10",
@@ -6189,7 +6190,7 @@ dependencies = [
 [[package]]
 name = "libra-tower"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=8de53d4#8de53d412d723e5d50826766c47aed245ff756bd"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=da8bcdb4#da8bcdb425c9568370a939c5ead644a7e846d635"
 dependencies = [
  "anyhow",
  "byteorder",
@@ -6210,7 +6211,7 @@ dependencies = [
 [[package]]
 name = "libra-txs"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=8de53d4#8de53d412d723e5d50826766c47aed245ff756bd"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=da8bcdb4#da8bcdb425c9568370a939c5ead644a7e846d635"
 dependencies = [
  "anyhow",
  "bcs 0.1.4",
@@ -6236,7 +6237,7 @@ dependencies = [
 [[package]]
 name = "libra-types"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=8de53d4#8de53d412d723e5d50826766c47aed245ff756bd"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=da8bcdb4#da8bcdb425c9568370a939c5ead644a7e846d635"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -6271,7 +6272,7 @@ dependencies = [
 [[package]]
 name = "libra-wallet"
 version = "0.1.0"
-source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=8de53d4#8de53d412d723e5d50826766c47aed245ff756bd"
+source = "git+https://github.com/0LNetworkCommunity/libra-framework.git?rev=da8bcdb4#da8bcdb425c9568370a939c5ead644a7e846d635"
 dependencies = [
  "anyhow",
  "blst",
@@ -7786,9 +7787,9 @@ checksum = "ff011a302c396a5197692431fc1948019154afc178baf7d8e37367442a4601cf"
 
 [[package]]
 name = "openssl-sys"
-version = "0.9.90"
+version = "0.9.98"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "374533b0e45f3a7ced10fcaeccca020e66656bc03dac384f852e4e5a7a8104a6"
+checksum = "c1665caf8ab2dc9aef43d1c0023bd904633a6a05cb30b0ad59bec2ae986e57a7"
 dependencies = [
  "cc",
  "libc",

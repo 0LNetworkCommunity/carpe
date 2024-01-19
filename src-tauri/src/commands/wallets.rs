@@ -2,10 +2,12 @@ use crate::{
   carpe_error::CarpeError,
   commands::query,
   configs::{self, get_cfg, get_client},
-  configs_profile, key_manager,
+  configs_profile,
+  key_manager::{self, inject_private_key_to_cfg},
 };
 
-use anyhow::anyhow;
+use anyhow::{anyhow, Context};
+use libra_txs::{submit_transaction::Sender, txs_cli_user::SetSlowTx};
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
   legacy_types::app_cfg::Profile,
@@ -130,6 +132,25 @@ pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   Ok(mapped)
 }
 
+#[tauri::command(async)]
+/// check if this account is a slow wallet
+pub async fn is_slow(account: AccountAddress) -> anyhow::Result<bool, CarpeError> {
+  let c = get_client()?;
+  println!("is slow");
+  let b = c
+    .view_ext(
+      "0x1::slow_wallet::is_slow",
+      None,
+      Some(account.to_hex_literal()),
+    )
+    .await?;
+  dbg!(&b);
+  match b.as_array().context("no bool found")?[0].as_bool() {
+    Some(b) => Ok(b),
+    None => Ok(false),
+  }
+}
+
 async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeError> {
   futures::future::join_all(list.iter_mut().map(|e| async {
     if let Ok(addr) = get_originating_address(e.auth_key).await {
@@ -144,12 +165,8 @@ async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeEr
 
 async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError> {
   futures::future::join_all(list.iter_mut().map(|e| async {
-    // if query::get_seq_num(e.account).await.is_ok() {
-    //   // e.on_chain = true;
-    // }
     if let Ok(b) = query::get_balance(e.account).await {
       e.balance = b;
-      // e.on_chain = true;
     }
   }))
   .await;
@@ -215,4 +232,18 @@ async fn test_fetch_originating() {
   .unwrap();
   let r = get_originating_address(a).await.unwrap();
   dbg!(&r);
+}
+
+#[tauri::command(async)]
+pub async fn set_slow_wallet() -> Result<(), CarpeError> {
+  // NOTE: unsure Serde was catching all cases check serialization
+  let mut config = get_cfg()?;
+  inject_private_key_to_cfg(&mut config)?;
+  let mut sender = Sender::from_app_cfg(&config, None).await?;
+
+  let t = SetSlowTx {};
+  t.run(&mut sender).await?;
+  // let payload = libra_stdlib::slow_wallet_user_set_slow();
+  // sender.sign_submit_wait(payload).await?;
+  Ok(())
 }

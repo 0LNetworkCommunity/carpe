@@ -90,13 +90,13 @@ async fn main() {
       commands::wallets::get_default_profile,
       commands::wallets::refresh_accounts,
       commands::wallets::get_all_accounts,
-      // get_account_events,
-      // add_account,
       commands::wallets::keygen,
       commands::wallets::init_from_mnem,
       commands::wallets::init_from_private_key,
       commands::wallets::remove_accounts,
       commands::wallets::switch_profile,
+      commands::wallets::is_slow,
+      commands::wallets::set_slow_wallet,
       //////// Networks ////////
       commands::preferences::refresh_upstream_peer_stats,
       commands::networks::force_upstream,
@@ -108,8 +108,6 @@ async fn main() {
       commands::query::query_balance,
       commands::query::query_makewhole,
       commands::query::get_recovery_mode,
-      // wallet_type,
-
       //////// Transactions ////////
       commands::tx::coin_transfer,
       // claim_make_whole,

@@ -124,6 +124,8 @@ export function findOneAccount(account: string): CarpeProfile | undefined {
 }
 
 export const setAccount = async (account: string, notifySucess = true) => {
+  if (get(signingAccount).account == account) return
+
   // cannot switch profile with miner running
   if (get(minerLoopEnabled)) {
     notify_error('To switch accounts you need to turn miner off first.')
@@ -149,12 +151,17 @@ export const setAccount = async (account: string, notifySucess = true) => {
     })
 }
 
-// export function addNewAccount(account: Profile) {
-//   let list = get(allAccounts);
-//   // account.on_chain = false;
-//   list.push(account);
-//   allAccounts.set(list);
-// }
+// check if a wallet is slow
+export const is_slow_wallet = async (account: string): Promise<boolean> => {
+  return invoke('is_slow', { account })
+  // .then((b) => {
+  //   return b
+  // })
+  // .catch((e) => {
+  //   raise_error(e, false, 'setAccount')
+  //   return false
+  // })
+}
 
 export function checkSigningAccountBalance() {
   const selected = get(signingAccount)
@@ -210,8 +217,6 @@ export function getAccountEvents(account: CarpeProfile, errorCallback = null) {
 }
 
 export const isLegacy = async (): Promise<boolean> => {
-  // let canMigrate = false
-
   return invoke('has_legacy_configs', {})
     .then((b: boolean) => {
       if (b) logger(Level.Warn, 'legacy configs found, should try to migrate')

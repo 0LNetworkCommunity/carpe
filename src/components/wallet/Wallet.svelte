@@ -28,7 +28,6 @@
       </div>
 
       <AccountsList />
-
       <CreateAccountLinks />
 
       {#if $connected && pendingAccounts.length > 0}
