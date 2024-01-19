@@ -25,6 +25,11 @@ libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", r
 libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "da8bcdb4" }
 libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "da8bcdb4" }
 
+# without these pinned versions, poem-openapi-types fail
+poem = { version = "=1.3.55", features = ["anyhow", "rustls"] }
+poem-openapi = { version = "=2.0.11", features = ["swagger-ui", "url"] }
+poem-openapi-derive = "=2.0.11"
+
 # shared with libra-framework and diem
 anyhow = "1.0.62"
 futures = "= 0.3.24"

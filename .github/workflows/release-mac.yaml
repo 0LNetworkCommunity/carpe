@@ -1,6 +1,7 @@
-name: carpe-release-mac-x86
+name: carpe-release-mac
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
@@ -17,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-11 ]
+        os: [ macos-14-arm64, macos-11 ]
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -41,22 +42,24 @@ jobs:
       - name: checkout source
         uses: actions/checkout@v3
 
-########  CACHE  ########
+#####  Cache  ########
 
-      - uses: Swatinem/rust-cache@v2
+      - uses: Swatinem/rust-cache@v2.7.3
         with:
-           workspaces: ./src-tauri
-           shared-key: ${{ matrix.os }}
-           cache-all-crates: true
+         workspaces: src-tauri
+         shared-key: "macos-11"
+         cache-all-crates: true
+         cache-on-failure: true
+         
 
 ########  BUILD  ########
 
       - name: yarn installation
         run: yarn install
-
-      # - name: pre-build rust
-      #   working-directory: ./src-tauri
-      #   run: cargo b --release
+      
+      - name: pre-build rust
+        working-directory: ./src-tauri
+        run: cargo b --release
 
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
