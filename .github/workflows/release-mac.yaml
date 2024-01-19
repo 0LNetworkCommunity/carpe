@@ -1,4 +1,4 @@
-name: carpe-release-mac-x86
+name: carpe-release-mac
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-11 ]
+        os: [ macos-14-arm64 ]
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
