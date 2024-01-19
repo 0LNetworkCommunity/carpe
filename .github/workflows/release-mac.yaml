@@ -42,13 +42,6 @@ jobs:
       - name: checkout source
         uses: actions/checkout@v3
 
-########  CACHE  ########
-
-      - uses: Swatinem/rust-cache@v2
-        with:
-           workspaces: ./src-tauri
-           shared-key: ${{ matrix.os }}
-           cache-all-crates: true
 
 ########  BUILD  ########
 
