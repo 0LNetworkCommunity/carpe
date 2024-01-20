@@ -49,6 +49,8 @@ jobs:
          workspaces: ./src-tauri
          shared-key: ${{ matrix.os }}
          cache-all-crates: true
+         cache-on-failure: true
+
 
 
 ########  BUILD  ########
