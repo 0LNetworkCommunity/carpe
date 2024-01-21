@@ -7,4 +7,4 @@ pub(crate) mod tx;
 pub(crate) mod wallets;
 pub(crate) mod web_logs;
 
-pub use app_version::*;
+//pub use app_version::*;
