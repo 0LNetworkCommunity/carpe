@@ -4,9 +4,9 @@
 
 Currently Windows and Mac are supported:
 
-- [Download Windows 10+](https://github.com/OLSF/carpe/releases/download/v0.5.0/carpe_0.5.0_x64.msi) and read the [Windows instructions](docs/start-carpe-windows.md)
+- [Download Windows 10+](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.0/carpe_1.0.0_x64_en-US.msi) and read the [Windows instructions](docs/start-carpe-windows.md)
 
-- [Download MacOs 11+](https://github.com/OLSF/carpe/releases/download/v0.5.0/carpe-macos-11.dmg) and read the [Mac instructions](docs/start-carpe-mac.md)
+- [Download MacOs 11+](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.0/carpe_1.0.0_x64.dmg) and read the [Mac instructions](docs/start-carpe-mac.md)
 
 
 On Windows, currently, Microsoft Edge WebView2 must be installed manually first.
