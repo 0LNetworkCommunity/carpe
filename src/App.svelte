@@ -36,7 +36,7 @@
   import Events from './components/events/Events.svelte'
   import About from './components/about/About.svelte'
   import SearchingFullnodes from './components/layout/SearchingFullnodes.svelte'
-  import RecoveryMode from './components/layout/RecoveryMode.svelte'
+  // import RecoveryMode from './components/layout/RecoveryMode.svelte'
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
   import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
   import { maybeTowerOnce as maybeTowerOnce } from './modules/miner_invoke'
@@ -115,7 +115,7 @@
     <SearchingFullnodes />
     <KeyError/>
     <SpinnerAccount />
-    <RecoveryMode />
+    <!-- <RecoveryMode /> -->
   {/if}
 
   <div class="uk-container">

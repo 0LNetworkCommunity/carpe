@@ -3,7 +3,7 @@
 
   import { _ } from 'svelte-i18n'
   import CardAlert from '../layout/CardAlert.svelte'
-    import { raise_error } from '../../modules/carpeError'
+  import { raise_error } from '../../modules/carpeError'
 
   let is_recovery = false
   let epoch_recovery_ends = null
