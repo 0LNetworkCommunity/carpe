@@ -20,10 +20,10 @@ export const nodeEnv = writable<string>('')
 export const nodeEnvIsTest = writable<boolean>(false)
 
 // helper to figure out what environment we are in TEST/PROD
-export function getEnv() {
+export async function getEnv() {
   logger(Level.Info, ' getEnv')
 
-  invoke('get_env', {})
+  return invoke('get_env', {})
     .then((res: string) => {
       nodeEnv.set(res)
       if (res == 'test') {

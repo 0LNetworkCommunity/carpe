@@ -19,6 +19,7 @@ import {
 import type { CarpeProfile, SlowWalletBalance } from './accounts'
 import { navigate } from 'svelte-navigator'
 import { carpeTick } from './tick'
+import { initNetwork } from './networks'
 
 export const getDefaultProfile = async () => {
   invoke('get_default_profile', {})
@@ -78,12 +79,12 @@ export const addAccount = async (init_type: InitType, secret: string) => {
   }
   // submit
   return invoke(method_name, arg_obj)
-    .then((res: CarpeProfile) => {
+    .then(async (res: CarpeProfile) => {
       // set as init so we don't get sent back to Newbie account creation.
       isInit.set(true)
       responses.set(JSON.stringify(res))
       signingAccount.set(res)
-
+      await initNetwork()
       // only navigate away once we have refreshed the accounts including balances
       notify_success(`Account Added: ${res.nickname}`)
 
