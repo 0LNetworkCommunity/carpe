@@ -1,7 +1,10 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { get, writable } from 'svelte/store'
 import { Level, logger, raise_error } from './carpeError'
+import type { CarpeError } from './carpeError'
 import { refreshAccounts } from './accountActions'
+import { notify_success } from './carpeNotify'
+import { nodeEnvIsTest } from './debug'
 
 // matches rust equivalent
 export interface NetworkPlaylist {
@@ -18,6 +21,22 @@ export interface HostProfile {
   is_sync: boolean
 }
 
+// default playlist which is provided in Carpe.
+export const playlistJsonUrl =
+  'https://raw.githubusercontent.com/0LNetworkCommunity/seed-peers/main/fullnode_seed_playlist.json'
+
+export const updateNetwork = async (url: string, notice = true) => {
+  // check input data
+  // submit
+  await invoke('override_playlist', { url })
+    .then((res: NetworkPlaylist) => {
+      network_profile.set(res)
+      notice && notify_success('Network Settings Updated')
+    })
+    .catch((error) => {
+      notice && raise_error(error as CarpeError, false, 'updateNetwork')
+    })
+}
 export const defaultPlaylist = (): NetworkPlaylist => {
   const h: HostProfile = {
     url: 'http://localhost:8080',
@@ -128,4 +147,23 @@ export const incrementBackoff = () => {
   const new_time = new Date()
   new_time.setSeconds(new_time.getSeconds() + 2 * get(scanning_fullnodes_retries))
   scanning_fullnodes_backoff.set(new_time.getSeconds())
+}
+let current_network_profile: NetworkPlaylist
+network_profile.subscribe((value) => {
+  current_network_profile = value
+})
+let isTest = false
+nodeEnvIsTest.subscribe((value) => {
+  isTest = value
+})
+export const initNetwork = async () => {
+  logger(Level.Info, 'initNetwork')
+  if (!isTest) {
+    await getNetwork()
+    if (current_network_profile.chain_id === NamedChain.TESTING) {
+      logger(Level.Info, 'initNetwork')
+      return await updateNetwork(playlistJsonUrl, false)
+    }
+  }
+  return true
 }

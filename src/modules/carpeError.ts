@@ -110,7 +110,7 @@ export enum Level {
 
 // error logging to terminal and text file
 export const logger = async (level: Level, msg: string) => {
-  console.log(`${level}: ${msg}`)
+  console.log(`${new Date()} : ${level}: ${msg}`)
   invoke('log_this', {
     level,
     msg,

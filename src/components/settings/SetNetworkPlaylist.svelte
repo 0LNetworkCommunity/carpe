@@ -1,34 +1,12 @@
 <script lang="ts">
   import { _ } from "svelte-i18n";
-  import { invoke } from "@tauri-apps/api/tauri";
 
-  import type { CarpeError } from "../../modules/carpeError";
-  import { raise_error } from "../../modules/carpeError";
-  import { network_profile } from "../../modules/networks";
-  import type { NetworkPlaylist} from "../../modules/networks";
-  import { notify_success } from "../../modules/carpeNotify";
-
-  // default playlist which is provided in Carpe.
-  let playlist_json_url = "https://raw.githubusercontent.com/0LNetworkCommunity/seed-peers/main/fullnode_seed_playlist.json";
-
-  const updateNetwork = (url: string) => {
-    // check input data
-    // submit
-    invoke("override_playlist", { url })
-      .then((res: NetworkPlaylist) => {
-        network_profile.set(res);
-        notify_success("Network Settings Updated");
-
-      })
-      .catch((error) => {
-        raise_error(error as CarpeError, false, "updateNetwork");
-      });
-  }
-
+  import { updateNetwork, playlistJsonUrl } from "../../modules/networks";
+  let playlist_json_url = playlistJsonUrl;
 </script>
 
 <main>
-  <form id="account-form">
+  <form id="account-form" on:submit|preventDefault={() => {}}>
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
         <span> {$_("settings.network_settings.playlist")} </span>

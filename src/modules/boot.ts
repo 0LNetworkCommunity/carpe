@@ -8,7 +8,7 @@ import {
 } from './accountActions'
 import { Level, logger } from './carpeError'
 import { getEnv } from './debug'
-import { getMetadata, getNetwork, refreshUpstreamPeerStats } from './networks'
+import { getMetadata, getNetwork, refreshUpstreamPeerStats, initNetwork } from './networks'
 import { getVersion } from './version'
 import { carpeTick } from './tick'
 import { writable } from 'svelte/store'
@@ -17,13 +17,13 @@ export const isBooted = writable(false)
 
 export const bootUp = async () => {
   logger(Level.Warn, 'webview is starting')
-
-  getEnv() // load env var
+  await getEnv() // load env var
   getVersion() // git commit and version
 
   // try to migrate carpe files from v5-6 to v7
   // tryMigrate()
   if (await isCarpeInit()) {
+    await initNetwork()
     // try to connect to a chain eagerly.
     // if not we will be scanning for peers below
 
@@ -41,7 +41,8 @@ export const bootUp = async () => {
       })
   } else {
     logger(Level.Warn, 'carpe settings not initialized')
-    await isLegacy()
-    navigate('wallet')
+    await isLegacy().finally(() => {
+      navigate('wallet')
+    })
   }
 }

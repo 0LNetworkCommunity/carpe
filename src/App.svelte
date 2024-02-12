@@ -36,13 +36,14 @@
   import Events from './components/events/Events.svelte'
   import About from './components/about/About.svelte'
   import SearchingFullnodes from './components/layout/SearchingFullnodes.svelte'
-  import RecoveryMode from './components/layout/RecoveryMode.svelte'
+  // import RecoveryMode from './components/layout/RecoveryMode.svelte'
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
   import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
   import { maybeTowerOnce as maybeTowerOnce } from './modules/miner_invoke'
     import KeyError from './components/layout/KeyError.svelte'
     import UpgradeApp from './components/about/UpgradeApp.svelte'
     import { tryUpdate } from './modules/updater'
+    import { isLoading } from 'svelte-i18n'
 
   // black magic with I18n here
   // temporarily set up here otherwise... issues
@@ -106,8 +107,11 @@
     unlistenBacklogError()
   })
 </script>
+{#if $isLoading}
 
-<main class="uk-background-muted uk-height-viewport">
+  Please wait...
+{:else}
+<main class="uk-background-muted uk-height-viewport" >
   <Style />
   <UpgradeApp />
 
@@ -115,7 +119,7 @@
     <SearchingFullnodes />
     <KeyError/>
     <SpinnerAccount />
-    <RecoveryMode />
+    <!-- <RecoveryMode /> -->
   {/if}
 
   <div class="uk-container">
@@ -144,3 +148,5 @@
     </Router>
   </div>
 </main>
+{/if}
+
