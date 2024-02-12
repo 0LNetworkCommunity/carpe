@@ -47,7 +47,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2.7.3
         with:
          workspaces: src-tauri
-         shared-key: "macos-11"
+         shared-key: "${{ matrix.os }}"
          cache-all-crates: true
          cache-on-failure: true
          
