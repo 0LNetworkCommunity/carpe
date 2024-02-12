@@ -63,7 +63,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
            workspaces: ./src-tauri
-           shared-key: ${{ matrix.os }}
+           shared-key: "${{ matrix.os }}"
            cache-all-crates: true
 
 ########  BUILD  ########
@@ -71,9 +71,9 @@ jobs:
       - name: yarn installation
         run: yarn install
 
-      # - name: pre-build rust
-      #   working-directory: ./src-tauri
-      #   run: cargo b --release
+      - name: pre-build rust
+        working-directory: ./src-tauri
+        run: cargo b --release
 
       - name: Build Tauri
         uses: tauri-apps/tauri-action@v0
