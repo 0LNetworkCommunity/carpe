@@ -1,57 +1,59 @@
-# Developing and Building Carpe
+# Developing and Building Carpe with Tauri and Svelte
 
-[Tauri](https://tauri.studio)
-[Svelte](https://svelte.dev) apps. 
+Carpe leverages the power of [Tauri](https://tauri.studio) for building secure, lightweight desktop applications and [Svelte](https://svelte.dev) for creating efficient, reactive web interfaces. The template for Carpe can be found at: https://github.com/jbarszczewski/tauri-svelte-template.
 
-Carpe is based on: https://github.com/jbarszczewski/tauri-svelte-template.
+## Get Started
 
-
-## Get started
+To start developing with Carpe, you need to set up your development environment by installing the necessary dependencies and configuring your system.
 
 ### Dependencies
 
-- NodeJS version 16
-- Yarn
-- Rust (version will install on its own)
-- Setup your environment: https://tauri.studio/en/docs/getting-started/intro#setting-up-your-environment
-- Windows development environment setup: [instructions](./windows-dev-setup.md)
+Ensure you have the following prerequisites installed:
 
-Install the dependencies...
+- **Node.js**: Version 16. Download it from [https://nodejs.org](https://nodejs.org).
+- **Yarn**: A dependency management system. Install it via npm with `npm install -g yarn`.
+- **Rust**: The Rust programming language environment. The specific version of Rust will install automatically, but ensure you have the Rust toolchain by getting it from [https://rustup.rs/](https://rustup.rs/).
 
-First Rust:
-```
-cd src-tauri/
-cargo build
+Additionally, you'll need to set up your environment for Tauri development:
 
-```
+- Follow the Tauri setup guide: [Setting up your environment](https://tauri.studio/en/docs/getting-started/intro#setting-up-your-environment).
+- For Windows users, a specific guide is available: [Windows development environment setup](./windows-dev-setup.md).
 
-Then Javascript:
+### Installation Steps
 
-```bash
-yarn
-```
+1. **Install Rust Dependencies**: Navigate to the `src-tauri/` directory and build the Rust codebase:
 
-...then start development server:
+    ```bash
+    cd src-tauri/
+    cargo build
+    ```
 
-```bash
-yarn dev
-```
+2. **Install JavaScript Dependencies**: Return to the project root directory and install the JavaScript dependencies using Yarn:
 
-This will take care of running both frontend and backend of your app with watch attached to both. That means whenever you change something in `src` (svelte frontend code) or `src-tauri` (rust backend code), it will be automatically processed and hot reloaded. To finish dev/debug mode simply close the app window.
+    ```bash
+    cd ..
+    yarn
+    ```
 
-## Building and running in production mode
+3. **Start the Development Server**: Launch the development server with:
 
-To create an optimised version of the app:
+    ```bash
+    yarn dev
+    ```
+
+Closing the app window exits the development/debug mode.
+
+## Building and Running in Production Mode
+
+Compile and package your Carpe application for production with:
 
 ```bash
 yarn build
 ```
+This generates an optimized version of your application, including standalone executables and installers, in the `src-tauri/target/release` directory.
 
-This will create standalone app and installer in `src-tauri/target/release` directory.
+## Additional Resources
 
-## Useful links
-
--   [Tauri](https://tauri.studio)
--   [Svelte](https://svelte.dev)
--   [Sveltestrap](https://sveltestrap.js.org)
-
+- [Tauri Studio](https://tauri.studio): Official Tauri project website with comprehensive documentation.
+- [Svelte](https://svelte.dev): Home of the Svelte framework, with guides, tutorials, and API documentation.
+- [Sveltestrap](https://sveltestrap.js.org): Bootstrap 4 components for Svelte, facilitating quick and responsive UI development.
