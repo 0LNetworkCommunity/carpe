@@ -33,9 +33,13 @@ export const updateNetwork = async (url: string, notice = true) => {
       network_profile.set(res)
       notice && notify_success('Network Settings Updated')
     })
-    .catch((error) => {
-      notice && raise_error(error as CarpeError, false, 'updateNetwork')
-    })
+    catch (error) {
+  console.error('Failed to update network settings', error);
+  if (notice) {
+    raise_error('An error occurred while updating network settings.', false, 'updateNetwork');
+  }
+  throw error; // Rethrow the error for further handling
+}
 }
 export const defaultPlaylist = (): NetworkPlaylist => {
   const h: HostProfile = {
