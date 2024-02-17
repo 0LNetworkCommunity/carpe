@@ -10,7 +10,7 @@
   import DebugSwitcher from './DebugSwitcher.svelte'
   import DebugPaths from './DebugPaths.svelte'
   import DebugNetworkInfo from './DebugNetworkInfo.svelte'
-
+  import DebugGetPrivateKey from './DebugGetPrivateKey.svelte'
   let debugEnabled = false
   onMount(async () => {
     debugMode.subscribe((b) => (debugEnabled = b))
@@ -26,6 +26,7 @@
     <DebugSwitchRexMainnet />
     <DebugSwitchProdTest />
     <DebugActions />
+    <DebugGetPrivateKey />
     {#if !debugEnabled}
       <DebugCard />
     {/if}

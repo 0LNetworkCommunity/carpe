@@ -330,3 +330,17 @@ export function claimMakeWhole(account: string, callback = null) {
       }
     })
 }
+
+export function getPrivateKey(address: string, callback = null) {
+  invoke('get_private_key_from_os', { address })
+    .then((res) => {
+      callback && callback(res)
+    })
+    .catch((e) => {
+      if (callback) {
+        callback(e.msg)
+      } else {
+        raise_error(e, true, 'get_private_key')
+      }
+    })
+}
