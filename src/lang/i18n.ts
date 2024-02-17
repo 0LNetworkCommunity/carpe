@@ -28,13 +28,13 @@ function setupI18n(options) {
   })
 }
 const fixedLocales = {
-  zh: 'zh_cn'
+  zh: 'zh_cn',
 }
 function getLocale() {
   // The value of locale is taken from the browser navigator.language, and the first part is taken here to adapt it to the language key defined by carpe.
   // where zh-CN requires special handling
   // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/language
-  let locale = getLocaleFromNavigator();
+  let locale = getLocaleFromNavigator()
   if (locale) {
     locale = locale.toLocaleLowerCase().split('-')[0]
   }

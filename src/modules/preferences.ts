@@ -26,7 +26,7 @@ export const init_locale_preferences = () => {
   })
 
   const acct = get(signingAccount)
-  
+
   const locale = acct && acct.locale ? acct.locale : getLocale()
   setupI18n({
     withLocale: locale,
