@@ -1,16 +1,15 @@
 {
-  "name": "v0.5.0",
-  "notes": "New features: Claim your Make Whole payment, send user transactions, account events view. Plus bugfixes to network connectivity.",
-  "pub_date": "2022-04-30T17:00:00Z",
+  "version": "1.0.1",
+  "notes": "Multiple UI fixes, Chain autoconnect enabled",
+  "pub_date": "2024-02-17T22:57:15.333Z",
   "platforms": {
-    "darwin": {
-      "url": "https://github.com/OLSF/carpe/releases/download/v0.5.0/carpe.app.tar.gz"
+    "darwin-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbHZDRzV2QUVraUIzSldtQmhZTFlyNTBEVU04cDJOQzl5UG9JdGhQeE42L3RJa0VBOEJudjk2NVhhaHBLeVRZbndBVnpYL2JwWUxTK3llbE9obmRoR1FZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA4MjA5OTIzCWZpbGU6Y2FycGUuYXBwLnRhci5negowRHBQODllTGdjZW5EY2dlM05ZVHRTdnFNT2V2dmVxdDlXb0xlYjFTYWFyQTFmcGp6b2NxM2xVc1VRc3hYOUdranUwN0tzd1RBSE84dUxUMmlFaVZDQT09Cg==",
+      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.1/carpe_x64.app.tar.gz"
     },
-    "linux": {
-      "url": "https://github.com/OLSF/carpe/releases/download/v0.5.0/carpe_0.5.0_amd64.deb"
-    },
-    "win64": {
-      "url": "https://github.com/OLSF/carpe/releases/download/v0.5.0/carpe_0.5.0_x64.msi.zip"
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbGx0TEVtaThOdko4TFoxZXZleTBSODFoNzh6bUNZM3A1RWVmK0JRc2c3ZHJIRnNYSmpVYmJWZ0hmYjk5OVZGMUkrMTM0U1N3SkZRKyt1VnIzbW0wY1F3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA4MjEwNjMwCWZpbGU6Y2FycGVfMS4wLjFfeDY0X2VuLVVTLm1zaS56aXAKMWZ0eW85Z3BEUmF5VEFwVnc0TXJBR1JPMjVLRlVJUHlkV3hCenRpaVVHNjFnbDRYWkxwUHJUUStoTVpqWTZZcllUYXBLdnduZzQxNzU3TUhsV211Q2c9PQo=",
+      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.1/carpe_1.0.1_x64_en-US.msi.zip"
     }
   }
 }
