@@ -25,33 +25,49 @@ export interface HostProfile {
 export const playlistJsonUrl =
   'https://raw.githubusercontent.com/0LNetworkCommunity/seed-peers/main/fullnode_seed_playlist.json'
 
-export const updateNetwork = async (url: string, notice = true) => {
-  // check input data
-  // submit
-  await invoke('override_playlist', { url })
-    .then((res: NetworkPlaylist) => {
-      network_profile.set(res)
-      notice && notify_success('Network Settings Updated')
-    })
-    .catch((error) => {
-      notice && raise_error(error as CarpeError, false, 'updateNetwork')
-    })
-}
-export const defaultPlaylist = (): NetworkPlaylist => {
-  const h: HostProfile = {
-    url: 'http://localhost:8080',
-    note: 'local-net',
-    version: 0,
-    is_api: false,
-    is_sync: false,
+// Embedded default node list as a fallback
+const embeddedNodeList: HostProfile[] = [
+  {
+    note: "mainnet-rpc",
+    url: "https://rpc.openlibra.space:8080/",
+    version: 1,
+    is_api: true,
+    is_sync: true,
+  },
+  {
+    note: "sirouk",
+    url: "http://70.15.242.6:8080",
+    version: 1,
+    is_api: true,
+    is_sync: true,
+  },
+  {
+    note: "Alan Yoon",
+    url: "http://222.101.31.242:8080",
+    version: 1,
+    is_api: true,
+    is_sync: true,
+  },
+  {
+    note: "Bethose | SDL",
+    url: "http://65.109.80.179:8080",
+    version: 1,
+    is_api: true,
+    is_sync: true,
   }
+];
 
-  const np: NetworkPlaylist = {
-    chain_id: NamedChain.TESTING,
-    nodes: [h],
+// Function to fetch the node list from the primary source
+async function fetchNodeList(): Promise<HostProfile[]> {
+  try {
+    const response = await fetch(playlistJsonUrl);
+    if (!response.ok) throw new Error('Failed to fetch');
+    const data = await response.json();
+    return data.nodes;
+  } catch (error) {
+    console.error('Error fetching node list from playlistJsonUrl, using embedded list:', error);
+    return embeddedNodeList;
   }
-
-  return np
 }
 
 // chain metadata matches the index of node api
@@ -156,14 +172,20 @@ let isTest = false
 nodeEnvIsTest.subscribe((value) => {
   isTest = value
 })
+
 export const initNetwork = async () => {
-  logger(Level.Info, 'initNetwork')
+  logger(Level.Info, 'initNetwork');
   if (!isTest) {
-    await getNetwork()
+    const nodeList = await fetchNodeList(); // Use the new logic to fetch node list
+    const updatedNetworkPlaylist: NetworkPlaylist = {
+      chain_id: current_network_profile.chain_id || NamedChain.TESTING, // Use current or default
+      nodes: nodeList,
+    };
+    await updateNetwork(JSON.stringify(updatedNetworkPlaylist), false); // Update the network with the fetched or fallback list
+    await getNetwork(); // Refresh network settings
     if (current_network_profile.chain_id === NamedChain.TESTING) {
-      logger(Level.Info, 'initNetwork')
-      return await updateNetwork(playlistJsonUrl, false)
+      logger(Level.Info, 'Network set to TESTING mode');
     }
   }
-  return true
-}
+  return true;
+};
