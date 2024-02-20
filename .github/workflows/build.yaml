@@ -11,7 +11,10 @@ on:
     types:
       - opened
       - synchronize
-
+    branches:
+      - 'release**'
+      - 'main'
+      
 jobs:
  build:
     strategy:
