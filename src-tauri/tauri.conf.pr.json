@@ -1,0 +1,84 @@
+{
+  "package": {
+    "productName": "carpe",
+    "version": "1.0.1"
+  },
+  "build": {
+    "distDir": "../dist",
+    "devPath": "http://localhost:3000",
+    "beforeDevCommand": "yarn dev:web",
+    "beforeBuildCommand": "yarn build:web"
+  },
+  "tauri": {
+    "updater": {
+      "active": false,
+      "endpoints": [
+        "https://raw.githubusercontent.com/0LNetworkCommunity/carpe/main/autoupdater/autoupdater_payload.json"
+      ],
+      "dialog": false,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk2NDM3QUIwRDdENjkyNjgKUldSb2t0YlhzSHBEbHZOTkNCT3ljZTJESE1yc2t5c1dqbFd0VkZ2THM3N0RucTV0TC9FeDBQb1oK"
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.tauri.Carpe",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "resources": [
+        "gmp.dll",
+        "gmp.lib",
+        "libgmp-10.dll",
+        "libcrypto.dylib",
+        "libcrypto.3.dylib",
+        "libssl.dylib",
+        "libssl.3.dylib"
+      ],
+      "externalBin": [],
+      "copyright": "",
+      "category": "DeveloperTool",
+      "shortDescription": "",
+      "longDescription": "",
+      "deb": {
+        "depends": []
+      },
+      "macOS": {
+        "frameworks": [],
+        "minimumSystemVersion": "",
+        "exceptionDomain": "localhost",
+        "signingIdentity": null,
+        "entitlements": null
+      },
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": "",
+        "webviewInstallMode": {
+          "type": "embedBootstrapper"
+        }
+      }
+    },
+    "allowlist": {
+      "all": true,
+      "fs": {
+        "all": true
+      }
+    },
+    "windows": [
+      {
+        "title": "CARPE",
+        "width": 1000,
+        "height": 800,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self' blob: data: filesystem: ws: http: https: 'unsafe-eval' 'unsafe-inline'"
+    }
+  }
+}
