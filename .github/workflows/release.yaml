@@ -1,4 +1,4 @@
-name: carpe-release
+name: release
 
 on:
   workflow_dispatch:
@@ -34,12 +34,12 @@ jobs:
 
       # Setup Node.js
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4.0.2
         with:
           node-version: 18
       # checkout
       - name: checkout source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.1.1
 
       - name: install dependencies (windows only)
         if: matrix.os == 'windows-latest'
