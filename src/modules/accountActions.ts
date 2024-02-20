@@ -337,10 +337,7 @@ export function getPrivateKey(address: string, callback = null) {
       callback && callback(res)
     })
     .catch((e) => {
-      if (callback) {
-        callback(e.msg)
-      } else {
-        raise_error(e, true, 'get_private_key')
-      }
+      callback && callback('')
+      raise_error(e, false, 'get_private_key')
     })
 }

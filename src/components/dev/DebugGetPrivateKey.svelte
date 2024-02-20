@@ -1,7 +1,21 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import { getPrivateKey } from '../../modules/accountActions'
+  import Copy from '../../components/layout/Copy.svelte'
+  import { signingAccount } from '../../modules/accounts'
+  import { get } from 'svelte/store'
+  import { notify_success } from '../../modules/carpeNotify'
   let address = ''
-  let privateKey = '';
+  let privateKey = ''
+  onMount(() => {
+    const account = get(signingAccount)
+    if (account) {
+      address = account.account
+    }
+  })
+  function onCopy() {
+    notify_success('copy success')
+  }
 </script>
 
 <main>
@@ -14,11 +28,16 @@
           <input class="uk-input" type="text" placeholder={address} bind:value={address} />
         </div>
         <div>
-            <span>PrivateKey: {privateKey}</span>
-          </div>
+          PrivateKey:
+          {#if privateKey}
+            <code class="uk-text-light">
+              {privateKey.slice(0, 8) + '......' + privateKey.slice(-8)}</code>
+            <Copy text={privateKey} on:copy={onCopy}></Copy>
+          {/if}
+        </div>
         <div>
           <button
-            on:click={getPrivateKey(address, (res) => privateKey = res )}
+            on:click={getPrivateKey(address, (res) => (privateKey = res))}
             class="uk-button uk-button-primary uk-align-right"
             id="add-btn">Get PrivateKey</button
           >
