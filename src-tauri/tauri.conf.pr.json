@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "carpe-pr",
-    "version": "1.x.x-PR"
+    "version": "1.0.0"
   },
   "build": {
     "distDir": "../dist",
