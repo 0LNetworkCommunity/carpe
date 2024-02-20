@@ -90,6 +90,4 @@ jobs:
         run: cargo b --release
 
       - name: build tauri
-        run: yarn run build
-        env:
-          TAURI_PRIVATE_KEY: mock-supersecret-key
+        run: yarn run build:github-pr

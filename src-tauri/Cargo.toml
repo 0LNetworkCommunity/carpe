@@ -54,6 +54,7 @@ tauri = { version = "^1.5.2", features = ["api-all", "updater"] }
 custom-protocol = ["tauri/custom-protocol"]
 default = ["custom-protocol"]
 carpe-canary = [] # for building canary versions which use separate config dirs.
+carpe-pr = [] # for building pr versions which use separate config dirs.
 
 [dev-dependencies]
 serde_yaml = "0.8.24"
