@@ -91,3 +91,5 @@ jobs:
 
       - name: build tauri
         run: yarn run build:github-pr
+        env:
+          TAURI_PRIVATE_KEY: mock-supersecret-key
