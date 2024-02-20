@@ -76,9 +76,10 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
            workspaces: ./src-tauri
-           shared-key: "${{ matrix.os }}"
+           shared-key: "${{ matrix.os }}-PR"
            cache-all-crates: true
            cache-on-failure: true
+
 
 ########  BUILD  ########
 
@@ -91,3 +92,7 @@ jobs:
 
       - name: build tauri
         run: yarn run build:github-pr
+        env:
+        # Mocked keys.  
+          TAURI_PRIVATE_KEY: "dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5ZUYrUFF0RS9ZbU5EN0VFWk52TmpDRDQvTFFWOHhqSXNkZFVvUjZSRWNJc0FBQkFBQUFBQUFBQUFBQUlBQUFBQTZhNUxkYVFJWDNWTENKR2tSNzFVcDhsRzcvd0lKeWRGcytBZDNyZ3o3OWRXOWVmbmZCQktJYk8xOHVHWG5CZ25XN1pBOXM3SjMyWW1DRFNZWFJ5WGxsd3B6d3RvOEtTNHFFbFM5VE5obmNEZ1dHeEljVFRhZ2FXa0RzNHZOVkNESE5DdDArUmkvUUE9Cg=="
+          TAURI_KEY_PASSWORD: "mock"

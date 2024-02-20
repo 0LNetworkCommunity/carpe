@@ -10,6 +10,14 @@
     "beforeBuildCommand": "yarn build:web"
   },
   "tauri": {
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://raw.githubusercontent.com/0LNetworkCommunity/carpe/main/autoupdater/non_existent.json"
+      ],
+      "dialog": false,
+      "pubkey":"dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEI1NEM2REJBMjU1MUQxMjQKUldRazBWRWx1bTFNdFY4bmxyVEg4NVFvZXFlMnNacGF0VlNLYSs1RmNENzFWaUx0amhOSjI0UU0K"
+    },
     "bundle": {
       "active": true,
       "targets": "all",
