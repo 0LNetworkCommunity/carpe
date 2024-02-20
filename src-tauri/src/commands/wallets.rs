@@ -3,7 +3,7 @@ use crate::{
   commands::query,
   configs::{self, get_cfg, get_client},
   configs_profile,
-  key_manager::{self, inject_private_key_to_cfg},
+  key_manager::{self, inject_private_key_to_cfg, get_private_key},
 };
 
 use anyhow::{anyhow, Context};
@@ -246,4 +246,11 @@ pub async fn set_slow_wallet() -> Result<(), CarpeError> {
   // let payload = libra_stdlib::slow_wallet_user_set_slow();
   // sender.sign_submit_wait(payload).await?;
   Ok(())
+}
+
+#[tauri::command]
+pub fn get_private_key_from_os(address: AccountAddress) -> Result<String, CarpeError> {
+  let pk = get_private_key(&address)?;
+  let acc_struct = account_keys::get_account_from_private(&pk);
+  Ok(acc_struct.pri_key.to_encoded_string()?)
 }

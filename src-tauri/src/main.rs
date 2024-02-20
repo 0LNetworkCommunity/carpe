@@ -97,6 +97,7 @@ async fn main() {
       commands::wallets::switch_profile,
       commands::wallets::is_slow,
       commands::wallets::set_slow_wallet,
+      commands::wallets::get_private_key_from_os,
       //////// Networks ////////
       commands::preferences::refresh_upstream_peer_stats,
       commands::networks::force_upstream,
