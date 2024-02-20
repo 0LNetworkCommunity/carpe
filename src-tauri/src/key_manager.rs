@@ -7,6 +7,7 @@ use libra_types::exports::AccountAddress;
 use libra_types::exports::{Ed25519PrivateKey, Ed25519PublicKey, KeyPair};
 use libra_types::legacy_types::app_cfg::AppCfg;
 use std::convert::TryInto;
+use std::convert::Into;
 
 const KEYRING_APP_NAME: &str = "carpe";
 

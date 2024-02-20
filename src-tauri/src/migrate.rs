@@ -133,7 +133,7 @@ fn read_legacy_accounts() {
 
   let acc = read_accounts(&temp).unwrap();
   assert!(
-    acc.accounts.first().unwrap().account
+    acc.accounts.get(0).unwrap().account
       == AccountAddress::from_hex_literal("0x69a385e1744e33fbb24a42ecbd1603e3").unwrap()
   );
   std::fs::remove_file(temp).unwrap();
