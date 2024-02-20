@@ -9,7 +9,6 @@ on:
   pull_request:
     types:
       - opened
-      - synchronize
     branches:
       - 'release**'
       - 'main'

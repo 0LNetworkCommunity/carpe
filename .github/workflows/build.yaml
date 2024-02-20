@@ -5,7 +5,6 @@ on:
   pull_request:
     types:
       - opened
-      - synchronize
     branches:
       - 'release**'
       - 'main'
@@ -76,7 +75,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
            workspaces: ./src-tauri
-           shared-key: "${{ matrix.os }}-PR"
+           shared-key: "${{ matrix.os }}"
            cache-all-crates: true
            cache-on-failure: true
 
