@@ -47,7 +47,10 @@ export const refreshAccounts = async () => {
       // TODO make this the correct return type
       isRefreshingAccounts.set(false)
       allAccounts.set(result)
-
+      const currentAccount = get(signingAccount)
+      if (currentAccount) {
+        signingAccount.set(get(allAccounts).find((item) => item.account === currentAccount.account))
+      }
       if (!get(isAccountRefreshed)) {
         isAccountRefreshed.set(true)
       }
