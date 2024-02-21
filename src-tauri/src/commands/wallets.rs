@@ -3,7 +3,7 @@ use crate::{
   commands::query,
   configs::{self, get_cfg, get_client},
   configs_profile,
-  key_manager::{self, inject_private_key_to_cfg, get_private_key},
+  key_manager::{self, get_private_key, inject_private_key_to_cfg},
 };
 
 use anyhow::{anyhow, Context};
