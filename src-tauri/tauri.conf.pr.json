@@ -1,0 +1,84 @@
+{
+  "package": {
+    "productName": "carpe-pr",
+    "version": "1.0.0"
+  },
+  "build": {
+    "distDir": "../dist",
+    "devPath": "http://localhost:3000",
+    "beforeDevCommand": "yarn dev:web",
+    "beforeBuildCommand": "yarn build:web"
+  },
+  "tauri": {
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://raw.githubusercontent.com/0LNetworkCommunity/carpe/main/autoupdater/non_existent.json"
+      ],
+      "dialog": false,
+      "pubkey":"dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEI1NEM2REJBMjU1MUQxMjQKUldRazBWRWx1bTFNdFY4bmxyVEg4NVFvZXFlMnNacGF0VlNLYSs1RmNENzFWaUx0amhOSjI0UU0K"
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.tauri.CarpeCanary",
+      "icon": [
+        "icons-canary/32x32.png",
+        "icons-canary/128x128.png",
+        "icons-canary/128x128@2x.png",
+        "icons-canary/icon.icns",
+        "icons-canary/icon.ico"
+      ],
+      "resources": [
+        "gmp.dll",
+        "gmp.lib",
+        "libgmp-10.dll",
+        "libcrypto.dylib",
+        "libcrypto.3.dylib",
+        "libssl.dylib",
+        "libssl.3.dylib"
+      ],
+      "externalBin": [],
+      "copyright": "",
+      "category": "DeveloperTool",
+      "shortDescription": "",
+      "longDescription": "",
+      "deb": {
+        "depends": []
+      },
+      "macOS": {
+        "frameworks": [],
+        "minimumSystemVersion": "",
+        "exceptionDomain": "localhost",
+        "signingIdentity": null,
+        "entitlements": null
+      },
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": "",
+        "webviewInstallMode": {
+          "type": "embedBootstrapper"
+        }
+      }
+    },
+    "allowlist": {
+      "all": true,
+      "fs": {
+        "all": true
+      }
+    },
+    "windows": [
+      {
+        "title": "CARPE PR",
+        "width": 1000,
+        "height": 800,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self' blob: data: filesystem: ws: http: https: 'unsafe-eval' 'unsafe-inline'"
+    }
+  }
+}

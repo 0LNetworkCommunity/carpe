@@ -10,6 +10,7 @@
     "build:universal": "tauri build --target universal-apple-darwin",
     "build:aarch64": "RUSTFLAGS='--cfg tokio_unstable' tauri build --target aarch64-apple-darwin",
     "build:canary": "tauri build --config src-tauri/tauri.conf.canary.json --features carpe-canary",
+    "build:github-pr": "tauri build --config src-tauri/tauri.conf.pr.json --features carpe-pr",
     "build:web": "vite build",
     "lint": "svelte-check --tsconfig ./tsconfig.json && eslint src && prettier --check src",
     "format": "eslint --fix src/* && prettier --write src"

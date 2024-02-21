@@ -1,0 +1,98 @@
+name: release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-canary.[0-9]+'
+
+    branches:
+      - 'canary*'
+      - 'release-[0-9]+.[0-9]+.[0-9]+'
+      - 'ci'
+jobs:
+ build-and-publish:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest, macos-latest ]
+    name: build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      ### DO NOT REMOVE: uncomment if you need to debug runner ###
+      # - name: setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     detached: true
+
+      # Setup Rust
+      - uses: dtolnay/rust-toolchain@1.70.0
+        with:
+          components: rustfmt
+
+      # Setup Node.js
+      - name: setup node
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: 18
+      # checkout
+      - name: checkout source
+        uses: actions/checkout@v4.1.1
+
+      - name: install dependencies (windows only)
+        if: matrix.os == 'windows-latest'
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "11.0"
+          directory: ${{ runner.temp }}/llvm
+
+      - name: Set LIBCLANG_PATH
+        if: matrix.os == 'windows-latest'
+        run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
+
+      # Package the windows dependencies
+      - name: copy gmp.dll for build
+        if: matrix.os == 'windows-latest'
+        run: |
+          $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
+          Copy-Item ('${{ github.workspace }}' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
+
+
+########  CACHE  ########
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+           workspaces: ./src-tauri
+           shared-key: "${{ matrix.os }}"
+           cache-all-crates: true
+           cache-on-failure: true
+
+########  BUILD  ########
+
+      - name: yarn installation
+        run: yarn install
+
+      - name: pre-build rust
+        working-directory: ./src-tauri
+        run: cargo b --release
+
+      - name: Build Tauri
+        id: build-tauri
+        uses: tauri-apps/tauri-action@v0.5.0
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          TAURI_PRIVATE_KEY: "${{secrets.TAURI_PRIVATE_KEY}}"
+          TAURI_KEY_PASSWORD: "${{secrets.TAURI_KEY_PASSWORD}}"
+        with:
+          args: ${{contains(github.ref, 'canary') && '--config src-tauri/tauri.conf.canary.json --features carpe-canary' || '' }}
+          # pass the rust feature flags for canary if the tag includes "canary"
+          tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }}
+          # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }}
+          releaseBody: '[draft]'
+          releaseDraft: true
+          prerelease: false
+          includeUpdaterJson: true
+ 
