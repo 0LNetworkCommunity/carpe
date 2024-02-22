@@ -7,7 +7,3 @@ Canary version allows you to have both installations side-by-side without interf
 Canary versions will receive Over-The-Air updates just like the production version.
 
 [Download Carpe Canary Here](https://github.com/0LNetworkCommunity/carpe/releases/tag/v1.0.0-16-canary)
-
-
-
-

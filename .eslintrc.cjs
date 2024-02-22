@@ -15,7 +15,7 @@ module.exports = {
     extraFileExtensions: ['.svelte'],
   },
   rules: {
-    "svelte/no-at-html-tags" : "off" // we use @html for translations only
+    'svelte/no-at-html-tags': 'off', // we use @html for translations only
   },
   env: {
     browser: true,
