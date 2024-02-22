@@ -28,33 +28,33 @@ export const playlistJsonUrl =
 // Embedded default node list as a fallback
 const embeddedNodeList: HostProfile[] = [
   {
-    note: "mainnet-rpc",
-    url: "https://rpc.openlibra.space:8080/",
+    note: 'mainnet-rpc',
+    url: 'https://rpc.openlibra.space:8080/',
     version: 0,
     is_api: false,
     is_sync: false,
   },
   {
-    note: "sirouk",
-    url: "http://70.15.242.6:8080",
+    note: 'sirouk',
+    url: 'http://70.15.242.6:8080',
     version: 0,
     is_api: false,
     is_sync: false,
   },
   {
-    note: "Alan Yoon",
-    url: "http://222.101.31.242:8080",
+    note: 'Alan Yoon',
+    url: 'http://222.101.31.242:8080',
     version: 0,
     is_api: false,
     is_sync: false,
   },
   {
-    note: "Bethose | SDL",
-    url: "http://65.109.80.179:8080",
+    note: 'Bethose | SDL',
+    url: 'http://65.109.80.179:8080',
     version: 0,
     is_api: false,
     is_sync: false,
-  }
+  },
 ]
 
 // Function to fetch the node list from the primary source
@@ -109,8 +109,8 @@ export const networkMetadata = writable<IndexResponse>()
 // Function to update network settings
 export const updateNetwork = async (url: string, notice = true) => {
   try {
-    const res = await invoke('override_playlist', { url }) as NetworkPlaylist;
-    network_profile.set(res); // Assuming res is of type NetworkPlaylist
+    const res = (await invoke('override_playlist', { url })) as NetworkPlaylist
+    network_profile.set(res) // Assuming res is of type NetworkPlaylist
     if (notice) {
       notify_success('Network Settings Updated')
     }
@@ -196,8 +196,6 @@ let isTest = false
 nodeEnvIsTest.subscribe((value) => {
   isTest = value
 })
-
-
 
 // Initialize and update the network settings based on fetched data
 export const initNetwork = async () => {

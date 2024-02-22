@@ -13,11 +13,11 @@ on:
       - 'release-[0-9]+.[0-9]+.[0-9]+'
       - 'ci'
 jobs:
- build-and-publish:
+  build-and-publish:
     strategy:
       fail-fast: false
       matrix:
-        os: [ windows-latest, macos-latest ]
+        os: [windows-latest, macos-latest]
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -45,7 +45,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         uses: KyleMayes/install-llvm-action@v1
         with:
-          version: "11.0"
+          version: '11.0'
           directory: ${{ runner.temp }}/llvm
 
       - name: Set LIBCLANG_PATH
@@ -59,17 +59,16 @@ jobs:
           $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
           Copy-Item ('${{ github.workspace }}' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
 
-
-########  CACHE  ########
+      ########  CACHE  ########
 
       - uses: Swatinem/rust-cache@v2
         with:
-           workspaces: ./src-tauri
-           shared-key: "${{ matrix.os }}"
-           cache-all-crates: true
-           cache-on-failure: true
+          workspaces: ./src-tauri
+          shared-key: '${{ matrix.os }}'
+          cache-all-crates: true
+          cache-on-failure: true
 
-########  BUILD  ########
+      ########  BUILD  ########
 
       - name: yarn installation
         run: yarn install
@@ -82,9 +81,9 @@ jobs:
         id: build-tauri
         uses: tauri-apps/tauri-action@v0.5.0
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          TAURI_PRIVATE_KEY: "${{secrets.TAURI_PRIVATE_KEY}}"
-          TAURI_KEY_PASSWORD: "${{secrets.TAURI_KEY_PASSWORD}}"
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+          TAURI_PRIVATE_KEY: '${{secrets.TAURI_PRIVATE_KEY}}'
+          TAURI_KEY_PASSWORD: '${{secrets.TAURI_KEY_PASSWORD}}'
         with:
           args: ${{contains(github.ref, 'canary') && '--config src-tauri/tauri.conf.canary.json --features carpe-canary' || '' }}
           # pass the rust feature flags for canary if the tag includes "canary"
@@ -95,4 +94,3 @@ jobs:
           releaseDraft: true
           prerelease: false
           includeUpdaterJson: true
- 
