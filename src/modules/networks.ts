@@ -60,7 +60,7 @@ const embeddedNodeList: HostProfile[] = [
 // Function to fetch the node list from the primary source
 async function fetchNodeList(): Promise<HostProfile[]> {
   try {
-    const response = await get(playlistJsonUrl)
+    const response = await fetch(playlistJsonUrl)
     if (!response.ok) throw new Error('Failed to fetch')
     const data = await response.json()
     return data.nodes
@@ -109,7 +109,7 @@ export const networkMetadata = writable<IndexResponse>()
 // Function to update network settings
 export const updateNetwork = async (url: string, notice = true) => {
   try {
-    const res = await invoke('override_playlist', { url })
+    const res = await invoke('override_playlist', { url }) as NetworkPlaylist;
     network_profile.set(res); // Assuming res is of type NetworkPlaylist
     if (notice) {
       notify_success('Network Settings Updated')
