@@ -223,7 +223,7 @@ export const getTowerChainView = async () => {
   })
     .then((res: TowerStateView) => {
       resetTowerStatus()
-      if (res.verified_tower_height) {
+      if (res.previous_proof_hash) {
         isTowerNewbie.set(false)
       }
       tower.update((b) => {
