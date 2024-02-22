@@ -1,19 +1,21 @@
-name: carpe-release
+name: build
 
 on:
   workflow_dispatch:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
-      - '[0-9]+.[0-9]+.[0-9]+-rc.[0-9]+'
-      - '[0-9]+.[0-9]+.[0-9]+-canary.[0-9]+'
-
+      - '*'
     branches:
-      - 'canary*'
-      - 'release-[0-9]+.[0-9]+.[0-9]+'
-      - 'ci'
+      - '*'    
+  pull_request:
+    types:
+      - opened
+    branches:
+      - 'release**'
+      - 'main'
+      
 jobs:
- build-and-publish:
+ build:
     strategy:
       fail-fast: false
       matrix:
@@ -26,20 +28,33 @@ jobs:
       #   uses: mxschmitt/action-tmate@v3
       #   with:
       #     detached: true
-
+      # checkout
       # Setup Rust
-      - uses: dtolnay/rust-toolchain@1.70.0
+      - name: checkout sources
+        uses: actions/checkout@v4.1.1
         with:
-          components: rustfmt
+          fetch-depth: 0
+          
+      - name: Set rust_version from rust_toolchain file
+        run: echo "RUST_VERSION=$(cat src-tauri/rust-toolchain)" >> $GITHUB_ENV
+      
+      - name: Set rust_version from rust_toolchain file
+        if: matrix.os == 'windows-latest'
+        run: |
+          Get-Content -Path src-tauri/rust-toolchain | Tee-Object -variable RUST_VERSION 
+          echo "RUST_VERSION=$RUST_VERSION" | Out-File -FilePath $env:GITHUB_ENV -Append
 
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          profile: minimal
+          toolchain: "${{ env.RUST_VERSION }}"
+          override: true
+          
       # Setup Node.js
       - name: setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4.0.2
         with:
           node-version: 18
-      # checkout
-      - name: checkout source
-        uses: actions/checkout@v3
 
       - name: install dependencies (windows only)
         if: matrix.os == 'windows-latest'
@@ -69,6 +84,7 @@ jobs:
            cache-all-crates: true
            cache-on-failure: true
 
+
 ########  BUILD  ########
 
       - name: yarn installation
@@ -78,21 +94,9 @@ jobs:
         working-directory: ./src-tauri
         run: cargo b --release
 
-      - name: Build Tauri
-        id: build-tauri
-        uses: tauri-apps/tauri-action@v0.5.0
+      - name: build tauri
+        run: yarn run build:github-pr
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          TAURI_PRIVATE_KEY: "${{secrets.TAURI_PRIVATE_KEY}}"
-          TAURI_KEY_PASSWORD: "${{secrets.TAURI_KEY_PASSWORD}}"
-        with:
-          args: ${{contains(github.ref, 'canary') && '--config src-tauri/tauri.conf.canary.json --features carpe-canary' || '' }}
-          # pass the rust feature flags for canary if the tag includes "canary"
-          tagName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }}
-          # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: ${{contains(github.ref, 'canary') && 'v__VERSION__-canary' ||  'v__VERSION__' }}
-          releaseBody: '[draft]'
-          releaseDraft: true
-          prerelease: false
-          includeUpdaterJson: true
- 
+        # Mocked keys.  
+          TAURI_PRIVATE_KEY: "dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5ZUYrUFF0RS9ZbU5EN0VFWk52TmpDRDQvTFFWOHhqSXNkZFVvUjZSRWNJc0FBQkFBQUFBQUFBQUFBQUlBQUFBQTZhNUxkYVFJWDNWTENKR2tSNzFVcDhsRzcvd0lKeWRGcytBZDNyZ3o3OWRXOWVmbmZCQktJYk8xOHVHWG5CZ25XN1pBOXM3SjMyWW1DRFNZWFJ5WGxsd3B6d3RvOEtTNHFFbFM5VE5obmNEZ1dHeEljVFRhZ2FXa0RzNHZOVkNESE5DdDArUmkvUUE9Cg=="
+          TAURI_KEY_PASSWORD: "mock"
