@@ -78,8 +78,7 @@ pub fn get_keypair(
 pub fn inject_private_key_to_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<(), CarpeError> {
   // gets the default profile
   let profile = app_cfg_mut.get_profile_mut(None)?;
-
-  let pri_key = get_private_key(&profile.auth_key.derived_address()).map_err(|e| CarpeError {
+  let pri_key = get_private_key(&profile.account).map_err(|e| CarpeError {
     category: ErrorCat::Configs,
     uid: E_KEY_NOT_REGISTERED,
     msg: "no keys found on OS keychain".to_string(),
