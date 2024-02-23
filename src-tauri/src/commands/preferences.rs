@@ -2,7 +2,7 @@ use crate::configs::{default_config_path, legacy_config_path};
 use crate::migrate::{self, backup_legacy_dir, read_accounts};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use anyhow::Context;
-use libra_types::legacy_types::mode_ol::MODE_0L;
+use libra_types::{legacy_types::app_cfg::TxCost, legacy_types::mode_ol::MODE_0L};
 use log::{error, info, warn};
 use std::env;
 use std::path::PathBuf;
@@ -23,6 +23,31 @@ pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
   Ok(())
 }
 
+#[tauri::command(async)]
+// get the miner_txs_cost
+pub fn get_miner_txs_cost() -> Result<TxCost, CarpeError> {
+  let app_cfg = get_cfg()?;
+  let miner_txs_cost = app_cfg.tx_configs.miner_txs_cost.unwrap();
+  Ok(miner_txs_cost)
+}
+
+#[tauri::command(async)]
+/// set the miner_txs_cost
+pub fn set_miner_txs_cost(max_gas_unit_for_tx: u64) -> Result<(), CarpeError> {
+  let mut app_cfg = get_cfg()?;
+  app_cfg.tx_configs.miner_txs_cost = Some(TxCost {
+    max_gas_unit_for_tx: max_gas_unit_for_tx,
+    coin_price_per_unit: 100,
+    user_tx_timeout: 5000,
+  });
+  app_cfg.tx_configs.baseline_cost = TxCost {
+    max_gas_unit_for_tx: max_gas_unit_for_tx,
+    coin_price_per_unit: 100,
+    user_tx_timeout: 5000,
+  };
+  app_cfg.save_file()?;
+  Ok(())
+}
 #[tauri::command]
 /// global config dir for convenience
 pub fn debug_preferences_path() -> Result<PathBuf, CarpeError> {

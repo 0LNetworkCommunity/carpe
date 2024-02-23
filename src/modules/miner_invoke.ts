@@ -14,7 +14,7 @@ import {
   minerProofComplete,
   minerEventReceived,
   isTowerNewbie,
-  resetTowerStatus,
+  // resetTowerStatus,
   canMine,
 } from './miner'
 
@@ -211,7 +211,7 @@ export const maybeEmitBacklog = async () => {
   // and there is no backlog already in progress
   // and finally check that the listener has started.
   if (hasProofsPending() && !get(backlogInProgress) && get(backlogListenerReady)) {
-    maybeEmitBacklog()
+    emitBacklog()
   }
 }
 
@@ -222,7 +222,7 @@ export const getTowerChainView = async () => {
     account: get(signingAccount).account,
   })
     .then((res: TowerStateView) => {
-      resetTowerStatus()
+      // resetTowerStatus()
       if (res.previous_proof_hash) {
         isTowerNewbie.set(false)
       }

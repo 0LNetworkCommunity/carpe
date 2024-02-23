@@ -109,6 +109,10 @@
       "btn_remove": "REMOVER CONTA",
       "confirm": "Confirmar remover contas deste dispositivo? Isso não é reversível.",
       "description": "Isso não exclui nenhuma conta da rede. Apenas remove as contas deste dispositivo. Se você não tiver seus códigos de recuperação (mnemônicos) armazenados em algum lugar, poderá ser bloqueado desta conta permanentemente. NINGUÉM PODE AJUDÁ-LO A RECUPERAR O MNEMONIC."
+    },
+    "gas_setting": {
+      "title": "Beállított maximális gáz (min: 3000)",
+      "btn_confirm": "Confirmar"
     }
   },
   "miner": {

@@ -143,6 +143,10 @@
       "btn_remove": "REMOVE ACCOUNTS FROM CARPE",
       "confirm": "Confirm remove accounts from this device? This is not reversible.",
       "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
+    },
+    "gas_setting": {
+      "title": "Setting maximum gas (min: 3000)",
+      "btn_confirm": "Confirm"
     }
   },
   "miner": {
