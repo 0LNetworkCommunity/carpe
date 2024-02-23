@@ -1,5 +1,5 @@
 import { get } from 'svelte/store'
-import { minerLoopEnabled } from './miner'
+import { minerLoopEnabled, tower, minerEventReceived } from './miner'
 import {
   killBacklogListener,
   startBacklogListener,
@@ -32,8 +32,13 @@ export async function disableMining(): Promise<boolean> {
   // stop the event listener.
   // set mining to disabled
   minerLoopEnabled.set(false)
+  minerEventReceived.set(false)
   killBacklogListener() // TODO: how do we prevent zombie listeners from making duplicates.
   clearInterval(looper)
+  tower.update((b) => {
+    b.progress = null
+    return b
+  })
   return true
 }
 

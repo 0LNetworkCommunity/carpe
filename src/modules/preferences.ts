@@ -3,19 +3,24 @@ import { get, writable } from 'svelte/store'
 import { getLocaleFromNavigator, setupI18n } from '../lang/i18n'
 import { Level, logger, raise_error } from './carpeError'
 import { signingAccount } from './accounts'
+import { notify_success } from './carpeNotify'
 
 const empty_preferences = function (): Preferences {
   return {
     locale: null,
   }
 }
-
+export interface MinerTxConfig {
+  max_gas_unit_for_tx: number
+  coin_price_per_unit: number
+  user_tx_timeout: number
+}
 export const preferences = writable<Preferences>(empty_preferences())
-
+export const minerMaxGasUnitForTx = writable<number>(10000)
 export interface Preferences {
   locale: string
 }
-
+const MinMaxGasUnitForTx = 3000
 export const init_locale_preferences = () => {
   logger(Level.Info, ' call init_preferences')
 
@@ -42,4 +47,26 @@ export function setLocale(locale: string) {
       })
     })
     .catch((e) => raise_error(e, true, 'set_preferences_locale'))
+}
+
+export function setMinerMaxGas(maxGasUnitForTx: number) {
+  // min MinMaxGasUnitForTx
+  if (typeof maxGasUnitForTx !== 'number') {
+    maxGasUnitForTx = MinMaxGasUnitForTx
+  }
+  maxGasUnitForTx = Math.max(MinMaxGasUnitForTx, maxGasUnitForTx)
+  invoke('set_miner_txs_cost', { maxGasUnitForTx: maxGasUnitForTx })
+    .then(() => {
+      minerMaxGasUnitForTx.set(maxGasUnitForTx)
+      notify_success('Gas Settings Updated')
+    })
+    .catch((e) => raise_error(e, true, 'set_miner_txs_cost'))
+}
+
+export function getMinerMaxGas() {
+  invoke('get_miner_txs_cost')
+    .then((res: MinerTxConfig) => {
+      minerMaxGasUnitForTx.set(res.max_gas_unit_for_tx)
+    })
+    .catch((e) => raise_error(e, true, 'get_miner_txs_cost'))
 }

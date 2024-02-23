@@ -113,6 +113,10 @@
       "btn_remove": "KONTO LÖSCHEN",
       "confirm": "Das Löschen von Konten auf diesem Gerät bestätigen? Das kann nicht rückgängig gemacht werden.",
       "description": "Dabei werden keine Konten von der Chain gelöscht. Die Konten werden nur von diesem Gerät entfernt. Wenn du deine Wiederherstellungscodes (Mnemonik) nicht irgendwo aufbewahrst, kann es sein, dass du dauerhaft aus diesem Konto ausgesperrt wirst. NIEMAND KANN DIR HELFEN, DIE MNEMONIK WIEDERZUBEKOMMEN. "
+    },
+    "gas_setting": {
+      "title": "Maximales Gas einstellen (min: 3000)",
+      "btn_confirm": "Bestätigen"
     }
   },
   "miner": {
