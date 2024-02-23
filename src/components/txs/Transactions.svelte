@@ -139,7 +139,7 @@
           >
         </p>
       {:else}
-        <form id="account-form">
+        <form id="account-form" on:submit|preventDefault={() => {}}>
           <fieldset class="uk-fieldset uk-grid-small" uk-grid>
             <div class="uk-width-3-4@s">
               <label class="uk-form-label" for="sender-text">{$_('txs.transfer.sender')} </label>
