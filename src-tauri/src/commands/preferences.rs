@@ -36,12 +36,12 @@ pub fn get_miner_txs_cost() -> Result<TxCost, CarpeError> {
 pub fn set_miner_txs_cost(max_gas_unit_for_tx: u64) -> Result<(), CarpeError> {
   let mut app_cfg = get_cfg()?;
   app_cfg.tx_configs.miner_txs_cost = Some(TxCost {
-    max_gas_unit_for_tx: max_gas_unit_for_tx,
+    max_gas_unit_for_tx,
     coin_price_per_unit: 100,
     user_tx_timeout: 5000,
   });
   app_cfg.tx_configs.baseline_cost = TxCost {
-    max_gas_unit_for_tx: max_gas_unit_for_tx,
+    max_gas_unit_for_tx,
     coin_price_per_unit: 100,
     user_tx_timeout: 5000,
   };
