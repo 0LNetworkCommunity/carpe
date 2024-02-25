@@ -1,6 +1,6 @@
 <script>
   import { onDestroy, onMount } from 'svelte'
-  import { NamedChain, network_profile } from '../../modules/networks'
+  import { NamedChain, network_profile, pickChainIdFromNetworkPlaylist } from '../../modules/networks'
 
   let isTestNet = false
   let unsubs
@@ -8,7 +8,8 @@
   onMount(async () => {
     unsubs = network_profile.subscribe((network) => {
       if (network) {
-        isTestNet = network.chain_id == NamedChain.TESTNET
+        const chain_id = pickChainIdFromNetworkPlaylist(network)
+        isTestNet = chain_id == NamedChain.TESTNET
       }
     })
   })

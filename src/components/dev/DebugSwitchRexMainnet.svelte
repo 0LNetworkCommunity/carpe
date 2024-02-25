@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { setNetwork, getNetwork, network_profile, NamedChain } from '../../modules/networks'
+  import { setNetwork, getNetwork, network_profile, NamedChain, pickChainIdFromNetworkPlaylist } from '../../modules/networks'
 
   let current_chain_id
 
@@ -8,7 +8,7 @@
     getNetwork()
     network_profile.subscribe((n) => {
       if (n) {
-        current_chain_id = n.chain_id
+        current_chain_id = pickChainIdFromNetworkPlaylist(n)
       }
     })
   })

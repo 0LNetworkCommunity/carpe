@@ -10,6 +10,7 @@ import { nodeEnvIsTest } from './debug'
 export interface NetworkPlaylist {
   chain_id: NamedChain // Todo, use the Network Enum
   nodes: HostProfile[]
+  chain_name?: NamedChain
 }
 
 // matches rust equivalent
@@ -122,7 +123,7 @@ export const updateNetwork = async (url: string, notice = true) => {
 }
 
 export function setNetwork(network: NamedChain) {
-  invoke('toggle_network', { chainId: network })
+  invoke('toggle_network', { chainIdStr: network })
     .then((res: NetworkPlaylist) => {
       network_profile.set(res)
       // update accounts from current network
@@ -213,4 +214,8 @@ export const initNetwork = async () => {
     }
   }
   return true
+}
+
+export function pickChainIdFromNetworkPlaylist(np: NetworkPlaylist) {
+  return (np.chain_name || np.chain_id).toUpperCase()
 }
