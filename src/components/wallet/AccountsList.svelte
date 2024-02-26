@@ -9,7 +9,7 @@
   import { connected } from '../../modules/networks'
   import { setAccount } from '../../modules/accountActions'
   import Actions from './Actions.svelte'
-
+  import Copy from '../../components/layout/Copy.svelte'
   UIkit.use(Icons)
 
   let showOptions = false
@@ -33,7 +33,7 @@
           <!-- <th>{$_('wallet.account_list.nickname')}</th> -->
           <th>{$_('wallet.account_list.address')}</th>
           <!-- <th>{$_('wallet.account_list.authkey')}</th> -->
-          <th class="uk-width-small">{$_('wallet.account_list.unlocked')}</th>
+          <th class="uk-width-small uk-text-right">{$_('wallet.account_list.unlocked')}</th>
 
           <th class="uk-text-right">{$_('wallet.account_list.balance')}</th>
         </tr>
@@ -72,10 +72,20 @@
             grab">{a.nickname}</td
             > -->
 
-            <td on:click={() => setAccount(a.account)} class="uk-text-truncate" style="cursor:
-            grab" >{formatAccount(a.account)}</td>
+            <td
+              on:click={() => setAccount(a.account)}
+              class="uk-transition-toggle uk-table-shrink"
+              style="cursor:grab"
+            >
+              <div class="uk-flex-inline">
+                <span class="uk-text-truncate" style="width: 32vw; display:inline-block"
+                  >{formatAccount(a.account)}</span
+                >
+                <span class="uk-transition-fade"><Copy text={a.account}></Copy></span>
+              </div>
+            </td>
             <!-- <td>{a.auth_key.slice(0, 5)}...</td> -->
-            <td>{printCoins(a.balance.unlocked)}</td>
+            <td class="uk-text-right">{printCoins(a.balance.unlocked)}</td>
             <td class="uk-text-right">
               {#if a.on_chain != null && a.on_chain == false}
                 {$_('wallet.account_list.account_on_chain')}

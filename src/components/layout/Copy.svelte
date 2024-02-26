@@ -16,4 +16,4 @@
   }
 </script>
 
-<button class="uk-icon-link uk-margin-small-right" uk-icon={icon} on:click={copyThis} />
+<button class="uk-icon-link uk-margin-small-right" uk-icon={icon} on:click|stopPropagation={copyThis} />
