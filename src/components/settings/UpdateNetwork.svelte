@@ -89,7 +89,7 @@
   </h5>
   <p>{$_("settings.network_settings.override_peers_description")}</p>
 
-  <form id="account-form">
+  <form id="account-form" on:submit|preventDefault={() => {}}>
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
         <span>{$_("settings.network_settings.url_of_upstream_node")}</span>

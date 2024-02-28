@@ -109,6 +109,10 @@
       "btn_remove": "SUPPRIMER LE COMPTE",
       "confirm": "Confirmer la suppression du compte de cet appareil ? Cette opération est irreversible.",
       "description": "Votre compte sera toujours sur la chaîne mais il n'apparaîtra plus sur cet appareil. Si vous n'avez plus votre phrase secrète, vous perdez accès à ce compte définitivement. PERSONNE NE PEUT RETROUVER VOTRE PHRASE SECRÈTE."
+    },
+    "gas_setting": {
+      "title": "Réglage du gaz maximum (min : 3000)",
+      "btn_confirm": "Confirmer"
     }
   },
   "miner": {

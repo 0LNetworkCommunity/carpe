@@ -132,6 +132,8 @@ async fn main() {
       commands::preferences::get_env,
       commands::preferences::set_env,
       commands::preferences::set_preferences_locale,
+      commands::preferences::get_miner_txs_cost,
+      commands::preferences::set_miner_txs_cost,
       ///////// Debug ////////
       commands::app_version::get_app_version,
       commands::web_logs::log_this,
