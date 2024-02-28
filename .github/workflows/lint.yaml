@@ -11,6 +11,7 @@ on:
       - opened
     branches:
       - 'release**'
+      - 'canary**'
       - 'main'
 jobs:
   ts-lint:

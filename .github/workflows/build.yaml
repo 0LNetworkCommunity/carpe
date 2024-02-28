@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ windows-latest, macos-latest ]
+        os: [ windows-latest, macos-11, macos-14 ]
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -81,7 +81,6 @@ jobs:
         with:
            workspaces: ./src-tauri
            shared-key: "${{ matrix.os }}"
-           cache-all-crates: true
            cache-on-failure: true
 
 
