@@ -17,7 +17,6 @@ jobs:
   ts-lint:
     runs-on: ubuntu-latest
     steps:
-
       # Setup Node.js
       - name: setup node
         uses: actions/setup-node@v4.0.2
@@ -62,7 +61,7 @@ jobs:
       - name: cache rust
         uses: Swatinem/rust-cache@v2
         with:
-          shared-key: "libra" # to share across CI builds, so it is not job-id specific
+          shared-key: 'libra' # to share across CI builds, so it is not job-id specific
           cache-on-failure: true
       
       - name: check format

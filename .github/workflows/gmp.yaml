@@ -13,12 +13,12 @@ jobs:
       fail-fast: false
       matrix:
         config:
-        # - os: ubuntu-20.04
-        #   vcpkg_triplet: x64-linux-release
-        - os: macos-11
-          vcpkg_triplet: x64-osx-dynamic
-        - os: windows-2019
-          vcpkg_triplet: x64-windows-release
+          # - os: ubuntu-20.04
+          #   vcpkg_triplet: x64-linux-release
+          - os: macos-11
+            vcpkg_triplet: x64-osx-dynamic
+          - os: windows-2019
+            vcpkg_triplet: x64-windows-release
     steps:
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v3
@@ -59,7 +59,7 @@ jobs:
           allowUpdates: true
           tag: gmp-libraries-${{ matrix.config.os }}
           commit: ${{github.ref}}
-          body: "gmp libs built from source"
+          body: 'gmp libs built from source'
           artifacts: ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/*.dylib, ${{ github.workspace }}/vcpkg/installed/x64-osx*/**/*.a
 
       - name: release win
@@ -69,6 +69,5 @@ jobs:
           allowUpdates: true
           tag: gmp-libraries-${{ matrix.config.os }}
           commit: ${{github.ref}}
-          body: "gmp libs built from source"
+          body: 'gmp libs built from source'
           artifacts: ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.lib,  ${{ github.workspace }}\vcpkg\installed\${{ matrix.config.vcpkg_triplet }}/**/*gmp*.dll
-

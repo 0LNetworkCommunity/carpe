@@ -34,7 +34,10 @@ export const getDefaultProfile = async () => {
 export const getAccounts = async () => {
   // first make sure we don't have empty accounts
   invoke('get_all_accounts')
-    .then((result: CarpeProfile[]) => allAccounts.set(result))
+    .then((result: CarpeProfile[]) => {
+      allAccounts.set(result)
+      console.log(result)
+    })
     .catch((e) => raise_error(e, true, 'get_all_accounts'))
 }
 
@@ -47,7 +50,10 @@ export const refreshAccounts = async () => {
       // TODO make this the correct return type
       isRefreshingAccounts.set(false)
       allAccounts.set(result)
-
+      const currentAccount = get(signingAccount)
+      if (currentAccount) {
+        signingAccount.set(get(allAccounts).find((item) => item.account === currentAccount.account))
+      }
       if (!get(isAccountRefreshed)) {
         isAccountRefreshed.set(true)
       }
@@ -83,7 +89,10 @@ export const addAccount = async (init_type: InitType, secret: string) => {
       // set as init so we don't get sent back to Newbie account creation.
       isInit.set(true)
       responses.set(JSON.stringify(res))
-      signingAccount.set(res)
+      // cannot switch profile with miner running
+      if (!get(minerLoopEnabled)) {
+        signingAccount.set(res)
+      }
       await initNetwork()
       // only navigate away once we have refreshed the accounts including balances
       notify_success(`Account Added: ${res.nickname}`)
@@ -328,5 +337,16 @@ export function claimMakeWhole(account: string, callback = null) {
       } else {
         raise_error(e, false, 'claim_make_whole')
       }
+    })
+}
+
+export function getPrivateKey(address: string, callback = null) {
+  invoke('get_private_key_from_os', { address })
+    .then((res) => {
+      callback && callback(res)
+    })
+    .catch((e) => {
+      callback && callback('')
+      raise_error(e, false, 'get_private_key')
     })
 }

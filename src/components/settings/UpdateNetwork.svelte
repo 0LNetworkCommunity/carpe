@@ -10,6 +10,7 @@
     getNetwork,
     synced_fullnodes,
     refreshUpstreamPeerStats,
+    pickChainIdFromNetworkPlaylist,
   } from "../../modules/networks";
   import type { NetworkPlaylist } from "../../modules/networks";
   import { notify_success } from "../../modules/carpeNotify";
@@ -25,7 +26,7 @@
     network_profile.subscribe((n: NetworkPlaylist) => {
       if (n) {
         upstream_url = n.nodes.length == 1 ? n.nodes[0].url : ""; // just used to show OVERRIDE PEERS url
-        current_chain_id = n.chain_id;
+        current_chain_id = pickChainIdFromNetworkPlaylist(n);
       }
 
     });
@@ -89,7 +90,7 @@
   </h5>
   <p>{$_("settings.network_settings.override_peers_description")}</p>
 
-  <form id="account-form">
+  <form id="account-form" on:submit|preventDefault={() => {}}>
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
         <span>{$_("settings.network_settings.url_of_upstream_node")}</span>
@@ -107,10 +108,10 @@
         id="add-btn">{$_("settings.network_settings.btn_update")}</button
       >
 
-      <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+      <!-- <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
         {$_("settings.network_settings.upstream_title")}
       </h5>
-      <p>{$_("settings.network_settings.upstream_subtitle")}</p>
+      <p>{$_("settings.network_settings.upstream_subtitle")}</p> -->
       <!-- <button class="uk-button uk-button-default" on:click={refreshWaypoint}>{$_("settings.network_settings.btn_fetch_new_waypoint")}</button> -->
     </fieldset>
   </form>

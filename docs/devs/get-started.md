@@ -23,23 +23,23 @@ Additionally, you'll need to set up your environment for Tauri development:
 
 1. **Install Rust Dependencies**: Navigate to the `src-tauri/` directory and build the Rust codebase:
 
-    ```bash
-    cd src-tauri/
-    cargo build
-    ```
+   ```bash
+   cd src-tauri/
+   cargo build
+   ```
 
 2. **Install JavaScript Dependencies**: Return to the project root directory and install the JavaScript dependencies using Yarn:
 
-    ```bash
-    cd ..
-    yarn
-    ```
+   ```bash
+   cd ..
+   yarn
+   ```
 
 3. **Start the Development Server**: Launch the development server with:
 
-    ```bash
-    yarn dev
-    ```
+   ```bash
+   yarn dev
+   ```
 
 Closing the app window exits the development/debug mode.
 
@@ -50,6 +50,7 @@ Compile and package your Carpe application for production with:
 ```bash
 yarn build
 ```
+
 This generates an optimized version of your application, including standalone executables and installers, in the `src-tauri/target/release` directory.
 
 ## Additional Resources

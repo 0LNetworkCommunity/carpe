@@ -2,7 +2,7 @@
   import AccountSettings from './AccountSettings.svelte'
   import UpdateNetwork from './UpdateNetwork.svelte'
   import LangAppearanceSettings from './LangAppearanceSettings.svelte'
-
+  import UpdateMinerGas from './UpdateMinerGas.svelte'
   import { _ } from 'svelte-i18n'
 </script>
 
@@ -12,6 +12,7 @@
   </div>
 
   <LangAppearanceSettings />
+  <UpdateMinerGas />
   <UpdateNetwork />
   <AccountSettings />
 </main>

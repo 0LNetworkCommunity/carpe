@@ -97,6 +97,7 @@ async fn main() {
       commands::wallets::switch_profile,
       commands::wallets::is_slow,
       commands::wallets::set_slow_wallet,
+      commands::wallets::get_private_key_from_os,
       //////// Networks ////////
       commands::preferences::refresh_upstream_peer_stats,
       commands::networks::force_upstream,
@@ -131,6 +132,8 @@ async fn main() {
       commands::preferences::get_env,
       commands::preferences::set_env,
       commands::preferences::set_preferences_locale,
+      commands::preferences::get_miner_txs_cost,
+      commands::preferences::set_miner_txs_cost,
       ///////// Debug ////////
       commands::app_version::get_app_version,
       commands::web_logs::log_this,
