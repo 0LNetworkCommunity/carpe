@@ -13,7 +13,7 @@
     {$_('wallet.account_from_mnem_from.title')}
   </h3>
   <p>{$_('wallet.account_from_mnem_from.description')}</p>
-  <form id="account-form">
+  <form id="account-form" on:submit|preventDefault={() => {}}>
     <fieldset class="uk-fieldset">
       <div class="uk-margin uk-inline-block uk-width-1-1">
         <input

@@ -27,7 +27,19 @@ function setupI18n(options) {
     fallbackLocale: 'en',
   })
 }
-
+const fixedLocales = {
+  zh: 'zh_cn',
+}
+function getLocale() {
+  // The value of locale is taken from the browser navigator.language, and the first part is taken here to adapt it to the language key defined by carpe.
+  // where zh-CN requires special handling
+  // https://developer.mozilla.org/en-US/docs/Web/API/Navigator/language
+  let locale = getLocaleFromNavigator()
+  if (locale) {
+    locale = locale.toLocaleLowerCase().split('-')[0]
+  }
+  return fixedLocales[locale] || locale
+}
 // We expose the svelte-i18n _ store so that our app has
 // a single API for i18n
-export { _, setupI18n, getLocaleFromNavigator, locale }
+export { _, setupI18n, getLocale, locale }
