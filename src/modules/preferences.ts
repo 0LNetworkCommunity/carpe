@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/tauri'
 import { get, writable } from 'svelte/store'
-import { getLocaleFromNavigator, setupI18n } from '../lang/i18n'
+import { getLocale, setupI18n } from '../lang/i18n'
 import { Level, logger, raise_error } from './carpeError'
 import { signingAccount } from './accounts'
 import { notify_success } from './carpeNotify'
@@ -31,7 +31,8 @@ export const init_locale_preferences = () => {
   })
 
   const acct = get(signingAccount)
-  const locale = acct && acct.locale ? acct.locale : getLocaleFromNavigator()
+
+  const locale = acct && acct.locale ? acct.locale : getLocale()
   setupI18n({
     withLocale: locale,
     fallbackLocale: 'en',

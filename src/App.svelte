@@ -108,8 +108,9 @@
   })
 </script>
 {#if $isLoading}
-
-  Please wait...
+<main class="uk-background-muted uk-height-viewport uk-flex uk-flex-center uk-flex-middle uk-flex-column" >
+  <span class="uk-text-large">Please wait...</span>
+</main>
 {:else}
 <main class="uk-background-muted uk-height-viewport" >
   <Style />
