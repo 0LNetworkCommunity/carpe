@@ -36,7 +36,6 @@ export const getAccounts = async () => {
   invoke('get_all_accounts')
     .then((result: CarpeProfile[]) => {
       allAccounts.set(result)
-      console.log(result)
     })
     .catch((e) => raise_error(e, true, 'get_all_accounts'))
 }
