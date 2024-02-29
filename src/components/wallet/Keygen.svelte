@@ -3,10 +3,13 @@
   import { invoke } from '@tauri-apps/api/tauri'
   import { signingAccount } from '../../modules/accounts'
   import type { CarpeProfile } from '../../modules/accounts'
+  import { minerLoopEnabled } from '../../modules/miner'
+
   import { raise_error } from '../../modules/carpeError'
   import { responses } from '../../modules/debug'
   import AccountFromMnemSubmit from './AccountFromMnemSubmit.svelte'
   import { onDestroy } from 'svelte'
+  import { get } from 'svelte/store'
 
   interface NewKeygen {
     entry: CarpeProfile
@@ -22,7 +25,10 @@
         tempDangerDisplayMnem = res.mnem
         res.mnem = null
         responses.set(JSON.stringify(res))
-        signingAccount.set(res.entry)
+        // cannot switch profile with miner running
+        if (!get(minerLoopEnabled)) {
+          signingAccount.set(res.entry)
+        }
         hide = false
       })
       .catch((e) => raise_error(e, true, 'do_keygen'))

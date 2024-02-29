@@ -89,7 +89,10 @@ export const addAccount = async (init_type: InitType, secret: string) => {
       // set as init so we don't get sent back to Newbie account creation.
       isInit.set(true)
       responses.set(JSON.stringify(res))
-      signingAccount.set(res)
+      // cannot switch profile with miner running
+      if (!get(minerLoopEnabled)) {
+        signingAccount.set(res)
+      }
       await initNetwork()
       // only navigate away once we have refreshed the accounts including balances
       notify_success(`Account Added: ${res.nickname}`)
