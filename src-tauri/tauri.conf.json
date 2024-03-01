@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "carpe",
-    "version": "1.0.2"
+    "version": "1.0.3"
   },
   "build": {
     "distDir": "../dist",
@@ -15,7 +15,7 @@
       "endpoints": [
         "https://raw.githubusercontent.com/0LNetworkCommunity/carpe/main/autoupdater/autoupdater_payload.json"
       ],
-      "dialog": false,
+      "dialog": true,
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk2NDM3QUIwRDdENjkyNjgKUldSb2t0YlhzSHBEbHZOTkNCT3ljZTJESE1yc2t5c1dqbFd0VkZ2THM3N0RucTV0TC9FeDBQb1oK"
     },
     "bundle": {
