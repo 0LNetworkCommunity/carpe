@@ -4,7 +4,7 @@ import { get } from 'svelte/store'
 import { isKeyError, isRefreshingAccounts, signingAccount } from './accounts'
 import { Level, logger, raise_error, type CarpeError } from './carpeError'
 import { clearDisplayErrors } from './carpeErrorUI'
-import { notify_success } from './carpeNotify'
+import { notify_error, notify_success } from './carpeNotify'
 import { responses } from './debug'
 import {
   backlogListenerReady,
@@ -162,8 +162,13 @@ export const startBacklogListener = async () => {
     .catch((e: CarpeError) => {
       let quiet_errors = false
       if (e.uid == 104) {
-        // check for known error: key not found after upgrade
-        isKeyError.set(true)
+        // User canceled the operation
+        if (e.trace && e.trace.startsWith('PlatformFailure')) {
+            notify_error(e.trace)
+        } else {
+          // check for known error: key not found after upgrade
+          isKeyError.set(true)
+        }
         backlogListenerReady.set(false)
         minerLoopEnabled.set(false)
 
