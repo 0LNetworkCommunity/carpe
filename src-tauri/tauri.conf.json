@@ -1,7 +1,7 @@
 {
   "package": {
     "productName": "carpe",
-    "version": "1.0.1"
+    "version": "1.0.2"
   },
   "build": {
     "distDir": "../dist",
@@ -36,7 +36,9 @@
         "libcrypto.dylib",
         "libcrypto.3.dylib",
         "libssl.dylib",
-        "libssl.3.dylib"
+        "libssl.3.dylib",
+        "msvcp140.dll",
+        "vcruntime140.dll"
       ],
       "externalBin": [],
       "copyright": "",

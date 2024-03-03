@@ -1,19 +1,15 @@
 {
-  "version": "v1.0.0-12",
+  "version": "v1.0.1-3",
   "notes": "canary",
   "pub_date": "2023-12-02T00:00:00Z",
   "platforms": {
-    "darwin-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSZWdQTTVlRE1MMkJJWWZJM0xXdkhVa1o2YmROdFNwQ2JxRkJaeVFpU1AvcHlCRlArclp1Q2I4VDZuK2FsSmFaei9wYS9GOTFzNnV5U1k2M1cwa0dabVpxdE1RajJ2SGdVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzAxODk3MTgyCWZpbGU6Y2FycGUtY2FuYXJ5LmFwcC50YXIuZ3oKWEpXK2tBVDZsbE9hOGEwUXB0cDR5eTlyQ0w3MlZ2YmNpOXlOb3FNcGdqdzVuN090TElhNXd6ZXViUFFDcDBWK2lRYTRKayswZkpDcVNaeWxTRC9pQVE9PQo=",
-      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.0-12-canary/carpe-canary_1.0.0-12_x64.dmg"
-    },
-    "darwin-aarch64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSZWdQTTVlRE1MMkJJWWZJM0xXdkhVa1o2YmROdFNwQ2JxRkJaeVFpU1AvcHlCRlArclp1Q2I4VDZuK2FsSmFaei9wYS9GOTFzNnV5U1k2M1cwa0dabVpxdE1RajJ2SGdVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzAxODk3MTgyCWZpbGU6Y2FycGUtY2FuYXJ5LmFwcC50YXIuZ3oKWEpXK2tBVDZsbE9hOGEwUXB0cDR5eTlyQ0w3MlZ2YmNpOXlOb3FNcGdqdzVuN090TElhNXd6ZXViUFFDcDBWK2lRYTRKayswZkpDcVNaeWxTRC9pQVE9PQo=",
-      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.0-12-canary/carpe-canary_1.0.0-12_x64.dmg"
-    },
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSZWdQTTVlRE1MMkZyeTRsbVlXdVBzOVdXc2RIdnF0VGNtZHFGRTNubHJEdGdUYUhMbGMvTmFKUkd1eVdnTjFmUm9NZUExM3VhNDlraTZESGFCc1UxU2RqR2E3SUZyMndNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzAxODk3NjYwCWZpbGU6Y2FycGUtY2FuYXJ5XzEuMC4wLTEyX3g2NC1zZXR1cC5uc2lzLnppcApVRUE1Uk9abVdvbTN6Q3JhNGdCQlIwMk5XVWR0aTRUNUJEbGFsMFBDdnE1SUYvNytWZTZoK0VLeENyYzdjTnd1WEVvZmgwL3VmSlhha1JpUDF3RC9Ddz09Cg==",
-      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.0-11-canary/carpe-canary_1.0.0-11_x64-setup.nsis.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbHFHV0Z5Z1ViTnFROUk0d2NYY1Ewck9NaTZpYjNGSmxTRUJCQjJmVU9XOVdSTHNLbjNlT09lYklOdmxHTmFINjlSRmRqamp0dEJSVDNNZTNnQWdORUFjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA5Mjk3NzY3CWZpbGU6Y2FycGUtY2FuYXJ5XzEuMC4xLjNfeDY0X2VuLVVTLm1zaS56aXAKa1Mxa054dVlBTDFIRUY2cE9kVVVtOU9Bcm9BL2RWY3hUU0ZTOEUwS2JXWmN1OTd5MDZjRCt5aHNNeXFoUVRGQVFKWnBCaUpSVkp0dTB2elVhSEpPRGc9PQo=",
+      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.1-3-canary/carpe-canary_1.0.1.3_x64_en-US.msi.zip"
+    },
+    "darwin-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbGxGRXllcE1HQlBpRlM0K0Q4Ym9IQnhSV1huMzZYYithbTlla0RGM3hmOFE3Q09hVjZFUkZmVlo1VEJtcXI4NGV3SEpRanlJbDF3NUtuZytNVVRaUEFnPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA5Mjk3ODg2CWZpbGU6Y2FycGUtY2FuYXJ5LmFwcC50YXIuZ3oKVUd3WG02RWgxMHlEYU92QWdHYUhmWlBnVjBEckx5Rnk1aWV2K3J3dHlVb0g4d3RzSktsU3p2b2ZieThUUkpCSFNWcWlIMEVacWZETlh2TlgwNjZ0QWc9PQo=",
+      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.1-3-canary/carpe-canary_x64.app.tar.gz"
     }
   }
 }

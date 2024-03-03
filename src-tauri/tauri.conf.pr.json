@@ -36,7 +36,9 @@
         "libcrypto.dylib",
         "libcrypto.3.dylib",
         "libssl.dylib",
-        "libssl.3.dylib"
+        "libssl.3.dylib",
+        "msvcp140.dll",
+        "vcruntime140.dll"
       ],
       "externalBin": [],
       "copyright": "",
