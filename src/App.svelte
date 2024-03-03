@@ -32,6 +32,7 @@
   import DevMode from './components/dev/DevMode.svelte'
   import AccountCreate from './components/wallet/AccountCreate.svelte'
   import Keygen from './components/wallet/Keygen.svelte'
+  import AddWatchAccount from './components/wallet/AddWatchAccount.svelte'
   import Transactions from './components/txs/Transactions.svelte'
   import Events from './components/events/Events.svelte'
   import About from './components/about/About.svelte'
@@ -130,6 +131,7 @@
         <Route path={routes.wallet} component={Wallet} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
         <Route path={routes.accountFromMnem} component={AccountCreate} primary={false} />
+        <Route path={routes.addWatchAccount} component={AddWatchAccount} primary={false} />
         <Route path={routes.keygen} component={Keygen} primary={false} />
         <Route path={routes.miner} component={Miner} primary={false} />
         <Route path={routes.transfer} component={Transactions} primary={false} />

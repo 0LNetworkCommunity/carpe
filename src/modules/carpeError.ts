@@ -16,6 +16,7 @@ export interface CarpeError {
   category: number
   uid: number
   msg: string
+  trace?: string
 }
 
 export enum ErrMap {

@@ -15,6 +15,7 @@ import {
   migrateInProgress,
   migrateSuccess,
   canMigrate,
+  watchAccounts,
 } from './accounts'
 import type { CarpeProfile, SlowWalletBalance } from './accounts'
 import { navigate } from 'svelte-navigator'
@@ -35,6 +36,10 @@ export const getAccounts = async () => {
   // first make sure we don't have empty accounts
   invoke('get_all_accounts')
     .then((result: CarpeProfile[]) => {
+      const watchList = get(watchAccounts)
+      result.map((item) => {
+        item.watch_only = watchList.includes(item.account)
+      })
       allAccounts.set(result)
     })
     .catch((e) => raise_error(e, true, 'get_all_accounts'))
@@ -48,6 +53,12 @@ export const refreshAccounts = async () => {
     .then((result: [CarpeProfile]) => {
       // TODO make this the correct return type
       isRefreshingAccounts.set(false)
+
+      const watchList = get(watchAccounts)
+      result.map((item) => {
+        item.watch_only = watchList.includes(item.account)
+      })
+
       allAccounts.set(result)
       const currentAccount = get(signingAccount)
       if (currentAccount) {
@@ -85,19 +96,7 @@ export const addAccount = async (init_type: InitType, secret: string) => {
   // submit
   return invoke(method_name, arg_obj)
     .then(async (res: CarpeProfile) => {
-      // set as init so we don't get sent back to Newbie account creation.
-      isInit.set(true)
-      responses.set(JSON.stringify(res))
-      // cannot switch profile with miner running
-      if (!get(minerLoopEnabled)) {
-        signingAccount.set(res)
-      }
-      await initNetwork()
-      // only navigate away once we have refreshed the accounts including balances
-      notify_success(`Account Added: ${res.nickname}`)
-
-      refreshAccounts()
-      setTimeout(() => navigate('wallet'), 10)
+      await onAccountAdd(res)
       return res
     })
     .catch((error) => {
@@ -348,4 +347,38 @@ export function getPrivateKey(address: string, callback = null) {
       callback && callback('')
       raise_error(e, false, 'get_private_key')
     })
+}
+
+export function addWatchAccount(address: string) {
+  invoke('add_watch_account', {
+    address,
+  })
+    .then(async (res: CarpeProfile) => {
+      let list = get(watchAccounts)
+      list = Array.from(new Set([...list, res.account]))
+      watchAccounts.set(list)
+      localStorage.setItem('watchAccounts', JSON.stringify(list))
+      res.watch_only = true
+      await onAccountAdd(res)
+    })
+    .catch((e: CarpeError) => {
+      notify_error('Unable to parse AccountAddress')
+      raise_error(e, true, 'add_watch_account')
+    })
+}
+
+async function onAccountAdd(res: CarpeProfile) {
+  // set as init so we don't get sent back to Newbie account creation.
+  isInit.set(true)
+  responses.set(JSON.stringify(res))
+  // cannot switch profile with miner running
+  if (!get(minerLoopEnabled)) {
+    signingAccount.set(res)
+  }
+  await initNetwork()
+  // only navigate away once we have refreshed the accounts including balances
+  notify_success(`Account Added: ${res.nickname}`)
+
+  await refreshAccounts()
+  setTimeout(() => navigate('wallet'), 10)
 }

@@ -1,11 +1,6 @@
 name: lint
 
 on:
-  push:
-    tags:
-      - '*'
-    branches:
-      - '*'
   pull_request:
     types:
       - opened
