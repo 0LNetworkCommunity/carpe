@@ -98,6 +98,7 @@ async fn main() {
       commands::wallets::is_slow,
       commands::wallets::set_slow_wallet,
       commands::wallets::get_private_key_from_os,
+      commands::wallets::add_watch_account,
       //////// Networks ////////
       commands::preferences::refresh_upstream_peer_stats,
       commands::networks::force_upstream,

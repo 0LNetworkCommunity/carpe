@@ -12,6 +12,9 @@
       <Link to={routes.accountFromMnem}>
         <button class="uk-button uk-button-default">{$_('wallet.btn_restore_account')}</button>
       </Link>
+      <Link to={routes.addWatchAccount}>
+        <button class="uk-button uk-button-default">{$_('wallet.btn_add_watch_account')}</button>
+      </Link>
 
     </div>
 </main>

@@ -55,6 +55,9 @@ input:checked + .uk-switch-slider:before {
 input:checked + .uk-switch-slider.uk-switch-on-off {
   background-color: #32d296 !important;
 }
+input:disabled + .uk-switch-slider.uk-switch-on-off {
+  cursor: not-allowed;
+}
 
 /* Style Modifier */
 .uk-switch-slider.uk-switch-big:before {

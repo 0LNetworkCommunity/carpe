@@ -254,3 +254,11 @@ pub fn get_private_key_from_os(address: AccountAddress) -> Result<String, CarpeE
   let acc_struct = account_keys::get_account_from_private(&pk);
   Ok(acc_struct.pri_key.to_encoded_string()?)
 }
+
+#[tauri::command(async)]
+pub async fn add_watch_account(address: AccountAddress) -> Result<CarpeProfile, CarpeError> {
+  let authkey: AuthenticationKey = query::get_auth_key(address).await?;
+  configs_profile::set_account_profile(address, authkey).await?;
+  let core_profile = &Profile::new(authkey, address);
+  Ok(core_profile.into())
+}
