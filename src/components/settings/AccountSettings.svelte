@@ -5,11 +5,14 @@
   import { raise_error } from '../../modules/carpeError'
   import { notify_success } from '../../modules/carpeNotify'
   import { responses } from '../../modules/debug'
+  import { watchAccounts } from '../../modules/accounts'
   const removeAccounts = async () => {
     invoke('remove_accounts', {})
       .then((res: string) => {
         responses.set(res)
         notify_success('Accounts removed successfully')
+        watchAccounts.set([])
+        localStorage.removeItem('watchAccounts')
         refreshAccounts()
       })
       .catch((e) => {

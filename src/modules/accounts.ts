@@ -7,6 +7,7 @@ export interface CarpeProfile {
   on_chain?: boolean
   balance?: SlowWalletBalance
   locale?: string // TODO: refactor, tauri now offers locale of the OS
+  watch_only?: boolean
 }
 export interface SlowWalletBalance {
   unlocked: number
@@ -20,6 +21,7 @@ export const new_account = (account: string, authkey: string, nickname: string):
     nickname: nickname,
     on_chain: false,
     balance: { unlocked: 0, total: 0 },
+    watch_only: false,
   }
 }
 
@@ -35,6 +37,9 @@ export const makeWhole = writable<object>()
 export const canMigrate = writable<boolean>(false)
 export const migrateSuccess = writable<boolean>()
 export const migrateInProgress = writable<boolean>()
+
+const localeWatchAccounts = JSON.parse(localStorage.getItem('watchAccounts') || '[]')
+export const watchAccounts = writable<string[]>(localeWatchAccounts)
 
 export const formatAccount = (acc: string): string => {
   return acc.replace('00000000000000000000000000000000', '')

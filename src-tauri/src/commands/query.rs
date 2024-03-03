@@ -3,7 +3,7 @@ use crate::{carpe_error::CarpeError, configs::get_client};
 use anyhow::anyhow;
 use libra_query::account_queries::get_account_balance_libra;
 use libra_types::{
-  exports::AccountAddress,
+  exports::{AccountAddress, AuthenticationKey},
   legacy_types::{
     makewhole_resource::CreditResource, makewhole_resource::MakeWholeResource,
     tower::TowerProofHistoryView,
@@ -67,6 +67,18 @@ pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
   })?;
 
   Ok(res.into_inner().sequence_number)
+}
+
+pub async fn get_auth_key(account: AccountAddress) -> Result<AuthenticationKey, CarpeError> {
+  let client = get_client()?;
+  let res = client.get_account(account).await.map_err(|e| {
+    CarpeError::misc(&format!(
+      "Could not get authentication_key from account{}: {}",
+      account, e
+    ))
+  })?;
+
+  Ok(res.into_inner().authentication_key)
 }
 
 #[tauri::command(async)]

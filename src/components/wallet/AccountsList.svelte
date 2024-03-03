@@ -52,8 +52,9 @@
               : ""}
             on:click={() => setAccount(a.account)}
           > -->
-            <td class="uk-transition-toggle">
-              {#if a.account == $signingAccount.account}
+            <td >
+              <span class="uk-transition-toggle">
+                {#if a.account == $signingAccount.account}
                 {#if $minerLoopEnabled}
                   <IconMining />
                 {:else}
@@ -64,6 +65,11 @@
                   class="uk-margin-left uk-transition-fade"
                   on:click={toggleOptions}
                 />
+              {/if}
+              </span>
+              
+              {#if a.watch_only}
+                <span class="uk-align-right" uk-icon="eye"></span>
               {/if}
             </td>
             <!-- <td

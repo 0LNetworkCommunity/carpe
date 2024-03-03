@@ -2,6 +2,7 @@ export const routes = {
   home: '/',
   wallet: '/wallet',
   addAccount: '/add-account',
+  addWatchAccount: '/add-wathc-account',
   accountFromMnem: '/account-from-mnem',
   keygen: '/keygen',
   miner: '/miner',

@@ -16,6 +16,7 @@
     routes.developer,
     routes.keygen,
     routes.accountFromMnem,
+    routes.addWatchAccount,
   ]
 
   const location_store = useLocation()

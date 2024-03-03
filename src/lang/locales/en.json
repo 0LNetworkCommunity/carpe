@@ -33,6 +33,7 @@
     "carpe": "CARPE",
     "btn_new_account": "New Account",
     "btn_restore_account": "Restore Account",
+    "btn_add_watch_account": "Watch Account",
     "newbie_message": "Looks like you don't have any accounts",
     "reminder_create": {
       "card_title": "Onboarding",
@@ -82,6 +83,10 @@
       "description": "Recover the account using the private key.",
       "placeholder": "Private Key",
       "accordion_title": "advanced: use private key"
+    },
+    "add_watch_account": {
+      "description": "Add account to \"watch\" without a signing key (read only).",
+      "placeholder": "address"
     },
     "account_switcher": {
       "select_account": "Settings",
