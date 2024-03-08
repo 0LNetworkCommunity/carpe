@@ -44,14 +44,14 @@ To configure a slow wallet, select an account you would like to configure and ho
 
 A new button will appear. Once pressed the section account info appears.
 
-Below the information about your address and authkey press the plus in the box that says account acctions and you will see a button with the text "SET SLOW WALLET ..." on it. 
-Once clicked you will yet again be asked to cofirm that you really wish to turn this account into a slow wallet. 
+Below the information about your address and authkey: press the plus in the box that says account acctions, and you will see a button with the text "SET SLOW WALLET ..." on it. 
+Once clicked, you will yet again be asked to cofirm that you really wish to turn this account into a slow wallet. 
 
-A word of caution once set you cannot undo this and the wallet will forever be a slow wallet.
+**A word of caution once set you cannot undo this and the wallet will forever be a slow wallet.**
 
 You need to have at least 1 libra in your account to configure the slow wallet as it is an on-chain event.
 
-For a visual walk-through of how to set a slow wallet check the screencast below
+For a visual walk-through of how to set a slow wallet, check the screencast below
 
 ![settingSlowWallet](https://github.com/Teisson/carpe/assets/97843018/143f3abd-4f32-4301-8762-0896b8bc882b)
 
