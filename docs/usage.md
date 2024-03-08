@@ -51,7 +51,7 @@ Once clicked, you will yet again be asked to cofirm that you really wish to turn
 
 You need to have at least 1 libra in your account to configure the slow wallet as it is an on-chain event.
 
-For a visual walk-through of how to set a slow wallet, check the screencast below
+For a visual walk-through of how to set a slow wallet, check the screencast below.
 
 ![settingSlowWallet](https://github.com/Teisson/carpe/assets/97843018/143f3abd-4f32-4301-8762-0896b8bc882b)
 
