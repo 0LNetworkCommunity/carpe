@@ -6,21 +6,34 @@
     "events": "Events"
   },
   "layout": {
+    "key_error": {
+      "title": "ERROR: key not configured",
+      "body": "Your private key could not be found. Maybe this is due to a migration or upgrade. You should enter your mnemonic again save on your operating system's secure keychain."
+    },
     "connection_error": {
       "title": "Oops, We Can't Connect to 0L Network",
-      "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>"
+      "body": "<p> This is likely because the upstream peer (server) you use is down.</p> <h3> Don't worry, your account and coins are safe.</h3> <p>If you need to update or refresh your peers you can do so here:</p>",
+      "dont_worry": "Don't worry, your account and coins are safe",
+      "refresh_instructions": "If you need to update or refresh your peers you can do so here:"
     },
     "error_accordion": {
       "title": "Error Report",
       "category": "Error Category",
       "id": "ID"
-    }
+    },
+    "recovery_mode": {
+      "title": "Recovery Mode",
+      "body": "The network is up! But we are in Recovery Mode, and no rewards are being paid for proofs yet. Wait until Recovery Mode is finished to send proofs for rewards. Recovery ends when epoch {epoch_recovery_ends} changes to {epoch_recovery_ends_after}"
+    },
+    "attempting_to_connect": "Attempting to connect to the blockchain",
+    "not_connected_to_chain": "Not connected to chain, data may be out of sync"
   },
   "wallet": {
     "wallet": "Wallet",
     "carpe": "CARPE",
     "btn_new_account": "New Account",
     "btn_restore_account": "Restore Account",
+    "btn_add_watch_account": "Watch Account",
     "newbie_message": "Looks like you don't have any accounts",
     "reminder_create": {
       "card_title": "Onboarding",
@@ -38,7 +51,8 @@
       "offline": "offline",
       "loading": "loading",
       "account_on_chain": "Account Not On Chain",
-      "message": " Your balance will go down for every transaction you send, including mining."
+      "message": " Your balance will go down for every transaction you send, including mining.",
+      "info_title": "Account Info"
     },
     "keygen": {
       "title": "Create New Account",
@@ -65,11 +79,27 @@
       "description": "Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions",
       "placeholder": "Recovery Mnemonic"
     },
+    "account_from_private": {
+      "description": "Recover the account using the private key.",
+      "placeholder": "Private Key",
+      "accordion_title": "advanced: use private key"
+    },
+    "add_watch_account": {
+      "description": "Add account to \"watch\" without a signing key (read only).",
+      "placeholder": "address"
+    },
     "account_switcher": {
       "select_account": "Select Account",
       "switch_account": "Switch Account",
       "setting": "Go To Setting",
       "developers": "Developers"
+    },
+    "settings": {
+      "title": "Wallet Options",
+      "slow_label": "Slow Wallet",
+      "slow_info": "This is a slow wallet, transfers are limited to the amount unlocked. Each day 35,000 coins unlock on Slow Wallets",
+      "warn": "These changes will appear on blockchain.",
+      "slow_wallet_warn": "WARNING: SETTING YOUR WALLET TO SLOW OR COMMUNITY IS PERMANENT"
     }
   },
   "about": {
@@ -78,6 +108,13 @@
     "version": "Version",
     "branch": "Branch",
     "commit": "Commit"
+  },
+  "upgrade": {
+    "uptodate": "You are on the current version",
+    "available": "There is an upgrade available",
+    "download": "Downloading",
+    "check_again": "Check Upgrade",
+    "restart": "Success. You can now restart Carpe"
   },
   "settings": {
     "title": "SETTINGS",
@@ -92,6 +129,8 @@
     "network_settings": {
       "title": "NETWORK SETTINGS",
       "list_of_peers": "LIST OF PEERS",
+      "synced_peers": "Synced Peers",
+      "refresh_peers_button": "Check Fullnodes Sync",
       "description": "Choose a playlist of upstream nodes, so you can access the chain. Network connections will try the list in random order until a connection is made. Simply link to any playlist.json file here to update peers.",
       "playlist": "Update Playlist of Network Servers",
       "override_peers": "OVERRIDE PEERS",
@@ -210,14 +249,17 @@
       "no_balance_body2": "Looks like you have less than 2 coins in your account, this means you won't be able to onboard anyone."
     },
     "set_wallet_type": {
-      "title": "Set your Account Type",
+      "actions_title": "Account Actions",
+      "set_slow_title": "Make Slow Wallet (danger)",
       "subtitle": " Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
       "btn_slow": "Set Slow Wallet",
       "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversable.",
-      "slow_confirm": "Set Slow",
+      "warning": "Warning: this change is forever",
       "btn_community": "Set Community Wallet",
       "btn_confirm_community": "Set Community",
-      "community_confirm": "Confirm Set Community Wallet? This is not reversable."
+      "community_confirm": "Confirm Set Community Wallet? This is not reversable.",
+      "title": "Set your Account Type",
+      "slow_confirm": "Set Slow"
     },
     "transfer": {
       "title": "Coin Transfer",
@@ -238,6 +280,7 @@
       "error_amount_greater_than_balance": "Amount cannot be greater than account balance",
       "error_receiver_equals_sender": "Receiver address must be different from sender address",
       "error_slow_wallet": "Coin transfer is disabled for slow wallets.",
+      "error_account_does_not_exist": "Recipient account does not exist.",
       "success": "Transfer executed with success",
       "failed": "Transfer failed. Code: {code}"
     }

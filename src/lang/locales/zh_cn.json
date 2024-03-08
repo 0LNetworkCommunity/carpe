@@ -6,21 +6,34 @@
     "events": "事件"
   },
   "layout": {
+    "key_error": {
+      "title": "错误：私钥未配置",
+      "body": "找不到您的私钥。可能是由于迁移或升级造成的。您应该再次输入您的助记词，保存在操作系统的安全钥匙串中。"
+    },
     "connection_error": {
       "title": "糟糕, 居然无法连上OL网络",
-      "body": "<p> 很有可能是上游节点已断开。</p> <h3> 别担心！您的账号和资产是安全的.</h3> <p>如果您需要更新连接节点，请点这里：</p>"
+      "body": "<p> 很有可能是上游节点已断开。</p> <h3> 别担心！您的账号和资产是安全的.</h3> <p>如果您需要更新连接节点，请点这里：</p>",
+      "dont_worry": "别担心，您的账户和资产都很安全",
+      "refresh_instructions": "如果您需要更新或刷新您的同行，可以在这里进行："
     },
     "error_accordion": {
       "title": "错误报告",
       "category": "错误分类",
       "id": "ID"
-    }
+    },
+    "recovery_mode": {
+      "title": "恢复模式",
+      "body": "网络已启动！但我们正处于恢复模式，还没有为证明支付奖励。请等待恢复模式结束后再发送证明以获取奖励。当周期 {epoch_recovery_ends} 变为 {epoch_recovery_ends_after} 时，恢复模式结束。"
+    },
+    "attempting_to_connect": "尝试连接到区块链",
+    "not_connected_to_chain": "未连接到链，数据可能不同步"
   },
   "wallet": {
     "wallet": "钱包",
     "carpe": "CARPE",
     "btn_new_account": "创建账号",
     "btn_restore_account": "恢复账号",
+    "btn_add_watch_account": "观察账号",
     "newbie_message": "您似乎还没有创建账号。",
     "reminder_create": {
       "card_title": "激活",
@@ -33,12 +46,13 @@
       "nickname": "昵称",
       "address": "地址",
       "authkey": "激活码",
-      "unlocked": "Unlocked",
+      "unlocked": "已解锁",
       "balance": "余额",
       "offline": "断线",
       "loading": "加载中",
       "account_on_chain": "未激活",
-      "message": " 所有发送的交易（包括：挖矿）都会消耗一些余额作为手续费。"
+      "message": " 所有发送的交易（包括：挖矿）都会消耗一些余额作为手续费。",
+      "info_title": "账户信息"
     },
     "keygen": {
       "title": "创建新账号",
@@ -65,11 +79,27 @@
       "description": "使用您已备份的钱包账户助记词，在 CARPE 恢复账号，查看资产和发送交易。",
       "placeholder": "助记词"
     },
+    "account_from_private": {
+      "description": "使用私钥恢复账户。",
+      "placeholder": "私钥",
+      "accordion_title": "高级：使用私钥"
+    },
+    "add_watch_account": {
+      "description": "在没有私钥或助记词的情况下添加观察账号。",
+      "placeholder": "地址"
+    },
     "account_switcher": {
       "select_account": "选择账号",
       "switch_account": "切换账号",
       "setting": "设置菜单",
       "developers": "开发者模式"
+    },
+    "settings": {
+      "title": "钱包选项",
+      "slow_label": "慢钱包",
+      "slow_info": "这是一个慢钱包，转账仅限于解锁的金额。慢速钱包每天解锁 35,000 个币",
+      "warn": "这些更改将出现在区块链上。",
+      "slow_wallet_warn": "警告：将钱包设置为 \"慢速 \"或 \"社区 \"是永久性的"
     }
   },
   "about": {
@@ -78,6 +108,13 @@
     "version": "版本号",
     "branch": "分支",
     "commit": "Commit"
+  },
+  "upgrade": {
+    "uptodate": "您使用的是当前版本",
+    "available": "有一个升级版本",
+    "download": "下载中",
+    "check_again": "检查升级",
+    "restart": "成功。现在您可以重新启动 Carpe"
   },
   "settings": {
     "title": "设置",
@@ -92,6 +129,8 @@
     "network_settings": {
       "title": "网络设置",
       "list_of_peers": "节点列表",
+      "synced_peers": "Synced Peers",
+      "refresh_peers_button": "Check Fullnodes Sync",
       "description": "选择节点列表，自动化切换上游节点。Carpe 会在列表中随机连接上游节点，直至链接成功。您可以链接任何的 playlist.json 文件来更新节点。",
       "playlist": "更新网络节点",
       "override_peers": "覆盖节点",
@@ -210,14 +249,17 @@
       "no_balance_body2": "您的账户资产少于2个币，您不可以激活任何人。"
     },
     "set_wallet_type": {
-      "title": "设置账户类型",
+      "actions_title": "账户操作",
+      "set_slow_title": "慢速钱包（危险）",
       "subtitle": "确认您务必确认本次操作. 本操作不可逆. 慢钱包和社区钱包是永久性的。",
       "btn_slow": "设为慢钱包",
       "btn_confirm_slow": "确认设置慢钱包吗？本操作不可逆。",
-      "slow_confirm": "设为慢钱包",
+      "warning": "警告：这一改变将是永久性的",
       "btn_community": "设为社区钱包",
       "btn_confirm_community": "设为社区钱包",
-      "community_confirm": "确认要设为社区钱包吗？本操作不可逆。"
+      "community_confirm": "确认要设为社区钱包吗？本操作不可逆。",
+      "title": "设置账户类型",
+      "slow_confirm": "设为慢钱包"
     },
     "transfer": {
       "title": "代币转账",
@@ -238,6 +280,7 @@
       "error_amount_greater_than_balance": "数量不能大于账户余额",
       "error_receiver_equals_sender": "接收地址不能是发送地址",
       "error_slow_wallet": "慢钱包转账功能尚未启动",
+      "error_account_does_not_exist": "收件人帐户不存在",
       "success": "转账成功！",
       "failed": "转账失败。 错误码: {code}"
     }

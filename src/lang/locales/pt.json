@@ -6,21 +6,34 @@
     "events": "Eventos"
   },
   "layout": {
+    "key_error": {
+      "title": "ERRO: chave não configurada",
+      "body": "Não foi possível encontrar a sua chave privada. Talvez isto se deva a uma migração ou atualização. Deve introduzir novamente a sua mnemónica guardada no chaveiro seguro do seu sistema operativo."
+    },
     "connection_error": {
       "title": "Opa, não foi possível conectar à rede 0L",
-      "body": "<p>Isto geralmente acontece porque o node (servidor) que você está usando está fora do ar.</p> <h3> Não se preocupe, sua conta e moedas estão seguras.</h3> <p>Se você precisar configurar ou atualizar seus nodes, você pode fazer isso aqui:</p>"
+      "body": "<p>Isto geralmente acontece porque o node (servidor) que você está usando está fora do ar.</p> <h3> Não se preocupe, sua conta e moedas estão seguras.</h3> <p>Se você precisar configurar ou atualizar seus nodes, você pode fazer isso aqui:</p>",
+      "dont_worry": "Não se preocupe, a sua conta e as suas moedas estão seguras",
+      "refresh_instructions": "Se necessitar de atualizar ou de refrescar os seus pares, pode fazê-lo aqui:"
     },
     "error_accordion": {
       "title": "Relatório de Erros",
       "category": "Categoria de Erro",
       "id": "ID"
-    }
+    },
+    "recovery_mode": {
+      "title": "Modo de recuperação",
+      "body": "A rede está a funcionar! Mas estamos em modo de recuperação e ainda não estão a ser pagas recompensas pelas provas. Espera até que o Modo de Recuperação termine para enviar provas para receber recompensas. A recuperação termina quando a época {epoch_recovery_ends} muda para {epoch_recovery_ends_after}"
+    },
+    "attempting_to_connect": "Tentativa de ligação à cadeia de blocos",
+    "not_connected_to_chain": "Não ligado à corrente, os dados podem estar dessincronizados"
   },
   "wallet": {
     "wallet": "Carteira",
     "carpe": "CARPE",
     "btn_new_account": "Criar Conta",
     "btn_restore_account": "Restaurar Conta",
+    "btn_add_watch_account": "Ver conta",
     "newbie_message": "Parece que você não tem nenhuma conta ainda",
     "reminder_create": {
       "card_title": "Integração",
@@ -38,7 +51,8 @@
       "offline": "offline",
       "loading": "carregando",
       "account_on_chain": "Conta não criada na rede",
-      "message": "Seu saldo diminuirá para cada transação que você enviar, incluindo as de mineração."
+      "message": "Seu saldo diminuirá para cada transação que você enviar, incluindo as de mineração.",
+      "info_title": "Informações sobre a conta"
     },
     "keygen": {
       "title": "Criar nova conta",
@@ -65,11 +79,27 @@
       "description": "Usando suas palavras de recuperação (mnemônicos), você pode configurar o Carpe como uma carteira para monitorar e enviar transações",
       "placeholder": "Mnemônico de Recuperação"
     },
+    "account_from_private": {
+      "description": "Recuperar a conta utilizando a chave privada.",
+      "placeholder": "Chave privada",
+      "accordion_title": "avançado: utilizar chave privada"
+    },
+    "add_watch_account": {
+      "description": "Adicionar conta a \"watch\" sem uma chave de assinatura (apenas leitura).",
+      "placeholder": "endereço"
+    },
     "account_switcher": {
       "select_account": "Selecionar Conta",
       "switch_account": "Mudar de Conta",
       "setting": "Configurações",
       "developers": "Desenvolvedores"
+    },
+    "settings": {
+      "title": "Opções de carteira",
+      "slow_label": "Carteira lenta",
+      "slow_info": "Esta é uma carteira lenta, as transferências são limitadas ao montante desbloqueado. Todos os dias, 35,000 moedas são desbloqueadas nas carteiras lentas",
+      "warn": "Estas alterações aparecerão na cadeia de blocos.",
+      "slow_wallet_warn": "AVISO: A DEFINIÇÃO DA SUA CARTEIRA COMO LENTA OU COMUNITÁRIA É PERMANENTE"
     }
   },
   "about": {
@@ -78,6 +108,13 @@
     "version": "Versão",
     "branch": "Branch",
     "commit": "Commit"
+  },
+  "upgrade": {
+    "uptodate": "Está a utilizar a versão atual",
+    "available": "Existe uma atualização disponível",
+    "download": "Descarregamento",
+    "check_again": "Verificar a atualização",
+    "restart": "Sucesso. Pode agora reiniciar o Carpe"
   },
   "settings": {
     "title": "CONFIGURAÇÕES",
@@ -92,6 +129,8 @@
     "network_settings": {
       "title": "CONFIGURAÇÕES DE REDE",
       "list_of_peers": "LISTA DE PARES",
+      "synced_peers": "Synced Peers",
+      "refresh_peers_button": "Check Fullnodes Sync",
       "description": "Escolha uma lista de nós ascendentes, para que você possa acessar o blockchain. As conexões de rede tentarão a lista em ordem aleatória até que uma conexão seja estabelecida. Basta vincular a qualquer arquivo playlist.json aqui para atualizar os pares.",
       "playlist": "Atualizar Lista de Servidores de Rede",
       "override_peers": "SUBSTITUIR PARES",
@@ -210,14 +249,17 @@
       "no_balance_body2": "Parece que você tem menos de 2 moedas em sua conta, isso significa que você não poderá embarcar ninguém."
     },
     "set_wallet_type": {
-      "title": "Defina seu Tipo de Conta",
+      "actions_title": "Acções da conta",
+      "set_slow_title": "Fazer carteira lenta (perigo)",
       "subtitle": "Certifique-se de que você sabe o que está fazendo. Essa operação não é reversível. As carteiras lentas e comunitárias são permanentes.",
       "btn_slow": "Definir Carteira Lenta",
       "btn_confirm_slow": "Confirmar Definir Carteira Lenta? Esta operação não é reversível.",
-      "slow_confirm": "Definir Lenta",
+      "warning": "Aviso: esta mudança é para sempre",
       "btn_community": "Definir Carteira de Comunidade",
       "btn_confirm_community": "Definir Comunidade",
-      "community_confirm": "Confirmar Definir Carteira de Comunidade? Esta operação não é reversível."
+      "community_confirm": "Confirmar Definir Carteira de Comunidade? Esta operação não é reversível.",
+      "title": "Defina seu Tipo de Conta",
+      "slow_confirm": "Definir Lenta"
     },
     "transfer": {
       "title": "Transferência de Moedas",
@@ -238,6 +280,7 @@
       "error_amount_greater_than_balance": "Valor não pode ser maior que o saldo da conta",
       "error_receiver_equals_sender": "Endereço do recebedor deve ser diferente do endereço do emissor.",
       "error_slow_wallet": "Transferência de moedas está desabilidato para slow wallets.",
+      "error_account_does_not_exist": "A conta do destinatário não existe.",
       "success": "Transferência executada com sucesso!",
       "failed": "Transferência falhou. Código: {code}"
     }

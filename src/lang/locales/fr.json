@@ -6,22 +6,35 @@
     "events": "Événements"
   },
   "layout": {
+    "key_error": {
+      "title": "ERROR : clé non configurée",
+      "body": "Votre clé privée n'a pas été trouvée. Cela peut être dû à une migration ou à une mise à jour. Vous devez saisir à nouveau votre mnémonique et l'enregistrer dans le trousseau sécurisé de votre système d'exploitation."
+    },
     "connection_error": {
       "title": "Impossible de se connecter au réseau 0L",
-      "body": "<p> Il est probable que l'upstream peer (serveur) que vous utilisez soit déconnecté.</p> <h3> Pas d'inquiétude, votre compte et vos Coins sont en sécurité.</h3> <p>Pour mettre à jour vos peers, rendez-vous ici :</p>"
+      "body": "<p> Il est probable que l'upstream peer (serveur) que vous utilisez soit déconnecté.</p> <h3> Pas d'inquiétude, votre compte et vos Coins sont en sécurité.</h3> <p>Pour mettre à jour vos peers, rendez-vous ici :</p>",
+      "dont_worry": "Ne vous inquiétez pas, votre compte et vos pièces sont en sécurité",
+      "refresh_instructions": "Si vous avez besoin de mettre à jour ou d'actualiser vos pairs, vous pouvez le faire ici :"
     },
     "error_accordion": {
       "title": "Rapport d'erreurs",
       "category": "Categorie d'erreur",
       "id": "ID"
-    }
+    },
+    "recovery_mode": {
+      "title": "Recovery Mode",
+      "body": "Le réseau est opérationnel ! Mais nous sommes en mode de récupération et aucune récompense n'est encore versée pour les épreuves. Attendez que le mode de récupération soit terminé pour envoyer des preuves en vue d'obtenir des récompenses. La récupération se termine lorsque l'époque {epoch_recovery_ends} devient {epoch_recovery_ends_after}."
+    },
+    "attempting_to_connect": "Tentative de connexion à la blockchain",
+    "not_connected_to_chain": "Non connecté à la chaîne, les données peuvent être désynchronisées"
   },
   "wallet": {
     "wallet": "Portefeuille",
     "carpe": "CARPE",
     "btn_new_account": "Nouveau Compte",
     "btn_restore_account": "Récupération de Compte",
-    "newbie_message": "Nous n'avons pas trouvé votre compte.",
+    "btn_add_watch_account": "Watch Account",
+    "newbie_message": "Compte de surveillance",
     "reminder_create": {
       "card_title": "Onboarding",
       "message_headline": "Vous avez généré les clés de votre compte mais il n'existe pas encore sur la chaine.",
@@ -33,12 +46,13 @@
       "nickname": "Pseudo",
       "address": "Adresse",
       "authkey": "Authkey",
-      "unlocked": "Unlocked",
+      "unlocked": "Débloqué",
       "balance": "Solde",
       "offline": "hors-ligne",
       "loading": "chargement",
       "account_on_chain": "Le compte n'est pas sur la chaîne",
-      "message": " Votre solde diminuera pour toutes transactions effectuées, y compris lorsque vous minez."
+      "message": " Votre solde diminuera pour toutes transactions effectuées, y compris lorsque vous minez.",
+      "info_title": "Informations sur le compte"
     },
     "keygen": {
       "title": "Creer un nouveau compte",
@@ -65,11 +79,27 @@
       "description": "Grâce à votre phrase secrète de récupération vous pouvez utiliser Carpe comme portefeuille pour visualiser et faire des transactions",
       "placeholder": "Phrase secrète de récupération"
     },
+    "account_from_private": {
+      "description": "Récupérer le compte à l'aide de la clé privée.",
+      "placeholder": "Clé privée",
+      "accordion_title": "avancé : utiliser la clé privée"
+    },
+    "add_watch_account": {
+      "description": "Ajouter un compte à \"watch\" sans clé de signature (en lecture seule).",
+      "placeholder": "adresse"
+    },
     "account_switcher": {
       "select_account": "Selection du Compte",
       "switch_account": "Changer de Compte",
       "setting": "Paramètres",
       "developers": "Dévelopeurs"
+    },
+    "settings": {
+      "title": "Options du portefeuille",
+      "slow_label": "Portefeuille lent",
+      "slow_info": "Il s'agit d'un portefeuille lent, les transferts sont limités au montant débloqué. Chaque jour, 35 000 pièces sont débloquées sur les portefeuilles lents.",
+      "warn": "Ces changements apparaîtront sur la blockchain.",
+      "slow_wallet_warn": "AVERTISSEMENT : LE RÉGLAGE DE VOTRE PORTEFEUILLE SUR \"LENT\" OU \"COMMUNAUTAIRE\" EST PERMANENT"
     }
   },
   "about": {
@@ -78,6 +108,13 @@
     "version": "Version",
     "branch": "Branche",
     "commit": "Commit"
+  },
+  "upgrade": {
+    "uptodate": "Vous êtes sur la version actuelle",
+    "available": "Une mise à niveau est disponible",
+    "download": "Téléchargement",
+    "check_again": "Vérifier la mise à niveau",
+    "restart": "Succès. Vous pouvez maintenant redémarrer Carpe"
   },
   "settings": {
     "title": "PARAMÈTRES",
@@ -92,6 +129,8 @@
     "network_settings": {
       "title": "PARAMÈTRES RÉSEAU",
       "list_of_peers": "LISTE DES PAIRS",
+      "synced_peers": "Synced Peers",
+      "refresh_peers_button": "Check Fullnodes Sync",
       "description": "Choisissez une liste de noeuds en amont pour accéder à la chaîne. Un noeud aléatoire de la liste sera utilisé pour se connecter. Fournissez le lien d'un fichier playlist.json ici pour mettre à jour les pairs.",
       "playlist": "Rafraichir la liste des serveurs",
       "override_peers": "ÉCRASER LES PAIRS",
@@ -210,14 +249,17 @@
       "no_balance_body2": "Vous avez moins de deux Coins sur votre compte, vous ne pouvez donc pas onboarder d'autres comptes."
     },
     "set_wallet_type": {
-      "title": "Modifier le type de compte",
+      "actions_title": "Actions sur le compte",
+      "set_slow_title": "Faire du portefeuille lent (danger)",
       "subtitle": " Soyez sûr de vous, cette opération est irreversible! Les portefeuilles \"Slow\" et \"Community\" sont permanents.",
       "btn_slow": "Changer en \"Slow\"",
       "btn_confirm_slow": "Confirmez le passage en \"Slow\"? Cet opération est irreversible.",
-      "slow_confirm": "Changer en \"Slow\"",
+      "warning": "Avertissement : ce changement est définitif",
       "btn_community": "Changer en \"Community\"",
       "btn_confirm_community": "Changer en \"Community\"",
-      "community_confirm": "Confirmez le passage en \"Community\"? Cet opération est irreversible"
+      "community_confirm": "Confirmez le passage en \"Community\"? Cet opération est irreversible",
+      "title": "Modifier le type de compte",
+      "slow_confirm": "Changer en \"Slow\""
     },
     "transfer": {
       "title": "Transfert de Coins",
@@ -238,6 +280,7 @@
       "error_amount_greater_than_balance": "Le montant ne peut pas être supérieur au solde du compte",
       "error_receiver_equals_sender": "Les adresses de l'expéditeur et du destinataire doivent être differentes",
       "error_slow_wallet": "Le transfert de Coin est désactivé pour les portefeuilles 'slow'.",
+      "error_account_does_not_exist": "Le compte du destinataire n'existe pas.",
       "success": "Transfert executé avec succés",
       "failed": "Transfert échoué. Code: {code}"
     }
@@ -254,7 +297,7 @@
     "loading": {
       "error": "Erreur durant le chargement des événements :",
       "corrupted_db": "Actuellement connecté à un noeud n'ayant pas tous les événements.",
-      "data_safe": "Ne vous inquiétez pas, votre compte est sécurisé sur la chaine. Essayez de vous connecter à un autre noeud en amont."
+      "account_off_chain": "Le compte sélectionné n'a pas encore été intégré."
     }
   },
   "make_whole": {
