@@ -156,6 +156,7 @@
   },
   "miner": {
     "title": "Miner",
+    "disable_warning": "Mining feature will be removed after V7 release.",
     "miner_backlog": {
       "title": "Sync Tower Proofs",
       "subtitle": "Manually resubmit local proofs",

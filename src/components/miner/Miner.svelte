@@ -30,7 +30,12 @@
       {$_('miner.title')}
     </h2>
   </div>
-
+  <div class="uk-alert-warning" uk-alert>
+    <a href class="uk-alert-close" uk-close> </a>
+    <p>
+      {$_('miner.disable_warning')}
+    </p>
+  </div>
   {#if isDevTest}
     <div class="uk-flex uk-flex-center">
       <p class="uk-text-light uk-text-muted uk-text-uppercase">
@@ -38,12 +43,12 @@
       </p>
     </div>
   {/if}
-    {#if !$signingAccount.on_chain}
-      <CantStart />
-    {/if}
+  {#if !$signingAccount.on_chain}
+    <CantStart />
+  {/if}
   <div class="uk-grid uk-margin-small">
     {#if ($signingAccount && $signingAccount.on_chain) || ($tower && $tower.progress && $tower.progress.pct_complete)}
-   <!-- so we don't get a flash of the error card on an intermittent local network connection if we are in fact mining -->
+      <!-- so we don't get a flash of the error card on an intermittent local network connection if we are in fact mining -->
       <div class="uk-width-1-1 uk-align-center">
         <ToggleMiner />
         <MinerProgress />

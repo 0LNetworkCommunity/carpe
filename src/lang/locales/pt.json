@@ -156,6 +156,7 @@
   },
   "miner": {
     "title": "Minerador",
+    "disable_warning": "A funcionalidade de extração mineira será eliminada após a versão V7.",
     "miner_backlog": {
       "title": "Provas de Sincronização da Torre",
       "subtitle": "Reenviar manualmente as provas locais",

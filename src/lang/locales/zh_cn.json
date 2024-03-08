@@ -156,6 +156,7 @@
   },
   "miner": {
     "title": "矿工",
+    "disable_warning": "挖矿功能会在 V7 发布后移除",
     "miner_backlog": {
       "title": "同步塔（Tower）证明",
       "subtitle": "手动提交本地积压证明",

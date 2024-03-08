@@ -156,6 +156,7 @@
   },
   "miner": {
     "title": "Mineur",
+    "disable_warning": "La fonction d'exploitation minière sera supprimée après la sortie de la V7.",
     "miner_backlog": {
       "title": "Synchroniser vos preuves",
       "subtitle": "Re-soumettre les preuves locales",
