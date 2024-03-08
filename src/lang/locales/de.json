@@ -6,9 +6,15 @@
     "events": "Ereignisse"
   },
   "layout": {
+    "key_error": {
+      "title": "ERROR: Schlüssel nicht konfiguriert",
+      "body": "Ihr privater Schlüssel konnte nicht gefunden werden. Vielleicht ist dies auf eine Migration oder ein Upgrade zurückzuführen. Sie sollten Ihre Mnemonik erneut eingeben und im sicheren Schlüsselbund Ihres Betriebssystems speichern."
+    },
     "connection_error": {
       "title": "Ups, wir können keine Verbindung zum 0L-Netzwerk herstellen",
-      "body": "<p> Dies liegt wahrscheinlich daran, dass der von dir verwendete Upstream-Peer (Server) nicht verfügbar ist.</p> <h3> Keine Sorge, dein Konto und deine Coins sind sicher.</h3> <p>Wenn Du Deine Peers ändern oder aktualisieren musst, kannst Du das hier tun:</p>"
+      "body": "<p> Dies liegt wahrscheinlich daran, dass der von dir verwendete Upstream-Peer (Server) nicht verfügbar ist.</p> <h3> Keine Sorge, dein Konto und deine Coins sind sicher.</h3> <p>Wenn Du Deine Peers ändern oder aktualisieren musst, kannst Du das hier tun:</p>",
+      "dont_worry": "Keine Sorge, Ihr Konto und Ihre Münzen sind sicher",
+      "refresh_instructions": "Wenn Sie Ihre Peers aktualisieren oder auffrischen müssen, können Sie dies hier tun:"
     },
     "error_accordion": {
       "title": "Fehlerbericht",
@@ -18,13 +24,16 @@
     "recovery_mode": {
       "title": "Wiederherstellungsmodus",
       "body": "Das Netz ist wieder in Betrieb! Aber wir befinden uns im Wiederherstellungsmodus, und es werden noch keine Belohnungen für Proofs gezahlt. Warte, bis der Wiederherstellungsmodus beendet ist, um Proofs für Belohnungen zu senden. Die Wiederherstellung endet, wenn die Epoche {epoch_recovery_ends} auf {epoch_recovery_ends_after} wechselt."
-    }
+    },
+    "attempting_to_connect": "Versuch einer Verbindung mit der Blockchain",
+    "not_connected_to_chain": "Nicht mit der Kette verbunden, Daten können nicht synchronisiert sein"
   },
   "wallet": {
     "wallet": "Wallet",
     "carpe": "CARPE",
     "btn_new_account": "Neues Konto",
     "btn_restore_account": "Konto wiederherstellen",
+    "btn_add_watch_account": "Konto beobachten",
     "newbie_message": "Sieht aus, als hättest du keine Konten",
     "reminder_create": {
       "card_title": "Onboarding",
@@ -42,7 +51,8 @@
       "offline": "offline",
       "loading": "wird geladen",
       "account_on_chain": "Konto nicht auf der Chain",
-      "message": " Dein Guthaben verringert sich bei jeder Transaktion, die du sendest, einschließlich Mining."
+      "message": " Dein Guthaben verringert sich bei jeder Transaktion, die du sendest, einschließlich Mining.",
+      "info_title": "Konto-Informationen"
     },
     "keygen": {
       "title": "Neues Konto anlegen",
@@ -69,11 +79,27 @@
       "description": "Mit deinen Wiederherstellungswörtern (Mnemonik) kannst du Carpe als Wallet zur Überwachung und zum Senden von Transaktionen konfigurieren",
       "placeholder": "Wiederherstellungs Mnemonik"
     },
+    "account_from_private": {
+      "description": "Stellen Sie das Konto mithilfe des privaten Schlüssels wieder her.",
+      "placeholder": "Privater Schlüssel",
+      "accordion_title": "fortgeschritten: privaten Schlüssel verwenden"
+    },
+    "add_watch_account": {
+      "description": "Konto zu \"watch\" ohne Signierschlüssel hinzufügen (nur lesen).",
+      "placeholder": "Adresse"
+    },
     "account_switcher": {
       "select_account": "Konto auswählen",
       "switch_account": "Konto wechseln",
       "setting": "Gehe zu Einstellung",
       "developers": "Entwickler"
+    },
+    "settings": {
+      "title": "Portemonnaie-Optionen",
+      "slow_label": "Langsame Brieftasche",
+      "slow_info": "Dies ist eine langsame Geldbörse, Überweisungen sind auf die freigeschaltete Menge beschränkt. Jeden Tag werden 35,000 Münzen auf Slow Wallets freigeschaltet",
+      "warn": "Diese Änderungen werden in der Blockchain angezeigt.",
+      "slow_wallet_warn": "WARNUNG: DIE EINSTELLUNG IHRER GELDBÖRSE AUF LANGSAM ODER GEMEINSCHAFT IST DAUERHAFT"
     }
   },
   "about": {
@@ -82,6 +108,13 @@
     "version": "Version",
     "branch": "Branch",
     "commit": "Commit"
+  },
+  "upgrade": {
+    "uptodate": "Sie sind auf der aktuellen Version",
+    "available": "Es ist ein Upgrade verfügbar",
+    "download": "Herunterladen von",
+    "check_again": "Upgrade prüfen",
+    "restart": "Erfolgreich. Sie können nun Carpe neu starten"
   },
   "settings": {
     "title": "EINSTELLUNGEN",
@@ -96,6 +129,8 @@
     "network_settings": {
       "title": "NETZWERKEINSTELLUNGEN",
       "list_of_peers": "LISTE DER PEERS",
+      "synced_peers": "Synced Peers",
+      "refresh_peers_button": "Check Fullnodes Sync",
       "description": "Wählen Sie eine Playlist mit vorgelagerten Knoten, damit ein Zugriff auf die Kette möglich ist. Netzwerkverbindungen werden die Liste in zufälliger Reihenfolge ausprobieren, bis eine Verbindung hergestellt ist. Verweise hier einfach auf eine beliebige playlist.json-Datei, um die Peers zu aktualisieren.",
       "playlist": "Playlist der Netzwerkserver aktualisieren",
       "override_peers": "PEERS ÜBERSCHREIBEN",
@@ -121,6 +156,7 @@
   },
   "miner": {
     "title": "Miner",
+    "disable_warning": "Die Mining-Funktion wird nach der Veröffentlichung von V7 entfernt werden.",
     "miner_backlog": {
       "title": "Sync Tower Proofs",
       "subtitle": "Lokale Proofs manuell erneut einreichen",
@@ -214,14 +250,17 @@
       "no_balance_body2": "Sieht so aus, als hättest du weniger als 2 Coins auf deinem Konto, das bedeutet, dass du niemanden onboarden kannst."
     },
     "set_wallet_type": {
-      "title": "Kontotyp Auswählen",
+      "actions_title": "Konto-Aktionen",
+      "set_slow_title": "Slow Wallet machen (Gefahr)",
       "subtitle": " Es ist wichtig, dass du weißt, was du tust. Dies kann nicht mehr rückgängig gemacht werden. Slow und Community Wallets sind unveränderlich.",
       "btn_slow": "Slow Wallet Wählen",
       "btn_confirm_slow": "Slow Wallet bestätigen? Dies kann nicht rückgängig gemacht werden.",
-      "slow_confirm": "Slow Wählen",
+      "warning": "Warnung: Diese Änderung ist für immer",
       "btn_community": "Community Wallet Wählen",
       "btn_confirm_community": "Community Wählen",
-      "community_confirm": "Community Wallet bestätigen? Dies kann nicht rückgängig gemacht werden."
+      "community_confirm": "Community Wallet bestätigen? Dies kann nicht rückgängig gemacht werden.",
+      "title": "Kontotyp Auswählen",
+      "slow_confirm": "Slow Wählen"
     },
     "transfer": {
       "title": "Überweisung von Coins",
@@ -242,6 +281,7 @@
       "error_amount_greater_than_balance": "Der Betrag kann nicht größer als der Kontostand sein",
       "error_receiver_equals_sender": "Die Empfängeradresse muss sich von der Absenderadresse unterscheiden",
       "error_slow_wallet": "Die Überweisung von Coins ist für Slow Wallets deaktiviert.",
+      "error_account_does_not_exist": "Das Konto des Empfängers ist nicht vorhanden.",
       "success": "Überweisung erfolgreich durchgeführt",
       "failed": "Überweisung fehlgeschlagen. Code: {code}"
     }
