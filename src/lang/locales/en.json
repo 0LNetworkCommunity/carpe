@@ -97,7 +97,7 @@
     "settings": {
       "title": "Wallet Options",
       "slow_label": "Slow Wallet",
-      "slow_info": "This is a slow wallet, transfers are limited to the amount unlocked. Each day 41,000 coins unlock on Slow Wallets",
+      "slow_info": "This is a slow wallet, transfers are limited to the amount unlocked. Each day 35,000 coins unlock on Slow Wallets",
       "warn": "These changes will appear on blockchain.",
       "slow_wallet_warn": "WARNING: SETTING YOUR WALLET TO SLOW OR COMMUNITY IS PERMANENT"
     }
@@ -156,6 +156,7 @@
   },
   "miner": {
     "title": "Miner",
+    "disable_warning": "Mining feature will be removed after V7 release.",
     "miner_backlog": {
       "title": "Sync Tower Proofs",
       "subtitle": "Manually resubmit local proofs",
@@ -257,7 +258,9 @@
       "warning": "Warning: this change is forever",
       "btn_community": "Set Community Wallet",
       "btn_confirm_community": "Set Community",
-      "community_confirm": "Confirm Set Community Wallet? This is not reversible"
+      "community_confirm": "Confirm Set Community Wallet? This is not reversible",
+      "title": "Set your Account Type",
+      "slow_confirm": "Set Slow"
     },
     "transfer": {
       "title": "Coin Transfer",

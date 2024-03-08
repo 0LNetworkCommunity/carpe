@@ -30,7 +30,7 @@
       type="button"
       on:click|preventDefault={initAccount(address)}
     >
-      Submit Now
+    {$_('wallet.account_from_mnem_submit.btn_submit')}
     </button>
   </div>
 </main>
