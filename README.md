@@ -19,7 +19,7 @@ Carpe is a desktop "wallet" that connects to the 0L network and lets you create 
 
 Like any account-based blockchain, any new account address you create in the Carpe app will initially be inactive. For the account to become active, it will need to be sent at least one coin. Until that happens your account does not exist "on chain". 
 
-You can either have a friend send you a coin or you can use the drip function in discord here:[0L Network Discord Server](https://discord.gg/AzCp63pggW). Go to the "Getting started section," and hop in the carpe-onboarding channel, where you simply type '/drip' and enter your adress from your carpe app. The bot will then send you one libra which will activate your account on-chain.
+You can either have a friend send you a coin or you can use the drip function in discord here: [0L Network Discord Server](https://discord.gg/AzCp63pggW). Go to the "Getting started section," and hop in the carpe-onboarding channel, where you simply type '/drip' and enter your adress from your carpe app. The bot will then send you one libra which will activate your account on-chain.
 
 It may take a few seconds, but if it doesn't automatically update your account, you can always hower over the avatar in the top right corner of the app. Click settings on the drop-down menu, and update the playlist which will refresh your connection to the chain and then a simple restart of the app should get you set up for success. 
 
