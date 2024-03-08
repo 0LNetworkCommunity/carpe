@@ -25,7 +25,7 @@ It may take a few seconds, but if it doesn't automatically update your account, 
 
 This can be done as maany times as you'd like, but will often only be necessary on rare occassions.
 
-**Please note that there's currently a limit on the first transfer for a 1000 Libra**
+**Please note that there's currently a limit on the first transfer for a 1000 Libra.**
 
 ## Configuring slow wallets:
 
