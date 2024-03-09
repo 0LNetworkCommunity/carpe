@@ -38,6 +38,7 @@ export const makeWhole = writable<object>()
 export const canMigrate = writable<boolean>(false)
 export const migrateSuccess = writable<boolean>()
 export const migrateInProgress = writable<boolean>()
+export const isCarpeTickRunning = writable<boolean>(false)
 
 const localeWatchAccounts = JSON.parse(localStorage.getItem('watchAccounts') || '[]')
 export const watchAccounts = writable<string[]>(localeWatchAccounts)

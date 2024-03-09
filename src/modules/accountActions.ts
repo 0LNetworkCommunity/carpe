@@ -17,6 +17,7 @@ import {
   canMigrate,
   watchAccounts,
   pendingAccounts,
+  isCarpeTickRunning,
 } from './accounts'
 import type { CarpeProfile, SlowWalletBalance } from './accounts'
 import { navigate } from 'svelte-navigator'
@@ -380,6 +381,11 @@ async function onAccountAdd(res: CarpeProfile) {
     signingAccount.set(res)
   }
   await initNetwork()
+  if (!get(isCarpeTickRunning)) {
+    // start the carpe tick for every 30 secs, this is async
+    setInterval(carpeTick, 30000)
+    isCarpeTickRunning.set(true)
+  }
   // only navigate away once we have refreshed the accounts including balances
   notify_success(`Account Added: ${res.nickname}`)
 
