@@ -35,7 +35,15 @@ export const updateNetwork = async (url: string, notice = true) => {
       notice && notify_success('Network Settings Updated')
     })
     .catch((error) => {
-      notice && raise_error(error as CarpeError, false, 'updateNetwork')
+      raise_error(error as CarpeError, true, 'override_playlist')
+      invoke('force_upstream', { url: 'https://rpc.openlibra.space:8080/' })
+        .then((res: NetworkPlaylist) => {
+          network_profile.set(res)
+          notice && notify_success('Network Settings Updated')
+        })
+        .catch((error) => {
+          notice && raise_error(error as CarpeError, false, 'force_upstream')
+        })
     })
 }
 export const defaultPlaylist = (): NetworkPlaylist => {
