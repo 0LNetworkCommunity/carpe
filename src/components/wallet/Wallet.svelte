@@ -2,7 +2,7 @@
   import { _ } from 'svelte-i18n'
   import UIkit from 'uikit'
   import Icons from 'uikit/dist/js/uikit-icons'
-  import { allAccounts } from '../../modules/accounts'
+  import { allAccounts, pendingAccounts } from '../../modules/accounts'
 
   // views
   import Newbie from './Newbie.svelte'
@@ -13,7 +13,6 @@
 
   UIkit.use(Icons)
 
-  let pendingAccounts = $allAccounts.filter((x) => x && !x.on_chain)
 </script>
 
 <main>
@@ -30,8 +29,8 @@
       <AccountsList />
       <CreateAccountLinks />
 
-      {#if $connected && pendingAccounts.length > 0}
-        <ReminderCreate {pendingAccounts} isConnected={$connected} />
+      {#if $connected && $pendingAccounts.length > 0}
+        <ReminderCreate pendingAccounts={$pendingAccounts} isConnected={$connected} />
       {/if}
     {/if}
   </div>

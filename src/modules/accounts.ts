@@ -29,6 +29,7 @@ export const signingAccount = writable<CarpeProfile>()
 export const isInit = writable(false)
 export const isRefreshingAccounts = writable(false)
 export const allAccounts = writable<CarpeProfile[]>([])
+export const pendingAccounts = writable<CarpeProfile[]>([])
 export const isAccountRefreshed = writable(false)
 export const accountEvents = writable<object>() // TODO define interface AccountEvent
 export const isKeyError = writable<boolean>(false)

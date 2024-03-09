@@ -16,12 +16,16 @@ import {
   migrateSuccess,
   canMigrate,
   watchAccounts,
+  pendingAccounts,
 } from './accounts'
 import type { CarpeProfile, SlowWalletBalance } from './accounts'
 import { navigate } from 'svelte-navigator'
 import { carpeTick } from './tick'
 import { initNetwork } from './networks'
 
+allAccounts.subscribe((v) => {
+  pendingAccounts.set(v.filter((x) => x && !x.on_chain))
+})
 export const getDefaultProfile = async () => {
   invoke('get_default_profile', {})
     .then((res: CarpeProfile) => {
@@ -379,6 +383,5 @@ async function onAccountAdd(res: CarpeProfile) {
   // only navigate away once we have refreshed the accounts including balances
   notify_success(`Account Added: ${res.nickname}`)
 
-  await refreshAccounts()
-  setTimeout(() => navigate('wallet'), 10)
+  await refreshAccounts().finally(() => navigate('wallet'))
 }
