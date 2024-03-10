@@ -67,7 +67,22 @@ export const refreshAccounts = async () => {
       allAccounts.set(result)
       const currentAccount = get(signingAccount)
       if (currentAccount) {
-        signingAccount.set(get(allAccounts).find((item) => item.account === currentAccount.account))
+        const changedCurrentAccount = get(allAccounts).find((item) => {
+          const {
+            account,
+            on_chain,
+            balance: { unlocked, total },
+          } = item
+          return (
+            account === currentAccount.account &&
+            (on_chain !== currentAccount.on_chain ||
+              unlocked !== currentAccount.balance?.unlocked ||
+              total !== currentAccount.balance?.total)
+          )
+        })
+        if (changedCurrentAccount) {
+          signingAccount.set(changedCurrentAccount)
+        }
       }
       if (!get(isAccountRefreshed)) {
         isAccountRefreshed.set(true)
