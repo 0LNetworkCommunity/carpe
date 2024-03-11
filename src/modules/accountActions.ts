@@ -16,12 +16,17 @@ import {
   migrateSuccess,
   canMigrate,
   watchAccounts,
+  pendingAccounts,
+  isCarpeTickRunning,
 } from './accounts'
 import type { CarpeProfile, SlowWalletBalance } from './accounts'
 import { navigate } from 'svelte-navigator'
 import { carpeTick } from './tick'
 import { initNetwork } from './networks'
 
+allAccounts.subscribe((v) => {
+  pendingAccounts.set(v.filter((x) => x && !x.on_chain))
+})
 export const getDefaultProfile = async () => {
   invoke('get_default_profile', {})
     .then((res: CarpeProfile) => {
@@ -62,7 +67,22 @@ export const refreshAccounts = async () => {
       allAccounts.set(result)
       const currentAccount = get(signingAccount)
       if (currentAccount) {
-        signingAccount.set(get(allAccounts).find((item) => item.account === currentAccount.account))
+        const changedCurrentAccount = get(allAccounts).find((item) => {
+          const {
+            account,
+            on_chain,
+            balance: { unlocked, total },
+          } = item
+          return (
+            account === currentAccount.account &&
+            (on_chain !== currentAccount.on_chain ||
+              unlocked !== currentAccount.balance?.unlocked ||
+              total !== currentAccount.balance?.total)
+          )
+        })
+        if (changedCurrentAccount) {
+          signingAccount.set(changedCurrentAccount)
+        }
       }
       if (!get(isAccountRefreshed)) {
         isAccountRefreshed.set(true)
@@ -96,6 +116,14 @@ export const addAccount = async (init_type: InitType, secret: string) => {
   // submit
   return invoke(method_name, arg_obj)
     .then(async (res: CarpeProfile) => {
+      // update watchAccounts
+
+      let list = get(watchAccounts)
+      list = list.filter((item) => item !== res.account)
+      watchAccounts.set(list)
+      localStorage.setItem('watchAccounts', JSON.stringify(list))
+      res.watch_only = false
+
       await onAccountAdd(res)
       return res
     })
@@ -350,6 +378,19 @@ export function getPrivateKey(address: string, callback = null) {
 }
 
 export function addWatchAccount(address: string) {
+  const accountList: CarpeProfile[] = get(allAccounts)
+  // v5 address padding 0
+  if (address.length == 32) {
+    address = address.padStart(64, '0')
+  }
+  const hasAdd = !!accountList.find(
+    (item) => item.account.toLocaleLowerCase() === address.toLocaleLowerCase(),
+  )
+  if (hasAdd) {
+    notify_error('address already exists')
+    return
+  }
+
   invoke('add_watch_account', {
     address,
   })
@@ -359,6 +400,7 @@ export function addWatchAccount(address: string) {
       watchAccounts.set(list)
       localStorage.setItem('watchAccounts', JSON.stringify(list))
       res.watch_only = true
+
       await onAccountAdd(res)
     })
     .catch((e: CarpeError) => {
@@ -376,9 +418,13 @@ async function onAccountAdd(res: CarpeProfile) {
     signingAccount.set(res)
   }
   await initNetwork()
+  if (!get(isCarpeTickRunning)) {
+    // start the carpe tick for every 30 secs, this is async
+    setInterval(carpeTick, 30000)
+    isCarpeTickRunning.set(true)
+  }
   // only navigate away once we have refreshed the accounts including balances
   notify_success(`Account Added: ${res.nickname}`)
 
-  await refreshAccounts()
-  setTimeout(() => navigate('wallet'), 10)
+  await refreshAccounts().finally(() => navigate('wallet'))
 }

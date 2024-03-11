@@ -29,14 +29,16 @@ export const signingAccount = writable<CarpeProfile>()
 export const isInit = writable(false)
 export const isRefreshingAccounts = writable(false)
 export const allAccounts = writable<CarpeProfile[]>([])
+export const pendingAccounts = writable<CarpeProfile[]>([])
 export const isAccountRefreshed = writable(false)
 export const accountEvents = writable<object>() // TODO define interface AccountEvent
 export const isKeyError = writable<boolean>(false)
 export const makeWhole = writable<object>()
-
+export const tempCreateAccount = writable<CarpeProfile>()
 export const canMigrate = writable<boolean>(false)
 export const migrateSuccess = writable<boolean>()
 export const migrateInProgress = writable<boolean>()
+export const isCarpeTickRunning = writable<boolean>(false)
 
 const localeWatchAccounts = JSON.parse(localStorage.getItem('watchAccounts') || '[]')
 export const watchAccounts = writable<string[]>(localeWatchAccounts)
