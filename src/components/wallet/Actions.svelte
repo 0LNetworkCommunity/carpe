@@ -18,7 +18,7 @@
         {#if res}
           <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">{$_('wallet.settings.slow_label')}</h4>
           <p>{$_('wallet.settings.slow_info')}</p>
-        {:else if !$signingAccount.watch_only}
+        {:else if !$signingAccount.watch_only && $signingAccount.on_chain }
           <SetWalletType />
         {/if}
       {/await}

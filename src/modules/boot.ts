@@ -12,6 +12,7 @@ import { getMetadata, getNetwork, refreshUpstreamPeerStats, initNetwork } from '
 import { getVersion } from './version'
 import { carpeTick } from './tick'
 import { writable } from 'svelte/store'
+import { isCarpeTickRunning } from './accounts'
 
 export const isBooted = writable(false)
 
@@ -36,6 +37,7 @@ export const bootUp = async () => {
       .finally(() => {
         refreshUpstreamPeerStats()
         setInterval(carpeTick, 30000) // start the carpe tick for every 30 secs, this is async
+        isCarpeTickRunning.set(true)
         isBooted.set(true)
         navigate('wallet')
       })
