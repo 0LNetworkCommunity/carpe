@@ -116,6 +116,14 @@ export const addAccount = async (init_type: InitType, secret: string) => {
   // submit
   return invoke(method_name, arg_obj)
     .then(async (res: CarpeProfile) => {
+      // update watchAccounts
+
+      let list = get(watchAccounts)
+      list = list.filter((item) => item !== res.account)
+      watchAccounts.set(list)
+      localStorage.setItem('watchAccounts', JSON.stringify(list))
+      res.watch_only = false
+
       await onAccountAdd(res)
       return res
     })
@@ -370,6 +378,19 @@ export function getPrivateKey(address: string, callback = null) {
 }
 
 export function addWatchAccount(address: string) {
+  const accountList: CarpeProfile[] = get(allAccounts)
+  // v5 address padding 0
+  if (address.length == 32) {
+    address = address.padStart(64, '0')
+  }
+  const hasAdd = !!accountList.find(
+    (item) => item.account.toLocaleLowerCase() === address.toLocaleLowerCase(),
+  )
+  if (hasAdd) {
+    notify_error('address already exists')
+    return
+  }
+
   invoke('add_watch_account', {
     address,
   })
@@ -379,6 +400,7 @@ export function addWatchAccount(address: string) {
       watchAccounts.set(list)
       localStorage.setItem('watchAccounts', JSON.stringify(list))
       res.watch_only = true
+
       await onAccountAdd(res)
     })
     .catch((e: CarpeError) => {
