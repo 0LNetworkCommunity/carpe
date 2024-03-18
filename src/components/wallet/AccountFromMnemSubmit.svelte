@@ -14,18 +14,16 @@
   let isSubmitting = false
   function initAccount(mnem_string: string) {
     if (mnem_string.length == 0) return
-
+    mnem_string = mnem_string.trim().split(/\s+/).join(' ')
     isSubmitting = true
-    addAccount(InitType.Mnem, mnem_string.trim())
-      .finally(() => {
-        isSubmitting = false
-        mnem_string = null
-        UIkit.modal('#submit-confirmation-modal').hide()
-      })
+    addAccount(InitType.Mnem, mnem_string.trim()).finally(() => {
+      isSubmitting = false
+      mnem_string = null
+      UIkit.modal('#submit-confirmation-modal').hide()
+    })
   }
 
-  onDestroy(() => formDangerMnem=null)
-
+  onDestroy(() => (formDangerMnem = null))
 </script>
 
 {#if isNewAccount}
