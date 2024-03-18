@@ -18,6 +18,7 @@ import {
   watchAccounts,
   pendingAccounts,
   isCarpeTickRunning,
+  totalBalance,
 } from './accounts'
 import type { CarpeProfile, SlowWalletBalance } from './accounts'
 import { navigate } from 'svelte-navigator'
@@ -26,6 +27,19 @@ import { initNetwork } from './networks'
 
 allAccounts.subscribe((v) => {
   pendingAccounts.set(v.filter((x) => x && !x.on_chain))
+  const allBalance: SlowWalletBalance = v.reduce(
+    (p, c): SlowWalletBalance => {
+      return {
+        total: p.total + c.balance.total,
+        unlocked: p.unlocked + c.balance.unlocked,
+      }
+    },
+    {
+      total: 0,
+      unlocked: 0,
+    },
+  )
+  totalBalance.set(allBalance)
 })
 export const getDefaultProfile = async () => {
   invoke('get_default_profile', {})
