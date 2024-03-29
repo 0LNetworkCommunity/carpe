@@ -44,6 +44,7 @@ allAccounts.subscribe((v) => {
 export const getDefaultProfile = async () => {
   invoke('get_default_profile', {})
     .then((res: CarpeProfile) => {
+      res.account = res.account.toLocaleUpperCase()
       signingAccount.set(res)
     })
     .catch((e) => {
@@ -58,6 +59,8 @@ export const getAccounts = async () => {
       const watchList = get(watchAccounts)
       result.map((item) => {
         item.watch_only = watchList.includes(item.account)
+        item.account = item.account.toLocaleUpperCase()
+        item.auth_key = item.account.toLocaleUpperCase()
       })
       allAccounts.set(result)
     })
@@ -76,6 +79,8 @@ export const refreshAccounts = async () => {
       const watchList = get(watchAccounts)
       result.map((item) => {
         item.watch_only = watchList.includes(item.account)
+        item.account = item.account.toLocaleUpperCase()
+        item.auth_key = item.account.toLocaleUpperCase()
       })
 
       allAccounts.set(result)
@@ -190,6 +195,7 @@ export const setAccount = async (account: string, notifySucess = true) => {
 
   invoke('switch_profile', { account })
     .then((res: CarpeProfile) => {
+      res.account = res.account.toLocaleLowerCase()
       signingAccount.set(res)
       isInit.set(true)
       if (notifySucess) {
@@ -436,6 +442,7 @@ async function onAccountAdd(res: CarpeProfile) {
   responses.set(JSON.stringify(res))
   // cannot switch profile with miner running
   if (!get(minerLoopEnabled)) {
+    res.account = res.account.toLocaleUpperCase()
     signingAccount.set(res)
   }
   await initNetwork()
