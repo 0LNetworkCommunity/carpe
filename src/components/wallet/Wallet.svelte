@@ -16,10 +16,12 @@
 </script>
 
 <main>
-  <div class="uk-position-relative">
-    {#if !$allAccounts || ($allAccounts && $allAccounts.length == 0)}
+  {#if !$allAccounts || ($allAccounts && $allAccounts.length == 0)}
+    <div>
       <Newbie />
-    {:else if $allAccounts && $allAccounts.length > 0}
+    </div>
+  {:else if $allAccounts && $allAccounts.length > 0}
+    <div class="uk-position-relative">
       <div class="uk-flex uk-flex-center">
         <h2 class="uk-text-light uk-text-muted uk-text-uppercase">
           {$_('wallet.wallet')}
@@ -37,6 +39,6 @@
       {#if $connected && $pendingAccounts.length > 0}
         <ReminderCreate pendingAccounts={$pendingAccounts} isConnected={$connected} />
       {/if}
-    {/if}
-  </div>
+    </div>
+  {/if}
 </main>

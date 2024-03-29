@@ -20,6 +20,13 @@ static CONFIG_DIR: Lazy<PathBuf> = Lazy::new(|| {
   os_path.config_dir().to_path_buf()
 });
 
+static LEGACY_ACCOUNTS_FILE: &str = "legacy_accounts.json";
+
+// get the config path for LEGACY_ACCOUNTS_FILE
+pub fn default_legacy_account_path() -> PathBuf {
+  CONFIG_DIR.join(LEGACY_ACCOUNTS_FILE)
+}
+
 /// get the config path for files
 // NOTE: update in V1 we are now using OS specific paths.
 // Lin: /home/alice/.config/carpe

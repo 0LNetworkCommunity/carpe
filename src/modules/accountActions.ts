@@ -85,11 +85,13 @@ export const refreshAccounts = async () => {
           const {
             account,
             on_chain,
+            watch_only,
             balance: { unlocked, total },
           } = item
           return (
             account === currentAccount.account &&
             (on_chain !== currentAccount.on_chain ||
+              watch_only !== currentAccount.watch_only ||
               unlocked !== currentAccount.balance?.unlocked ||
               total !== currentAccount.balance?.total)
           )
@@ -117,15 +119,19 @@ export enum InitType {
   PriKey,
 }
 
-export const addAccount = async (init_type: InitType, secret: string) => {
+export const addAccount = async (
+  init_type: InitType,
+  secret: string,
+  isLegacy: boolean = false,
+) => {
   let method_name = ''
   let arg_obj = {}
   if (init_type == InitType.Mnem) {
     method_name = 'init_from_mnem'
-    arg_obj = { mnem: secret.trim() }
+    arg_obj = { mnem: secret.trim(), isLegacy }
   } else if (init_type == InitType.PriKey) {
     method_name = 'init_from_private_key'
-    arg_obj = { priKeyString: secret.trim() }
+    arg_obj = { priKeyString: secret.trim(), isLegacy }
   }
   // submit
   return invoke(method_name, arg_obj)
@@ -391,7 +397,7 @@ export function getPrivateKey(address: string, callback = null) {
     })
 }
 
-export function addWatchAccount(address: string) {
+export function addWatchAccount(address: string, isLegacy: boolean = true) {
   const accountList: CarpeProfile[] = get(allAccounts)
   // v5 address padding 0
   if (address.length == 32) {
@@ -407,6 +413,7 @@ export function addWatchAccount(address: string) {
 
   invoke('add_watch_account', {
     address,
+    isLegacy,
   })
     .then(async (res: CarpeProfile) => {
       let list = get(watchAccounts)
