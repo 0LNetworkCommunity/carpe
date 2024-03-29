@@ -195,7 +195,7 @@ export const setAccount = async (account: string, notifySucess = true) => {
 
   invoke('switch_profile', { account })
     .then((res: CarpeProfile) => {
-      res.account = res.account.toLocaleLowerCase()
+      res.account = res.account.toLocaleUpperCase()
       signingAccount.set(res)
       isInit.set(true)
       if (notifySucess) {
