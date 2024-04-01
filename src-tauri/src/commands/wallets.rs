@@ -320,9 +320,9 @@ fn add_legacy_accounts(authkey: AuthenticationKey) -> Result<LegacyAccounts, Car
     let _ = update_legacy_accounts(&all);
     Ok(all)
   } else {
-    return Err(CarpeError::misc(
-      &format!("account already exists").to_owned(),
-    ));
+    Err(CarpeError::misc(
+      "account already exists",
+    ))
   }
 }
 fn update_legacy_accounts(accounts: &LegacyAccounts) -> Result<(), CarpeError> {
@@ -361,11 +361,10 @@ pub fn remove_legacy_accounts() -> Result<String, CarpeError> {
       }
     }
   }
-  return Err(CarpeError::misc(
+  Err(CarpeError::misc(
     &format!(
       "No legacy accounts to remove. No account file found at {:?}",
       &db_path
-    )
-    .to_owned(),
-  ));
+    ),
+  ))
 }
