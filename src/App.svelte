@@ -2,21 +2,21 @@
   // CSS
   import Style from './style/Style.svelte'
   // JS
-  import { listen } from '@tauri-apps/api/event'
-  import type { Event } from '@tauri-apps/api/event'
+  // import { listen } from '@tauri-apps/api/event'
+  // import type { Event } from '@tauri-apps/api/event'
   import { onDestroy, onMount } from 'svelte'
   import { Router, Route } from 'svelte-navigator'
 
   // CARPE MODULES
-  import {
-    backlogInProgress,
-    backlogListenerReady,
-    backlogSubmitted,
-    minerEventReceived,
-  } from './modules/miner'
-  import { raise_error } from './modules/carpeError'
-  import type { CarpeError, CarpeOkReturn } from './modules/carpeError'
-  import { responses, debugMode } from './modules/debug'
+  // import {
+  //   backlogInProgress,
+  //   backlogListenerReady,
+  //   backlogSubmitted,
+  //   minerEventReceived,
+  // } from './modules/miner'
+  // import { raise_error } from './modules/carpeError'
+  // import type { CarpeError, CarpeOkReturn } from './modules/carpeError'
+  import { debugMode } from './modules/debug'
   import { routes } from './modules/routes'
   import 'uikit/dist/css/uikit.min.css'
   import { init_locale_preferences } from './modules/preferences'
@@ -27,7 +27,7 @@
   import Nav from './components/Nav.svelte'
   import DebugCard from './components/dev/DebugCard.svelte'
   import Wallet from './components/wallet/Wallet.svelte'
-  import Miner from './components/miner/Miner.svelte'
+  // import Miner from './components/miner/Miner.svelte'
   import Settings from './components/settings/Settings.svelte'
   import DevMode from './components/dev/DevMode.svelte'
   import AccountCreate from './components/wallet/AccountCreate.svelte'
@@ -40,7 +40,7 @@
   // import RecoveryMode from './components/layout/RecoveryMode.svelte'
   import MakeWhole from './components/make-whole/MakeWhole.svelte'
   import SpinnerAccount from './components/layout/SpinnerAccount.svelte'
-  import { maybeTowerOnce as maybeTowerOnce } from './modules/miner_invoke'
+  // import { maybeTowerOnce as maybeTowerOnce } from './modules/miner_invoke'
     import KeyError from './components/layout/KeyError.svelte'
     import UpgradeApp from './components/about/UpgradeApp.svelte'
     import { tryUpdate } from './modules/updater'
@@ -50,10 +50,10 @@
   // temporarily set up here otherwise... issues
   init_locale_preferences()
 
-  let unlistenProofStart
-  let unlistenAck
-  let unlistenBacklogSuccess
-  let unlistenBacklogError
+  // let unlistenProofStart
+  // let unlistenAck
+  // let unlistenBacklogSuccess
+  // let unlistenBacklogError
 
   onMount(async () => {
     tryUpdate()
@@ -67,45 +67,45 @@
     // there is a listener service which loads the key once, and then waits for a specific
     // event to trigger the backlog submission.
 
-    unlistenProofStart = await listen('proof-start', (event: CarpeOkReturn) => {
-      responses.set(event.payload)
-      //update the tower stats after we show the backlog being up to date.
-      minerEventReceived.set(true)
-    })
+    // unlistenProofStart = await listen('proof-start', (event: CarpeOkReturn) => {
+    //   responses.set(event.payload)
+    //   //update the tower stats after we show the backlog being up to date.
+    //   minerEventReceived.set(true)
+    // })
 
-    unlistenAck = await listen('ack-backlog-request', () => {
-      backlogInProgress.set(true)
-      backlogSubmitted.set(false)
+    // unlistenAck = await listen('ack-backlog-request', () => {
+    //   backlogInProgress.set(true)
+    //   backlogSubmitted.set(false)
 
-      // set listener ready in case
-      backlogListenerReady.set(true)
-    })
+    //   // set listener ready in case
+    //   backlogListenerReady.set(true)
+    // })
 
-    unlistenBacklogSuccess = await listen('backlog-success', (event: CarpeOkReturn) => {
-      responses.set(event.payload)
-      //update the tower stats after we show the backlog being up to date.
-      backlogInProgress.set(false)
-      backlogSubmitted.set(true)
+    // unlistenBacklogSuccess = await listen('backlog-success', (event: CarpeOkReturn) => {
+    //   responses.set(event.payload)
+    //   //update the tower stats after we show the backlog being up to date.
+    //   backlogInProgress.set(false)
+    //   backlogSubmitted.set(true)
 
-      // this is what keeps the loop going
-      maybeTowerOnce()
-    })
+    //   // this is what keeps the loop going
+    //   maybeTowerOnce()
+    // })
 
-    unlistenBacklogError = await listen('backlog-error', (event: Event<CarpeError>) => {
-      // TODO: show an UX in the miner view for this type of error
+    // unlistenBacklogError = await listen('backlog-error', (event: Event<CarpeError>) => {
+    //   // TODO: show an UX in the miner view for this type of error
 
-      raise_error(event.payload, true, 'listen(backlog-error)')
+    //   raise_error(event.payload, true, 'listen(backlog-error)')
 
-      backlogInProgress.set(false)
-      backlogSubmitted.set(false)
-    })
+    //   backlogInProgress.set(false)
+    //   backlogSubmitted.set(false)
+    // })
   })
 
   onDestroy(() => {
-    unlistenProofStart()
-    unlistenAck()
-    unlistenBacklogSuccess()
-    unlistenBacklogError()
+    // unlistenProofStart()
+    // unlistenAck()
+    // unlistenBacklogSuccess()
+    // unlistenBacklogError()
   })
 </script>
 {#if $isLoading}
@@ -133,7 +133,7 @@
         <Route path={routes.accountFromMnem} component={AccountCreate} primary={false} />
         <Route path={routes.addWatchAccount} component={AddWatchAccount} primary={false} />
         <Route path={routes.keygen} component={Keygen} primary={false} />
-        <Route path={routes.miner} component={Miner} primary={false} />
+        <!-- <Route path={routes.miner} component={Miner} primary={false} /> -->
         <Route path={routes.transfer} component={Transactions} primary={false} />
         <Route path={routes.events} component={Events} primary={false} />
         <Route path={routes.settings} component={Settings} primary={false} />
