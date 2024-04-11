@@ -1,6 +1,6 @@
 import { get } from 'svelte/store'
 import { getAccounts, refreshAccounts } from './accountActions'
-import { getLocalHeight, getTowerChainView, maybeEmitBacklog } from './miner_invoke'
+// import { getLocalHeight, getTowerChainView, maybeEmitBacklog } from './miner_invoke'
 import { getMetadata } from './networks'
 import { isInit } from './accounts'
 import { Level, logger } from './carpeError'
@@ -25,9 +25,9 @@ export const carpeTick = async () => {
       getMetadata()
         .then(refreshAccounts)
         // tower things
-        .then(getTowerChainView)
-        .then(getLocalHeight)
-        .then(maybeEmitBacklog)
+        // .then(getTowerChainView)
+        // .then(getLocalHeight)
+        // .then(maybeEmitBacklog)
         .finally(() => (tick_in_progress = false))
     }
   }

@@ -37,9 +37,9 @@
         <li class="uk-padding {$location_store.pathname.includes('wallet') ? 'uk-active' : ''}">
           <Link to={routes.wallet}>{$_('nav.wallet')}</Link>
         </li>
-        <li class="uk-padding {$location_store.pathname.includes('miner') ? 'uk-active' : ''}">
+        <!-- <li class="uk-padding {$location_store.pathname.includes('miner') ? 'uk-active' : ''}">
           <Link to={routes.miner}>{$_('nav.miner')}</Link>
-        </li>
+        </li> -->
         <li class="uk-padding {$location_store.pathname.includes('transfer') ? 'uk-active' : ''}">
           <Link to={routes.transfer}>{$_('nav.transactions')}</Link>
         </li>
