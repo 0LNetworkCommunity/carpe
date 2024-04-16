@@ -1,7 +1,7 @@
 //! query the chain
 use crate::{carpe_error::CarpeError, configs::get_client};
 use anyhow::anyhow;
-// use libra_query::account_queries::get_account_balance_libra;
+use libra_query::account_queries::get_account_balance_libra;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey},
   legacy_types::{
@@ -46,27 +46,15 @@ pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResour
 }
 
 pub async fn get_balance(account: AccountAddress) -> Result<SlowWalletBalance, CarpeError> {
-  // let client = get_client()?;
-  get_account_real_balance(account).await.map_err(|e| {
-    CarpeError::misc(&format!(
-      "Could not get balance from account{}: {}",
-      account, e
-    ))
-  })
-}
-pub async fn get_account_real_balance(
-  account: AccountAddress,
-) -> anyhow::Result<SlowWalletBalance> {
   let client = get_client()?;
-  let res = client
-    .view_ext(
-      "0x1::ol_account::real_balance",
-      None,
-      Some(account.to_hex_literal()),
-    )
-    .await;
-  let json = res?.as_array().unwrap().to_owned();
-  SlowWalletBalance::from_value(json)
+  get_account_balance_libra(&client, account)
+    .await
+    .map_err(|e| {
+      CarpeError::misc(&format!(
+        "Could not get balance from account{}: {}",
+        account, e
+      ))
+    })
 }
 
 pub async fn get_seq_num(account: AccountAddress) -> Result<u64, CarpeError> {
