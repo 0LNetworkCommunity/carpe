@@ -4,9 +4,9 @@
 
 Currently Windows and Mac are supported:
 
-- [Download Windows 10+](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.6/carpe_1.0.6_x64_en-US.msi)
+- [Download Windows 10+](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.7/carpe_1.0.7_x64_en-US.msi)
 
-- [Download MacOs 11+](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.6/carpe_1.0.6_x64.dmg)
+- [Download MacOs 11+](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.7/carpe_1.0.7_x64.dmg)
 
 
 # About
