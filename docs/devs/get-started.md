@@ -1,6 +1,6 @@
 # Developing and Building Carpe with Tauri and Svelte
 
-Carpe leverages the power of [Tauri](https://tauri.studio) for building secure, lightweight desktop applications and [Svelte](https://svelte.dev) for creating efficient, reactive web interfaces. The template for Carpe can be found at: https://github.com/jbarszczewski/tauri-svelte-template.
+Carpe leverages the power of [Tauri](https://tauri.app/) for building secure, lightweight desktop applications and [Svelte](https://svelte.dev) for creating efficient, reactive web interfaces. The template for Carpe can be found at: https://github.com/jbarszczewski/tauri-svelte-template.
 
 ## Get Started
 
@@ -16,7 +16,7 @@ Ensure you have the following prerequisites installed:
 
 Additionally, you'll need to set up your environment for Tauri development:
 
-- Follow the Tauri setup guide: [Setting up your environment](https://tauri.studio/en/docs/getting-started/intro#setting-up-your-environment).
+- Follow the Tauri setup guide: [Setting up your environment](https://tauri.app/v1/guides/).
 - For Windows users, a specific guide is available: [Windows development environment setup](./windows-dev-setup.md).
 
 ### Installation Steps
@@ -55,6 +55,6 @@ This generates an optimized version of your application, including standalone ex
 
 ## Additional Resources
 
-- [Tauri Studio](https://tauri.studio): Official Tauri project website with comprehensive documentation.
+- [Tauri Studio](https://tauri.app/): Official Tauri project website with comprehensive documentation.
 - [Svelte](https://svelte.dev): Home of the Svelte framework, with guides, tutorials, and API documentation.
 - [Sveltestrap](https://sveltestrap.js.org): Bootstrap 4 components for Svelte, facilitating quick and responsive UI development.

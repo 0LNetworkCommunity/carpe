@@ -45,4 +45,4 @@ Before creating a new TAG, please confirm that Cargo.toml file is pointing to th
 If the app icon design will be changed, the high resolution file needs to be in `./app-icon.png`.
 Then simply run `yarn tauri icon`, and all the icon formats will be created.
 
-https://tauri.studio/docs/guides/icons/
+[https://tauri.studio/docs/guides/icons/](https://tauri.app/v1/guides/features/icons/#__docusaurus_skipToContent_fallback)
