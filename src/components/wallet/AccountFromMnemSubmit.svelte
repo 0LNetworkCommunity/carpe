@@ -6,26 +6,24 @@
 
   export let formDangerMnem: string
   export let isNewAccount = true
-
+  export let isLegacy = false;
   function openConfirmationModal() {
     UIkit.modal('#submit-confirmation-modal').show()
   }
 
   let isSubmitting = false
-  function initAccount(mnem_string: string) {
+  function initAccount(mnem_string: string, isLegacy) {
     if (mnem_string.length == 0) return
-
+    mnem_string = mnem_string.trim().split(/\s+/).join(' ')
     isSubmitting = true
-    addAccount(InitType.Mnem, mnem_string.trim())
-      .finally(() => {
-        isSubmitting = false
-        mnem_string = null
-        UIkit.modal('#submit-confirmation-modal').hide()
-      })
+    addAccount(InitType.Mnem, mnem_string.trim(), isLegacy).finally(() => {
+      isSubmitting = false
+      mnem_string = null
+      UIkit.modal('#submit-confirmation-modal').hide()
+    })
   }
 
-  onDestroy(() => formDangerMnem=null)
-
+  onDestroy(() => (formDangerMnem = null))
 </script>
 
 {#if isNewAccount}
@@ -56,7 +54,7 @@
           class="uk-button uk-button-primary"
           type="button"
           disabled={isSubmitting}
-          on:click|preventDefault={initAccount(formDangerMnem)}
+          on:click|preventDefault={initAccount(formDangerMnem, isLegacy)}
         >
           {#if isSubmitting}
             {$_('wallet.account_from_mnem_submit.btn_submiting')}
@@ -72,7 +70,7 @@
     class="uk-button uk-button-primary"
     type="button"
     disabled={isSubmitting}
-    on:click|preventDefault={initAccount(formDangerMnem)}
+    on:click|preventDefault={initAccount(formDangerMnem, isLegacy)}
   >
     {#if isSubmitting}
       {$_('wallet.account_from_mnem_submit.btn_submiting')}...

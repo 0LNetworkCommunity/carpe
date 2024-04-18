@@ -18,6 +18,7 @@ import {
   watchAccounts,
   pendingAccounts,
   isCarpeTickRunning,
+  totalBalance,
 } from './accounts'
 import type { CarpeProfile, SlowWalletBalance } from './accounts'
 import { navigate } from 'svelte-navigator'
@@ -26,10 +27,24 @@ import { initNetwork } from './networks'
 
 allAccounts.subscribe((v) => {
   pendingAccounts.set(v.filter((x) => x && !x.on_chain))
+  const allBalance: SlowWalletBalance = v.reduce(
+    (p, c): SlowWalletBalance => {
+      return {
+        total: p.total + c.balance.total,
+        unlocked: p.unlocked + c.balance.unlocked,
+      }
+    },
+    {
+      total: 0,
+      unlocked: 0,
+    },
+  )
+  totalBalance.set(allBalance)
 })
 export const getDefaultProfile = async () => {
   invoke('get_default_profile', {})
     .then((res: CarpeProfile) => {
+      res.account = res.account.toLocaleUpperCase()
       signingAccount.set(res)
     })
     .catch((e) => {
@@ -44,6 +59,8 @@ export const getAccounts = async () => {
       const watchList = get(watchAccounts)
       result.map((item) => {
         item.watch_only = watchList.includes(item.account)
+        item.account = item.account.toLocaleUpperCase()
+        item.auth_key = item.auth_key.toLocaleUpperCase()
       })
       allAccounts.set(result)
     })
@@ -62,6 +79,8 @@ export const refreshAccounts = async () => {
       const watchList = get(watchAccounts)
       result.map((item) => {
         item.watch_only = watchList.includes(item.account)
+        item.account = item.account.toLocaleUpperCase()
+        item.auth_key = item.auth_key.toLocaleUpperCase()
       })
 
       allAccounts.set(result)
@@ -71,16 +90,19 @@ export const refreshAccounts = async () => {
           const {
             account,
             on_chain,
+            watch_only,
             balance: { unlocked, total },
           } = item
           return (
             account === currentAccount.account &&
             (on_chain !== currentAccount.on_chain ||
+              watch_only !== currentAccount.watch_only ||
               unlocked !== currentAccount.balance?.unlocked ||
               total !== currentAccount.balance?.total)
           )
         })
         if (changedCurrentAccount) {
+          console.log('ref::::')
           signingAccount.set(changedCurrentAccount)
         }
       }
@@ -103,15 +125,19 @@ export enum InitType {
   PriKey,
 }
 
-export const addAccount = async (init_type: InitType, secret: string) => {
+export const addAccount = async (
+  init_type: InitType,
+  secret: string,
+  isLegacy: boolean = false,
+) => {
   let method_name = ''
   let arg_obj = {}
   if (init_type == InitType.Mnem) {
     method_name = 'init_from_mnem'
-    arg_obj = { mnem: secret.trim() }
+    arg_obj = { mnem: secret.trim(), isLegacy }
   } else if (init_type == InitType.PriKey) {
     method_name = 'init_from_private_key'
-    arg_obj = { priKeyString: secret.trim() }
+    arg_obj = { priKeyString: secret.trim(), isLegacy }
   }
   // submit
   return invoke(method_name, arg_obj)
@@ -170,6 +196,7 @@ export const setAccount = async (account: string, notifySucess = true) => {
 
   invoke('switch_profile', { account })
     .then((res: CarpeProfile) => {
+      res.account = res.account.toLocaleUpperCase()
       signingAccount.set(res)
       isInit.set(true)
       if (notifySucess) {
@@ -377,7 +404,7 @@ export function getPrivateKey(address: string, callback = null) {
     })
 }
 
-export function addWatchAccount(address: string) {
+export function addWatchAccount(address: string, isLegacy: boolean = true) {
   const accountList: CarpeProfile[] = get(allAccounts)
   // v5 address padding 0
   if (address.length == 32) {
@@ -393,6 +420,7 @@ export function addWatchAccount(address: string) {
 
   invoke('add_watch_account', {
     address,
+    isLegacy,
   })
     .then(async (res: CarpeProfile) => {
       let list = get(watchAccounts)
@@ -415,6 +443,7 @@ async function onAccountAdd(res: CarpeProfile) {
   responses.set(JSON.stringify(res))
   // cannot switch profile with miner running
   if (!get(minerLoopEnabled)) {
+    res.account = res.account.toLocaleUpperCase()
     signingAccount.set(res)
   }
   await initNetwork()
