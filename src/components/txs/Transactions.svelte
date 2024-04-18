@@ -60,6 +60,7 @@
       sender: account.account,
       receiver: receiver.trim(),
       amount: amount,
+      legacy: account.account.startsWith('0'.repeat(32)),
     })
       .then((res) => {
         responses.set(JSON.stringify(res))

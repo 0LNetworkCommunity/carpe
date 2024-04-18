@@ -60,7 +60,7 @@ export const getAccounts = async () => {
       result.map((item) => {
         item.watch_only = watchList.includes(item.account)
         item.account = item.account.toLocaleUpperCase()
-        item.auth_key = item.account.toLocaleUpperCase()
+        item.auth_key = item.auth_key.toLocaleUpperCase()
       })
       allAccounts.set(result)
     })
@@ -80,7 +80,7 @@ export const refreshAccounts = async () => {
       result.map((item) => {
         item.watch_only = watchList.includes(item.account)
         item.account = item.account.toLocaleUpperCase()
-        item.auth_key = item.account.toLocaleUpperCase()
+        item.auth_key = item.auth_key.toLocaleUpperCase()
       })
 
       allAccounts.set(result)
@@ -102,6 +102,7 @@ export const refreshAccounts = async () => {
           )
         })
         if (changedCurrentAccount) {
+          console.log('ref::::')
           signingAccount.set(changedCurrentAccount)
         }
       }
