@@ -24,19 +24,13 @@ On MacOS you will be prompted for your OS login password (on Windows and Ubuntu 
 
 ![screen01](./img/keyring.png)
 
-## Get a friend to onboard
+## Get onboard
 
 Until you can use the newly created account, you need some 0L user who "onboards" you. Please send the displayed "authkey" to this person.
 
 After the onboarding transaction has been done, the wallet will show some BALANCE for your account and no longer the text "Account not on chain".
 
-If you don't yet have a friend on 0L, come to the [Discord Server](https://discord.gg/AzCp63pggW) and make a new friend that can send your onboarding transaction.
-
-## Mining
-
-After your account has been onboarded, new menus appear on top of the screen. Switch to "MINER" to earn coins.
-
-To start mining, just click on the red toggle button, so it turns into green color.
+If you don't yet have a friend on 0L, come to the [Discord Server](https://discord.gg/AzCp63pggW) and send your 0L public adress in the onboarding channel.
 
 ## DANGER
 
