@@ -11,7 +11,7 @@ Currently Windows and Mac are supported:
 
 # About
 
-Carpe is a desktop "wallet" that connects to the 0L network and lets you create accounts, do some account management. To learn more about 0L itself follow the link: [0L introduction](https://github.com/OLSF/libra#readme).
+Carpe is a desktop "wallet" that connects to the 0L network and lets you create accounts, do some account management. To learn more about 0L itself, you can check out the official website of the project : [0L Network website](https://0l.network/).
 
 # Creating Accounts
 
