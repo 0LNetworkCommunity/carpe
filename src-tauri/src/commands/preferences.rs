@@ -58,9 +58,9 @@ pub fn debug_preferences_path() -> Result<PathBuf, CarpeError> {
 /// refreshes statistics and returns the synced peers
 pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
   let mut app_cfg = get_cfg()?;
-  app_cfg.refresh_network_profile_and_save(None).await?; // uses app_cfg.chain_info_chain_id
-  let np = app_cfg.get_network_profile(None)?;
-  // dbg!(&np);
+  
+  let np = app_cfg.refresh_network_profile_and_save(None).await?; // uses app_cfg.chain_info_chain_id
+  app_cfg.network_playlist = vec![np.clone()];
   app_cfg.save_file()?;
 
   let peers = match np.the_good_ones() {

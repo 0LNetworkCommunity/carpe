@@ -102,7 +102,6 @@ export const refreshAccounts = async () => {
           )
         })
         if (changedCurrentAccount) {
-          console.log('ref::::')
           signingAccount.set(changedCurrentAccount)
         }
       }
