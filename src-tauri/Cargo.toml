@@ -1,6 +1,6 @@
 [package]
 name = "carpe"
-version = "1.0.7"
+version = "1.0.8"
 authors = ["0LNetworkCommunity"]
 default-run = "carpe"
 description = "a light miner and wallet for libra"
