@@ -5,7 +5,7 @@
 You can find the installable Mac package in the releases folder:
 
 macOS version 10.15 or higher
-https://github.com/OLSF/carpe/releases/download/v0.3.0/carpe-macos-10.15.dmg
+[https://github.com/OLSF/carpe/releases/download/v0.3.0/carpe-macos-10.15.dmg](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.7/carpe_1.0.7_x64.dmg)
 
 ## Allow App Permissions
 

@@ -35,6 +35,7 @@
     "btn_restore_account": "Konto wiederherstellen",
     "btn_add_watch_account": "Konto beobachten",
     "newbie_message": "Sieht aus, als hättest du keine Konten",
+    "legacy_account_opt": "Ältere Adresse, 32-Zeichen-Adresse",
     "reminder_create": {
       "card_title": "Onboarding",
       "message_headline": "Du hast Keys für ein Konto erzeugt, aber es existiert noch nicht auf der Chain.",

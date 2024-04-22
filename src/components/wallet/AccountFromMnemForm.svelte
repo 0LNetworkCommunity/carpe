@@ -4,8 +4,12 @@
   import { onDestroy } from 'svelte'
 
   let formDangerMnem: string
-
-  onDestroy(() => formDangerMnem=null)
+  let isLegacy = false
+  function toggle() {
+    isLegacy = !isLegacy
+  }
+  
+  onDestroy(() => (formDangerMnem = null))
 </script>
 
 <main>
@@ -23,8 +27,12 @@
           bind:value={formDangerMnem}
         />
       </div>
-
-      <AccountFromMnemSubmit {formDangerMnem} isNewAccount={false} />
+      <div class="uk-margin-bottom uk-inline-block uk-width-1-1">
+        <label
+          ><input class="uk-checkbox" type="checkbox" on:click={toggle} checked={isLegacy} />&nbsp; {$_('wallet.legacy_account_opt')}</label
+        >
+      </div>
+      <AccountFromMnemSubmit {formDangerMnem} isNewAccount={false} {isLegacy} />
     </fieldset>
   </form>
 </main>

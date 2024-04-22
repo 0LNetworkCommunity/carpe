@@ -84,7 +84,7 @@ The MS compiler toolchain requires various environment variables set correctly. 
 Carpe can now be cloned from GitHub and built, in the shell opened in step 7, with the same commands as used for the Linux and MacOS builds:
 
 ```
-git clone [git@github.com:OLSF/carpe.git](https://github.com/OLSF/carpe.git)
+git clone https://github.com/0LNetworkCommunity/carpe.git
 cd carpe
 cd cd src-tauri
 cargo build

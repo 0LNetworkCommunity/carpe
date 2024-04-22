@@ -19,11 +19,11 @@ gmp-mpfr-sys = { version = "1.6", default-features = false }
 openssl-sys = "0.9.98"
 
 [dependencies]
-libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "da8bcdb4" }
-libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "da8bcdb4" }
-libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "da8bcdb4" }
-libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "da8bcdb4" }
-libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "da8bcdb4" }
+libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "7ce1536" }
+libra-tower = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "7ce1536" }
+libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "7ce1536" }
+libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "7ce1536" }
+libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "7ce1536" }
 
 # without these pinned versions, poem-openapi-types fail
 poem = { version = "=1.3.55", features = ["anyhow", "rustls"] }

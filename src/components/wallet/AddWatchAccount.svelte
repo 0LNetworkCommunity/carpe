@@ -5,7 +5,9 @@
   let address: string
 
   const initAccount = (address: string) => {
-    addWatchAccount(address.trim())
+    address = address.trim()
+    let isLegacy = address.length === 32 || address.startsWith('0'.padStart(32, '0'))
+    addWatchAccount(address, isLegacy)
   }
 </script>
 
@@ -30,7 +32,7 @@
       type="button"
       on:click|preventDefault={initAccount(address)}
     >
-    {$_('wallet.account_from_mnem_submit.btn_submit')}
+      {$_('wallet.account_from_mnem_submit.btn_submit')}
     </button>
   </div>
 </main>

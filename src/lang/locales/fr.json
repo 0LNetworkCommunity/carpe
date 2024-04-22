@@ -35,6 +35,7 @@
     "btn_restore_account": "Récupération de Compte",
     "btn_add_watch_account": "Watch Account",
     "newbie_message": "Compte de surveillance",
+    "legacy_account_opt": "Adresse héritée, adresse de 32 caractères",
     "reminder_create": {
       "card_title": "Onboarding",
       "message_headline": "Vous avez généré les clés de votre compte mais il n'existe pas encore sur la chaine.",

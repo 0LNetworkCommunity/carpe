@@ -8,7 +8,7 @@
   // import DebugSwitchProdTest from './DebugSwitchProdTest.svelte'
   import DebugSwitchRexMainnet from './DebugSwitchRexMainnet.svelte'
   import DebugSwitcher from './DebugSwitcher.svelte'
-  // import DebugPaths from './DebugPaths.svelte'
+  import DebugPaths from './DebugPaths.svelte'
   import DebugNetworkInfo from './DebugNetworkInfo.svelte'
   import DebugGetPrivateKey from './DebugGetPrivateKey.svelte'
   let debugEnabled = false
@@ -22,7 +22,7 @@
     <p class="uk-margin-bottom"><DebugSwitcher /> Turn on debug view on all screens</p>
 
     <DebugNetworkInfo />
-    <!-- <DebugPaths /> -->
+    <DebugPaths />
     <DebugSwitchRexMainnet />
     <!-- <DebugSwitchProdTest /> -->
     <!-- <DebugActions /> -->

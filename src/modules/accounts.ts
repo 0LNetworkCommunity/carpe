@@ -39,7 +39,7 @@ export const canMigrate = writable<boolean>(false)
 export const migrateSuccess = writable<boolean>()
 export const migrateInProgress = writable<boolean>()
 export const isCarpeTickRunning = writable<boolean>(false)
-
+export const totalBalance = writable<SlowWalletBalance>({ total: 0, unlocked: 0 })
 const localeWatchAccounts = JSON.parse(localStorage.getItem('watchAccounts') || '[]')
 export const watchAccounts = writable<string[]>(localeWatchAccounts)
 

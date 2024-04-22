@@ -35,6 +35,7 @@
     "btn_restore_account": "Restaurar Conta",
     "btn_add_watch_account": "Ver conta",
     "newbie_message": "Parece que você não tem nenhuma conta ainda",
+    "legacy_account_opt": "Endereço herdado, endereço de 32 caracteres",
     "reminder_create": {
       "card_title": "Integração",
       "message_headline": "Você gerou chaves para uma conta, mas ela não existe na rede ainda.",

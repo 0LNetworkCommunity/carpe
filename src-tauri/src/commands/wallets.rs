@@ -1,12 +1,12 @@
 use crate::{
   carpe_error::CarpeError,
   commands::query,
-  configs::{self, get_cfg, get_client},
+  configs::{self, default_legacy_account_path, get_cfg, get_client},
   configs_profile,
   key_manager::{self, get_private_key, inject_private_key_to_cfg},
 };
 
-use anyhow::{anyhow, Context};
+use anyhow::{anyhow, Context, Error};
 use libra_txs::{submit_transaction::Sender, txs_cli_user::SetSlowTx};
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
@@ -16,6 +16,8 @@ use libra_types::{
 };
 use libra_wallet::account_keys::{self, KeyChain};
 use serde::{Deserialize, Serialize};
+use std::fs::{self, File};
+use std::io::prelude::*;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NewKeygen {
@@ -23,6 +25,21 @@ pub struct NewKeygen {
   mnem: String,
 }
 
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
+pub struct LegacyAccounts {
+  pub accounts: Vec<LegacyAccount>,
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq)]
+pub struct LegacyAccount {
+  pub authkey: AuthenticationKey,
+}
+
+impl LegacyAccount {
+  pub fn new(authkey: AuthenticationKey) -> Self {
+    LegacyAccount { authkey }
+  }
+}
 /// a subset of AppCfg::Profile, dropping the private key
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CarpeProfile {
@@ -74,18 +91,23 @@ pub fn is_init() -> Result<bool, CarpeError> {
 
 /// default way accounts get initialized in Carpe
 #[tauri::command(async)] // don't want this to be async. We want it to block before moving back to the wallets page (and then needing a refresh), it's a smoother UI.
-pub async fn init_from_mnem(mnem: String) -> Result<CarpeProfile, CarpeError> {
+pub async fn init_from_mnem(mnem: String, is_legacy: bool) -> Result<CarpeProfile, CarpeError> {
   let wallet = account_keys::get_keys_from_mnem(mnem.clone())?;
-  init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?).await
+  init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?, is_legacy).await
 }
 
 #[tauri::command(async)]
-pub async fn init_from_private_key(pri_key_string: String) -> Result<CarpeProfile, CarpeError> {
+pub async fn init_from_private_key(
+  pri_key_string: String,
+  is_legacy: bool,
+) -> Result<CarpeProfile, CarpeError> {
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
     .map_err(|_| anyhow!("cannot parse encoded private key"))?;
   let acc_struct = account_keys::get_account_from_private(&pri);
   let authkey = acc_struct.auth_key;
-
+  if is_legacy {
+    let _ = add_legacy_accounts(authkey);
+  }
   // IMPORTANT
   // let's check if this account has had a rotated authkey,
   // so the address we derive may not be the expected one.
@@ -177,7 +199,15 @@ pub async fn get_originating_address(
   auth_key: AuthenticationKey,
 ) -> Result<AccountAddress, CarpeError> {
   let client = get_client()?;
-  Ok(client.lookup_originating_address(auth_key).await?)
+  let all = read_legacy_accounts().unwrap();
+  let acc_list: Vec<String> = all.accounts.iter().map(|a| a.authkey.to_string()).collect();
+  if acc_list.contains(&auth_key.to_string()) {
+    let a = auth_key.to_string()[32..].to_owned();
+    let b = String::from("00000000000000000000000000000000");
+    Ok(AccountAddress::from_hex_literal(&format!("0x{}{}", b, a)).unwrap())
+  } else {
+    Ok(client.lookup_originating_address(auth_key).await?)
+  }
 }
 
 /// Switch tx profiles, change 0L.toml to use selected account
@@ -200,6 +230,7 @@ pub fn remove_accounts() -> Result<String, CarpeError> {
   let mut cfg = configs::get_cfg()?;
   cfg.user_profiles = vec![];
   cfg.save_file()?;
+  let _ = remove_legacy_accounts();
   Ok("removed all accounts".to_owned())
 }
 
@@ -220,7 +251,7 @@ fn get_short(acc: AccountAddress) -> String {
 async fn test_init_mnem() {
   use libra_types::legacy_types::app_cfg::AppCfg;
   let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
-  init_from_mnem(alice).await.unwrap();
+  init_from_mnem(alice, false).await.unwrap();
   let _cfg = AppCfg::load(None).unwrap();
 }
 
@@ -235,11 +266,11 @@ async fn test_fetch_originating() {
 }
 
 #[tauri::command(async)]
-pub async fn set_slow_wallet() -> Result<(), CarpeError> {
+pub async fn set_slow_wallet(legacy: bool) -> Result<(), CarpeError> {
   // NOTE: unsure Serde was catching all cases check serialization
   let mut config = get_cfg()?;
   inject_private_key_to_cfg(&mut config)?;
-  let mut sender = Sender::from_app_cfg(&config, None).await?;
+  let mut sender = Sender::from_app_cfg(&config, None, legacy).await?;
 
   let t = SetSlowTx {};
   t.run(&mut sender).await?;
@@ -256,9 +287,80 @@ pub fn get_private_key_from_os(address: AccountAddress) -> Result<String, CarpeE
 }
 
 #[tauri::command(async)]
-pub async fn add_watch_account(address: AccountAddress) -> Result<CarpeProfile, CarpeError> {
+pub async fn add_watch_account(
+  address: AccountAddress,
+  is_legacy: bool,
+) -> Result<CarpeProfile, CarpeError> {
   let authkey: AuthenticationKey = query::get_auth_key(address).await?;
+  if is_legacy {
+    let _ = add_legacy_accounts(authkey);
+  }
   configs_profile::set_account_profile(address, authkey).await?;
   let core_profile = &Profile::new(authkey, address);
   Ok(core_profile.into())
+}
+
+fn read_legacy_accounts() -> Result<LegacyAccounts, Error> {
+  let db_path = default_legacy_account_path();
+  if db_path.exists() {
+    let file = File::open(db_path)?;
+    Ok(serde_json::from_reader(file)?)
+  } else {
+    Ok(LegacyAccounts { accounts: vec![] })
+  }
+}
+
+fn add_legacy_accounts(authkey: AuthenticationKey) -> Result<LegacyAccounts, CarpeError> {
+  let mut all = read_legacy_accounts()?;
+  // push new account
+  let new_account = LegacyAccount { authkey };
+  let acc_list: Vec<String> = all.accounts.iter().map(|a| a.authkey.to_string()).collect();
+  if !acc_list.contains(&new_account.authkey.to_string()) {
+    all.accounts.push(new_account);
+    let _ = update_legacy_accounts(&all);
+    Ok(all)
+  } else {
+    Err(CarpeError::misc("account already exists"))
+  }
+}
+fn update_legacy_accounts(accounts: &LegacyAccounts) -> Result<(), CarpeError> {
+  let db_path = default_legacy_account_path();
+  let serialized = serde_json::to_vec(accounts)
+    .map_err(|e| CarpeError::config(&format!("json legacyAccounts should serialize, {:?}", &e)))?;
+
+  File::create(db_path)
+    .map_err(|e| {
+      CarpeError::config(&format!(
+        "carpe legacyAccounts.json should be created!, {:?}",
+        &e
+      ))
+    })?
+    .write_all(&serialized)
+    .map_err(|e| {
+      CarpeError::config(&format!(
+        "carpe legacyAccounts.json should be written!, {:?}",
+        &e
+      ))
+    })?;
+  Ok(())
+}
+
+pub fn remove_legacy_accounts() -> Result<String, CarpeError> {
+  let db_path = default_legacy_account_path();
+  dbg!(&db_path);
+  if db_path.exists() {
+    match fs::remove_file(&db_path) {
+      Ok(_) => return Ok("removed all legacy accounts".to_owned()),
+      _ => {
+        return Err(CarpeError::misc(&format!(
+          "unable to delete account file found at {:?}",
+          &db_path
+        )))
+      }
+    }
+  }
+  Err(CarpeError::misc(&format!(
+    "No legacy accounts to remove. No account file found at {:?}",
+    &db_path
+  )))
 }

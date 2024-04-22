@@ -35,6 +35,7 @@
     "btn_restore_account": "恢复账号",
     "btn_add_watch_account": "观察账号",
     "newbie_message": "您似乎还没有创建账号。",
+    "legacy_account_opt": "遗留地址， 32字符的地址",
     "reminder_create": {
       "card_title": "激活",
       "message_headline": "您的账号已经创建成功，但是还没有激活。",

@@ -35,6 +35,7 @@
     "btn_restore_account": "Restore Account",
     "btn_add_watch_account": "Watch Account",
     "newbie_message": "Looks like you don't have any accounts",
+    "legacy_account_opt": "Legacy account, address length 32 characters",
     "reminder_create": {
       "card_title": "Onboarding",
       "message_headline": "You have generated keys for an account, but it does not yet exist on chain.",
