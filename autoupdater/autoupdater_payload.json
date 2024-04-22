@@ -1,6 +1,6 @@
 {
-  "version": "1.0.7",
-  "notes": "Miner sunset",
+  "version": "1.0.8",
+  "notes": "Improvements & Fixes",
   "pub_date": "2024-03-11T10:57:15.333Z",
   "platforms": {
     "windows-x86_64": {
