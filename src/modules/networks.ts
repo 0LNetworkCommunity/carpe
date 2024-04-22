@@ -158,10 +158,6 @@ export const incrementBackoff = () => {
   scanning_fullnodes_backoff.set(new_time.getSeconds())
 }
 
-let current_network_profile: NetworkPlaylist = defaultPlaylist()
-network_profile.subscribe((value) => {
-  current_network_profile = value
-})
 let isTest = false
 nodeEnvIsTest.subscribe((value) => {
   isTest = value
@@ -170,9 +166,8 @@ export const initNetwork = async () => {
   logger(Level.Info, 'initNetwork')
   if (!isTest) {
     await getNetwork()
-    if (current_network_profile.chain_id === NamedChain.TESTING) {
-      return await updateNetwork(playlistJsonUrl, false)
-    }
+
+    return await updateNetwork(playlistJsonUrl, false)
   }
   return true
 }

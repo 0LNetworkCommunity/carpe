@@ -266,7 +266,7 @@ async fn test_fetch_originating() {
 }
 
 #[tauri::command(async)]
-pub async fn set_slow_wallet(legacy: bool,) -> Result<(), CarpeError> {
+pub async fn set_slow_wallet(legacy: bool) -> Result<(), CarpeError> {
   // NOTE: unsure Serde was catching all cases check serialization
   let mut config = get_cfg()?;
   inject_private_key_to_cfg(&mut config)?;
@@ -320,9 +320,7 @@ fn add_legacy_accounts(authkey: AuthenticationKey) -> Result<LegacyAccounts, Car
     let _ = update_legacy_accounts(&all);
     Ok(all)
   } else {
-    Err(CarpeError::misc(
-      "account already exists",
-    ))
+    Err(CarpeError::misc("account already exists"))
   }
 }
 fn update_legacy_accounts(accounts: &LegacyAccounts) -> Result<(), CarpeError> {
@@ -361,10 +359,8 @@ pub fn remove_legacy_accounts() -> Result<String, CarpeError> {
       }
     }
   }
-  Err(CarpeError::misc(
-    &format!(
-      "No legacy accounts to remove. No account file found at {:?}",
-      &db_path
-    ),
-  ))
+  Err(CarpeError::misc(&format!(
+    "No legacy accounts to remove. No account file found at {:?}",
+    &db_path
+  )))
 }

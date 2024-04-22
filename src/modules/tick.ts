@@ -1,7 +1,7 @@
 import { get } from 'svelte/store'
 import { getAccounts, refreshAccounts } from './accountActions'
 // import { getLocalHeight, getTowerChainView, maybeEmitBacklog } from './miner_invoke'
-import { getMetadata } from './networks'
+import { getMetadata, refreshUpstreamPeerStats } from './networks'
 import { isInit } from './accounts'
 import { Level, logger } from './carpeError'
 
@@ -21,7 +21,8 @@ export const carpeTick = async () => {
       tick_in_progress = true
 
       // don't try to connect while we are booting up the app and looking for fullnodes
-      // things that need network connectivity e.g. miner happen here
+
+      await refreshUpstreamPeerStats()
       getMetadata()
         .then(refreshAccounts)
         // tower things
