@@ -126,8 +126,8 @@ export const getMetadata = async () => {
       networkMetadata.set(null)
       connected.set(false)
 
-      incrementBackoff()
       refreshUpstreamPeerStats() // update the metadata and if we are connected
+      incrementBackoff()
     })
 }
 
