@@ -1044,6 +1044,7 @@ dependencies = [
  "libra-types",
  "libra-wallet",
  "log",
+ "notify-rust",
  "once_cell",
  "openssl-sys",
  "poem",
@@ -7457,11 +7458,12 @@ dependencies = [
 
 [[package]]
 name = "nix"
-version = "0.24.3"
+version = "0.23.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fa52e972a9a719cecb6864fb88568781eb706bac2cd1d4f04a648542dbf78069"
+checksum = "8f3790c00a0150112de0f4cd161e3d7fc4b2d8a5542ffc35f099a2562aecb35c"
 dependencies = [
  "bitflags 1.3.2",
+ "cc",
  "cfg-if",
  "libc",
  "memoffset 0.6.5",
@@ -7496,14 +7498,14 @@ dependencies = [
 
 [[package]]
 name = "notify-rust"
-version = "4.6.0"
+version = "4.5.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5cc2e370356160e41aba3fd0fbac26d86a89ddd2ac4300c03de999a77cfa2509"
+checksum = "368e89ea58df747ce88be669ae44e79783c1d30bfd540ad0fc520b3f41f0b3b0"
 dependencies = [
  "mac-notification-sys",
  "serde 1.0.165",
  "tauri-winrt-notification",
- "zbus 3.3.0",
+ "zbus 2.3.2",
  "zvariant 3.15.0",
  "zvariant_derive 3.15.0",
 ]
@@ -12203,9 +12205,9 @@ dependencies = [
 
 [[package]]
 name = "zbus"
-version = "3.3.0"
+version = "2.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "41ce2de393c874ba871292e881bf3c13a0d5eb38170ebab2e50b4c410eaa222b"
+checksum = "2d8f1a037b2c4a67d9654dc7bdfa8ff2e80555bbefdd3c1833c1d1b27c963a6b"
 dependencies = [
  "async-broadcast",
  "async-channel",
@@ -12224,7 +12226,8 @@ dependencies = [
  "futures-sink",
  "futures-util",
  "hex",
- "nix 0.24.3",
+ "lazy_static 1.4.0",
+ "nix 0.23.2",
  "once_cell",
  "ordered-stream",
  "rand 0.8.5",
@@ -12235,7 +12238,7 @@ dependencies = [
  "tracing",
  "uds_windows",
  "winapi 0.3.9",
- "zbus_macros 3.3.0",
+ "zbus_macros 2.3.2",
  "zbus_names",
  "zvariant 3.15.0",
 ]
@@ -12254,9 +12257,9 @@ dependencies = [
 
 [[package]]
 name = "zbus_macros"
-version = "3.3.0"
+version = "2.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a13d08f5dc6cf725b693cb6ceacd43cd430ec0664a879188f29e7d7dcd98f96d"
+checksum = "1f8fb5186d1c87ae88cf234974c240671238b4a679158ad3b94ec465237349a6"
 dependencies = [
  "proc-macro-crate 1.3.1",
  "proc-macro2 1.0.63",
