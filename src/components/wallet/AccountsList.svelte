@@ -4,7 +4,6 @@
   import Icons from 'uikit/dist/js/uikit-icons'
   import { allAccounts, formatAccount, signingAccount } from '../../modules/accounts'
   import { printCoins, unscaledCoins } from '../../modules/coinHelpers'
-  import IconMining from '../icons/IconMining.svelte'
   import { minerLoopEnabled } from '../../modules/miner'
   import { connected } from '../../modules/networks'
   import { setAccount } from '../../modules/accountActions'
@@ -22,6 +21,52 @@
     showOptions = false
   })
 
+  let sortOrder = 'asc' // Initial sort order ('asc' for ascending, 'desc' for descending)
+  let sortColumn = null // Default column for initial sorting
+
+  // Function to sort accounts based on the column header clicked
+  function sortAccounts(column) {
+    if (sortColumn === column) {
+      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'
+    } else {
+      sortColumn = column
+      sortOrder = 'desc'
+    }
+
+    privateSortAccounts(column)
+  }
+
+  function privateSortAccounts(column) {
+    $allAccounts = $allAccounts.slice().sort((a, b) => {
+      // Access nested properties for 'unlocked' and 'balance'
+      let valA =
+        column === 'balance'
+          ? a.balance.total
+          : column === 'unlocked'
+            ? a.balance.unlocked
+            : formatAccount(a.account)
+      let valB =
+        column === 'balance'
+          ? b.balance.total
+          : column === 'unlocked'
+            ? b.balance.unlocked
+            : formatAccount(b.account)
+
+      // Handle case-insensitive sorting for string types
+      if (typeof valA === 'string') valA = valA.toLowerCase()
+      if (typeof valB === 'string') valB = valB.toLowerCase()
+
+      if (sortOrder === 'asc') {
+        return valA > valB ? 1 : -1
+      } else {
+        return valA < valB ? 1 : -1
+      }
+    })
+  }
+
+  $: if (sortColumn && $allAccounts.length > 0) {
+    privateSortAccounts(sortColumn)
+  }
 </script>
 
 <main>
@@ -29,13 +74,40 @@
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
-          <th class="uk-width-small"  />
-          <!-- <th>{$_('wallet.account_list.nickname')}</th> -->
-          <th>{$_('wallet.account_list.address')}</th>
-          <!-- <th>{$_('wallet.account_list.authkey')}</th> -->
-          <th class="uk-width-small uk-text-right">{$_('wallet.account_list.unlocked')}</th>
-
-          <th class="uk-text-right">{$_('wallet.account_list.balance')}</th>
+          <th class="uk-width-small" />
+          <th
+            class="sortable uk-width-medium uk-text-left"
+            on:click={() => sortAccounts('account')}
+          >
+            {$_('wallet.account_list.address')}
+            {#if sortColumn === 'account'}
+              <span
+                uk-icon={`icon: triangle-${sortOrder === 'asc' ? 'up' : 'down'}`}
+                class="uk-margin-small-left"
+              />
+            {/if}
+          </th>
+          <th
+            class="sortable uk-width-small uk-text-right"
+            on:click={() => sortAccounts('unlocked')}
+          >
+            {$_('wallet.account_list.unlocked')}
+            {#if sortColumn === 'unlocked'}
+              <span
+                uk-icon={`icon: triangle-${sortOrder === 'asc' ? 'up' : 'down'}`}
+                class="uk-margin-small-left"
+              />
+            {/if}
+          </th>
+          <th class="sortable uk-text-right" on:click={() => sortAccounts('balance')}>
+            {$_('wallet.account_list.balance')}
+            {#if sortColumn === 'balance'}
+              <span
+                uk-icon={`icon: triangle-${sortOrder === 'asc' ? 'up' : 'down'}`}
+                class="uk-margin-small-left"
+              />
+            {/if}
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -46,38 +118,18 @@
               ? 'uk-text-primary'
               : ''}
           >
-            <!-- <tr
-            class={isMining && a.account == selectedAccount.account
-              ? "uk-text-primary"
-              : ""}
-            on:click={() => setAccount(a.account)}
-          > -->
-            <td >
+            <td>
               <span>
                 {#if a.account == $signingAccount.account}
-                {#if $minerLoopEnabled}
-                  <IconMining />
-                {:else}
                   <span uk-icon="user" />
+                  <button uk-icon="settings" class="uk-margin-left" on:click={toggleOptions} />
                 {/if}
-                <button
-                  uk-icon="settings"
-                  class="uk-margin-left"
-                  on:click={toggleOptions}
-                />
-              {/if}
               </span>
-              
+
               {#if a.watch_only}
                 <span class="uk-align-right" style="margin-top: 3px;" uk-icon="eye"></span>
               {/if}
             </td>
-            <!-- <td
-              on:click={() => setAccount(a.account)}
-              style="cursor:
-            grab">{a.nickname}</td
-            > -->
-
             <td
               on:click={() => setAccount(a.account)}
               class="uk-transition-toggle uk-table-shrink"
@@ -125,3 +177,13 @@
     <Actions />
   {/if}
 </main>
+
+<style>
+  .sortable {
+    cursor: pointer;
+    user-select: none;
+  }
+  .uk-margin-small-left {
+    margin-left: 5px;
+  }
+</style>
