@@ -13,6 +13,11 @@
 
   let showOptions = false
 
+  let showNoteColumn = false
+  $: showNoteColumn = $allAccounts.some(
+    (account) => account.note !== null && account.note.trim() !== '',
+  )
+
   const toggleOptions = () => {
     showOptions ? (showOptions = false) : (showOptions = true)
   }
@@ -44,13 +49,21 @@
           ? a.balance.total
           : column === 'unlocked'
             ? a.balance.unlocked
-            : formatAccount(a.account)
+            : column === 'note'
+              ? a.note
+                ? a.note
+                : ''
+              : formatAccount(a.account)
       let valB =
         column === 'balance'
           ? b.balance.total
           : column === 'unlocked'
             ? b.balance.unlocked
-            : formatAccount(b.account)
+            : column === 'note'
+              ? b.note
+                ? b.note
+                : ''
+              : formatAccount(b.account)
 
       // Handle case-insensitive sorting for string types
       if (typeof valA === 'string') valA = valA.toLowerCase()
@@ -75,6 +88,17 @@
       <thead>
         <tr>
           <th class="uk-width-small" />
+          {#if showNoteColumn}
+            <th class="sortable uk-width-medium uk-text-left" on:click={() => sortAccounts('note')}>
+              {$_('wallet.account_list.note')}
+              {#if sortColumn === 'note'}
+                <span
+                  uk-icon={`icon: triangle-${sortOrder === 'asc' ? 'up' : 'down'}`}
+                  class="uk-margin-small-left"
+                />
+              {/if}
+            </th>
+          {/if}
           <th
             class="sortable uk-width-medium uk-text-left"
             on:click={() => sortAccounts('account')}
@@ -130,6 +154,9 @@
                 <span class="uk-align-right" style="margin-top: 3px;" uk-icon="eye"></span>
               {/if}
             </td>
+            {#if showNoteColumn}
+              <td class="uk-text-left">{a.note ? a.note : ''}</td>
+            {/if}
             <td
               on:click={() => setAccount(a.account)}
               class="uk-transition-toggle uk-table-shrink"

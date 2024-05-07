@@ -90,6 +90,8 @@ async fn main() {
       commands::wallets::get_default_profile,
       commands::wallets::refresh_accounts,
       commands::wallets::get_all_accounts,
+      commands::wallets::get_all_accounts_with_notes,
+      commands::wallets::associate_note_with_account,
       commands::wallets::keygen,
       commands::wallets::init_from_mnem,
       commands::wallets::init_from_private_key,

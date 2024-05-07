@@ -1,7 +1,7 @@
 use crate::{
   carpe_error::CarpeError,
   commands::query,
-  configs::{self, default_legacy_account_path, get_cfg, get_client},
+  configs::{self, default_legacy_account_path, get_cfg, get_client, default_config_path},
   configs_profile,
   key_manager::{self, get_private_key, inject_private_key_to_cfg},
 };
@@ -18,6 +18,9 @@ use libra_wallet::account_keys::{self, KeyChain};
 use serde::{Deserialize, Serialize};
 use std::fs::{self, File};
 use std::io::prelude::*;
+use std::fs::OpenOptions;
+use std::path::{PathBuf, Path};
+use tauri::api::path;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NewKeygen {
@@ -49,6 +52,7 @@ pub struct CarpeProfile {
   on_chain: bool,
   balance: SlowWalletBalance,
   locale: Option<String>, // TODO: refactor, tauri now offers locale of the OS
+  note: Option<String>,
 }
 
 impl From<&Profile> for CarpeProfile {
@@ -63,6 +67,7 @@ impl From<&Profile> for CarpeProfile {
         total: core_profile.balance.total,
       }, // TODO: refactor upstream to have Clone
       locale: core_profile.locale.clone(),
+      note: None,
     }
   }
 }
@@ -123,12 +128,104 @@ pub async fn init_from_private_key(
   Ok(core_profile.into())
 }
 
+#[derive(Serialize, Deserialize)]
+struct Note {
+    account: String,
+    note: String,
+}
+
 /// read all accounts from profile
 #[tauri::command(async)]
 pub fn get_all_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   let app_cfg = get_cfg()?;
   let mapped: Vec<CarpeProfile> = app_cfg.user_profiles.iter().map(|p| p.into()).collect();
   Ok(mapped)
+}
+
+/// read all accounts from profile plus notes
+#[tauri::command]
+pub fn get_all_accounts_with_notes() -> Result<Vec<CarpeProfile>, CarpeError> {
+    let mut accounts = get_all_accounts()?;
+    assign_notes_to_accounts(&mut accounts);
+
+    // print notes assigned to accounts
+    for account in accounts.iter() {
+        if let Some(note) = &account.note {
+            println!("get_all_accounts_with_notes >> note found: {} for: {}", note, account.account);
+        }
+    }
+
+    Ok(accounts)
+}
+
+fn notes_file_path() -> PathBuf {
+  path::config_dir().unwrap_or_else(|| PathBuf::from(".")).join("account_notes.json")
+}
+
+fn read_notes() -> Result<Vec<Note>, CarpeError> {
+  let file_path = notes_file_path();
+
+  // Check if the file exists before attempting to open it
+  if !Path::new(&file_path).exists() {
+    return Ok(vec![]);  // Return an empty vector if the file does not exist
+  }
+
+  let mut file = match File::open(&file_path) {
+      Ok(f) => f,
+      Err(e) => return Err(CarpeError::misc(&format!("Failed to open notes file: {}", e))),
+  };
+
+  let mut contents = String::new();
+  if let Err(e) = file.read_to_string(&mut contents) {
+      return Err(CarpeError::misc(&format!("Failed to read from notes file: {}", e)));
+  }
+
+  match serde_json::from_str(&contents) {
+      Ok(notes) => Ok(notes),
+      Err(e) => Err(CarpeError::misc(&format!("Failed to parse notes JSON: {}", e))),
+  }
+}
+
+fn assign_notes_to_accounts(accounts: &mut Vec<CarpeProfile>) -> Result<(), CarpeError> {
+  println!(">>> assign_notes_to_accounts");
+  let notes = read_notes()?;
+
+  // Log the notes for debugging purposes
+  for note in &notes {
+      println!("assign_notes_to_accounts >> note found: {} for: {}", note.note, note.account);
+  }
+
+  // print accounts addresses for debugging purposes
+  for account in accounts.iter() {
+      println!("assign_notes_to_accounts >> account: {}", account.account);
+  }
+
+  for account in accounts.iter_mut() {
+      let note_option = notes.iter()
+          .find(|note| note.account == account.account.to_string().to_uppercase())
+          .map(|note| note.note.clone());
+      account.note = note_option;
+  }
+
+  Ok(())
+}
+
+/// save new account note to file
+#[tauri::command]
+pub fn associate_note_with_account(account: String, note: String) -> Result<(), String> {
+  let file_path = notes_file_path();
+  let mut notes = read_notes().unwrap_or_else(|_| vec![]);
+  let address = account.to_lowercase();
+  if let Some(account_note) = notes.iter_mut().find(|n| n.account == account) {
+      account_note.note = note;
+  } else {
+      notes.push(Note { account, note });
+  }
+
+  let notes_json = serde_json::to_string(&notes).map_err(|e| e.to_string())?;
+  let mut file = OpenOptions::new().write(true).create(true).open(file_path).map_err(|e| e.to_string())?;
+  file.write_all(notes_json.as_bytes()).map_err(|e| e.to_string())?;
+  Ok(())
 }
 
 /// read all accounts from profile
@@ -150,7 +247,8 @@ pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   map_get_balance(&mut app_cfg.user_profiles).await?;
   app_cfg.save_file()?;
 
-  let mapped: Vec<CarpeProfile> = app_cfg.user_profiles.iter().map(|p| p.into()).collect();
+  let mut mapped: Vec<CarpeProfile> = app_cfg.user_profiles.iter().map(|p| p.into()).collect();
+  assign_notes_to_accounts(&mut mapped);
   Ok(mapped)
 }
 
