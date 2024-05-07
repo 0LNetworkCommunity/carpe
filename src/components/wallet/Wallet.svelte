@@ -27,7 +27,9 @@
           {$_('wallet.wallet')}
         </h2>
       </div>
-      <div class="uk-position-right uk-text-light uk-text-uppercase uk-flex-inline uk-flex-column">
+      <div
+        class="uk-position-right uk-text-light uk-text-uppercase uk-flex-inline uk-flex-column max-height-fit-content"
+      >
         <span class="uk-margin-small-bottom"
           >{$_('wallet.account_list.balance')}: {printCoins($totalBalance.total)}</span
         >
@@ -42,3 +44,10 @@
     </div>
   {/if}
 </main>
+
+<style>
+  .max-height-fit-content {
+    max-height: -webkit-fit-content;
+    max-height: fit-content; /* Standard syntax for other browsers */
+  }
+</style>
