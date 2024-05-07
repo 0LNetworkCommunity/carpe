@@ -1,9 +1,9 @@
 [package]
 name = "carpe"
-version = "1.0.5"
+version = "1.0.10"
 authors = ["0LNetworkCommunity"]
 default-run = "carpe"
-description = "a light miner and wallet for libra"
+description = " Wallet for libra"
 edition = "2021"
 license = "Apache 2.0"
 repository = "https://github.com/0LNetworkCommunity/carpe"
