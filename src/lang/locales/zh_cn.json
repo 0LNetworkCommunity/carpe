@@ -44,6 +44,7 @@
       "onboard_key": "激活码（AuthKey）"
     },
     "account_list": {
+      "note": "笔记",
       "nickname": "昵称",
       "address": "地址",
       "authkey": "激活码",
@@ -54,6 +55,12 @@
       "account_on_chain": "未激活",
       "message": " 所有发送的交易（包括：挖矿）都会消耗一些余额作为手续费。",
       "info_title": "账户信息"
+    },
+    "account_note": {
+      "title": "账户备注",
+      "description": "一条备注，帮助您识别您的账户：",
+      "placeholder": "在此输入您的备注...",
+      "btn_save": "保存备注"
     },
     "keygen": {
       "title": "创建新账号",

@@ -459,7 +459,17 @@ async function onAccountAdd(res: CarpeProfile) {
 }
 
 export const associateNoteWithAccount = async (account, note) => {
-  console.log('associateNoteWithAccount', account, note)
+  // update allAccounts set account with the new note
+  const list = get(allAccounts)
+  const updatedList = list.map((item) => {
+    if (item.account === account) {
+      item.note = note
+    }
+    return item
+  })
+  allAccounts.set(updatedList)
+
+  // update the backend
   try {
     const result = await invoke('associate_note_with_account', { account, note })
     refreshAccounts()

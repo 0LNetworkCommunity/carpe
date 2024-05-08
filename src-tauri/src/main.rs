@@ -137,6 +137,10 @@ async fn main() {
       commands::preferences::set_preferences_locale,
       commands::preferences::get_miner_txs_cost,
       commands::preferences::set_miner_txs_cost,
+
+      //////// User Preferences ////////
+      commands::user_preferences::get_user_preferences,
+      commands::user_preferences::set_accounts_list_preference,
       ///////// Debug ////////
       commands::app_version::get_app_version,
       commands::web_logs::log_this,

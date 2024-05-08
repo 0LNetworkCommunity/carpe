@@ -9,6 +9,7 @@
   import { setAccount } from '../../modules/accountActions'
   import Actions from './Actions.svelte'
   import Copy from '../../components/layout/Copy.svelte'
+  import { preferences, setAccountsListPreference } from '../../modules/user_preferences'
   UIkit.use(Icons)
 
   let showOptions = false
@@ -19,40 +20,46 @@
   )
 
   const toggleOptions = () => {
-    showOptions ? (showOptions = false) : (showOptions = true)
+    console.log('>>> show options', !showOptions)
+
+    showOptions = !showOptions
   }
 
-  signingAccount.subscribe(() => {
+  function selectAddress(address) {
     showOptions = false
-  })
+    setAccount(address)
+  }
 
-  let sortOrder = 'asc' // Initial sort order ('asc' for ascending, 'desc' for descending)
-  let sortColumn = null // Default column for initial sorting
+  // Subscribe to the preferences store
+  let sortOrder = 'asc'
+  let sortColumn = null
+  $: if ($preferences.accounts_list_sort_column && $preferences.accounts_list_sort_order) {
+    sortColumn = $preferences.accounts_list_sort_column
+    sortOrder = $preferences.accounts_list_sort_order
+  }
 
-  // Function to sort accounts based on the column header clicked
+  // Update preferences when user clicks to sort
   function sortAccounts(column) {
-    if (sortColumn === column) {
-      sortOrder = sortOrder === 'asc' ? 'desc' : 'asc'
-    } else {
-      sortColumn = column
-      sortOrder = 'desc'
-    }
+    const newSortOrder = sortColumn === column && sortOrder === 'asc' ? 'desc' : 'asc'
+
+    // Set sortColumn and sortOrder immediately for local update
+    sortColumn = column
+    sortOrder = newSortOrder
 
     privateSortAccounts(column)
+    setAccountsListPreference(column, sortOrder)
   }
 
+  // Private function to sort accounts
   function privateSortAccounts(column) {
     $allAccounts = $allAccounts.slice().sort((a, b) => {
-      // Access nested properties for 'unlocked' and 'balance'
       let valA =
         column === 'balance'
           ? a.balance.total
           : column === 'unlocked'
             ? a.balance.unlocked
             : column === 'note'
-              ? a.note
-                ? a.note
-                : ''
+              ? a.note || ''
               : formatAccount(a.account)
       let valB =
         column === 'balance'
@@ -60,26 +67,16 @@
           : column === 'unlocked'
             ? b.balance.unlocked
             : column === 'note'
-              ? b.note
-                ? b.note
-                : ''
+              ? b.note || ''
               : formatAccount(b.account)
-
-      // Handle case-insensitive sorting for string types
       if (typeof valA === 'string') valA = valA.toLowerCase()
       if (typeof valB === 'string') valB = valB.toLowerCase()
-
-      if (sortOrder === 'asc') {
-        return valA > valB ? 1 : -1
-      } else {
-        return valA < valB ? 1 : -1
-      }
+      return sortOrder === 'asc' ? (valA > valB ? 1 : -1) : valA < valB ? 1 : -1
     })
   }
 
-  $: if (sortColumn && $allAccounts.length > 0) {
-    privateSortAccounts(sortColumn)
-  }
+  // Re-sort when preferences change
+  $: sortColumn && $allAccounts.length > 0 && privateSortAccounts(sortColumn)
 </script>
 
 <main>
@@ -87,7 +84,7 @@
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
-          <th class="uk-width-small" />
+          <th class="uk-width-small" style="min-width: 126px" />
           {#if showNoteColumn}
             <th class="sortable uk-width-medium uk-text-left" on:click={() => sortAccounts('note')}>
               {$_('wallet.account_list.note')}
@@ -136,7 +133,6 @@
       </thead>
       <tbody>
         {#each $allAccounts as a}
-          <!-- svelte-ignore missing-declaration -->
           <tr
             class={$minerLoopEnabled && a.account == $signingAccount.account
               ? 'uk-text-primary'
@@ -148,28 +144,31 @@
                   <span uk-icon="user" />
                   <button uk-icon="settings" class="uk-margin-left" on:click={toggleOptions} />
                 {/if}
+                {#if a.watch_only}
+                  <span class="uk-align-right" style="margin: 4px;" uk-icon="eye"></span>
+                {/if}
               </span>
-
-              {#if a.watch_only}
-                <span class="uk-align-right" style="margin-top: 3px;" uk-icon="eye"></span>
-              {/if}
             </td>
             {#if showNoteColumn}
-              <td class="uk-text-left">{a.note ? a.note : ''}</td>
+              <td class="uk-text-left uk-transition-toggle uk-table-shrink note-column"
+                >{a.note ? a.note : ''}</td
+              >
             {/if}
             <td
-              on:click={() => setAccount(a.account)}
+              on:click={() => selectAddress(a.account)}
               class="uk-transition-toggle uk-table-shrink"
-              style="cursor:grab"
+              style="cursor: grab"
             >
               <div class="uk-flex-inline">
-                <span class="uk-text-truncate" style="width: 32vw; display:inline-block"
-                  >{formatAccount(a.account)}</span
+                <span
+                  class="uk-text-truncate"
+                  style={showNoteColumn
+                    ? 'width: 26vw; display: inline-block'
+                    : 'width: 32vw; display: inline-block'}>{formatAccount(a.account)}</span
                 >
                 <span class="uk-transition-fade"><Copy text={a.account}></Copy></span>
               </div>
             </td>
-            <!-- <td>{a.auth_key.slice(0, 5)}...</td> -->
             <td class="uk-text-right">{printCoins(a.balance.unlocked)}</td>
             <td class="uk-text-right">
               {#if a.on_chain != null && a.on_chain == false}
@@ -177,13 +176,11 @@
               {:else if a.on_chain}
                 <div class="uk-inline">
                   {#if unscaledCoins(a.balance) < 1}
-                    <!-- TODO: make this icon align vertical middle. -->
-                    <span class="uk-margin uk-text-warning" uk-icon="icon: info" />
+                    <span class="uk-margin uk-text-warning" uk-icon="icon: info"></span>
                     <div uk-dropdown>
                       {$_('wallet.account_list.message')}
                     </div>
                   {/if}
-
                   {printCoins(a.balance.total)}
                 </div>
               {:else if a.balance == null}
@@ -199,10 +196,9 @@
       </tbody>
     </table>
   {/if}
-
-  {#if showOptions}
-    <Actions />
-  {/if}
+  <div style="display: {showOptions ? 'block' : 'none'};">
+    <Actions {signingAccount} />
+  </div>
 </main>
 
 <style>
@@ -212,5 +208,12 @@
   }
   .uk-margin-small-left {
     margin-left: 5px;
+  }
+  .note-column {
+    width: fit-content;
+    max-width: 120px;
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Use an ellipsis to indicate clipped text */
+    /* white-space: nowrap; /* Prevent text from wrapping to the next line */
   }
 </style>

@@ -56,6 +56,12 @@
       "message": "Your balance will go down for every transaction you send, including mining.",
       "info_title": "Account Info"
     },
+    "account_note": {
+      "title": "Account Note",
+      "description": "A note to help you identify your account:",
+      "placeholder": "Enter your note here...",
+      "btn_save": "Save Note"
+    },
     "keygen": {
       "title": "Create New Account",
       "description": "After you generate an account and secret phrase, you'll need someone to send one 0L coin to that account for it to be created on chain.",

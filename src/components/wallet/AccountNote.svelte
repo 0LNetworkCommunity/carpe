@@ -1,21 +1,33 @@
-<script>
-  import { signingAccount } from '../../modules/accounts'
+<script lang="ts">
+  import { _ } from '../../lang/i18n'
   import { associateNoteWithAccount } from '../../modules/accountActions'
 
-  export let account = $signingAccount.account
-  export let note = $signingAccount.note
+  export let account
+  export let note
 
   async function updateNote() {
-    $signingAccount.note = note
     associateNoteWithAccount(account, note)
   }
 </script>
 
-<div class="account-note">
-  <h3>Account Note</h3>
-  <textarea class="uk-textarea" bind:value={note} rows="4" placeholder="Enter note here..."
+<div class="account-note uk-inline">
+  <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
+    {$_('wallet.account_note.title')}
+  </h5>
+  <p>{$_('wallet.account_note.description')}</p>
+  <textarea
+    class="uk-textarea"
+    bind:value={note}
+    rows="4"
+    placeholder={$_('wallet.account_note.placeholder')}
+    maxlength="100"
   ></textarea>
-  <button class="uk-button uk-button-primary" on:click={() => updateNote()}>Save Note</button>
+  <button
+    class="uk-button uk-button-primary save-note-btn uk-align-right"
+    on:click={() => updateNote()}
+  >
+    {$_('wallet.account_note.btn_save')}
+  </button>
 </div>
 
 <style>
@@ -28,7 +40,7 @@
 
   .uk-textarea,
   .uk-button {
-    width: 100%;
-    margin-top: 0.5rem;
+    margin: 0.5rem 0rem;
+    resize: none;
   }
 </style>
