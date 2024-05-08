@@ -210,7 +210,7 @@ pub async fn get_originating_address(
   }
 }
 
-/// Switch tx profiles, change 0L.toml to use selected account
+/// Switch tx profiles, change libra.yaml to use selected account
 #[tauri::command(async)]
 // IMPORTANT: don't return the profile, since it has keys
 pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, CarpeError> {
@@ -266,11 +266,11 @@ async fn test_fetch_originating() {
 }
 
 #[tauri::command(async)]
-pub async fn set_slow_wallet(legacy: bool) -> Result<(), CarpeError> {
+pub async fn set_slow_wallet(legacy: bool, _sender: AccountAddress) -> Result<(), CarpeError> {
   // NOTE: unsure Serde was catching all cases check serialization
   let mut config = get_cfg()?;
-  inject_private_key_to_cfg(&mut config)?;
-  let mut sender = Sender::from_app_cfg(&config, None, legacy).await?;
+  inject_private_key_to_cfg(&mut config, _sender)?;
+  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string()), legacy).await?;
 
   let t = SetSlowTx {};
   t.run(&mut sender).await?;

@@ -3,7 +3,6 @@
   import { invoke } from '@tauri-apps/api/tauri'
   import { tempCreateAccount } from '../../modules/accounts'
   import type { CarpeProfile } from '../../modules/accounts'
-  // import { minerLoopEnabled } from '../../modules/miner'
 
   import { raise_error } from '../../modules/carpeError'
   import { responses } from '../../modules/debug'

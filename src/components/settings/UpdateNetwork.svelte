@@ -48,6 +48,7 @@
       .then((res: NetworkPlaylist) => {
         network_profile.set(res);
         notify_success("Network Settings Updated");
+        check_sync();
       })
       .catch((error) => {
         raise_error(error as CarpeError, false, "forceUpstream");

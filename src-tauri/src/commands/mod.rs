@@ -1,5 +1,5 @@
 pub(crate) mod app_version;
-pub(crate) mod mining;
+// pub(crate) mod mining;
 pub(crate) mod networks;
 pub(crate) mod preferences;
 pub(crate) mod query;
