@@ -69,8 +69,24 @@
             : column === 'note'
               ? b.note || ''
               : formatAccount(b.account)
+
       if (typeof valA === 'string') valA = valA.toLowerCase()
       if (typeof valB === 'string') valB = valB.toLowerCase()
+
+      if (valA === valB) {
+        // Desempate usando formatAccount
+        let secondaryValA = formatAccount(a.account).toLowerCase()
+        let secondaryValB = formatAccount(b.account).toLowerCase()
+        return sortOrder === 'asc'
+          ? secondaryValA > secondaryValB
+            ? 1
+            : -1
+          : secondaryValA < secondaryValB
+            ? 1
+            : -1
+      }
+
+      // Ordenação principal
       return sortOrder === 'asc' ? (valA > valB ? 1 : -1) : valA < valB ? 1 : -1
     })
   }
@@ -84,9 +100,12 @@
     <table class="uk-table uk-table-divider">
       <thead>
         <tr>
-          <th class="uk-width-small" style="min-width: 126px" />
+          <th class="uk-width-small uk-text-nowrap" style="min-width: 126px" />
           {#if showNoteColumn}
-            <th class="sortable uk-width-medium uk-text-left" on:click={() => sortAccounts('note')}>
+            <th
+              class="sortable uk-width-medium uk-text-left uk-text-nowrap"
+              on:click={() => sortAccounts('note')}
+            >
               {$_('wallet.account_list.note')}
               {#if sortColumn === 'note'}
                 <span
@@ -97,7 +116,7 @@
             </th>
           {/if}
           <th
-            class="sortable uk-width-medium uk-text-left"
+            class="sortable uk-width-medium uk-text-left uk-text-nowrap"
             on:click={() => sortAccounts('account')}
           >
             {$_('wallet.account_list.address')}
@@ -109,7 +128,7 @@
             {/if}
           </th>
           <th
-            class="sortable uk-width-small uk-text-right"
+            class="sortable uk-width-small uk-text-right uk-text-nowrap"
             on:click={() => sortAccounts('unlocked')}
           >
             {$_('wallet.account_list.unlocked')}
@@ -120,7 +139,10 @@
               />
             {/if}
           </th>
-          <th class="sortable uk-text-right" on:click={() => sortAccounts('balance')}>
+          <th
+            class="sortable uk-text-right uk-text-nowrap"
+            on:click={() => sortAccounts('balance')}
+          >
             {$_('wallet.account_list.balance')}
             {#if sortColumn === 'balance'}
               <span
@@ -170,7 +192,7 @@
               </div>
             </td>
             <td class="uk-text-right">{printCoins(a.balance.unlocked)}</td>
-            <td class="uk-text-right">
+            <td class="uk-text-right uk-text-nowrap">
               {#if a.on_chain != null && a.on_chain == false}
                 {$_('wallet.account_list.account_on_chain')}
               {:else if a.on_chain}
