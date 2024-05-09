@@ -77,10 +77,10 @@ pub fn get_keypair(
 // NOTE to future devs: DANGER: make sure this is never called in a flow that uses save_file(). The upstream prevents the key from serializing, but it should be guarded here as well.
 pub fn inject_private_key_to_cfg(
   app_cfg_mut: &mut AppCfg,
-  accout: AccountAddress,
+  account: AccountAddress,
 ) -> anyhow::Result<(), CarpeError> {
   // gets the default profile
-  let profile = app_cfg_mut.get_profile_mut(Some(accout.to_string()))?;
+  let profile = app_cfg_mut.get_profile_mut(Some(account.to_string()))?;
   let pri_key = get_private_key(&profile.account).map_err(|e| CarpeError {
     category: ErrorCat::Configs,
     uid: E_KEY_NOT_REGISTERED,
