@@ -20,8 +20,6 @@
   )
 
   const toggleOptions = () => {
-    console.log('>>> show options', !showOptions)
-
     showOptions = !showOptions
   }
 
