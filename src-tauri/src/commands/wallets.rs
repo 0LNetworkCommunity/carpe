@@ -20,8 +20,6 @@ use std::fs::{self, File};
 use std::io::{Write, prelude::*};
 use std::fs::OpenOptions;
 use std::path::{PathBuf, Path};
-use tauri::api::path;
-use tauri::State;
 use serde_json;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -148,7 +146,7 @@ pub fn get_all_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
 #[tauri::command]
 pub fn get_all_accounts_with_notes() -> Result<Vec<CarpeProfile>, CarpeError> {
     let mut accounts = get_all_accounts()?;
-    assign_notes_to_accounts(&mut accounts);
+    let _ = assign_notes_to_accounts(&mut accounts);
     Ok(accounts)
 }
 
@@ -168,17 +166,17 @@ fn read_notes() -> Result<Vec<Note>, CarpeError> {
 
   let mut file = match File::open(&file_path) {
       Ok(f) => f,
-      Err(e) => return Err(CarpeError::misc("Failed to open notes file")),
+      Err(_e) => return Err(CarpeError::misc("Failed to open notes file")),
   };
 
   let mut contents = String::new();
-  if let Err(e) = file.read_to_string(&mut contents) {
+  if let Err(_e) = file.read_to_string(&mut contents) {
       return Err(CarpeError::misc("Failed to read from notes file"));
   }
 
   match serde_json::from_str(&contents) {
       Ok(notes) => Ok(notes),
-      Err(e) => Err(CarpeError::misc("Failed to parse notes JSON")),
+      Err(_e) => Err(CarpeError::misc("Failed to parse notes JSON")),
   }
 }
 
@@ -195,7 +193,7 @@ fn assign_notes_to_accounts(accounts: &mut Vec<CarpeProfile>) -> Result<(), Carp
 #[tauri::command]
 pub fn associate_note_with_account(account: String, note: String) -> Result<(), CarpeError> {
   let file_path = notes_file_path();
-  let mut notes = read_notes().map_err(|e| CarpeError::misc("Failed to read notes"))?;
+  let mut notes = read_notes().map_err(|_e| CarpeError::misc("Failed to read notes"))?;
   let address = account.to_uppercase();
 
   // Check if the account already exists and update the note if it does
@@ -214,17 +212,17 @@ pub fn associate_note_with_account(account: String, note: String) -> Result<(), 
   }
 
   let notes_json = serde_json::to_string(&notes)
-      .map_err(|e| CarpeError::misc("Failed to serialize notes"))?;
+      .map_err(|_e| CarpeError::misc("Failed to serialize notes"))?;
 
   let mut file = OpenOptions::new()
       .write(true)
       .truncate(true)
       .create(true)
       .open(&file_path)
-      .map_err(|e| CarpeError::misc("Failed to open file for writing"))?;
+      .map_err(|_e| CarpeError::misc("Failed to open file for writing"))?;
 
   file.write_all(notes_json.as_bytes())
-      .map_err(|e| CarpeError::misc("Failed to write to file"))?;
+      .map_err(|_e| CarpeError::misc("Failed to write to file"))?;
 
   Ok(())
 }
@@ -251,7 +249,7 @@ pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   app_cfg.save_file()?;
 
   let mut mapped: Vec<CarpeProfile> = app_cfg.user_profiles.iter().map(|p| p.into()).collect();
-  assign_notes_to_accounts(&mut mapped);
+  let _ = assign_notes_to_accounts(&mut mapped);
   Ok(mapped)
 }
 
@@ -259,7 +257,6 @@ pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
 /// check if this account is a slow wallet
 pub async fn is_slow(account: AccountAddress) -> anyhow::Result<bool, CarpeError> {
   let c = get_client()?;
-  println!("is slow");
   let b = c
     .view_ext(
       "0x1::slow_wallet::is_slow",
@@ -267,7 +264,6 @@ pub async fn is_slow(account: AccountAddress) -> anyhow::Result<bool, CarpeError
       Some(account.to_hex_literal()),
     )
     .await?;
-  dbg!(&b);
   match b.as_array().context("no bool found")?[0].as_bool() {
     Some(b) => Ok(b),
     None => Ok(false),

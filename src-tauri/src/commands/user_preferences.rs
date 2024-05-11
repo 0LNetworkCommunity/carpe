@@ -1,9 +1,8 @@
-use std::fs;
 use crate::carpe_error::CarpeError;
 use serde::{Deserialize, Serialize};
 use std::fs::{File, OpenOptions};
 use std::io::{Read, Write};
-use std::path::{PathBuf, Path};
+use std::path::{PathBuf};
 use crate::configs::default_config_path;
 
 #[derive(Serialize, Deserialize)]
