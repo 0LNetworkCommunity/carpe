@@ -1,15 +1,22 @@
 <script lang="ts">
-  import { _ } from "svelte-i18n";
-
+  import { _ } from 'svelte-i18n'
 </script>
 
 <table class="uk-table uk-table-divider">
   <thead>
     <tr>
-      <th class="uk-text-center"><span class="skeleton-container">{$_("miner.tower_state.local_height")}</span></th>
-      <th class="uk-text-center"><span class="skeleton-container">{$_("miner.tower_state.on_chain_height")}</span></th>
-      <th class="uk-text-center"><span class="skeleton-container">{$_("miner.tower_state.mined_in_last_epoch")}</span></th>
-      <th class="uk-text-center"><span class="skeleton-container">{$_("miner.tower_state.sent_in_this_epoch")}</span></th>
+      <th class="uk-text-center"
+        ><span class="skeleton-container">{$_('miner.tower_state.local_height')}</span></th
+      >
+      <th class="uk-text-center"
+        ><span class="skeleton-container">{$_('miner.tower_state.on_chain_height')}</span></th
+      >
+      <th class="uk-text-center"
+        ><span class="skeleton-container">{$_('miner.tower_state.mined_in_last_epoch')}</span></th
+      >
+      <th class="uk-text-center"
+        ><span class="skeleton-container">{$_('miner.tower_state.sent_in_this_epoch')}</span></th
+      >
     </tr>
   </thead>
   <tbody>
@@ -24,7 +31,7 @@
 
 <style>
   .skeleton-container {
-    background-color: #F0F0F0;
-    color: #F0F0F0;
+    background-color: #f0f0f0;
+    color: #f0f0f0;
   }
 </style>

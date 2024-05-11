@@ -1,0 +1,101 @@
+name: build
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - 'release**'
+      - 'main'
+      
+jobs:
+ build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ windows-latest, macos-11, macos-14, ubuntu-latest ]
+    name: build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      ### DO NOT REMOVE: uncomment if you need to debug runner ###
+      # - name: setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+      #   with:
+      #     detached: true
+      # checkout
+      # Setup Rust
+      - name: checkout sources
+        uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
+          
+      - name: Set rust_version from rust_toolchain file
+        run: echo "RUST_VERSION=$(cat src-tauri/rust-toolchain)" >> $GITHUB_ENV
+      
+      - name: Set rust_version from rust_toolchain file
+        if: matrix.os == 'windows-latest'
+        run: |
+          Get-Content -Path src-tauri/rust-toolchain | Tee-Object -variable RUST_VERSION 
+          echo "RUST_VERSION=$RUST_VERSION" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          profile: minimal
+          toolchain: "${{ env.RUST_VERSION }}"
+          override: true
+          
+      # Setup Node.js
+      - name: setup node
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: 18
+
+      # Install ld for ubuntu
+      - name: install dependencies (ubuntu only)
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo apt-get install -y lld libsoup2.4-dev libgdk3.0-cil-dev libjavascriptcoregtk-4.0-dev libwebkit2gtk-4.0-dev
+
+      - name: install dependencies (windows only)
+        if: matrix.os == 'windows-latest'
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "11.0"
+          directory: ${{ runner.temp }}/llvm
+
+      - name: Set LIBCLANG_PATH
+        if: matrix.os == 'windows-latest'
+        run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
+
+      # Package the windows dependencies
+      - name: copy gmp.dll for build
+        if: matrix.os == 'windows-latest'
+        run: |
+          $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
+          Copy-Item ('${{ github.workspace }}' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
+
+
+########  CACHE  ########
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+           workspaces: ./src-tauri
+           shared-key: "${{ matrix.os }}"
+           cache-on-failure: true
+
+
+########  BUILD  ########
+
+      - name: yarn installation
+        run: yarn install
+
+      - name: pre-build rust
+        working-directory: ./src-tauri
+        run: cargo b --release
+
+      - name: build tauri
+        run: yarn run build:github-pr
+        env:
+        # Mocked keys.  
+          TAURI_PRIVATE_KEY: "dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5ZUYrUFF0RS9ZbU5EN0VFWk52TmpDRDQvTFFWOHhqSXNkZFVvUjZSRWNJc0FBQkFBQUFBQUFBQUFBQUlBQUFBQTZhNUxkYVFJWDNWTENKR2tSNzFVcDhsRzcvd0lKeWRGcytBZDNyZ3o3OWRXOWVmbmZCQktJYk8xOHVHWG5CZ25XN1pBOXM3SjMyWW1DRFNZWFJ5WGxsd3B6d3RvOEtTNHFFbFM5VE5obmNEZ1dHeEljVFRhZ2FXa0RzNHZOVkNESE5DdDArUmkvUUE9Cg=="
+          TAURI_KEY_PASSWORD: "mock"

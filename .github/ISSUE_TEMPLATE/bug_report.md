@@ -1,10 +1,9 @@
 ---
 name: "\U0001F41B Carpe Bug report"
 about: Create a bug report to help improve Carpe
-title: "[Bug]"
+title: '[Bug]'
 labels: bug
 assignees: ''
-
 ---
 
 # 🐛 Bug
@@ -15,8 +14,8 @@ assignees: ''
 
 **Steps to reproduce**
 
-
 **Print screen or Debug/Console error message**
+
 ```
 // Paste the output here
 ```
@@ -28,6 +27,7 @@ assignees: ''
 ## System information
 
 **Please complete the following information:**
+
 - <!-- Carpe Version -->
 - <!-- Computer OS -->
 

@@ -1,14 +1,13 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { getEnv, nodeEnv, setDebugProdTest } from "../../debug";
+  import { onMount } from 'svelte'
+  import { getEnv, nodeEnv, setDebugProdTest } from '../../modules/debug'
 
-  let current_env = "prod";
-  
-  onMount(()=> {
-    getEnv(); // TODO: this should be async and awaited
-    nodeEnv.subscribe(env => current_env = env);
-  });
+  let current_env = 'prod'
 
+  onMount(() => {
+    getEnv() // TODO: this should be async and awaited
+    nodeEnv.subscribe((env) => (current_env = env))
+  })
 </script>
 
 <main>
@@ -20,8 +19,8 @@
           class="uk-radio"
           type="radio"
           name="radio2"
-          checked={current_env == "prod"}
-          on:click={() => setDebugProdTest("prod")}
+          checked={current_env == 'prod'}
+          on:click={() => setDebugProdTest('prod')}
         /> Prod
       </label>
       <label
@@ -29,8 +28,8 @@
           class="uk-radio"
           type="radio"
           name="radio2"
-          checked={current_env == "test"}
-          on:click={() => setDebugProdTest("test")}
+          checked={current_env == 'test'}
+          on:click={() => setDebugProdTest('test')}
         /> Test
       </label>
     </div>

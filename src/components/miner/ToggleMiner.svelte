@@ -1,30 +1,25 @@
-<script>
-  import { onMount, onDestroy } from "svelte";
-  import { toggleMining } from "../../miner_toggle";
-  import { minerLoopEnabled } from "../../miner";
+<script lang="ts">
+  import { minerLoopEnabled } from '../../modules/miner'
+  import { toggleMining } from '../../modules/miner_toggle'
+  import { signingAccount } from '../../modules/accounts';
+  let checking = false
 
-  let enabled;
-  let unsubscribe; 
-
-  onMount(async () => {
-    unsubscribe = minerLoopEnabled.subscribe(boo => enabled = boo);
-  });
-
-  onDestroy(async () => {
-    unsubscribe && unsubscribe();
-  });
-  
+  const toggle = () => {
+    checking = true
+    setTimeout(() => (checking = false), 1000)
+    toggleMining()
+  }
 </script>
 
 <main>
   <div class="uk-text-center uk-margin" style="position: relative">
-    <label class="uk-switch">
-      <input
-        type="checkbox"
-        on:click={() => toggleMining()}
-        checked={enabled}
-      />
-      <div class="uk-switch-slider uk-switch-on-off round" />     
-    </label>
+    {#if !checking}
+      <label class="uk-switch">
+        <input type="checkbox" on:click={toggle} checked={$minerLoopEnabled}  disabled={$signingAccount.watch_only}/>
+        <div class="uk-switch-slider uk-switch-on-off round" />
+      </label>
+    {:else}
+      <div uk-spinner></div>
+    {/if}
   </div>
 </main>

@@ -6,69 +6,101 @@
     "events": "事件"
   },
   "layout": {
-      "connection_error": {
-         "title": "晕了, 居然无法连上OL网络",
-         "body": "<p> 很有可能是你的上游节点已经停机了.</p> <h3> 别担心！你的账号和资产是安全的.</h3> <p>如果你需要更新你的节点，请点这里：</p>"
-      },
-      "error_accordion": {
-          "title": "错误报告",
-          "category": "错误分类",
-          "id": "ID"
-      }
+    "key_error": {
+      "title": "错误：私钥未配置",
+      "body": "找不到您的私钥。可能是由于迁移或升级造成的。您应该再次输入您的助记词，保存在操作系统的安全钥匙串中。"
+    },
+    "connection_error": {
+      "title": "糟糕, 居然无法连上OL网络",
+      "body": "<p> 很有可能是上游节点已断开。</p> <h3> 别担心！您的账号和资产是安全的.</h3> <p>如果您需要更新连接节点，请点这里：</p>",
+      "dont_worry": "别担心，您的账户和资产都很安全",
+      "refresh_instructions": "如果您需要更新或刷新您的同行，可以在这里进行："
+    },
+    "error_accordion": {
+      "title": "错误报告",
+      "category": "错误分类",
+      "id": "ID"
+    },
+    "recovery_mode": {
+      "title": "恢复模式",
+      "body": "网络已启动！但我们正处于恢复模式，还没有为证明支付奖励。请等待恢复模式结束后再发送证明以获取奖励。当周期 {epoch_recovery_ends} 变为 {epoch_recovery_ends_after} 时，恢复模式结束。"
+    },
+    "attempting_to_connect": "尝试连接到区块链",
+    "not_connected_to_chain": "未连接到链，数据可能不同步"
   },
   "wallet": {
     "wallet": "钱包",
     "carpe": "CARPE",
     "btn_new_account": "创建账号",
     "btn_restore_account": "恢复账号",
-    "newbie_message": "看起来你还没有创建账号。",
+    "btn_add_watch_account": "观察账号",
+    "newbie_message": "您似乎还没有创建账号。",
+    "legacy_account_opt": "遗留地址， 32字符的地址",
     "reminder_create": {
       "card_title": "激活",
       "message_headline": "您的账号已经创建成功，但是还没有激活。",
       "message_prefix": "加我们的",
-      "message_suffix": " 社区并提供您的激活码，我们会帮助你完成激活。",
+      "message_suffix": " 社区并提供您的激活码，社区成员会帮助您完成账户激活。",
       "onboard_key": "激活码（AuthKey）"
     },
     "account_list": {
       "nickname": "昵称",
       "address": "地址",
       "authkey": "激活码",
+      "unlocked": "已解锁",
       "balance": "余额",
       "offline": "断线",
       "loading": "加载中",
       "account_on_chain": "未激活",
-      "message": " 所有的发送的交易（包括：挖矿）都会消耗您的余额。"
+      "message": " 所有发送的交易（包括：挖矿）都会消耗一些余额作为手续费。",
+      "info_title": "账户信息"
     },
     "keygen": {
       "title": "创建新账号",
-      "description": "账户创建成功以后，只有有人向您的账户发送至少一个代币，账号才会在链上存在。",
+      "description": "创建账户后，您的账户需要收到来自链上的任意一个钱包至少1个0L代币，才能够被激活上链。",
       "btn_generate_keys": "生成密钥",
       "btn_generate_keys_2": "换一个密钥",
-      "btn_create_account": "创建这个密钥",
+      "btn_create_account": "创建账户",
       "account_address": "账户地址",
       "onboard_key": "激活码（AuthKey）",
-      "onboard_key_description": "这个激活码用来将你账户激活到链上",
+      "onboard_key_description": "这个激活码用来将您账户激活到链上",
       "securite_recovery_phrase": "账号助记词",
-      "securite_note": "这是您账号的助记词。如果丢失，没有人可以帮你。请把他记下来，不要告诉任何人。",
-      "account_tips": "您的账号还没有上链，您需要将您的激活码发给一个人帮助您完成账号创建。"
+      "securite_note": "这是您账号的助记词。如果丢失，您的账户将永远无法恢复。建议您用纸和笔记下来，妥善保管。",
+      "account_tips": "您的账号还没有上链，您需要将激活码发给一个已经拥有链上钱包的用户，来帮助您完成账号创建。"
     },
     "account_from_mnem_submit": {
-      "title":" 备份好了吗？",
-      "body": " <p>您确定要使用这个助记词吗?</p> <p>如果助记词丢失或者忘记，您将不能恢复您的账号.</p><p> 这是最后的机会将它写下来.</p>",
-      "btn_cancel": "再检查一下",
-      "btn_submit": "提交保存",
+      "title": " 备份好了吗？",
+      "body": " <p>您确定要使用这个助记词吗？</p> <p>如果助记词丢失或者忘记，您将不能恢复您的账号！</p><p> 请检查已经完成助记词备份！</p>",
+      "btn_cancel": "返回检查",
+      "btn_submit": "确认提交",
       "btn_submiting": "提交中"
     },
     "account_from_mnem_from": {
       "title": "恢复账号",
-      "description": "使用您的助记词，在CARPE创建账号，查看资产和发送交易。",
+      "description": "使用您已备份的钱包账户助记词，在 CARPE 恢复账号，查看资产和发送交易。",
       "placeholder": "助记词"
+    },
+    "account_from_private": {
+      "description": "使用私钥恢复账户。",
+      "placeholder": "私钥",
+      "accordion_title": "高级：使用私钥"
+    },
+    "add_watch_account": {
+      "description": "在没有私钥或助记词的情况下添加观察账号。",
+      "placeholder": "地址"
     },
     "account_switcher": {
       "select_account": "选择账号",
       "switch_account": "切换账号",
-      "setting": "设置",
-      "developers": "开发着"
+      "setting": "设置菜单",
+      "developers": "开发者模式"
+    },
+    "settings": {
+      "title": "钱包选项",
+      "slow_label": "慢钱包",
+      "slow_info": "这是一个慢钱包，转账仅限于解锁的金额。慢速钱包每天解锁 35,000 个币",
+      "warn": "这些更改将出现在区块链上。",
+      "slow_wallet_warn": "警告：将钱包设置为 \"慢速 \"或 \"社区 \"是永久性的"
     }
   },
   "about": {
@@ -78,6 +110,13 @@
     "branch": "分支",
     "commit": "Commit"
   },
+  "upgrade": {
+    "uptodate": "您使用的是当前版本",
+    "available": "有一个升级版本",
+    "download": "下载中",
+    "check_again": "检查升级",
+    "restart": "成功。现在您可以重新启动 Carpe"
+  },
   "settings": {
     "title": "设置",
     "langapp_settings": {
@@ -86,19 +125,21 @@
       "lang_description": "请选择您要显示的语言",
       "lang_button": "中文",
       "theme": "主题",
-      "theme_description": "请选择您喜欢的主题"
+      "theme_description": "请选择您喜欢的界面主题"
     },
     "network_settings": {
       "title": "网络设置",
       "list_of_peers": "节点列表",
-      "description": "选择节点列表，帮助您连上网络，Carpe 会在列表中随机链接列表中的节点，直至链接成功。你可以链接任何的playlist.json文件来更新节点。",
+      "synced_peers": "Synced Peers",
+      "refresh_peers_button": "Check Fullnodes Sync",
+      "description": "选择节点列表，自动化切换上游节点。Carpe 会在列表中随机连接上游节点，直至链接成功。您可以链接任何的 playlist.json 文件来更新节点。",
       "playlist": "更新网络节点",
       "override_peers": "覆盖节点",
-      "override_peers_description": "您可以强制使用某一个节点，只需要设置一个节点，他会替换上面的节点列表.",
-      "url_of_upstream_node": "上游节点URL",
-      "btn_update": "更新",
+      "override_peers_description": "您可以设置只使用一个指定节点，请输入该节点 IP 地址，点击确认。注：覆盖节点模式下，节点列表功能将默认关闭。",
+      "url_of_upstream_node": "指定节点URL",
+      "btn_update": "确认",
       "upstream_title": "获取新的WAYPOINT",
-      "upstream_subtitle": "大多数的WAYPOINT问题可以痛殴刷新新的Waypoint来解决",
+      "upstream_subtitle": "通过切换获取新的 waypoint 来解决连接问题。",
       "btn_fetch_new_waypoint": "获取新的Waypoint",
       "btn_cancel": "取消",
       "btn_submit": "使用节点列表"
@@ -106,21 +147,26 @@
     "account_settings": {
       "title": "账号设置",
       "btn_remove": "删除账号",
-      "comfirm": "确认要从本设备中删除该账号吗？本操作不可逆。",
-      "description": "本操作不会删除链上的账号，只会删除本设备上的信息，如果您没有保存助记词，您的账号就会被锁定，没有人能够帮你恢复这个账号。"
+      "confirm": "请确认要从本设备中删除当前账号吗？本操作不可逆。",
+      "description": "本操作不会删除链上账号，只会删除本地设备上的信息，请注意如果您没有备份助记词，您的账号将无法被恢复。"
+    },
+    "gas_setting": {
+      "title": "设置最大gas (最小值: 3000)",
+      "btn_confirm": "确认"
     }
   },
   "miner": {
     "title": "矿工",
+    "disable_warning": "挖矿功能会在 V7 发布后移除",
     "miner_backlog": {
       "title": "同步塔（Tower）证明",
-      "subtitle": "手动提交本地证明",
-      "in_process": "进行中",
+      "subtitle": "手动提交本地积压证明",
+      "in_process": "提交中",
       "btn_submit": "提交本地积压证明"
     },
     "miner_phases": {
       "backlog_started": "积压监听启动",
-      "backlog_in_process": "积压提交进行中",
+      "backlog_in_process": "积压提交中",
       "backlog_complete": "积压处理完成",
       "mining_enabled": "启动挖矿",
       "proof_started": "证明请求开始",
@@ -129,50 +175,50 @@
     "miner_process": {
       "status_complete": "证明完成",
       "status_in_process": "挖矿进行中",
-      "notes": "百分比是估算的 <br> 他是根据你前一个证明的消耗时间估算的。",
-      "notes2": "超过100%，意味着它比它前一个证明所花的时间要长。"
+      "notes": "百分比是预估值 <br> 它是根据您前一个证明的消耗时间估算的。",
+      "notes2": "超过100%，意味着当前证明比前一个所需要的时间更长。"
     },
     "tower_state": {
       "local_height": "本地塔高",
       "on_chain_height": "链上塔高",
-      "mined_in_last_epoch": "上期数",
-      "sent_in_this_epoch": "本期数",
-      "empty": "本设备上未发现证明",
+      "mined_in_last_epoch": "当前纪元",
+      "sent_in_this_epoch": "现已提交",
+      "empty": "当前设备未发现证明",
       "proof_more": "您提交的证明数已达到今天的最大值（72）",
-      "proof_less": "证明数量未达到获取奖励的最小值 (8)",
-      "proof_ok": "恭喜你完成了本期需要的最小的证明数（8）"
+      "proof_less": "证明数量未达获取奖励的最小值 (8)",
+      "proof_ok": "恭喜您完成了本期需要的最小的证明数（8）"
     },
     "cards": {
       "cant_start": {
-        "title": "您的账号在链上还不存在。",
-        "body": "只有您的账号在链上激活以后，挖矿程序才能启动。可能您已经在本地创建了地址，但是还没有人往您的地址里发送资产。"
+        "title": "您的账号还未激活在链上。",
+        "body": "账号激活上链后，挖矿程序才能启动。可能您已经在本地创建了钱包地址，但是需要一个已经拥有链上钱包的用户转账1个0L币激活您的账户。"
       },
       "disco_error": {
         "title": "中断",
-        "body": "你提交的证明中存在间隙. 每一个证明都需要引用前一个证明，因此您的证明被拒绝了。"
+        "body": "您当前提交的证明中存在空缺. 每一个证明的提交都需要基于前一个的数据，因此现在这个证明被拒绝了。"
       },
       "epoch_status": {
-        "empty_title": "尚未提交证明",
-        "empty_body": "尚未在链上找到任何证明，如果你成功提交了一个证明，您就可以在这里看到统计数据了。",
+        "empty_title": "没有提交证明",
+        "empty_body": "没有在链上找到任何证明，如果您成功提交了一个证明，这里会显示统计数据。",
         "in_process_title": "加油！",
-        "in_process_body": "您的账户每天（epoch）至少提交8个证明，第二天才会收到奖励。",
-        "complete_title": "成功！",
-        "complete_body": "您已经完成了今日所需的证明，（最少8个每天（epoch）. 您将会在明天（下一个epoch）开始的时候收到奖励",
-        "exceed_title": "哇喔！",
-        "exceed_body": "您已经提交了72个证明，这是每天可以提交的最大数量。塔会继续产生证明，但是在下一个周期开始之前不会被接受."
+        "in_process_body": "您的账户每天（epoch）需要至少提交8个证明，第二天（下一个epoch）才会收到奖励。",
+        "complete_title": "成功！请保持",
+        "complete_body": "您已经完成今日所需的最低证明提交数量，（最少8个每天（epoch）保持挖矿将收获更多奖励。 您将会在明天（下一个epoch）开始的时候收到奖励",
+        "exceed_title": "牛哇！牛！",
+        "exceed_body": "您已经提交了72个证明，这是每天可以提交的最大数量。塔会继续提交证明，并在新的周期开始后一口气提交到连上。"
       },
       "first_proof": {
-        "title": "开始我们的第一个证明吧！",
-        "body": "<p>这将会需要大约30分钟或者1小时左右的时间</p> <p> 挖取证明将会消耗您账户中一定数量的资产. 如果您提交的证明数达到每天所需的最小值, 你就会在第二天（epoch）收到奖励.</p> <p> 记得检查你的计算机确保您关闭显示器时，您的机器不会进入休眠状态。这不是运行矿工的地方。</p>",
-        "body_disabled": "打开开关开始挖矿!"
+        "title": "开始提交第一个证明吧！",
+        "body": "<p>这将需要大约30分钟或者1小时左右的时间</p> <p> 挖取证明将会消耗您余额中一定数量的代币作为手续费. 如果您提交的证明数达到每天所需的最小值（8个）, 您就会在第二天（下一个epoch）收到奖励.</p> <p> 请检查您的计算机设置，关闭显示器后，电脑不会进入休眠状态，休眠状态 Carpe 会停止运行。</p>",
+        "body_disabled": "打开按钮开始挖矿吧!"
       },
       "invalid_proof": {
         "title": "证明验证失败！",
         "body": "奇怪. 这个证明被拒绝了，因为它不是一个有效的“延时证明”。这通常是参数设置错误。"
       },
       "oops": {
-        "title": "Oops",
-        "body": "挖取证明的过程中出错。"
+        "title": "喔！~",
+        "body": "挖取证明的过程中出错了。"
       },
       "too_many_proofs": {
         "title": "太多错误",
@@ -180,12 +226,12 @@
       },
       "wrong_difficulty": {
         "title": "错误的难度",
-        "body": "您证明文件中使用了错误的难度参数。检查您链接的网络是否使用了正确的难度参数。"
+        "body": "您证明文件中使用了错误的难度参数。检查您连接的网络是否使用了正确的难度参数。"
       },
       "sync_proof": {
         "title": "同步证明",
         "body": "等待证明交易确认 {delta} ",
-        "body_0": "有些小错误, 您本地的证明比链上的多，也有可能是您本地丢失了一些证明文件。"
+        "body_0": "出现了一些小错误, 您本地的证明比链上的多，也有可能是您本地丢失了一些证明文件。"
       }
     }
   },
@@ -205,25 +251,28 @@
       "no_balance_body2": "您的账户资产少于2个币，您不可以激活任何人。"
     },
     "set_wallet_type": {
-      "title": "设置账户类型",
-      "subtitle": "确认您知道你在做什么. 本操作不可逆. 慢钱包和社区钱包是永久性的。",
+      "actions_title": "账户操作",
+      "set_slow_title": "慢速钱包（危险）",
+      "subtitle": "确认您务必确认本次操作. 本操作不可逆. 慢钱包和社区钱包是永久性的。",
       "btn_slow": "设为慢钱包",
       "btn_confirm_slow": "确认设置慢钱包吗？本操作不可逆。",
-      "slow_confirm": "设为慢钱包",
+      "warning": "警告：这一改变将是永久性的",
       "btn_community": "设为社区钱包",
       "btn_confirm_community": "设为社区钱包",
-      "community_confirm": "确认要设为社区钱包吗？本操作不可逆。"
+      "community_confirm": "确认要设为社区钱包吗？本操作不可逆。",
+      "title": "设置账户类型",
+      "slow_confirm": "设为慢钱包"
     },
     "transfer": {
       "title": "代币转账",
       "sender": "发送者",
       "balance": "余额",
       "receiver": "接收者",
-      "amount": "数量",
+      "amount": "代币数量",
       "amount_label": "数量 (不能使用小数)",
-      "receiver_placeholder": "请输入接收者地址",
+      "receiver_placeholder": "请输入接收者钱包账户地址",
       "amount_placeholder": "请输入需要转账的数量",
-      "confirm_title": "小心！",
+      "confirm_title": "注意！",
       "please_confirm": "请确认您的转账信息:",
       "await": "处理中",
       "btn_next": "下一步",
@@ -232,7 +281,8 @@
       "btn_close": "关闭",
       "error_amount_greater_than_balance": "数量不能大于账户余额",
       "error_receiver_equals_sender": "接收地址不能是发送地址",
-      "error_slow_wallet": "慢钱包的转账尚未启动",
+      "error_slow_wallet": "慢钱包转账功能尚未启动",
+      "error_account_does_not_exist": "收件人帐户不存在",
       "success": "转账成功！",
       "failed": "转账失败。 错误码: {code}"
     }
@@ -248,7 +298,7 @@
     "sent_payment": "转出记录",
     "loading": {
       "error": "账户事件加载失败:",
-      "corrupted_db": "当前连接的节点没有您的账户信息. 别担心，你的资产是安全的，您可以尝试其他节点！",
+      "corrupted_db": "当前连接的节点无法查询您的账户信息. 别担心，您的资产是安全的，您可以尝试其他节点！",
       "account_off_chain": "当前选中的账号未激活！"
     }
   },
@@ -264,7 +314,7 @@
       "claim": "Claim"
     },
     "claim_btn": {
-      "await" : "Await...",
+      "await": "Await...",
       "claim": "Claim Now"
     },
     "modal_success": {

@@ -1,106 +1,48 @@
 //! transaction scripts
+use std::str::FromStr;
 
-use crate::{carpe_error::CarpeError, configs};
-use diem_sdk::transaction_builder::stdlib;
-use diem_types::{account_address::AccountAddress, transaction::authenticator::AuthenticationKey};
-use txs::{
-  commands::{create_account_cmd::create_from_auth_and_coin, demo_cmd, transfer_cmd},
-  submit_tx::{self},
-};
+use crate::key_manager::{get_private_key, inject_private_key_to_cfg};
+use crate::{carpe_error::CarpeError, configs::get_cfg};
 
-#[tauri::command]
-pub fn demo_tx() -> Result<String, CarpeError> {
-  // let addr: AccountAddress = account.parse()
-  // .map_err(|_|{ CarpeError::misc("can't parse account") })?;
+use libra_txs::submit_transaction::Sender;
+use libra_types::exports::{AccountAddress, AccountKey};
 
-  let tx_params =
-    configs::get_tx_params()?;
-  // dbg!(&tx_params);
-  match demo_cmd::demo_tx(&tx_params, None) {
-    Ok(r) => Ok(format!("Tx Success: {:?}", r)),
-    Err(e) => Err(CarpeError::misc(&format!(
-      "could not do demo tx, message: {:?}",
-      e
-    ))),
-  }
+fn make_account_key(address: &AccountAddress) -> anyhow::Result<AccountKey> {
+  let pk = get_private_key(address)?;
+  Ok(AccountKey::from_private_key(pk))
 }
 
 #[tauri::command(async)]
-pub fn create_user_account(authkey: String) -> Result<String, CarpeError> {
-  let tx_params =
-    configs::get_tx_params()?;
-
-  if let Some(key) = authkey.parse::<AuthenticationKey>().ok() {
-    match create_from_auth_and_coin(key, 1, tx_params, None) {
-      Ok(r) => Ok(format!("Tx Success: {:?}", r)),
-      Err(e) => {
-        dbg!(&e);
-        let new_msg = format!(
-          "could not make account creation tx, message: Location {:?}, Code: {:?}",
-          &e.location, &e.abort_code
-        );
-
-        let mut ce: CarpeError = e.into();
-
-        dbg!(&ce);
-        ce.msg = new_msg;
-
-        Err(ce)
-      }
+pub async fn coin_transfer(
+  _sender: AccountAddress,
+  receiver: &str,
+  amount: u64,
+  legacy: bool,
+) -> Result<(), CarpeError> {
+  // NOTE: unsure Serde was catching all cases check serialization
+  let receiver_account = match AccountAddress::from_str(receiver) {
+    Ok(a) => a,
+    Err(e) => {
+      dbg!(e);
+      // try prepending
+      AccountAddress::from_str(&format!("0x{}", receiver))?
     }
-  } else {
-    Err(CarpeError::misc("could not parse authentication key"))
-  }
-}
+  };
 
-#[derive(serde::Deserialize, serde::Serialize, Debug)]
-pub enum WalletTypes {
-  Slow = 0,
-  Community = 1,
-}
-
-#[tauri::command(async)]
-pub fn wallet_type(type_int: u8) -> Result<String, CarpeError> {
-  let tx_params =
-    configs::get_tx_params()?;
-
-  match txs::commands::wallet_cmd::set_wallet_type(type_int, tx_params, None) {
-    Ok(r) => Ok(format!("Tx Success: {:?}", r)),
-    Err(e) => Err(CarpeError::misc(&format!(
-      "could not set wallet type: {:?}",
-      e
-    ))),
-  }
-}
-
-#[tauri::command(async)]
-pub fn coin_transfer(receiver: String, amount: u64) -> Result<String, CarpeError> {
-
-  let tx_params =
-    configs::get_tx_params()?;
-
-
-  let receiver_address: AccountAddress = receiver
-    .parse()
-    .map_err(|_| CarpeError::misc("Invalid receiver account address"))?;
-
-  match transfer_cmd::balance_transfer(receiver_address, amount, tx_params, None) {
-    Ok(r) => Ok(format!("Transfer success: {:?}", r)),
-    Err(e) => Err(CarpeError::misc(&format!(
-      "{:}",
-      match e.abort_code {
-        Some(code) => code,
-        None => 0,
-      }
-    ))),
-  }
-}
-
-#[tauri::command(async)]
-pub async fn claim_make_whole() -> Result<(), CarpeError> {
-  let tx_payload = stdlib::encode_claim_make_whole_script_function();
-  let tx_params =
-    configs::get_tx_params()?;
-  submit_tx::maybe_submit(tx_payload, &tx_params, None)?;
+  let mut config = get_cfg()?;
+  inject_private_key_to_cfg(&mut config)?;
+  let mut sender = Sender::from_app_cfg(&config, None, legacy).await?;
+  sender
+    .transfer(receiver_account, amount as f64, false)
+    .await?;
   Ok(())
 }
+
+// #[tauri::command(async)]
+// pub async fn claim_make_whole() -> Result<(), CarpeError> {
+//   let tx_payload = stdlib::encode_claim_make_whole_script_function();
+//   let tx_params =
+//     configs::get_tx_params()?;
+//   submit_tx::maybe_submit(tx_payload, &tx_params, None)?;
+//   Ok(())
+// }

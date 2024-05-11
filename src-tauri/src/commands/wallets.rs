@@ -1,68 +1,82 @@
-/**
- * OK - get all accounts
- * OK - add account
- * - remove account
- * - update account
- *
- **/
-use crate::carpe_error::CarpeError;
-use crate::configs::default_accounts_db_path;
-use crate::{configs, configs_network, configs_profile, key_manager};
-use anyhow::{bail, Error};
-use diem_client::views::EventView;
-use diem_types::account_address::AccountAddress;
-use diem_types::transaction::authenticator::AuthenticationKey;
-use diem_wallet::WalletLibrary;
-use ol_keys::scheme::KeyScheme;
-use ol_keys::wallet;
-use std::fs::{self, create_dir_all, File};
+use crate::{
+  carpe_error::CarpeError,
+  commands::query,
+  configs::{self, default_legacy_account_path, get_cfg, get_client},
+  configs_profile,
+  key_manager::{self, get_private_key, inject_private_key_to_cfg},
+};
+
+use anyhow::{anyhow, Context, Error};
+use libra_txs::{submit_transaction::Sender, txs_cli_user::SetSlowTx};
+use libra_types::{
+  exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
+  legacy_types::app_cfg::Profile,
+  move_resource::gas_coin::SlowWalletBalance,
+  type_extensions::client_ext::ClientExt,
+};
+use libra_wallet::account_keys::{self, KeyChain};
+use serde::{Deserialize, Serialize};
+use std::fs::{self, File};
 use std::io::prelude::*;
 
-use super::get_balance;
-use super::get_payment_events;
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
-pub struct Accounts {
-  pub accounts: Vec<AccountEntry>,
+pub struct NewKeygen {
+  entry: Profile,
+  mnem: String,
+}
+
+#[derive(serde::Deserialize, serde::Serialize, Debug)]
+pub struct LegacyAccounts {
+  pub accounts: Vec<LegacyAccount>,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq)]
-pub struct AccountEntry {
-  pub account: AccountAddress,
+pub struct LegacyAccount {
   pub authkey: AuthenticationKey,
-  pub nickname: String,
-  pub on_chain: Option<bool>,
-  pub balance: Option<u64>,
 }
 
-impl AccountEntry {
-  pub fn new(address: AccountAddress, authkey: AuthenticationKey) -> Self {
-    AccountEntry {
-      account: address.clone(),
-      authkey,
-      nickname: get_short(address),
-      on_chain: None,
-      balance: None,
-    }
+impl LegacyAccount {
+  pub fn new(authkey: AuthenticationKey) -> Self {
+    LegacyAccount { authkey }
   }
 }
+/// a subset of AppCfg::Profile, dropping the private key
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CarpeProfile {
+  account: AccountAddress,
+  auth_key: AuthenticationKey,
+  nickname: String,
+  on_chain: bool,
+  balance: SlowWalletBalance,
+  locale: Option<String>, // TODO: refactor, tauri now offers locale of the OS
+}
 
-#[derive(serde::Deserialize, serde::Serialize, Debug, PartialEq)]
-pub struct NewKeygen {
-  entry: AccountEntry,
-  mnem: String,
+impl From<&Profile> for CarpeProfile {
+  fn from(core_profile: &Profile) -> Self {
+    Self {
+      account: core_profile.account,
+      auth_key: core_profile.auth_key,
+      nickname: core_profile.nickname.clone(),
+      on_chain: core_profile.on_chain,
+      balance: SlowWalletBalance {
+        unlocked: core_profile.balance.unlocked,
+        total: core_profile.balance.total,
+      }, // TODO: refactor upstream to have Clone
+      locale: core_profile.locale.clone(),
+    }
+  }
 }
 
 /// Keygen handler
 #[tauri::command]
 pub fn keygen() -> Result<NewKeygen, CarpeError> {
-  dbg!("keygen");
-  let wallet = WalletLibrary::new();
-  let mnemonic_string = wallet.mnemonic();
+  let legacy_key = account_keys::legacy_keygen(false)?;
+  let mnemonic_string = legacy_key.mnemonic;
 
-  let (authkey, address, _) = wallet::get_account_from_mnem(mnemonic_string.clone())
-    .map_err(|_| CarpeError::misc("cannot generate keys"))?;
+  let keys = account_keys::get_keys_from_mnem(mnemonic_string.clone())?;
+
   let res = NewKeygen {
-    entry: AccountEntry::new(address, authkey),
+    entry: Profile::new(keys.child_0_owner.auth_key, keys.child_0_owner.account),
     mnem: mnemonic_string,
   };
 
@@ -76,176 +90,267 @@ pub fn is_init() -> Result<bool, CarpeError> {
 }
 
 /// default way accounts get initialized in Carpe
-#[tauri::command]
-pub fn init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-  danger_init_from_mnem(mnem).map_err(|_| CarpeError::config("could not initialize from mnemonic"))
+#[tauri::command(async)] // don't want this to be async. We want it to block before moving back to the wallets page (and then needing a refresh), it's a smoother UI.
+pub async fn init_from_mnem(mnem: String, is_legacy: bool) -> Result<CarpeProfile, CarpeError> {
+  let wallet = account_keys::get_keys_from_mnem(mnem.clone())?;
+  init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?, is_legacy).await
 }
 
-pub fn danger_init_from_mnem(mnem: String) -> Result<AccountEntry, CarpeError> {
-  dbg!("init from mnem");
-  let init = configs::is_initialized();
-  // TODO: refactor upstream wallet::get_account so that it returns a result
-  let (authkey, address, _wl) = wallet::get_account_from_mnem(mnem.clone())?;
+#[tauri::command(async)]
+pub async fn init_from_private_key(
+  pri_key_string: String,
+  is_legacy: bool,
+) -> Result<CarpeProfile, CarpeError> {
+  let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
+    .map_err(|_| anyhow!("cannot parse encoded private key"))?;
+  let acc_struct = account_keys::get_account_from_private(&pri);
+  let authkey = acc_struct.auth_key;
+  if is_legacy {
+    let _ = add_legacy_accounts(authkey);
+  }
+  // IMPORTANT
+  // let's check if this account has had a rotated authkey,
+  // so the address we derive may not be the expected one.
+  let address = get_originating_address(authkey)
+    .await
+    .unwrap_or(acc_struct.account); // the account may not have been created on chain. If we can't get the address, we'll just use the one we derived from the private key
 
-  let priv_key = KeyScheme::new_from_mnemonic(mnem)
-    .child_0_owner
-    .get_private_key();
-
-  // first try to insert into DB.
-  // it will error if the account already exists.
-  insert_account_db(get_short(address.clone()), address, authkey)?;
-
-  key_manager::set_private_key(&address.to_string(), priv_key)
+  key_manager::set_private_key(&address, acc_struct.pri_key)
     .map_err(|e| CarpeError::config(&e.to_string()))?;
 
-  configs_profile::set_account_profile(address.clone(), authkey.clone())?;
+  configs_profile::set_account_profile(address, authkey).await?;
+  let core_profile = &Profile::new(authkey, address);
+  Ok(core_profile.into())
+}
 
-  // this may be the first account and may not yet be initialized.
-  if !init {
-    configs_network::set_network_configs(configs_network::Networks::Mainnet)?;
+/// read all accounts from profile
+#[tauri::command(async)]
+pub fn get_all_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
+  let app_cfg = get_cfg()?;
+  let mapped: Vec<CarpeProfile> = app_cfg.user_profiles.iter().map(|p| p.into()).collect();
+  Ok(mapped)
+}
+
+/// read all accounts from profile
+#[tauri::command(async)]
+pub fn get_default_profile() -> Result<CarpeProfile, CarpeError> {
+  let app_cfg = get_cfg()?;
+  let p = app_cfg.get_profile(None)?;
+  Ok(p.into())
+}
+
+#[tauri::command(async)]
+pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
+  // let mut all = Accounts::read_from_file()?;
+  let mut app_cfg = get_cfg()?;
+
+  // while we are here check if the accounts are on chain
+  // under a different address than implied by authkey
+  map_get_originating_address(&mut app_cfg.user_profiles).await?;
+  map_get_balance(&mut app_cfg.user_profiles).await?;
+  app_cfg.save_file()?;
+
+  let mapped: Vec<CarpeProfile> = app_cfg.user_profiles.iter().map(|p| p.into()).collect();
+  Ok(mapped)
+}
+
+#[tauri::command(async)]
+/// check if this account is a slow wallet
+pub async fn is_slow(account: AccountAddress) -> anyhow::Result<bool, CarpeError> {
+  let c = get_client()?;
+  println!("is slow");
+  let b = c
+    .view_ext(
+      "0x1::slow_wallet::is_slow",
+      None,
+      Some(account.to_hex_literal()),
+    )
+    .await?;
+  dbg!(&b);
+  match b.as_array().context("no bool found")?[0].as_bool() {
+    Some(b) => Ok(b),
+    None => Ok(false),
   }
-
-  Ok(AccountEntry::new(address, authkey))
 }
 
-/// read all accounts from ACCOUNTS_DB_FILE
-#[tauri::command(async)]
-pub fn get_all_accounts() -> Result<Accounts, CarpeError> {
-  let all = read_accounts()?;
-  Ok(all)
+async fn map_get_originating_address(list: &mut [Profile]) -> Result<(), CarpeError> {
+  futures::future::join_all(list.iter_mut().map(|e| async {
+    if let Ok(addr) = get_originating_address(e.auth_key).await {
+      e.account = addr;
+      e.nickname = get_short(addr);
+      e.on_chain = true;
+    }
+  }))
+  .await;
+  Ok(())
 }
 
-#[tauri::command(async)]
-pub fn get_account_events(account: AccountAddress) -> Result<Vec<EventView>, CarpeError> {
-  let events = get_payment_events(account)?;
-  Ok(events)
+async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError> {
+  futures::future::join_all(list.iter_mut().map(|e| async {
+    if let Ok(b) = query::get_balance(e.account).await {
+      e.balance = b;
+    }
+  }))
+  .await;
+  Ok(())
 }
 
-#[tauri::command(async)]
-pub fn refresh_accounts() -> Result<Accounts, CarpeError> {
-  let all = read_accounts()?;
-  let updated = map_get_balance(all)?;
-  update_accounts_db(&updated)?;
-  Ok(updated)
-}
-
-fn map_get_balance(mut all_accounts: Accounts) -> Result<Accounts, CarpeError> {
-  all_accounts.accounts = all_accounts
-    .accounts
-    .into_iter()
-    .map(|mut e| {
-      e.balance = get_balance(e.account).ok();
-      e.on_chain = Some(e.balance.is_some());
-      e
-    })
-    .collect();
-  Ok(all_accounts)
-}
-
-fn find_account_data(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
-  let all = read_accounts()?;
-  match all.accounts.into_iter().find(|a| a.account == account) {
-    Some(entry) => Ok(entry),
-    None => Err(CarpeError::misc("could not find an account")),
+pub async fn get_originating_address(
+  auth_key: AuthenticationKey,
+) -> Result<AccountAddress, CarpeError> {
+  let client = get_client()?;
+  let all = read_legacy_accounts().unwrap();
+  let acc_list: Vec<String> = all.accounts.iter().map(|a| a.authkey.to_string()).collect();
+  if acc_list.contains(&auth_key.to_string()) {
+    let a = auth_key.to_string()[32..].to_owned();
+    let b = String::from("00000000000000000000000000000000");
+    Ok(AccountAddress::from_hex_literal(&format!("0x{}{}", b, a)).unwrap())
+  } else {
+    Ok(client.lookup_originating_address(auth_key).await?)
   }
-}
-
-/// Add an account (for tracking only).
-#[tauri::command]
-pub fn add_account(
-  nickname: String,
-  authkey: String,
-  address: String,
-) -> Result<Accounts, CarpeError> {
-  // Todo: Does tauri parse the types automatically?
-  let parsed_address: AccountAddress = address
-    .parse()
-    .map_err(|_| CarpeError::misc("cannot parse account address"))?;
-
-  let parsed_auth: AuthenticationKey = authkey
-    .parse()
-    .map_err(|_| CarpeError::misc("cannot parse authkey"))?;
-
-  insert_account_db(nickname, parsed_address, parsed_auth).map_err(|e| {
-    CarpeError::misc(&format!(
-      "could not add account, message {:?}",
-      e.to_string()
-    ))
-  })
 }
 
 /// Switch tx profiles, change 0L.toml to use selected account
 #[tauri::command(async)]
-pub fn switch_profile(account: AccountAddress) -> Result<AccountEntry, CarpeError> {
-  match find_account_data(account) {
-    Ok(entry) => {
-      configs_profile::set_account_profile(account, entry.authkey.clone())
-        .map_err(|_| CarpeError::misc("could not switch profile"))?;
-      Ok(AccountEntry::new(account, entry.authkey))
-    }
-    Err(_) => Err(CarpeError::misc("could not switch profile")),
-  }
-}
-
-fn insert_account_db(
-  nickname: String,
-  address: AccountAddress,
-  authkey: AuthenticationKey,
-) -> Result<Accounts, Error> {
-  let app_dir = default_accounts_db_path();
-  // get all accounts
-  let mut all = read_accounts()?;
-
-  // push new account
-  let new_account = AccountEntry {
-    account: address,
-    authkey: authkey,
-    nickname: nickname,
-    on_chain: None,
-    balance: None,
-  };
-
-  if !all.accounts.contains(&new_account) {
-    all.accounts.push(new_account);
-
-    // write to db file
-    // in case it doesn't exist
-    //TODO: remove this.
-    create_dir_all(&app_dir.parent().unwrap()).unwrap();
-    let serialized = serde_json::to_vec(&all).expect("Struct Accounts should be converted!");
-    let mut file = File::create(app_dir).expect("DB_FILE should be created!");
-    file
-      .write_all(&serialized)
-      .expect("DB_FILE should be writen!");
-
-    Ok(all)
-  } else {
-    bail!("account already exists")
-  }
-}
-
-fn update_accounts_db(accounts: &Accounts) -> Result<(), CarpeError> {
-  let app_dir = default_accounts_db_path();
-  let serialized = serde_json::to_vec(accounts)
-    .map_err(|e| CarpeError::config(&format!("json account db should serialize, {:?}", &e)))?;
-
-  File::create(app_dir)
-    .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be created!, {:?}", &e)))?
-    .write_all(&serialized)
-    .map_err(|e| CarpeError::config(&format!("carpe DB_FILE should be written!, {:?}", &e)))?;
-  Ok(())
+// IMPORTANT: don't return the profile, since it has keys
+pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, CarpeError> {
+  let mut app_cfg = get_cfg()?;
+  let p = app_cfg.get_profile(Some(account.to_string()))?;
+  app_cfg.workspace.set_default(p.nickname.clone());
+  app_cfg.save_file()?;
+  // TODO: gross, fix upstream `app_cfg.rs` to prevent the borrow issues here
+  let profile = app_cfg.get_profile(Some(account.to_string()))?;
+  Ok(profile.into())
 }
 
 // remove all accounts which are being tracked.
 #[tauri::command]
 pub fn remove_accounts() -> Result<String, CarpeError> {
   // Note: this only removes the account tracking, doesn't delete account on chain.
+  let mut cfg = configs::get_cfg()?;
+  cfg.user_profiles = vec![];
+  cfg.save_file()?;
+  let _ = remove_legacy_accounts();
+  Ok("removed all accounts".to_owned())
+}
 
-  let db_path = default_accounts_db_path();
+pub fn danger_get_keys(mnemonic: String) -> Result<KeyChain, anyhow::Error> {
+  let keys = account_keys::get_keys_from_mnem(mnemonic)?;
+  Ok(keys)
+}
+
+fn get_short(acc: AccountAddress) -> String {
+  // let's check if this is a legacy/founder key, it will have 16 zeros at the start, and that's not a useful nickname
+  if acc.to_string()[..32] == *"00000000000000000000000000000000" {
+    return acc.to_string()[32..35].to_owned();
+  }
+  acc.to_string()[..3].to_owned()
+}
+
+#[tokio::test]
+async fn test_init_mnem() {
+  use libra_types::legacy_types::app_cfg::AppCfg;
+  let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
+  init_from_mnem(alice, false).await.unwrap();
+  let _cfg = AppCfg::load(None).unwrap();
+}
+
+#[tokio::test]
+async fn test_fetch_originating() {
+  let a = AuthenticationKey::from_encoded_string(
+    "53113e2c0edc2bd6b9cccd4c6ab84064847e3ab53d3a46c4139c6d0834f18634",
+  )
+  .unwrap();
+  let r = get_originating_address(a).await.unwrap();
+  dbg!(&r);
+}
+
+#[tauri::command(async)]
+pub async fn set_slow_wallet(legacy: bool) -> Result<(), CarpeError> {
+  // NOTE: unsure Serde was catching all cases check serialization
+  let mut config = get_cfg()?;
+  inject_private_key_to_cfg(&mut config)?;
+  let mut sender = Sender::from_app_cfg(&config, None, legacy).await?;
+
+  let t = SetSlowTx {};
+  t.run(&mut sender).await?;
+  // let payload = libra_stdlib::slow_wallet_user_set_slow();
+  // sender.sign_submit_wait(payload).await?;
+  Ok(())
+}
+
+#[tauri::command]
+pub fn get_private_key_from_os(address: AccountAddress) -> Result<String, CarpeError> {
+  let pk = get_private_key(&address)?;
+  let acc_struct = account_keys::get_account_from_private(&pk);
+  Ok(acc_struct.pri_key.to_encoded_string()?)
+}
+
+#[tauri::command(async)]
+pub async fn add_watch_account(
+  address: AccountAddress,
+  is_legacy: bool,
+) -> Result<CarpeProfile, CarpeError> {
+  let authkey: AuthenticationKey = query::get_auth_key(address).await?;
+  if is_legacy {
+    let _ = add_legacy_accounts(authkey);
+  }
+  configs_profile::set_account_profile(address, authkey).await?;
+  let core_profile = &Profile::new(authkey, address);
+  Ok(core_profile.into())
+}
+
+fn read_legacy_accounts() -> Result<LegacyAccounts, Error> {
+  let db_path = default_legacy_account_path();
+  if db_path.exists() {
+    let file = File::open(db_path)?;
+    Ok(serde_json::from_reader(file)?)
+  } else {
+    Ok(LegacyAccounts { accounts: vec![] })
+  }
+}
+
+fn add_legacy_accounts(authkey: AuthenticationKey) -> Result<LegacyAccounts, CarpeError> {
+  let mut all = read_legacy_accounts()?;
+  // push new account
+  let new_account = LegacyAccount { authkey };
+  let acc_list: Vec<String> = all.accounts.iter().map(|a| a.authkey.to_string()).collect();
+  if !acc_list.contains(&new_account.authkey.to_string()) {
+    all.accounts.push(new_account);
+    let _ = update_legacy_accounts(&all);
+    Ok(all)
+  } else {
+    Err(CarpeError::misc("account already exists"))
+  }
+}
+fn update_legacy_accounts(accounts: &LegacyAccounts) -> Result<(), CarpeError> {
+  let db_path = default_legacy_account_path();
+  let serialized = serde_json::to_vec(accounts)
+    .map_err(|e| CarpeError::config(&format!("json legacyAccounts should serialize, {:?}", &e)))?;
+
+  File::create(db_path)
+    .map_err(|e| {
+      CarpeError::config(&format!(
+        "carpe legacyAccounts.json should be created!, {:?}",
+        &e
+      ))
+    })?
+    .write_all(&serialized)
+    .map_err(|e| {
+      CarpeError::config(&format!(
+        "carpe legacyAccounts.json should be written!, {:?}",
+        &e
+      ))
+    })?;
+  Ok(())
+}
+
+pub fn remove_legacy_accounts() -> Result<String, CarpeError> {
+  let db_path = default_legacy_account_path();
   dbg!(&db_path);
   if db_path.exists() {
     match fs::remove_file(&db_path) {
-      Ok(_) => return Ok("removed all accounts".to_owned()),
+      Ok(_) => return Ok("removed all legacy accounts".to_owned()),
       _ => {
         return Err(CarpeError::misc(&format!(
           "unable to delete account file found at {:?}",
@@ -254,51 +359,8 @@ pub fn remove_accounts() -> Result<String, CarpeError> {
       }
     }
   }
-  return Err(CarpeError::misc(
-    &format!(
-      "No accounts to remove. No account file found at {:?}",
-      &db_path
-    )
-    .to_owned(),
-  ));
-}
-
-fn read_accounts() -> Result<Accounts, Error> {
-  let db_path = default_accounts_db_path();
-  if db_path.exists() {
-    let file = File::open(db_path)?;
-    Ok(serde_json::from_reader(file)?)
-  } else {
-    Ok(Accounts { accounts: vec![] })
-  }
-}
-
-pub fn danger_get_keys(mnemonic: String) -> Result<WalletLibrary, anyhow::Error> {
-  let (_, _, wl) = wallet::get_account_from_mnem(mnemonic)?;
-  Ok(wl)
-}
-
-//TODO:
-// fn _create_account(app_cfg: AppCfg, path: PathBuf, block_zero: &Option<PathBuf>) {
-//   let block = match block_zero {
-//     Some(b) => VDFProof::parse_block_file(b.to_owned()),
-//     None => write_genesis(&app_cfg),
-//   };
-
-//   UserConfigs::new(block).create_manifest(path);
-// }
-
-fn get_short(acc: AccountAddress) -> String {
-  acc.to_string()[..3].to_owned()
-}
-
-#[test]
-// danger_init_from_mnem
-fn test_init_mnem() {
-  use ol_types::config::parse_toml;
-  let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
-  danger_init_from_mnem(alice).unwrap();
-  let path = dirs::home_dir().unwrap().join(".0L").join("0L.toml");
-  let cfg = parse_toml(Some(path));
-  dbg!(&cfg);
+  Err(CarpeError::misc(&format!(
+    "No legacy accounts to remove. No account file found at {:?}",
+    &db_path
+  )))
 }

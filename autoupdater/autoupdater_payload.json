@@ -1,16 +1,19 @@
 {
-  "name": "v0.3.0",
-  "notes": "beta release",
-  "pub_date": "2022-03-25T17:00:00Z",
+  "version": "1.0.9",
+  "notes": "bugfixes & Linux version",
+  "pub_date": "2024-03-11T10:57:15.333Z",
   "platforms": {
-    "darwin": {
-      "url": "https://github.com/OLSF/carpe/releases/download/v0.3.0/carpe.app.tar.gz"
+    "windows-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbGxuZjlhcEErZENDYnpKbkNTUC85TjRkTEdKZjZvK0NLMmUzOFB6SHNTMTBacFhURTV4WVdzOUQ2M3JhZTRnK2RnaWRYcldxVWVwZUt5M0VYUjloRGdvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzE0NzIxNzQ3CWZpbGU6Y2FycGVfMS4wLjlfeDY0X2VuLVVTLm1zaS56aXAKZ0N6MnNuQVJKL1NxN1NNWWhUeisyeENJMzNPcFlLNzZiOFloenlMVXNQQksxVHY1Z3VqNGpPeHZ2WFp3WWlER0pjVjhVaXp5b1FZelcvV2FlVmsyRFE9PQo=",
+      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.9/carpe_1.0.9_x64_en-US.msi.zip"
     },
-    "linux": {
-      "url": "https://github.com/OLSF/carpe/releases/download/v0.3.0/carpe_0.3.0_amd64.deb"
+    "darwin-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbGw0L0VSVVFIU1FmeUhRUVpoOE53a21FanNLOXkyMXMzeWh6UjVNdVdXcmdJbEwyaElQRDJKeWFlWHJpd3VLL2tWTWprdTN1RGVuK05TTnF4R1R2ZWd3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzE0NzE5MzIzCWZpbGU6Y2FycGUuYXBwLnRhci5negpPeitVc2xxTG1FZWkzcFlIMUFKczN5NjRKTGYyQU16M2lvQTc2cVFJT0Y0cEJpRERIR1R3SUg2MFU4L0huVjQ2SmlHcTVCc2VudHMyR3hoWXU1R1dBUT09Cg==",
+      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.9/carpe_x64.app.tar.gz"
     },
-    "win64": {
-      "url": "https://github.com/OLSF/carpe/releases/download/v0.3.0/carpe_0.3.0_x64.msi.zip"
+    "linux-x86_64": {
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbHBha1lmVC8yYktyd0N5bldSWDdFRXNxdk9TeGhTVktYNmkzQXg1OVF1dHp2ajJudjk0N2xRcVhCTU5hdHpkMnkrS2c1NTBNR2p5WFk1d0svWTFZclFFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzE0NzIxMTI5CWZpbGU6Y2FycGVfMS4wLjlfYW1kNjQuQXBwSW1hZ2UudGFyLmd6CnNLRmhwZTd1Q0hBU0dGeDdjTlE0ekR5ZllpTnFvT1ZWNTN1K3RIeittemErNXZIb0w5S2E1MGlUVVlYb2h1UStRVmRtRGNqZGlkUCsvaDQvblRwU0JnPT0K",
+      "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.9/carpe_1.0.9_amd64.AppImage.tar.gz"
     }
   }
 }

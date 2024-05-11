@@ -1,22 +1,38 @@
 //! key management tools, leveraging OS keyrings.
 
 extern crate keyring;
+use crate::carpe_error::{CarpeError, ErrorCat, E_KEY_NOT_REGISTERED};
 use anyhow::{anyhow, bail};
-use diem_crypto::{
-  ed25519::{Ed25519PrivateKey, Ed25519PublicKey},
-  test_utils::KeyPair,
-};
-use keyring::KeyringError;
+use libra_types::exports::AccountAddress;
+use libra_types::exports::{Ed25519PrivateKey, Ed25519PublicKey, KeyPair};
+use libra_types::legacy_types::app_cfg::AppCfg;
 use std::convert::TryInto;
-
-#[cfg(test)]
-use std::error::Error;
 
 const KEYRING_APP_NAME: &str = "carpe";
 
+fn keyring_addr_string_format(address: &AccountAddress) -> String {
+  address.short_str_lossless().to_uppercase()
+}
+
+/// overwrite then delete
+pub fn erase_keyring_address(address: &AccountAddress) -> anyhow::Result<()> {
+  let ol_address: String = keyring_addr_string_format(address);
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
+
+  let bytes = &[0u8, 64];
+  let encoded = hex::encode(bytes);
+
+  kr.set_password(&encoded)?;
+  kr.delete_password()?;
+  Ok(())
+}
 /// send the encoded private key to OS keyring
-pub fn set_private_key(ol_address: &str, key: Ed25519PrivateKey) -> Result<(), KeyringError> {
-  let kr = keyring::Keyring::new(KEYRING_APP_NAME, &ol_address);
+pub fn set_private_key(
+  address: &AccountAddress,
+  key: Ed25519PrivateKey,
+) -> Result<(), keyring::Error> {
+  let ol_address: String = keyring_addr_string_format(address);
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
 
   let bytes: &[u8] = &(key.to_bytes());
   let encoded = hex::encode(bytes);
@@ -25,8 +41,9 @@ pub fn set_private_key(ol_address: &str, key: Ed25519PrivateKey) -> Result<(), K
 }
 
 /// retrieve a private key from OS keyring
-pub fn get_private_key(ol_address: &str) -> Result<Ed25519PrivateKey, anyhow::Error> {
-  let kr = keyring::Keyring::new(KEYRING_APP_NAME, &ol_address);
+pub fn get_private_key(address: &AccountAddress) -> Result<Ed25519PrivateKey, anyhow::Error> {
+  let ol_address: String = keyring_addr_string_format(address);
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
   match kr.get_password() {
     Ok(s) => {
       let ser = hex::decode(s)?;
@@ -41,9 +58,9 @@ pub fn get_private_key(ol_address: &str) -> Result<Ed25519PrivateKey, anyhow::Er
 
 // retrieve a keypair from OS keyring
 pub fn get_keypair(
-  ol_address: &str,
+  address: &AccountAddress,
 ) -> Result<KeyPair<Ed25519PrivateKey, Ed25519PublicKey>, anyhow::Error> {
-  match get_private_key(&ol_address) {
+  match get_private_key(address) {
     Ok(k) => {
       let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = match k.try_into() {
         Ok(p) => p,
@@ -53,59 +70,31 @@ pub fn get_keypair(
     }
     Err(e) => bail!(e),
   }
-  // let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = k.try_into().unwrap(); // TODO: just return here.
-  // Ok(p)
 }
 
-#[test]
-fn encode_keys() {
-  let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
-  use ol_keys::scheme::KeyScheme;
-  let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
-  let private = scheme.child_0_owner.get_private_key();
-  let bytes: &[u8] = &(private.to_bytes());
-
-  let encoded = hex::encode(bytes);
-
-  let new_bytes = hex::decode(encoded).unwrap();
-  let back: Ed25519PrivateKey = new_bytes.as_slice().try_into().unwrap();
-
-  assert_eq!(&back, &private);
-}
-
-#[test]
-#[ignore] // TODO: this needs to be hand tested since it requires OS password input.
-fn test_set() -> Result<(), Box<dyn Error>> {
-  use ol_keys::scheme::KeyScheme;
-  let ol_address = "0x0";
-
-  let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
-
-  let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
-  let private = scheme.child_0_owner.get_private_key();
-
-  // let password = "topS3cr3tP4$$w0rd";
-  set_private_key(ol_address, private).unwrap();
-
+/// insert the public key into the AppCfg temporarily so that we don't need
+/// to prompt user for mnemonic.
+// NOTE to future devs: DANGER: make sure this is never called in a flow that uses save_file(). The upstream prevents the key from serializing, but it should be guarded here as well.
+pub fn inject_private_key_to_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<(), CarpeError> {
+  // gets the default profile
+  let profile = app_cfg_mut.get_profile_mut(None)?;
+  let pri_key = get_private_key(&profile.account).map_err(|e| CarpeError {
+    category: ErrorCat::Configs,
+    uid: E_KEY_NOT_REGISTERED,
+    msg: "no keys found on OS keychain".to_string(),
+    trace: e.to_string(),
+  })?;
+  profile.set_private_key(&pri_key);
+  // NOTE: intentionally not saving profile
   Ok(())
 }
 
 #[test]
-#[ignore] // TODO: this needs to be hand tested since it requires OS password input.
+fn test_keyring_addr_format() {
+  use std::str::FromStr;
 
-fn test_get() -> Result<(), Box<dyn Error>> {
-  use ol_keys::scheme::KeyScheme;
-  let ol_address = "0x123";
+  let addr = AccountAddress::from_str("0x4c613c2f4b1e67ca8d98a542ee3f59f5").unwrap();
 
-  let alice_mnem = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse";
-
-  let scheme = KeyScheme::new_from_mnemonic(alice_mnem.to_owned());
-  let private = scheme.child_0_owner.get_private_key();
-
-  set_private_key(ol_address, private.clone()).unwrap();
-
-  let read = get_private_key(ol_address).unwrap();
-  assert_eq!(&read, &private);
-
-  Ok(())
+  let s = keyring_addr_string_format(&addr);
+  assert!("4C613C2F4B1E67CA8D98A542EE3F59F5" == s);
 }

@@ -35,9 +35,5 @@ pub fn get_head_ref() -> String {
 }
 
 pub fn get_commit_hash() -> String {
-  let hash: &str = match built_info::GIT_COMMIT_HASH {
-    Some(t) => &t[0..8],
-    None => "",
-  };
-  hash.to_string()
+  built_info::GIT_VERSION.unwrap_or("").to_owned()
 }

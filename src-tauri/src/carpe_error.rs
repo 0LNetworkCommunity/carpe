@@ -1,6 +1,17 @@
-//! Carpe error type for client
+use libra_types::exports::{AccountAddressParseError, RestError};
 
-use txs::submit_tx::TxError;
+// catch all
+pub const E_UNKNOWN: u64 = 100;
+// config errors
+pub const E_APP_CONFIG: u64 = 103; // consistent with TowerError.rs
+pub const E_KEY_NOT_REGISTERED: u64 = 104; // consistent with TowerError.rs
+
+// Client Errors
+pub const E_CLIENT_UNKNOWN: u64 = 500;
+pub const E_CLIENT_CX: u64 = 404;
+
+// Transaction Errors
+pub const E_TX_UNKNOWN: u64 = 300;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub enum ErrorCat {
@@ -29,36 +40,65 @@ impl From<anyhow::Error> for CarpeError {
   }
 }
 
-impl From<TxError> for CarpeError {
-  fn from(e: TxError) -> Self {
-    let uid = e.abort_code.unwrap_or(E_UNKNOWN);
-    let msg = format!(
-      "Transaction Error: Location {:?} AbortCode: {:?}",
-      &e.location, &e.abort_code
-    );
-    let trace = format!("TxView: {:?}", &e.tx_view);
-    // check if the is a tower error
-    match tower::tower_errors::parse_error(e) {
-      tower::tower_errors::TowerError::Unknown => {
-        // this isn't a tower error, so it must be another TX error
-        CarpeError::new(ErrorCat::Tx, uid, msg, trace)
-      }
-      tower::tower_errors::TowerError::Other(_v) => {
-        // TODO: Use VMStatusView?
-        CarpeError::new(ErrorCat::Tx, uid, msg, trace)
-      }
-
-      a => CarpeError::tower(&a.to_string(), a.value()),
-    }
+impl From<AccountAddressParseError> for CarpeError {
+  fn from(e: AccountAddressParseError) -> Self {
+    CarpeError::misc(&format!("misc error, message: {:?}", e.to_string()))
   }
 }
 
-pub const E_UNKNOWN: u64 = 100; // consistent with TowerError.rs
+impl From<RestError> for CarpeError {
+  fn from(e: RestError) -> Self {
+    match e {
+      RestError::Api(e) => {
+        let code = e.status_code.as_u16();
+        let msg = format!(
+          "Transaction Error: AbortCode: {:?}, Message: {:?}",
+          &e.state, &e.error
+        );
+        let trace = format!("TxView: {:?}", &e);
 
-pub const E_APP_CONFIG: u64 = 103; // consistent with TowerError.rs
+        CarpeError::new(ErrorCat::Tx, code as u64, msg, trace)
+      }
+      RestError::Bcs(e) => {
+        let msg = "Transaction Error:".to_string();
+        let trace = format!("TxView: {:?}", &e);
 
-// Client Errors
-pub const E_CLIENT_CX: u64 = 404; // consistent with TowerError.rs
+        CarpeError::new(ErrorCat::Tx, E_UNKNOWN, msg, trace)
+      }
+      RestError::Json(e) => {
+        let msg = format!("Transaction Error: Message: {:?}", &e);
+        let trace = format!("TxView: {:?}", &e);
+
+        CarpeError::new(ErrorCat::Tx, E_UNKNOWN, msg, trace)
+      }
+      RestError::UrlParse(e) => {
+        let msg = format!("Transaction Error: Message: {:?}", &e);
+        let trace = format!("TxView: {:?}", &e);
+
+        CarpeError::new(ErrorCat::Tx, E_UNKNOWN, msg, trace)
+      }
+      RestError::Timeout(e) => {
+        let msg = format!("Transaction Error: Message: {:?}", &e);
+        let trace = format!("TxView: {:?}", &e);
+
+        CarpeError::new(ErrorCat::Tx, E_UNKNOWN, msg, trace)
+      }
+      RestError::Unknown(e) => {
+        let msg = format!("Transaction Error: Message: {:?}", &e);
+        let trace = format!("TxView: {:?}", &e);
+
+        CarpeError::new(ErrorCat::Tx, E_UNKNOWN, msg, trace)
+      }
+      RestError::Http(s, e) => {
+        let uid = s.as_u16();
+        let msg = format!("Transaction Error: Message: {:?}", &e);
+        let trace = format!("TxView: {:?}", &e);
+
+        CarpeError::new(ErrorCat::Tx, uid as u64, msg, trace)
+      }
+    }
+  }
+}
 
 impl CarpeError {
   pub fn new(category: ErrorCat, uid: u64, msg: String, trace: String) -> Self {
@@ -79,10 +119,10 @@ impl CarpeError {
     }
   }
 
-  pub fn tx(msg: &str) -> Self {
+  pub fn tx_unknown(msg: &str) -> Self {
     CarpeError {
       category: ErrorCat::Tx,
-      uid: E_UNKNOWN,
+      uid: E_TX_UNKNOWN,
       msg: msg.to_owned(),
       trace: msg.to_owned(),
     }
@@ -106,10 +146,10 @@ impl CarpeError {
     }
   }
 
-  pub fn client(msg: &str) -> Self {
+  pub fn client_unknown_err(msg: &str) -> Self {
     CarpeError {
       category: ErrorCat::Client,
-      uid: E_UNKNOWN,
+      uid: E_CLIENT_UNKNOWN,
       msg: msg.to_owned(),
       trace: msg.to_owned(),
     }

@@ -1,10 +1,15 @@
 {
-  "compilerOptions": {
-    "module": "es2020",
-    "resolveJsonModule": true
-  },
   "extends": "@tsconfig/svelte/tsconfig.json",
-
-  "include": ["src/**/*", "tests/**/*.ts"],
-  "exclude": ["node_modules/*", "__sapper__/*", "public/*"]
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": true,
+    "isolatedModules": true,
+    "strict": false,
+    "lib": ["ESNext"]
+  },
+  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.js", "src/**/*.svelte"]
 }

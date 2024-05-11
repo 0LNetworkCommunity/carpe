@@ -1,86 +1,77 @@
 //! 0L configs file
 
-use std::path::PathBuf;
-
-use anyhow::Error;
-use cli::diem_client::DiemClient;
-use dirs;
-use ol::{
-  config::AppCfg,
-  node::{client::find_a_remote_jsonrpc, node::Node},
+use libra_types::{
+  exports::Client,
+  legacy_types::app_cfg::{AppCfg, CONFIG_FILE_NAME},
 };
+use once_cell::sync::Lazy;
+use std::path::{Path, PathBuf};
 
-use ol_types::config::{self, TxType};
-use txs::tx_params::TxParams;
+// Set up paths for the canary builds
+#[cfg(feature = "carpe-canary")]
+static CONFIG_DIR: Lazy<PathBuf> = Lazy::new(|| {
+  let os_path = directories::ProjectDirs::from("com", "carpe", "CarpeCanary").unwrap();
+  os_path.config_dir().to_path_buf()
+});
 
-use crate::{carpe_error::CarpeError, key_manager};
+#[cfg(not(feature = "carpe-canary"))]
+static CONFIG_DIR: Lazy<PathBuf> = Lazy::new(|| {
+  let os_path = directories::ProjectDirs::from("com", "carpe", "Carpe").unwrap();
+  os_path.config_dir().to_path_buf()
+});
 
-static APP_CONFIG_FILE: &str = "0L.toml";
+static LEGACY_ACCOUNTS_FILE: &str = "legacy_accounts.json";
 
-static ACCOUNTS_DB_FILE: &str = "accounts.json";
-static ACCOUNTS_DB_FILE_REX: &str = "accounts-rex.json";
-
-// get the config path for files
-pub fn default_config_path() -> PathBuf {
-  dirs::home_dir().unwrap().join(".0L").join(APP_CONFIG_FILE)
+// get the config path for LEGACY_ACCOUNTS_FILE
+pub fn default_legacy_account_path() -> PathBuf {
+  CONFIG_DIR.join(LEGACY_ACCOUNTS_FILE)
 }
 
-/// Get all the 0L configs. For tx sending and upstream nodes
-pub fn get_cfg() -> Result<AppCfg, Error> {
-  config::parse_toml(None) // gets default toml path.
+/// get the config path for files
+// NOTE: update in V1 we are now using OS specific paths.
+// Lin: /home/alice/.config/carpe
+// Win: C:\Users\Alice\AppData\Roaming\carpe\Carpe\config
+// Mac: /Users/Alice/Library/Application Support/com.carpe.Carpe
+pub fn default_config_path() -> &'static Path {
+  &CONFIG_DIR
 }
 
-pub fn default_accounts_db_path() -> PathBuf {
-  let db_file = match get_cfg() {
-    Ok(cfg) => match cfg.chain_info.chain_id.as_str() {
-      "Rex" => ACCOUNTS_DB_FILE_REX,
-      _ => ACCOUNTS_DB_FILE,
-    },
-    Err(_) => ACCOUNTS_DB_FILE,
-  };
-  dirs::home_dir().unwrap().join(".0L").join(db_file)
+/// default config path for platform
+pub fn config_file_path() -> PathBuf {
+  CONFIG_DIR.join(CONFIG_FILE_NAME)
 }
 
-/// get transaction parameters from config file
-pub fn get_tx_params() -> Result<TxParams, anyhow::Error> {
-  // TODO: Should the Error type be a CarpeError?
-  let config = get_cfg()?;
-
-  // Requires user input to get OS keyring
-  let keypair = key_manager::get_keypair(&config.profile.account.to_string())?;
-  TxParams::get_tx_params_from_keypair(config.clone(), TxType::Miner, keypair, None, false, false)
+/// Where carpe pre V1 used to be located
+pub fn legacy_config_path() -> PathBuf {
+  let base = directories::BaseDirs::new().unwrap();
+  base.home_dir().join(".0L")
 }
 
-pub fn get_node_obj() -> Result<Node, CarpeError> {
-  let cfg = get_cfg()?;
-  let client = get_diem_client(&cfg)?;
-
-  Ok(Node::new(client, &cfg, false))
+/// create a new config file for initialization
+pub fn new_cfg() -> anyhow::Result<AppCfg> {
+  // use carpe default system config path
+  let mut c = AppCfg::default();
+  c.workspace.node_home = default_config_path().to_path_buf();
+  c.save_file()?;
+  Ok(c)
 }
 
-pub fn get_diem_client(cfg: &AppCfg) -> Result<DiemClient, CarpeError> {
-  find_a_remote_jsonrpc(
-    cfg,
-    cfg
-      .clone()
-      .chain_info
-      .base_waypoint
-      .ok_or(CarpeError::config("could not load base_waypoint"))?,
-  )
-  .map_err(|_| CarpeError::client("could not make a client"))
+/// get the AppCfg with the default file path
+pub fn get_cfg() -> anyhow::Result<AppCfg> {
+  AppCfg::load(Some(config_file_path()))
 }
 
-/// For devs, get the source path, needed to initialize swarm
-pub fn dev_get_source_path() -> Result<Option<PathBuf>, Error> {
-  let c = get_cfg()?;
-  Ok(c.workspace.source_path)
+/// get a client struct from default configs
+pub fn get_client() -> anyhow::Result<Client> {
+  let app_cfg = get_cfg()?;
+  Ok(Client::new(app_cfg.pick_url(None)?))
 }
 
-/// Where the swarm_temp folder is created, defaults to .0L/swarm_temp
-pub fn dev_get_swarm_temp() -> Result<PathBuf, Error> {
-  Ok(get_cfg()?.workspace.node_home.join("swarm_temp"))
-}
-
+/// check if we have a file and it's populated with at least one profile
 pub fn is_initialized() -> bool {
-  default_config_path().exists()
+  if let Ok(cfg) = get_cfg() {
+    cfg.get_profile(None).is_ok()
+  } else {
+    false
+  }
 }
