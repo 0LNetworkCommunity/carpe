@@ -90,6 +90,8 @@ async fn main() {
       commands::wallets::get_default_profile,
       commands::wallets::refresh_accounts,
       commands::wallets::get_all_accounts,
+      commands::wallets::get_all_accounts_with_notes,
+      commands::wallets::associate_note_with_account,
       commands::wallets::keygen,
       commands::wallets::init_from_mnem,
       commands::wallets::init_from_private_key,
@@ -114,14 +116,14 @@ async fn main() {
       commands::tx::coin_transfer,
       // claim_make_whole,
       //////// Tower ////////
-      commands::query::get_onchain_tower_state,
-      commands::mining::miner_once,
-      commands::mining::start_backlog_sender_listener,
-      commands::mining::get_local_height,
-      commands::mining::get_epoch_rules,
-      commands::mining::submit_backlog,
-      commands::mining::get_last_local_proof,
-      commands::mining::debug_highest_proof_path,
+      // commands::query::get_onchain_tower_state,
+      // commands::mining::miner_once,
+      // commands::mining::start_backlog_sender_listener,
+      // commands::mining::get_local_height,
+      // commands::mining::get_epoch_rules,
+      // commands::mining::submit_backlog,
+      // commands::mining::get_last_local_proof,
+      // commands::mining::debug_highest_proof_path,
       // submit_proof_zero,
 
       //////// Preferences ////////
@@ -135,6 +137,10 @@ async fn main() {
       commands::preferences::set_preferences_locale,
       commands::preferences::get_miner_txs_cost,
       commands::preferences::set_miner_txs_cost,
+
+      //////// User Preferences ////////
+      commands::user_preferences::get_user_preferences,
+      commands::user_preferences::set_accounts_list_preference,
       ///////// Debug ////////
       commands::app_version::get_app_version,
       commands::web_logs::log_this,

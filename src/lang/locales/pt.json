@@ -44,6 +44,7 @@
       "onboard_key": "CHAVE DE INTEGRAÇÃO"
     },
     "account_list": {
+      "note": "Nota",
       "nickname": "Apelido",
       "address": "Conta",
       "authkey": "Chave de autenticação",
@@ -54,6 +55,12 @@
       "account_on_chain": "Conta não criada na rede",
       "message": "Seu saldo diminuirá para cada transação que você enviar, incluindo as de mineração.",
       "info_title": "Informações sobre a conta"
+    },
+    "account_note": {
+      "title": "Nota da Conta",
+      "description": "Uma nota para ajudá-lo a identificar sua conta:",
+      "placeholder": "Digite sua nota aqui...",
+      "btn_save": "Salvar Nota"
     },
     "keygen": {
       "title": "Criar nova conta",

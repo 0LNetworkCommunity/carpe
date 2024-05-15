@@ -75,9 +75,12 @@ pub fn get_keypair(
 /// insert the public key into the AppCfg temporarily so that we don't need
 /// to prompt user for mnemonic.
 // NOTE to future devs: DANGER: make sure this is never called in a flow that uses save_file(). The upstream prevents the key from serializing, but it should be guarded here as well.
-pub fn inject_private_key_to_cfg(app_cfg_mut: &mut AppCfg) -> anyhow::Result<(), CarpeError> {
+pub fn inject_private_key_to_cfg(
+  app_cfg_mut: &mut AppCfg,
+  account: AccountAddress,
+) -> anyhow::Result<(), CarpeError> {
   // gets the default profile
-  let profile = app_cfg_mut.get_profile_mut(None)?;
+  let profile = app_cfg_mut.get_profile_mut(Some(account.to_string()))?;
   let pri_key = get_private_key(&profile.account).map_err(|e| CarpeError {
     category: ErrorCat::Configs,
     uid: E_KEY_NOT_REGISTERED,

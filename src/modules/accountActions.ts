@@ -54,7 +54,7 @@ export const getDefaultProfile = async () => {
 
 export const getAccounts = async () => {
   // first make sure we don't have empty accounts
-  invoke('get_all_accounts')
+  invoke('get_all_accounts_with_notes')
     .then((result: CarpeProfile[]) => {
       const watchList = get(watchAccounts)
       result.map((item) => {
@@ -64,7 +64,7 @@ export const getAccounts = async () => {
       })
       allAccounts.set(result)
     })
-    .catch((e) => raise_error(e, true, 'get_all_accounts'))
+    .catch((e) => raise_error(e, true, 'get_all_accounts_with_notes'))
 }
 
 export const refreshAccounts = async () => {
@@ -186,12 +186,6 @@ export function findOneAccount(account: string): CarpeProfile | undefined {
 
 export const setAccount = async (account: string, notifySucess = true) => {
   if (get(signingAccount).account == account) return
-
-  // cannot switch profile with miner running
-  if (get(minerLoopEnabled)) {
-    notify_error('To switch accounts you need to turn miner off first.')
-    return
-  }
 
   invoke('switch_profile', { account })
     .then((res: CarpeProfile) => {
@@ -440,11 +434,9 @@ async function onAccountAdd(res: CarpeProfile) {
   // set as init so we don't get sent back to Newbie account creation.
   isInit.set(true)
   responses.set(JSON.stringify(res))
-  // cannot switch profile with miner running
-  if (!get(minerLoopEnabled)) {
-    res.account = res.account.toLocaleUpperCase()
-    signingAccount.set(res)
-  }
+  res.account = res.account.toLocaleUpperCase()
+  signingAccount.set(res)
+
   await initNetwork()
   if (!get(isCarpeTickRunning)) {
     // start the carpe tick for every 30 secs, this is async
@@ -455,4 +447,27 @@ async function onAccountAdd(res: CarpeProfile) {
   notify_success(`Account Added: ${res.nickname}`)
 
   await refreshAccounts().finally(() => navigate('wallet'))
+}
+
+export const associateNoteWithAccount = async (account, note) => {
+  // update allAccounts set account with the new note
+  const list = get(allAccounts)
+  const updatedList = list.map((item) => {
+    if (item.account === account) {
+      item.note = note
+    }
+    return item
+  })
+  allAccounts.set(updatedList)
+
+  // update the backend
+  try {
+    const result = await invoke('associate_note_with_account', { account, note })
+    refreshAccounts()
+    notify_success('Note successfully associated with account')
+    return result
+  } catch (e) {
+    raise_error(e, true, 'associateNoteWithAccount')
+    notify_error('Failed to associate note with account')
+  }
 }

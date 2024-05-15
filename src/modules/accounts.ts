@@ -8,6 +8,7 @@ export interface CarpeProfile {
   balance?: SlowWalletBalance
   locale?: string // TODO: refactor, tauri now offers locale of the OS
   watch_only?: boolean
+  note: string
 }
 export interface SlowWalletBalance {
   unlocked: number
@@ -22,6 +23,7 @@ export const new_account = (account: string, authkey: string, nickname: string):
     on_chain: false,
     balance: { unlocked: 0, total: 0 },
     watch_only: false,
+    note: null,
   }
 }
 

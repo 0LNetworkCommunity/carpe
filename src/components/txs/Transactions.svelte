@@ -10,6 +10,7 @@
   import type { CarpeProfile } from '../../modules/accounts'
   import { raise_error } from '../../modules/carpeError'
   import CantStart from '../miner/cards/CantStart.svelte'
+  import { refreshAccounts } from '../../modules/accountActions'
 
   const errorDic = {
     '120127': $_('txs.transfer.error_slow_wallet'),
@@ -46,8 +47,8 @@
     account && amount > unscaledCoins(account.balance)
       ? $_('txs.transfer.error_amount_greater_than_balance')
       : receiver && receiver.toUpperCase() == account.account.toUpperCase()
-        ? $_('txs.transfer.error_receiver_equals_sender')
-        : ''
+      ? $_('txs.transfer.error_receiver_equals_sender')
+      : ''
 
   onDestroy(async () => {
     unsubs && unsubs()
@@ -68,6 +69,7 @@
         waitingTxs = false
         amount = 0
         receiver = null
+        refreshAccounts()
       })
       .catch((error) => {
         responses.set(JSON.stringify(error))

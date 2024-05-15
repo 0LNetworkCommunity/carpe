@@ -15,6 +15,7 @@ export const setWalletType = async (wtype: WalletType) => {
   const account = get(signingAccount)
   invoke('set_slow_wallet', {
     legacy: account.account.startsWith('0'.repeat(32)),
+    sender: account.account,
   })
     .then((res: string) => {
       notify_success(`The account is set to: SlowWallet`)
