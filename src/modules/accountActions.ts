@@ -188,12 +188,6 @@ export function findOneAccount(account: string): CarpeProfile | undefined {
 export const setAccount = async (account: string, notifySucess = true) => {
   if (get(signingAccount).account == account) return
 
-  // cannot switch profile with miner running
-  if (get(minerLoopEnabled)) {
-    notify_error('To switch accounts you need to turn miner off first.')
-    return
-  }
-
   invoke('switch_profile', { account })
     .then((res: CarpeProfile) => {
       res.account = res.account.toLocaleUpperCase()
@@ -441,11 +435,9 @@ async function onAccountAdd(res: CarpeProfile) {
   // set as init so we don't get sent back to Newbie account creation.
   isInit.set(true)
   responses.set(JSON.stringify(res))
-  // cannot switch profile with miner running
-  if (!get(minerLoopEnabled)) {
-    res.account = res.account.toLocaleUpperCase()
-    signingAccount.set(res)
-  }
+  res.account = res.account.toLocaleUpperCase()
+  signingAccount.set(res)
+
   await initNetwork()
   if (!get(isCarpeTickRunning)) {
     // start the carpe tick for every 30 secs, this is async

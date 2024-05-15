@@ -116,14 +116,14 @@ async fn main() {
       commands::tx::coin_transfer,
       // claim_make_whole,
       //////// Tower ////////
-      commands::query::get_onchain_tower_state,
-      commands::mining::miner_once,
-      commands::mining::start_backlog_sender_listener,
-      commands::mining::get_local_height,
-      commands::mining::get_epoch_rules,
-      commands::mining::submit_backlog,
-      commands::mining::get_last_local_proof,
-      commands::mining::debug_highest_proof_path,
+      // commands::query::get_onchain_tower_state,
+      // commands::mining::miner_once,
+      // commands::mining::start_backlog_sender_listener,
+      // commands::mining::get_local_height,
+      // commands::mining::get_epoch_rules,
+      // commands::mining::submit_backlog,
+      // commands::mining::get_last_local_proof,
+      // commands::mining::debug_highest_proof_path,
       // submit_proof_zero,
 
       //////// Preferences ////////

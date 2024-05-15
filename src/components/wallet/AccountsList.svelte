@@ -4,7 +4,6 @@
   import Icons from 'uikit/dist/js/uikit-icons'
   import { allAccounts, formatAccount, signingAccount } from '../../modules/accounts'
   import { printCoins, unscaledCoins } from '../../modules/coinHelpers'
-  import { minerLoopEnabled } from '../../modules/miner'
   import { connected } from '../../modules/networks'
   import { setAccount } from '../../modules/accountActions'
   import Actions from './Actions.svelte'
@@ -153,11 +152,7 @@
       </thead>
       <tbody>
         {#each $allAccounts as a}
-          <tr
-            class={$minerLoopEnabled && a.account == $signingAccount.account
-              ? 'uk-text-primary'
-              : ''}
-          >
+          <tr>
             <td>
               <span>
                 {#if a.account == $signingAccount.account}
