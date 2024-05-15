@@ -44,6 +44,7 @@
       "onboard_key": "ONBOARD KEY"
     },
     "account_list": {
+      "note": "Notiz",
       "nickname": "Spitzname",
       "address": "Adresse",
       "authkey": "Authkey",
@@ -54,6 +55,12 @@
       "account_on_chain": "Konto nicht auf der Chain",
       "message": " Dein Guthaben verringert sich bei jeder Transaktion, die du sendest, einschließlich Mining.",
       "info_title": "Konto-Informationen"
+    },
+    "account_note": {
+      "title": "Kontonotiz",
+      "description": "Eine Notiz, um Ihnen zu helfen, Ihr Konto zu identifizieren:",
+      "placeholder": "Geben Sie hier Ihre Notiz ein...",
+      "btn_save": "Notiz speichern"
     },
     "keygen": {
       "title": "Neues Konto anlegen",

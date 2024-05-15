@@ -54,7 +54,7 @@ export const getDefaultProfile = async () => {
 
 export const getAccounts = async () => {
   // first make sure we don't have empty accounts
-  invoke('get_all_accounts')
+  invoke('get_all_accounts_with_notes')
     .then((result: CarpeProfile[]) => {
       const watchList = get(watchAccounts)
       result.map((item) => {
@@ -64,7 +64,7 @@ export const getAccounts = async () => {
       })
       allAccounts.set(result)
     })
-    .catch((e) => raise_error(e, true, 'get_all_accounts'))
+    .catch((e) => raise_error(e, true, 'get_all_accounts_with_notes'))
 }
 
 export const refreshAccounts = async () => {
@@ -447,4 +447,27 @@ async function onAccountAdd(res: CarpeProfile) {
   notify_success(`Account Added: ${res.nickname}`)
 
   await refreshAccounts().finally(() => navigate('wallet'))
+}
+
+export const associateNoteWithAccount = async (account, note) => {
+  // update allAccounts set account with the new note
+  const list = get(allAccounts)
+  const updatedList = list.map((item) => {
+    if (item.account === account) {
+      item.note = note
+    }
+    return item
+  })
+  allAccounts.set(updatedList)
+
+  // update the backend
+  try {
+    const result = await invoke('associate_note_with_account', { account, note })
+    refreshAccounts()
+    notify_success('Note successfully associated with account')
+    return result
+  } catch (e) {
+    raise_error(e, true, 'associateNoteWithAccount')
+    notify_error('Failed to associate note with account')
+  }
 }

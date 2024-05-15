@@ -27,14 +27,18 @@
           {$_('wallet.wallet')}
         </h2>
       </div>
-      <div
-        class="uk-position-right uk-text-light uk-text-uppercase uk-flex-inline uk-flex-column max-height-fit-content"
-      >
-        <span class="uk-margin-small-bottom"
-          >{$_('wallet.account_list.balance')}: {printCoins($totalBalance.total)}</span
+      {#if $allAccounts.length > 1}
+        <div
+          class="uk-position-right uk-text-light uk-text-uppercase uk-flex-inline uk-flex-column max-height-fit-content"
         >
-        <span>{$_('wallet.account_list.unlocked')}: {printCoins($totalBalance.unlocked)}</span>
-      </div>
+          <span class="uk-margin-small-bottom">
+            {$_('wallet.account_list.balance')}: {printCoins($totalBalance.total)}
+          </span>
+          <span>
+            {$_('wallet.account_list.unlocked')}: {printCoins($totalBalance.unlocked)}
+          </span>
+        </div>
+      {/if}
       <AccountsList />
       <CreateAccountLinks />
 

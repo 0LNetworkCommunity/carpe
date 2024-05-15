@@ -44,6 +44,7 @@
       "onboard_key": "ONBOARD KEY"
     },
     "account_list": {
+      "note": "Nota",
       "nickname": "Nickname",
       "address": "Address",
       "authkey": "Authkey",
@@ -54,6 +55,12 @@
       "account_on_chain": "Account Not On Chain",
       "message": " Your balance will go down for every transaction you send, including mining.",
       "info_title": "Account Info"
+    },
+    "account_note": {
+      "title": "Nota dell'account",
+      "description": "Una nota per aiutarti a identificare il tuo account:",
+      "placeholder": "Inserisci qui la tua nota...",
+      "btn_save": "Salva nota"
     },
     "keygen": {
       "title": "Create New Account",

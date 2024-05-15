@@ -44,6 +44,7 @@
       "onboard_key": "ONBOARD KEY"
     },
     "account_list": {
+      "note": "Note",
       "nickname": "Pseudo",
       "address": "Adresse",
       "authkey": "Authkey",
@@ -54,6 +55,12 @@
       "account_on_chain": "Le compte n'est pas sur la chaîne",
       "message": " Votre solde diminuera pour toutes transactions effectuées, y compris lorsque vous minez.",
       "info_title": "Informations sur le compte"
+    },
+    "account_note": {
+      "title": "Note du compte",
+      "description": "Une note pour vous aider à identifier votre compte :",
+      "placeholder": "Entrez votre note ici...",
+      "btn_save": "Sauvegarder la note"
     },
     "keygen": {
       "title": "Creer un nouveau compte",
