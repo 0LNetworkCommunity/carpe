@@ -2,11 +2,12 @@
   import { _ } from '../../lang/i18n'
   import { associateNoteWithAccount } from '../../modules/accountActions'
 
-  export let account
-  export let note
+  export let signingAccount
+
+  $signingAccount.note && console.log('>>> signingAccount.note', $signingAccount.note)
 
   async function updateNote() {
-    associateNoteWithAccount(account, note)
+    associateNoteWithAccount($signingAccount.account, $signingAccount.note)
   }
 </script>
 
@@ -17,14 +18,16 @@
   <p>{$_('wallet.account_note.description')}</p>
   <textarea
     class="uk-textarea"
-    bind:value={note}
+    bind:value={$signingAccount.note}
     rows="4"
     placeholder={$_('wallet.account_note.placeholder')}
     maxlength="100"
+    disabled={!$signingAccount}
   ></textarea>
   <button
     class="uk-button uk-button-primary save-note-btn uk-align-right"
     on:click={() => updateNote()}
+    disabled={!$signingAccount}
   >
     {$_('wallet.account_note.btn_save')}
   </button>

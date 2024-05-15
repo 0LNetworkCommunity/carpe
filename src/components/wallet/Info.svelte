@@ -1,6 +1,5 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
-  //import { signingAccount } from '../../modules/accounts'
   import Copy from '../../components/layout/Copy.svelte'
 
   export let signingAccount

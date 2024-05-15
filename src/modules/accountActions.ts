@@ -63,7 +63,6 @@ export const getAccounts = async () => {
         item.auth_key = item.auth_key.toLocaleUpperCase()
       })
       allAccounts.set(result)
-      console.log('get_all_accounts_with_notes', result)
     })
     .catch((e) => raise_error(e, true, 'get_all_accounts_with_notes'))
 }

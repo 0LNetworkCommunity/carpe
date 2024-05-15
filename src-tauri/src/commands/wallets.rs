@@ -315,9 +315,15 @@ pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, Car
   let p = app_cfg.get_profile(Some(account.to_string()))?;
   app_cfg.workspace.set_default(p.nickname.clone());
   app_cfg.save_file()?;
-  // TODO: gross, fix upstream `app_cfg.rs` to prevent the borrow issues here
-  let profile = app_cfg.get_profile(Some(account.to_string()))?;
-  Ok(profile.into())
+  
+  // TODO: gross, fix upstream `app_cfg.rs` to prevent the borrow issues here 
+  let mut profile = app_cfg.get_profile(Some(account.to_string()))?;
+
+  // Assign account note
+  let mut profiles: Vec<CarpeProfile> = vec![profile.into()];
+  assign_notes_to_accounts(&mut profiles)?;
+
+  Ok(profiles.into_iter().next().unwrap().into())
 }
 
 // remove all accounts which are being tracked.
