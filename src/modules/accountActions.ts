@@ -187,9 +187,11 @@ export function findOneAccount(account: string): CarpeProfile | undefined {
 export const setAccount = async (account: string, notifySucess = true) => {
   if (get(signingAccount).account == account) return
 
+  const watchList = get(watchAccounts)
   invoke('switch_profile', { account })
     .then((res: CarpeProfile) => {
       res.account = res.account.toLocaleUpperCase()
+      res.watch_only = watchList.includes(res.account.toLocaleLowerCase())
       signingAccount.set(res)
       isInit.set(true)
       if (notifySucess) {
@@ -312,23 +314,6 @@ export const ignoreMigrate = () => {
     .then(isLegacy) // reset if we actually did migrate the files
     .catch((e: CarpeError) => raise_error(e, true, 'ignore_migrate'))
 }
-/*
-export let invoke_makewhole = async (account: String): Promise<number> => {
- // let demo_account = "613b6d9599f72134a4fa20bba4c75c36";
- // account = demo_account;
-
-  console.log(">>> calling make whole");
-  return await invoke("query_makewhole", { account })
-    .then((a) => {
-      if (a.length > 0) {
-        console.log("MakeWhole " + account + ", coins: " + a[0].coins.value)
-        console.log(a)
-      }
-      console.log(a);
-      return a[0].coins.value
-    })
-}
-*/
 
 export const updateMakeWhole = () => {
   const mk = get(makeWhole)

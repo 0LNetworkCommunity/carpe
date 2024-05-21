@@ -4,8 +4,6 @@
 
   export let signingAccount
 
-  $signingAccount.note && console.log('>>> signingAccount.note', $signingAccount.note)
-
   async function updateNote() {
     associateNoteWithAccount($signingAccount.account, $signingAccount.note)
   }

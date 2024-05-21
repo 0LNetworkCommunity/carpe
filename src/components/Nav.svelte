@@ -20,6 +20,8 @@
   ]
 
   const location_store = useLocation()
+
+  $: watchOnly = $signingAccount?.watch_only
 </script>
 
 <main class="uk-margin-top">
@@ -36,20 +38,12 @@
           <li class="uk-padding {$location_store.pathname.includes('wallet') ? 'uk-active' : ''}">
             <Link to={routes.wallet}>{$_('nav.wallet')}</Link>
           </li>
-          <!-- <li class="uk-padding {$location_store.pathname.includes('miner') ? 'uk-active' : ''}">
-          <Link to={routes.miner}>{$_('nav.miner')}</Link>
-        </li> -->
           <li class="uk-padding {$location_store.pathname.includes('transfer') ? 'uk-active' : ''}">
-            <Link to={routes.transfer}>{$_('nav.transactions')}</Link>
+            <Link to={watchOnly ? routes.wallet : routes.transfer}>{$_('nav.transactions')}</Link>
           </li>
-          <!-- Remove Events tab till we get a fullnode set able to respond to these queries -->
-          <!-- <li><Link to={routes.events}>{$_("nav.events")}</Link></li> -->
-          <!-- Postpone MakeWhole release -->
-          <!--<li><MakeWholeLink /></li>-->
         </ul>
       </div>
     {/if}
-    <!-- {#if $isInit} -->
     <div class="uk-navbar-right">
       <ul class="uk-navbar-nav">
         <li>
@@ -57,6 +51,5 @@
         </li>
       </ul>
     </div>
-    <!-- {/if} -->
   </nav>
 </main>
