@@ -26,7 +26,7 @@ fn get_preferences_path() -> Result<PathBuf, CarpeError> {
 #[tauri::command(async)]
 pub async fn get_user_preferences() -> Result<UserPreferences, CarpeError> {
     let file_path = get_preferences_path()?;
-    match File::open(&file_path) {
+    match File::open(file_path) {
         Ok(mut file) => {
             let mut contents = String::new();
             if let Err(e) = file.read_to_string(&mut contents) {
@@ -45,7 +45,7 @@ pub async fn set_accounts_list_preference(sort_column: String, sort_order: Strin
         .write(true)
         .create(true)
         .truncate(true)
-        .open(&file_path)
+        .open(file_path)
         .map_err(|e| CarpeError::misc(&format!("Failed to open preferences file for writing: {}", e)))?;
 
     let preferences = UserPreferences {

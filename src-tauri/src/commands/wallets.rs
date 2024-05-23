@@ -20,7 +20,6 @@ use std::fs::{self, File};
 use std::io::{Write, prelude::*};
 use std::fs::OpenOptions;
 use std::path::{PathBuf, Path};
-use serde_json;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NewKeygen {
@@ -152,7 +151,7 @@ pub fn get_all_accounts_with_notes() -> Result<Vec<CarpeProfile>, CarpeError> {
 
 fn notes_file_path() -> PathBuf {
   let app_dir_path = default_config_path();  // Assuming this returns a PathBuf or Path
-  return app_dir_path.join("account_notes.json");
+  app_dir_path.join("account_notes.json")
 }
 
 
@@ -180,7 +179,7 @@ fn read_notes() -> Result<Vec<Note>, CarpeError> {
   }
 }
 
-fn assign_notes_to_accounts(accounts: &mut Vec<CarpeProfile>) -> Result<(), CarpeError> {
+fn assign_notes_to_accounts(accounts: &mut [CarpeProfile]) -> Result<(), CarpeError> {
   let notes = read_notes()?;
   for account in accounts.iter_mut() {
       let note_option = notes.iter()
@@ -218,7 +217,7 @@ pub fn associate_note_with_account(account: String, note: String) -> Result<(), 
       .write(true)
       .truncate(true)
       .create(true)
-      .open(&file_path)
+      .open(file_path)
       .map_err(|_e| CarpeError::misc("Failed to open file for writing"))?;
 
   file.write_all(notes_json.as_bytes())
@@ -323,7 +322,7 @@ pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, Car
   let mut profiles: Vec<CarpeProfile> = vec![profile.into()];
   assign_notes_to_accounts(&mut profiles)?;
 
-  Ok(profiles.into_iter().next().unwrap().into())
+  Ok(profiles.into_iter().next().unwrap())
 }
 
 // remove all accounts which are being tracked.
