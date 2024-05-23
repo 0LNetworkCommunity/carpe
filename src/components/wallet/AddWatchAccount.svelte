@@ -3,11 +3,21 @@
   import { addWatchAccount } from '../../modules/accountActions'
 
   let address: string
+  let isSubmitting = false
 
-  const initAccount = (address: string) => {
+  const initAccount = async (address: string) => {
+    isSubmitting=true
     address = address.trim()
     let isLegacy = address.length === 32 || address.startsWith('0'.padStart(32, '0'))
-    addWatchAccount(address, isLegacy)
+    try {
+      await addWatchAccount(address, isLegacy);
+    } catch (error) {
+      // Handle the error if needed
+      console.error("Error adding watch account:", error);
+    } finally {
+      isSubmitting = false;
+    }
+
   }
 </script>
 
@@ -30,9 +40,14 @@
     <button
       class="uk-button uk-button-primary"
       type="button"
+      disabled={isSubmitting}
       on:click|preventDefault={initAccount(address)}
     >
-      {$_('wallet.account_from_mnem_submit.btn_submit')}
+      {#if isSubmitting}
+        {$_('wallet.account_from_mnem_submit.btn_submiting')}...
+      {:else}
+        {$_('wallet.account_from_mnem_submit.btn_submit')}
+      {/if}
     </button>
   </div>
 </main>
