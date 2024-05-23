@@ -212,7 +212,9 @@
     </table>
   {/if}
   <div style="display: {showOptions ? 'block' : 'none'};">
-    <Actions {signingAccount} />
+    {#if $signingAccount}
+      <Actions {signingAccount} />
+    {/if}
   </div>
 </main>
 

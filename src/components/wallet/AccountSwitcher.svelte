@@ -1,6 +1,6 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
-  import { Link } from 'svelte-navigator'
+  import { Link, navigate } from 'svelte-navigator'
 
   import { signingAccount, allAccounts } from '../../modules/accounts'
   import { setAccount } from '../../modules/accountActions'
@@ -34,13 +34,16 @@
           {#if !$allAccounts}
             <p>loading...</p>
           {:else}
-            {#each $allAccounts as acc}
+            {#each $allAccounts.slice().sort((a, b) => a.nickname.localeCompare(b.nickname)) as acc}
               <li>
                 <a
                   href={'#'}
                   class={$signingAccount.account == acc.account ? 'uk-text-primary' : ''}
                   on:click={() => {
                     if ($signingAccount.account != acc.account) {
+                      if (acc.watch_only) {
+                        navigate('wallet')
+                      }
                       setAccount(acc.account)
                     }
                   }}
