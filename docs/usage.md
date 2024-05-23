@@ -37,20 +37,21 @@ If you don't yet have a friend on 0L, come to the [Discord Server](https://disco
 There are some dangerous buttons on the "TRANSACTIONS" and "SETTINGS" screens. Don't use them until you know what they do.
 
 ## SlowWallet
+
 How to set your wallet as a slow wallet  
 **Wallet balance must be maintained at least 10 Libra**
 
-***Note that this operation is irreversible, please do not use this feature unless you know what you are doing!***
+**_Note that this operation is irreversible, please do not use this feature unless you know what you are doing!_**
 
 Click on the Settings icon to the left of the wallet address you want to set.
 
 ![screen01](./img/slowwallet-step-1.jpg)
 
-If you already have a slow wallet, clicking on the Settings icon will show you the following image  
+If you already have a slow wallet, clicking on the Settings icon will show you the following image
 
 ![screen3](./img/slowwallet-step-done.png)
 
-If it is not a slow wallet, click on the setup icon will be displayed as shown below, then click on the `SET SLOW WALLET` button, the system pops up the authorization, waiting for a successful transaction    
+If it is not a slow wallet, click on the setup icon will be displayed as shown below, then click on the `SET SLOW WALLET` button, the system pops up the authorization, waiting for a successful transaction
 
 ![screen02](./img/slowwallet-step-2.jpg)
 
@@ -58,6 +59,4 @@ If it is not a slow wallet, click on the setup icon will be displayed as shown b
 
 ![screen02](./img/slowwallet-step-success.png)
 
-If you have any problems with the process, please feel free to come to [Discord Server](https://discord.gg/AzCp63pggW) for feedback. 
-
-
+If you have any problems with the process, please feel free to come to [Discord Server](https://discord.gg/AzCp63pggW) for feedback.

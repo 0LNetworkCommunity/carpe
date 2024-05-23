@@ -421,7 +421,7 @@ export function addWatchAccount(address: string, isLegacy: boolean = true) {
     return
   }
 
-  addAccountOptimistic("loading...", true)
+  addAccountOptimistic('loading...', true)
 
   invoke('add_watch_account', {
     address,
