@@ -1,12 +1,14 @@
 <script lang="ts">
   import { invoke } from '@tauri-apps/api/tauri'
   import { _ } from 'svelte-i18n'
-  import { refreshAccounts } from '../../modules/accountActions'
+  import { refreshAccounts, resetSigningAccount } from '../../modules/accountActions'
   import { raise_error } from '../../modules/carpeError'
   import { notify_success } from '../../modules/carpeNotify'
   import { responses } from '../../modules/debug'
   import { watchAccounts } from '../../modules/accounts'
+
   const removeAccounts = async () => {
+    resetSigningAccount()
     invoke('remove_accounts', {})
       .then((res: string) => {
         responses.set(res)

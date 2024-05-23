@@ -26,7 +26,7 @@ import { carpeTick } from './tick'
 import { initNetwork } from './networks'
 
 allAccounts.subscribe((v) => {
-  pendingAccounts.set(v.filter((x) => x && !x.on_chain))
+  pendingAccounts.set(v.filter((x) => x && !x.on_chain && !x.watch_only))
   const allBalance: SlowWalletBalance = v.reduce(
     (p, c): SlowWalletBalance => {
       return {
@@ -124,6 +124,26 @@ export enum InitType {
   PriKey,
 }
 
+const addAccountOptimistic = async (address: string, watch_only: boolean) => {
+  const list = get(allAccounts)
+  const found = list.find((i) => i.account == address)
+  if (found) {
+    return
+  }
+
+  const newAccount: CarpeProfile = {
+    account: address,
+    auth_key: '',
+    nickname: 'New Account',
+    on_chain: false,
+    balance: { unlocked: 0, total: 0 },
+    watch_only: watch_only,
+    note: '',
+  }
+  list.push(newAccount)
+  allAccounts.set(list)
+}
+
 export const addAccount = async (
   init_type: InitType,
   secret: string,
@@ -138,11 +158,13 @@ export const addAccount = async (
     method_name = 'init_from_private_key'
     arg_obj = { priKeyString: secret.trim(), isLegacy }
   }
+
+  addAccountOptimistic('loading...', false)
+
   // submit
   return invoke(method_name, arg_obj)
     .then(async (res: CarpeProfile) => {
       // update watchAccounts
-
       let list = get(watchAccounts)
       list = list.filter((item) => item !== res.account)
       watchAccounts.set(list)
@@ -184,6 +206,9 @@ export function findOneAccount(account: string): CarpeProfile | undefined {
   return found
 }
 
+export const resetSigningAccount = async () => {
+  signingAccount.set(null)
+}
 export const setAccount = async (account: string, notifySucess = true) => {
   if (get(signingAccount).account == account) return
 
@@ -395,6 +420,8 @@ export function addWatchAccount(address: string, isLegacy: boolean = true) {
     notify_error('address already exists')
     return
   }
+
+  addAccountOptimistic("loading...", true)
 
   invoke('add_watch_account', {
     address,
