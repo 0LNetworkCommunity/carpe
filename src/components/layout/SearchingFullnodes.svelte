@@ -11,7 +11,7 @@
 
 <main>
   {#if !$connected}
-    <div class="uk-background-primary uk-light uk-text-center">
+    <div class="uk-background-primary uk-light uk-text-center" style="max-height: 95px">
       {#if $scanningForFullnodes}
         <span class="uk-text-uppercase"> {$_('layout.attempting_to_connect')} </span>
         <div uk-spinner="ratio: 0.5" class="uk-padding" />

@@ -11,9 +11,6 @@
     let isLegacy = address.length === 32 || address.startsWith('0'.padStart(32, '0'))
     try {
       await addWatchAccount(address, isLegacy);
-    } catch (error) {
-      // Handle the error if needed
-      console.error("Error adding watch account:", error);
     } finally {
       isSubmitting = false;
     }
