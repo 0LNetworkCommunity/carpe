@@ -44,6 +44,7 @@ export const bootUp = async () => {
   } else {
     logger(Level.Warn, 'carpe settings not initialized')
     await isLegacy().finally(() => {
+      isBooted.set(true)
       navigate('wallet')
     })
   }

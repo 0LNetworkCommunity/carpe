@@ -3,7 +3,7 @@
   import UIkit from 'uikit'
   import Icons from 'uikit/dist/js/uikit-icons'
   import { allAccounts, formatAccount, signingAccount } from '../../modules/accounts'
-  import { printCoins, unscaledCoins } from '../../modules/coinHelpers'
+  import { printCoins } from '../../modules/coinHelpers'
   import { connected } from '../../modules/networks'
   import { setAccount } from '../../modules/accountActions'
   import Actions from './Actions.svelte'
@@ -91,6 +91,23 @@
 
   // Re-sort when preferences change
   $: sortColumn && $allAccounts.length > 0 && privateSortAccounts(sortColumn)
+
+  const printAmount = (account, balance, isConnected) => {
+    const balanceFormatted = printCoins(balance);
+    if (!isConnected) {
+      return (balance > 0)
+        ? `${balanceFormatted} <span uk-icon="icon: warning" style="color:red" title="${$_('wallet.account_list.offline')}"></span>`
+        : `<span uk-icon="icon: warning" style="color:red" title="${$_('wallet.account_list.offline')}"></span>`;
+    }
+    if (account.on_chain != null && account.on_chain == false) {
+      return $_('wallet.account_list.account_on_chain');
+    }
+    if (account.on_chain) {
+      return balanceFormatted;
+    }
+    return $_('wallet.account_list.account_on_chain');
+  }
+
 </script>
 
 <main>
@@ -188,27 +205,11 @@
                   <span class="uk-transition-fade"><Copy text={a.account}></Copy></span>
                 </div>
               </td>
-              <td class="uk-text-right">{printCoins(a.balance.unlocked)}</td>
               <td class="uk-text-right uk-text-nowrap">
-                {#if a.on_chain != null && a.on_chain == false}
-                  {$_('wallet.account_list.account_on_chain')}
-                {:else if a.on_chain}
-                  <div class="uk-inline">
-                    {#if unscaledCoins(a.balance) < 1}
-                      <span class="uk-margin uk-text-warning" uk-icon="icon: info"></span>
-                      <div uk-dropdown>
-                        {$_('wallet.account_list.message')}
-                      </div>
-                    {/if}
-                    {printCoins(a.balance.total)}
-                  </div>
-                {:else if a.balance == null}
-                  {$_('wallet.account_list.loading')}...
-                {:else if !$connected}
-                  {$_('wallet.account_list.offline')}...
-                {:else}
-                  {$_('wallet.account_list.account_on_chain')}
-                {/if}
+                {@html printAmount(a, a.balance.unlocked, $connected)}
+              </td>
+              <td class="uk-text-right uk-text-nowrap" style="width: 150px">
+                {@html printAmount(a, a.balance.total, $connected)}
               </td>
             </tr>
           {/if}

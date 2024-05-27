@@ -5,7 +5,7 @@
   import { raise_error } from '../../modules/carpeError'
   import { notify_success } from '../../modules/carpeNotify'
   import { responses } from '../../modules/debug'
-  import { watchAccounts } from '../../modules/accounts'
+  import { watchAccounts, pendingAccounts } from '../../modules/accounts'
 
   const removeAccounts = async () => {
     resetSigningAccount()
@@ -14,6 +14,7 @@
         responses.set(res)
         notify_success('Accounts removed successfully')
         watchAccounts.set([])
+        pendingAccounts.set([])
         localStorage.removeItem('watchAccounts')
         refreshAccounts()
       })

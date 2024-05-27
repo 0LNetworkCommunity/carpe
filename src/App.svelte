@@ -45,6 +45,8 @@
     import UpgradeApp from './components/about/UpgradeApp.svelte'
     import { tryUpdate } from './modules/updater'
     import { isLoading } from 'svelte-i18n'
+    import { isBooted } from './modules/boot'
+    import SplashScreen from './components/layout/SplashScreen.svelte'
 
   // black magic with I18n here
   // temporarily set up here otherwise... issues
@@ -116,6 +118,10 @@
 <main class="uk-background-muted uk-height-viewport" >
   <Style />
   <UpgradeApp />
+
+  {#if !$isBooted}
+    <SplashScreen />
+  {/if}
 
   {#if $isInit}
     <SearchingFullnodes />
