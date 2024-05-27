@@ -35,22 +35,24 @@
             <p>loading...</p>
           {:else}
             {#each $allAccounts.slice().sort((a, b) => a.nickname.localeCompare(b.nickname)) as acc}
-              <li>
-                <a
-                  href={'#'}
-                  class={$signingAccount.account == acc.account ? 'uk-text-primary' : ''}
-                  on:click={() => {
-                    if ($signingAccount.account != acc.account) {
-                      if (acc.watch_only) {
-                        navigate('wallet')
+              {#if acc.account != 'loading...'}
+                <li>
+                  <a
+                    href={'#'}
+                    class={$signingAccount.account == acc.account ? 'uk-text-primary' : ''}
+                    on:click={() => {
+                      if ($signingAccount.account != acc.account) {
+                        if (acc.watch_only) {
+                          navigate('wallet')
+                        }
+                        setAccount(acc.account)
                       }
-                      setAccount(acc.account)
-                    }
-                  }}
-                >
-                  {acc.nickname}
-                </a>
-              </li>
+                    }}
+                  >
+                    {acc.nickname}
+                  </a>
+                </li>
+              {/if}
             {/each}
             <li class="uk-nav-divider" />
           {/if}

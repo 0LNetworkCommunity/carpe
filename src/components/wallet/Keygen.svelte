@@ -37,12 +37,6 @@
 </script>
 
 <main>
-  <!-- <div class="uk-flex uk-flex-center">
-    <h3 class="uk-text-light uk-text-muted uk-text-uppercase">
-      {$_('wallet.keygen.title')}
-    </h3>
-  </div> -->
-
   {#if $tempCreateAccount && $tempCreateAccount.account && !hide}
     <div class="uk-margin uk-card uk-card-default uk-card-body uk-text-muted">
       <h5 class="uk-text-muted uk-text-uppercase">{$_('wallet.keygen.account_address')}</h5>
@@ -92,21 +86,5 @@
         >
       </div>
     </div>
-
-    <!-- <div class="uk-card uk-card-default uk-card-body">
-      <div class="uk-flex uk-child-width-1-2">
-        <div class=" uk-margin-left">
-          <h3 class="uk-text-light uk-text-muted uk-text">
-            {$_('wallet.keygen.description')}
-          </h3>
-        </div>
-
-        <div class="uk-align-center">
-          <button class="uk-button uk-button-secondary" on:click={do_keygen}>
-            {$_('wallet.keygen.btn_generate_keys')}
-          </button>
-        </div>
-      </div>
-    </div> -->
   {/if}
 </main>

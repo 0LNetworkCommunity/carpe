@@ -8,7 +8,6 @@ Currently Windows and Mac are supported:
 
 - [Download MacOs 11+](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.7/carpe_1.0.7_x64.dmg)
 
-
 # About
 
 Carpe is a desktop "wallet" that connects to the 0L network and lets you create accounts, do some account management. To learn more about 0L itself, you can check out the official website of the project : [0L Network website](https://0l.network/).

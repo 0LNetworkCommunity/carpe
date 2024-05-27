@@ -9,6 +9,7 @@
   import Actions from './Actions.svelte'
   import Copy from '../../components/layout/Copy.svelte'
   import { preferences, setAccountsListPreference } from '../../modules/user_preferences'
+  import AccountRowSkeleton from './AccountRowSkeleton.svelte'
   UIkit.use(Icons)
 
   let showOptions = false
@@ -152,61 +153,65 @@
       </thead>
       <tbody>
         {#each $allAccounts as a}
-          <tr>
-            <td>
-              <span>
-                {#if a.account == $signingAccount.account}
-                  <span uk-icon="user" />
-                  <button uk-icon="settings" class="uk-margin-left" on:click={toggleOptions} />
-                {/if}
-                {#if a.watch_only}
-                  <span class="uk-align-right" style="margin: 4px;" uk-icon="eye"></span>
-                {/if}
-              </span>
-            </td>
-            {#if showNoteColumn}
-              <td class="uk-text-left uk-transition-toggle uk-table-shrink note-column"
-                >{a.note ? a.note : ''}</td
-              >
-            {/if}
-            <td
-              on:click={() => selectAddress(a.account)}
-              class="uk-transition-toggle uk-table-shrink"
-              style="cursor: grab"
-            >
-              <div class="uk-flex-inline">
-                <span
-                  class="uk-text-truncate"
-                  style={showNoteColumn
-                    ? 'width: 26vw; display: inline-block'
-                    : 'width: 32vw; display: inline-block'}>{formatAccount(a.account)}</span
-                >
-                <span class="uk-transition-fade"><Copy text={a.account}></Copy></span>
-              </div>
-            </td>
-            <td class="uk-text-right">{printCoins(a.balance.unlocked)}</td>
-            <td class="uk-text-right uk-text-nowrap">
-              {#if a.on_chain != null && a.on_chain == false}
-                {$_('wallet.account_list.account_on_chain')}
-              {:else if a.on_chain}
-                <div class="uk-inline">
-                  {#if unscaledCoins(a.balance) < 1}
-                    <span class="uk-margin uk-text-warning" uk-icon="icon: info"></span>
-                    <div uk-dropdown>
-                      {$_('wallet.account_list.message')}
-                    </div>
+          {#if a.account == 'loading...'}
+            <AccountRowSkeleton {showNoteColumn} />
+          {:else}
+            <tr>
+              <td>
+                <span>
+                  {#if a.account == $signingAccount.account}
+                    <span uk-icon="user" />
+                    <button uk-icon="settings" class="uk-margin-left" on:click={toggleOptions} />
                   {/if}
-                  {printCoins(a.balance.total)}
-                </div>
-              {:else if a.balance == null}
-                {$_('wallet.account_list.loading')}...
-              {:else if !$connected}
-                {$_('wallet.account_list.offline')}...
-              {:else}
-                {$_('wallet.account_list.account_on_chain')}
+                  {#if a.watch_only}
+                    <span class="uk-align-right" style="margin: 4px;" uk-icon="eye"></span>
+                  {/if}
+                </span>
+              </td>
+              {#if showNoteColumn}
+                <td class="uk-text-left uk-transition-toggle uk-table-shrink note-column"
+                  >{a.note ? a.note : ''}</td
+                >
               {/if}
-            </td>
-          </tr>
+              <td
+                on:click={() => selectAddress(a.account)}
+                class="uk-transition-toggle uk-table-shrink"
+                style="cursor: grab"
+              >
+                <div class="uk-flex-inline">
+                  <span
+                    class="uk-text-truncate"
+                    style={showNoteColumn
+                      ? 'width: 26vw; display: inline-block'
+                      : 'width: 32vw; display: inline-block'}>{formatAccount(a.account)}</span
+                  >
+                  <span class="uk-transition-fade"><Copy text={a.account}></Copy></span>
+                </div>
+              </td>
+              <td class="uk-text-right">{printCoins(a.balance.unlocked)}</td>
+              <td class="uk-text-right uk-text-nowrap">
+                {#if a.on_chain != null && a.on_chain == false}
+                  {$_('wallet.account_list.account_on_chain')}
+                {:else if a.on_chain}
+                  <div class="uk-inline">
+                    {#if unscaledCoins(a.balance) < 1}
+                      <span class="uk-margin uk-text-warning" uk-icon="icon: info"></span>
+                      <div uk-dropdown>
+                        {$_('wallet.account_list.message')}
+                      </div>
+                    {/if}
+                    {printCoins(a.balance.total)}
+                  </div>
+                {:else if a.balance == null}
+                  {$_('wallet.account_list.loading')}...
+                {:else if !$connected}
+                  {$_('wallet.account_list.offline')}...
+                {:else}
+                  {$_('wallet.account_list.account_on_chain')}
+                {/if}
+              </td>
+            </tr>
+          {/if}
         {/each}
       </tbody>
     </table>
