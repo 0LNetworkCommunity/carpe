@@ -6,25 +6,17 @@
   import { printCoins } from '../../modules/coinHelpers'
   import { connected } from '../../modules/networks'
   import { setAccount } from '../../modules/accountActions'
-  import Actions from './Actions.svelte'
   import Copy from '../../components/layout/Copy.svelte'
   import { preferences, setAccountsListPreference } from '../../modules/user_preferences'
   import AccountRowSkeleton from './AccountRowSkeleton.svelte'
+  import { navigate } from 'svelte-navigator'; // Adjust based on your routing library
   UIkit.use(Icons)
-
-  let showOptions = false
 
   let showNoteColumn = false
   $: showNoteColumn = $allAccounts.some(
     (account) => account.note !== null && account.note.trim() !== '',
   )
-
-  const toggleOptions = () => {
-    showOptions = !showOptions
-  }
-
   function selectAddress(address) {
-    showOptions = false
     setAccount(address)
   }
 
@@ -178,7 +170,7 @@
                 <span>
                   {#if a.account == $signingAccount.account}
                     <span uk-icon="user" />
-                    <button uk-icon="settings" class="uk-margin-left" on:click={toggleOptions} />
+                    <button uk-icon="settings" class="uk-margin-left" on:click={() => navigate('/account-details')} />
                   {/if}
                   {#if a.watch_only}
                     <span class="uk-align-right" style="margin: 4px;" uk-icon="eye"></span>
@@ -217,11 +209,6 @@
       </tbody>
     </table>
   {/if}
-  <div style="display: {showOptions ? 'block' : 'none'};">
-    {#if $signingAccount}
-      <Actions {signingAccount} />
-    {/if}
-  </div>
 </main>
 
 <style>

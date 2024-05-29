@@ -1,6 +1,7 @@
 export const routes = {
   home: '/',
   wallet: '/wallet',
+  accountDetails: '/account-details',
   addAccount: '/add-account',
   addWatchAccount: '/add-wathc-account',
   accountFromMnem: '/account-from-mnem',

@@ -180,6 +180,60 @@ export const addAccount = async (
     .finally(() => (secret = null))
 }
 
+export const removeAccount = async (account: string) => {
+  removeAccountOptimistic(account)
+  invoke('remove_account', { account })
+    .then(() => {
+      // update allAccounts set
+      const list = get(allAccounts)
+      const updatedList = list.filter((item) => item.account !== account)
+      allAccounts.set(updatedList)
+      // update pendingAccounts set
+      const pendingList = get(pendingAccounts)
+      const updatedPendingList = pendingList.filter((item) => item.account !== account)
+      pendingAccounts.set(updatedPendingList)
+      // update watchAccounts set
+      let watchList = get(watchAccounts)
+      watchList = watchList.filter((item) => item !== account.toLowerCase())
+      watchAccounts.set(watchList)
+      // update signingAccount
+      signingAccount.set(updatedList.length > 0 ? updatedList[0] : null)
+      notify_success('Account removed')
+    })
+    .catch((e) => {
+      raise_error(e, true, 'remove_account')
+      notify_error('Failed to remove account')
+    })
+}
+
+const removeAccountOptimistic = (account) => {
+  // update allAccounts set
+  const list = get(allAccounts)
+  const updatedList = list.filter((item) => item.account !== account)
+  allAccounts.set(updatedList)
+  // update pendingAccounts set
+  const pendingList = get(pendingAccounts)
+  const updatedPendingList = pendingList.filter((item) => item.account !== account)
+  pendingAccounts.set(updatedPendingList)
+}
+
+// remove all accounts
+export const removeAllAccounts = async () => {
+  invoke('remove_accounts', {})
+    .then(() => {
+      resetSigningAccount()
+      allAccounts.set([])
+      pendingAccounts.set([])
+      watchAccounts.set([])
+      refreshAccounts()
+      notify_success('All accounts removed')
+    })
+    .catch((e) => {
+      raise_error(e, true, 'remove_all_accounts')
+      notify_error('Failed to remove all accounts')
+    })
+}
+
 export const isCarpeInit = async (): Promise<boolean> => {
   // on app load we want to avoid the Newbie view until we know it's not a new user
   logger(Level.Info, ' isCarpeInit')
@@ -215,8 +269,8 @@ export const setAccount = async (account: string, notifySucess = true) => {
   const watchList = get(watchAccounts)
   invoke('switch_profile', { account })
     .then((res: CarpeProfile) => {
-      res.account = res.account.toLocaleUpperCase()
-      res.watch_only = watchList.includes(res.account.toLocaleLowerCase())
+      res.account = res.account.toUpperCase()
+      res.watch_only = watchList.includes(res.account.toLowerCase())
       signingAccount.set(res)
       isInit.set(true)
       if (notifySucess) {

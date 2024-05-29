@@ -6,6 +6,12 @@ use libra_types::{
 };
 use once_cell::sync::Lazy;
 use std::path::{Path, PathBuf};
+use tokio::sync::Mutex;
+use std::sync::Arc;
+
+pub static CONFIG_MUTEX: Lazy<Arc<Mutex<AppCfg>>> = Lazy::new(|| {
+    Arc::new(Mutex::new(get_cfg().unwrap()))
+}); 
 
 // Set up paths for the canary builds
 #[cfg(feature = "carpe-canary")]

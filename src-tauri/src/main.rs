@@ -96,6 +96,7 @@ async fn main() {
       commands::wallets::init_from_mnem,
       commands::wallets::init_from_private_key,
       commands::wallets::remove_accounts,
+      commands::wallets::remove_account,
       commands::wallets::switch_profile,
       commands::wallets::is_slow,
       commands::wallets::set_slow_wallet,

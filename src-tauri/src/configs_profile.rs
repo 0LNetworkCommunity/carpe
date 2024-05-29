@@ -9,37 +9,40 @@ use libra_types::legacy_types::app_cfg::get_nickname;
 use libra_types::legacy_types::app_cfg::Profile;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey},
-  legacy_types::app_cfg::AppCfg,
 };
+use configs::CONFIG_MUTEX;
 
 /// For switching between profiles in the Account DB.
 pub async fn set_account_profile(
   account: AccountAddress,
   authkey: AuthenticationKey,
-) -> anyhow::Result<AppCfg> {
+) -> anyhow::Result<()> {
   let configs_exist = configs::is_initialized();
-  let mut cfg = match configs_exist {
-    true => configs::get_cfg()?,
-    false => configs::new_cfg()?,
+  let _cfg = match configs_exist {
+      true => configs::get_cfg()?,
+      false => configs::new_cfg()?,
   };
 
+  // Lock the mutex before making any changes
+  let mut cfg_guard = CONFIG_MUTEX.lock().await;
+
   // set as default profile
-  cfg.workspace.default_profile = Some(get_nickname(account));
+  cfg_guard.workspace.default_profile = Some(get_nickname(account));
   let profile = Profile::new(authkey, account);
   // add if we have not already
-  cfg.maybe_add_profile(profile)?;
+  cfg_guard.maybe_add_profile(profile)?;
 
-  cfg.workspace.node_home = default_config_path().to_path_buf();
+  cfg_guard.workspace.node_home = default_config_path().to_path_buf();
 
-  if !cfg.workspace.node_home.exists() {
-    fs::create_dir_all(&cfg.workspace.node_home)?;
-    fs::create_dir_all(cfg.get_block_dir(None)?)?;
+  if !cfg_guard.workspace.node_home.exists() {
+      fs::create_dir_all(&cfg_guard.workspace.node_home)?;
+      fs::create_dir_all(cfg_guard.get_block_dir(None)?)?;
   }
 
-  cfg.save_file()?;
+  cfg_guard.save_file()?;
 
-  Ok(cfg)
-}
+  Ok(())
+} 
 
 /// helper to get local proofs
 pub fn get_local_proofs_this_profile() -> anyhow::Result<Vec<PathBuf>> {

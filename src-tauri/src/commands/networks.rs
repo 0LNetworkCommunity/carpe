@@ -1,6 +1,6 @@
 //! networks to connect to
 
-use crate::configs::{get_cfg, get_client};
+use crate::configs::{get_cfg, get_client, CONFIG_MUTEX};
 
 use crate::carpe_error::CarpeError;
 use libra_types::exports::IndexResponse;
@@ -15,7 +15,7 @@ use url::Url;
 #[tauri::command(async)]
 pub async fn toggle_network(chain_id_str: &str) -> Result<NetworkPlaylist, CarpeError> {
   let chain_id = NamedChain::from_str(chain_id_str)?;
-  let mut app_cfg = get_cfg()?;
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
   app_cfg.set_chain_id(chain_id);
   app_cfg.save_file()?;
   maybe_create_playlist(&mut app_cfg, chain_id).await.ok();
@@ -60,7 +60,7 @@ pub async fn get_metadata() -> Result<IndexResponse, CarpeError> {
 
 #[tauri::command(async)]
 pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> {
-  let mut app_cfg = get_cfg()?;
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
   let np = app_cfg.update_network_playlist(None, Some(url)).await?;
   app_cfg.save_file()?;
   Ok(np)
@@ -69,7 +69,7 @@ pub async fn override_playlist(url: Url) -> Result<NetworkPlaylist, CarpeError> 
 #[tauri::command(async)]
 /// we want to elimated the entire playlist and use a single fullnode
 pub async fn force_upstream(url: Url) -> Result<NetworkPlaylist, CarpeError> {
-  let mut app_cfg = get_cfg()?;
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
   let dummy_playlist = NetworkPlaylist {
     chain_name: app_cfg.workspace.default_chain_id,
     nodes: vec![HostProfile::new(url)],

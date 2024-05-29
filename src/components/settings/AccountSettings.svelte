@@ -1,26 +1,18 @@
 <script lang="ts">
-  import { invoke } from '@tauri-apps/api/tauri'
   import { _ } from 'svelte-i18n'
-  import { refreshAccounts, resetSigningAccount } from '../../modules/accountActions'
-  import { raise_error } from '../../modules/carpeError'
-  import { notify_success } from '../../modules/carpeNotify'
-  import { responses } from '../../modules/debug'
-  import { watchAccounts, pendingAccounts } from '../../modules/accounts'
+  import { removeAllAccounts } from '../../modules/accountActions'
+  import { writable } from 'svelte/store'
+
+  let isSubmitting = writable(false)
 
   const removeAccounts = async () => {
-    resetSigningAccount()
-    invoke('remove_accounts', {})
-      .then((res: string) => {
-        responses.set(res)
-        notify_success('Accounts removed successfully')
-        watchAccounts.set([])
-        pendingAccounts.set([])
-        localStorage.removeItem('watchAccounts')
-        refreshAccounts()
-      })
-      .catch((e) => {
-        raise_error(e, false, 'removeAccounts')
-      })
+    isSubmitting.set(true)
+    try {
+      removeAllAccounts() 
+    } finally {
+      isSubmitting.set(false)
+    }
+    
   }
 </script>
 
@@ -37,7 +29,10 @@
         >
         <div uk-dropdown="mode: click">
           <p>{$_('settings.account_settings.confirm')}</p>
-          <button class="uk-button uk-button-danger" on:click={removeAccounts}>
+          <button class="uk-button uk-button-danger" 
+            on:click={removeAccounts}
+            disabled={!isSubmitting}
+            >
             {$_('settings.account_settings.btn_remove')}
           </button>
         </div>

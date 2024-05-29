@@ -1,14 +1,11 @@
 <script lang="ts">
-  import { _ } from 'svelte-i18n'
-  import Copy from '../../components/layout/Copy.svelte'
+  import { _ } from 'svelte-i18n';
+  import Copy from '../../components/layout/Copy.svelte';
 
-  export let signingAccount
+  export let signingAccount;
 </script>
 
-<main>
-  <h4 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">
-    {$_('wallet.account_list.info_title')}
-  </h4>
+<main >
   <p class="uk-text-uppercase">
     {$_('wallet.account_list.address')}:
     <code class="uk-text-light">{$signingAccount.account}</code>

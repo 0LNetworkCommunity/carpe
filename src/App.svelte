@@ -27,6 +27,7 @@
   import Nav from './components/Nav.svelte'
   import DebugCard from './components/dev/DebugCard.svelte'
   import Wallet from './components/wallet/Wallet.svelte'
+  import AccountDetails from './components/wallet/AccountDetails.svelte'
   // import Miner from './components/miner/Miner.svelte'
   import Settings from './components/settings/Settings.svelte'
   import DevMode from './components/dev/DevMode.svelte'
@@ -135,6 +136,7 @@
       <Nav />
       <div class="uk-background-muted uk-margin-large">
         <Route path={routes.wallet} component={Wallet} primary={false} />
+        <Route path={routes.accountDetails} component={AccountDetails} primary={false} />
         <!-- <Route path="/add-account" component={AddAccount} primary={false} /> -->
         <Route path={routes.accountFromMnem} component={AccountCreate} primary={false} />
         <Route path={routes.addWatchAccount} component={AddWatchAccount} primary={false} />
