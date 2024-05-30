@@ -5,6 +5,7 @@
   import { signingAccount } from '../../modules/accounts';
   import { get } from 'svelte/store';
   import { notify_success } from '../../modules/carpeNotify';
+  import { _ } from 'svelte-i18n';
 
   let address = '';
   let privateKey = '';
@@ -32,8 +33,8 @@
 
 <main class="uk-card uk-card-default uk-card-body  uk-height-1-1" style="height: 280px;">
   <div class="uk-flex uk-flex-column uk-height-1-1">
-    <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">Private Key</h5>
-    <p style="margin:0px">Recover your account private key:</p>
+    <h5 class="uk-text-light uk-text-uppercase uk-text-muted uk-text-thin">{$_('wallet.get_private_key.title')}</h5>
+    <p style="margin:0px">{$_('wallet.get_private_key.description')}</p>
     <div class="uk-flex-1 uk-flex uk-flex-column uk-flex-center">
       <div class="uk-flex uk-flex-center">
         {#if privateKey}
@@ -54,7 +55,8 @@
           id="add-btn"
           style="margin: 0.5rem 0rem;"
         >
-          Hide PrivateKey
+          {$_('wallet.get_private_key.btn_hide')}
+          
         </button>
       {:else}
         <button
@@ -63,7 +65,7 @@
           id="add-btn"
           style="margin: 0.5rem 0rem;"
         >
-          Get PrivateKey
+          {$_('wallet.get_private_key.btn_get')}
         </button>
       {/if}
       

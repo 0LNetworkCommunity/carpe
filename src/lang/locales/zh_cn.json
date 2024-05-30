@@ -83,6 +83,12 @@
       "placeholder": "在此输入您的备注...",
       "btn_save": "保存备注"
     },
+    "get_private_key": {
+      "title": "私钥",
+      "description": "恢复您的账户私钥：",
+      "btn_hide": "隐藏私钥",
+      "btn_get": "获取私钥"
+    },
     "keygen": {
       "title": "创建新账号",
       "description": "创建账户后，您的账户需要收到来自链上的任意一个钱包至少1个0L代币，才能够被激活上链。",

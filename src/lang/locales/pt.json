@@ -83,6 +83,12 @@
       "placeholder": "Digite sua nota aqui...",
       "btn_save": "Salvar Nota"
     },
+    "get_private_key": {
+      "title": "Chave Privada",
+      "description": "Recupere a chave privada da sua conta:",
+      "btn_hide": "Ocultar Chave Privada",
+      "btn_get": "Obter Chave Privada"
+    },
     "keygen": {
       "title": "Criar nova conta",
       "description": "Depois de gerar uma conta e a frase secreta, você precisará que alguém envie uma moeda do 0L para esta conta para que ela seja criada na rede.",

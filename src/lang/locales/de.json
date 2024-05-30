@@ -83,6 +83,12 @@
       "placeholder": "Geben Sie hier Ihre Notiz ein...",
       "btn_save": "Notiz speichern"
     },
+    "get_private_key": {
+      "title": "Privater Schlüssel",
+      "description": "Wiederherstellen Ihres Kontoschlüssels:",
+      "btn_hide": "Privaten Schlüssel verbergen",
+      "btn_get": "Privaten Schlüssel abrufen"
+    },
     "keygen": {
       "title": "Neues Konto anlegen",
       "description": "Nachdem du ein Konto und eine geheime Phrase erstellt hast, muss jemand einen 0L-Coin an dieses Konto senden, damit es auf der Chain erstellt wird.",
