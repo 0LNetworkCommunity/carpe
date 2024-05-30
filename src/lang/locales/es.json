@@ -2,7 +2,7 @@
   "nav": {
     "wallet": "Wallet",
     "miner": "Miner",
-    "transactions": "Transaction",
+    "transactions": "Transfer",
     "events": "Events"
   },
   "layout": {
@@ -40,11 +40,11 @@
       "card_title": "Onboarding",
       "message_headline": "You have generated keys for an account, but it does not yet exist on chain.",
       "message_prefix": "Join our community on ",
-      "message_suffix": " and provide us your Onboard Key to get onboarded.",
-      "onboard_key": "ONBOARD KEY"
+      "message_suffix": " and provide us your Address to get onboarded.",
+      "onboard_key": "ADDRESS"
     },
     "account_list": {
-      "note": "Nota",
+      "note": "Note",
       "nickname": "Nickname",
       "address": "Address",
       "authkey": "Authkey",
@@ -53,14 +53,35 @@
       "offline": "offline",
       "loading": "loading",
       "account_on_chain": "Account Not On Chain",
-      "message": " Your balance will go down for every transaction you send, including mining.",
+      "message": "Your balance will go down for every transaction you send, including mining.",
       "info_title": "Account Info"
     },
+    "account_details": {
+      "title": "Account Details"
+    },
+    "remove_account": {
+      "btn": "Remove Account",
+      "modal": {
+        "title": " Heads Up!",
+        "body": {
+          "question": "Are you sure you want to remove this account?",
+          "review_list": {
+            "title": "Please review the following before proceeding:",
+            "item1": "After removing your account from this wallet, you won't be able to recover its private key.",
+            "item2": "Ensure you have a <strong>backup of your recovery codes (mnemonic)</strong> before proceeding.",
+            "item3": "This action will only remove the account from this device, not from the blockchain.",
+            "item4": "If you lose your recovery codes, you may be locked out of your account permanently. <strong>NO ONE CAN HELP YOU RECOVER THEM</strong>."
+          }
+        },
+        "btn_cancel": "Cancel",
+        "btn_confirm": "Confirm Remove Account"
+      }
+    },
     "account_note": {
-      "title": "Nota de cuenta",
-      "description": "Una nota para ayudarte a identificar tu cuenta:",
-      "placeholder": "Ingresa tu nota aquí...",
-      "btn_save": "Guardar nota"
+      "title": "Account Note",
+      "description": "A note to help you identify your account:",
+      "placeholder": "Enter your note here...",
+      "btn_save": "Save Note"
     },
     "keygen": {
       "title": "Create New Account",
@@ -80,12 +101,12 @@
       "body": " <p>Are you sure you wrote down your mnemonic phrase?</p> <p>You won't be able to recover your account without it. No one can help you if lose it.</p><p>This is the last opportunity to write it down.</p>",
       "btn_cancel": "Let me check again",
       "btn_submit": "Submit Now",
-      "btn_submiting": "Submiting"
+      "btn_submiting": "Submitting"
     },
     "account_from_mnem_from": {
       "title": "RESTORE ACCOUNT",
       "description": "Using your recovery words (mnemonic) you can configure Carpe as a wallet to monitor, and send transactions",
-      "placeholder": "Recovery Mnemonic"
+      "placeholder": "Recovery Words"
     },
     "account_from_private": {
       "description": "Recover the account using the private key.",
@@ -97,9 +118,9 @@
       "placeholder": "address"
     },
     "account_switcher": {
-      "select_account": "Select Account",
+      "select_account": "Settings",
       "switch_account": "Switch Account",
-      "setting": "Go To Setting",
+      "setting": "Settings",
       "developers": "Developers"
     },
     "settings": {
@@ -130,13 +151,13 @@
       "title": "Language and Appearance",
       "lang": "Language",
       "lang_description": "Choose the language used to display",
-      "lang_button": "Spanish",
+      "lang_button": "English",
       "theme": "Theme",
       "theme_description": "Choose the theme"
     },
     "network_settings": {
       "title": "NETWORK SETTINGS",
-      "list_of_peers": "LIST OF PEERS",
+      "list_of_peers": "PEERS PLAYLIST",
       "synced_peers": "Synced Peers",
       "refresh_peers_button": "Check Fullnodes Sync",
       "description": "Choose a playlist of upstream nodes, so you can access the chain. Network connections will try the list in random order until a connection is made. Simply link to any playlist.json file here to update peers.",
@@ -153,9 +174,26 @@
     },
     "account_settings": {
       "title": "ACCOUNT SETTINGS",
-      "btn_remove": "REMOVE ACCOUNT",
-      "confirm": "Confirm remove accounts from this device? This is not reversable.",
+      "btn_remove": "REMOVE ACCOUNTS FROM CARPE",
+      "confirm": "Confirm remove accounts from this device? This is not reversible.",
       "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
+    },
+    "remove_all_accounts": {
+      "modal": {
+        "title": "Heads Up!",
+        "body": {
+          "question": "Are you sure you want to remove all accounts from this device?",
+          "review_list": {
+            "title": "Please review the following before proceeding:",
+            "item1": "After removing your accounts from this wallet, you won't be able to recover their private keys.",
+            "item2": "Ensure you have a <strong>backup of your recovery codes (mnemonic)</strong> before proceeding.",
+            "item3": "This action will only remove the accounts from this device, not from the blockchain.",
+            "item4": "If you lose your recovery codes, you may be locked out of your account permanently. <strong>NO ONE CAN HELP YOU RECOVER THEM.</strong>"
+          }
+        },
+        "btn_cancel": "Cancel",
+        "btn_confirm": "Confirm Remove All Accounts"
+      }
     },
     "gas_setting": {
       "title": "Setting maximum gas (min: 3000)",
@@ -198,7 +236,7 @@
     "cards": {
       "cant_start": {
         "title": "Your account does not exist on chain yet ",
-        "body": "The miner can't start until the account can be found on chain. Maybe you've generated new keys locally, but no one has sent any coins to that address?"
+        "body": "The Carpe can't do anything until the account can be found on chain. Maybe you've generated new keys locally, but no one has sent any coins to that address?"
       },
       "disco_error": {
         "title": "Discontinuity ",
@@ -260,25 +298,25 @@
     "set_wallet_type": {
       "actions_title": "Account Actions",
       "set_slow_title": "Make Slow Wallet (danger)",
-      "subtitle": " Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
+      "subtitle": "Be sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
       "btn_slow": "Set Slow Wallet",
-      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversable.",
+      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversible",
       "warning": "Warning: this change is forever",
       "btn_community": "Set Community Wallet",
       "btn_confirm_community": "Set Community",
-      "community_confirm": "Confirm Set Community Wallet? This is not reversable.",
+      "community_confirm": "Confirm Set Community Wallet? This is not reversible",
       "title": "Set your Account Type",
       "slow_confirm": "Set Slow"
     },
     "transfer": {
       "title": "Coin Transfer",
       "sender": "Sender",
-      "balance": "Balance",
+      "balance": "Unlocked Balance",
       "receiver": "Receiver",
       "amount": "Amount",
       "amount_label": "Amount (fractions not allowed yet)",
       "receiver_placeholder": "Receiver address",
-      "amount_placeholder": "Amount to be transfered",
+      "amount_placeholder": "Amount to be transferred",
       "confirm_title": "Heads up!",
       "please_confirm": "Please confirm your transfer information:",
       "await": "Await txs",
@@ -304,9 +342,9 @@
     "received_payment": "Received Payment",
     "sent_payment": "Sent Payment",
     "loading": {
-      "error": "Error loading the account events:",
-      "corrupted_db": "Current connected node does not have all account events. Don't worry. Your wallet and coins are safe on the chain. Try connecting to another upstream node.",
-      "account_off_chain": "Account selected not onboarded yet."
+      "error": "Events Temporarily Unavailable",
+      "corrupted_db": "The server you are connected to does not have all your event history available.",
+      "account_off_chain": "Account selected not onboarded yet, and has no events."
     }
   },
   "make_whole": {
@@ -325,7 +363,7 @@
       "claim": "Claim Now"
     },
     "modal_success": {
-      "title": "Transation confirmed!",
+      "title": "Transaction confirmed!",
       "amount_for_account": "<p>You have claimed <span class=\"uk-text-bold\">{coins} coins</span> for account <br><span class=\"uk-text-bold\">{account}</span>.</p>",
       "check_balance": "You can check your balance now.",
       "ok_btn": "OK"

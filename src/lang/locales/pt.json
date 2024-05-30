@@ -56,6 +56,27 @@
       "message": "Seu saldo diminuirá para cada transação que você enviar, incluindo as de mineração.",
       "info_title": "Informações sobre a conta"
     },
+    "account_details": {
+      "title": "Detalhes da Conta"
+    },
+    "remove_account": {
+      "btn": "Remover Conta",
+      "modal": {
+        "title": "Atenção!",
+        "body": {
+          "question": "Tem certeza de que deseja remover esta conta?",
+          "review_list": {
+            "title": "Por favor, reveja o seguinte antes de continuar:",
+            "item1": "Após remover sua conta desta carteira, você não poderá recuperar sua chave privada.",
+            "item2": "Certifique-se de ter um <strong>backup dos seus códigos de recuperação (mnemonic)</strong> antes de continuar.",
+            "item3": "Esta ação removerá apenas a conta deste dispositivo, não da blockchain.",
+            "item4": "Se você perder seus códigos de recuperação, poderá ser bloqueado permanentemente de sua conta. <strong>NINGUÉM PODE AJUDÁ-LO A RECUPERÁ-LOS</strong>."
+          }
+        },
+        "btn_cancel": "Cancelar",
+        "btn_confirm": "Confirmar Remoção da Conta"
+      }
+    },
     "account_note": {
       "title": "Nota da Conta",
       "description": "Uma nota para ajudá-lo a identificar sua conta:",
