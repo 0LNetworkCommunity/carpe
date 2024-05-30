@@ -494,6 +494,7 @@ export function addWatchAccount(address: string, isLegacy: boolean = true) {
       notify_error('Unable to parse AccountAddress')
       raise_error(e, true, 'add_watch_account')
     })
+    .finally(() => navigate('/wallet'))
 }
 
 async function onAccountAdd(res: CarpeProfile) {
@@ -512,7 +513,7 @@ async function onAccountAdd(res: CarpeProfile) {
   // only navigate away once we have refreshed the accounts including balances
   notify_success(`Account Added: ${res.nickname}`)
 
-  await refreshAccounts().finally(() => navigate('wallet'))
+  await refreshAccounts()
 }
 
 export const associateNoteWithAccount = async (account, note) => {
