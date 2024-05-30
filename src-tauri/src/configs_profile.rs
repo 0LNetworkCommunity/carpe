@@ -5,12 +5,10 @@ use std::{fs, path::PathBuf};
 
 use crate::configs::{self, get_cfg};
 use crate::default_config_path;
+use configs::CONFIG_MUTEX;
+use libra_types::exports::{AccountAddress, AuthenticationKey};
 use libra_types::legacy_types::app_cfg::get_nickname;
 use libra_types::legacy_types::app_cfg::Profile;
-use libra_types::{
-  exports::{AccountAddress, AuthenticationKey},
-};
-use configs::CONFIG_MUTEX;
 
 /// For switching between profiles in the Account DB.
 pub async fn set_account_profile(
@@ -19,8 +17,8 @@ pub async fn set_account_profile(
 ) -> anyhow::Result<()> {
   let configs_exist = configs::is_initialized();
   let _cfg = match configs_exist {
-      true => configs::get_cfg()?,
-      false => configs::new_cfg()?,
+    true => configs::get_cfg()?,
+    false => configs::new_cfg()?,
   };
 
   // Lock the mutex before making any changes
@@ -35,14 +33,12 @@ pub async fn set_account_profile(
   cfg_guard.workspace.node_home = default_config_path().to_path_buf();
 
   if !cfg_guard.workspace.node_home.exists() {
-      fs::create_dir_all(&cfg_guard.workspace.node_home)?;
-      fs::create_dir_all(cfg_guard.get_block_dir(None)?)?;
+    fs::create_dir_all(&cfg_guard.workspace.node_home)?;
+    fs::create_dir_all(cfg_guard.get_block_dir(None)?)?;
   }
-
   cfg_guard.save_file()?;
-
   Ok(())
-} 
+}
 
 /// helper to get local proofs
 pub fn get_local_proofs_this_profile() -> anyhow::Result<Vec<PathBuf>> {

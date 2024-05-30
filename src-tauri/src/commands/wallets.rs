@@ -7,6 +7,7 @@ use crate::{
 };
 
 use anyhow::{anyhow, Context, Error};
+use configs::CONFIG_MUTEX;
 use libra_txs::{submit_transaction::Sender, txs_cli_user::SetSlowTx};
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
@@ -20,7 +21,6 @@ use std::fs::OpenOptions;
 use std::fs::{self, File};
 use std::io::{prelude::*, Write};
 use std::path::{Path, PathBuf};
-use configs::CONFIG_MUTEX;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NewKeygen {
@@ -309,34 +309,31 @@ pub async fn get_originating_address(
 }
 
 /// Switch tx profiles, change libra.yaml to use selected account
-// IMPORTANT: don't return the profile, since it has keys
 #[tauri::command(async)]
 pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, CarpeError> {
-    let mut app_cfg = CONFIG_MUTEX.lock().await;
-    
-    // Clone the necessary data from the immutable borrow
-    let account_str = account.to_string();
-    let p_nickname = {
-        let p = app_cfg.get_profile(Some(account_str.clone()))?;
-        p.nickname.clone()
-    };
-    
-    // Perform the mutable operation
-    app_cfg.workspace.set_default(p_nickname);
-    app_cfg.save_file()?;
-    
-    // Get the profile again after the mutable operation
-    let profile = app_cfg.get_profile(Some(account_str))?;
-    
-    // Assign account note
-    let mut profiles: Vec<CarpeProfile> = vec![profile.into()];
-    assign_notes_to_accounts(&mut profiles)?;
+  // IMPORTANT: don't return the profile, since it has keys
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
 
-    Ok(profiles.into_iter().next().unwrap())
+  // Clone the necessary data from the immutable borrow
+  let account_str = account.to_string();
+  let p_nickname = {
+    let p = app_cfg.get_profile(Some(account_str.clone()))?;
+    p.nickname.clone()
+  };
+
+  // Perform the mutable operation
+  app_cfg.workspace.set_default(p_nickname);
+  app_cfg.save_file()?;
+
+  // Get the profile again after the mutable operation
+  let profile = app_cfg.get_profile(Some(account_str))?;
+
+  // Assign account note
+  let mut profiles: Vec<CarpeProfile> = vec![profile.into()];
+  assign_notes_to_accounts(&mut profiles)?;
+
+  Ok(profiles.into_iter().next().unwrap())
 }
-
-
-
 
 // remove all accounts which are being tracked.
 #[tauri::command(async)]
