@@ -1,4 +1,4 @@
-use crate::configs::{default_config_path, legacy_config_path};
+use crate::configs::{default_config_path, legacy_config_path, CONFIG_MUTEX};
 use crate::migrate::{self, backup_legacy_dir, read_accounts};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use anyhow::Context;
@@ -14,8 +14,8 @@ pub struct Preferences {
 
 #[tauri::command(async)]
 /// set the locale preference
-pub fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
-  let mut app_cfg = get_cfg()?;
+pub async fn set_preferences_locale(locale: String) -> Result<(), CarpeError> {
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
   let profile = app_cfg.get_profile_mut(None)?;
 
   profile.locale = Some(locale);
@@ -33,8 +33,8 @@ pub fn get_miner_txs_cost() -> Result<TxCost, CarpeError> {
 
 #[tauri::command(async)]
 /// set the miner_txs_cost
-pub fn set_miner_txs_cost(max_gas_unit_for_tx: u64) -> Result<(), CarpeError> {
-  let mut app_cfg = get_cfg()?;
+pub async fn set_miner_txs_cost(max_gas_unit_for_tx: u64) -> Result<(), CarpeError> {
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
   app_cfg.tx_configs.miner_txs_cost = Some(TxCost {
     max_gas_unit_for_tx,
     coin_price_per_unit: 100,
@@ -57,7 +57,7 @@ pub fn debug_preferences_path() -> Result<PathBuf, CarpeError> {
 #[tauri::command(async)]
 /// refreshes statistics and returns the synced peers
 pub async fn refresh_upstream_peer_stats() -> Result<Vec<Url>, CarpeError> {
-  let mut app_cfg = get_cfg()?;
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
 
   let np = app_cfg.refresh_network_profile_and_save(None).await?; // uses app_cfg.chain_info_chain_id
   app_cfg.network_playlist = vec![np.clone()];

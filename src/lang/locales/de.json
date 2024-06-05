@@ -56,11 +56,38 @@
       "message": " Dein Guthaben verringert sich bei jeder Transaktion, die du sendest, einschließlich Mining.",
       "info_title": "Konto-Informationen"
     },
+    "account_details": {
+      "title": "Kontodetails"
+    },
+    "remove_account": {
+      "btn": "Konto entfernen",
+      "modal": {
+        "title": "Achtung!",
+        "body": {
+          "question": "Sind Sie sicher, dass Sie dieses Konto entfernen möchten?",
+          "review_list": {
+            "title": "Bitte überprüfen Sie das Folgende, bevor Sie fortfahren:",
+            "item1": "Nach dem Entfernen Ihres Kontos aus dieser Wallet können Sie dessen privaten Schlüssel nicht wiederherstellen.",
+            "item2": "Stellen Sie sicher, dass Sie ein <strong>Backup Ihrer Wiederherstellungscodes (mnemonic)</strong> haben, bevor Sie fortfahren.",
+            "item3": "Diese Aktion entfernt das Konto nur von diesem Gerät, nicht von der Blockchain.",
+            "item4": "Wenn Sie Ihre Wiederherstellungscodes verlieren, könnten Sie dauerhaft von Ihrem Konto ausgeschlossen werden. <strong>NIEMAND KANN IHNEN HELFEN, DIE CODES WIEDERHERZUSTELLEN</strong>."
+          }
+        },
+        "btn_cancel": "Abbrechen",
+        "btn_confirm": "Konto entfernen bestätigen"
+      }
+    },
     "account_note": {
       "title": "Kontonotiz",
       "description": "Eine Notiz, um Ihnen zu helfen, Ihr Konto zu identifizieren:",
       "placeholder": "Geben Sie hier Ihre Notiz ein...",
       "btn_save": "Notiz speichern"
+    },
+    "get_private_key": {
+      "title": "Privater Schlüssel",
+      "description": "Wiederherstellen Ihres Kontoschlüssels:",
+      "btn_hide": "Privaten Schlüssel verbergen",
+      "btn_get": "Privaten Schlüssel abrufen"
     },
     "keygen": {
       "title": "Neues Konto anlegen",
@@ -156,6 +183,23 @@
       "btn_remove": "KONTO LÖSCHEN",
       "confirm": "Das Löschen von Konten auf diesem Gerät bestätigen? Das kann nicht rückgängig gemacht werden.",
       "description": "Dabei werden keine Konten von der Chain gelöscht. Die Konten werden nur von diesem Gerät entfernt. Wenn du deine Wiederherstellungscodes (Mnemonik) nicht irgendwo aufbewahrst, kann es sein, dass du dauerhaft aus diesem Konto ausgesperrt wirst. NIEMAND KANN DIR HELFEN, DIE MNEMONIK WIEDERZUBEKOMMEN. "
+    },
+    "remove_all_accounts": {
+      "modal": {
+        "title": "Achtung!",
+        "body": {
+          "question": "Sind Sie sicher, dass Sie alle Konten von diesem Gerät entfernen möchten?",
+          "review_list": {
+            "title": "Bitte überprüfen Sie das Folgende, bevor Sie fortfahren:",
+            "item1": "Nach dem Entfernen Ihrer Konten aus dieser Wallet können Sie deren private Schlüssel nicht wiederherstellen.",
+            "item2": "Stellen Sie sicher, dass Sie ein <strong>Backup Ihrer Wiederherstellungscodes (mnemonic)</strong> haben, bevor Sie fortfahren.",
+            "item3": "Diese Aktion entfernt die Konten nur von diesem Gerät, nicht von der Blockchain.",
+            "item4": "Wenn Sie Ihre Wiederherstellungscodes verlieren, könnten Sie dauerhaft von Ihrem Konto ausgeschlossen werden. <strong>NIEMAND KANN IHNEN HELFEN, DIE CODES WIEDERHERZUSTELLEN</strong>."
+          }
+        },
+        "btn_cancel": "Abbrechen",
+        "btn_confirm": "Alle Konten entfernen bestätigen"
+      }
     },
     "gas_setting": {
       "title": "Maximales Gas einstellen (min: 3000)",

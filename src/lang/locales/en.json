@@ -56,11 +56,38 @@
       "message": "Your balance will go down for every transaction you send, including mining.",
       "info_title": "Account Info"
     },
+    "account_details": {
+      "title": "Account Details"
+    },
+    "remove_account": {
+      "btn": "Remove Account",
+      "modal": {
+        "title": " Heads Up!",
+        "body": {
+          "question": "Are you sure you want to remove this account?",
+          "review_list": {
+            "title": "Please review the following before proceeding:",
+            "item1": "After removing your account from this wallet, you won't be able to recover its private key.",
+            "item2": "Ensure you have a <strong>backup of your recovery codes (mnemonic)</strong> before proceeding.",
+            "item3": "This action will only remove the account from this device, not from the blockchain.",
+            "item4": "If you lose your recovery codes, you may be locked out of your account permanently. <strong>NO ONE CAN HELP YOU RECOVER THEM</strong>."
+          }
+        },
+        "btn_cancel": "Cancel",
+        "btn_confirm": "Confirm Remove Account"
+      }
+    },
     "account_note": {
       "title": "Account Note",
       "description": "A note to help you identify your account:",
       "placeholder": "Enter your note here...",
       "btn_save": "Save Note"
+    },
+    "get_private_key": {
+      "title": "Private Key",
+      "description": "Recover your account private key:",
+      "btn_hide": "Hide Private Key",
+      "btn_get": "Get Private Key"
     },
     "keygen": {
       "title": "Create New Account",
@@ -156,6 +183,23 @@
       "btn_remove": "REMOVE ACCOUNTS FROM CARPE",
       "confirm": "Confirm remove accounts from this device? This is not reversible.",
       "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
+    },
+    "remove_all_accounts": {
+      "modal": {
+        "title": "Heads Up!",
+        "body": {
+          "question": "Are you sure you want to remove all accounts from this device?",
+          "review_list": {
+            "title": "Please review the following before proceeding:",
+            "item1": "After removing your accounts from this wallet, you won't be able to recover their private keys.",
+            "item2": "Ensure you have a <strong>backup of your recovery codes (mnemonic)</strong> before proceeding.",
+            "item3": "This action will only remove the accounts from this device, not from the blockchain.",
+            "item4": "If you lose your recovery codes, you may be locked out of your account permanently. <strong>NO ONE CAN HELP YOU RECOVER THEM.</strong>"
+          }
+        },
+        "btn_cancel": "Cancel",
+        "btn_confirm": "Confirm Remove All Accounts"
+      }
     },
     "gas_setting": {
       "title": "Setting maximum gas (min: 3000)",

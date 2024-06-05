@@ -56,11 +56,38 @@
       "message": " Votre solde diminuera pour toutes transactions effectuées, y compris lorsque vous minez.",
       "info_title": "Informations sur le compte"
     },
+    "account_details": {
+      "title": "Détails du compte"
+    },
+    "remove_account": {
+      "btn": "Supprimer le compte",
+      "modal": {
+        "title": "Attention!",
+        "body": {
+          "question": "Êtes-vous sûr de vouloir supprimer ce compte?",
+          "review_list": {
+            "title": "Veuillez revoir ce qui suit avant de continuer:",
+            "item1": "Après avoir supprimé votre compte de ce portefeuille, vous ne pourrez plus récupérer sa clé privée.",
+            "item2": "Assurez-vous d'avoir une <strong>sauvegarde de vos codes de récupération (mnemonic)</strong> avant de continuer.",
+            "item3": "Cette action ne supprimera le compte que de cet appareil, pas de la blockchain.",
+            "item4": "Si vous perdez vos codes de récupération, vous risquez d'être définitivement bloqué de votre compte. <strong>PERSONNE NE PEUT VOUS AIDER À LES RÉCUPÉRER</strong>."
+          }
+        },
+        "btn_cancel": "Annuler",
+        "btn_confirm": "Confirmer la suppression du compte"
+      }
+    },
     "account_note": {
       "title": "Note du compte",
       "description": "Une note pour vous aider à identifier votre compte :",
       "placeholder": "Entrez votre note ici...",
       "btn_save": "Sauvegarder la note"
+    },
+    "get_private_key": {
+      "title": "Clé Privée",
+      "description": "Récupérer la clé privée de votre compte:",
+      "btn_hide": "Masquer la Clé Privée",
+      "btn_get": "Obtenir la Clé Privée"
     },
     "keygen": {
       "title": "Creer un nouveau compte",
@@ -156,6 +183,23 @@
       "btn_remove": "SUPPRIMER LE COMPTE",
       "confirm": "Confirmer la suppression du compte de cet appareil ? Cette opération est irreversible.",
       "description": "Votre compte sera toujours sur la chaîne mais il n'apparaîtra plus sur cet appareil. Si vous n'avez plus votre phrase secrète, vous perdez accès à ce compte définitivement. PERSONNE NE PEUT RETROUVER VOTRE PHRASE SECRÈTE."
+    },
+    "remove_all_accounts": {
+      "modal": {
+        "title": "Attention!",
+        "body": {
+          "question": "Êtes-vous sûr de vouloir supprimer tous les comptes de cet appareil?",
+          "review_list": {
+            "title": "Veuillez revoir ce qui suit avant de continuer:",
+            "item1": "Après avoir supprimé vos comptes de ce portefeuille, vous ne pourrez plus récupérer leurs clés privées.",
+            "item2": "Assurez-vous d'avoir une <strong>sauvegarde de vos codes de récupération (mnemonic)</strong> avant de continuer.",
+            "item3": "Cette action ne supprimera les comptes que de cet appareil, pas de la blockchain.",
+            "item4": "Si vous perdez vos codes de récupération, vous risquez d'être définitivement bloqué de votre compte. <strong>PERSONNE NE PEUT VOUS AIDER À LES RÉCUPÉRER</strong>."
+          }
+        },
+        "btn_cancel": "Annuler",
+        "btn_confirm": "Confirmer la suppression de tous les comptes"
+      }
     },
     "gas_setting": {
       "title": "Réglage du gaz maximum (min : 3000)",

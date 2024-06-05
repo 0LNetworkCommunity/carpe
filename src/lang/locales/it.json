@@ -56,11 +56,38 @@
       "message": " Your balance will go down for every transaction you send, including mining.",
       "info_title": "Account Info"
     },
+    "account_details": {
+      "title": "Dettagli dell'account"
+    },
+    "remove_account": {
+      "btn": "Rimuovi account",
+      "modal": {
+        "title": "Attenzione!",
+        "body": {
+          "question": "Sei sicuro di voler rimuovere questo account?",
+          "review_list": {
+            "title": "Si prega di rivedere quanto segue prima di procedere:",
+            "item1": "Dopo aver rimosso il tuo account da questo wallet, non potrai più recuperare la sua chiave privata.",
+            "item2": "Assicurati di avere un <strong>backup dei tuoi codici di recupero (mnemonic)</strong> prima di procedere.",
+            "item3": "Questa azione rimuoverà solo l'account da questo dispositivo, non dalla blockchain.",
+            "item4": "Se perdi i tuoi codici di recupero, potresti essere bloccato permanentemente dal tuo account. <strong>NESSUNO PUÒ AIUTARTI A RECUPERARLI</strong>."
+          }
+        },
+        "btn_cancel": "Annulla",
+        "btn_confirm": "Conferma rimozione account"
+      }
+    },
     "account_note": {
       "title": "Nota dell'account",
       "description": "Una nota per aiutarti a identificare il tuo account:",
       "placeholder": "Inserisci qui la tua nota...",
       "btn_save": "Salva nota"
+    },
+    "get_private_key": {
+      "title": "Chiave Privata",
+      "description": "Recupera la chiave privata del tuo account:",
+      "btn_hide": "Nascondi Chiave Privata",
+      "btn_get": "Ottieni Chiave Privata"
     },
     "keygen": {
       "title": "Create New Account",
@@ -153,9 +180,26 @@
     },
     "account_settings": {
       "title": "ACCOUNT SETTINGS",
-      "btn_remove": "REMOVE ACCOUNT",
+      "btn_remove": "REMOVE ACCOUNTS FROM CARPE",
       "confirm": "Confirm remove accounts from this device? This is not reversable.",
       "description": "This does not delete any accounts from the chain. It only removes the accounts from this device. If you do not have your recovery codes (mnemonic) stored somewhere, you may be locked out of this account permanently. NO ONE CAN HELP YOU RECOVER THE MNEMONIC. "
+    },
+    "remove_all_accounts": {
+      "modal": {
+        "title": "Attenzione!",
+        "body": {
+          "question": "Sei sicuro di voler rimuovere tutti gli account da questo dispositivo?",
+          "review_list": {
+            "title": "Si prega di rivedere quanto segue prima di procedere:",
+            "item1": "Dopo aver rimosso i tuoi account da questo wallet, non potrai più recuperare le loro chiavi private.",
+            "item2": "Assicurati di avere un <strong>backup dei tuoi codici di recupero (mnemonic)</strong> prima di procedere.",
+            "item3": "Questa azione rimuoverà solo gli account da questo dispositivo, non dalla blockchain.",
+            "item4": "Se perdi i tuoi codici di recupero, potresti essere bloccato permanentemente dal tuo account. <strong>NESSUNO PUÒ AIUTARTI A RECUPERARLI</strong>."
+          }
+        },
+        "btn_cancel": "Annulla",
+        "btn_confirm": "Conferma rimozione di tutti gli account"
+      }
     },
     "gas_setting": {
       "title": "Setting maximum gas (min: 3000)",

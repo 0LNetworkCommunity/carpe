@@ -1,6 +1,7 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n'
   import { InitType, addAccount } from '../../modules/accountActions'
+  import { navigate } from 'svelte-navigator'
 
   let danger_temp_private_key: string
   let isLegacy = false
@@ -8,7 +9,10 @@
     isLegacy = !isLegacy
   }
   const initAccount = (pri_key: string) => {
-    addAccount(InitType.PriKey, pri_key.trim(), isLegacy)
+    addAccount(InitType.PriKey, pri_key.trim(), isLegacy).finally(() => {
+      danger_temp_private_key = null
+      navigate('wallet')
+    })
   }
 </script>
 

@@ -42,6 +42,7 @@ serde = { version = "1.0.137", features = ["derive"] }
 serde_json = { version = "1.0.81", features = ["preserve_order"] }
 log = "0.4.17"
 tokio = { version = "1.21.0", features = ["full"] }
+tokio-util = "0.7.11"
 url = { version = "2.2.2", features = ["serde"] }
 
 # only in carpe

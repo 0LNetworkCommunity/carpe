@@ -7,6 +7,7 @@ use crate::{
 };
 
 use anyhow::{anyhow, Context, Error};
+use configs::CONFIG_MUTEX;
 use libra_txs::{submit_transaction::Sender, txs_cli_user::SetSlowTx};
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
@@ -240,8 +241,7 @@ pub fn get_default_profile() -> Result<CarpeProfile, CarpeError> {
 
 #[tauri::command(async)]
 pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
-  // let mut all = Accounts::read_from_file()?;
-  let mut app_cfg = get_cfg()?;
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
 
   // while we are here check if the accounts are on chain
   // under a different address than implied by authkey
@@ -310,15 +310,23 @@ pub async fn get_originating_address(
 
 /// Switch tx profiles, change libra.yaml to use selected account
 #[tauri::command(async)]
-// IMPORTANT: don't return the profile, since it has keys
 pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, CarpeError> {
-  let mut app_cfg = get_cfg()?;
-  let p = app_cfg.get_profile(Some(account.to_string()))?;
-  app_cfg.workspace.set_default(p.nickname.clone());
+  // IMPORTANT: don't return the profile, since it has keys
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
+
+  // Clone the necessary data from the immutable borrow
+  let account_str = account.to_string();
+  let p_nickname = {
+    let p = app_cfg.get_profile(Some(account_str.clone()))?;
+    p.nickname.clone()
+  };
+
+  // Perform the mutable operation
+  app_cfg.workspace.set_default(p_nickname);
   app_cfg.save_file()?;
 
-  // TODO: gross, fix upstream `app_cfg.rs` to prevent the borrow issues here
-  let profile = app_cfg.get_profile(Some(account.to_string()))?;
+  // Get the profile again after the mutable operation
+  let profile = app_cfg.get_profile(Some(account_str))?;
 
   // Assign account note
   let mut profiles: Vec<CarpeProfile> = vec![profile.into()];
@@ -328,14 +336,32 @@ pub async fn switch_profile(account: AccountAddress) -> Result<CarpeProfile, Car
 }
 
 // remove all accounts which are being tracked.
-#[tauri::command]
-pub fn remove_accounts() -> Result<String, CarpeError> {
+#[tauri::command(async)]
+pub async fn remove_accounts() -> Result<String, CarpeError> {
   // Note: this only removes the account tracking, doesn't delete account on chain.
-  let mut cfg = configs::get_cfg()?;
-  cfg.user_profiles = vec![];
-  cfg.save_file()?;
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
+  app_cfg.user_profiles = vec![];
+  app_cfg.save_file()?;
   let _ = remove_legacy_accounts();
   Ok("removed all accounts".to_owned())
+}
+
+// remove an account from the tracked accounts
+#[tauri::command(async)]
+pub async fn remove_account(account: AccountAddress) -> Result<String, CarpeError> {
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
+  let acc_str = account.to_string().to_lowercase();
+  let index = app_cfg
+    .user_profiles
+    .iter()
+    .position(|p| p.account.to_string() == acc_str);
+  if let Some(i) = index {
+    app_cfg.user_profiles.remove(i);
+    app_cfg.save_file()?;
+    Ok(format!("removed account {}", acc_str))
+  } else {
+    Err(CarpeError::misc("account not found"))
+  }
 }
 
 pub fn danger_get_keys(mnemonic: String) -> Result<KeyChain, anyhow::Error> {
@@ -396,6 +422,7 @@ pub async fn add_watch_account(
   is_legacy: bool,
 ) -> Result<CarpeProfile, CarpeError> {
   let authkey: AuthenticationKey = query::get_auth_key(address).await?;
+
   if is_legacy {
     let _ = add_legacy_accounts(authkey);
   }
@@ -467,4 +494,20 @@ pub fn remove_legacy_accounts() -> Result<String, CarpeError> {
     "No legacy accounts to remove. No account file found at {:?}",
     &db_path
   )))
+}
+
+pub fn remove_legacy_account(authkey: AuthenticationKey) -> Result<String, CarpeError> {
+  let mut all = read_legacy_accounts()?;
+  let acc_str = authkey.to_string();
+  let index = all
+    .accounts
+    .iter()
+    .position(|p| p.authkey.to_string() == acc_str);
+  if let Some(i) = index {
+    all.accounts.remove(i);
+    let _ = update_legacy_accounts(&all);
+    Ok(format!("removed account {}", acc_str))
+  } else {
+    Err(CarpeError::misc("account not found"))
+  }
 }

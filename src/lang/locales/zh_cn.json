@@ -56,11 +56,38 @@
       "message": " 所有发送的交易（包括：挖矿）都会消耗一些余额作为手续费。",
       "info_title": "账户信息"
     },
+    "account_details": {
+      "title": "账户详情"
+    },
+    "remove_account": {
+      "btn": "删除账户",
+      "modal": {
+        "title": "注意!",
+        "body": {
+          "question": "您确定要删除此账户吗？",
+          "review_list": {
+            "title": "请在继续之前查看以下内容：",
+            "item1": "从此钱包删除账户后，您将无法恢复其私钥。",
+            "item2": "在继续之前，请确保您有<strong>备份您的恢复码（mnemonic）</strong>。",
+            "item3": "此操作只会从此设备中删除账户，而不会从区块链中删除。",
+            "item4": "如果您丢失了恢复码，您可能会永久锁定账户。<strong>没有人可以帮助您恢复它们</strong>。"
+          }
+        },
+        "btn_cancel": "取消",
+        "btn_confirm": "确认删除账户"
+      }
+    },
     "account_note": {
       "title": "账户备注",
       "description": "一条备注，帮助您识别您的账户：",
       "placeholder": "在此输入您的备注...",
       "btn_save": "保存备注"
+    },
+    "get_private_key": {
+      "title": "私钥",
+      "description": "恢复您的账户私钥：",
+      "btn_hide": "隐藏私钥",
+      "btn_get": "获取私钥"
     },
     "keygen": {
       "title": "创建新账号",
@@ -156,6 +183,23 @@
       "btn_remove": "删除账号",
       "confirm": "请确认要从本设备中删除当前账号吗？本操作不可逆。",
       "description": "本操作不会删除链上账号，只会删除本地设备上的信息，请注意如果您没有备份助记词，您的账号将无法被恢复。"
+    },
+    "remove_all_accounts": {
+      "modal": {
+        "title": "注意!",
+        "body": {
+          "question": "您确定要从此设备中删除所有账户吗？",
+          "review_list": {
+            "title": "请在继续之前查看以下内容：",
+            "item1": "从此钱包删除账户后，您将无法恢复其私钥。",
+            "item2": "在继续之前，请确保您有<strong>备份您的恢复码（mnemonic）</strong>。",
+            "item3": "此操作只会从此设备中删除账户，而不会从区块链中删除。",
+            "item4": "如果您丢失了恢复码，您可能会永久锁定账户。<strong>没有人可以帮助您恢复它们</strong>。"
+          }
+        },
+        "btn_cancel": "取消",
+        "btn_confirm": "确认删除所有账户"
+      }
     },
     "gas_setting": {
       "title": "设置最大gas (最小值: 3000)",
