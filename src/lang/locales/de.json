@@ -302,17 +302,29 @@
       "no_balance_body2": "Sieht so aus, als hättest du weniger als 2 Coins auf deinem Konto, das bedeutet, dass du niemanden onboarden kannst."
     },
     "set_wallet_type": {
-      "actions_title": "Konto-Aktionen",
-      "set_slow_title": "Slow Wallet machen (Gefahr)",
-      "subtitle": " Es ist wichtig, dass du weißt, was du tust. Dies kann nicht mehr rückgängig gemacht werden. Slow und Community Wallets sind unveränderlich.",
-      "btn_slow": "Slow Wallet Wählen",
-      "btn_confirm_slow": "Slow Wallet bestätigen? Dies kann nicht rückgängig gemacht werden.",
-      "warning": "Warnung: Diese Änderung ist für immer",
-      "btn_community": "Community Wallet Wählen",
-      "btn_confirm_community": "Community Wählen",
-      "community_confirm": "Community Wallet bestätigen? Dies kann nicht rückgängig gemacht werden.",
-      "title": "Kontotyp Auswählen",
-      "slow_confirm": "Slow Wählen"
+      "actions_title": "Kontohandlungen",
+      "set_slow_title": "Langsame Wallet erstellen (gefährlich)",
+      "subtitle": "Stellen Sie sicher, dass Sie wissen, was Sie tun. Dies ist nicht umkehrbar. Langsame und Community-Wallets sind dauerhaft.",
+      "btn_slow": "Langsame Wallet setzen",
+      "modal": {
+        "title": "Warnung: Diese Änderung ist für immer",
+        "body": {
+          "question": "Sind Sie sicher, dass Sie dieses Konto als langsame Wallet festlegen möchten?",
+          "review_list": {
+            "title": "Bitte überprüfen Sie die folgenden Punkte, bevor Sie fortfahren:",
+            "item1": "Dieser Vorgang ist nicht umkehrbar. Nachdem Sie Ihre Wallet auf langsam gesetzt haben, können Sie dies nicht mehr ändern.",
+            "item2": "Diese Aktion wird die Wallet auf der Blockchain als langsam festlegen und Ihre Kontoliquidität ändern.",
+            "item3": "Langsame Wallets haben ein tägliches Freischaltungslimit von 35.000 Münzen vom Kontostand."
+          }
+        },
+        "btn_confirm": "Bestätigen Sie das Setzen der langsamen Wallet? Dies ist nicht umkehrbar",
+        "btn_cancel": "Abbrechen"
+      },
+      "btn_community": "Community Wallet setzen",
+      "btn_confirm_community": "Community setzen",
+      "community_confirm": "Bestätigen Sie das Setzen der Community Wallet? Dies ist nicht umkehrbar",
+      "title": "Legen Sie Ihren Kontotyp fest",
+      "slow_confirm": "Langsam setzen"
     },
     "transfer": {
       "title": "Überweisung von Coins",
