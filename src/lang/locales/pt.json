@@ -285,17 +285,29 @@
       "no_balance_body2": "Parece que você tem menos de 2 moedas em sua conta, isso significa que você não poderá embarcar ninguém."
     },
     "set_wallet_type": {
-      "actions_title": "Acções da conta",
-      "set_slow_title": "Fazer carteira lenta (perigo)",
-      "subtitle": "Certifique-se de que você sabe o que está fazendo. Essa operação não é reversível. As carteiras lentas e comunitárias são permanentes.",
+      "actions_title": "Ações da Conta",
+      "set_slow_title": "Tornar Carteira Lenta (perigoso)",
+      "subtitle": "Certifique-se de que você sabe o que está fazendo. Isso não é reversível. Carteiras Lentas e Comunitárias são permanentes.",
       "btn_slow": "Definir Carteira Lenta",
-      "btn_confirm_slow": "Confirmar Definir Carteira Lenta? Esta operação não é reversível.",
-      "warning": "Aviso: esta mudança é para sempre",
-      "btn_community": "Definir Carteira de Comunidade",
+      "modal": {
+        "title": "Aviso: esta alteração é permanente",
+        "body": {
+          "question": "Tem certeza de que deseja definir esta conta como uma carteira lenta?",
+          "review_list": {
+            "title": "Revise o seguinte antes de prosseguir:",
+            "item1": "Esta operação não é reversível. Depois de definir sua carteira como lenta, você não poderá alterar de volta.",
+            "item2": "Esta ação definirá a carteira como lenta na blockchain e mudará a liquidez da sua conta.",
+            "item3": "Carteiras lentas têm um limite diário de desbloqueio de 35.000 moedas do saldo da conta."
+          }
+        },
+        "btn_confirm": "Confirmar definição de Carteira Lenta? Isso não é reversível",
+        "btn_cancel": "Cancelar"
+      },
+      "btn_community": "Definir Carteira Comunitária",
       "btn_confirm_community": "Definir Comunidade",
-      "community_confirm": "Confirmar Definir Carteira de Comunidade? Esta operação não é reversível.",
-      "title": "Defina seu Tipo de Conta",
-      "slow_confirm": "Definir Lenta"
+      "community_confirm": "Confirmar definição de Carteira Comunitária? Isso não é reversível",
+      "title": "Defina o Tipo da Sua Conta",
+      "slow_confirm": "Definir Lento"
     },
     "transfer": {
       "title": "Transferência de Moedas",

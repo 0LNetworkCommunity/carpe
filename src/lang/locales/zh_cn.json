@@ -303,15 +303,27 @@
     },
     "set_wallet_type": {
       "actions_title": "账户操作",
-      "set_slow_title": "慢速钱包（危险）",
-      "subtitle": "确认您务必确认本次操作. 本操作不可逆. 慢钱包和社区钱包是永久性的。",
+      "set_slow_title": "设为慢钱包（危险）",
+      "subtitle": "确保你知道自己在做什么。这是不可逆的。慢钱包和社区钱包是永久性的。",
       "btn_slow": "设为慢钱包",
-      "btn_confirm_slow": "确认设置慢钱包吗？本操作不可逆。",
-      "warning": "警告：这一改变将是永久性的",
+      "modal": {
+        "title": "警告：此更改是永久性的",
+        "body": {
+          "question": "你确定要将此账户设为慢钱包吗？",
+          "review_list": {
+            "title": "在继续之前请检查以下内容：",
+            "item1": "此操作不可逆。将钱包设为慢钱包后，无法更改回去。",
+            "item2": "此操作将在区块链上将钱包设为慢钱包，并将改变你的账户流动性。",
+            "item3": "慢钱包每天的解锁限额为35,000枚硬币。"
+          }
+        },
+        "btn_confirm": "确认设为慢钱包？这不可逆",
+        "btn_cancel": "取消"
+      },
       "btn_community": "设为社区钱包",
-      "btn_confirm_community": "设为社区钱包",
-      "community_confirm": "确认要设为社区钱包吗？本操作不可逆。",
-      "title": "设置账户类型",
+      "btn_confirm_community": "设为社区",
+      "community_confirm": "确认设为社区钱包？这不可逆",
+      "title": "设置你的账户类型",
       "slow_confirm": "设为慢钱包"
     },
     "transfer": {
