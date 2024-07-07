@@ -39,9 +39,9 @@
     "reminder_create": {
       "card_title": "Onboarding",
       "message_headline": "Du hast Keys für ein Konto erzeugt, aber es existiert noch nicht auf der Chain.",
-      "message_prefix": "Tritt unserer Gemeinschaft bei auf ",
+      "message_prefix": "Die Anzahl der Quittungen in einer einzigen Transaktion darf 1,000 nicht überschreiten.",
       "message_suffix": " und gib uns deinen Onboard Key, um an Bord zu kommen.",
-      "onboard_key": "ONBOARD KEY"
+      "onboard_key": "Adresse"
     },
     "account_list": {
       "note": "Notiz",

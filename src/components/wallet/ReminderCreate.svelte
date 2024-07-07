@@ -19,11 +19,11 @@
           <p>{$_('wallet.reminder_create.message_headline')}</p>
           <p>
             {$_('wallet.reminder_create.message_prefix')}
-            <a
+            <!-- <a
               href="https://discord.com/channels/833074824447655976/909866360060932127"
               target="_blank">Discord <span uk-icon="icon: link;ratio:0.8" /></a
             >
-            {$_('wallet.reminder_create.message_suffix')}
+            {$_('wallet.reminder_create.message_suffix')} -->
           </p>
           {#each pendingAccounts as a}
             {#if a.account == 'loading...'}

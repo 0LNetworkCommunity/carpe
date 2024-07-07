@@ -39,9 +39,9 @@
     "reminder_create": {
       "card_title": "Integração",
       "message_headline": "Você gerou chaves para uma conta, mas ela não existe na rede ainda.",
-      "message_prefix": "Junte-se à nossa comunidade no ",
+      "message_prefix": "O número de recibos numa única transação não pode exceder 1,000",
       "message_suffix": " e forneça-nos a sua Chave de Integração para criar sua conta na rede.",
-      "onboard_key": "CHAVE DE INTEGRAÇÃO"
+      "onboard_key": "Conta"
     },
     "account_list": {
       "note": "Nota",

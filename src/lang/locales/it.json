@@ -39,9 +39,9 @@
     "reminder_create": {
       "card_title": "Onboarding",
       "message_headline": "You have generated keys for an account, but it does not yet exist on chain.",
-      "message_prefix": "Join our community on ",
+      "message_prefix": "The number of receipts in a single transaction cannot exceed 1,000",
       "message_suffix": " and provide us your Onboard Key to get onboarded.",
-      "onboard_key": "ONBOARD KEY"
+      "onboard_key": "Address"
     },
     "account_list": {
       "note": "Nota",

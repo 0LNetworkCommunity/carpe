@@ -39,9 +39,9 @@
     "reminder_create": {
       "card_title": "激活",
       "message_headline": "您的账号已经创建成功，但是还没有激活。",
-      "message_prefix": "加我们的",
+      "message_prefix": "单笔收款数量不能超过1,000",
       "message_suffix": " 社区并提供您的激活码，社区成员会帮助您完成账户激活。",
-      "onboard_key": "激活码（AuthKey）"
+      "onboard_key": "地址"
     },
     "account_list": {
       "note": "笔记",

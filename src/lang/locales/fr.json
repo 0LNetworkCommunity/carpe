@@ -39,9 +39,9 @@
     "reminder_create": {
       "card_title": "Onboarding",
       "message_headline": "Vous avez généré les clés de votre compte mais il n'existe pas encore sur la chaine.",
-      "message_prefix": "Rejoignez notre communauté sur ",
+      "message_prefix": "Le nombre de reçus dans une seule transaction ne peut excéder 1,000",
       "message_suffix": " et fournissez votre clé (onboard key) pour etre onboardé.",
-      "onboard_key": "ONBOARD KEY"
+      "onboard_key": "Adresse"
     },
     "account_list": {
       "note": "Note",
