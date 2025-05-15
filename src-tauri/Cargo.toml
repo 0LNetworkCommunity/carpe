@@ -9,45 +9,44 @@ license = "NOASSERTION"
 repository = "https://github.com/0LNetworkCommunity/carpe"
 
 [build-dependencies]
-tauri-build = { version = "^1.5.0", features = [] }
+tauri-build = { version = "1.5.0", features = [] }
 built = { version = "0.5.1", features = ["git2"] }
 
-# this will bundle gmp for mac and ubuntu
-# TODO: windows will not build unless using msys2 for build
+
 [target.'cfg(unix)'.dependencies]
-gmp-mpfr-sys = { version = "1.6", default-features = false }
+# gmp-mpfr-sys = { version = "1.6", default-features = false }
 openssl-sys = "0.9.98"
 
 [dependencies]
-libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", rev = "v7.0.2" }
-libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "v7.0.2" }
-libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "v7.0.2" }
-libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", rev = "v7.0.2" }
+libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", tag = "8.0.3" }
+libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", tag = "8.0.3" }
+libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", tag = "8.0.3" }
+libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", tag = "8.0.3" }
 
-# without these pinned versions, poem-openapi-types fail
-poem = { version = "=1.3.55", features = ["anyhow", "rustls"] }
-poem-openapi = { version = "=2.0.11", features = ["swagger-ui", "url"] }
-poem-openapi-derive = "=2.0.11"
+# # without these pinned versions, poem-openapi-types fail
+# poem = { version = "=1.3.55", features = ["anyhow", "rustls"] }
+# poem-openapi = { version = "=2.0.11", features = ["swagger-ui", "url"] }
+# poem-openapi-derive = "=2.0.11"
 
-notify-rust = "=4.5.10"
+# notify-rust = "=4.5.10"
 
 # shared with libra-framework and diem
-anyhow = "1.0.62"
-futures = "= 0.3.24"
-glob = "0.3.0"
-hex = { version = "0.4.3", features = ["serde"] }
-once_cell = "1.10.0"
-serde = { version = "1.0.137", features = ["derive"] }
-serde_json = { version = "1.0.81", features = ["preserve_order"] }
-log = "0.4.17"
-tokio = { version = "1.21.0", features = ["full"] }
-tokio-util = "0.7.11"
-url = { version = "2.2.2", features = ["serde"] }
+anyhow = "*"
+futures = "*"
+glob = "*"
+hex = "*"
+once_cell = "*"
+serde = "*"
+serde_json = "*"
+log = "*"
+tokio = "*"
+tokio-util = "*"
+url = "*"
 
 # only in carpe
 directories = "5.0.1"
-keyring = "^1.2"
-simplelog = { version = "^0.11.0", features = ["paris"] }
+keyring = "1.2"
+simplelog = { version = "0.11.0", features = ["paris"] }
 tauri = { version = "^1.5.2", features = ["api-all", "updater"] }
 
 
