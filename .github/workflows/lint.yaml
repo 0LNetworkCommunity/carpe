@@ -45,13 +45,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set rust_version from rust_toolchain file
-        run: echo "RUST_VERSION=$(cat src-tauri/rust-toolchain)" >> $GITHUB_ENV
-
       - uses: actions-rs/toolchain@v1.0.6
         with:
           profile: minimal
-          toolchain: ${{ env.RUST_VERSION }}
+          toolchain: 1.84.1
           override: true
 
       - name: install rustfmt clippy
