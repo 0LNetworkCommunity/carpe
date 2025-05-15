@@ -7,8 +7,8 @@ use crate::configs::{self, get_cfg};
 use crate::default_config_path;
 use configs::CONFIG_MUTEX;
 use libra_types::exports::{AccountAddress, AuthenticationKey};
-use libra_types::legacy_types::app_cfg::get_nickname;
-use libra_types::legacy_types::app_cfg::Profile;
+use libra_types::core_types::app_cfg::get_nickname;
+use libra_types::core_types::app_cfg::Profile;
 
 /// For switching between profiles in the Account DB.
 pub async fn set_account_profile(

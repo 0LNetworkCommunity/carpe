@@ -3,8 +3,8 @@ use anyhow::bail;
 use libra_types::exports::{
   AccountAddress, AuthenticationKey, NamedChain, ValidCryptoMaterialStringExt,
 };
-use libra_types::legacy_types::network_playlist;
-use libra_types::legacy_types::{
+use libra_types::core_types::network_playlist;
+use libra_types::core_types::{
   app_cfg::{get_nickname, Profile},
   network_playlist::NetworkPlaylist,
 };

@@ -11,7 +11,7 @@ use configs::CONFIG_MUTEX;
 use libra_txs::{submit_transaction::Sender, txs_cli_user::SetSlowTx};
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
-  legacy_types::app_cfg::Profile,
+  core_types::app_cfg::Profile,
   move_resource::gas_coin::SlowWalletBalance,
   type_extensions::client_ext::ClientExt,
 };
@@ -379,7 +379,7 @@ fn get_short(acc: AccountAddress) -> String {
 
 #[tokio::test]
 async fn test_init_mnem() {
-  use libra_types::legacy_types::app_cfg::AppCfg;
+  use libra_types::core_types::app_cfg::AppCfg;
   let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
   init_from_mnem(alice, false).await.unwrap();
   let _cfg = AppCfg::load(None).unwrap();

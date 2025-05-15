@@ -4,7 +4,7 @@ use anyhow::anyhow;
 use libra_query::account_queries::get_account_balance_libra;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey},
-  legacy_types::{
+  core_types::{
     makewhole_resource::CreditResource, makewhole_resource::MakeWholeResource,
     tower::TowerProofHistoryView,
   },

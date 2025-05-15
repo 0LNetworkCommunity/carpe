@@ -5,10 +5,10 @@ use crate::configs::{get_cfg, get_client, CONFIG_MUTEX};
 use crate::carpe_error::CarpeError;
 use libra_types::exports::IndexResponse;
 use libra_types::exports::NamedChain;
-use libra_types::legacy_types::network_playlist::HostProfile;
-use libra_types::legacy_types::network_playlist::NetworkPlaylist;
+use libra_types::core_types::network_playlist::HostProfile;
+use libra_types::core_types::network_playlist::NetworkPlaylist;
 
-use libra_types::legacy_types::app_cfg::AppCfg;
+use libra_types::core_types::app_cfg::AppCfg;
 use std::str::FromStr;
 use url::Url;
 

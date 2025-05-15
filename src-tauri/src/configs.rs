@@ -2,7 +2,7 @@
 
 use libra_types::{
   exports::Client,
-  legacy_types::app_cfg::{AppCfg, CONFIG_FILE_NAME},
+  core_types::app_cfg::{AppCfg, CONFIG_FILE_NAME},
 };
 use once_cell::sync::Lazy;
 use std::path::{Path, PathBuf};

@@ -2,7 +2,7 @@ use crate::configs::{default_config_path, legacy_config_path, CONFIG_MUTEX};
 use crate::migrate::{self, backup_legacy_dir, read_accounts};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 use anyhow::Context;
-use libra_types::{legacy_types::app_cfg::TxCost, legacy_types::mode_ol::MODE_0L};
+use libra_types::{core_types::app_cfg::TxCost, core_types::mode_ol::MODE_0L};
 use log::{error, info, warn};
 use std::env;
 use std::path::PathBuf;
