@@ -1,6 +1,9 @@
 name: build
 
 on:
+  push:
+    branches: ['*']
+
   workflow_dispatch:
   pull_request:
     types:
@@ -8,7 +11,6 @@ on:
     branches:
       - 'release**'
       - 'main'
-
 jobs:
   build:
     strategy:
@@ -36,7 +38,7 @@ jobs:
       - name: Set rust_version from rust_toolchain file
         if: matrix.os == 'windows-latest'
         run: |
-          Get-Content -Path src-tauri/rust-toolchain | Tee-Object -variable RUST_VERSION 
+          Get-Content -Path src-tauri/rust-toolchain | Tee-Object -variable RUST_VERSION
           echo "RUST_VERSION=$RUST_VERSION" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - uses: actions-rs/toolchain@v1.0.6
