@@ -3,7 +3,7 @@ name = "carpe"
 version = "1.0.5"
 authors = ["0LNetworkCommunity"]
 default-run = "carpe"
-description = "a light miner and wallet for libra"
+description = "a wallet for OpenLibra"
 edition = "2021"
 license = "NOASSERTION"
 repository = "https://github.com/0LNetworkCommunity/carpe"
@@ -58,14 +58,3 @@ carpe-pr = [] # for building pr versions which use separate config dirs.
 
 [dev-dependencies]
 serde_yaml = "0.8.24"
-
-# uses a profile similar to `cli` in Diem/Cargo.toml
-# optimized for performance and size
-# if you are hunting bugs, this is not the profile to use.
-# [profile.release]
-# opt-level = 'z'   # Optimize for size.
-# lto = true        # Enable Link Time Optimization
-# codegen-units = 1 # Reduce number of codegen units to increase optimizations.
-# panic = 'abort'   # Abort on panic
-# debug = false     # remove debug on compile
-# strip = true      # strip debug and symbols for size

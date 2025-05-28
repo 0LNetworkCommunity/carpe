@@ -5,7 +5,6 @@ use libra_query::account_queries::get_account_balance_libra;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey},
   core_types::{
-    makewhole_resource::CreditResource, makewhole_resource::MakeWholeResource,
     tower::TowerProofHistoryView,
   },
   move_resource::gas_coin::SlowWalletBalance,

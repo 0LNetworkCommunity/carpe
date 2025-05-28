@@ -31,7 +31,7 @@ pub async fn coin_transfer(
 
   let mut config = get_cfg()?;
   inject_private_key_to_cfg(&mut config, _sender)?;
-  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string()), legacy).await?;
+  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string(), false), legacy).await?;
   sender
     .transfer(receiver_account, amount as f64, false)
     .await?;
