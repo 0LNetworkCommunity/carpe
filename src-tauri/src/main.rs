@@ -111,7 +111,6 @@ async fn main() {
       commands::networks::get_metadata,
       //////// Queries ////////
       commands::query::query_balance,
-      commands::query::query_makewhole,
       commands::query::get_recovery_mode,
       //////// Transactions ////////
       commands::tx::coin_transfer,

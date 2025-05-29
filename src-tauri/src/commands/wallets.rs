@@ -396,11 +396,11 @@ async fn test_fetch_originating() {
 }
 
 #[tauri::command(async)]
-pub async fn set_slow_wallet(legacy: bool, _sender: AccountAddress) -> Result<(), CarpeError> {
+pub async fn set_slow_wallet(_legacy: bool, _sender: AccountAddress) -> Result<(), CarpeError> {
   // NOTE: unsure Serde was catching all cases check serialization
   let mut config = get_cfg()?;
   inject_private_key_to_cfg(&mut config, _sender)?;
-  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string()), legacy).await?;
+  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string())).await?;
 
   let t = SetSlowTx {};
   t.run(&mut sender).await?;

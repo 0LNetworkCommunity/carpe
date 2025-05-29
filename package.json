@@ -7,6 +7,7 @@
     "dev:canary": "tauri dev --config src-tauri/tauri.conf.canary.json --features carpe-canary",
     "dev:web": "vite",
     "build": "tauri build",
+    "rust-build": "cd src-tauri && cargo  build --features custom-protocol --release -j 1",
     "build:universal": "tauri build --target universal-apple-darwin",
     "build:aarch64": "RUSTFLAGS='--cfg tokio_unstable' tauri build --target aarch64-apple-darwin",
     "build:canary": "tauri build --config src-tauri/tauri.conf.canary.json --features carpe-canary",
@@ -43,5 +44,6 @@
     "printWidth": 100,
     "semi": false,
     "singleQuote": true
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
