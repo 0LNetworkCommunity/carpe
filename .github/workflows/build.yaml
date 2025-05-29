@@ -12,6 +12,8 @@ on:
     branches:
       - 'release**'
       - 'main'
+  schedule:
+    - cron: '0 5 * * *'  # Runs at 5am UTC / 1am ET daily
 jobs:
   build:
     strategy:
@@ -32,15 +34,6 @@ jobs:
         uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
-
-      # - name: Set rust_version from rust_toolchain file
-      #   run: echo "RUST_VERSION=$(cat src-tauri/rust-toolchain)" >> $GITHUB_ENV
-
-      # - name: Set rust_version from rust_toolchain file
-      #   if: matrix.os == 'windows-latest'
-      #   run: |
-      #     Get-Content -Path src-tauri/rust-toolchain | Tee-Object -variable RUST_VERSION
-      #     echo "RUST_VERSION=$RUST_VERSION" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - uses: actions-rs/toolchain@v1.0.6
         with:
