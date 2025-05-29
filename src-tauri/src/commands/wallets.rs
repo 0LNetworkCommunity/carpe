@@ -10,8 +10,8 @@ use anyhow::{anyhow, Context, Error};
 use configs::CONFIG_MUTEX;
 use libra_txs::{submit_transaction::Sender, txs_cli_user::SetSlowTx};
 use libra_types::{
-  exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
   core_types::app_cfg::Profile,
+  exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
   move_resource::gas_coin::SlowWalletBalance,
   type_extensions::client_ext::ClientExt,
 };

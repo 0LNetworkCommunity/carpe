@@ -3,9 +3,9 @@
 extern crate keyring;
 use crate::carpe_error::{CarpeError, ErrorCat, E_KEY_NOT_REGISTERED};
 use anyhow::{anyhow, bail};
+use libra_types::core_types::app_cfg::AppCfg;
 use libra_types::exports::AccountAddress;
 use libra_types::exports::{Ed25519PrivateKey, Ed25519PublicKey, KeyPair};
-use libra_types::core_types::app_cfg::AppCfg;
 use std::convert::TryInto;
 
 const KEYRING_APP_NAME: &str = "carpe";

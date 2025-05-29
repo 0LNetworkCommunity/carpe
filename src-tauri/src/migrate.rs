@@ -1,12 +1,12 @@
 use crate::configs;
 use anyhow::bail;
-use libra_types::exports::{
-  AccountAddress, AuthenticationKey, NamedChain, ValidCryptoMaterialStringExt,
-};
 use libra_types::core_types::network_playlist;
 use libra_types::core_types::{
   app_cfg::{get_nickname, Profile},
   network_playlist::NetworkPlaylist,
+};
+use libra_types::exports::{
+  AccountAddress, AuthenticationKey, NamedChain, ValidCryptoMaterialStringExt,
 };
 use libra_types::move_resource::gas_coin::SlowWalletBalance;
 use log::info;

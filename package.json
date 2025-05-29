@@ -14,6 +14,8 @@
     "build:canary": "tauri build --config src-tauri/tauri.conf.canary.json --features carpe-canary",
     "build:github-pr": "tauri build --config src-tauri/tauri.conf.pr.json --features carpe-pr",
     "build:web": "vite build",
+    "lint:rust": "cd src-tauri && cargo fmt --all -- --check && cargo clippy --workspace --tests -- -D warnings",
+    "fix:rust": "cd src-tauri && cargo fmt --all && cargo clippy --workspace --tests --fix",
     "lint": "svelte-check --tsconfig ./tsconfig.json && eslint src && prettier --check src",
     "format": "eslint --fix src/* && prettier --write src",
     "merge:lang": "node ./src/lang/merge.mjs"

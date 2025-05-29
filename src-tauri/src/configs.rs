@@ -1,8 +1,8 @@
 //! 0L configs file
 
 use libra_types::{
-  exports::Client,
   core_types::app_cfg::{AppCfg, CONFIG_FILE_NAME},
+  exports::Client,
 };
 use once_cell::sync::Lazy;
 use std::path::{Path, PathBuf};
