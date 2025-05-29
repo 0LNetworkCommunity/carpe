@@ -50,7 +50,7 @@ jobs:
       # Install ld for ubuntu
       - name: install dependencies (ubuntu only)
         if: matrix.os == 'ubuntu-22.04'
-        run: sudo sudo apt-get install -y lld libsoup2.4-dev libgdk3.0-cil-dev libjavascriptcoregtk-4.0-dev libwebkit2gtk-4.0-dev
+        run: sudo apt-get update && sudo apt-get install -y lld libsoup2.4-dev libgdk3.0-cil-dev libjavascriptcoregtk-4.0-dev libwebkit2gtk-4.0-dev
 
       - name: install dependencies (windows only)
         if: matrix.os == 'windows-latest'
