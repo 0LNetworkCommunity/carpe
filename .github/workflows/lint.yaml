@@ -9,6 +9,8 @@ on:
       - 'release**'
       - 'canary**'
       - 'main'
+  schedule:
+    - cron: '0 5 * * *'  # Runs at 5am UTC / 1am ET daily
 jobs:
   ts-lint:
     runs-on: ubuntu-latest
