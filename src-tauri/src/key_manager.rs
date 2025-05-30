@@ -62,10 +62,7 @@ pub fn get_keypair(
 ) -> Result<KeyPair<Ed25519PrivateKey, Ed25519PublicKey>, anyhow::Error> {
   match get_private_key(address) {
     Ok(k) => {
-      let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = match k.try_into() {
-        Ok(p) => p,
-        Err(e) => bail!(e),
-      };
+      let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = k.into();
       Ok(p)
     }
     Err(e) => bail!(e),

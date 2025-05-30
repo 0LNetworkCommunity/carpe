@@ -27,10 +27,7 @@ pub fn get_pkg_version() -> String {
 }
 
 pub fn get_head_ref() -> String {
-  let head: &str = match built_info::GIT_HEAD_REF {
-    Some(t) => t,
-    None => "",
-  };
+  let head: &str = built_info::GIT_HEAD_REF.unwrap_or_default();
   head.to_string()
 }
 
