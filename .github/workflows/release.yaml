@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-11, ubuntu-22.04]
+        os: [windows-latest, macos-13, ubuntu-22.04]
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
