@@ -1,14 +1,20 @@
 name: lint
 
 on:
+  push:
+    branches: ['*']
+
   workflow_dispatch:
   pull_request:
     types:
       - opened
+      - synchronize
     branches:
       - 'release**'
       - 'canary**'
       - 'main'
+  schedule:
+    - cron: '0 5 * * *'  # Runs at 5am UTC / 1am ET daily
 jobs:
   ts-lint:
     runs-on: ubuntu-latest
@@ -41,13 +47,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set rust_version from rust_toolchain file
-        run: echo "RUST_VERSION=$(cat src-tauri/rust-toolchain)" >> $GITHUB_ENV
-
       - uses: actions-rs/toolchain@v1.0.6
         with:
           profile: minimal
-          toolchain: ${{ env.RUST_VERSION }}
+          toolchain: 1.84.1
           override: true
 
       - name: install rustfmt clippy

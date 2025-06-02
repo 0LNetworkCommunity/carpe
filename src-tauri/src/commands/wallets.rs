@@ -10,8 +10,8 @@ use anyhow::{anyhow, Context, Error};
 use configs::CONFIG_MUTEX;
 use libra_txs::{submit_transaction::Sender, txs_cli_user::SetSlowTx};
 use libra_types::{
+  core_types::app_cfg::Profile,
   exports::{AccountAddress, AuthenticationKey, Ed25519PrivateKey, ValidCryptoMaterialStringExt},
-  legacy_types::app_cfg::Profile,
   move_resource::gas_coin::SlowWalletBalance,
   type_extensions::client_ext::ClientExt,
 };
@@ -379,7 +379,7 @@ fn get_short(acc: AccountAddress) -> String {
 
 #[tokio::test]
 async fn test_init_mnem() {
-  use libra_types::legacy_types::app_cfg::AppCfg;
+  use libra_types::core_types::app_cfg::AppCfg;
   let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
   init_from_mnem(alice, false).await.unwrap();
   let _cfg = AppCfg::load(None).unwrap();
@@ -396,11 +396,11 @@ async fn test_fetch_originating() {
 }
 
 #[tauri::command(async)]
-pub async fn set_slow_wallet(legacy: bool, _sender: AccountAddress) -> Result<(), CarpeError> {
+pub async fn set_slow_wallet(_legacy: bool, _sender: AccountAddress) -> Result<(), CarpeError> {
   // NOTE: unsure Serde was catching all cases check serialization
   let mut config = get_cfg()?;
   inject_private_key_to_cfg(&mut config, _sender)?;
-  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string()), legacy).await?;
+  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string())).await?;
 
   let t = SetSlowTx {};
   t.run(&mut sender).await?;

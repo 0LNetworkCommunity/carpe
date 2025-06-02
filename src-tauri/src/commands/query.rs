@@ -4,10 +4,6 @@ use anyhow::anyhow;
 use libra_query::account_queries::get_account_balance_libra;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey},
-  legacy_types::{
-    makewhole_resource::CreditResource, makewhole_resource::MakeWholeResource,
-    tower::TowerProofHistoryView,
-  },
   move_resource::gas_coin::SlowWalletBalance,
   type_extensions::client_ext::ClientExt,
 };
@@ -17,33 +13,33 @@ pub async fn query_balance(account: AccountAddress) -> Result<SlowWalletBalance,
   get_balance(account).await
 }
 
-#[tauri::command(async)]
-pub async fn get_onchain_tower_state(account: String) -> Result<TowerProofHistoryView, CarpeError> {
-  let account: AccountAddress = account.parse()?;
-  let client = get_client()?;
-  let tower_access_path = "0x1::tower_state::TowerProofHistory";
-  let res = client
-    .get_account_resource_bcs::<TowerProofHistoryView>(account, tower_access_path)
-    .await?;
-  let epoch = res.state().epoch;
-  let mut state = res.into_inner();
-  if state.latest_epoch_mining != epoch {
-    state.count_proofs_in_epoch = 0;
-  }
+// #[tauri::command(async)]
+// pub async fn get_onchain_tower_state(account: String) -> Result<TowerProofHistoryView, CarpeError> {
+//   let account: AccountAddress = account.parse()?;
+//   let client = get_client()?;
+//   let tower_access_path = "0x1::tower_state::TowerProofHistory";
+//   let res = client
+//     .get_account_resource_bcs::<TowerProofHistoryView>(account, tower_access_path)
+//     .await?;
+//   let epoch = res.state().epoch;
+//   let mut state = res.into_inner();
+//   if state.latest_epoch_mining != epoch {
+//     state.count_proofs_in_epoch = 0;
+//   }
 
-  Ok(state)
-}
-//
-#[tauri::command(async)]
-pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError> {
-  let client = get_client()?;
-  let access_path = "0x1::make_whole::MakeWhole";
-  let res = client
-    .get_account_resource_bcs::<MakeWholeResource>(account, access_path)
-    .await?;
-  let credits = res.into_inner().credits;
-  Ok(credits)
-}
+//   Ok(state)
+// }
+// //
+// #[tauri::command(async)]
+// pub async fn query_makewhole(account: AccountAddress) -> Result<Vec<CreditResource>, CarpeError> {
+//   let client = get_client()?;
+//   let access_path = "0x1::make_whole::MakeWhole";
+//   let res = client
+//     .get_account_resource_bcs::<MakeWholeResource>(account, access_path)
+//     .await?;
+//   let credits = res.into_inner().credits;
+//   Ok(credits)
+// }
 
 pub async fn get_balance(account: AccountAddress) -> Result<SlowWalletBalance, CarpeError> {
   let client = get_client()?;

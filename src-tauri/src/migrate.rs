@@ -1,12 +1,12 @@
 use crate::configs;
 use anyhow::bail;
-use libra_types::exports::{
-  AccountAddress, AuthenticationKey, NamedChain, ValidCryptoMaterialStringExt,
-};
-use libra_types::legacy_types::network_playlist;
-use libra_types::legacy_types::{
+use libra_types::core_types::network_playlist;
+use libra_types::core_types::{
   app_cfg::{get_nickname, Profile},
   network_playlist::NetworkPlaylist,
+};
+use libra_types::exports::{
+  AccountAddress, AuthenticationKey, NamedChain, ValidCryptoMaterialStringExt,
 };
 use libra_types::move_resource::gas_coin::SlowWalletBalance;
 use log::info;
@@ -133,7 +133,7 @@ fn read_legacy_accounts() {
 
   let acc = read_accounts(&temp).unwrap();
   assert!(
-    acc.accounts.get(0).unwrap().account
+    acc.accounts.first().unwrap().account
       == AccountAddress::from_hex_literal("0x69a385e1744e33fbb24a42ecbd1603e3").unwrap()
   );
   std::fs::remove_file(temp).unwrap();

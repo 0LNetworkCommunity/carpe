@@ -3,9 +3,9 @@
 extern crate keyring;
 use crate::carpe_error::{CarpeError, ErrorCat, E_KEY_NOT_REGISTERED};
 use anyhow::{anyhow, bail};
+use libra_types::core_types::app_cfg::AppCfg;
 use libra_types::exports::AccountAddress;
 use libra_types::exports::{Ed25519PrivateKey, Ed25519PublicKey, KeyPair};
-use libra_types::legacy_types::app_cfg::AppCfg;
 use std::convert::TryInto;
 
 const KEYRING_APP_NAME: &str = "carpe";
@@ -62,10 +62,7 @@ pub fn get_keypair(
 ) -> Result<KeyPair<Ed25519PrivateKey, Ed25519PublicKey>, anyhow::Error> {
   match get_private_key(address) {
     Ok(k) => {
-      let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = match k.try_into() {
-        Ok(p) => p,
-        Err(e) => bail!(e),
-      };
+      let p: KeyPair<Ed25519PrivateKey, Ed25519PublicKey> = k.into();
       Ok(p)
     }
     Err(e) => bail!(e),

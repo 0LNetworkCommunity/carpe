@@ -9,14 +9,14 @@ use std::sync::{Arc, Mutex};
 use crate::commands::query::get_onchain_tower_state;
 use libra_tower::core::backlog::process_backlog;
 use libra_tower::core::backlog::submit_or_delete;
-use libra_types::legacy_types::app_cfg::AppCfg;
+use libra_types::core_types::app_cfg::AppCfg;
 use tokio::task::block_in_place;
 
 use tauri::{async_runtime::block_on, Runtime, Window};
 
 use libra_tower::core::{proof, tower_error::TowerError};
 
-use libra_types::legacy_types::block::VDFProof;
+use libra_types::core_types::block::VDFProof;
 
 use log::{error, info, warn};
 use serde::{Deserialize, Serialize};

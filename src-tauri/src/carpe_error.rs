@@ -24,13 +24,9 @@ pub enum ErrorCat {
 
 #[derive(serde::Deserialize, serde::Serialize, Debug, Clone)]
 pub struct CarpeError {
-  ///
   pub category: ErrorCat,
-  ///
   pub uid: u64,
-  ///
   pub msg: String,
-  ///
   pub trace: String,
 }
 

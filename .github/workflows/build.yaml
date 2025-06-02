@@ -1,20 +1,25 @@
 name: build
 
 on:
+  push:
+    branches: ['*']
+
   workflow_dispatch:
   pull_request:
     types:
       - opened
+      - synchronize
     branches:
       - 'release**'
       - 'main'
-
+  schedule:
+    - cron: '0 5 * * *'  # Runs at 5am UTC / 1am ET daily
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-11, ubuntu-latest]
+        os: [windows-latest, macos-13, macos-latest, ubuntu-22.04]
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -30,19 +35,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set rust_version from rust_toolchain file
-        run: echo "RUST_VERSION=$(cat src-tauri/rust-toolchain)" >> $GITHUB_ENV
-
-      - name: Set rust_version from rust_toolchain file
-        if: matrix.os == 'windows-latest'
-        run: |
-          Get-Content -Path src-tauri/rust-toolchain | Tee-Object -variable RUST_VERSION 
-          echo "RUST_VERSION=$RUST_VERSION" | Out-File -FilePath $env:GITHUB_ENV -Append
-
       - uses: actions-rs/toolchain@v1.0.6
         with:
           profile: minimal
-          toolchain: '${{ env.RUST_VERSION }}'
+          toolchain: 1.84.1
           override: true
 
       # Setup Node.js
@@ -53,8 +49,8 @@ jobs:
 
       # Install ld for ubuntu
       - name: install dependencies (ubuntu only)
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo apt-get install -y lld libsoup2.4-dev libgdk3.0-cil-dev libjavascriptcoregtk-4.0-dev libwebkit2gtk-4.0-dev
+        if: matrix.os == 'ubuntu-22.04'
+        run: sudo apt-get update && sudo apt-get install -y lld libsoup2.4-dev libgdk3.0-cil-dev libjavascriptcoregtk-4.0-dev libwebkit2gtk-4.0-dev
 
       - name: install dependencies (windows only)
         if: matrix.os == 'windows-latest'
