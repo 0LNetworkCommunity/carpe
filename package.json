@@ -7,11 +7,15 @@
     "dev:canary": "tauri dev --config src-tauri/tauri.conf.canary.json --features carpe-canary",
     "dev:web": "vite",
     "build": "tauri build",
+    "rust-build": "cd src-tauri && cargo build --features custom-protocol --release -j 1",
+    "pre-build": "ulimit -v unlimited && RUSTC_WRAPPER= CARGO_BUILD_JOBS=1 bun tauri build",
     "build:universal": "tauri build --target universal-apple-darwin",
     "build:aarch64": "RUSTFLAGS='--cfg tokio_unstable' tauri build --target aarch64-apple-darwin",
     "build:canary": "tauri build --config src-tauri/tauri.conf.canary.json --features carpe-canary",
     "build:github-pr": "tauri build --config src-tauri/tauri.conf.pr.json --features carpe-pr",
     "build:web": "vite build",
+    "lint:rust": "cd src-tauri && cargo fmt --all -- --check && cargo clippy --workspace --tests -- -D warnings",
+    "fix:rust": "cd src-tauri && cargo fmt --all && cargo clippy --workspace --tests --fix",
     "lint": "svelte-check --tsconfig ./tsconfig.json && eslint src && prettier --check src",
     "format": "eslint --fix src/* && prettier --write src",
     "merge:lang": "node ./src/lang/merge.mjs"
@@ -43,5 +47,6 @@
     "printWidth": 100,
     "semi": false,
     "singleQuote": true
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }
