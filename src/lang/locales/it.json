@@ -302,17 +302,29 @@
       "no_balance_body2": "Looks like you have less than 2 coins in your account, this means you won't be able to onboard anyone."
     },
     "set_wallet_type": {
-      "actions_title": "Account Actions",
-      "set_slow_title": "Make Slow Wallet (danger)",
-      "subtitle": " Make sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
-      "btn_slow": "Set Slow Wallet",
-      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversable.",
-      "warning": "Warning: this change is forever",
-      "btn_community": "Set Community Wallet",
-      "btn_confirm_community": "Set Community",
-      "community_confirm": "Confirm Set Community Wallet? This is not reversable.",
-      "title": "Set your Account Type",
-      "slow_confirm": "Set Slow"
+      "actions_title": "Azioni dell'account",
+      "set_slow_title": "Rendere il portafoglio lento (pericoloso)",
+      "subtitle": "Assicurati di sapere cosa stai facendo. Questo non è reversibile. I portafogli lenti e comunitari sono permanenti.",
+      "btn_slow": "Imposta portafoglio lento",
+      "modal": {
+        "title": "Avviso: questa modifica è permanente",
+        "body": {
+          "question": "Sei sicuro di voler impostare questo account come portafoglio lento?",
+          "review_list": {
+            "title": "Si prega di rivedere quanto segue prima di procedere:",
+            "item1": "Questa operazione non è reversibile. Dopo aver impostato il portafoglio su lento, non è possibile tornare indietro.",
+            "item2": "Questa azione imposterà il portafoglio come lento sulla blockchain e cambierà la liquidità del tuo account.",
+            "item3": "I portafogli lenti hanno un limite di sblocco giornaliero di 35.000 monete dal saldo del conto."
+          }
+        },
+        "btn_confirm": "Confermare l'impostazione del portafoglio lento? Questo non è reversibile",
+        "btn_cancel": "Annulla"
+      },
+      "btn_community": "Imposta portafoglio comunitario",
+      "btn_confirm_community": "Imposta comunità",
+      "community_confirm": "Confermare l'impostazione del portafoglio comunitario? Questo non è reversibile",
+      "title": "Imposta il tipo di account",
+      "slow_confirm": "Imposta lento"
     },
     "transfer": {
       "title": "Coin Transfer",

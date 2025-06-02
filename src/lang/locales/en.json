@@ -306,8 +306,20 @@
       "set_slow_title": "Make Slow Wallet (danger)",
       "subtitle": "Be sure you know what you are doing. This is not reversible. Slow and Community wallets are permanent.",
       "btn_slow": "Set Slow Wallet",
-      "btn_confirm_slow": "Confirm Set Slow Wallet? This is not reversible",
-      "warning": "Warning: this change is forever",
+      "modal": {
+        "title": "Warning: this change is forever",
+        "body": {
+          "question": "Are you sure you want to set this account as a slow wallet?",
+          "review_list": {
+            "title": "Please review the following before proceeding:",
+            "item1": "This operation is not reversible. After setting your wallet to slow you can't change it back.",
+            "item2": "This action will set the wallet to slow on the blockchain and will change your account liquidity.",
+            "item3": "Slow wallets have a daily unlock limit of 35,000 coins from the account balance."
+          }
+        },
+        "btn_confirm": "Confirm Set Slow Wallet? This is not reversible",
+        "btn_cancel": "Cancel"
+      },
       "btn_community": "Set Community Wallet",
       "btn_confirm_community": "Set Community",
       "community_confirm": "Confirm Set Community Wallet? This is not reversible",
