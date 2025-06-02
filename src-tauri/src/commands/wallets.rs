@@ -421,6 +421,12 @@ pub async fn add_watch_account(
   address: AccountAddress,
   is_legacy: bool,
 ) -> Result<CarpeProfile, CarpeError> {
+  // Catch edge case the user is setting up a carpe for the first time
+  // only with a watch account.
+  if !configs::is_initialized() {
+    configs::new_cfg()?;
+  };
+
   let authkey: AuthenticationKey = query::get_auth_key(address).await?;
 
   if is_legacy {
