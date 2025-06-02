@@ -18,19 +18,22 @@ jobs:
       #   with:
       #     detached: true
 
-      # Setup Rust
-      - uses: dtolnay/rust-toolchain@1.70.0
+      - name: checkout sources
+        uses: actions/checkout@v4.1.1
         with:
-          components: rustfmt
+          fetch-depth: 0
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          profile: minimal
+          toolchain: 1.84.1
+          override: true
 
       # Setup Node.js
       - name: setup node
         uses: actions/setup-node@v4.0.2
         with:
           node-version: 18
-      # checkout
-      - name: checkout source
-        uses: actions/checkout@v4.1.1
 
       - name: install dependencies (ubuntu only)
         if: matrix.os == 'ubuntu-latest'
