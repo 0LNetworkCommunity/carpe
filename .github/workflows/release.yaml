@@ -47,12 +47,12 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
 
-      # Package the windows dependencies
-      - name: copy gmp.dll for build
-        if: matrix.os == 'windows-latest'
-        run: |
-          $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
-          Copy-Item ('${{ github.workspace }}' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
+      # # Package the windows dependencies
+      # - name: copy gmp.dll for build
+      #   if: matrix.os == 'windows-latest'
+      #   run: |
+      #     $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
+      #     Copy-Item ('${{ github.workspace }}' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
 
       ########  CACHE  ########
 
