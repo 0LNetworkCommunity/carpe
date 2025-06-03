@@ -9,6 +9,11 @@
   let error = null;
   let errorDetails = null;
 
+  function showErrorDetails() {
+    console.log("Error details:", errorDetails);
+    alert(`Error: ${error}\n\nDetails: ${errorDetails}`);
+  }
+
   async function checkMigrationStatus() {
     if (!account) return;
     
@@ -17,11 +22,12 @@
       error = null;
       errorDetails = null;
       console.log("Checking migration status for:", account);
+      
       isMigrated = await invoke('check_account_migration_status', { account });
       console.log("Migration status result:", isMigrated);
     } catch (e) {
       error = "Failed to check migration status";
-      errorDetails = e.toString();
+      errorDetails = JSON.stringify(e, null, 2);
       console.error("Error checking migration status:", e);
     } finally {
       isLoading = false;
@@ -36,23 +42,50 @@
 </script>
 
 {#if isLoading}
-  <span uk-spinner="ratio: 0.5" class="migration-spinner"></span>
+  <span uk-spinner="ratio: 0.5" class="status-spinner"></span>
 {:else if error}
+  <!-- Use button instead of span for better accessibility -->
+  <button 
+    class="icon-button" 
+    aria-label="Show error details" 
+    uk-tooltip="Click for details"
+    on:click={showErrorDetails}>
+    <span uk-icon="icon: question" style="color: grey;"></span>
+  </button>
+{:else if isMigrated}
+  <span 
+    uk-icon="icon: check" 
+    style="color: green;" 
+    uk-tooltip="Account migrated to v8"
+    title="Account migrated to v8">
+  </span>
+{:else}
   <span 
     uk-icon="icon: warning" 
-    style="color: grey;" 
-    uk-tooltip={errorDetails || error}
-    title={errorDetails || error}>
+    style="color: orange;" 
+    uk-tooltip="Account not migrated to v8"
+    title="Account not migrated to v8">
   </span>
-{:else if isMigrated}
-  <span uk-icon="icon: check" style="color: green;" title="Account migrated to v8"></span>
-{:else}
-  <span uk-icon="icon: info" style="color: orange;" title="Account not migrated to v8"></span>
 {/if}
 
 <style>
-  .migration-spinner {
+  .status-spinner {
     width: 12px;
     height: 12px;
+  }
+  
+  .icon-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .icon-button:focus {
+    outline: 2px solid #007bff;
+    border-radius: 4px;
   }
 </style>

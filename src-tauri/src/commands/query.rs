@@ -41,24 +41,33 @@ pub async fn check_account_migration_status(account: AccountAddress) -> Result<b
 pub async fn is_not_valid_vouch_score(account: AccountAddress) -> Result<bool, CarpeError> {
   let client = get_client()?;
   
-  // Update to match how you're using get_view function elsewhere
-  let res = get_view(
+  let result = get_view(
         &client,
-        "0x1::founder::is_voucher_score_valid",
-        None,  // No type arguments
-        Some(account.to_string()), // Account parameter as a single string
+        "0x1::founder::check_voucher_score_valid",
+        None,
+        Some(account.to_string())
     )
-  .await
-  .map_err(|e| CarpeError::misc(&format!("Failed to check vouch score: {}", e)))?;
+  .await;
   
-  let is_valid_vouch_score = res.as_array()
-      .ok_or_else(|| CarpeError::misc("Invalid response format"))?
-      .get(0)
-      .ok_or_else(|| CarpeError::misc("Empty response"))?
-      .as_bool()
-      .ok_or_else(|| CarpeError::misc("Response is not a boolean value"))?;
-  
-  Ok(is_valid_vouch_score)
+  match result {
+    Ok(res) => {
+      let is_valid = res.as_array()
+          .and_then(|arr| arr.get(0))
+          .and_then(|val| val.as_bool())
+          .unwrap_or(false);
+      
+      Ok(is_valid)
+    },
+    Err(e) => {
+      // Check if the error is the specific abort code we're seeing
+      if e.to_string().contains("196609") {
+        // This specific error code might indicate the account isn't eligible
+        Ok(false)
+      } else {
+        Err(CarpeError::misc(&format!("Failed to check vouch score: {}", e)))
+      }
+    }
+  }
 }
 
 // #[tauri::command(async)]
