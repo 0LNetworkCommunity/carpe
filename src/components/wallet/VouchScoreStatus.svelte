@@ -6,6 +6,7 @@
   
   let isValidVouchScore = null;
   let isLoading = true;
+  let isFounder = false;
   let error = null;
   let errorDetails = null;
 
@@ -14,16 +15,37 @@
     alert(`Error: ${error}\n\nDetails: ${errorDetails}`);
   }
 
-  async function checkVouchScoreStatus() {
+  async function checkFounderStatus() {
     if (!account) return;
     
     try {
       isLoading = true;
       error = null;
       errorDetails = null;
-      console.log("Checking vouch score validity for:", account);
+      console.log("Checking if account is founder:", account);
       
-      // Call the Rust function
+      isFounder = await invoke('is_founder', { account });
+      console.log("Is founder result:", isFounder);
+      
+      // If account is a founder, check vouch score
+      if (isFounder) {
+        await checkVouchScoreStatus();
+      } else {
+        console.log("Account is not a founder, skipping vouch score check");
+        isLoading = false;
+      }
+    } catch (e) {
+      error = "Failed to check founder status";
+      errorDetails = JSON.stringify(e, null, 2);
+      console.error("Error checking founder status:", e);
+      isLoading = false;
+    }
+  }
+
+  async function checkVouchScoreStatus() {
+    try {
+      console.log("Checking vouch score validity for founder account:", account);
+      
       isValidVouchScore = await invoke('is_not_valid_vouch_score', { account });
       console.log("Vouch score validity result:", isValidVouchScore);
     } catch (e) {
@@ -44,7 +66,7 @@
 
   onMount(() => {
     if (account) {
-      checkVouchScoreStatus();
+      checkFounderStatus();
     }
   });
 </script>
@@ -59,6 +81,8 @@
     on:click={showErrorDetails}>
     <span uk-icon="icon: question" style="color: grey;"></span>
   </button>
+{:else if !isFounder}
+  <!-- Don't show anything if not a founder -->
 {:else if isValidVouchScore}
   <span 
     class="heart-icon filled" 
@@ -99,7 +123,7 @@
     justify-content: center;
     height: 20px;
     width: 20px;
-    cursor: default; /* Add this line to show the default arrow cursor */
+    cursor: default;
   }
   
   .filled {

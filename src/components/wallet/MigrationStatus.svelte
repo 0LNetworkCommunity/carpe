@@ -6,6 +6,7 @@
   
   let isMigrated = null;
   let isLoading = true;
+  let isFounder = false;
   let error = null;
   let errorDetails = null;
 
@@ -14,14 +15,36 @@
     alert(`Error: ${error}\n\nDetails: ${errorDetails}`);
   }
 
-  async function checkMigrationStatus() {
+  async function checkFounderStatus() {
     if (!account) return;
     
     try {
       isLoading = true;
       error = null;
       errorDetails = null;
-      console.log("Checking migration status for:", account);
+      console.log("Checking if account is founder:", account);
+      
+      isFounder = await invoke('is_founder', { account });
+      console.log("Is founder result:", isFounder);
+      
+      // If account is a founder, check migration status
+      if (isFounder) {
+        await checkMigrationStatus();
+      } else {
+        console.log("Account is not a founder, skipping migration check");
+        isLoading = false;
+      }
+    } catch (e) {
+      error = "Failed to check founder status";
+      errorDetails = JSON.stringify(e, null, 2);
+      console.error("Error checking founder status:", e);
+      isLoading = false;
+    }
+  }
+
+  async function checkMigrationStatus() {
+    try {
+      console.log("Checking migration status for founder account:", account);
       
       isMigrated = await invoke('check_account_migration_status', { account });
       console.log("Migration status result:", isMigrated);
@@ -36,7 +59,7 @@
 
   onMount(() => {
     if (account) {
-      checkMigrationStatus();
+      checkFounderStatus();
     }
   });
 </script>
@@ -44,7 +67,6 @@
 {#if isLoading}
   <span uk-spinner="ratio: 0.5" class="status-spinner"></span>
 {:else if error}
-  <!-- Use button instead of span for better accessibility -->
   <button 
     class="icon-button" 
     aria-label="Show error details" 
@@ -52,6 +74,8 @@
     on:click={showErrorDetails}>
     <span uk-icon="icon: question" style="color: grey;"></span>
   </button>
+{:else if !isFounder}
+  <!-- Don't show anything if not a founder -->
 {:else if isMigrated}
   <span 
     uk-icon="icon: check" 

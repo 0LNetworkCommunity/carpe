@@ -114,6 +114,7 @@ async fn main() {
       commands::query::get_recovery_mode,
       commands::query::check_account_migration_status,
       commands::query::is_not_valid_vouch_score,
+      commands::query::is_founder,
       //////// Transactions ////////
       commands::tx::coin_transfer,
       // claim_make_whole,

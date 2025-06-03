@@ -70,6 +70,36 @@ pub async fn is_not_valid_vouch_score(account: AccountAddress) -> Result<bool, C
   }
 }
 
+// Add this function to query.rs
+#[tauri::command(async)]
+pub async fn is_founder(account: AccountAddress) -> Result<bool, CarpeError> {
+  let client = get_client()?;
+  
+  let result = get_view(
+        &client,
+        "0x1::founder::is_founder",
+        None,
+        Some(account.to_string())
+    )
+  .await;
+  
+  match result {
+    Ok(res) => {
+      let is_founder = res.as_array()
+          .and_then(|arr| arr.get(0))
+          .and_then(|val| val.as_bool())
+          .unwrap_or(false);
+      
+      Ok(is_founder)
+    },
+    Err(e) => {
+      // In case of errors, log and return false
+      println!("Error checking if account is founder: {}", e);
+      Ok(false)
+    }
+  }
+}
+
 // #[tauri::command(async)]
 // pub async fn get_onchain_tower_state(account: String) -> Result<TowerProofHistoryView, CarpeError> {
 //   let account: AccountAddress = account.parse()?;
