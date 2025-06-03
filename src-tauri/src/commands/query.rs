@@ -17,54 +17,55 @@ pub async fn query_balance(account: AccountAddress) -> Result<SlowWalletBalance,
 #[tauri::command(async)]
 pub async fn check_account_migration_status(account: AccountAddress) -> Result<bool, CarpeError> {
   let client = get_client()?;
-  
   let res = get_view(
-        &client,
-        "0x1::reauthorization::is_v8_authorized",
-        None,
-        Some(account.to_string()),
-    )
+    &client,
+    "0x1::reauthorization::is_v8_authorized",
+    None,
+    Some(account.to_string()),
+  )
   .await
   .map_err(|e| CarpeError::misc(&format!("Failed to check migration status: {}", e)))?;
-  
-  let is_migrated = res.as_array()
-      .ok_or_else(|| CarpeError::misc("Invalid response format"))?
-      .get(0)
-      .ok_or_else(|| CarpeError::misc("Empty response"))?
-      .as_bool()
-      .ok_or_else(|| CarpeError::misc("Response is not a boolean value"))?;
-  
+  let is_migrated = res
+    .as_array()
+    .and_then(|arr| arr.first())
+    .and_then(|val| val.as_bool())
+    .unwrap_or(false);
+
   Ok(is_migrated)
 }
 
 #[tauri::command(async)]
 pub async fn is_not_valid_vouch_score(account: AccountAddress) -> Result<bool, CarpeError> {
   let client = get_client()?;
-  
+
   let result = get_view(
-        &client,
-        "0x1::founder::check_voucher_score_valid",
-        None,
-        Some(account.to_string())
-    )
+    &client,
+    "0x1::founder::check_voucher_score_valid",
+    None,
+    Some(account.to_string()),
+  )
   .await;
-  
+
   match result {
     Ok(res) => {
-      let is_valid = res.as_array()
-          .and_then(|arr| arr.get(0))
-          .and_then(|val| val.as_bool())
-          .unwrap_or(false);
-      
+      let is_valid = res
+        .as_array()
+        .and_then(|arr| arr.first())
+        .and_then(|val| val.as_bool())
+        .unwrap_or(false);
+
       Ok(is_valid)
-    },
+    }
     Err(e) => {
       // Check if the error is the specific abort code we're seeing
       if e.to_string().contains("196609") {
         // This specific error code might indicate the account isn't eligible
         Ok(false)
       } else {
-        Err(CarpeError::misc(&format!("Failed to check vouch score: {}", e)))
+        Err(CarpeError::misc(&format!(
+          "Failed to check vouch score: {}",
+          e
+        )))
       }
     }
   }
@@ -74,24 +75,25 @@ pub async fn is_not_valid_vouch_score(account: AccountAddress) -> Result<bool, C
 #[tauri::command(async)]
 pub async fn is_founder(account: AccountAddress) -> Result<bool, CarpeError> {
   let client = get_client()?;
-  
+
   let result = get_view(
-        &client,
-        "0x1::founder::is_founder",
-        None,
-        Some(account.to_string())
-    )
+    &client,
+    "0x1::founder::is_founder",
+    None,
+    Some(account.to_string()),
+  )
   .await;
-  
+
   match result {
     Ok(res) => {
-      let is_founder = res.as_array()
-          .and_then(|arr| arr.get(0))
-          .and_then(|val| val.as_bool())
-          .unwrap_or(false);
-      
+      let is_founder = res
+        .as_array()
+        .and_then(|arr| arr.first())
+        .and_then(|val| val.as_bool())
+        .unwrap_or(false);
+
       Ok(is_founder)
-    },
+    }
     Err(e) => {
       // In case of errors, log and return false
       println!("Error checking if account is founder: {}", e);
