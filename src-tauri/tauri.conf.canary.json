@@ -30,9 +30,6 @@
         "icons-canary/icon.ico"
       ],
       "resources": [
-        "gmp.dll",
-        "gmp.lib",
-        "libgmp-10.dll",
         "libcrypto.dylib",
         "libcrypto.3.dylib",
         "libssl.dylib",
