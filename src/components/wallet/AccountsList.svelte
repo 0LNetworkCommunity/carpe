@@ -10,6 +10,7 @@
   import { preferences, setAccountsListPreference } from '../../modules/user_preferences'
   import AccountRowSkeleton from './AccountRowSkeleton.svelte'
   import { navigate } from 'svelte-navigator'; // Adjust based on your routing library
+  import MigrationStatus from './MigrationStatus.svelte'
   UIkit.use(Icons)
 
   let showNoteColumn = false
@@ -176,6 +177,9 @@
                     <span class="uk-align-right" style="margin: 4px;" uk-icon="eye"></span>
                   {/if}
                 </span>
+                <span class="migration-status-wrapper">
+                    <MigrationStatus account={a.account} />
+                </span>
               </td>
               {#if showNoteColumn}
                 <td class="uk-text-left uk-transition-toggle uk-table-shrink note-column"
@@ -225,5 +229,10 @@
     overflow: hidden; /* Hide overflow */
     text-overflow: ellipsis; /* Use an ellipsis to indicate clipped text */
     /* white-space: nowrap; /* Prevent text from wrapping to the next line */
+  }
+  .migration-status-wrapper {
+    margin-left: 5px;
+    display: inline-flex;
+    vertical-align: middle;
   }
 </style>

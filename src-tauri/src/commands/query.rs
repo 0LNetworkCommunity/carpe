@@ -2,6 +2,7 @@
 use crate::{carpe_error::CarpeError, configs::get_client};
 use anyhow::anyhow;
 use libra_query::account_queries::get_account_balance_libra;
+use libra_query::query_view::get_view;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey},
   move_resource::gas_coin::SlowWalletBalance,
@@ -11,6 +12,31 @@ use libra_types::{
 #[tauri::command(async)]
 pub async fn query_balance(account: AccountAddress) -> Result<SlowWalletBalance, CarpeError> {
   get_balance(account).await
+}
+
+#[tauri::command(async)]
+pub async fn check_account_migration_status(account: AccountAddress) -> Result<bool, CarpeError> {
+  let client = get_client()?;
+  
+  // Use the get_view function to call the Move view function
+  // The Move function signature is: public fun is_v8_authorized(account: address): bool
+  let res = get_view(
+        &client,
+        "0x1::reauthorization::is_v8_authorized",
+        None,
+        Some(account.to_string()),
+    )
+  .await
+  .map_err(|e| CarpeError::misc(&format!("Failed to check migration status: {}", e)))?;
+  
+  let is_migrated = res.as_array()
+      .ok_or_else(|| CarpeError::misc("Invalid response format"))?
+      .get(0)
+      .ok_or_else(|| CarpeError::misc("Empty response"))?
+      .as_bool()
+      .ok_or_else(|| CarpeError::misc("Response is not a boolean value"))?;
+  
+  Ok(is_migrated)
 }
 
 // #[tauri::command(async)]
