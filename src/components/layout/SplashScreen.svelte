@@ -19,18 +19,13 @@
 
   .logo {
     width: 150px;
-    height: 150px;
+    height: 1,s50px;
   }
 
-  h1 {
-    margin-top: 20px;
-    font-size: 2rem; 
-  }
 </style>
 
 {#if loading}
   <div class="splash-container">
     <img src="/libra.png" alt="Libra Logo" class="logo" />
-    <h1 class="uk-text-muted">Carpe Libra</h1>
   </div>
 {/if}
