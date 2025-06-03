@@ -11,6 +11,8 @@
   import AccountRowSkeleton from './AccountRowSkeleton.svelte'
   import { navigate } from 'svelte-navigator'; // Adjust based on your routing library
   import MigrationStatus from './MigrationStatus.svelte'
+  import VouchScoreStatus from './VouchScoreStatus.svelte'
+
   UIkit.use(Icons)
 
   let showNoteColumn = false
@@ -177,9 +179,14 @@
                     <span class="uk-align-right" style="margin: 4px;" uk-icon="eye"></span>
                   {/if}
                 </span>
-                <span class="migration-status-wrapper">
-                    <MigrationStatus account={a.account} />
-                </span>
+                <div class="status-indicators">
+                    <span class="migration-status-wrapper">
+                      <MigrationStatus account={a.account} />
+                    </span>
+                    <span class="vouch-score-wrapper">
+                      <VouchScoreStatus account={a.account} />
+                    </span>
+                </div>
               </td>
               {#if showNoteColumn}
                 <td class="uk-text-left uk-transition-toggle uk-table-shrink note-column"
@@ -230,9 +237,14 @@
     text-overflow: ellipsis; /* Use an ellipsis to indicate clipped text */
     /* white-space: nowrap; /* Prevent text from wrapping to the next line */
   }
-  .migration-status-wrapper {
-    margin-left: 5px;
+  .status-indicators {
     display: inline-flex;
+    margin-left: 5px;
     vertical-align: middle;
+  }
+  
+  .migration-status-wrapper,
+  .vouch-score-wrapper {
+    margin-right: 3px;
   }
 </style>

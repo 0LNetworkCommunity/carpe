@@ -18,8 +18,6 @@ pub async fn query_balance(account: AccountAddress) -> Result<SlowWalletBalance,
 pub async fn check_account_migration_status(account: AccountAddress) -> Result<bool, CarpeError> {
   let client = get_client()?;
   
-  // Use the get_view function to call the Move view function
-  // The Move function signature is: public fun is_v8_authorized(account: address): bool
   let res = get_view(
         &client,
         "0x1::reauthorization::is_v8_authorized",
@@ -37,6 +35,30 @@ pub async fn check_account_migration_status(account: AccountAddress) -> Result<b
       .ok_or_else(|| CarpeError::misc("Response is not a boolean value"))?;
   
   Ok(is_migrated)
+}
+
+#[tauri::command(async)]
+pub async fn is_not_valid_vouch_score(account: AccountAddress) -> Result<bool, CarpeError> {
+  let client = get_client()?;
+  
+  // Update to match how you're using get_view function elsewhere
+  let res = get_view(
+        &client,
+        "0x1::founder::is_voucher_score_valid",
+        None,  // No type arguments
+        Some(account.to_string()), // Account parameter as a single string
+    )
+  .await
+  .map_err(|e| CarpeError::misc(&format!("Failed to check vouch score: {}", e)))?;
+  
+  let is_valid_vouch_score = res.as_array()
+      .ok_or_else(|| CarpeError::misc("Invalid response format"))?
+      .get(0)
+      .ok_or_else(|| CarpeError::misc("Empty response"))?
+      .as_bool()
+      .ok_or_else(|| CarpeError::misc("Response is not a boolean value"))?;
+  
+  Ok(is_valid_vouch_score)
 }
 
 // #[tauri::command(async)]

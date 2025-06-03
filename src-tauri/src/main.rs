@@ -113,6 +113,7 @@ async fn main() {
       commands::query::query_balance,
       commands::query::get_recovery_mode,
       commands::query::check_account_migration_status,
+      commands::query::is_not_valid_vouch_score,
       //////// Transactions ////////
       commands::tx::coin_transfer,
       // claim_make_whole,
