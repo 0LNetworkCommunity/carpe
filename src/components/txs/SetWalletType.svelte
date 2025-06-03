@@ -9,11 +9,20 @@
   export let signingAccount;
   let loading = false;
   let isSlowWallet = false;
+  let confirmationModal
+
+  onMount(() => {
+    confirmationModal = UIkit.modal('#set-slow-wallet-confirmation-modal')
+  })
 
   const checkIsSlowWallet = async () => {
     if (signingAccount && signingAccount.account) {
       isSlowWallet = await is_slow_wallet(signingAccount.account);
     }
+  };
+
+  const openSlowModal = () => {
+    confirmationModal && confirmationModal.show();
   };
 
   const setWallet = (wtype: WalletType) => {
@@ -22,8 +31,8 @@
       .finally(() => {
         loading = false;
         checkIsSlowWallet(); // Recheck the slow wallet status after setting the wallet type
+        confirmationModal.hide();
       });
-    UIkit.modal('.wallet-modal').hide();
   };
 
   // Run checkIsSlowWallet when the component mounts
@@ -57,8 +66,8 @@
               <button
                 class="uk-button uk-button-default"
                 type="button"
-                uk-toggle="target: #slow"
                 disabled={loading ? true : false}
+                on:click|preventDefault={openSlowModal}
               >
                 {$_('txs.set_wallet_type.btn_slow')} ...
               </button>
@@ -74,14 +83,36 @@
     </ul>
 
     <!-- SLOW WALLET MODAL -->
-    <div id="slow" uk-modal class="uk-modal-container wallet-modal uk-text-center">
+    <div id="set-slow-wallet-confirmation-modal" uk-modal class="uk-modal-container">
       <div class="uk-modal-dialog uk-modal-body uk-padding-large">
-        <h4 class="uk-modal-title uk-text-uppercase uk-text-muted">
-          {$_('txs.set_wallet_type.warning')}
-        </h4>
-        <button class="uk-button uk-button-danger" on:click={() => setWallet(WalletType.Slow)}>
-          {$_('txs.set_wallet_type.btn_confirm_slow')}
-        </button>
+        <div>
+          <h2 class="uk-modal-title uk-text-uppercase uk-text-danger">
+            {$_('txs.set_wallet_type.modal.title')}
+          </h2>
+          <h3 class="uk-text-bold">{$_("txs.set_wallet_type.modal.body.question")}</h3>
+          <code class="uk-text-light">{$signingAccount.account}</code>
+          <p class="uk-text-lead uk-text-warning">{$_("txs.set_wallet_type.modal.body.review_list.title")}</p>
+          <ul class="uk-list uk-list-bullet uk-text-left uk-margin-top uk-margin-large-bottom">
+            <li>{@html $_("txs.set_wallet_type.modal.body.review_list.item1")}</li>
+            <li>{@html $_("txs.set_wallet_type.modal.body.review_list.item2")}</li>
+            <li>{@html $_("txs.set_wallet_type.modal.body.review_list.item3")}</li>
+          </ul>
+        </div>        
+        <div class="uk-margin-top uk-text-right">
+          <button 
+            class="uk-button uk-button-default uk-margin-right uk-modal-close"
+            disabled={loading}
+          >
+          {$_("txs.set_wallet_type.modal.btn_cancel")}
+          </button>
+          <button 
+            class="uk-button uk-button-danger" 
+            disabled={loading}
+            on:click={() => setWallet(WalletType.Slow)}
+          >
+            {$_('txs.set_wallet_type.modal.btn_confirm')}
+          </button>
+        </div>
       </div>
     </div>
   {/if}

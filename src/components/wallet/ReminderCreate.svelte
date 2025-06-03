@@ -17,14 +17,7 @@
             {$_('wallet.reminder_create.card_title')}
           </h3>
           <p>{$_('wallet.reminder_create.message_headline')}</p>
-          <p>
-            {$_('wallet.reminder_create.message_prefix')}
-            <a
-              href="https://discord.com/channels/833074824447655976/909866360060932127"
-              target="_blank">Discord <span uk-icon="icon: link;ratio:0.8" /></a
-            >
-            {$_('wallet.reminder_create.message_suffix')}
-          </p>
+
           {#each pendingAccounts as a}
             {#if a.account == 'loading...'}
               <p class="pulse" style="min-height: 20px"></p>

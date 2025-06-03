@@ -302,17 +302,29 @@
       "no_balance_body2": "Vous avez moins de deux Coins sur votre compte, vous ne pouvez donc pas onboarder d'autres comptes."
     },
     "set_wallet_type": {
-      "actions_title": "Actions sur le compte",
-      "set_slow_title": "Faire du portefeuille lent (danger)",
-      "subtitle": " Soyez sûr de vous, cette opération est irreversible! Les portefeuilles \"Slow\" et \"Community\" sont permanents.",
-      "btn_slow": "Changer en \"Slow\"",
-      "btn_confirm_slow": "Confirmez le passage en \"Slow\"? Cet opération est irreversible.",
-      "warning": "Avertissement : ce changement est définitif",
-      "btn_community": "Changer en \"Community\"",
-      "btn_confirm_community": "Changer en \"Community\"",
-      "community_confirm": "Confirmez le passage en \"Community\"? Cet opération est irreversible",
-      "title": "Modifier le type de compte",
-      "slow_confirm": "Changer en \"Slow\""
+      "actions_title": "Actions du compte",
+      "set_slow_title": "Rendre le portefeuille lent (dangereux)",
+      "subtitle": "Assurez-vous de savoir ce que vous faites. Ce n'est pas réversible. Les portefeuilles lents et communautaires sont permanents.",
+      "btn_slow": "Définir le portefeuille lent",
+      "modal": {
+        "title": "Attention : ce changement est définitif",
+        "body": {
+          "question": "Êtes-vous sûr de vouloir définir ce compte comme un portefeuille lent?",
+          "review_list": {
+            "title": "Veuillez examiner les points suivants avant de continuer:",
+            "item1": "Cette opération est irréversible. Après avoir défini votre portefeuille sur lent, vous ne pouvez plus revenir en arrière.",
+            "item2": "Cette action définira le portefeuille comme lent sur la blockchain et modifiera la liquidité de votre compte.",
+            "item3": "Les portefeuilles lents ont une limite de déblocage quotidienne de 35 000 pièces du solde du compte."
+          }
+        },
+        "btn_confirm": "Confirmer le portefeuille lent? Ce n'est pas réversible",
+        "btn_cancel": "Annuler"
+      },
+      "btn_community": "Définir le portefeuille communautaire",
+      "btn_confirm_community": "Définir la communauté",
+      "community_confirm": "Confirmer le portefeuille communautaire? Ce n'est pas réversible",
+      "title": "Définissez votre type de compte",
+      "slow_confirm": "Définir lent"
     },
     "transfer": {
       "title": "Transfert de Coins",
