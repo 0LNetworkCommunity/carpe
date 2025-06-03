@@ -19,13 +19,9 @@
 
   .logo {
     width: 150px;
-    height: 150px;
+    height: 1,s50px;
   }
 
-  h1 {
-    margin-top: 20px;
-    font-size: 2rem;
-  }
 </style>
 
 {#if loading}
