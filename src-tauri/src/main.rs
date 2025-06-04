@@ -117,6 +117,7 @@ async fn main() {
       commands::query::is_founder,
       //////// Transactions ////////
       commands::tx::coin_transfer,
+      commands::tx::vouch_transaction,
       // claim_make_whole,
       //////// Tower ////////
       // commands::query::get_onchain_tower_state,

@@ -4,7 +4,7 @@ use std::str::FromStr;
 use crate::key_manager::{get_private_key, inject_private_key_to_cfg};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 
-use libra_txs::submit_transaction::Sender;
+use libra_txs::{submit_transaction::Sender, txs_cli_user::VouchTx};
 use libra_types::exports::{AccountAddress, AccountKey};
 
 fn make_account_key(address: &AccountAddress) -> anyhow::Result<AccountKey> {
@@ -36,6 +36,61 @@ pub async fn coin_transfer(
     .transfer(receiver_account, amount as f64, false)
     .await?;
   Ok(())
+}
+
+#[tauri::command(async)]
+pub async fn vouch_transaction(
+  _sender: AccountAddress,
+  receiver: &str,
+  _legacy: bool,
+) -> Result<(), CarpeError> {
+  println!("Starting vouch transaction from {} to {}", _sender, receiver);
+  
+  let receiver_account = match AccountAddress::from_str(receiver) {
+    Ok(a) => {
+      println!("Successfully parsed receiver address: {}", a);
+      a
+    },
+    Err(e) => {
+      println!("Failed to parse receiver address: {}, trying with 0x prefix", e);
+      AccountAddress::from_str(&format!("0x{}", receiver))?
+    }
+  };
+
+  println!("Getting configuration and injecting private key");
+  let mut config = get_cfg()?;
+  inject_private_key_to_cfg(&mut config, _sender)?;
+  
+  println!("Creating sender from app config");
+  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string())).await?;
+  
+  // Try both function paths to see which one works
+  let function_paths = [
+    "0x1::vouch::vouch_for",
+  ];
+  
+  for &path in &function_paths {
+    println!("Attempting to call function: {}", path);
+    match sender
+      .generic(
+        path,
+        &None,
+        &Some(format!("{}", receiver_account)),
+      )
+      .await {
+        Ok(_) => {
+          println!("Successfully called {}", path);
+          return Ok(());
+        },
+        Err(e) => {
+          println!("Failed to call {}: {}", path, e);
+          // Continue to try the next path
+        }
+      }
+  }
+  
+  // If we get here, both attempts failed
+  Err(CarpeError::misc("Failed to call vouch function with any known path"))
 }
 
 // #[tauri::command(async)]
