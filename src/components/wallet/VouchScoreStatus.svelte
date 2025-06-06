@@ -4,6 +4,7 @@
   
   export let account;
   
+  let isMigrated = null;
   let isValidVouchScore = null;
   let isLoading = true;
   let isFounder = false;
@@ -42,6 +43,21 @@
     }
   }
 
+  async function checkMigrationStatus() {
+    try {
+      console.log("Checking migration status for founder account:", account);
+      
+      isMigrated = await invoke('check_account_migration_status', { account });
+      console.log("Migration status result:", isMigrated);
+    } catch (e) {
+      error = "Failed to check migration status";
+      errorDetails = JSON.stringify(e, null, 2);
+      console.error("Error checking migration status:", e);
+    } finally {
+      isLoading = false;
+    }
+  }
+
   async function checkVouchScoreStatus() {
     try {
       console.log("Checking vouch score validity for founder account:", account);
@@ -66,6 +82,7 @@
 
   onMount(() => {
     if (account) {
+      checkMigrationStatus();
       checkFounderStatus();
     }
   });
@@ -81,7 +98,7 @@
     on:click={showErrorDetails}>
     <span uk-icon="icon: question" style="color: grey;"></span>
   </button>
-{:else if !isFounder}
+{:else if !isMigrated && !isFounder}
   <!-- Don't show anything if not a founder -->
 {:else if isValidVouchScore}
   <span 

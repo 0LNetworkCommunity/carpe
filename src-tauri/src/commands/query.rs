@@ -19,7 +19,7 @@ pub async fn check_account_migration_status(account: AccountAddress) -> Result<b
   let client = get_client()?;
   let res = get_view(
     &client,
-    "0x1::reauthorization::is_v8_authorized",
+    "0x1::activity::is_pre_v8",
     None,
     Some(account.to_string()),
   )

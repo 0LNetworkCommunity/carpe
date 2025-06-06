@@ -26,14 +26,6 @@
       
       isFounder = await invoke('is_founder', { account });
       console.log("Is founder result:", isFounder);
-      
-      // If account is a founder, check migration status
-      if (isFounder) {
-        await checkMigrationStatus();
-      } else {
-        console.log("Account is not a founder, skipping migration check");
-        isLoading = false;
-      }
     } catch (e) {
       error = "Failed to check founder status";
       errorDetails = JSON.stringify(e, null, 2);
@@ -59,6 +51,7 @@
 
   onMount(() => {
     if (account) {
+      checkMigrationStatus();
       checkFounderStatus();
     }
   });
@@ -74,9 +67,9 @@
     on:click={showErrorDetails}>
     <span uk-icon="icon: question" style="color: grey;"></span>
   </button>
-{:else if !isFounder}
-  <!-- Don't show anything if not a founder -->
-{:else if isMigrated}
+{:else if !isMigrated}
+  <!-- Don't show anything if not migrated -->
+{:else if isFounder}
   <span 
     uk-icon="icon: check" 
     style="color: green;" 
