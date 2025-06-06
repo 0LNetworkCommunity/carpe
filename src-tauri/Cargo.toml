@@ -18,10 +18,10 @@ built = { version = "0.5.1", features = ["git2"] }
 openssl-sys = "0.9.98"
 
 [dependencies]
-libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", tag = "8.0.3" }
-libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", tag = "8.0.3" }
-libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", tag = "8.0.3" }
-libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", tag = "8.0.3" }
+libra-query = { git = "https://github.com/0LNetworkCommunity/libra-framework.git", tag = "8.0.6" }
+libra-types = { git = "https://github.com/0LNetworkCommunity/libra-framework", tag = "8.0.6" }
+libra-txs = { git = "https://github.com/0LNetworkCommunity/libra-framework", tag = "8.0.6" }
+libra-wallet = { git = "https://github.com/0LNetworkCommunity/libra-framework", tag = "8.0.6" }
 
 # # without these pinned versions, poem-openapi-types fail
 # poem = { version = "=1.3.55", features = ["anyhow", "rustls"] }
