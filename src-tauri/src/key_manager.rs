@@ -23,7 +23,7 @@ pub fn erase_keyring_address(address: &AccountAddress) -> anyhow::Result<()> {
   let encoded = hex::encode(bytes);
 
   kr.set_password(&encoded)?;
-  kr.delete_password()?;
+  kr.delete_credential()?;
   Ok(())
 }
 /// send the encoded private key to OS keyring
