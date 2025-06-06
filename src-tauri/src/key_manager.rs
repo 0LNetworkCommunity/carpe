@@ -17,13 +17,13 @@ fn keyring_addr_string_format(address: &AccountAddress) -> String {
 /// overwrite then delete
 pub fn erase_keyring_address(address: &AccountAddress) -> anyhow::Result<()> {
   let ol_address: String = keyring_addr_string_format(address);
-  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address)?;
 
   let bytes = &[0u8, 64];
   let encoded = hex::encode(bytes);
 
   kr.set_password(&encoded)?;
-  kr.delete_password()?;
+  kr.delete_credential()?;
   Ok(())
 }
 /// send the encoded private key to OS keyring
@@ -32,7 +32,7 @@ pub fn set_private_key(
   key: Ed25519PrivateKey,
 ) -> Result<(), keyring::Error> {
   let ol_address: String = keyring_addr_string_format(address);
-  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address)?;
 
   let bytes: &[u8] = &(key.to_bytes());
   let encoded = hex::encode(bytes);
@@ -43,7 +43,7 @@ pub fn set_private_key(
 /// retrieve a private key from OS keyring
 pub fn get_private_key(address: &AccountAddress) -> Result<Ed25519PrivateKey, anyhow::Error> {
   let ol_address: String = keyring_addr_string_format(address);
-  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address);
+  let kr = keyring::Entry::new(KEYRING_APP_NAME, &ol_address)?;
   match kr.get_password() {
     Ok(s) => {
       let ser = hex::decode(s)?;
