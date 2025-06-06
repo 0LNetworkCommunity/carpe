@@ -44,9 +44,9 @@ tokio-util = "*"
 url = "*"
 
 # only in carpe
-directories = "5.0.1"
-keyring = "1.2"
-simplelog = { version = "0.11.0", features = ["paris"] }
+directories = "6"
+keyring = "3"
+simplelog = { version = "0.12"}
 tauri = { version = "^1.5.2", features = ["api-all", "updater"] }
 
 
