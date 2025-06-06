@@ -2,6 +2,7 @@
 use crate::{carpe_error::CarpeError, configs::get_client};
 use anyhow::anyhow;
 use libra_query::account_queries::get_account_balance_libra;
+use libra_query::query_view::get_view;
 use libra_types::{
   exports::{AccountAddress, AuthenticationKey},
   move_resource::gas_coin::SlowWalletBalance,
@@ -11,6 +12,94 @@ use libra_types::{
 #[tauri::command(async)]
 pub async fn query_balance(account: AccountAddress) -> Result<SlowWalletBalance, CarpeError> {
   get_balance(account).await
+}
+
+#[tauri::command(async)]
+pub async fn check_account_migration_status(account: AccountAddress) -> Result<bool, CarpeError> {
+  let client = get_client()?;
+  let res = get_view(
+    &client,
+    "0x1::activity::is_pre_v8",
+    None,
+    Some(account.to_string()),
+  )
+  .await
+  .map_err(|e| CarpeError::misc(&format!("Failed to check migration status: {}", e)))?;
+  let is_migrated = res
+    .as_array()
+    .and_then(|arr| arr.first())
+    .and_then(|val| val.as_bool())
+    .unwrap_or(false);
+
+  Ok(is_migrated)
+}
+
+#[tauri::command(async)]
+pub async fn is_not_valid_vouch_score(account: AccountAddress) -> Result<bool, CarpeError> {
+  let client = get_client()?;
+
+  let result = get_view(
+    &client,
+    "0x1::founder::check_voucher_score_valid",
+    None,
+    Some(account.to_string()),
+  )
+  .await;
+
+  match result {
+    Ok(res) => {
+      let is_valid = res
+        .as_array()
+        .and_then(|arr| arr.first())
+        .and_then(|val| val.as_bool())
+        .unwrap_or(false);
+
+      Ok(is_valid)
+    }
+    Err(e) => {
+      // Check if the error is the specific abort code we're seeing
+      if e.to_string().contains("196609") {
+        // This specific error code might indicate the account isn't eligible
+        Ok(false)
+      } else {
+        Err(CarpeError::misc(&format!(
+          "Failed to check vouch score: {}",
+          e
+        )))
+      }
+    }
+  }
+}
+
+// Add this function to query.rs
+#[tauri::command(async)]
+pub async fn is_founder(account: AccountAddress) -> Result<bool, CarpeError> {
+  let client = get_client()?;
+
+  let result = get_view(
+    &client,
+    "0x1::founder::is_founder",
+    None,
+    Some(account.to_string()),
+  )
+  .await;
+
+  match result {
+    Ok(res) => {
+      let is_founder = res
+        .as_array()
+        .and_then(|arr| arr.first())
+        .and_then(|val| val.as_bool())
+        .unwrap_or(false);
+
+      Ok(is_founder)
+    }
+    Err(e) => {
+      // In case of errors, log and return false
+      println!("Error checking if account is founder: {}", e);
+      Ok(false)
+    }
+  }
 }
 
 // #[tauri::command(async)]
