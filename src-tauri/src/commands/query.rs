@@ -134,10 +134,10 @@ pub async fn get_vouch_limit(account: AccountAddress) -> Result<u64, CarpeError>
 #[tauri::command(async)]
 pub async fn get_given_vouches(account: AccountAddress) -> Result<Vec<String>, CarpeError> {
   let client = get_client()?;
-  
+
   // Format the address with 0x prefix which is required by the Move function
   let formatted_address = format!("0x{}", account.to_hex());
-  
+
   let result = get_view(
     &client,
     "0x1::vouch::get_given_vouches",
@@ -148,7 +148,7 @@ pub async fn get_given_vouches(account: AccountAddress) -> Result<Vec<String>, C
 
   match result {
     Ok(res) => {
-      // The response should be an array with two elements: 
+      // The response should be an array with two elements:
       // 1. A vector of addresses
       // 2. A vector of epochs when they were vouched for
       if let Some(outer_arr) = res.as_array() {
@@ -158,12 +158,12 @@ pub async fn get_given_vouches(account: AccountAddress) -> Result<Vec<String>, C
               .iter()
               .filter_map(|v| v.as_str().map(|s| s.to_string()))
               .collect();
-              
+
             return Ok(vouched_addresses);
           }
         }
       }
-      
+
       // If we couldn't parse the response, return empty vector
       Ok(vec![])
     }
