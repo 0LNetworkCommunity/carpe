@@ -131,6 +131,52 @@ pub async fn get_vouch_limit(account: AccountAddress) -> Result<u64, CarpeError>
   }
 }
 
+#[tauri::command(async)]
+pub async fn get_given_vouches(account: AccountAddress) -> Result<Vec<String>, CarpeError> {
+  let client = get_client()?;
+  
+  // Format the address with 0x prefix which is required by the Move function
+  let formatted_address = format!("0x{}", account.to_hex());
+  
+  let result = get_view(
+    &client,
+    "0x1::vouch::get_given_vouches",
+    None,
+    Some(formatted_address),
+  )
+  .await;
+
+  match result {
+    Ok(res) => {
+      // The response should be an array with two elements: 
+      // 1. A vector of addresses
+      // 2. A vector of epochs when they were vouched for
+      if let Some(outer_arr) = res.as_array() {
+        if outer_arr.len() >= 1 {
+          if let Some(addresses) = outer_arr[0].as_array() {
+            let vouched_addresses: Vec<String> = addresses
+              .iter()
+              .filter_map(|v| v.as_str().map(|s| s.to_string()))
+              .collect();
+              
+            return Ok(vouched_addresses);
+          }
+        }
+      }
+      
+      // If we couldn't parse the response, return empty vector
+      Ok(vec![])
+    }
+    Err(e) => {
+      println!("Error checking given vouches: {}", e);
+      Err(CarpeError::misc(&format!(
+        "Failed to check given vouches: {}",
+        e
+      )))
+    }
+  }
+}
+
 // #[tauri::command(async)]
 // pub async fn get_onchain_tower_state(account: String) -> Result<TowerProofHistoryView, CarpeError> {
 //   let account: AccountAddress = account.parse()?;

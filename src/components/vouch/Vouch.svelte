@@ -25,6 +25,9 @@
   let vouchLimit = 0
   let isLoadingVouchData = false
 
+  let vouchedAccounts: string[] = []
+  let isLoadingVouchedAccounts = false
+
   // Validation for the receiver address
   $: isReceiverValid = receiver ? re.test(receiver.replace(/^0x/, '')) : true
 
@@ -36,6 +39,7 @@
       // Fetch vouch data whenever account changes
       if (obj) {
         fetchVouchLimitData()
+        fetchVouchedAccounts()
       }
     })
   })
@@ -43,6 +47,32 @@
   onDestroy(async () => {
     unsubs && unsubs()
   })
+
+  // Add this function to fetch the list of vouched accounts
+  async function fetchVouchedAccounts() {
+    if (!account) return
+    
+    isLoadingVouchedAccounts = true
+    try {
+      vouchedAccounts = await invoke('get_given_vouches', {
+        account: account.account
+      })
+      
+      console.log(`Fetched ${vouchedAccounts.length} vouched accounts`)
+    } catch (error) {
+      console.error('Error fetching vouched accounts:', error)
+    } finally {
+      isLoadingVouchedAccounts = false
+    }
+  }
+  
+  // Function to format addresses for display
+  // function formatShortAddress(address: string): string {
+  //   const clean = address.replace(/^0x/, '')
+  //   return clean.length > 8 ? 
+  //     `0x${clean.substring(0, 4)}...${clean.substring(clean.length - 4)}` : 
+  //     `0x${clean}`
+  // }
 
   // Fetch vouch limit data
   async function fetchVouchLimitData() {
@@ -66,6 +96,7 @@
   // Refresh vouch data
   async function refreshVouchData() {
     await fetchVouchLimitData()
+    await fetchVouchedAccounts()
   }
   
   // Handle vouch transaction
@@ -193,13 +224,51 @@
         <p>{errorMessage}</p>
       </div>
     {/if}
-    
+    <div class="uk-margin-top">
+  <button class="uk-button uk-button-default uk-width-1-1 uk-flex uk-flex-between uk-flex-middle" type="button" uk-toggle="target: #vouched-accounts">
+    <span>View Your Current Vouches ({vouchedAccounts.length})</span>
+    <span uk-icon="icon: chevron-down"></span>
+  </button>
+  
+  <div id="vouched-accounts" hidden>
+    <div class="uk-card uk-card-default uk-card-body uk-padding-small uk-margin-small-top">
+      {#if isLoadingVouchedAccounts}
+        <div class="uk-flex uk-flex-center uk-margin">
+          <div uk-spinner="ratio: 0.8"></div>
+          <span class="uk-margin-small-left">Loading vouched accounts...</span>
+        </div>
+      {:else if vouchedAccounts.length === 0}
+        <p class="uk-text-center uk-text-muted">You haven't vouched for any accounts yet.</p>
+      {:else}
+        <div class="uk-flex uk-flex-between uk-margin-small-bottom">
+          <span>Accounts you've vouched for:</span>
+          <button 
+            class="uk-button uk-button-small uk-button-text"
+            uk-tooltip="Refresh vouched accounts" 
+            on:click={fetchVouchedAccounts}
+            disabled={isLoadingVouchedAccounts}>
+            <span uk-icon="icon: refresh; ratio: 0.7"></span>
+          </button>
+        </div>
+        
+        <div class="uk-height-small uk-overflow-auto">
+          <ul class="uk-list uk-list-divider uk-margin-remove">
+            {#each vouchedAccounts as address}
+              <li class="uk-padding-small uk-padding-remove-horizontal">
+                {address}
+              </li>
+            {/each}
+          </ul>
+        </div>
+      {/if}
+    </div>
+  </div>
+</div>
     <div class="uk-margin-top uk-text-meta">
       <h4>Important Information</h4>
       <ul class="uk-list uk-list-bullet">
         <li>Vouching creates a public on-chain relationship between accounts.</li>
         <li>Be selective about who you vouch for, as it affects your reputation.</li>
-        <li>Vouch transactions cannot be reversed.</li>
         <li>Each account has a limited number of vouches per epoch.</li>
       </ul>
     </div>
