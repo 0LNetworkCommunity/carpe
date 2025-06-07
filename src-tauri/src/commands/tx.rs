@@ -4,7 +4,7 @@ use std::str::FromStr;
 use crate::key_manager::{get_private_key, inject_private_key_to_cfg};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 
-use libra_txs::{submit_transaction::Sender, txs_cli_user::VouchTx};
+use libra_txs::submit_transaction::Sender;
 use libra_types::exports::{AccountAddress, AccountKey};
 
 fn make_account_key(address: &AccountAddress) -> anyhow::Result<AccountKey> {
@@ -64,18 +64,22 @@ pub async fn vouch_transaction(
   println!("Creating sender from app config");
   let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string())).await?;
   
-  // Try both function paths to see which one works
+  // Try different function paths and argument formats
   let function_paths = [
-    "0x1::vouch::vouch_for",
+    "0x1::vouch_txs::vouch_for"
   ];
   
   for &path in &function_paths {
-    println!("Attempting to call function: {}", path);
+    // Format address as a Move address literal (with 0x prefix)
+    let formatted_address = format!("0x{}", receiver_account.to_hex());
+    
+    println!("Attempting to call function: {} with argument: {}", path, formatted_address);
+    
     match sender
       .generic(
         path,
-        &None,
-        &Some(format!("{}", receiver_account)),
+        &None, // No type arguments
+        &Some(formatted_address.clone()) // Use the properly formatted address
       )
       .await {
         Ok(_) => {
@@ -89,8 +93,8 @@ pub async fn vouch_transaction(
       }
   }
   
-  // If we get here, both attempts failed
-  Err(CarpeError::misc("Failed to call vouch function with any known path"))
+  // If we get here, all attempts failed
+  Err(CarpeError::misc("Failed to call vouch function with any known path or argument format"))
 }
 
 // #[tauri::command(async)]

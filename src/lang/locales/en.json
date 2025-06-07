@@ -327,6 +327,24 @@
       "title": "Set your Account Type",
       "slow_confirm": "Set Slow"
     },
+    "vouch": {
+      "title": "Vouch for an Account",
+      "receiver": "Account to Vouch For",
+      "receiver_placeholder": "Enter account address (0x...)",
+      "vouch_limit": "Vouch Limit",
+      "sender": "Your Account",
+      "btn_vouch": "Vouch",
+      "await": "Processing...",
+      "success": "Successfully vouched for the account!",
+      "invalid_address": "Please enter a valid account address",
+      "limit_reached": "You've reached your vouch limit for this epoch.",
+      "important_info": "Important Information",
+      "info_relationship": "Vouching creates a public on-chain relationship between accounts.",
+      "info_selective": "Be selective about who you vouch for, as it affects your reputation.",
+      "info_irreversible": "Vouch transactions cannot be reversed.",
+      "info_limit": "Each account has a limited number of vouches per epoch.",
+      "refresh_tooltip": "Refresh vouching limits"
+    },
     "transfer": {
       "title": "Coin Transfer",
       "sender": "Sender",

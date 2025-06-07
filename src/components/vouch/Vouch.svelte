@@ -2,104 +2,108 @@
   import { onDestroy, onMount } from 'svelte'
   import { _ } from 'svelte-i18n'
   import { invoke } from '@tauri-apps/api/tauri'
-
-  import { responses } from '../../modules/debug'
-  import { notify_success } from '../../modules/carpeNotify'
-  import { printUnscaledCoins, printCoins, unscaledCoins } from '../../modules/coinHelpers'
   import { formatAccount, signingAccount } from '../../modules/accounts'
+
+  import { notify_success } from '../../modules/carpeNotify'
   import type { CarpeProfile } from '../../modules/accounts'
   import { raise_error } from '../../modules/carpeError'
   import CantStart from '../miner/cards/CantStart.svelte'
   import { refreshAccounts } from '../../modules/accountActions'
 
-  const errorDic = {
-    '120127': $_('txs.transfer.error_slow_wallet'),
-    '1004': $_('txs.transfer.error_account_does_not_exist'),
-  }
-
+  
   let account: CarpeProfile
   let unsubs
-  onMount(async () => {
-    unsubs = signingAccount.subscribe((obj) => {
-      account = obj
-      watchOnly = obj.watch_only
-    })
-  })
-
-  let receiver: string
-  let amountInput: string
-
-  let amount = 0
+  let receiver: string = ''
   let errorMessage = ''
   let waitingTxs = false
-  let waitingConfirmation = false
   let watchOnly = false
   const re = /[a-fA-F0-9]{32}/i
 
   let isReceiverValid = true
-  let isValidAmount = true
-  let checkMessage = ''
+  
+  // Vouch limit variables
+  let vouchLimit = 0
+  let remainingVouches = 0
+  let isLoadingVouchData = false
 
-  $: isReceiverValid = account && receiver && re.test(receiver) && receiver != account.account
-  $: isValidAmount = account && amount > 0 && amount < unscaledCoins(account.balance.unlocked)
+  // Validation for the receiver address
+  $: isReceiverValid = receiver ? re.test(receiver.replace(/^0x/, '')) : true
 
-  $: checkMessage =
-    account && amount > unscaledCoins(account.balance)
-      ? $_('txs.transfer.error_amount_greater_than_balance')
-      : receiver && receiver.toUpperCase() == account.account.toUpperCase()
-      ? $_('txs.transfer.error_receiver_equals_sender')
-      : ''
+  onMount(async () => {
+    unsubs = signingAccount.subscribe((obj) => {
+      account = obj
+      watchOnly = obj?.watch_only
+      
+      // Fetch vouch data whenever account changes
+      if (obj) {
+        fetchVouchLimitData()
+      }
+    })
+  })
 
   onDestroy(async () => {
     unsubs && unsubs()
   })
 
-  const transferCoins = async () => {
+  // Fetch vouch limit data
+  async function fetchVouchLimitData() {
+    if (!account) return
+    
+    isLoadingVouchData = true
+    try {
+      // Get the vouch limit
+      vouchLimit = await invoke('get_vouch_limit', {
+        account: account.account
+      })
+      
+      // Get remaining vouches
+      remainingVouches = await invoke('get_remaining_vouches', {
+        account: account.account
+      })
+      
+      console.log(`Vouch limit: ${vouchLimit}, Remaining: ${remainingVouches}`)
+    } catch (error) {
+      console.error('Error fetching vouch data:', error)
+    } finally {
+      isLoadingVouchData = false
+    }
+  }
+  
+  // Refresh vouch data
+  async function refreshVouchData() {
+    await fetchVouchLimitData()
+  }
+  
+  // Handle vouch transaction
+  async function submitVouch() {
+    if (!account || !receiver) {
+      errorMessage = "Please enter a receiver address"
+      return
+    }
+    
     waitingTxs = true
-
-    return invoke('vouch_transaction', {
-      sender: account.account,
-      receiver: receiver.trim(),
-      legacy: account.account.startsWith('0'.repeat(32)),
-    })
-      .then((res) => {
-        responses.set(JSON.stringify(res))
-        notify_success($_('txs.transfer.success'))
-        waitingTxs = false
-        amount = 0
-        receiver = null
-        refreshAccounts()
+    errorMessage = ''
+    
+    try {
+      console.log(`Submitting vouch transaction from ${account.account} to ${receiver}`)
+      
+      await invoke("vouch_transaction", {
+        sender: account.account,
+        receiver: receiver,
+        legacy: false
       })
-      .catch((error) => {
-        responses.set(JSON.stringify(error))
-        raise_error(error, false, 'vouch_transaction')
-        errorMessage = errorDic[error.msg]
-          ? errorDic[error.msg]
-          : $_('txs.transfer.failed', { values: { code: error.msg } })
-        waitingTxs = false
-      })
-  }
-
-  const cancelClick = () => {
-    waitingConfirmation = false
-  }
-
-  const confirmClick = () => {
-    waitingConfirmation = false
-    transferCoins()
-  }
-
-  const handleChange = () => {
-    let cleanedInput = amountInput
-      .replace(/\D*/gm, '') // remove non digits
-      .replace(/^0+/gm, '') // remove leading zeros
-
-    if (cleanedInput.length === 0) {
-      amount = 0
-      amountInput = ''
-    } else {
-      amount = parseInt(cleanedInput)
-      amountInput = printUnscaledCoins(amount, 0, 0)
+      
+      notify_success($_('txs.vouch.success'))
+      receiver = ''
+      
+      // Refresh vouch data after successful transaction
+      await refreshVouchData()
+      refreshAccounts()
+    } catch (e) {
+      console.error("Vouch failed:", e)
+      raise_error(e, true, "vouch_transaction")
+    } finally {
+      waitingTxs = false
     }
   }
 </script>
@@ -114,86 +118,108 @@
   {#if !$signingAccount.on_chain}
     <CantStart />
   {:else if account}
-    <div>
-      {#if waitingConfirmation}
-        <h2 class="uk-text-muted uk-text-uppercase">
-          {$_('txs.transfer.confirm_title')}
-        </h2>
-        <p>{$_('txs.transfer.please_confirm')}</p>
-        <p class="uk-text-uppercase">
-          {$_('txs.transfer.sender')}:
-          <span class="uk-text-bold">{formatAccount(account.account)}</span>
-        </p>
-        <p class="uk-text-uppercase">
-          {$_('txs.transfer.receiver')}:
-          <span class="uk-text-bold">{receiver}</span>
-        </p>
-        <p class="uk-text-uppercase">
-          {$_('txs.transfer.amount')}:
-          <span class="uk-text-bold">{printUnscaledCoins(amount)}</span>
-        </p>
+    <!-- Modify just the relevant parts of the form -->
 
-        <p class="uk-text-right">
-          <button
-            on:click={cancelClick}
-            class="uk-button uk-button-default uk-margin-right"
-            type="button">{$_('txs.transfer.btn_cancel')}</button
-          >
-          <button on:click={confirmClick} class="uk-button uk-button-primary" type="button"
-            >{$_('txs.transfer.btn_confirm')}</button
-          >
+<!-- Replace the form section with this updated version -->
+<div class="uk-margin-large">
+  <div class="uk-card uk-card-default uk-card-body">
+    <h3 class="uk-card-title">{$_('txs.vouch.title')}</h3>
+    
+    <!-- Sender and Vouch Limit Info -->
+    <!-- Sender and Vouch Limit Info -->
+<div class="uk-grid-small uk-margin-bottom" uk-grid>
+  <div class="uk-width-3-4@s">
+    <label class="uk-form-label" for="vouch-sender">{$_('txs.vouch.sender')}</label>
+    <div class="uk-form-controls uk-form-controls-text">
+      <!-- Display shortened address with copy functionality if available -->
+      <div class="sender-address">
+        {#if account?.account}
+          <span id="vouch-sender" class="uk-text-bold">{formatAccount(account.account)}</span>
+        {/if}
+      </div>
+    </div>
+  </div>
+  <div class="uk-width-1-4@s">
+    <span class="uk-form-label" id="vouch-limit-label">
+      {$_('txs.vouch.vouch_limit')}
+      {#if isLoadingVouchData}
+        <span uk-spinner="ratio: 0.5"></span>
+      {/if}
+    </span>
+    <div class="uk-flex uk-flex-middle" aria-labelledby="vouch-limit-label">
+      <span class="uk-text-bold">{remainingVouches}/{vouchLimit}</span>
+      <button 
+        class="uk-button uk-button-small uk-button-text uk-margin-small-left"
+        uk-tooltip={$_('txs.vouch.refresh_tooltip')}
+        on:click={refreshVouchData}
+        disabled={isLoadingVouchData}>
+        <span uk-icon="icon: refresh; ratio: 0.7"></span>
+      </button>
+    </div>
+  </div>
+</div>
+    
+    <!-- Receiver input -->
+    <div class="uk-margin">
+      <label class="uk-form-label" for="vouch-receiver">{$_('txs.vouch.receiver')}</label>
+      <div class="uk-form-controls">
+        <input
+          id="vouch-receiver"
+          class="uk-input {!isReceiverValid && receiver ? 'uk-form-danger' : ''}"
+          type="text"
+          bind:value={receiver}
+          placeholder="Enter account address (0x...)"
+          disabled={watchOnly || waitingTxs || remainingVouches <= 0}
+        />
+        {#if !isReceiverValid && receiver}
+          <p class="uk-text-danger uk-text-small">Please enter a valid account address</p>
+        {/if}
+      </div>
+    </div>
+    
+    <div class="uk-margin">
+      <button
+        class="uk-button uk-button-primary uk-width-1-1"
+        on:click={submitVouch}
+        disabled={!isReceiverValid || !receiver || watchOnly || waitingTxs || remainingVouches <= 0}
+      >
+        {#if waitingTxs}
+          <span uk-spinner="ratio: 0.6"></span> {$_('txs.vouch.await')}
+        {:else}
+          {$_('txs.vouch.btn_vouch')}
+        {/if}
+      </button>
+      
+      {#if remainingVouches <= 0}
+        <p class="uk-text-warning uk-text-small">
+          You've reached your vouch limit for this epoch.
         </p>
-      {:else}
-        <form id="account-form" on:submit|preventDefault={() => {}}>
-          <fieldset class="uk-fieldset uk-grid-small" uk-grid>
-            <div class="uk-width-3-4@s">
-              <label class="uk-form-label" for="sender-text">{$_('txs.transfer.sender')} </label>
-              <div>
-                {formatAccount(account.account)}
-              </div>
-            </div>
-            <div class="uk-width-1-4@s">
-              <label class="uk-form-label" for="balance-text">
-                {$_('txs.transfer.balance')}
-              </label>
-              <div>{printCoins(account.balance.unlocked)}</div>
-            </div>
-            <div class="uk-width-1-1">
-              <label class="uk-form-label" for="receiver-text">
-                {$_('txs.transfer.receiver')}
-              </label>
-              <div class="uk-form-controls">
-                <input
-                  id="receiver-text"
-                  disabled={waitingTxs || watchOnly}
-                  class="uk-input"
-                  type="text"
-                  placeholder={$_('txs.transfer.receiver_placeholder')}
-                  bind:value={receiver}
-                />
-              </div>
-            </div>
-            <p class="uk-text-warning">{checkMessage || errorMessage}</p>
-            <div class="uk-width-1-1">
-              <div class="uk-align-right">
-                {#if waitingTxs}
-                  <span uk-spinner="ratio: 0.8" style="margin: 0px 10px 0px 0px" />
-                {/if}
-                <button class="uk-button uk-button-default uk-modal-close uk-margin-right">
-                  {waitingTxs ? $_('txs.transfer.btn_close') : $_('txs.transfer.btn_cancel')}
-                </button>
-                <button
-                  on:click={() => (waitingConfirmation = true)}
-                  disabled={waitingTxs || !isValidAmount || !isReceiverValid || watchOnly}
-                  class="uk-button uk-button-primary"
-                >
-                  {waitingTxs ? $_('txs.transfer.await') : $_('txs.transfer.btn_next')}
-                </button>
-              </div>
-            </div>
-          </fieldset>
-        </form>
       {/if}
     </div>
+    
+    {#if errorMessage}
+      <div class="uk-alert uk-alert-danger">
+        <p>{errorMessage}</p>
+      </div>
+    {/if}
+    
+    <div class="uk-margin-top uk-text-meta">
+      <h4>Important Information</h4>
+      <ul class="uk-list uk-list-bullet">
+        <li>Vouching creates a public on-chain relationship between accounts.</li>
+        <li>Be selective about who you vouch for, as it affects your reputation.</li>
+        <li>Vouch transactions cannot be reversed.</li>
+        <li>Each account has a limited number of vouches per epoch.</li>
+      </ul>
+    </div>
+  </div>
+</div>
   {/if}
 </main>
+
+<style>
+  h3.uk-card-title {
+    color: var(--uk-primary-color, #1e87f0);
+    margin-bottom: 20px;
+  }
+</style>

@@ -102,6 +102,83 @@ pub async fn is_founder(account: AccountAddress) -> Result<bool, CarpeError> {
   }
 }
 
+#[tauri::command(async)]
+pub async fn get_vouch_limit(account: AccountAddress) -> Result<u64, CarpeError> {
+  let client = get_client()?;
+
+  let result = get_view(
+    &client,
+    "0x1::vouch_limits::get_vouch_limit",
+    None,
+    Some(account.to_string()),
+  )
+  .await;
+
+  match result {
+    Ok(res) => {
+      let limit = res
+        .as_array()
+        .and_then(|arr| arr.first())
+        .and_then(|val| val.as_u64())
+        .unwrap_or(0);
+
+      println!("Vouch limit for {}: {}", account, limit);
+      Ok(limit)
+    }
+    Err(e) => {
+      println!("Error checking vouch limit: {}", e);
+      
+      // If there's a specific error that indicates the function doesn't exist,
+      // we can handle it gracefully
+      if e.to_string().contains("function not found") {
+        println!("Function not found, returning default value");
+        return Ok(0);
+      }
+      
+      Err(CarpeError::misc(&format!(
+        "Failed to check vouch limit: {}",
+        e
+      )))
+    }
+  }
+}
+
+#[tauri::command(async)]
+pub async fn get_remaining_vouches(account: AccountAddress) -> Result<u64, CarpeError> {
+  // Get the total vouch limit
+  let vouch_limit = get_vouch_limit(account).await?;
+  
+  // Get count of given vouches
+  let client = get_client()?;
+  let given_result = get_view(
+    &client,
+    "0x1::vouch::get_given_this_epoch",
+    None,
+    Some(account.to_string()),
+  )
+  .await;
+  
+  let given_count = match given_result {
+    Ok(res) => {
+      res
+        .as_array()
+        .and_then(|arr| arr.first())
+        .and_then(|val| val.as_u64())
+        .unwrap_or(0)
+    }
+    Err(_) => 0, // Default to 0 if we can't get the count
+  };
+  
+  // Calculate remaining (ensure we don't underflow)
+  let remaining = if given_count >= vouch_limit {
+    0
+  } else {
+    vouch_limit - given_count
+  };
+  
+  Ok(remaining)
+}
+
 // #[tauri::command(async)]
 // pub async fn get_onchain_tower_state(account: String) -> Result<TowerProofHistoryView, CarpeError> {
 //   let account: AccountAddress = account.parse()?;

@@ -115,6 +115,8 @@ async fn main() {
       commands::query::check_account_migration_status,
       commands::query::is_not_valid_vouch_score,
       commands::query::is_founder,
+      commands::query::get_vouch_limit,
+      commands::query::get_remaining_vouches,
       //////// Transactions ////////
       commands::tx::coin_transfer,
       commands::tx::vouch_transaction,
