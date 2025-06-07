@@ -152,7 +152,7 @@ pub async fn get_given_vouches(account: AccountAddress) -> Result<Vec<String>, C
       // 1. A vector of addresses
       // 2. A vector of epochs when they were vouched for
       if let Some(outer_arr) = res.as_array() {
-        if outer_arr.len() >= 1 {
+        if !outer_arr.is_empty() {
           if let Some(addresses) = outer_arr[0].as_array() {
             let vouched_addresses: Vec<String> = addresses
               .iter()
