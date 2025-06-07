@@ -45,9 +45,7 @@ pub async fn vouch_transaction(
   _legacy: bool,
 ) -> Result<(), CarpeError> {
   let receiver_account = match AccountAddress::from_str(receiver) {
-    Ok(a) => {
-      a
-    }
+    Ok(a) => a,
     Err(e) => {
       println!(
         "Failed to parse receiver address: {}, trying with 0x prefix",

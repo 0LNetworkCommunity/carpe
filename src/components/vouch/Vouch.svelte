@@ -126,6 +126,7 @@
       refreshAccounts()
     } catch (e) {
       console.error("Vouch failed:", e)
+      errorMessage = "Vouch transaction failed. Check the address for recipient or your vouch limit."
       raise_error(e, true, "vouch_transaction")
     } finally {
       waitingTxs = false
