@@ -332,7 +332,7 @@
       "receiver": "Account to Vouch For",
       "receiver_placeholder": "Enter account address (0x...)",
       "vouch_limit": "Vouch Limit",
-      "sender": "Your Account",
+      "sender": "Sender",
       "btn_vouch": "Vouch",
       "await": "Processing...",
       "success": "Successfully vouched for the account!",

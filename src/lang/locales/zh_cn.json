@@ -332,7 +332,7 @@
       "receiver": "被担保账户",
       "receiver_placeholder": "输入账户地址 (0x...)",
       "vouch_limit": "担保限制",
-      "sender": "您的账户",
+      "sender": "发送者",
       "btn_vouch": "担保",
       "await": "处理中...",
       "success": "成功为账户担保！",

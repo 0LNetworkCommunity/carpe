@@ -123,9 +123,6 @@
 <!-- Replace the form section with this updated version -->
 <div class="uk-margin-large">
   <div class="uk-card uk-card-default uk-card-body">
-    <h3 class="uk-card-title">{$_('txs.vouch.title')}</h3>
-    
-    <!-- Sender and Vouch Limit Info -->
     <!-- Sender and Vouch Limit Info -->
 <div class="uk-grid-small uk-margin-bottom" uk-grid>
   <div class="uk-width-3-4@s">
@@ -134,7 +131,7 @@
       <!-- Display shortened address with copy functionality if available -->
       <div class="sender-address">
         {#if account?.account}
-          <span id="vouch-sender" class="uk-text-bold">{formatAccount(account.account)}</span>
+          <span id="vouch-sender">{formatAccount(account.account)}</span>
         {/if}
       </div>
     </div>
@@ -147,7 +144,7 @@
       {/if}
     </span>
     <div class="uk-flex uk-flex-middle" aria-labelledby="vouch-limit-label">
-      <span class="uk-text-bold">{remainingVouches}/{vouchLimit}</span>
+      <span>{remainingVouches}</span>
       <button 
         class="uk-button uk-button-small uk-button-text uk-margin-small-left"
         uk-tooltip={$_('txs.vouch.refresh_tooltip')}
@@ -216,10 +213,3 @@
 </div>
   {/if}
 </main>
-
-<style>
-  h3.uk-card-title {
-    color: var(--uk-primary-color, #1e87f0);
-    margin-bottom: 20px;
-  }
-</style>

@@ -106,6 +106,8 @@ pub async fn is_founder(account: AccountAddress) -> Result<bool, CarpeError> {
 pub async fn get_vouch_limit(account: AccountAddress) -> Result<u64, CarpeError> {
   let client = get_client()?;
 
+  println!("Querying vouch limit for account: {}", account);
+  
   let result = get_view(
     &client,
     "0x1::vouch_limits::get_vouch_limit",
@@ -116,14 +118,37 @@ pub async fn get_vouch_limit(account: AccountAddress) -> Result<u64, CarpeError>
 
   match result {
     Ok(res) => {
-      let limit = res
-        .as_array()
-        .and_then(|arr| arr.first())
-        .and_then(|val| val.as_u64())
-        .unwrap_or(0);
-
-      println!("Vouch limit for {}: {}", account, limit);
-      Ok(limit)
+      if let Some(arr) = res.as_array() {
+        if let Some(val) = arr.first() {
+          // Try to parse as u64 directly
+          if let Some(num) = val.as_u64() {
+            println!("Parsed vouch limit (u64): {}", num);
+            return Ok(num);
+          } 
+          // Try to parse as string then u64
+          else if let Some(str_val) = val.as_str() {
+            match str_val.parse::<u64>() {
+              Ok(num) => {
+                println!("Parsed vouch limit (string->u64): {}", num);
+                return Ok(num);
+              },
+              Err(e) => {
+                println!("Failed to parse string as u64: {}", e);
+              }
+            }
+          }
+          
+          println!("Could not parse limit value: {:?}", val);
+        } else {
+          println!("Array is empty");
+        }
+      } else {
+        println!("Response is not an array: {:?}", res);
+      }
+      
+      // Default to 0 if we couldn't parse the value
+      println!("Using default value 0");
+      Ok(0)
     }
     Err(e) => {
       println!("Error checking vouch limit: {}", e);
@@ -135,10 +160,42 @@ pub async fn get_vouch_limit(account: AccountAddress) -> Result<u64, CarpeError>
         return Ok(0);
       }
       
-      Err(CarpeError::misc(&format!(
-        "Failed to check vouch limit: {}",
-        e
-      )))
+      // Try with a direct argument - some Move APIs expect specific formats
+      let formatted_address = format!("0x{}", account.to_hex());
+      println!("Trying again with formatted address: {}", formatted_address);
+      
+      let retry_result = get_view(
+        &client,
+        "0x1::vouch_limits::get_vouch_limit",
+        None,
+        Some(formatted_address),
+      )
+      .await;
+      
+      match retry_result {
+        Ok(res) => {
+          println!("Retry raw vouch limit response: {:?}", res);
+          
+          if let Some(arr) = res.as_array() {
+            if let Some(val) = arr.first() {
+              if let Some(num) = val.as_u64() {
+                println!("Retry parsed vouch limit: {}", num);
+                return Ok(num);
+              }
+            }
+          }
+          
+          println!("Retry parsing failed, returning default value");
+          Ok(0)
+        }
+        Err(retry_err) => {
+          println!("Retry also failed: {}", retry_err);
+          Err(CarpeError::misc(&format!(
+            "Failed to check vouch limit: {}",
+            e
+          )))
+        }
+      }
     }
   }
 }
