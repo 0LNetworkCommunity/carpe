@@ -3,6 +3,7 @@
     "wallet": "Wallet",
     "miner": "Miner",
     "transactions": "Transfer",
+    "vouch": "Vouch",
     "events": "Events"
   },
   "layout": {

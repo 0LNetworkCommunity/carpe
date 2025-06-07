@@ -14,4 +14,5 @@ export const routes = {
   developer: '/dev',
   swarm: '/swarm',
   makeWhole: '/make-whole',
+  vouch: '/vouch',
 }
