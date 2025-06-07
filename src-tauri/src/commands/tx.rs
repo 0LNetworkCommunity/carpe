@@ -44,14 +44,8 @@ pub async fn vouch_transaction(
   receiver: &str,
   _legacy: bool,
 ) -> Result<(), CarpeError> {
-  println!(
-    "Starting vouch transaction from {} to {}",
-    _sender, receiver
-  );
-
   let receiver_account = match AccountAddress::from_str(receiver) {
     Ok(a) => {
-      println!("Successfully parsed receiver address: {}", a);
       a
     }
     Err(e) => {
@@ -63,11 +57,9 @@ pub async fn vouch_transaction(
     }
   };
 
-  println!("Getting configuration and injecting private key");
   let mut config = get_cfg()?;
   inject_private_key_to_cfg(&mut config, _sender)?;
 
-  println!("Creating sender from app config");
   let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string())).await?;
 
   // Try different function paths and argument formats
@@ -76,11 +68,6 @@ pub async fn vouch_transaction(
   for &path in &function_paths {
     // Format address as a Move address literal (with 0x prefix)
     let formatted_address = format!("0x{}", receiver_account.to_hex());
-
-    println!(
-      "Attempting to call function: {} with argument: {}",
-      path, formatted_address
-    );
 
     match sender
       .generic(
