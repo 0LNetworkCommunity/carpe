@@ -105,9 +105,6 @@ pub async fn is_founder(account: AccountAddress) -> Result<bool, CarpeError> {
 #[tauri::command(async)]
 pub async fn get_vouch_limit(account: AccountAddress) -> Result<u64, CarpeError> {
   let client = get_client()?;
-
-  println!("Querying vouch limit for account: {}", account);
-  
   let result = get_view(
     &client,
     "0x1::vouch_limits::get_vouch_limit",
@@ -118,122 +115,20 @@ pub async fn get_vouch_limit(account: AccountAddress) -> Result<u64, CarpeError>
 
   match result {
     Ok(res) => {
-      if let Some(arr) = res.as_array() {
-        if let Some(val) = arr.first() {
-          // Try to parse as u64 directly
-          if let Some(num) = val.as_u64() {
-            println!("Parsed vouch limit (u64): {}", num);
-            return Ok(num);
-          } 
-          // Try to parse as string then u64
-          else if let Some(str_val) = val.as_str() {
-            match str_val.parse::<u64>() {
-              Ok(num) => {
-                println!("Parsed vouch limit (string->u64): {}", num);
-                return Ok(num);
-              },
-              Err(e) => {
-                println!("Failed to parse string as u64: {}", e);
-              }
-            }
-          }
-          
-          println!("Could not parse limit value: {:?}", val);
-        } else {
-          println!("Array is empty");
-        }
-      } else {
-        println!("Response is not an array: {:?}", res);
-      }
-      
-      // Default to 0 if we couldn't parse the value
-      println!("Using default value 0");
-      Ok(0)
-    }
-    Err(e) => {
-      println!("Error checking vouch limit: {}", e);
-      
-      // If there's a specific error that indicates the function doesn't exist,
-      // we can handle it gracefully
-      if e.to_string().contains("function not found") {
-        println!("Function not found, returning default value");
-        return Ok(0);
-      }
-      
-      // Try with a direct argument - some Move APIs expect specific formats
-      let formatted_address = format!("0x{}", account.to_hex());
-      println!("Trying again with formatted address: {}", formatted_address);
-      
-      let retry_result = get_view(
-        &client,
-        "0x1::vouch_limits::get_vouch_limit",
-        None,
-        Some(formatted_address),
-      )
-      .await;
-      
-      match retry_result {
-        Ok(res) => {
-          println!("Retry raw vouch limit response: {:?}", res);
-          
-          if let Some(arr) = res.as_array() {
-            if let Some(val) = arr.first() {
-              if let Some(num) = val.as_u64() {
-                println!("Retry parsed vouch limit: {}", num);
-                return Ok(num);
-              }
-            }
-          }
-          
-          println!("Retry parsing failed, returning default value");
-          Ok(0)
-        }
-        Err(retry_err) => {
-          println!("Retry also failed: {}", retry_err);
-          Err(CarpeError::misc(&format!(
-            "Failed to check vouch limit: {}",
-            e
-          )))
-        }
-      }
-    }
-  }
-}
-
-#[tauri::command(async)]
-pub async fn get_remaining_vouches(account: AccountAddress) -> Result<u64, CarpeError> {
-  // Get the total vouch limit
-  let vouch_limit = get_vouch_limit(account).await?;
-  
-  // Get count of given vouches
-  let client = get_client()?;
-  let given_result = get_view(
-    &client,
-    "0x1::vouch::get_given_this_epoch",
-    None,
-    Some(account.to_string()),
-  )
-  .await;
-  
-  let given_count = match given_result {
-    Ok(res) => {
-      res
+      let vouch_limit: u64 = res
         .as_array()
         .and_then(|arr| arr.first())
-        .and_then(|val| val.as_u64())
-        .unwrap_or(0)
+        .and_then(|val| val.as_str())
+        .and_then(|str_val| str_val.parse::<u64>().ok())
+        .unwrap_or(0);
+      Ok(vouch_limit)
     }
-    Err(_) => 0, // Default to 0 if we can't get the count
-  };
-  
-  // Calculate remaining (ensure we don't underflow)
-  let remaining = if given_count >= vouch_limit {
-    0
-  } else {
-    vouch_limit - given_count
-  };
-  
-  Ok(remaining)
+    Err(e) => {
+      // In case of errors, log and return false
+      println!("Error checking vouch limit: {}", e);
+      Ok(0)
+    }
+  }
 }
 
 // #[tauri::command(async)]

@@ -23,7 +23,6 @@
   
   // Vouch limit variables
   let vouchLimit = 0
-  let remainingVouches = 0
   let isLoadingVouchData = false
 
   // Validation for the receiver address
@@ -56,12 +55,7 @@
         account: account.account
       })
       
-      // Get remaining vouches
-      remainingVouches = await invoke('get_remaining_vouches', {
-        account: account.account
-      })
-      
-      console.log(`Vouch limit: ${vouchLimit}, Remaining: ${remainingVouches}`)
+      console.log(`Vouch limit: ${vouchLimit}`)
     } catch (error) {
       console.error('Error fetching vouch data:', error)
     } finally {
@@ -144,7 +138,7 @@
       {/if}
     </span>
     <div class="uk-flex uk-flex-middle" aria-labelledby="vouch-limit-label">
-      <span>{remainingVouches}</span>
+      <span>{vouchLimit}</span>
       <button 
         class="uk-button uk-button-small uk-button-text uk-margin-small-left"
         uk-tooltip={$_('txs.vouch.refresh_tooltip')}
@@ -166,7 +160,7 @@
           type="text"
           bind:value={receiver}
           placeholder="Enter account address (0x...)"
-          disabled={watchOnly || waitingTxs || remainingVouches <= 0}
+          disabled={watchOnly || waitingTxs || vouchLimit <= 0}
         />
         {#if !isReceiverValid && receiver}
           <p class="uk-text-danger uk-text-small">Please enter a valid account address</p>
@@ -178,7 +172,7 @@
       <button
         class="uk-button uk-button-primary uk-width-1-1"
         on:click={submitVouch}
-        disabled={!isReceiverValid || !receiver || watchOnly || waitingTxs || remainingVouches <= 0}
+        disabled={!isReceiverValid || !receiver || watchOnly || waitingTxs || vouchLimit <= 0}
       >
         {#if waitingTxs}
           <span uk-spinner="ratio: 0.6"></span> {$_('txs.vouch.await')}
@@ -187,7 +181,7 @@
         {/if}
       </button>
       
-      {#if remainingVouches <= 0}
+      {#if vouchLimit <= 0}
         <p class="uk-text-warning uk-text-small">
           You've reached your vouch limit for this epoch.
         </p>
