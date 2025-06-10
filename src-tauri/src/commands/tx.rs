@@ -39,10 +39,7 @@ pub async fn coin_transfer(
 }
 
 #[tauri::command(async)]
-pub async fn vouch_transaction(
-  _sender: AccountAddress,
-  receiver: &str,
-) -> Result<(), CarpeError> {
+pub async fn vouch_transaction(_sender: AccountAddress, receiver: &str) -> Result<(), CarpeError> {
   let receiver_account = match AccountAddress::from_str(receiver) {
     Ok(a) => a,
     Err(e) => {
