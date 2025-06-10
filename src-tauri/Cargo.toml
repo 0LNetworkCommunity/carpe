@@ -39,7 +39,7 @@ url = { version = "2.2.2", features = ["serde"] }
 
 # only in carpe
 directories = "6"
-keyring = "3"
+keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service"] }
 simplelog = { version = "0.12"}
 tauri = { version = "^1.5.2", features = ["api-all", "updater"] }
 
