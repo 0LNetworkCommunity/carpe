@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, macos-11, ubuntu-22.04]
+        os: [windows-latest, macos-13, ubuntu-22.04]
     name: build ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
@@ -18,23 +18,27 @@ jobs:
       #   with:
       #     detached: true
 
-      # Setup Rust
-      - uses: dtolnay/rust-toolchain@1.70.0
+      - name: checkout sources
+        uses: actions/checkout@v4.1.1
         with:
-          components: rustfmt
+          fetch-depth: 0
+
+      - uses: actions-rs/toolchain@v1.0.6
+        with:
+          profile: minimal
+          toolchain: 1.84.1
+          override: true
 
       # Setup Node.js
       - name: setup node
         uses: actions/setup-node@v4.0.2
         with:
           node-version: 18
-      # checkout
-      - name: checkout source
-        uses: actions/checkout@v4.1.1
 
       - name: install dependencies (ubuntu only)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-22.04'
         run: sudo apt-get update && sudo apt-get install -y lld libsoup2.4-dev libgdk3.0-cil-dev libjavascriptcoregtk-4.0-dev libwebkit2gtk-4.0-dev
+
 
       - name: install dependencies (windows only)
         if: matrix.os == 'windows-latest'
