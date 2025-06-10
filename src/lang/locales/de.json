@@ -3,6 +3,7 @@
     "wallet": "Wallet",
     "miner": "Miner",
     "transactions": "Transaktionen",
+    "vouch": "Bürgen",
     "events": "Ereignisse"
   },
   "layout": {
@@ -300,6 +301,29 @@
       "no_balance_title": "Niedriger Kontostand",
       "no_balance_body1": "Das Onboarding von {onboard_key} war nicht erfolgreich.",
       "no_balance_body2": "Sieht so aus, als hättest du weniger als 2 Coins auf deinem Konto, das bedeutet, dass du niemanden onboarden kannst."
+    },
+    "vouch": {
+      "title": "Für ein Konto bürgen",
+      "receiver": "Konto, für das gebürgt werden soll",
+      "receiver_placeholder": "Kontoadresse eingeben (0x...)",
+      "vouch_limit": "Bürgschaftslimit",
+      "sender": "Absender",
+      "btn_vouch": "Bürgen",
+      "await": "Verarbeitung...",
+      "success": "Erfolgreich für das Konto gebürgt!",
+      "invalid_address": "Bitte geben Sie eine gültige Kontoadresse ein",
+      "limit_reached": "Sie haben Ihr Bürgschaftslimit für diese Epoche erreicht.",
+      "important_info": "Wichtige Informationen",
+      "info_relationship": "Bürgschaft schafft eine öffentliche On-Chain-Beziehung zwischen Konten.",
+      "info_selective": "Seien Sie selektiv, für wen Sie bürgen, da es Ihren Ruf beeinflusst.",
+      "info_irreversible": "Bürgschaftstransaktionen können nicht rückgängig gemacht werden.",
+      "info_limit": "Jedes Konto hat eine begrenzte Anzahl an Bürgschaften pro Epoche.",
+      "refresh_tooltip": "Bürgschaftslimits aktualisieren",
+      "view_current_vouches": "Ihre aktuellen Bürgschaften anzeigen",
+      "loading_vouched_accounts": "Verbürgte Konten werden geladen...",
+      "no_vouched_accounts": "Sie haben noch für keine Konten gebürgt.",
+      "accounts_vouched_for": "Konten, für die Sie gebürgt haben:",
+      "refresh_vouched_accounts": "Verbürgte Konten aktualisieren"
     },
     "set_wallet_type": {
       "actions_title": "Kontohandlungen",

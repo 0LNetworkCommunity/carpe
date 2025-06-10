@@ -3,6 +3,7 @@
     "wallet": "Portefeuille",
     "miner": "Mineur",
     "transactions": "Transactions",
+    "vouch": "Garantir",
     "events": "Événements"
   },
   "layout": {
@@ -300,6 +301,29 @@
       "no_balance_title": "Solde insuffisant",
       "no_balance_body1": "L'onboarding de {onboard_key} a échoué.",
       "no_balance_body2": "Vous avez moins de deux Coins sur votre compte, vous ne pouvez donc pas onboarder d'autres comptes."
+    },
+    "vouch": {
+      "title": "Se porter garant d'un compte",
+      "receiver": "Compte à garantir",
+      "receiver_placeholder": "Saisir l'adresse du compte (0x...)",
+      "vouch_limit": "Limite de garantie",
+      "sender": "Expéditeur",
+      "btn_vouch": "Garantir",
+      "await": "Traitement en cours...",
+      "success": "Compte garanti avec succès !",
+      "invalid_address": "Veuillez saisir une adresse de compte valide",
+      "limit_reached": "Vous avez atteint votre limite de garanties pour cette époque.",
+      "important_info": "Informations importantes",
+      "info_relationship": "La garantie crée une relation publique sur la blockchain entre les comptes.",
+      "info_selective": "Soyez sélectif sur les comptes que vous garantissez, car cela affecte votre réputation.",
+      "info_irreversible": "Les transactions de garantie ne peuvent pas être annulées.",
+      "info_limit": "Chaque compte dispose d'un nombre limité de garanties par époque.",
+      "refresh_tooltip": "Actualiser les limites de garantie",
+      "view_current_vouches": "Voir vos garanties actuelles",
+      "loading_vouched_accounts": "Chargement des comptes garantis...",
+      "no_vouched_accounts": "Vous n'avez encore garanti aucun compte.",
+      "accounts_vouched_for": "Comptes que vous avez garantis :",
+      "refresh_vouched_accounts": "Actualiser les comptes garantis"
     },
     "set_wallet_type": {
       "actions_title": "Actions du compte",
