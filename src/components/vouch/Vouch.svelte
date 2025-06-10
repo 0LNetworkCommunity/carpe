@@ -27,6 +27,9 @@
 
   let vouchedAccounts: string[] = []
   let isLoadingVouchedAccounts = false
+  
+  // Validation for the receiver address
+  $: isReceiverValid = account && receiver && re.test(receiver) && receiver != account.account
 
   onMount(async () => {
     unsubs = signingAccount.subscribe((obj) => {
@@ -79,8 +82,6 @@
       vouchLimit = await invoke('get_vouch_limit', {
         account: account.account
       })
-      
-      console.log(`Vouch limit: ${vouchLimit}`)
     } catch (error) {
       console.error('Error fetching vouch data:', error)
     } finally {
@@ -96,7 +97,7 @@
   
   // Handle vouch transaction
   async function submitVouch() {
-    if (!account || !receiver) {
+    if (!account || !receiver || !isReceiverValid) {
       errorMessage = $_('txs.vouch.invalid_address')
       return
     }
