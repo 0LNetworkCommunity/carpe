@@ -28,9 +28,6 @@
   let vouchedAccounts: string[] = []
   let isLoadingVouchedAccounts = false
 
-  // Validation for the receiver address
-  $: isReceiverValid = receiver ? re.test(receiver.replace(/^0x/, '')) : true
-
   onMount(async () => {
     unsubs = signingAccount.subscribe((obj) => {
       account = obj

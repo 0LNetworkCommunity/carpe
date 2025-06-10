@@ -42,7 +42,6 @@ pub async fn coin_transfer(
 pub async fn vouch_transaction(
   _sender: AccountAddress,
   receiver: &str,
-  _legacy: bool,
 ) -> Result<(), CarpeError> {
   let receiver_account = match AccountAddress::from_str(receiver) {
     Ok(a) => a,
