@@ -48,6 +48,7 @@
     import { isLoading } from 'svelte-i18n'
     import { isBooted } from './modules/boot'
     import SplashScreen from './components/layout/SplashScreen.svelte'
+    import Vouch from './components/vouch/Vouch.svelte'
 
   // black magic with I18n here
   // temporarily set up here otherwise... issues
@@ -147,7 +148,7 @@
         <Route path={routes.settings} component={Settings} primary={false} />
         <Route path={routes.about} component={About} primary={false} />
         <Route path={routes.makeWhole} component={MakeWhole} primary={false} />
-
+        <Route path={routes.vouch} component={Vouch} primary={false} />
         <!-- DEV -->
         <Route path={routes.developer} component={DevMode} primary={false} />
       </div>

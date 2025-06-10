@@ -3,6 +3,7 @@
     "wallet": "钱包",
     "miner": "矿工",
     "transactions": "交易",
+    "vouch": "担保",
     "events": "事件"
   },
   "layout": {
@@ -325,6 +326,29 @@
       "community_confirm": "确认设为社区钱包？这不可逆",
       "title": "设置你的账户类型",
       "slow_confirm": "设为慢钱包"
+    },
+    "vouch": {
+      "title": "为账户担保",
+      "receiver": "被担保账户",
+      "receiver_placeholder": "输入账户地址 (0x...)",
+      "vouch_limit": "担保限制",
+      "sender": "发送者",
+      "btn_vouch": "担保",
+      "await": "处理中...",
+      "success": "成功为账户担保！",
+      "invalid_address": "请输入有效的账户地址",
+      "limit_reached": "您已达到此纪元的担保限制。",
+      "important_info": "重要信息",
+      "info_relationship": "担保会在账户之间建立公开的链上关系。",
+      "info_selective": "请谨慎选择担保对象，这将影响您的声誉。",
+      "info_irreversible": "担保交易无法撤销。",
+      "info_limit": "每个账户在每个纪元中的担保次数有限。",
+      "refresh_tooltip": "刷新担保限制",
+      "view_current_vouches": "查看您当前的担保",
+      "loading_vouched_accounts": "正在加载担保账户...",
+      "no_vouched_accounts": "您尚未为任何账户担保。",
+      "accounts_vouched_for": "您已担保的账户：",
+      "refresh_vouched_accounts": "刷新担保账户"
     },
     "transfer": {
       "title": "代币转账",

@@ -17,7 +17,8 @@
     routes.keygen,
     routes.accountFromMnem,
     routes.addWatchAccount,
-    routes.accountDetails
+    routes.accountDetails,
+    routes.vouch
   ]
 
   const location_store = useLocation()
@@ -41,6 +42,9 @@
           </li>
           <li class="uk-padding {$location_store.pathname.includes('transfer') ? 'uk-active' : ''}">
             <Link to={watchOnly ? routes.wallet : routes.transfer}>{$_('nav.transactions')}</Link>
+          </li>
+          <li class="uk-padding {$location_store.pathname.includes('vouch') ? 'uk-active' : ''}">
+            <Link to={watchOnly ? routes.wallet : routes.vouch}>{$_('nav.vouch')}</Link>
           </li>
         </ul>
       </div>
