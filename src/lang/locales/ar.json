@@ -318,7 +318,12 @@
       "info_selective": "Be selective about who you vouch for, as it affects your reputation.",
       "info_irreversible": "Vouch transactions cannot be reversed.",
       "info_limit": "Each account has a limited number of vouches per epoch.",
-      "refresh_tooltip": "Refresh vouching limits"
+      "refresh_tooltip": "Refresh vouching limits",
+      "view_current_vouches": "عرض الضمانات الحالية",
+      "loading_vouched_accounts": "جاري تحميل الحسابات المضمونة...",
+      "no_vouched_accounts": "لم تقم بضمان أي حسابات حتى الآن.",
+      "accounts_vouched_for": "الحسابات التي قمت بضمانها:",
+      "refresh_vouched_accounts": "تحديث الحسابات المضمونة"
     },
     "set_wallet_type": {
       "actions_title": "Account Actions",

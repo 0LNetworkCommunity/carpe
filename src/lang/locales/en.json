@@ -343,7 +343,12 @@
       "info_selective": "Be selective about who you vouch for, as it affects your reputation.",
       "info_irreversible": "Vouch transactions cannot be reversed.",
       "info_limit": "Each account has a limited number of vouches per epoch.",
-      "refresh_tooltip": "Refresh vouching limits"
+      "refresh_tooltip": "Refresh vouching limits",
+      "view_current_vouches": "View Your Current Vouches",
+      "loading_vouched_accounts": "Loading vouched accounts...",
+      "no_vouched_accounts": "You haven't vouched for any accounts yet.",
+      "accounts_vouched_for": "Accounts you've vouched for:",
+      "refresh_vouched_accounts": "Refresh vouched accounts"
     },
     "transfer": {
       "title": "Coin Transfer",

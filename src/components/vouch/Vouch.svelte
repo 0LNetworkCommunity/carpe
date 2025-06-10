@@ -57,8 +57,6 @@
       vouchedAccounts = await invoke('get_given_vouches', {
         account: account.account
       })
-      
-      console.log(`Fetched ${vouchedAccounts.length} vouched accounts`)
     } catch (error) {
       console.error('Error fetching vouched accounts:', error)
     } finally {
@@ -102,7 +100,7 @@
   // Handle vouch transaction
   async function submitVouch() {
     if (!account || !receiver) {
-      errorMessage = "Please enter a receiver address"
+      errorMessage = $_('txs.vouch.invalid_address')
       return
     }
     
@@ -126,7 +124,7 @@
       refreshAccounts()
     } catch (e) {
       console.error("Vouch failed:", e)
-      errorMessage = "Vouch transaction failed. Check the address for recipient or your vouch limit."
+      errorMessage = $_('txs.vouch.invalid_address')
       raise_error(e, true, "vouch_transaction")
     } finally {
       waitingTxs = false
@@ -191,11 +189,11 @@
           class="uk-input {!isReceiverValid && receiver ? 'uk-form-danger' : ''}"
           type="text"
           bind:value={receiver}
-          placeholder="Enter account address (0x...)"
+          placeholder={$_('txs.vouch.receiver_placeholder')}
           disabled={watchOnly || waitingTxs || vouchLimit <= 0}
         />
         {#if !isReceiverValid && receiver}
-          <p class="uk-text-danger uk-text-small">Please enter a valid account address</p>
+          <p class="uk-text-danger uk-text-small">{$_('txs.vouch.invalid_address')}</p>
         {/if}
       </div>
     </div>
@@ -215,7 +213,7 @@
       
       {#if vouchLimit <= 0}
         <p class="uk-text-warning uk-text-small">
-          You've reached your vouch limit for this epoch.
+          {$_('txs.vouch.limit_reached')}
         </p>
       {/if}
     </div>
@@ -227,7 +225,7 @@
     {/if}
     <div class="uk-margin-top">
   <button class="uk-button uk-button-default uk-width-1-1 uk-flex uk-flex-between uk-flex-middle" type="button" uk-toggle="target: #vouched-accounts">
-    <span>View Your Current Vouches ({vouchedAccounts.length})</span>
+    <span>{$_('txs.vouch.view_current_vouches')} ({vouchedAccounts.length})</span>
     <span uk-icon="icon: chevron-down"></span>
   </button>
   
@@ -236,16 +234,16 @@
       {#if isLoadingVouchedAccounts}
         <div class="uk-flex uk-flex-center uk-margin">
           <div uk-spinner="ratio: 0.8"></div>
-          <span class="uk-margin-small-left">Loading vouched accounts...</span>
+          <span class="uk-margin-small-left">{$_('txs.vouch.loading_vouched_accounts')}</span>
         </div>
       {:else if vouchedAccounts.length === 0}
-        <p class="uk-text-center uk-text-muted">You haven't vouched for any accounts yet.</p>
+        <p class="uk-text-center uk-text-muted">{$_('txs.vouch.no_vouched_accounts')}</p>
       {:else}
         <div class="uk-flex uk-flex-between uk-margin-small-bottom">
-          <span>Accounts you've vouched for:</span>
+          <span>{$_('txs.vouch.accounts_vouched_for')}</span>
           <button 
             class="uk-button uk-button-small uk-button-text"
-            uk-tooltip="Refresh vouched accounts" 
+            uk-tooltip={$_('txs.vouch.refresh_vouched_accounts')} 
             on:click={fetchVouchedAccounts}
             disabled={isLoadingVouchedAccounts}>
             <span uk-icon="icon: refresh; ratio: 0.7"></span>
@@ -266,11 +264,11 @@
   </div>
 </div>
     <div class="uk-margin-top uk-text-meta">
-      <h4>Important Information</h4>
+      <h4>{$_('txs.vouch.important_info')}</h4>
       <ul class="uk-list uk-list-bullet">
-        <li>Vouching creates a public on-chain relationship between accounts.</li>
-        <li>Be selective about who you vouch for, as it affects your reputation.</li>
-        <li>Each account has a limited number of vouches per epoch.</li>
+        <li>{$_('txs.vouch.info_relationship')}</li>
+        <li>{$_('txs.vouch.info_selective')}</li>
+        <li>{$_('txs.vouch.info_limit')}</li>
       </ul>
     </div>
   </div>

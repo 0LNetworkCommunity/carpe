@@ -343,7 +343,12 @@
       "info_selective": "请谨慎选择担保对象，这将影响您的声誉。",
       "info_irreversible": "担保交易无法撤销。",
       "info_limit": "每个账户在每个纪元中的担保次数有限。",
-      "refresh_tooltip": "刷新担保限制"
+      "refresh_tooltip": "刷新担保限制",
+      "view_current_vouches": "查看您当前的担保",
+      "loading_vouched_accounts": "正在加载担保账户...",
+      "no_vouched_accounts": "您尚未为任何账户担保。",
+      "accounts_vouched_for": "您已担保的账户：",
+      "refresh_vouched_accounts": "刷新担保账户"
     },
     "transfer": {
       "title": "代币转账",

@@ -359,7 +359,12 @@
       "info_selective": "Be selective about who you vouch for, as it affects your reputation.",
       "info_irreversible": "Vouch transactions cannot be reversed.",
       "info_limit": "Each account has a limited number of vouches per epoch.",
-      "refresh_tooltip": "Refresh vouching limits"
+      "refresh_tooltip": "Refresh vouching limits",
+      "view_current_vouches": "Ver tus avales actuales",
+      "loading_vouched_accounts": "Cargando cuentas avaladas...",
+      "no_vouched_accounts": "Aún no has avalado ninguna cuenta.",
+      "accounts_vouched_for": "Cuentas que has avalado:",
+      "refresh_vouched_accounts": "Actualizar cuentas avaladas"
     }
   },
   "events": {

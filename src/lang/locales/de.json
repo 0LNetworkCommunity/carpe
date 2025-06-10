@@ -318,7 +318,12 @@
       "info_selective": "Seien Sie selektiv, für wen Sie bürgen, da es Ihren Ruf beeinflusst.",
       "info_irreversible": "Bürgschaftstransaktionen können nicht rückgängig gemacht werden.",
       "info_limit": "Jedes Konto hat eine begrenzte Anzahl an Bürgschaften pro Epoche.",
-      "refresh_tooltip": "Bürgschaftslimits aktualisieren"
+      "refresh_tooltip": "Bürgschaftslimits aktualisieren",
+      "view_current_vouches": "Ihre aktuellen Bürgschaften anzeigen",
+      "loading_vouched_accounts": "Verbürgte Konten werden geladen...",
+      "no_vouched_accounts": "Sie haben noch für keine Konten gebürgt.",
+      "accounts_vouched_for": "Konten, für die Sie gebürgt haben:",
+      "refresh_vouched_accounts": "Verbürgte Konten aktualisieren"
     },
     "set_wallet_type": {
       "actions_title": "Kontohandlungen",

@@ -301,7 +301,12 @@
       "info_selective": "Seja seletivo sobre quem você garante, pois isso afeta sua reputação.",
       "info_irreversible": "Transações de garantia não podem ser revertidas.",
       "info_limit": "Cada conta tem um número limitado de garantias por época.",
-      "refresh_tooltip": "Atualizar limites de garantia"
+      "refresh_tooltip": "Atualizar limites de garantia",
+      "view_current_vouches": "Ver Suas Garantias Atuais",
+      "loading_vouched_accounts": "Carregando contas garantidas...",
+      "no_vouched_accounts": "Você ainda não garantiu nenhuma conta.",
+      "accounts_vouched_for": "Contas que você garantiu:",
+      "refresh_vouched_accounts": "Atualizar contas garantidas"
     },
     "set_wallet_type": {
       "actions_title": "Ações da Conta",

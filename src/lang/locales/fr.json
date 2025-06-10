@@ -318,7 +318,12 @@
       "info_selective": "Soyez sélectif sur les comptes que vous garantissez, car cela affecte votre réputation.",
       "info_irreversible": "Les transactions de garantie ne peuvent pas être annulées.",
       "info_limit": "Chaque compte dispose d'un nombre limité de garanties par époque.",
-      "refresh_tooltip": "Actualiser les limites de garantie"
+      "refresh_tooltip": "Actualiser les limites de garantie",
+      "view_current_vouches": "Voir vos garanties actuelles",
+      "loading_vouched_accounts": "Chargement des comptes garantis...",
+      "no_vouched_accounts": "Vous n'avez encore garanti aucun compte.",
+      "accounts_vouched_for": "Comptes que vous avez garantis :",
+      "refresh_vouched_accounts": "Actualiser les comptes garantis"
     },
     "set_wallet_type": {
       "actions_title": "Actions du compte",
