@@ -302,6 +302,24 @@
       "no_balance_body1": "Onboarding {onboard_key} was not successful.",
       "no_balance_body2": "Looks like you have less than 2 coins in your account, this means you won't be able to onboard anyone."
     },
+    "vouch": {
+      "title": "Vouch for an Account",
+      "receiver": "Account to Vouch For",
+      "receiver_placeholder": "Enter account address (0x...)",
+      "vouch_limit": "Vouch Limit",
+      "sender": "Sender",
+      "btn_vouch": "Vouch",
+      "await": "Processing...",
+      "success": "Successfully vouched for the account!",
+      "invalid_address": "Please enter a valid account address",
+      "limit_reached": "You've reached your vouch limit for this epoch.",
+      "important_info": "Important Information",
+      "info_relationship": "Vouching creates a public on-chain relationship between accounts.",
+      "info_selective": "Be selective about who you vouch for, as it affects your reputation.",
+      "info_irreversible": "Vouch transactions cannot be reversed.",
+      "info_limit": "Each account has a limited number of vouches per epoch.",
+      "refresh_tooltip": "Refresh vouching limits"
+    },
     "set_wallet_type": {
       "actions_title": "Account Actions",
       "set_slow_title": "Make Slow Wallet (danger)",

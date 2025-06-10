@@ -344,6 +344,22 @@
       "error_account_does_not_exist": "Recipient account does not exist.",
       "success": "Transfer executed with success",
       "failed": "Transfer failed. Code: {code}"
+    },
+    "vouch": {
+      "title": "Vouch for an Account",
+      "sender": "From Account",
+      "receiver": "Account to Vouch For",
+      "await": "Await transaction",
+      "vouch_limit": "Vouch Limit",
+      "btn_vouch": "Vouch",
+      "success": "Successfully vouched for the account!",
+      "important_info": "Important Information",
+      "limit_reached": "You've reached your vouch limit for this epoch.",
+      "info_relationship": "Vouching creates a public on-chain relationship between accounts.",
+      "info_selective": "Be selective about who you vouch for, as it affects your reputation.",
+      "info_irreversible": "Vouch transactions cannot be reversed.",
+      "info_limit": "Each account has a limited number of vouches per epoch.",
+      "refresh_tooltip": "Refresh vouching limits"
     }
   },
   "events": {

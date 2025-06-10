@@ -302,6 +302,24 @@
       "no_balance_body1": "Onboarding {onboard_key} was not successful.",
       "no_balance_body2": "Looks like you have less than 2 coins in your account, this means you won't be able to onboard anyone."
     },
+    "vouch": {
+      "title": "Garantire un Account",
+      "receiver": "Account da garantire",
+      "receiver_placeholder": "Inserisci indirizzo account (0x...)",
+      "vouch_limit": "Limite di garanzia",
+      "sender": "Mittente",
+      "btn_vouch": "Garantisci",
+      "await": "Elaborazione...",
+      "success": "Account garantito con successo!",
+      "invalid_address": "Per favore inserisci un indirizzo account valido",
+      "limit_reached": "Hai raggiunto il tuo limite di garanzie per questa epoca.",
+      "important_info": "Informazioni Importanti",
+      "info_relationship": "La garanzia crea una relazione pubblica on-chain tra gli account.",
+      "info_selective": "Sii selettivo su chi garantisci, poiché influisce sulla tua reputazione.",
+      "info_irreversible": "Le transazioni di garanzia non possono essere annullate.",
+      "info_limit": "Ogni account ha un numero limitato di garanzie per epoca.",
+      "refresh_tooltip": "Aggiorna limiti di garanzia"
+    },
     "set_wallet_type": {
       "actions_title": "Azioni dell'account",
       "set_slow_title": "Rendere il portafoglio lento (pericoloso)",
