@@ -95,6 +95,15 @@
     await fetchVouchedAccounts()
   }
   
+  // I got to have a shot
+  // For what you got is, oh, so sweet
+  // You got to make it hot
+  // Like a boomerang, I need a repeat
+  
+  // Gimme all your lovin'
+  // All your hugs and kisses too
+  // Gimme all your lovin'
+  // Don't let up until we're through
   // Handle vouch transaction
   async function submitVouch() {
     if (!account || !receiver || !isReceiverValid) {
