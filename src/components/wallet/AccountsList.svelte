@@ -12,7 +12,10 @@
   import { navigate } from 'svelte-navigator'; // Adjust based on your routing library
   import MigrationStatus from './MigrationStatus.svelte'
   import VouchScoreStatus from './VouchScoreStatus.svelte'
-
+  import { invoke } from '@tauri-apps/api/tauri';
+  import { notify_success } from '../../modules/carpeNotify';
+  import { raise_error } from '../../modules/carpeError';
+  
   UIkit.use(Icons)
 
   let showNoteColumn = false
@@ -103,6 +106,33 @@
     return $_('wallet.account_list.account_on_chain');
   }
 
+  // Function to refresh account data
+  async function refreshAccounts() {
+    try {
+      // Refresh the accounts data
+      await invoke('refresh_accounts');
+    } catch (e) {
+      console.error("Failed to refresh accounts:", e);
+    }
+  }
+  
+  // Handle rejoin functionality when triggered by MigrationStatus component
+  async function handleRejoin(event) {
+    const { success, error } = event.detail;
+    
+    if (success) {
+      // Show success notification
+      notify_success($_('wallet.account_list.rejoin_success'));
+      
+      // Refresh accounts list after operation completes
+      await refreshAccounts();
+    } else {
+      // Handle error
+      console.error("Rejoin failed:", error);
+      raise_error(error, true, "rejoin_transaction");
+    }
+  }
+
 </script>
 
 <main>
@@ -181,7 +211,10 @@
                 </span>
                 <div class="status-indicators">
                     <span class="migration-status-wrapper">
-                      <MigrationStatus account={a.account} />
+                      <MigrationStatus 
+                        account={a.account} 
+                        on:rejoin={handleRejoin}
+                      />
                     </span>
                     <span class="vouch-score-wrapper">
                       <VouchScoreStatus account={a.account} />

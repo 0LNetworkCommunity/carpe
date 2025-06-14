@@ -9,11 +9,25 @@
   let isLoading = true;
   let isFounder = false;
   let error = null;
-  let errorDetails = null;
+  let previousAccount = null;
 
-  function showErrorDetails() {
-    console.log("Error details:", errorDetails);
-    alert(`Error: ${error}\n\nDetails: ${errorDetails}`);
+  // Watch for changes to the account prop and refresh status when it changes
+  $: if (account && account !== previousAccount) {
+    previousAccount = account;
+    refreshStatus();
+  }
+  
+  // Function to refresh all statuses
+  async function refreshStatus() {
+    if (account) {
+      isLoading = true;
+      error = null;
+      await Promise.all([
+        checkMigrationStatus(),
+        checkFounderStatus(),
+        checkVouchScoreStatus()
+      ]);
+    }
   }
 
   async function checkFounderStatus() {
@@ -22,7 +36,6 @@
     try {
       isLoading = true;
       error = null;
-      errorDetails = null;
       console.log("Checking if account is founder:", account);
       
       isFounder = await invoke('is_founder', { account });
@@ -37,7 +50,6 @@
       }
     } catch (e) {
       error = "Failed to check founder status";
-      errorDetails = JSON.stringify(e, null, 2);
       console.error("Error checking founder status:", e);
       isLoading = false;
     }
@@ -51,7 +63,6 @@
       console.log("Migration status result:", isMigrated);
     } catch (e) {
       error = "Failed to check migration status";
-      errorDetails = JSON.stringify(e, null, 2);
       console.error("Error checking migration status:", e);
     } finally {
       isLoading = false;
@@ -72,7 +83,6 @@
       } else {
         // For other unexpected errors
         error = "Failed to check vouch score";
-        errorDetails = JSON.stringify(e, null, 2);
         console.error("Error checking vouch score:", e);
       }
     } finally {
@@ -82,8 +92,7 @@
 
   onMount(() => {
     if (account) {
-      checkMigrationStatus();
-      checkFounderStatus();
+      refreshStatus();
     }
   });
 </script>
@@ -93,9 +102,8 @@
 {:else if error}
   <button 
     class="icon-button" 
-    aria-label="Show error details" 
-    uk-tooltip="Click for details"
-    on:click={showErrorDetails}>
+    aria-label="Invalid vouch score" 
+    uk-tooltip="Invalid vouch score">
     <span uk-icon="icon: question" style="color: grey;"></span>
   </button>
 {:else if !isMigrated && !isFounder}

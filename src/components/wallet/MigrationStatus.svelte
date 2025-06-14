@@ -1,18 +1,82 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, createEventDispatcher } from 'svelte';
   import { invoke } from '@tauri-apps/api/tauri';
   
   export let account;
+  export let isMigrated = null;
+  export let isFounder = false;
   
-  let isMigrated = null;
+  const dispatch = createEventDispatcher();
+  
   let isLoading = true;
-  let isFounder = false;
   let error = null;
-  let errorDetails = null;
-
-  function showErrorDetails() {
-    console.log("Error details:", errorDetails);
-    alert(`Error: ${error}\n\nDetails: ${errorDetails}`);
+  let previousAccount = null;
+  
+  // Watch for changes to the account prop and refresh status when it changes
+  $: if (account && account !== previousAccount) {
+    previousAccount = account;
+    refreshStatus();
+  }
+  
+  // Function to refresh both statuses
+  async function refreshStatus() {
+    if (account) {
+      isLoading = true;
+      error = null;
+      try {
+        await Promise.all([
+          checkMigrationStatus(),
+          checkFounderStatus()
+        ]);
+      } catch (e) {
+        console.error("Error refreshing status:", e);
+      } finally {
+        // Make sure loading state is reset regardless of success or failure
+        isLoading = false;
+      }
+    }
+  }
+  
+  // Function to directly call the rejoin_transaction function and notify parent
+  async function handleRejoin(event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    
+    try {
+      // Show loading state while processing
+      isLoading = true;
+      
+      // Call the rejoin_transaction Tauri function directly
+      await invoke('rejoin_transaction', { sender: account });
+      
+      // Wait a moment for the blockchain to process the transaction
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Refresh status checks after successful rejoin
+      await checkMigrationStatus();
+      await checkFounderStatus();
+      
+      // Notify parent component of successful rejoin
+      dispatch('rejoin', { 
+        account,
+        success: true 
+      });
+      
+      // Ensure loading state is explicitly reset after successful operation
+      isLoading = false;
+    } catch (e) {
+      console.error("Rejoin failed:", e);
+      // Ensure loading state is reset even on error
+      isLoading = false;
+      
+      // Notify parent component of failed rejoin
+      dispatch('rejoin', { 
+        account,
+        success: false,
+        error: e 
+      });
+    }
   }
 
   async function checkFounderStatus() {
@@ -21,14 +85,15 @@
     try {
       isLoading = true;
       error = null;
-      errorDetails = null;
       console.log("Checking if account is founder:", account);
       
       isFounder = await invoke('is_founder', { account });
       console.log("Is founder result:", isFounder);
     } catch (e) {
+      // When there's an error checking founder status, assume it's a founder
+      // This will show the rejoin button when there are errors
+      isFounder = true;
       error = "Failed to check founder status";
-      errorDetails = JSON.stringify(e, null, 2);
       console.error("Error checking founder status:", e);
       isLoading = false;
     }
@@ -41,8 +106,10 @@
       isMigrated = await invoke('check_account_migration_status', { account });
       console.log("Migration status result:", isMigrated);
     } catch (e) {
+      // When there's an error checking migration status, assume it's not migrated
+      // This will show the rejoin button when there are errors
+      isMigrated = false;
       error = "Failed to check migration status";
-      errorDetails = JSON.stringify(e, null, 2);
       console.error("Error checking migration status:", e);
     } finally {
       isLoading = false;
@@ -51,25 +118,23 @@
 
   onMount(() => {
     if (account) {
-      checkMigrationStatus();
-      checkFounderStatus();
+      refreshStatus();
     }
   });
 </script>
 
 {#if isLoading}
   <span uk-spinner="ratio: 0.5" class="status-spinner"></span>
-{:else if error}
+{:else if error || (!isMigrated && isFounder)}
+  <!-- Show rejoin button when there's an error OR for non-migrated founder accounts -->
   <button 
-    class="icon-button" 
-    aria-label="Show error details" 
-    uk-tooltip="Click for details"
-    on:click={showErrorDetails}>
-    <span uk-icon="icon: question" style="color: grey;"></span>
+    class="rejoin-button" 
+    on:click|stopPropagation={e => handleRejoin(e)}
+    uk-tooltip="Migrate this account to v8">
+    <span uk-icon="icon: refresh" class="rejoin-icon"></span>
   </button>
-{:else if !isMigrated}
-  <!-- Don't show anything if not migrated -->
-{:else if isFounder}
+<!-- Removed redundant condition since it's merged with the error case above -->
+{:else if isMigrated}
   <span 
     uk-icon="icon: check" 
     style="color: green;" 
@@ -77,12 +142,7 @@
     title="Account migrated to v8">
   </span>
 {:else}
-  <span 
-    uk-icon="icon: warning" 
-    style="color: orange;" 
-    uk-tooltip="Account not migrated to v8"
-    title="Account not migrated to v8">
-  </span>
+  <!-- Don't show anything for non-founder accounts that aren't migrated -->
 {/if}
 
 <style>
@@ -91,7 +151,9 @@
     height: 12px;
   }
   
-  .icon-button {
+  /* Removed unused icon-button styles */
+  
+  .rejoin-button {
     background: none;
     border: none;
     padding: 0;
@@ -101,8 +163,11 @@
     justify-content: center;
   }
   
-  .icon-button:focus {
-    outline: 2px solid #007bff;
-    border-radius: 4px;
+  .rejoin-icon {
+    color: #1e87f0;
+  }
+  
+  .rejoin-button:hover .rejoin-icon {
+    color: #0f6ecd;
   }
 </style>
