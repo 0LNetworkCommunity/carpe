@@ -107,9 +107,7 @@ pub async fn rejoin_transaction(_sender: AccountAddress) -> Result<(), CarpeErro
       return Ok(());
     }
     Err(e) => {
-      println!(
-        "Failed to call 0x1::filo_migration::maybe_migrate {}", e
-      );
+      println!("Failed to call 0x1::filo_migration::maybe_migrate {}", e);
       // Continue to try the next path
     }
   }
