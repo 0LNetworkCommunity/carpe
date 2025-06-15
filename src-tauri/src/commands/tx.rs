@@ -88,6 +88,36 @@ pub async fn vouch_transaction(_sender: AccountAddress, receiver: &str) -> Resul
   ))
 }
 
+#[tauri::command(async)]
+pub async fn rejoin_transaction(_sender: AccountAddress) -> Result<(), CarpeError> {
+  let mut config = get_cfg()?;
+  inject_private_key_to_cfg(&mut config, _sender)?;
+
+  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string())).await?;
+
+  match sender
+    .generic(
+      "0x1::filo_migration::maybe_migrate",
+      &None, // No type arguments
+      &None,
+    )
+    .await
+  {
+    Ok(_) => {
+      return Ok(());
+    }
+    Err(e) => {
+      println!("Failed to call 0x1::filo_migration::maybe_migrate {}", e);
+      // Continue to try the next path
+    }
+  }
+
+  // If we get here, all attempts failed
+  Err(CarpeError::misc(
+    "Failed to call vouch function with any known path or argument format",
+  ))
+}
+
 // #[tauri::command(async)]
 // pub async fn claim_make_whole() -> Result<(), CarpeError> {
 //   let tx_payload = stdlib::encode_claim_make_whole_script_function();
