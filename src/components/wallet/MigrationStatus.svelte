@@ -50,9 +50,6 @@
       // Call the rejoin_transaction Tauri function directly
       await invoke('rejoin_transaction', { sender: account });
       
-      // Wait a moment for the blockchain to process the transaction
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
       // Refresh status checks after successful rejoin
       await checkMigrationStatus();
       await checkFounderStatus();
