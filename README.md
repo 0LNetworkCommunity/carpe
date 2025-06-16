@@ -4,10 +4,12 @@ Carpe is a desktop wallet application that connects to the OpenLibra network, en
 
 ## Download the App
 
-Currently, Windows and macOS are supported:
+Currently, Windows, macOS, and Ubuntu are supported:
 
-- **Windows 10+**: [Download Carpe for Windows](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.7/carpe_1.0.7_x64_en-US.msi)
-- **macOS 11+**: [Download Carpe for macOS](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.7/carpe_1.0.7_x64.dmg)
+- **Windows 10+**: [Download Carpe for Windows](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.1.0/carpe_1.1.0_x64_en-US.msi)
+- **macOS 13+**: [Download Carpe for macOS](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.1.0/carpe_1.1.0_x64.dmg)
+
+See other downloads available at [Latest Releases](https://github.com/0LNetworkCommunity/carpe/releases/latest)
 
 ## Getting Started
 
