@@ -1,60 +1,69 @@
-# Developing and Building Carpe with Tauri and Svelte
+# Developing Carpe with Tauri and Svelte
 
-Carpe leverages the power of [Tauri](https://tauri.app/) for building secure, lightweight desktop applications and [Svelte](https://svelte.dev) for creating efficient, reactive web interfaces. The template for Carpe can be found at: https://github.com/jbarszczewski/tauri-svelte-template.
+Carpe leverages the power of [Tauri](https://tauri.app/) for building secure, lightweight desktop applications and [Svelte](https://svelte.dev) for creating efficient, reactive web interfaces. The project template is based on: https://github.com/jbarszczewski/tauri-svelte-template.
 
-## Get Started
+## Prerequisites
 
-To start developing with Carpe, you need to set up your development environment by installing the necessary dependencies and configuring your system.
+Before you begin, ensure you have the following dependencies installed:
 
-### Dependencies
+### Required Software
 
-Ensure you have the following prerequisites installed:
+- **Node.js**: Version 16 or higher - [Download from nodejs.org](https://nodejs.org)
+- **Yarn**: Package manager - Install via npm: `npm install -g yarn`
+- **Rust**: Programming language toolchain - [Install from rustup.rs](https://rustup.rs/)
 
-- **Node.js**: Version 16. Download it from [https://nodejs.org](https://nodejs.org).
-- **Yarn**: A dependency management system. Install it via npm with `npm install -g yarn`.
-- **Rust**: The Rust programming language environment. The specific version of Rust will install automatically, but ensure you have the Rust toolchain by getting it from [https://rustup.rs/](https://rustup.rs/).
+### Environment Setup
 
-Additionally, you'll need to set up your environment for Tauri development:
+- **General Tauri setup**: Follow the [official Tauri setup guide](https://tauri.app/v1/guides/)
+- **Windows users**: See our specific [Windows development environment setup guide](./windows-dev-setup.md)
 
-- Follow the Tauri setup guide: [Setting up your environment](https://tauri.app/v1/guides/).
-- For Windows users, a specific guide is available: [Windows development environment setup](./windows-dev-setup.md).
+## Getting Started
 
-### Installation Steps
+### 1. Install Rust Dependencies
 
-1. **Install Rust Dependencies**: Navigate to the `src-tauri/` directory and build the Rust codebase:
+Navigate to the Tauri source directory and build the Rust backend:
 
-   ```bash
-   cd src-tauri/
-   cargo build
-   ```
+```bash
+cd src-tauri/
+cargo build
+```
 
-2. **Install JavaScript Dependencies**: Return to the project root directory and install the JavaScript dependencies using Yarn:
+### 2. Install JavaScript Dependencies
 
-   ```bash
-   cd ..
-   yarn
-   ```
+Return to the project root and install frontend dependencies:
 
-3. **Start the Development Server**: Launch the development server with:
+```bash
+cd ..
+yarn
+```
 
-   ```bash
-   yarn dev
-   ```
+### 3. Start Development Server
 
-Closing the app window exits the development/debug mode.
+Launch the development environment:
 
-## Building and Running in Production Mode
+```bash
+yarn dev
+```
 
-Compile and package your Carpe application for production with:
+**Note**: Closing the app window will exit development/debug mode.
+
+## Building for Production
+
+To compile and package Carpe for distribution:
 
 ```bash
 yarn build
 ```
 
-This generates an optimized version of your application, including standalone executables and installers, in the `src-tauri/target/release` directory.
+This command generates:
+- Optimized application builds
+- Standalone executables
+- Platform-specific installers
+
+All build artifacts are placed in the `src-tauri/target/release` directory.
 
 ## Additional Resources
 
-- [Tauri Studio](https://tauri.app/): Official Tauri project website with comprehensive documentation.
-- [Svelte](https://svelte.dev): Home of the Svelte framework, with guides, tutorials, and API documentation.
-- [Sveltestrap](https://sveltestrap.js.org): Bootstrap 4 components for Svelte, facilitating quick and responsive UI development.
+- **[Tauri](https://tauri.app/)**: Official Tauri project website with comprehensive documentation
+- **[Svelte](https://svelte.dev)**: Svelte framework home with guides, tutorials, and API documentation
+- **[Sveltestrap](https://sveltestrap.js.org)**: Bootstrap 4 components for Svelte, enabling rapid responsive UI development
