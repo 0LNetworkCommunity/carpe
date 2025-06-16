@@ -55,7 +55,11 @@
       "loading": "loading",
       "account_on_chain": "Account Not On Chain",
       "message": "Your balance will go down for every transaction you send, including mining.",
-      "info_title": "Account Info"
+      "info_title": "Account Info",
+      "rejoin": "Re-join",
+      "rejoin_tooltip": "Migrate this account to v8 network",
+      "rejoin_success": "Account successfully rejoined to v8 network",
+      "rejoin_processing": "Migration in progress..."
     },
     "account_details": {
       "title": "Account Details"
