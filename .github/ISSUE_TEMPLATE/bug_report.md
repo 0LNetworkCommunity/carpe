@@ -6,31 +6,41 @@ labels: bug
 assignees: ''
 ---
 
-# 🐛 Bug
+# 🐛 Bug Report
 
-<!-- A clear and concise description of what the bug is. -->
+**Describe the bug**
+A clear and concise description of what the bug is.
 
-## To reproduce
+## Steps to Reproduce
 
-**Steps to reproduce**
+**Reproduction steps:**
+1. Go to '...'
+2. Click on '....'
+3. Scroll down to '....'
+4. See error
 
-**Print screen or Debug/Console error message**
+**Screenshots or Console Output**
+If applicable, add screenshots or paste console/debug error messages:
 
 ```
-// Paste the output here
+// Paste the console output or error message here
 ```
 
 ## Expected Behavior
 
-<!-- A clear and concise description of what you expected to happen. -->
+A clear and concise description of what you expected to happen.
 
-## System information
+## System Information
 
-**Please complete the following information:**
+**Please provide the following information:**
 
-- <!-- Carpe Version -->
-- <!-- Computer OS -->
+- **Carpe Version**: [e.g., v1.0.7]
+- **Operating System**: [e.g., Windows 11, macOS 12.0, Ubuntu 20.04]
+- **Additional details**: [Any other relevant system information]
 
-## Additional context
+## Additional Context
 
-Add any other context about the problem here.
+Add any other context about the problem here, such as:
+- When did this issue start occurring?
+- Does it happen consistently or intermittently?
+- Any recent changes to your system or setup?
