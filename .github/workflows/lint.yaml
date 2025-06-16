@@ -38,10 +38,6 @@ jobs:
   rust-lint:
     runs-on: macos-latest
     steps:
-      # - uses: awalsh128/cache-apt-pkgs-action@latest
-      #   with:
-      #     packages: build-essential lld pkg-config libclang-dev libwebkit2gtk-4.0-dev libglib2.0-* libssl-dev libgtk-3-dev libappindicator3-dev patchelf librsvg2-dev libvips-dev libgmp-dev
-      #     version: 1.0
       - name: checkout sources
         uses: actions/checkout@v4.1.1
         with:

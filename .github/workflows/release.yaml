@@ -34,11 +34,9 @@ jobs:
         uses: actions/setup-node@v4.0.2
         with:
           node-version: 18
-
       - name: install dependencies (ubuntu only)
         if: matrix.os == 'ubuntu-22.04'
         run: sudo apt-get update && sudo apt-get install -y lld libsoup2.4-dev libgdk3.0-cil-dev libjavascriptcoregtk-4.0-dev libwebkit2gtk-4.0-dev
-
 
       - name: install dependencies (windows only)
         if: matrix.os == 'windows-latest'
@@ -51,15 +49,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
 
-      # # Package the windows dependencies
-      # - name: copy gmp.dll for build
-      #   if: matrix.os == 'windows-latest'
-      #   run: |
-      #     $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
-      #     Copy-Item ('${{ github.workspace }}' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
-
       ########  CACHE  ########
-
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: ./src-tauri
@@ -67,10 +57,8 @@ jobs:
           cache-on-failure: true
 
       ########  BUILD  ########
-
       - name: yarn installation
         run: yarn install
-
       - name: pre-build rust
         working-directory: ./src-tauri
         run: cargo b --release
