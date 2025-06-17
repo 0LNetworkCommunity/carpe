@@ -3,6 +3,7 @@ import { invoke } from '@tauri-apps/api/tauri'
 import { raise_error, type CarpeError, logger, Level } from './carpeError'
 import { responses } from './debug'
 import { isTowerNewbie, minerLoopEnabled, resetTowerStatus } from './miner'
+import { _ } from '../lang/i18n'
 
 import { notify_success, notify_error } from './carpeNotify'
 import {
@@ -362,6 +363,24 @@ export const isLegacy = async (): Promise<boolean> => {
     })
     .catch((e: CarpeError) => {
       raise_error(e, true, 'has_legacy_configs')
+      return false
+    })
+}
+
+export const tryMigrateConfigFilename = async () => {
+  logger(Level.Warn, 'trying to migrate config filename from v7 to v8')
+  return invoke('migrate_config_filename', {})
+    .then((migrated: boolean) => {
+      if (migrated) {
+        logger(Level.Info, 'Successfully migrated config filename from v7 to v8')
+        notify_success(get(_)('wallet.migration.config_success'))
+      } else {
+        logger(Level.Info, 'Config filename migration not needed or skipped')
+      }
+      return migrated
+    })
+    .catch((e: CarpeError) => {
+      raise_error(e, false, 'migrate_config_filename')
       return false
     })
 }

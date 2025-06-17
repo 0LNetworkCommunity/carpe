@@ -5,6 +5,7 @@ import {
   refreshAccounts,
   isLegacy,
   getAccounts,
+  tryMigrateConfigFilename,
 } from './accountActions'
 import { Level, logger } from './carpeError'
 import { getEnv } from './debug'
@@ -20,6 +21,9 @@ export const bootUp = async () => {
   logger(Level.Warn, 'webview is starting')
   await getEnv() // load env var
   getVersion() // git commit and version
+
+  // First check for config filename migration from v7 to v8
+  await tryMigrateConfigFilename()
 
   // try to migrate carpe files from v5-6 to v7
   // tryMigrate()

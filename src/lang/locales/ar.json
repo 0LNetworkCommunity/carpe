@@ -60,6 +60,9 @@
     "account_details": {
       "title": "Account Details"
     },
+    "migration": {
+      "config_success": "تم ترحيل التكوين بنجاح من الإصدار السابق"
+    },
     "remove_account": {
       "btn": "Remove Account",
       "modal": {

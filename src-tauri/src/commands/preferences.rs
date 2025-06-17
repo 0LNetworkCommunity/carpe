@@ -133,3 +133,22 @@ pub async fn has_legacy_configs() -> bool {
   }
   false
 }
+
+#[tauri::command(async)]
+pub async fn migrate_config_filename() -> Result<bool, CarpeError> {
+  warn!("attempting config filename migration from v7 to v8");
+  match migrate::maybe_migrate_config_filename().await {
+    Ok(migrated) => {
+      if migrated {
+        info!("config filename migration success");
+      } else {
+        info!("config filename migration not needed or skipped");
+      }
+      Ok(migrated)
+    }
+    Err(e) => {
+      error!("config filename migration error {:?}", e);
+      Err(CarpeError::from(e))
+    }
+  }
+}
