@@ -2,15 +2,16 @@ use crate::configs;
 use anyhow::bail;
 use libra_types::core_types::network_playlist;
 use libra_types::core_types::{
-  app_cfg::{get_nickname, Profile},
+  app_cfg::{get_nickname, Profile, CONFIG_FILE_NAME},
   network_playlist::NetworkPlaylist,
 };
 use libra_types::exports::{
   AccountAddress, AuthenticationKey, NamedChain, ValidCryptoMaterialStringExt,
 };
 use libra_types::move_resource::gas_coin::SlowWalletBalance;
-use log::info;
+use log::{info, warn};
 use serde::{Deserialize, Deserializer};
+use std::fs;
 use std::path::Path;
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
@@ -119,6 +120,55 @@ pub fn backup_legacy_dir() -> anyhow::Result<()> {
     &backup_path.display()
   );
   Ok(())
+}
+
+/// Migrates config from v7 to v8 by checking for old config file name (libra.yaml)
+/// and renaming it to the new name (libra-cli-config.yaml)
+pub async fn maybe_migrate_config_filename() -> anyhow::Result<bool> {
+  let config_dir = configs::default_config_path();
+  let old_config_name = "libra.yaml";
+  let old_config_path = config_dir.join(old_config_name);
+
+  info!(
+    "Checking for old config file: {}",
+    old_config_path.display()
+  );
+
+  if old_config_path.exists() {
+    let new_config_path = config_dir.join(CONFIG_FILE_NAME);
+    info!(
+      "Found old config file. Migrating from {} to {}",
+      old_config_path.display(),
+      new_config_path.display()
+    );
+
+    // Create a backup of the old file
+    let dt = std::time::SystemTime::now();
+    let backup_filename = format!(
+      "libra.yaml.backup_{}",
+      dt.duration_since(std::time::UNIX_EPOCH)?.as_secs()
+    );
+    let backup_path = config_dir.join(backup_filename);
+
+    // Copy the file as a backup
+    fs::copy(&old_config_path, &backup_path)?;
+    info!("Created backup at: {}", backup_path.display());
+
+    // If the new config doesn't exist yet, rename the old one
+    if !new_config_path.exists() {
+      fs::rename(&old_config_path, &new_config_path)?;
+      info!("Renamed old config to new config filename");
+      Ok(true)
+    } else {
+      // Both old and new exist, keep the backup but don't overwrite the new file
+      warn!("Both old and new config files exist. Keeping both and using the new one.");
+      Ok(false)
+    }
+  } else {
+    // No old config found, nothing to migrate
+    info!("No old config file found, no filename migration needed");
+    Ok(false)
+  }
 }
 
 #[test]

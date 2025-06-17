@@ -139,6 +139,7 @@ async fn main() {
       commands::preferences::maybe_migrate,
       commands::preferences::ignore_migrate,
       commands::preferences::has_legacy_configs,
+      commands::preferences::migrate_config_filename,
       commands::preferences::get_env,
       commands::preferences::set_env,
       commands::preferences::set_preferences_locale,

@@ -60,6 +60,9 @@
     "account_details": {
       "title": "Detalhes da Conta"
     },
+    "migration": {
+      "config_success": "Configuração da versão anterior migrada com sucesso"
+    },
     "remove_account": {
       "btn": "Remover Conta",
       "modal": {
