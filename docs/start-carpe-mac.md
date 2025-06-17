@@ -1,14 +1,27 @@
-# Carpe for mac
+# Carpe for macOS
 
-## Download the latest version
+## System Requirements
 
-You can find the installable Mac package in the releases folder:
+- **macOS 10.15 or higher**
 
-macOS version 10.15 or higher
-[https://github.com/OLSF/carpe/releases/download/v0.3.0/carpe-macos-10.15.dmg](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.7/carpe_1.0.7_x64.dmg)
+## Download and Installation
 
-## Allow App Permissions
+You can download the latest macOS installer from our releases page:
 
-Note: while the app is in early beta status, you'll have to override the trusted developer settings on your Mac in order to run an install the app. The code is open source, so you can double check if we are doing anything sneaky.
+**[Download Carpe for macOS](https://github.com/0LNetworkCommunity/carpe/releases/download/v1.0.7/carpe_1.0.7_x64.dmg)**
 
-After installation and start, continue with [usage of carpe](usage.md).
+## Important: App Permissions
+
+Since Carpe is currently in early beta, you'll need to override the default trusted developer settings on your Mac to install and run the application.
+
+**Why this is necessary**: The code is completely open source, so you can verify that we're not doing anything malicious. This security warning is simply because we haven't yet gone through Apple's notarization process.
+
+### Steps to Allow Installation:
+1. Download the `.dmg` file from the link above
+2. Open the downloaded file
+3. If macOS prevents installation, go to **System Preferences > Security & Privacy**
+4. Click "Allow" next to the Carpe app notification
+
+## Next Steps
+
+After successful installation and launch, continue with our [Carpe Usage Guide](usage.md) to get started.

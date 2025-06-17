@@ -1,48 +1,69 @@
-# Releasing
+# Release Process
 
-Before creating a new TAG, please confirm that Cargo.toml file is pointing to the right libra branch.
+**Important**: Before creating a new release tag, verify that the `Cargo.toml` file is pointing to the correct libra branch.
 
-## Create a Candidate Release
+## Creating a Candidate Release
 
-1. Update app version on files (i.e.: “0.3.0”):
+### 1. Update Version Numbers
 
-- src-tauri/Cargo.toml
-- src-tauri/tauri.conf.json
+Update the app version in the following files (e.g., "0.3.0"):
 
-2. Create first candidate release TAG. i.e.: v0.3.0-rc.0
+- `src-tauri/Cargo.toml`
+- `src-tauri/tauri.conf.json`
 
-- mark TAG checkbox “pre-release”
-- github actions will generate builds for OSs
+### 2. Create Release Candidate Tag
 
-3. Share builds link on the #carpe-test channel and get feedback from tests
+Create your first candidate release tag (e.g., `v0.3.0-rc.0`):
 
-## Update Candidate Release
+- Mark the tag as "pre-release" in GitHub
+- GitHub Actions will automatically generate builds for all supported operating systems
 
-1. Merge PRs with fixes or improvements
-2. Create TAG. i.e.: v0.3.0-rc.1 -> v0.3.0-rc.2 -> v0.3.0-rc.3
+### 3. Testing and Feedback
 
-- mark TAG checkbox “pre-release”
-- github actions will generate builds for OSs
+Share the build links in the `#carpe-test` Discord channel and collect feedback from testers.
 
-3. Share builds link on the #carpe-test channel and get feedback from tests
+## Updating Candidate Releases
 
-## Publish a Release
+### 1. Merge Improvements
 
-1. Create release TAG. i.e.: v0.3.0
-2. Update docs with new installer links
+Merge pull requests containing fixes or improvements based on feedback.
 
-- README
-- Win
-- Mac
-- Debian
+### 2. Create Updated Tag
 
-3. Update auto updater version and links
+Create a new candidate tag (e.g., `v0.3.0-rc.1` → `v0.3.0-rc.2` → `v0.3.0-rc.3`):
+
+- Mark the tag as "pre-release"
+- GitHub Actions will generate new builds
+
+### 3. Continue Testing
+
+Share updated build links in the `#carpe-test` channel for additional testing.
+
+## Publishing a Final Release
+
+### 1. Create Release Tag
+
+Create the final release tag (e.g., `v0.3.0`) without the pre-release flag.
+
+### 2. Update Documentation
+
+Update installer links in the following documentation:
+
+- `README.md`
+- `docs/start-carpe-windows.md`
+- `docs/start-carpe-mac.md`
+
+### 3. Update Auto-Updater
+
+Update the auto-updater configuration with new version information and download links.
 
 ---
 
-## Icons
+## Icon Management
 
-If the app icon design will be changed, the high resolution file needs to be in `./app-icon.png`.
-Then simply run `yarn tauri icon`, and all the icon formats will be created.
+If you need to update the app icon design:
 
-[https://tauri.studio/docs/guides/icons/](https://tauri.app/v1/guides/features/icons/#__docusaurus_skipToContent_fallback)
+1. Place the high-resolution source file at `./app-icon.png`
+2. Run `yarn tauri icon` to generate all required icon formats automatically
+
+For more information, see the [Tauri Icon Guide](https://tauri.app/v1/guides/features/icons/).

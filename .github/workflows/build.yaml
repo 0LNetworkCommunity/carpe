@@ -63,12 +63,6 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: echo "LIBCLANG_PATH=$((gcm clang).source -replace "clang.exe")" >> $env:GITHUB_ENV
 
-      # # Package the windows dependencies
-      # - name: copy gmp.dll for build
-      #   if: matrix.os == 'windows-latest'
-      #   run: |
-      #     $var = (get-item $(rustup which rustc)).Directory.Parent.FullName+ '\lib\rustlib\'  + (rustc -vV | findstr "host:*").split(':')[1].Trim() + '\lib'
-      #     Copy-Item ('${{ github.workspace }}' + '\redist' + '\x86_64\*')  -Destination $var -Recurse
 
       ########  CACHE  ########
 
@@ -88,7 +82,7 @@ jobs:
         run: cargo b --release
 
       - name: build tauri
-        run: yarn run build:github-pr
+        run: yarn run build
         env:
           # Mocked keys.
           TAURI_PRIVATE_KEY: 'dW50cnVzdGVkIGNvbW1lbnQ6IHJzaWduIGVuY3J5cHRlZCBzZWNyZXQga2V5ClJXUlRZMEl5ZUYrUFF0RS9ZbU5EN0VFWk52TmpDRDQvTFFWOHhqSXNkZFVvUjZSRWNJc0FBQkFBQUFBQUFBQUFBQUlBQUFBQTZhNUxkYVFJWDNWTENKR2tSNzFVcDhsRzcvd0lKeWRGcytBZDNyZ3o3OWRXOWVmbmZCQktJYk8xOHVHWG5CZ25XN1pBOXM3SjMyWW1DRFNZWFJ5WGxsd3B6d3RvOEtTNHFFbFM5VE5obmNEZ1dHeEljVFRhZ2FXa0RzNHZOVkNESE5DdDArUmkvUUE9Cg=='
