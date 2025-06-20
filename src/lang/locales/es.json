@@ -402,7 +402,6 @@
       "wallet_type": "Tipo de Cartera",
       "wallet_address": "Dirección de Cartera a Reautorizar",
       "wallet_placeholder": "Introduce dirección de cartera (0x...)",
-      "wallet_description": "Por defecto, se establece como tu cuenta actual. Puedes cambiarla para reautorizar una cartera comunitaria diferente.",
       "community_wallet": "Cartera Comunitaria",
       "not_community_wallet": "No es una Cartera Comunitaria",
       "await": "Procesando...",

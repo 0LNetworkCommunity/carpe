@@ -15,13 +15,11 @@
   let waitingTxs = false
   
   // Selected wallet for reauthorization
-  let selectedWallet = account?.account || ''
+  let selectedWallet = ''
   
   // Handle CW reauthorization transaction
   onMount(() => {
-    if (account) {
-      selectedWallet = account.account
-    }
+    // Initialize component
   })
   
   async function submitCwReauth() {
@@ -81,9 +79,6 @@
         placeholder={$_('txs.cwreauth.wallet_placeholder')}
         disabled={watchOnly || waitingTxs}
       />
-      <p class="uk-text-meta uk-margin-small-top">
-        {$_('txs.cwreauth.wallet_description')}
-      </p>
     </div>
   </div>
 

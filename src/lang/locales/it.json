@@ -359,7 +359,6 @@
       "wallet_type": "Tipo di Portafoglio",
       "wallet_address": "Indirizzo del Portafoglio da Riautorizzare",
       "wallet_placeholder": "Inserisci indirizzo portafoglio (0x...)",
-      "wallet_description": "Per impostazione predefinita, è impostato sul tuo account corrente. Puoi cambiarlo per riautorizzare un diverso portafoglio comunitario.",
       "community_wallet": "Portafoglio Comunitario",
       "not_community_wallet": "Non è un Portafoglio Comunitario",
       "await": "Elaborazione...",

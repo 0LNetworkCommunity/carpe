@@ -384,7 +384,6 @@
       "wallet_type": "钱包类型",
       "wallet_address": "需要重新授权的钱包地址",
       "wallet_placeholder": "输入钱包地址 (0x...)",
-      "wallet_description": "默认设置为您当前的账户。您可以更改它以重新授权不同的社区钱包。",
       "community_wallet": "社区钱包",
       "not_community_wallet": "非社区钱包",
       "await": "处理中...",

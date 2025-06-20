@@ -342,7 +342,6 @@
       "wallet_type": "Wallet Type",
       "wallet_address": "Wallet Address to Reauthorize",
       "wallet_placeholder": "Enter wallet address (0x...)",
-      "wallet_description": "By default, this is set to your current account. You can change it to reauthorize a different community wallet.",
       "community_wallet": "Community Wallet",
       "not_community_wallet": "Not a Community Wallet",
       "await": "Processing...",
@@ -353,7 +352,6 @@
       "warning_not_cw": "Community Wallet reauthorization is only available for accounts configured as Community Wallets.",
       "about_title": "About Community Wallet Reauthorization",
       "about_description": "Community Wallets require periodic reauthorization to maintain their capabilities. This transaction renews your community wallet authorization on the blockchain."
-    
     },
     "set_wallet_type": {
       "actions_title": "Ações da Conta",

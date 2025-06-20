@@ -388,7 +388,6 @@
       "wallet_type": "Wallet Type",
       "wallet_address": "Wallet Address to Reauthorize",
       "wallet_placeholder": "Enter wallet address (0x...)",
-      "wallet_description": "By default, this is set to your current account. You can change it to reauthorize a different community wallet.",
       "community_wallet": "Community Wallet",
       "not_community_wallet": "Not a Community Wallet",
       "await": "Processing...",
