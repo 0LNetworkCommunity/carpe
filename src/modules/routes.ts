@@ -3,7 +3,7 @@ export const routes = {
   wallet: '/wallet',
   accountDetails: '/account-details',
   addAccount: '/add-account',
-  addWatchAccount: '/add-wathc-account',
+  addWatchAccount: '/add-watch-account',
   accountFromMnem: '/account-from-mnem',
   keygen: '/keygen',
   miner: '/miner',

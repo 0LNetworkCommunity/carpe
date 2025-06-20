@@ -291,6 +291,14 @@
     }
   },
   "txs": {
+    "transactions": "Transactions",
+    "select_transaction_type": "Sélectionner le type de transaction",
+    "type_selector": {
+      "transfer": "Transfert",
+      "vouch": "Garantir",
+      "revoke": "Révoquer la garantie",
+      "cwreauth": "Réautorisation CW"
+    },
     "deno_tx": "Demo Tx",
     "account": "Compte",
     "balance": "Solde",
@@ -327,6 +335,41 @@
       "no_vouched_accounts": "Vous n'avez encore garanti aucun compte.",
       "accounts_vouched_for": "Comptes que vous avez garantis :",
       "refresh_vouched_accounts": "Actualiser les comptes garantis"
+    },
+    "revoke": {
+      "title": "Révoquer la garantie",
+      "sender": "Expéditeur",
+      "receiver": "Compte dont la garantie est révoquée",
+      "receiver_placeholder": "Saisir l'adresse du compte (0x...)",
+      "await": "Traitement en cours...",
+      "btn_revoke": "Révoquer la garantie",
+      "success": "La garantie du compte a été révoquée avec succès !",
+      "invalid_address": "Veuillez saisir une adresse de compte valide",
+      "error_revoke_failed": "Échec de la révocation de la garantie. Assurez-vous d'avoir déjà garanti ce compte.",
+      "vouched_accounts_title": "Vos comptes garantis",
+      "refresh_tooltip": "Actualiser les comptes garantis",
+      "important_info": "Informations importantes",
+      "info_relationship": "La révocation d'une garantie supprime votre soutien à un compte.",
+      "info_selective": "Vous ne pouvez révoquer que les garanties que vous avez préalablement données.",
+      "info_irreversible": "Cette action ne peut pas être annulée et sera enregistrée sur la blockchain."
+    },
+    "cwreauth": {
+      "title": "Réautorisation du portefeuille communautaire",
+      "sender": "Compte",
+      "wallet_type": "Type de portefeuille",
+      "wallet_address": "Adresse du portefeuille à réautoriser",
+      "wallet_placeholder": "Saisir l'adresse du portefeuille (0x...)",
+      "wallet_description": "Par défaut, il s'agit de votre compte actuel. Vous pouvez le modifier pour réautoriser un autre portefeuille communautaire.",
+      "community_wallet": "Portefeuille communautaire",
+      "not_community_wallet": "Pas un portefeuille communautaire", 
+      "await": "Traitement en cours...",
+      "btn_reauth": "Réautoriser le portefeuille communautaire",
+      "success": "Portefeuille communautaire réautorisé avec succès !",
+      "error_invalid_address": "Veuillez saisir une adresse de portefeuille valide à réautoriser.",
+      "error_reauth_failed": "Échec de la réautorisation du portefeuille communautaire. Veuillez réessayer plus tard.",
+      "warning_not_cw": "La réautorisation du portefeuille communautaire n'est disponible que pour les comptes configurés en tant que portefeuilles communautaires.",
+      "about_title": "À propos de la réautorisation du portefeuille communautaire",
+      "about_description": "Les portefeuilles communautaires nécessitent une réautorisation périodique pour maintenir leurs capacités. Cette transaction renouvelle votre autorisation de portefeuille communautaire sur la blockchain."
     },
     "set_wallet_type": {
       "actions_title": "Actions du compte",

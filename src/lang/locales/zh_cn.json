@@ -291,6 +291,14 @@
     }
   },
   "txs": {
+    "transactions": "Transactions",
+    "select_transaction_type": "Select Transaction Type",
+    "type_selector": {
+      "transfer": "Transfer",
+      "vouch": "Vouch",
+      "revoke": "Revoke Vouch",
+      "cwreauth": "CW Reauth"
+    },
     "deno_tx": "测试交易",
     "account": "账号",
     "balance": "余额",
@@ -352,6 +360,41 @@
       "no_vouched_accounts": "您尚未为任何账户担保。",
       "accounts_vouched_for": "您已担保的账户：",
       "refresh_vouched_accounts": "刷新担保账户"
+    },
+    "revoke": {
+      "title": "撤销担保",
+      "sender": "发送者",
+      "receiver": "需要撤销担保的账户",
+      "receiver_placeholder": "输入账户地址 (0x...)",
+      "await": "处理中...",
+      "btn_revoke": "撤销担保",
+      "success": "已成功撤销对此账户的担保！",
+      "invalid_address": "请输入有效的账户地址",
+      "error_revoke_failed": "撤销担保失败。请确保您之前曾为此账户担保。",
+      "vouched_accounts_title": "您担保的账户",
+      "refresh_tooltip": "刷新担保账户",
+      "important_info": "重要信息",
+      "info_relationship": "撤销担保会移除您对一个账户的背书。",
+      "info_selective": "您只能撤销之前提供过的担保。",
+      "info_irreversible": "此操作无法撤销，并将被记录在区块链上。"
+    },
+    "cwreauth": {
+      "title": "社区钱包重新授权",
+      "sender": "账户",
+      "wallet_type": "钱包类型",
+      "wallet_address": "需要重新授权的钱包地址",
+      "wallet_placeholder": "输入钱包地址 (0x...)",
+      "wallet_description": "默认设置为您当前的账户。您可以更改它以重新授权不同的社区钱包。",
+      "community_wallet": "社区钱包",
+      "not_community_wallet": "非社区钱包",
+      "await": "处理中...",
+      "btn_reauth": "重新授权社区钱包",
+      "success": "社区钱包已成功重新授权！",
+      "error_invalid_address": "请输入要重新授权的有效钱包地址。",
+      "error_reauth_failed": "无法重新授权社区钱包。请稍后再试。",
+      "warning_not_cw": "社区钱包重新授权仅适用于配置为社区钱包的账户。",
+      "about_title": "关于社区钱包重新授权",
+      "about_description": "社区钱包需要定期重新授权以维持其功能。此交易在区块链上更新您的社区钱包授权。"
     },
     "transfer": {
       "title": "代币转账",

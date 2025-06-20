@@ -291,6 +291,14 @@
     }
   },
   "txs": {
+    "transactions": "Transactions",
+    "select_transaction_type": "Select Transaction Type",
+    "type_selector": {
+      "transfer": "Transfer",
+      "vouch": "Vouch",
+      "revoke": "Revoke Vouch",
+      "cwreauth": "CW Reauth"
+    },
     "deno_tx": "Demo Tx",
     "account": "Account",
     "balance": "Balance",
@@ -327,6 +335,41 @@
       "no_vouched_accounts": "Sie haben noch für keine Konten gebürgt.",
       "accounts_vouched_for": "Konten, für die Sie gebürgt haben:",
       "refresh_vouched_accounts": "Verbürgte Konten aktualisieren"
+    },
+    "revoke": {
+      "title": "Bürgschaft widerrufen",
+      "sender": "Absender",
+      "receiver": "Konto, von dem die Bürgschaft widerrufen werden soll",
+      "receiver_placeholder": "Kontoadresse eingeben (0x...)",
+      "await": "Verarbeitung...",
+      "btn_revoke": "Bürgschaft widerrufen",
+      "success": "Bürgschaft für das Konto erfolgreich widerrufen!",
+      "invalid_address": "Bitte geben Sie eine gültige Kontoadresse ein",
+      "error_revoke_failed": "Fehler beim Widerrufen der Bürgschaft. Bitte stellen Sie sicher, dass Sie zuvor für dieses Konto gebürgt haben.",
+      "vouched_accounts_title": "Ihre verbürgten Konten",
+      "refresh_tooltip": "Verbürgte Konten aktualisieren",
+      "important_info": "Wichtige Informationen",
+      "info_relationship": "Das Widerrufen einer Bürgschaft entfernt Ihre Unterstützung für ein Konto.",
+      "info_selective": "Sie können nur Bürgschaften widerrufen, die Sie zuvor gegeben haben.",
+      "info_irreversible": "Diese Aktion kann nicht rückgängig gemacht werden und wird in der Blockchain aufgezeichnet."
+    },
+    "cwreauth": {
+      "title": "Community-Wallet Wiederautorisierung",
+      "sender": "Konto",
+      "wallet_type": "Wallet-Typ",
+      "wallet_address": "Wallet-Adresse zum Wiederautorisieren",
+      "wallet_placeholder": "Wallet-Adresse eingeben (0x...)",
+      "wallet_description": "Standardmäßig ist dies auf Ihr aktuelles Konto eingestellt. Sie können es ändern, um eine andere Community-Wallet zu wiederautorisieren.",
+      "community_wallet": "Community-Wallet",
+      "not_community_wallet": "Keine Community-Wallet", 
+      "await": "Verarbeitung...",
+      "btn_reauth": "Community-Wallet wiederautorisieren",
+      "success": "Community-Wallet erfolgreich wiederautorisiert!",
+      "error_invalid_address": "Bitte geben Sie eine gültige Wallet-Adresse zum Wiederautorisieren ein.",
+      "error_reauth_failed": "Fehler bei der Wiederautorisierung der Community-Wallet. Bitte versuchen Sie es später erneut.",
+      "warning_not_cw": "Die Wiederautorisierung der Community-Wallet ist nur für Konten verfügbar, die als Community-Wallets konfiguriert sind.",
+      "about_title": "Über Community-Wallet Wiederautorisierung",
+      "about_description": "Community-Wallets benötigen regelmäßige Wiederautorisierung, um ihre Funktionen zu behalten. Diese Transaktion erneuert Ihre Community-Wallet-Autorisierung in der Blockchain."
     },
     "set_wallet_type": {
       "actions_title": "Kontohandlungen",

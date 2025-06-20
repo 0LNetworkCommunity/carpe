@@ -274,6 +274,14 @@
     }
   },
   "txs": {
+    "transactions": "Transactions",
+    "select_transaction_type": "Select Transaction Type",
+    "type_selector": {
+      "transfer": "Transfer",
+      "vouch": "Vouch",
+      "revoke": "Revoke Vouch",
+      "cwreauth": "CW Reauth"
+    },
     "deno_tx": "Demo Tx",
     "account": "Conta",
     "balance": "Saldo",
@@ -310,6 +318,42 @@
       "no_vouched_accounts": "Você ainda não garantiu nenhuma conta.",
       "accounts_vouched_for": "Contas que você garantiu:",
       "refresh_vouched_accounts": "Atualizar contas garantidas"
+    },
+    "revoke": {
+      "title": "Revogar Garantia",
+      "sender": "Remetente",
+      "receiver": "Conta para Revogar a Garantia",
+      "receiver_placeholder": "Digite o endereço da conta (0x...)",
+      "await": "Processando...",
+      "btn_revoke": "Revogar Garantia",
+      "success": "Garantia revogada com sucesso para a conta!",
+      "invalid_address": "Por favor, digite um endereço de conta válido",
+      "error_revoke_failed": "Falha ao revogar garantia. Por favor, certifique-se de que você garantiu esta conta anteriormente.",
+      "vouched_accounts_title": "Suas Contas Garantidas",
+      "refresh_tooltip": "Atualizar contas garantidas",
+      "important_info": "Informações Importantes",
+      "info_relationship": "Revogar uma garantia remove seu endosso de uma conta.",
+      "info_selective": "Você só pode revogar garantias que forneceu anteriormente.",
+      "info_irreversible": "Esta ação não pode ser desfeita e será registrada na blockchain."
+    },
+    "cwreauth": {
+      "title": "Community Wallet Reauthorization",
+      "sender": "Account",
+      "wallet_type": "Wallet Type",
+      "wallet_address": "Wallet Address to Reauthorize",
+      "wallet_placeholder": "Enter wallet address (0x...)",
+      "wallet_description": "By default, this is set to your current account. You can change it to reauthorize a different community wallet.",
+      "community_wallet": "Community Wallet",
+      "not_community_wallet": "Not a Community Wallet",
+      "await": "Processing...",
+      "btn_reauth": "Reauthorize Community Wallet",
+      "success": "Community Wallet successfully reauthorized!",
+      "error_invalid_address": "Please enter a valid wallet address to reauthorize.",
+      "error_reauth_failed": "Failed to reauthorize Community Wallet. Please try again later.",
+      "warning_not_cw": "Community Wallet reauthorization is only available for accounts configured as Community Wallets.",
+      "about_title": "About Community Wallet Reauthorization",
+      "about_description": "Community Wallets require periodic reauthorization to maintain their capabilities. This transaction renews your community wallet authorization on the blockchain."
+    
     },
     "set_wallet_type": {
       "actions_title": "Ações da Conta",
