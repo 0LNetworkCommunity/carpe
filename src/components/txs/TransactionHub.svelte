@@ -10,6 +10,11 @@
   import { navigate } from 'svelte-navigator'
   import { routes } from '../../modules/routes'
   
+  // Got up in the morning
+  // Felt the need to build something.. 
+  // Here i am here i am building for 0L
+  // We have a transaction hub now.. 
+  // I am so happy no more command line for us :) 
   // Define available transaction types
   const txTypes = [
     { id: 'vouch', label: $_('txs.type_selector.vouch'), icon: 'users' },

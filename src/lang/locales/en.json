@@ -365,6 +365,33 @@
       "accounts_vouched_for": "Accounts you've vouched for:",
       "refresh_vouched_accounts": "Refresh vouched accounts"
     },
+    "revoke": {
+      "title": "Revoke Vouch",
+      "sender": "Sender",
+      "receiver": "Account to Revoke Vouch From",
+      "receiver_placeholder": "Enter account address (0x...)",
+      "await": "Processing...",
+      "btn_revoke": "Revoke Vouch",
+      "success": "Successfully revoked vouch for the account!",
+      "invalid_address": "Please enter a valid account address",
+      "important_info": "Important Information",
+      "info_relationship": "Revoking a vouch removes your endorsement of an account.",
+      "info_selective": "You can only revoke vouches that you have previously given.",
+      "info_irreversible": "This action cannot be undone and will be recorded on the blockchain."
+    },
+    "cwreauth": {
+      "title": "Community Wallet Reauthorization",
+      "sender": "Account",
+      "wallet_type": "Wallet Type",
+      "community_wallet": "Community Wallet",
+      "not_community_wallet": "Not a Community Wallet",
+      "await": "Processing...",
+      "btn_reauth": "Reauthorize Community Wallet",
+      "success": "Community Wallet successfully reauthorized!",
+      "warning_not_cw": "Community Wallet reauthorization is only available for accounts configured as Community Wallets.",
+      "about_title": "About Community Wallet Reauthorization",
+      "about_description": "Community Wallets require periodic reauthorization to maintain their capabilities. This transaction renews your community wallet authorization on the blockchain."
+    },
     "transfer": {
       "title": "Coin Transfer",
       "sender": "Sender",

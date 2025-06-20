@@ -56,32 +56,28 @@ pub async fn vouch_transaction(_sender: AccountAddress, receiver: &str) -> Resul
 
   let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string())).await?;
 
-  // Try different function paths and argument formats
-  let function_paths = ["0x1::vouch_txs::vouch_for"];
+  // Try the revoke vouch function path
+  let function_path = "0x1::vouch_txs::vouch_for";
 
-  for &path in &function_paths {
-    // Format address as a Move address literal (with 0x prefix)
-    let formatted_address = format!("0x{}", receiver_account.to_hex());
+  // Format address as a Move address literal (with 0x prefix)
+  let formatted_address = format!("0x{}", receiver_account.to_hex());
 
-    match sender
-      .generic(
-        path,
-        &None,                            // No type arguments
-        &Some(formatted_address.clone()), // Use the properly formatted address
-      )
-      .await
-    {
-      Ok(_) => {
-        println!("Successfully called {}", path);
-        return Ok(());
-      }
-      Err(e) => {
-        println!("Failed to call {}: {}", path, e);
-        // Continue to try the next path
-      }
+  match sender
+    .generic(
+      function_path,
+      &None,                            // No type arguments
+      &Some(formatted_address.clone()), // Use the properly formatted address
+    )
+    .await
+  {
+    Ok(_) => {
+      println!("Successfully called {}", function_path);
+      return Ok(());
+    }
+    Err(e) => {
+      println!("Failed to call {}: {}", function_path, e);
     }
   }
-
   // If we get here, all attempts failed
   Err(CarpeError::misc(
     "Failed to call vouch function with any known path or argument format",
@@ -103,26 +99,107 @@ pub async fn rejoin_transaction(_sender: AccountAddress) -> Result<(), CarpeErro
     )
     .await
   {
-    Ok(_) => {
-      return Ok(());
-    }
+    Ok(_) => Ok(()),
     Err(e) => {
       println!("Failed to call 0x1::filo_migration::maybe_migrate {}", e);
       // Continue to try the next path
+      Err(CarpeError::misc(&format!("Failed to migrate: {}", e)))
     }
   }
-
-  // If we get here, all attempts failed
-  Err(CarpeError::misc(
-    "Failed to call vouch function with any known path or argument format",
-  ))
 }
 
-// #[tauri::command(async)]
-// pub async fn claim_make_whole() -> Result<(), CarpeError> {
-//   let tx_payload = stdlib::encode_claim_make_whole_script_function();
-//   let tx_params =
-//     configs::get_tx_params()?;
-//   submit_tx::maybe_submit(tx_payload, &tx_params, None)?;
-//   Ok(())
-// }
+#[tauri::command(async)]
+pub async fn revoke_vouch_transaction(
+  _sender: AccountAddress,
+  receiver: &str,
+) -> Result<(), CarpeError> {
+  let receiver_account = match AccountAddress::from_str(receiver) {
+    Ok(a) => a,
+    Err(e) => {
+      println!(
+        "Failed to parse receiver address: {}, trying with 0x prefix",
+        e
+      );
+      AccountAddress::from_str(&format!("0x{}", receiver))?
+    }
+  };
+
+  let mut config = get_cfg()?;
+  inject_private_key_to_cfg(&mut config, _sender)?;
+
+  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string())).await?;
+
+  // Try the revoke vouch function path
+  let function_path = "0x1::vouch_txs::revoke";
+
+  // Format address as a Move address literal (with 0x prefix)
+  let formatted_address = format!("0x{}", receiver_account.to_hex());
+
+  match sender
+    .generic(
+      function_path,
+      &None,                            // No type arguments
+      &Some(formatted_address.clone()), // Use the properly formatted address
+    )
+    .await
+  {
+    Ok(_) => {
+      println!("Successfully called {}", function_path);
+      Ok(())
+    }
+    Err(e) => {
+      println!("Failed to call {}: {}", function_path, e);
+      Err(CarpeError::misc(&format!("Failed to revoke vouch: {}", e)))
+    }
+  }
+}
+
+#[tauri::command(async)]
+pub async fn cw_reauth_transaction(
+  _sender: AccountAddress,
+  wallet_address: &str,
+) -> Result<(), CarpeError> {
+  // Parse the wallet address
+  let wallet_account = match AccountAddress::from_str(wallet_address) {
+    Ok(a) => a,
+    Err(e) => {
+      println!(
+        "Failed to parse wallet address: {}, trying with 0x prefix",
+        e
+      );
+      AccountAddress::from_str(&format!("0x{}", wallet_address))?
+    }
+  };
+
+  let mut config = get_cfg()?;
+  inject_private_key_to_cfg(&mut config, _sender)?;
+
+  let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string())).await?;
+
+  // Try the community wallet reauthorization function path
+  let function_path = "0x1::donor_voice_txs::vote_reauth_tx";
+
+  // Format address as a Move address literal (with 0x prefix)
+  let formatted_address = format!("0x{}", wallet_account.to_hex());
+
+  match sender
+    .generic(
+      function_path,
+      &None,                            // No type arguments
+      &Some(formatted_address.clone()), // Pass the wallet address as an argument
+    )
+    .await
+  {
+    Ok(_) => {
+      println!("Successfully called {}", function_path);
+      Ok(())
+    }
+    Err(e) => {
+      println!("Failed to call {}: {}", function_path, e);
+      Err(CarpeError::misc(&format!(
+        "Failed to reauthorize community wallet: {}",
+        e
+      )))
+    }
+  }
+}
