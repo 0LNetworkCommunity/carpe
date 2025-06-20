@@ -15,4 +15,5 @@ export const routes = {
   swarm: '/swarm',
   makeWhole: '/make-whole',
   vouch: '/vouch',
+  txHub: '/transactions',
 }

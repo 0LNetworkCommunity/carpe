@@ -35,6 +35,7 @@
   import Keygen from './components/wallet/Keygen.svelte'
   import AddWatchAccount from './components/wallet/AddWatchAccount.svelte'
   import Transactions from './components/txs/Transactions.svelte'
+  import TransactionHub from './components/txs/TransactionHub.svelte'
   import Events from './components/events/Events.svelte'
   import About from './components/about/About.svelte'
   import SearchingFullnodes from './components/layout/SearchingFullnodes.svelte'
@@ -149,6 +150,7 @@
         <Route path={routes.about} component={About} primary={false} />
         <Route path={routes.makeWhole} component={MakeWhole} primary={false} />
         <Route path={routes.vouch} component={Vouch} primary={false} />
+        <Route path={routes.txHub} component={TransactionHub} primary={false} />
         <!-- DEV -->
         <Route path={routes.developer} component={DevMode} primary={false} />
       </div>

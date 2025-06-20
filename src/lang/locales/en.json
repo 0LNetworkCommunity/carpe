@@ -3,7 +3,7 @@
     "wallet": "Wallet",
     "miner": "Miner",
     "transactions": "Transfer",
-    "vouch": "Vouch",
+    "vouch": "Transactions",
     "events": "Events"
   },
   "layout": {
@@ -300,6 +300,14 @@
     "balance": "Balance",
     "btn_onboard": "Onboard Account",
     "btn_transfer": "Transfer Coins",
+    "transactions": "Transactions",
+    "select_transaction_type": "Select Transaction Type",
+    "type_selector": {
+      "transfer": "Transfer",
+      "vouch": "Vouch",
+      "revoke": "Revoke Vouch",
+      "cwreauth": "CW Reauth"
+    },
     "onboard": {
       "title": "Onboard an Account",
       "await": "Awaiting Tx",

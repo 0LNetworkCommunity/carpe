@@ -43,8 +43,8 @@
           <li class="uk-padding {$location_store.pathname.includes('transfer') ? 'uk-active' : ''}">
             <Link to={watchOnly ? routes.wallet : routes.transfer}>{$_('nav.transactions')}</Link>
           </li>
-          <li class="uk-padding {$location_store.pathname.includes('vouch') ? 'uk-active' : ''}">
-            <Link to={watchOnly ? routes.wallet : routes.vouch}>{$_('nav.vouch')}</Link>
+          <li class="uk-padding {$location_store.pathname.includes('transactions') ? 'uk-active' : ''}">
+            <Link to={watchOnly ? routes.wallet : routes.txHub + '?type=vouch'}>{$_('nav.vouch')}</Link>
           </li>
         </ul>
       </div>
