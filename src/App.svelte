@@ -35,6 +35,7 @@
   import Keygen from './components/wallet/Keygen.svelte'
   import AddWatchAccount from './components/wallet/AddWatchAccount.svelte'
   import Transactions from './components/txs/Transactions.svelte'
+  import TransactionHub from './components/txs/TransactionHub.svelte'
   import Events from './components/events/Events.svelte'
   import About from './components/about/About.svelte'
   import SearchingFullnodes from './components/layout/SearchingFullnodes.svelte'
@@ -48,7 +49,6 @@
     import { isLoading } from 'svelte-i18n'
     import { isBooted } from './modules/boot'
     import SplashScreen from './components/layout/SplashScreen.svelte'
-    import Vouch from './components/vouch/Vouch.svelte'
 
   // black magic with I18n here
   // temporarily set up here otherwise... issues
@@ -148,7 +148,7 @@
         <Route path={routes.settings} component={Settings} primary={false} />
         <Route path={routes.about} component={About} primary={false} />
         <Route path={routes.makeWhole} component={MakeWhole} primary={false} />
-        <Route path={routes.vouch} component={Vouch} primary={false} />
+        <Route path={routes.txHub} component={TransactionHub} primary={false} />
         <!-- DEV -->
         <Route path={routes.developer} component={DevMode} primary={false} />
       </div>

@@ -120,6 +120,8 @@ async fn main() {
       //////// Transactions ////////
       commands::tx::coin_transfer,
       commands::tx::vouch_transaction,
+      commands::tx::revoke_vouch_transaction,
+      commands::tx::cw_reauth_transaction,
       commands::tx::rejoin_transaction,
       // claim_make_whole,
       //////// Tower ////////
