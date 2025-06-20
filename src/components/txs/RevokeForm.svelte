@@ -47,7 +47,7 @@
   // Handle revoke vouch transaction
   async function submitRevoke() {
     if (!account || !receiver || !isReceiverValid) {
-      errorMessage = $_('txs.vouch.invalid_address') // Reusing vouch text for now
+      errorMessage = $_('txs.revoke.invalid_address')
       return
     }
     
@@ -62,7 +62,7 @@
         receiver: receiver
       })
       
-      notify_success("Successfully revoked vouch for the account!")
+      notify_success($_('txs.revoke.success'))
       receiver = ''
       
       // Refresh vouched accounts after successful transaction
@@ -70,7 +70,7 @@
       refreshAccounts()
     } catch (e) {
       console.error("Revoke vouch failed:", e)
-      errorMessage = "Failed to revoke vouch. Please make sure you have previously vouched for this account."
+      errorMessage = $_('txs.revoke.error_revoke_failed')
       raise_error(e, true, "revoke_vouch_transaction")
     } finally {
       waitingTxs = false
@@ -94,7 +94,7 @@
 
 <!-- Vouched accounts section -->
 <div class="uk-margin">
-  <h4 class="uk-form-label" id="vouched-accounts-heading">Your Vouched Accounts</h4>
+  <h4 class="uk-form-label" id="vouched-accounts-heading">{$_('txs.revoke.vouched_accounts_title')}</h4>
   <div class="uk-card uk-card-default uk-card-body uk-padding-small" aria-labelledby="vouched-accounts-heading">
     {#if isLoadingVouchedAccounts}
       <div class="uk-flex uk-flex-center uk-margin">
@@ -108,7 +108,7 @@
         <span>{$_('txs.vouch.accounts_vouched_for')}</span>
         <button 
           class="uk-button uk-button-small uk-button-text"
-          uk-tooltip="Refresh vouched accounts" 
+          uk-tooltip={$_('txs.revoke.refresh_tooltip')}
           on:click={fetchVouchedAccounts}
           disabled={isLoadingVouchedAccounts}>
           <span uk-icon="icon: refresh; ratio: 0.7"></span>

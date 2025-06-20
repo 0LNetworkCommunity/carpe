@@ -26,7 +26,7 @@
   
   async function submitCwReauth() {
     if (!account || !selectedWallet) {
-      errorMessage = "Please enter a valid wallet address to reauthorize."
+      errorMessage = $_('txs.cwreauth.error_invalid_address')
       return
     }
     
@@ -47,7 +47,7 @@
       refreshAccounts()
     } catch (e) {
       console.error("CW Reauth failed:", e)
-      errorMessage = "Failed to reauthorize Community Wallet. Please try again later."
+      errorMessage = $_('txs.cwreauth.error_reauth_failed')
       raise_error(e, true, "cw_reauth_transaction")
     } finally {
       waitingTxs = false
@@ -71,18 +71,18 @@
 
   <!-- Wallet to reauthorize -->
   <div class="uk-margin">
-    <label class="uk-form-label" for="wallet-to-reauth">Wallet Address to Reauthorize</label>
+    <label class="uk-form-label" for="wallet-to-reauth">{$_('txs.cwreauth.wallet_address')}</label>
     <div class="uk-form-controls">
       <input
         id="wallet-to-reauth"
         class="uk-input"
         type="text"
         bind:value={selectedWallet}
-        placeholder="Enter wallet address (0x...)"
+        placeholder={$_('txs.cwreauth.wallet_placeholder')}
         disabled={watchOnly || waitingTxs}
       />
       <p class="uk-text-meta uk-margin-small-top">
-        By default, this is set to your current account. You can change it to reauthorize a different community wallet.
+        {$_('txs.cwreauth.wallet_description')}
       </p>
     </div>
   </div>
