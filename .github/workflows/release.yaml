@@ -3,11 +3,14 @@ name: release
 on:
   workflow_dispatch:
     inputs:
-      production_release:
-        description: 'Production release (defaults to canary)'
+      release_type:
+        description: 'Release type'
         required: false
-        default: false
-        type: boolean
+        default: 'canary'
+        type: choice
+        options:
+        - canary
+        - production
 jobs:
   build-and-publish:
     strategy:
@@ -76,11 +79,11 @@ jobs:
           TAURI_PRIVATE_KEY: '${{secrets.TAURI_PRIVATE_KEY}}'
           TAURI_KEY_PASSWORD: '${{secrets.TAURI_KEY_PASSWORD}}'
         with:
-          args: ${{ !github.event.inputs.production_release && '--config src-tauri/tauri.conf.canary.json --features carpe-canary' || '' }}
+          args: ${{ github.event.inputs.release_type == 'canary' && '--config src-tauri/tauri.conf.canary.json --features carpe-canary' || '' }}
           # pass the rust feature flags for canary if the tag includes "canary"
-          tagName: ${{ !github.event.inputs.production_release && 'v__VERSION__-canary' ||  'v__VERSION__' }}
+          tagName: ${{ github.event.inputs.release_type == 'canary' && 'v__VERSION__-canary' ||  'v__VERSION__' }}
           # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: ${{ !github.event.inputs.production_release && 'v__VERSION__-canary' ||  'v__VERSION__' }}
+          releaseName: ${{ github.event.inputs.release_type == 'canary' && 'v__VERSION__-canary' ||  'v__VERSION__' }}
           releaseBody: '[draft]'
           releaseDraft: true
           prerelease: false

@@ -1,18 +1,18 @@
 {
   "version": "1.1.0",
   "notes": "Compatibility with OL v8. Includes re-join tx and vouch transactions.",
-  "pub_date": "2025-06-18T00:39:38.540Z",
+  "pub_date": "2025-06-20T21:21:03.082Z",
   "platforms": {
     "linux-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbHNpN3VRNDBhSGpoLzJhTGZRK2EwK2I2QnI2U1ZoNlc4VEEwUVlldUhwZS8xSDFUUGlXSGN5WVF0TGovNnpIWG9yajZ0Q3M2cjdISTdrZ2pNclRnRlFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzUwMjA0MTIxCWZpbGU6Y2FycGVfMS4xLjBfYW1kNjQuQXBwSW1hZ2UudGFyLmd6CjJnYjRNcDkxRGhxZlRSZGs2RFhUUiszdnlPdGVpUldpN0NvaHR6OUozQlhsZVpmSXlIcVBmbHFtYmNYeXNpcEtxYTZTSTNqUVV5d3Q1VVhrSzVMakFBPT0K",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbHR1NnpCek5ZdzJBeXhRdXlZZ2hjOEZ4WGFPcjU5dWFvRitEOC9ENXZkbk1WaHhlUXFVK3dVVTcyNFY5Z2ZETFV1d3c1Z3ZJNEhkdU9uS25tTXRCeGc0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzUwNDUxODA3CWZpbGU6Y2FycGVfMS4xLjBfYW1kNjQuQXBwSW1hZ2UudGFyLmd6ClQ3SVUyRTBKQkN3Q215bFA5cytBdkh6eVdZN2JSUHlOYVg4Nkw1NFdSS2pZdmRBL2xKYlEzamt3TkN3UEI0NXRhNzFHcUdlNmhrU3dqTmpSaDdwMkRBPT0K",
       "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.1.0/carpe_1.1.0_amd64.AppImage.tar.gz"
     },
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbHZrbHdHZ0dURlIvWjUzOWRKUWlPSGRGMjdNYTZPVW5SdHlBcVdpVFprSEhodmplaEtaZk9LVm14bC9pMFRBYmJrd00xMWgraFk4ZG1UaDFMMnBtaXdJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzUwMjA0Mjk4CWZpbGU6Y2FycGVfMS4xLjBfeDY0X2VuLVVTLm1zaS56aXAKNGpPTTBCK1VrL0NLSXY3a3BCREd2RDNpamZabXVXL3BVRkdTa2RBdld6KzhRTnY3OFFQNGlqTGdWTWZranY0MGp1RkNXaTRVOVcxUDRmWWJiUFp2RFE9PQo=",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbGd2VmZYMTM1NTd1YWdJa1pEaDF4R1RpZTZrL3RwZk45SVMxa2lJajA0bm9yVGtNSWVPSE1yZjJFT2xMenE1QWZpQ3pmODQ5WWtZUHJJMTJDNTJLckE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzUwNDUyMjM5CWZpbGU6Y2FycGVfMS4xLjBfeDY0X2VuLVVTLm1zaS56aXAKVXJoVXhRRzd4bWIwQlFHR1Vzc2tIOVkvSlRPeEk1UmxxWEZpM0VKN29XbktSdWw0ZmdxazhhYlpnRkdQS2FvTzF0MEQ1dVl5R3N1dVo1YWtPNFdZQmc9PQo=",
       "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.1.0/carpe_1.1.0_x64_en-US.msi.zip"
     },
     "darwin-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbHVob1l3bEUvazBkUWdqc25PYXExQzBzb3pmclhpSUZkeTJjQm5PVHpncGtaMmt4TzdmMzlzU1gzeWd3MFJ3NkwxbWpNWmF4L0hlMjNSaWhqYmhRVlE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzUwMjA3MTcyCWZpbGU6Y2FycGUuYXBwLnRhci5negpYMElMblRkT1BjallxV1loUi9RUGJjVmxiOGNQUCtrdlZaMHk0RDZNVHlKUUZJbTJTeXZscVBaR1ZjYkpESjlRM0lEbGN3N00yekJ4blNlM1FRckZEUT09Cg==",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVSb2t0YlhzSHBEbHYwNkJPdFZJWnlFMGRXTytHeDVUZkFkOWVIYlVRZm1KWmpNc0VtdEZkdDkzeWozaG9BVnlvQjY0OXB2SkFGaEpPWDduUFc5ZDkxVW82Smd4N1NJcFFVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzUwNDU0NDU3CWZpbGU6Y2FycGUuYXBwLnRhci5negowN0gvSklxcHBjUnFJZVRDdktRMkFZM0xXemhFOHBhcm1kMWV2TUlpLzl3bklqNTNMaUtFTWtGaE5abWp5YjVobkhIdnp5TnZhL2xtaGZPUW52SEVCdz09Cg==",
       "url": "https://github.com/0LNetworkCommunity/carpe/releases/download/v1.1.0/carpe_x64.app.tar.gz"
     }
   }
