@@ -5,6 +5,7 @@ use crate::key_manager::{get_private_key, inject_private_key_to_cfg};
 use crate::{carpe_error::CarpeError, configs::get_cfg};
 
 use libra_txs::submit_transaction::Sender;
+use libra_txs::txs_cli;
 use libra_types::exports::{AccountAddress, AccountKey};
 
 fn make_account_key(address: &AccountAddress) -> anyhow::Result<AccountKey> {
@@ -17,10 +18,10 @@ pub async fn coin_transfer(
   _sender: AccountAddress,
   receiver: &str,
   amount: u64,
-  _legacy: bool,
+  legacy: bool,
 ) -> Result<(), CarpeError> {
   // NOTE: unsure Serde was catching all cases check serialization
-  let receiver_account = match AccountAddress::from_str(receiver) {
+  let mut receiver_account = match AccountAddress::from_str(receiver) {
     Ok(a) => a,
     Err(e) => {
       dbg!(e);
@@ -28,12 +29,19 @@ pub async fn coin_transfer(
       AccountAddress::from_str(&format!("0x{}", receiver))?
     }
   };
+  
+  // Handle legacy address conversion if needed
+  if legacy {
+    use libra_txs::txs_cli::to_legacy_address;
+    receiver_account = to_legacy_address(&receiver_account)?;
+    println!("Using legacy address format: {}", receiver_account);
+  }
 
   let mut config = get_cfg()?;
   inject_private_key_to_cfg(&mut config, _sender)?;
   let mut sender = Sender::from_app_cfg(&config, Some(_sender.to_string())).await?;
   sender
-    .transfer(receiver_account, amount as f64, false)
+    .transfer(receiver_account, amount as f64, legacy)
     .await?;
   Ok(())
 }
