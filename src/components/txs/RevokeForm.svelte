@@ -59,7 +59,8 @@
       
       await invoke("revoke_vouch_transaction", {
         sender: account.account,
-        receiver: receiver
+        receiver: receiver,
+        legacy: account.account.startsWith('0'.repeat(32))  // Use same legacy detection as in other forms
       })
       
       notify_success($_('txs.revoke.success'))
