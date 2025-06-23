@@ -36,7 +36,8 @@
       
       await invoke("cw_reauth_transaction", {
         sender: account.account,
-        walletAddress: selectedWallet // Pass the selected wallet address to reauthorize
+        walletAddress: selectedWallet, // Pass the selected wallet address to reauthorize
+        legacy: account.account.startsWith('0'.repeat(32)) // Use same legacy detection as other forms
       })
       
       notify_success($_('txs.cwreauth.success'))

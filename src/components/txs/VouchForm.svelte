@@ -88,7 +88,7 @@
       await invoke("vouch_transaction", {
         sender: account.account,
         receiver: receiver,
-        legacy: false
+        legacy: account.account.startsWith('0'.repeat(32))  // Use same legacy detection as in Transactions
       })
       
       notify_success($_('txs.vouch.success'))
