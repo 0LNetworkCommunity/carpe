@@ -96,36 +96,49 @@ pub fn is_init() -> Result<bool, CarpeError> {
 
 /// default way accounts get initialized in Carpe
 #[tauri::command(async)] // don't want this to be async. We want it to block before moving back to the wallets page (and then needing a refresh), it's a smoother UI.
-pub async fn init_from_mnem(mnem: String, is_legacy: bool) -> Result<CarpeProfile, CarpeError> {
+pub async fn init_from_mnem(mnem: String) -> Result<CarpeProfile, CarpeError> {
   let wallet = account_keys::get_keys_from_mnem(mnem.clone())?;
-  init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?, is_legacy).await
+  init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?).await
 }
 
 #[tauri::command(async)]
 pub async fn init_from_private_key(
   pri_key_string: String,
-  is_legacy: bool,
 ) -> Result<CarpeProfile, CarpeError> {
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
     .map_err(|_| anyhow!("cannot parse encoded private key"))?;
   let acc_struct = account_keys::get_account_from_private(&pri);
-  let authkey = acc_struct.auth_key;
-  if is_legacy {
-    let _ = add_legacy_accounts(authkey);
-  }
+  let core_profile = match add_account_by_authkey(acc_struct.auth_key, None).await {
+    Ok(p) => p,
+    Err(_e) => {
+      // the account may not exist on chain so we'll default to the derived address
+      add_account_by_authkey(acc_struct.auth_key, Some(acc_struct.account))
+        .await?
+    }
+  };
+
+
+  key_manager::set_private_key(&core_profile.account, acc_struct.pri_key)
+    .map_err(|e| CarpeError::config(&e.to_string()))?;
+
+
+  Ok(core_profile)
+}
+
+// add the account to profile by authkey
+pub async fn add_account_by_authkey(authkey: AuthenticationKey, force_address: Option<AccountAddress>) -> Result<CarpeProfile, CarpeError> {
+
   // IMPORTANT
   // let's check if this account has had a rotated authkey,
   // so the address we derive may not be the expected one.
-  let address = get_originating_address(authkey)
-    .await
-    .unwrap_or(acc_struct.account); // the account may not have been created on chain. If we can't get the address, we'll just use the one we derived from the private key
-
-  key_manager::set_private_key(&address, acc_struct.pri_key)
-    .map_err(|e| CarpeError::config(&e.to_string()))?;
+  let address = match force_address {
+    Some(addr) => addr,
+    None => get_originating_address(authkey).await?,
+  };
 
   configs_profile::set_account_profile(address, authkey).await?;
-  let core_profile = &Profile::new(authkey, address);
-  Ok(core_profile.into())
+  let profile = Profile::new(authkey, address);
+  Ok((&profile).into())
 }
 
 #[derive(Serialize, Deserialize)]
@@ -298,12 +311,13 @@ pub async fn get_originating_address(
   auth_key: AuthenticationKey,
 ) -> Result<AccountAddress, CarpeError> {
   let client = get_client()?;
-  let all = read_legacy_accounts().unwrap();
+  let all = read_legacy_accounts().map_err(|e| CarpeError::misc(&e.to_string()))?;
   let acc_list: Vec<String> = all.accounts.iter().map(|a| a.authkey.to_string()).collect();
   if acc_list.contains(&auth_key.to_string()) {
     let a = auth_key.to_string()[32..].to_owned();
     let b = String::from("00000000000000000000000000000000");
-    Ok(AccountAddress::from_hex_literal(&format!("0x{}{}", b, a)).unwrap())
+    AccountAddress::from_hex_literal(&format!("0x{}{}", b, a))
+      .map_err(|e| CarpeError::misc(&format!("Invalid address format: {}", e)))
   } else {
     Ok(client.lookup_originating_address(auth_key).await?)
   }
@@ -355,7 +369,7 @@ pub async fn remove_account(account: AccountAddress) -> Result<String, CarpeErro
   let index = app_cfg
     .user_profiles
     .iter()
-    .position(|p| p.account.to_string() == acc_str);
+    .position(|p| p.account.to_string().to_lowercase() == acc_str);
   if let Some(i) = index {
     app_cfg.user_profiles.remove(i);
     app_cfg.save_file()?;
@@ -382,7 +396,7 @@ fn get_short(acc: AccountAddress) -> String {
 async fn test_init_mnem() {
   use libra_types::core_types::app_cfg::AppCfg;
   let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
-  init_from_mnem(alice, false).await.unwrap();
+  init_from_mnem(alice).await.unwrap();
   let _cfg = AppCfg::load(None).unwrap();
 }
 
@@ -420,7 +434,6 @@ pub fn get_private_key_from_os(address: AccountAddress) -> Result<String, CarpeE
 #[tauri::command(async)]
 pub async fn add_watch_account(
   address: AccountAddress,
-  is_legacy: bool,
 ) -> Result<CarpeProfile, CarpeError> {
   // Catch edge case the user is setting up a carpe for the first time
   // only with a watch account.
@@ -430,12 +443,9 @@ pub async fn add_watch_account(
 
   let authkey: AuthenticationKey = query::get_auth_key(address).await?;
 
-  if is_legacy {
-    let _ = add_legacy_accounts(authkey);
-  }
   configs_profile::set_account_profile(address, authkey).await?;
-  let core_profile = &Profile::new(authkey, address);
-  Ok(core_profile.into())
+
+  Ok(Profile::new(authkey, address))
 }
 
 fn read_legacy_accounts() -> Result<LegacyAccounts, Error> {
