@@ -445,7 +445,8 @@ pub async fn add_watch_account(
 
   configs_profile::set_account_profile(address, authkey).await?;
 
-  Ok(Profile::new(authkey, address))
+  let profile = &Profile::new(authkey, address);
+  Ok(profile.into())
 }
 
 fn read_legacy_accounts() -> Result<LegacyAccounts, Error> {
@@ -536,7 +537,7 @@ pub async fn override_account_address(
   old_address: AccountAddress,
   new_address: AccountAddress,
   auth_key: AuthenticationKey,
-) -> Result<CarpeProfile, CarpeError> {
+) -> Result<(), CarpeError> {
   let mut app_cfg = get_cfg()?;
 
   // Find the profile with the matching old address and auth key
@@ -548,15 +549,9 @@ pub async fn override_account_address(
 
   // Update the account address for this profile
   profile.account = new_address;
-  profile.nickname = get_short(new_address);
 
   // Save the configuration
   app_cfg.save_file()?;
 
-  // Convert to CarpeProfile and assign notes
-  let mut carpe_profile: CarpeProfile = profile.into();
-  let mut profiles = vec![carpe_profile];
-  assign_notes_to_accounts(&mut profiles)?;
-
-  Ok(profiles.into_iter().next().unwrap())
+  Ok(())
 }
