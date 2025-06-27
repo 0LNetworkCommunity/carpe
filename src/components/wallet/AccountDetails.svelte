@@ -34,17 +34,17 @@
             <div class="uk-width-1-2@m">
               <OverrideAddress {signingAccount} />
             </div>
-          {/if}          
+          {/if}
           <div class="uk-width-1-1">
             <SetWalletType {signingAccount} />
-          </div>          
+          </div>
         </div>
         <div class="uk-margin-top uk-flex uk-flex-left uk-flex-wrap">
           <RemoveAccount {signingAccount} />
         </div>
       </div>
     </section>
-  {/if}  
+  {/if}
 </main>
 
 <style>

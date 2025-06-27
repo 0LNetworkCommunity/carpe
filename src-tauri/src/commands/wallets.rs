@@ -538,7 +538,7 @@ pub async fn override_account_address(
   auth_key: AuthenticationKey,
 ) -> Result<CarpeProfile, CarpeError> {
   let mut app_cfg = get_cfg()?;
-  
+
   // Find the profile with the matching old address and auth key
   let profile = app_cfg
     .user_profiles
@@ -549,14 +549,14 @@ pub async fn override_account_address(
   // Update the account address for this profile
   profile.account = new_address;
   profile.nickname = get_short(new_address);
-  
+
   // Save the configuration
   app_cfg.save_file()?;
-  
+
   // Convert to CarpeProfile and assign notes
   let mut carpe_profile: CarpeProfile = profile.into();
   let mut profiles = vec![carpe_profile];
   assign_notes_to_accounts(&mut profiles)?;
-  
+
   Ok(profiles.into_iter().next().unwrap())
 }

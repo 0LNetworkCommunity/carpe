@@ -9,7 +9,7 @@
     isLegacy = !isLegacy
   }
   const initAccount = (pri_key: string) => {
-    addAccount(InitType.PriKey, pri_key.trim(), isLegacy).finally(() => {
+    addAccount(InitType.PriKey, pri_key.trim()).finally(() => {
       danger_temp_private_key = null
       navigate('wallet')
     })

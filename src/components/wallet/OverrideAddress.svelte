@@ -1,15 +1,14 @@
 <script lang="ts">
-  import { invoke } from '@tauri-apps/api/tauri';
   import { _ } from 'svelte-i18n';
-  import { notify_success, notify_error } from '../../modules/carpeNotify';
+  import { notify_error } from '../../modules/carpeNotify';
   import { overrideAccountAddress } from '../../modules/accountActions';
 
   export let signingAccount;
-  
+
   let newAddress = '';
   let loading = false;
   let showConfirmation = false;
-  
+
   const validateAddress = (address: string): boolean => {
     // Basic validation - address should be 32 bytes hex (64 characters) with 0x prefix
     const cleanAddress = address.startsWith('0x') ? address.slice(2) : address;
@@ -33,7 +32,7 @@
     }
 
     const formattedAddress = formatAddress(newAddress);
-    
+
     if (formattedAddress.toLowerCase() === signingAccount.account.toLowerCase()) {
       notify_error('New address is the same as current address');
       return;
@@ -48,15 +47,15 @@
 
     try {
       const formattedAddress = formatAddress(newAddress);
-      
+
       await overrideAccountAddress(
-        signingAccount.account, 
-        formattedAddress, 
+        signingAccount.account,
+        formattedAddress,
         signingAccount.auth_key
       );
-      
+
       newAddress = '';
-      
+
     } catch (error) {
       console.error('Error overriding address:', error);
       // Error handling is done in the overrideAccountAddress function
@@ -82,7 +81,7 @@
     <p style="margin:0px; margin-bottom: 10px;">
       {$_('wallet.override_address.description')}
     </p>
-    
+
     <div class="uk-flex-1 uk-flex uk-flex-column">
       <div class="uk-margin-small">
         <div class="uk-text-small uk-text-muted">Current Address:</div>
@@ -90,7 +89,7 @@
           <code>{signingAccount?.account || 'N/A'}</code>
         </div>
       </div>
-      
+
       <div class="uk-margin-small">
         <label for="new-address-input" class="uk-form-label uk-text-small uk-text-muted">New Address:</label>
         <div class="uk-flex">
@@ -115,7 +114,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="uk-flex uk-flex-bottom uk-flex-right">
       <button
         class="uk-button uk-button-primary uk-button-small"
@@ -164,12 +163,12 @@
   .uk-modal-backdrop {
     background: rgba(0, 0, 0, 0.5);
   }
-  
+
   code {
     word-break: break-all;
     font-size: 11px;
   }
-  
+
   .uk-text-break {
     word-break: break-all;
   }

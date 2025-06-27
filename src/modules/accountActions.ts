@@ -145,10 +145,7 @@ const addAccountOptimistic = async (address: string, watch_only: boolean) => {
   allAccounts.set(list)
 }
 
-export const addAccount = async (
-  init_type: InitType,
-  secret: string
-) => {
+export const addAccount = async (init_type: InitType, secret: string) => {
   let method_name = ''
   let arg_obj = {}
   if (init_type == InitType.Mnem) {
@@ -559,12 +556,16 @@ export const associateNoteWithAccount = async (account, note) => {
   }
 }
 
-export const overrideAccountAddress = async (oldAddress: string, newAddress: string, authKey: string) => {
+export const overrideAccountAddress = async (
+  oldAddress: string,
+  newAddress: string,
+  authKey: string,
+) => {
   try {
-    const result = await invoke('override_account_address', { 
+    const result = await invoke('override_account_address', {
       oldAddress: oldAddress,
       newAddress: newAddress,
-      authKey: authKey
+      authKey: authKey,
     })
     await refreshAccounts()
     notify_success('Account address successfully overridden')
