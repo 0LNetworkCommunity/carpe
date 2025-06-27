@@ -243,9 +243,10 @@ pub fn get_default_profile() -> Result<CarpeProfile, CarpeError> {
 pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   let mut app_cfg = CONFIG_MUTEX.lock().await;
 
-  // while we are here check if the accounts are on chain
-  // under a different address than implied by authkey
-  map_get_originating_address(&mut app_cfg.user_profiles).await?;
+  // NOTE: map_get_originating_address was reverting the profile account
+  // after someone made a manual override on it.
+
+  // map_get_originating_address(&mut app_cfg.user_profiles).await?;
   map_get_balance(&mut app_cfg.user_profiles).await?;
   app_cfg.save_file()?;
 
