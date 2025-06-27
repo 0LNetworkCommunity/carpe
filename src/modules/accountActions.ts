@@ -145,40 +145,38 @@ const addAccountOptimistic = async (address: string, watch_only: boolean) => {
   allAccounts.set(list)
 }
 
-export const addAccount = async (
-  init_type: InitType,
-  secret: string,
-  isLegacy: boolean = false,
-) => {
+export const addAccount = async (init_type: InitType, secret: string) => {
   let method_name = ''
   let arg_obj = {}
   if (init_type == InitType.Mnem) {
     method_name = 'init_from_mnem'
-    arg_obj = { mnem: secret.trim(), isLegacy }
+    arg_obj = { mnem: secret.trim() }
   } else if (init_type == InitType.PriKey) {
     method_name = 'init_from_private_key'
-    arg_obj = { priKeyString: secret.trim(), isLegacy }
+    arg_obj = { priKeyString: secret.trim() }
   }
 
   addAccountOptimistic('loading...', false)
 
   // submit
   return invoke(method_name, arg_obj)
-    .then(async (res: CarpeProfile) => {
-      // update watchAccounts
-      let list = get(watchAccounts)
-      list = list.filter((item) => item !== res.account)
-      watchAccounts.set(list)
-      localStorage.setItem('watchAccounts', JSON.stringify(list))
-      res.watch_only = false
-
-      await onAccountAdd(res)
-      return res
-    })
+    .then(setWatchAccounts)
     .catch((error) => {
       raise_error(error, false, 'addAccount')
     })
     .finally(() => (secret = null))
+}
+
+const setWatchAccounts = async (res: CarpeProfile) => {
+  // update watchAccounts
+  let list = get(watchAccounts)
+  list = list.filter((item) => item !== res.account)
+  watchAccounts.set(list)
+  localStorage.setItem('watchAccounts', JSON.stringify(list))
+  res.watch_only = false
+
+  await onAccountAdd(res)
+  return res
 }
 
 export const removeAccount = async (account: string) => {
@@ -555,5 +553,26 @@ export const associateNoteWithAccount = async (account, note) => {
   } catch (e) {
     raise_error(e, true, 'associateNoteWithAccount')
     notify_error('Failed to associate note with account')
+  }
+}
+
+export const overrideAccountAddress = async (
+  oldAddress: string,
+  newAddress: string,
+  authKey: string,
+) => {
+  try {
+    const result = await invoke('override_account_address', {
+      oldAddress: oldAddress,
+      newAddress: newAddress,
+      authKey: authKey,
+    })
+    await refreshAccounts()
+    notify_success('Account address successfully overridden')
+    return result
+  } catch (e) {
+    raise_error(e, true, 'overrideAccountAddress')
+    notify_error('Failed to override account address')
+    throw e
   }
 }

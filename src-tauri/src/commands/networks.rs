@@ -17,6 +17,7 @@ pub async fn toggle_network(chain_id_str: &str) -> Result<NetworkPlaylist, Carpe
   let chain_id = NamedChain::from_str(chain_id_str)?;
   let mut app_cfg = CONFIG_MUTEX.lock().await;
   app_cfg.set_chain_id(chain_id);
+  // TODO: save_file might be duplicated with `maybe_create_playlist`
   app_cfg.save_file()?;
   maybe_create_playlist(&mut app_cfg, chain_id).await.ok();
 
