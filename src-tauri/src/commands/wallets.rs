@@ -102,9 +102,7 @@ pub async fn init_from_mnem(mnem: String) -> Result<CarpeProfile, CarpeError> {
 }
 
 #[tauri::command(async)]
-pub async fn init_from_private_key(
-  pri_key_string: String,
-) -> Result<CarpeProfile, CarpeError> {
+pub async fn init_from_private_key(pri_key_string: String) -> Result<CarpeProfile, CarpeError> {
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
     .map_err(|_| anyhow!("cannot parse encoded private key"))?;
   let acc_struct = account_keys::get_account_from_private(&pri);
@@ -112,22 +110,21 @@ pub async fn init_from_private_key(
     Ok(p) => p,
     Err(_e) => {
       // the account may not exist on chain so we'll default to the derived address
-      add_account_by_authkey(acc_struct.auth_key, Some(acc_struct.account))
-        .await?
+      add_account_by_authkey(acc_struct.auth_key, Some(acc_struct.account)).await?
     }
   };
 
-
   key_manager::set_private_key(&core_profile.account, acc_struct.pri_key)
     .map_err(|e| CarpeError::config(&e.to_string()))?;
-
 
   Ok(core_profile)
 }
 
 // add the account to profile by authkey
-pub async fn add_account_by_authkey(authkey: AuthenticationKey, force_address: Option<AccountAddress>) -> Result<CarpeProfile, CarpeError> {
-
+pub async fn add_account_by_authkey(
+  authkey: AuthenticationKey,
+  force_address: Option<AccountAddress>,
+) -> Result<CarpeProfile, CarpeError> {
   // IMPORTANT
   // let's check if this account has had a rotated authkey,
   // so the address we derive may not be the expected one.
@@ -432,9 +429,7 @@ pub fn get_private_key_from_os(address: AccountAddress) -> Result<String, CarpeE
 }
 
 #[tauri::command(async)]
-pub async fn add_watch_account(
-  address: AccountAddress,
-) -> Result<CarpeProfile, CarpeError> {
+pub async fn add_watch_account(address: AccountAddress) -> Result<CarpeProfile, CarpeError> {
   // Catch edge case the user is setting up a carpe for the first time
   // only with a watch account.
   if !configs::is_initialized() {
