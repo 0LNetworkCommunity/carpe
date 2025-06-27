@@ -4,6 +4,7 @@
   import AccountNote from './AccountNote.svelte';
   import SetWalletType from '../txs/SetWalletType.svelte';
   import GetPrivateKey from './GetPrivateKey.svelte';
+  import OverrideAddress from './OverrideAddress.svelte';
   import RemoveAccount from './RemoveAccount.svelte';
   import { _ } from 'svelte-i18n';
 
@@ -29,6 +30,9 @@
           {#if !$signingAccount.watch_only}
             <div class="uk-width-1-2@m">
               <GetPrivateKey />
+            </div>
+            <div class="uk-width-1-2@m">
+              <OverrideAddress {signingAccount} />
             </div>
           {/if}          
           <div class="uk-width-1-1">

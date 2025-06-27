@@ -558,3 +558,20 @@ export const associateNoteWithAccount = async (account, note) => {
     notify_error('Failed to associate note with account')
   }
 }
+
+export const overrideAccountAddress = async (oldAddress: string, newAddress: string, authKey: string) => {
+  try {
+    const result = await invoke('override_account_address', { 
+      oldAddress: oldAddress,
+      newAddress: newAddress,
+      authKey: authKey
+    })
+    await refreshAccounts()
+    notify_success('Account address successfully overridden')
+    return result
+  } catch (e) {
+    raise_error(e, true, 'overrideAccountAddress')
+    notify_error('Failed to override account address')
+    throw e
+  }
+}
