@@ -47,8 +47,11 @@
       // Show loading state while processing
       isLoading = true;
       
-      // Call the rejoin_transaction Tauri function directly
-      await invoke('rejoin_transaction', { sender: account });
+      // Call the rejoin_transaction Tauri function directly with legacy flag
+      await invoke('rejoin_transaction', { 
+        sender: account,
+        legacy: account.startsWith('0'.repeat(32))  // Use same legacy detection as other transactions
+      });
       
       // Refresh status checks after successful rejoin
       await checkMigrationStatus();
