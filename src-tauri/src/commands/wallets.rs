@@ -17,10 +17,10 @@ use libra_types::{
 };
 use libra_wallet::account_keys::{self, KeyChain};
 use serde::{Deserialize, Serialize};
-use std::{fs::OpenOptions, str::FromStr};
 use std::fs::{self, File};
 use std::io::{prelude::*, Write};
 use std::path::{Path, PathBuf};
+use std::{fs::OpenOptions, str::FromStr};
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NewKeygen {
@@ -534,14 +534,14 @@ pub async fn override_account_address(
   auth_key_str: &str,
 ) -> Result<(), CarpeError> {
   // Clean up the auth_key_str - remove 0x/0X prefix if present and ensure lowercase
-    let lower_auth_key = auth_key_str.trim().to_lowercase();
-    let clean_auth_key = lower_auth_key.trim_start_matches("0x");
-   // Convert the cleaned auth_key string to AuthenticationKey
-    let auth_key = AuthenticationKey::from_str(clean_auth_key)
-        .map_err(|e| CarpeError::misc(&format!("Invalid auth key format: {}", e)))?;
-    
-    // Use CONFIG_MUTEX to ensure thread safety and consistency
-    let mut app_cfg = CONFIG_MUTEX.lock().await;
+  let lower_auth_key = auth_key_str.trim().to_lowercase();
+  let clean_auth_key = lower_auth_key.trim_start_matches("0x");
+  // Convert the cleaned auth_key string to AuthenticationKey
+  let auth_key = AuthenticationKey::from_str(clean_auth_key)
+    .map_err(|e| CarpeError::misc(&format!("Invalid auth key format: {}", e)))?;
+
+  // Use CONFIG_MUTEX to ensure thread safety and consistency
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
 
   // Find the profile with the matching old address and auth key
   let profile = app_cfg
@@ -555,10 +555,9 @@ pub async fn override_account_address(
 
   // Update the account address for this profile
   profile.account = new_address;
-  
+
   // Set this account as the default one in the workspace
   app_cfg.workspace.set_default(nickname);
-  
 
   // Save the configuration
   app_cfg.save_file()?;
