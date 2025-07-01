@@ -555,4 +555,3 @@ export const associateNoteWithAccount = async (account, note) => {
     notify_error('Failed to associate note with account')
   }
 }
-
