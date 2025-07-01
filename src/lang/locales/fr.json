@@ -93,6 +93,11 @@
       "btn_hide": "Masquer la Clé Privée",
       "btn_get": "Obtenir la Clé Privée"
     },
+    "override_address": {
+      "title": "Remplacer l'Adresse",
+      "description": "Remplacer l'adresse du compte en raison de problèmes de migration hérités:",
+      "button": "Remplacer l'Adresse"
+    },
     "keygen": {
       "title": "Creer un nouveau compte",
       "description": "Aprés avoir généré votre compte et phrase secrète, vous aurez besoin que quelqu'un envoie un Coin 0L à ce compte pour qu'il soit mis sur la chaîne.",

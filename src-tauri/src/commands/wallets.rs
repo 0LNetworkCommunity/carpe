@@ -17,10 +17,10 @@ use libra_types::{
 };
 use libra_wallet::account_keys::{self, KeyChain};
 use serde::{Deserialize, Serialize};
-use std::fs::OpenOptions;
 use std::fs::{self, File};
 use std::io::{prelude::*, Write};
 use std::path::{Path, PathBuf};
+use std::{fs::OpenOptions, str::FromStr};
 
 #[derive(serde::Deserialize, serde::Serialize, Debug)]
 pub struct NewKeygen {
@@ -96,36 +96,46 @@ pub fn is_init() -> Result<bool, CarpeError> {
 
 /// default way accounts get initialized in Carpe
 #[tauri::command(async)] // don't want this to be async. We want it to block before moving back to the wallets page (and then needing a refresh), it's a smoother UI.
-pub async fn init_from_mnem(mnem: String, is_legacy: bool) -> Result<CarpeProfile, CarpeError> {
+pub async fn init_from_mnem(mnem: String) -> Result<CarpeProfile, CarpeError> {
   let wallet = account_keys::get_keys_from_mnem(mnem.clone())?;
-  init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?, is_legacy).await
+  init_from_private_key(wallet.child_0_owner.pri_key.to_encoded_string()?).await
 }
 
 #[tauri::command(async)]
-pub async fn init_from_private_key(
-  pri_key_string: String,
-  is_legacy: bool,
-) -> Result<CarpeProfile, CarpeError> {
+pub async fn init_from_private_key(pri_key_string: String) -> Result<CarpeProfile, CarpeError> {
   let pri = Ed25519PrivateKey::from_encoded_string(&pri_key_string)
     .map_err(|_| anyhow!("cannot parse encoded private key"))?;
   let acc_struct = account_keys::get_account_from_private(&pri);
-  let authkey = acc_struct.auth_key;
-  if is_legacy {
-    let _ = add_legacy_accounts(authkey);
-  }
+  let core_profile = match add_account_by_authkey(acc_struct.auth_key, None).await {
+    Ok(p) => p,
+    Err(_e) => {
+      // the account may not exist on chain so we'll default to the derived address
+      add_account_by_authkey(acc_struct.auth_key, Some(acc_struct.account)).await?
+    }
+  };
+
+  key_manager::set_private_key(&core_profile.account, acc_struct.pri_key)
+    .map_err(|e| CarpeError::config(&e.to_string()))?;
+
+  Ok(core_profile)
+}
+
+// add the account to profile by authkey
+pub async fn add_account_by_authkey(
+  authkey: AuthenticationKey,
+  force_address: Option<AccountAddress>,
+) -> Result<CarpeProfile, CarpeError> {
   // IMPORTANT
   // let's check if this account has had a rotated authkey,
   // so the address we derive may not be the expected one.
-  let address = get_originating_address(authkey)
-    .await
-    .unwrap_or(acc_struct.account); // the account may not have been created on chain. If we can't get the address, we'll just use the one we derived from the private key
-
-  key_manager::set_private_key(&address, acc_struct.pri_key)
-    .map_err(|e| CarpeError::config(&e.to_string()))?;
+  let address = match force_address {
+    Some(addr) => addr,
+    None => get_originating_address(authkey).await?,
+  };
 
   configs_profile::set_account_profile(address, authkey).await?;
-  let core_profile = &Profile::new(authkey, address);
-  Ok(core_profile.into())
+  let profile = Profile::new(authkey, address);
+  Ok((&profile).into())
 }
 
 #[derive(Serialize, Deserialize)]
@@ -243,9 +253,11 @@ pub fn get_default_profile() -> Result<CarpeProfile, CarpeError> {
 pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   let mut app_cfg = CONFIG_MUTEX.lock().await;
 
-  // while we are here check if the accounts are on chain
-  // under a different address than implied by authkey
-  map_get_originating_address(&mut app_cfg.user_profiles).await?;
+  // NOTE: map_get_originating_address was reverting the profile account
+  // after someone made a manual override on it.
+  // This function is currently disabled but might be needed in the future
+  // for handling profile account overrides. See Issue #123 for details.
+  // map_get_originating_address(&mut app_cfg.user_profiles).await?;
   map_get_balance(&mut app_cfg.user_profiles).await?;
   app_cfg.save_file()?;
 
@@ -287,6 +299,7 @@ async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError>
   futures::future::join_all(list.iter_mut().map(|e| async {
     if let Ok(b) = query::get_balance(e.account).await {
       e.balance = b;
+      e.on_chain = true;
     }
   }))
   .await;
@@ -297,12 +310,13 @@ pub async fn get_originating_address(
   auth_key: AuthenticationKey,
 ) -> Result<AccountAddress, CarpeError> {
   let client = get_client()?;
-  let all = read_legacy_accounts().unwrap();
+  let all = read_legacy_accounts().map_err(|e| CarpeError::misc(&e.to_string()))?;
   let acc_list: Vec<String> = all.accounts.iter().map(|a| a.authkey.to_string()).collect();
   if acc_list.contains(&auth_key.to_string()) {
     let a = auth_key.to_string()[32..].to_owned();
     let b = String::from("00000000000000000000000000000000");
-    Ok(AccountAddress::from_hex_literal(&format!("0x{}{}", b, a)).unwrap())
+    AccountAddress::from_hex_literal(&format!("0x{}{}", b, a))
+      .map_err(|e| CarpeError::misc(&format!("Invalid address format: {}", e)))
   } else {
     Ok(client.lookup_originating_address(auth_key).await?)
   }
@@ -354,7 +368,7 @@ pub async fn remove_account(account: AccountAddress) -> Result<String, CarpeErro
   let index = app_cfg
     .user_profiles
     .iter()
-    .position(|p| p.account.to_string() == acc_str);
+    .position(|p| p.account.to_string().to_lowercase() == acc_str);
   if let Some(i) = index {
     app_cfg.user_profiles.remove(i);
     app_cfg.save_file()?;
@@ -381,7 +395,7 @@ fn get_short(acc: AccountAddress) -> String {
 async fn test_init_mnem() {
   use libra_types::core_types::app_cfg::AppCfg;
   let alice = "talent sunset lizard pill fame nuclear spy noodle basket okay critic grow sleep legend hurry pitch blanket clerk impose rough degree sock insane purse".to_string();
-  init_from_mnem(alice, false).await.unwrap();
+  init_from_mnem(alice).await.unwrap();
   let _cfg = AppCfg::load(None).unwrap();
 }
 
@@ -417,10 +431,7 @@ pub fn get_private_key_from_os(address: AccountAddress) -> Result<String, CarpeE
 }
 
 #[tauri::command(async)]
-pub async fn add_watch_account(
-  address: AccountAddress,
-  is_legacy: bool,
-) -> Result<CarpeProfile, CarpeError> {
+pub async fn add_watch_account(address: AccountAddress) -> Result<CarpeProfile, CarpeError> {
   // Catch edge case the user is setting up a carpe for the first time
   // only with a watch account.
   if !configs::is_initialized() {
@@ -429,12 +440,10 @@ pub async fn add_watch_account(
 
   let authkey: AuthenticationKey = query::get_auth_key(address).await?;
 
-  if is_legacy {
-    let _ = add_legacy_accounts(authkey);
-  }
   configs_profile::set_account_profile(address, authkey).await?;
-  let core_profile = &Profile::new(authkey, address);
-  Ok(core_profile.into())
+
+  let profile = &Profile::new(authkey, address);
+  Ok(profile.into())
 }
 
 fn read_legacy_accounts() -> Result<LegacyAccounts, Error> {
@@ -516,4 +525,44 @@ pub fn remove_legacy_account(authkey: AuthenticationKey) -> Result<String, Carpe
   } else {
     Err(CarpeError::misc("account not found"))
   }
+}
+
+/// Override the account address for a given auth key
+/// This is needed for legacy migration issues where one authkey might link to two addresses onchain
+#[tauri::command(async)]
+pub async fn override_account_address(
+  old_address: AccountAddress,
+  new_address: AccountAddress,
+  auth_key_str: &str,
+) -> Result<(), CarpeError> {
+  // Clean up the auth_key_str - remove 0x/0X prefix if present and ensure lowercase
+  let lower_auth_key = auth_key_str.trim().to_lowercase();
+  let clean_auth_key = lower_auth_key.trim_start_matches("0x");
+  // Convert the cleaned auth_key string to AuthenticationKey
+  let auth_key = AuthenticationKey::from_str(clean_auth_key)
+    .map_err(|e| CarpeError::misc(&format!("Invalid auth key format: {}", e)))?;
+
+  // Use CONFIG_MUTEX to ensure thread safety and consistency
+  let mut app_cfg = CONFIG_MUTEX.lock().await;
+
+  // Find the profile with the matching old address and auth key
+  let profile = app_cfg
+    .user_profiles
+    .iter_mut()
+    .find(|p| p.account == old_address && p.auth_key == auth_key)
+    .ok_or_else(|| CarpeError::misc("Profile with matching address and auth key not found"))?;
+
+  // Clone the nickname before we modify the profile
+  let nickname = profile.nickname.clone();
+
+  // Update the account address for this profile
+  profile.account = new_address;
+
+  // Set this account as the default one in the workspace
+  app_cfg.workspace.set_default(nickname);
+
+  // Save the configuration
+  app_cfg.save_file()?;
+
+  Ok(())
 }
