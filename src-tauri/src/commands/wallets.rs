@@ -289,6 +289,7 @@ async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError>
   futures::future::join_all(list.iter_mut().map(|e| async {
     if let Ok(b) = query::get_balance(e.account).await {
       e.balance = b;
+      e.on_chain = true;
     }
   }))
   .await;
