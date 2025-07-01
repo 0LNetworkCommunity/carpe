@@ -1,7 +1,8 @@
 <script lang="ts">
   import { _ } from 'svelte-i18n';
-  import { notify_error } from '../../modules/carpeNotify';
-  import { overrideAccountAddress } from '../../modules/accountActions';
+  import { notify_error, notify_success } from '../../modules/carpeNotify';
+  import { refreshAccounts } from '../../modules/accountActions';
+    import { invoke } from '@tauri-apps/api/tauri'
 
   export let signingAccount;
 
@@ -33,7 +34,7 @@
 
     const formattedAddress = formatAddress(newAddress);
 
-    if (formattedAddress.toLowerCase() === signingAccount.account.toLowerCase()) {
+    if (formattedAddress.toLowerCase() === $signingAccount.account.toLowerCase()) {
       notify_error('New address is the same as current address');
       return;
     }
@@ -48,11 +49,13 @@
     try {
       const formattedAddress = formatAddress(newAddress);
 
-      await overrideAccountAddress(
-        signingAccount.account,
-        formattedAddress,
-        signingAccount.auth_key
-      );
+      await invoke('override_account_address', {
+        oldAddress: $signingAccount.account,
+        newAddress: formattedAddress,
+        authKeyStr: $signingAccount.auth_key
+      })
+      await refreshAccounts()
+      notify_success('Account address successfully overridden')
 
       newAddress = '';
 
@@ -86,7 +89,7 @@
       <div class="uk-margin-small">
         <div class="uk-text-small uk-text-muted">Current Address:</div>
         <div class="uk-text-small uk-text-break">
-          <code>{signingAccount?.account || 'N/A'}</code>
+          <code>{$signingAccount?.account || 'N/A'}</code>
         </div>
       </div>
 
@@ -137,7 +140,7 @@
     <div class="uk-modal-dialog uk-modal-body">
       <h2 class="uk-modal-title">Confirm Address Override</h2>
       <p>Are you sure you want to override the address for this account?</p>
-      <p><strong>Current:</strong> <code>{signingAccount?.account}</code></p>
+      <p><strong>Current:</strong> <code>{$signingAccount?.account}</code></p>
       <p><strong>New:</strong> <code>{formatAddress(newAddress)}</code></p>
       <p class="uk-text-warning">
         <strong>Warning:</strong> This action will update the profile's address. Make sure the new address is correct.
