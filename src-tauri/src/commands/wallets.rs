@@ -243,9 +243,11 @@ pub fn get_default_profile() -> Result<CarpeProfile, CarpeError> {
 pub async fn refresh_accounts() -> Result<Vec<CarpeProfile>, CarpeError> {
   let mut app_cfg = CONFIG_MUTEX.lock().await;
 
-  // while we are here check if the accounts are on chain
-  // under a different address than implied by authkey
-  map_get_originating_address(&mut app_cfg.user_profiles).await?;
+  // NOTE: map_get_originating_address was reverting the profile account
+  // after someone made a manual override on it.
+  // This function is currently disabled but might be needed in the future
+  // for handling profile account overrides. See Issue #123 for details.
+  // map_get_originating_address(&mut app_cfg.user_profiles).await?;
   map_get_balance(&mut app_cfg.user_profiles).await?;
   app_cfg.save_file()?;
 
@@ -287,6 +289,7 @@ async fn map_get_balance(list: &mut [Profile]) -> anyhow::Result<(), CarpeError>
   futures::future::join_all(list.iter_mut().map(|e| async {
     if let Ok(b) = query::get_balance(e.account).await {
       e.balance = b;
+      e.on_chain = true;
     }
   }))
   .await;
