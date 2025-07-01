@@ -93,6 +93,11 @@
       "btn_hide": "Hide Private Key",
       "btn_get": "Get Private Key"
     },
+    "override_address": {
+      "title": "Anular Dirección",
+      "description": "Anular la dirección de la cuenta debido a problemas de migración heredados:",
+      "button": "Anular Dirección"
+    },
     "keygen": {
       "title": "Create New Account",
       "description": "After you generate an account and secret phrase, you'll need someone to send one 0L coin to that account for it to be created on chain.",

@@ -145,40 +145,38 @@ const addAccountOptimistic = async (address: string, watch_only: boolean) => {
   allAccounts.set(list)
 }
 
-export const addAccount = async (
-  init_type: InitType,
-  secret: string,
-  isLegacy: boolean = false,
-) => {
+export const addAccount = async (init_type: InitType, secret: string) => {
   let method_name = ''
   let arg_obj = {}
   if (init_type == InitType.Mnem) {
     method_name = 'init_from_mnem'
-    arg_obj = { mnem: secret.trim(), isLegacy }
+    arg_obj = { mnem: secret.trim() }
   } else if (init_type == InitType.PriKey) {
     method_name = 'init_from_private_key'
-    arg_obj = { priKeyString: secret.trim(), isLegacy }
+    arg_obj = { priKeyString: secret.trim() }
   }
 
   addAccountOptimistic('loading...', false)
 
   // submit
   return invoke(method_name, arg_obj)
-    .then(async (res: CarpeProfile) => {
-      // update watchAccounts
-      let list = get(watchAccounts)
-      list = list.filter((item) => item !== res.account)
-      watchAccounts.set(list)
-      localStorage.setItem('watchAccounts', JSON.stringify(list))
-      res.watch_only = false
-
-      await onAccountAdd(res)
-      return res
-    })
+    .then(setWatchAccounts)
     .catch((error) => {
       raise_error(error, false, 'addAccount')
     })
     .finally(() => (secret = null))
+}
+
+const setWatchAccounts = async (res: CarpeProfile) => {
+  // update watchAccounts
+  let list = get(watchAccounts)
+  list = list.filter((item) => item !== res.account)
+  watchAccounts.set(list)
+  localStorage.setItem('watchAccounts', JSON.stringify(list))
+  res.watch_only = false
+
+  await onAccountAdd(res)
+  return res
 }
 
 export const removeAccount = async (account: string) => {
